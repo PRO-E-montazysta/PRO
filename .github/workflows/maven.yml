@@ -21,7 +21,7 @@ jobs:
   build:
     defaults:
       run:
-        working-directory: ./Java/E-Montazysta
+        working-directory: Java/E-Montazysta
     runs-on: ubuntu-latest
     
     steps:
