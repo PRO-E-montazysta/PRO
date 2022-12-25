@@ -33,6 +33,7 @@ public class SecurityConfig  {
    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
        return http
                .csrf(csrf -> csrf.disable())
+               .headers(headers -> headers.frameOptions().disable())
                .authorizeHttpRequests(auth ->
                        auth.anyRequest().authenticated())
                .userDetailsService(userDetailsService)
