@@ -22,8 +22,8 @@ public class CommentService {
                 .orElseThrow(() -> new RuntimeException("Comment with id " + id + " not found!"));
     }
 
-    public void addComment(Comment request) {
-        commentRepository.save(request);
+    public void addComment(Comment comment) {
+        commentRepository.save(comment);
     }
 
     public void deleteComment(Long id) {
