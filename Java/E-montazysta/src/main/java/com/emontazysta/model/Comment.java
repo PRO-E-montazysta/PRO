@@ -1,6 +1,8 @@
 package com.emontazysta.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +12,8 @@ import java.util.Date;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Comment {
 
     @Id
@@ -19,13 +23,4 @@ public class Comment {
     private String content;
 
     private Date createdAt;
-
-    public Comment() {
-        this.createdAt = new Date();
-    }
-
-    public Comment(String content) {
-        this.content = content;
-        this.createdAt = new Date();
-    }
 }

@@ -1,5 +1,6 @@
 package com.emontazysta.controller;
 
+import com.emontazysta.data.CommentRequest;
 import com.emontazysta.model.Comment;
 import com.emontazysta.service.CommentService;
 import lombok.AllArgsConstructor;
@@ -25,7 +26,7 @@ public class CommentController {
     }
 
     @PostMapping
-    public void addComment(@RequestBody Comment comment) {
+    public void addComment(@RequestBody CommentRequest comment) {
         commentService.addComment(comment);
     }
 

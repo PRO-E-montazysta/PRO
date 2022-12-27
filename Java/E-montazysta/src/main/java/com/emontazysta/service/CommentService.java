@@ -1,10 +1,12 @@
 package com.emontazysta.service;
 
+import com.emontazysta.data.CommentRequest;
 import com.emontazysta.model.Comment;
 import com.emontazysta.repositoriy.CommentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,7 +24,11 @@ public class CommentService {
                 .orElseThrow(() -> new RuntimeException("Comment with id " + id + " not found!"));
     }
 
-    public void addComment(Comment comment) {
+    public void addComment(CommentRequest newComment) {
+        Comment comment = new Comment();
+        comment.setContent(newComment.getContent());
+        comment.setCreatedAt(new Date());
+
         commentRepository.save(comment);
     }
 
