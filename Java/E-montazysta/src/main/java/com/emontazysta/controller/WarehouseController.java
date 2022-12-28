@@ -20,8 +20,8 @@ public class WarehouseController {
         return warehouseService.getWarehouses();
     }
 
-    @GetMapping
-    public Warehouse getWarehouse(Long id) {
+    @GetMapping("{warehouseId}")
+    public Warehouse getWarehouse(@PathVariable("warehouseId")Long id) {
         return warehouseService.getWarehouse(id);
     }
 
