@@ -37,7 +37,7 @@ public class WarehouseService {
     }
 
     public void updateWarehouse(Long id, WarehouseRequest warehouseToUpdate) {
-        Warehouse updatedWarehouse = new Warehouse();
+        Warehouse updatedWarehouse = this.getWarehouse(id);
         updatedWarehouse.setName(warehouseToUpdate.getName());
         updatedWarehouse.setDescription(warehouseToUpdate.getDescription());
         updatedWarehouse.setOpeningHours(warehouseToUpdate.getOpeningHours());
