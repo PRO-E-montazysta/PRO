@@ -1,8 +1,9 @@
-package com.emontazysta.service;
+package com.emontazysta.service.impl;
 
 import com.emontazysta.Role;
 import com.emontazysta.model.AppUser;
-import com.emontazysta.repositoriy.AppUserRepository;
+import com.emontazysta.repository.AppUserRepository;
+import com.emontazysta.service.AppUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class AppUserServiceImpl implements AppUserService{
+public class AppUserServiceImpl implements AppUserService {
 
     private final AppUserRepository appUserRepository;
     @Override

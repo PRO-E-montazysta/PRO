@@ -2,7 +2,7 @@ package com.emontazysta.controller;
 
 import com.emontazysta.data.RoleToUserForm;
 import com.emontazysta.model.AppUser;
-import com.emontazysta.service.AppUserServiceImpl;
+import com.emontazysta.service.impl.AppUserServiceImpl;
 import com.emontazysta.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
