@@ -24,7 +24,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/")
+@RequestMapping("/api/v1")
 public class AppUserController {
 
     private final AppUserService userService;
