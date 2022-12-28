@@ -1,4 +1,4 @@
-FROM openjdk:17-jdk-alpine as build
+FROM eclipse-temurin:17-jdk-alpine as build
 
 WORKDIR /workspace/app
 
@@ -10,7 +10,7 @@ COPY src src
 RUN ./mvnw install --no-transfer-progress -DskipTests
 RUN mkdir -p target/dependency && (cd target/dependency && jar -xf ../*.jar)
 
-FROM openjdk:17-jdk-alpine
+FROM eclipse-temurin:17-jre-alpine
 RUN addgroup -S spring && adduser -S spring -G spring
 USER spring:spring
 VOLUME /tmp
