@@ -56,7 +56,6 @@ public class AppUserService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found in database");
         } else {
             log.info("User found in the database: {}", username);
-            log.info("User found in the database: {}", password);
         }
         return user;
     }
