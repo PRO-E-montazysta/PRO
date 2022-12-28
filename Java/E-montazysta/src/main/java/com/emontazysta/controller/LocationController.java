@@ -1,5 +1,6 @@
 package com.emontazysta.controller;
 
+import com.emontazysta.data.LocationRequest;
 import com.emontazysta.model.Location;
 import com.emontazysta.service.LocationService;
 import lombok.AllArgsConstructor;
@@ -25,8 +26,8 @@ public class LocationController {
     }
 
     @PostMapping
-    public void addLocation(@RequestBody Location location) {
-        locationService.addLocation(location);
+    public void addLocation(@RequestBody LocationRequest locationToAdd) {
+        locationService.addLocation(locationToAdd);
     }
 
     @DeleteMapping("{locationId}")
@@ -36,7 +37,7 @@ public class LocationController {
 
     @PutMapping("{locationId}")
     public void updateLocation(@PathVariable("locationId") Long locationId,
-                               @RequestBody Location location) {
-        locationService.updateLocation(locationId, location);
+                               @RequestBody LocationRequest locationToUpdate) {
+        locationService.updateLocation(locationId, locationToUpdate);
     }
 }

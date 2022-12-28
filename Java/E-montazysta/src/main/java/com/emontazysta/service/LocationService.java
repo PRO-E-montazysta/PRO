@@ -1,5 +1,6 @@
 package com.emontazysta.service;
 
+import com.emontazysta.data.LocationRequest;
 import com.emontazysta.model.Location;
 import com.emontazysta.repositoriy.LocationRepository;
 import lombok.AllArgsConstructor;
@@ -22,16 +23,35 @@ public class LocationService {
                 .orElseThrow(() -> new RuntimeException("Location with id " + id + " not found!"));
     }
 
-    public void addLocation(Location request) {
-        locationRepository.save(request);
+    public void addLocation(LocationRequest locationToAdd) {
+        Location newLocation = new Location();
+        newLocation.setName(locationToAdd.getName());
+        newLocation.setXCoordinate(locationToAdd.getXCoordinate());
+        newLocation.setYCoordinate(locationToAdd.getYCoordinate());
+        newLocation.setCity(locationToAdd.getCity());
+        newLocation.setStreet(locationToAdd.getStreet());
+        newLocation.setPropertyNumber(locationToAdd.getPropertyNumber());
+        newLocation.setApartmentNumber(locationToAdd.getApartmentNumber());
+        newLocation.setZipCode(locationToAdd.getZipCode());
+
+        locationRepository.save(newLocation);
     }
 
     public void deleteLocation(Long id) {
         locationRepository.deleteById(id);
     }
 
-    public void updateLocation(Long id, Location updatedLocation) {
-        updatedLocation.setId(id);
+    public void updateLocation(Long id, LocationRequest locationToUpdate) {
+        Location updatedLocation = this.getLocation(id);
+        updatedLocation.setName(locationToUpdate.getName());
+        updatedLocation.setXCoordinate(locationToUpdate.getXCoordinate());
+        updatedLocation.setYCoordinate(locationToUpdate.getYCoordinate());
+        updatedLocation.setCity(locationToUpdate.getCity());
+        updatedLocation.setStreet(locationToUpdate.getStreet());
+        updatedLocation.setPropertyNumber(locationToUpdate.getPropertyNumber());
+        updatedLocation.setApartmentNumber(locationToUpdate.getApartmentNumber());
+        updatedLocation.setZipCode(locationToUpdate.getZipCode());
+
         locationRepository.save(updatedLocation);
     }
 }
