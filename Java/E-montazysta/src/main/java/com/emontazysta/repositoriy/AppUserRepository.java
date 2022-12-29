@@ -9,6 +9,6 @@ import java.util.Optional;
 @Repository
 public interface AppUserRepository extends JpaRepository<AppUser,Long> {
 
-    AppUser findByUsername(String username);
+    public AppUser findByUsername(String username);
 
 }
