@@ -1,9 +1,6 @@
 package com.emontazysta.controller;
 
-import com.emontazysta.mapper.FitterMapper;
-import com.emontazysta.model.Fitter;
 import com.emontazysta.model.OrderStage;
-import com.emontazysta.model.dto.FitterDto;
 import com.emontazysta.service.OrderStageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 
