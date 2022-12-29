@@ -1,4 +1,4 @@
-package com.emontazysta.repositoriy;
+package com.emontazysta.repository;
 
 import com.emontazysta.model.Company;
 import org.springframework.data.jpa.repository.JpaRepository;

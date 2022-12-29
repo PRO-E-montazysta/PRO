@@ -2,7 +2,7 @@ package com.emontazysta.service;
 
 import com.emontazysta.data.WarehouseRequest;
 import com.emontazysta.model.Warehouse;
-import com.emontazysta.repositoriy.WarehouseRepository;
+import com.emontazysta.repository.WarehouseRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

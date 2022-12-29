@@ -2,7 +2,7 @@ package com.emontazysta.service;
 
 import com.emontazysta.data.UnavailabilityRequest;
 import com.emontazysta.model.Unavailability;
-import com.emontazysta.repositoriy.UnavailabilityRepository;
+import com.emontazysta.repository.UnavailabilityRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

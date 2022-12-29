@@ -2,7 +2,7 @@ package com.emontazysta.service;
 
 import com.emontazysta.data.CompanyRequest;
 import com.emontazysta.model.Company;
-import com.emontazysta.repositoriy.CompanyRepository;
+import com.emontazysta.repository.CompanyRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
