@@ -1,7 +1,7 @@
 package com.emontazysta.service;
 
 import com.emontazysta.model.Location;
-import com.emontazysta.repositoriy.LocationRepository;
+import com.emontazysta.repository.LocationRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

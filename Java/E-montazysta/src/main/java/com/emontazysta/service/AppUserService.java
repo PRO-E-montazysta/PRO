@@ -2,7 +2,7 @@ package com.emontazysta.service;
 
 import com.emontazysta.Role;
 import com.emontazysta.model.AppUser;
-import com.emontazysta.repositoriy.AppUserRepository;
+import com.emontazysta.repository.AppUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,7 +1,7 @@
 package com.emontazysta.service;
 
 import com.emontazysta.model.Comment;
-import com.emontazysta.repositoriy.CommentRepository;
+import com.emontazysta.repository.CommentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

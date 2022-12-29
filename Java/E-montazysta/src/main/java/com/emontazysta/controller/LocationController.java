@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
+
 @RestController
 @AllArgsConstructor
-@RequestMapping("location")
+@RequestMapping(API_BASE_CONSTANT + "/locations")
 public class LocationController {
 
     private final LocationService locationService;
