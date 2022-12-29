@@ -2,29 +2,26 @@ package com.emontazysta.controller;
 
 import com.emontazysta.data.RoleToUserForm;
 import com.emontazysta.model.AppUser;
-import com.emontazysta.repositoriy.AppUserRepository;
+import com.emontazysta.repository.AppUserRepository;
 import com.emontazysta.service.AppUserService;
 import com.emontazysta.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.security.Principal;
 import java.util.List;
+
+import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping(API_BASE_CONSTANT)
 public class AppUserController {
 
     private final AppUserService userService;
