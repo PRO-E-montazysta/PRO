@@ -33,6 +33,14 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig  {
        private final AppUserService appuserDetailsService;
        private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+       private static final String[] SWAGGER_AUTH_LIST = {
+            // -- swagger ui"
+            "/v3/**",
+            "/swagger-ui",
+            "/swagger-ui.html",
+            "/swagger-ui/**"
+       };
        private RSAKey rsaKey;
 
        @Bean
@@ -49,7 +57,8 @@ public class SecurityConfig  {
                    .headers(headers -> headers.frameOptions().disable())
                    .csrf(AbstractHttpConfigurer::disable)
                    .authorizeHttpRequests( auth -> auth
-                           .requestMatchers("/token").permitAll()
+                           .antMatchers("/api/v1/gettoken").permitAll()
+                           .antMatchers(SWAGGER_AUTH_LIST).permitAll()
                            .anyRequest().authenticated()
                    )
                    .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

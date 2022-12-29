@@ -6,7 +6,7 @@ import com.emontazysta.service.ManagerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import jakarta.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -23,7 +23,7 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public Manager getById(Long id) {
         return repository.findById(id)
-                         .orElseThrow(EntityExistsException::new);
+                         .orElseThrow(EntityNotFoundException::new);
     }
 
     @Override

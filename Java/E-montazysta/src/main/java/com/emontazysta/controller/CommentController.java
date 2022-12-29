@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
+
 @RestController
 @AllArgsConstructor
-@RequestMapping("comment")
+@RequestMapping(API_BASE_CONSTANT + "/comments")
 public class CommentController {
 
     private final CommentService commentService;

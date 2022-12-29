@@ -4,6 +4,8 @@ import com.emontazysta.mapper.ForemanMapper;
 import com.emontazysta.model.Foreman;
 import com.emontazysta.model.dto.ForemanDto;
 import com.emontazysta.service.ForemanService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,14 +21,17 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
+
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/api/foremen", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = API_BASE_CONSTANT + "/foremen", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ForemanController {
 
     private final ForemanService foremanService;
 
     @GetMapping
+    @Operation(description = "Allows to get all Foremen.", security = @SecurityRequirement(name = "bearer-key"))
     public List<ForemanDto> getAllForemen() {
         return foremanService.getAll().stream()
                 .map(ForemanMapper::toDto)
@@ -34,17 +39,20 @@ public class ForemanController {
     }
 
     @GetMapping("{id}")
+    @Operation(description = "Allows to get Foreman by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public ForemanDto getForemanById(@PathVariable Long id) {
         return ForemanMapper.toDto(foremanService.getById(id));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(description = "Allows to add new Foreman.", security = @SecurityRequirement(name = "bearer-key"))
     public void addForeman(@RequestBody Foreman foreman) {
         foremanService.add(foreman);
     }
 
     @DeleteMapping("{id}")
+    @Operation(description = "Allows to delete Foreman by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public void deleteForemanById(@PathVariable Long id) {
         foremanService.delete(id);
     }

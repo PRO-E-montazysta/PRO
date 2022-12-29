@@ -16,10 +16,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping(API_BASE_CONSTANT)
 public class AppUserController {
 
     private final AppUserService userService;
