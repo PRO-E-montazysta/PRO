@@ -18,7 +18,7 @@ import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = API_BASE_CONSTANT + "/event", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = API_BASE_CONSTANT + "/elementEvent", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ElementEventController {
 
     private final ElementEventService service;
