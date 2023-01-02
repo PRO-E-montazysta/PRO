@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -33,11 +34,20 @@ public class ToolServiceImpl implements ToolService {
 
     @Override
     public void add(Tool tool) {
+        tool.setCreatedAt(new Date());
         repository.save(tool);
     }
 
     @Override
     public void delete(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public void update(Long id, Tool tool) {
+        Tool updatedTool = this.getById(id);
+        updatedTool.setName(tool.getName());
+
+        repository.save(updatedTool);
     }
 }

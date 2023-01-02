@@ -11,4 +11,5 @@ public interface ToolService {
     Tool getByCode(String code);
     void add(Tool tool);
     void delete(Long id);
+    void update(Long id, Tool tool);
 }

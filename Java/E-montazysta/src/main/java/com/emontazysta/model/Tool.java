@@ -20,6 +20,8 @@ public class Tool {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
+
     private Date createdAt;
 
     //TODO: Generate UNIQUE code
