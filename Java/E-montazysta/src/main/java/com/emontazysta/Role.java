@@ -3,9 +3,14 @@ package com.emontazysta;
 public enum Role {
     CLOUD_ADMIN("CLOUD_ADMIN"),
     ADMIN("ADMIN"),
-    MANAGER("MANAGER");
+    MANAGER("MANAGER"),
+    FITTER("FITTER"),
+    FOREMAN("FOREMAN"),
+    SPECIALIST("SPECIALIST"),
+    WAREHAUSE_MAN("WAREHAUSE_MAN"),
+    WAREHOUSE_MANAGER("WAREHOUSE_MANAGER");
 
-    private String nazwa;
+    private final String  nazwa;
 
     Role(String nazwa) {
         this.nazwa = nazwa;
