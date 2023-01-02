@@ -14,9 +14,8 @@ public class RoleService {
 
     public List<String> getAllRoles() {
         log.info("Fetching all roles");
-        List<String> roles = Stream.of(Role.values())
-                .map(Role::getValue)
+        return Stream.of(Role.values())
+                .map(Role::name)
                 .collect(Collectors.toList());
-        return roles;
     }
 }

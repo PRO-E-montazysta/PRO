@@ -21,9 +21,10 @@ import java.util.List;
 public class AppUserService implements UserDetailsService {
 
     private final AppUserRepository appUserRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
-    public AppUser saveUser(AppUser user, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public AppUser saveUser(AppUser user) {
         log.info("Saving new user {} to the database",user.getUsername());
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return appUserRepository.save(user);
