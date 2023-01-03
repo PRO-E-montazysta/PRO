@@ -32,6 +32,12 @@ public class ToolController {
         return toolService.getById(id);
     }
 
+    @GetMapping("{code}")
+    @Operation(description = "Allows to get Tool by given Code.", security = @SecurityRequirement(name = "bearer-key"))
+    public Tool getByCode(@PathVariable String code) {
+        return toolService.getByCode(code);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Tool.", security = @SecurityRequirement(name = "bearer-key"))

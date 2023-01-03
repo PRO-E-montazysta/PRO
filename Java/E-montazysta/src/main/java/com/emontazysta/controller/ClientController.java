@@ -1,9 +1,7 @@
 package com.emontazysta.controller;
 
 import com.emontazysta.model.Client;
-import com.emontazysta.model.Element;
 import com.emontazysta.service.impl.ClientServiceImpl;
-import com.emontazysta.service.impl.ElementServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;

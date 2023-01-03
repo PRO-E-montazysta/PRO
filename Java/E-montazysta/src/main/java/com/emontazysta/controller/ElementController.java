@@ -32,6 +32,12 @@ public class ElementController {
         return elementService.getById(id);
     }
 
+    @GetMapping("{code}")
+    @Operation(description = "Allows to get Element by given Code.", security = @SecurityRequirement(name = "bearer-key"))
+    public Element getByCode(@PathVariable String code) {
+        return elementService.getByCode(code);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Element.", security = @SecurityRequirement(name = "bearer-key"))
