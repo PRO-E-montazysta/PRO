@@ -1,6 +1,5 @@
 package com.emontazysta.controller;
 
-import com.emontazysta.data.CompanyRequest;
 import com.emontazysta.model.Company;
 import com.emontazysta.service.CompanyService;
 import lombok.AllArgsConstructor;
@@ -17,27 +16,27 @@ public class CompanyController {
 
     @GetMapping
     public List<Company> getCompanies() {
-        return companyService.getCompanies();
+        return companyService.getAll();
     }
 
     @GetMapping("{companyId}")
     public Company getCompany(@PathVariable("companyId") Long companyId) {
-        return companyService.getCompany(companyId);
+        return companyService.getById(companyId);
     }
 
     @PostMapping
-    public void addCompany(@RequestBody CompanyRequest companyToAdd) {
-        companyService.addCompany(companyToAdd);
+    public void addCompany(@RequestBody Company company) {
+        companyService.add(company);
     }
 
     @DeleteMapping("{companyId}")
     public void deleteCompany(@PathVariable("companyId") Long companyId) {
-         companyService.deleteCompany(companyId);
+         companyService.delete(companyId);
     }
 
     @PutMapping("{companyId}")
     public void updateCompany(@PathVariable("companyId") Long companyId,
-                              @RequestBody CompanyRequest companyToAdd) {
-        companyService.updateCompany(companyId, companyToAdd);
+                              @RequestBody Company company) {
+        companyService.update(companyId, company);
     }
 }
