@@ -8,12 +8,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Date;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Location {
+public class Tool {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,17 +22,8 @@ public class Location {
 
     private String name;
 
-    private Double xCoordinate;
+    private Date createdAt;
 
-    private Double yCoordinate;
-
-    private String city;
-
-    private String street;
-
-    private String propertyNumber;
-
-    private String apartmentNumber;
-
-    private String zipCode;
+    //TODO: Generate UNIQUE code
+    private String code;
 }

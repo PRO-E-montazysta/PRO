@@ -3,6 +3,7 @@ package com.emontazysta.controller;
 
 import com.emontazysta.model.LoginRequest;
 import com.emontazysta.service.TokenService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,7 @@ public class AuthController {
 
 
     @PostMapping("/gettoken")
+    @Operation(description = "Allows authenticate user")
     public String token(@RequestBody LoginRequest userLogin) throws AuthenticationException {
         System.out.println(bCryptPasswordEncoder.encode(userLogin.password()));
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLogin.username(), userLogin.password()));

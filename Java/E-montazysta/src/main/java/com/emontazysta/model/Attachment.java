@@ -1,5 +1,6 @@
 package com.emontazysta.model;
 
+import com.emontazysta.enums.TypeOfAttachment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,12 +9,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Date;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Location {
+public class Attachment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,17 +23,11 @@ public class Location {
 
     private String name;
 
-    private Double xCoordinate;
+    private String url;
 
-    private Double yCoordinate;
+    private String description;
 
-    private String city;
+    private TypeOfAttachment typeOfAttachment;
 
-    private String street;
-
-    private String propertyNumber;
-
-    private String apartmentNumber;
-
-    private String zipCode;
+    private Date createdAt;
 }

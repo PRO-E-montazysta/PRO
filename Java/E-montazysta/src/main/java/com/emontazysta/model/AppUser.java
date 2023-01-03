@@ -22,6 +22,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 public class AppUser implements UserDetails {
 
     @Id
