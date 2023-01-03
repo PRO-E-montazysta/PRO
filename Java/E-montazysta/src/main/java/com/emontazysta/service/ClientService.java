@@ -10,5 +10,5 @@ public interface ClientService {
     Client getById(Long id);
     void add(Client client);
     void delete(Long id);
-    void edit(Long id, Client client);
+    void update(Long id, Client client);
 }
