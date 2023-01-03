@@ -4,7 +4,7 @@ import com.emontazysta.Role;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 @SuperBuilder
@@ -16,5 +16,5 @@ public class AppUserDto {
     private String email;
     private String password;
     private String username;
-    private List<Role> roles;
+    private Set<Role> roles;
 }

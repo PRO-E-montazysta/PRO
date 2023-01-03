@@ -15,7 +15,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -39,7 +40,7 @@ public class AppUser implements UserDetails {
     private String username;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private List<Role> roles = new ArrayList<>();
+    private Set<Role> roles = new HashSet<>();
 
 
     @Override
