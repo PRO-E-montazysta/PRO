@@ -57,7 +57,8 @@ public class SecurityConfig  {
                    .headers(headers -> headers.frameOptions().disable())
                    .csrf(AbstractHttpConfigurer::disable)
                    .authorizeHttpRequests( auth -> auth
-                           .antMatchers("/api/v1/gettoken").permitAll()
+                           .antMatchers("/api/v1/gettoken","/api/v1/h2-console/**").permitAll()
+                           .antMatchers("/api/v1/users/create").hasAnyRole("ADMIN","CLOUD_ADMIN")
                            .antMatchers(SWAGGER_AUTH_LIST).permitAll()
                            .anyRequest().authenticated()
                    )
