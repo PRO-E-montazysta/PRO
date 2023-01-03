@@ -47,7 +47,7 @@ public class SecurityConfig {
 
     @PostConstruct
     void setUp() {
-        appuserDetailsService.saveUser(
+        appuserDetailsService.add(
                 new AppUser(
                         null,
                         "Tomek",

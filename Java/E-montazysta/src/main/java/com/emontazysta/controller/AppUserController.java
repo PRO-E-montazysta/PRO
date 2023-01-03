@@ -4,6 +4,8 @@ import com.emontazysta.Role;
 import com.emontazysta.mapper.UserMapper;
 import com.emontazysta.model.AppUser;
 import com.emontazysta.model.dto.AppUserDto;
+import com.emontazysta.service.AppUserService;
+import com.emontazysta.service.RoleService;
 import com.emontazysta.service.impl.AppUserServiceImpl;
 import com.emontazysta.service.impl.RoleServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
@@ -30,7 +33,6 @@ public class AppUserController {
 
     private final AppUserService userService;
     private final RoleService roleService;
-    private final AppUserRepository userRepository;
 
     @GetMapping("/all")
     @Operation(description = "Allows to get all Users.", security = @SecurityRequirement(name = "bearer-key"))
@@ -84,13 +86,13 @@ public class AppUserController {
 
     @PostMapping("/{id}/setroles")
     @Operation(description = "Allows to assign list of roles to the user", security = @SecurityRequirement(name = "bearer-key"))
-    public ResponseEntity<String> addRoleToUser(@RequestParam Long id, @RequestBody List<String> role) {
+    public ResponseEntity<String> addRoleToUser(@RequestParam Long id, @RequestBody Set<Role> role) {
         ResponseEntity response = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        if (roleServiceImpl.getAllRoles().contains(role)
+        if (roleService.getAllRoles().contains(role)
                 && userService.getById(id) != null) {
             userService.setRolesToUser(id, role);
             response =  ResponseEntity.status(HttpStatus.OK).build();
-        }else if (!roleServiceImpl.getAllRoles().contains(role)) {
+        }else if (!roleService.getAllRoles().contains(role)) {
             log.info("Can't add role '{}' no such user role", role);
         } else if (userService.getById(id) == null) {
             log.info("Can't add role '{}' can't find user with id {}", id);

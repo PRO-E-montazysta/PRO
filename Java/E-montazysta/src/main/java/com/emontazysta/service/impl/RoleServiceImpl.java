@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -22,7 +23,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<String> getAllRoles() {
         List<String> allRoles = Stream.of(Role.values())
-                .map(Role::getValue)
+                .map(Role::name)
                 .collect(Collectors.toList());;
         return allRoles;
     }
@@ -30,7 +31,7 @@ public class RoleServiceImpl implements RoleService {
     public List<String> getAllRoles(Principal principal) {
         log.info("Fetching all roles");
         List<String> allRoles = getAllRoles();
-        List<Role> principalRoles = userService.findByUsername(principal.getName()).getRoles();
+        Set<Role> principalRoles = userService.findByUsername(principal.getName()).getRoles();
         if (!principalRoles.contains(Role.CLOUD_ADMIN)) {
             allRoles.remove("CLOUD_ADMIN");
             return allRoles;
