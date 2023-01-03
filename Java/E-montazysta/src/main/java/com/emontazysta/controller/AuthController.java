@@ -24,9 +24,6 @@ import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 @RequestMapping(API_BASE_CONSTANT)
 public class AuthController {
 
-
-    private static final Logger LOG = LoggerFactory.getLogger(AuthController.class);
-
     private final TokenService tokenService;
     private final AuthenticationManager authenticationManager;
 
