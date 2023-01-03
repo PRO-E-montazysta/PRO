@@ -16,8 +16,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.security.Principal;
 import java.util.List;
 import java.util.Set;
@@ -28,6 +30,7 @@ import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@RolesAllowed({"CLOUD_ADMIN","ADMIN"})
 @RequestMapping(value = API_BASE_CONSTANT+"/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AppUserController {
 

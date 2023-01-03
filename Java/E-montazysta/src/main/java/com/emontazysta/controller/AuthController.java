@@ -36,7 +36,6 @@ public class AuthController {
     @PostMapping("/gettoken")
     @Operation(description = "Allows authenticate user")
     public String token(@RequestBody LoginRequest userLogin) throws AuthenticationException {
-        System.out.println(bCryptPasswordEncoder.encode(userLogin.password()));
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLogin.username(), userLogin.password()));
         return tokenService.generateToken(authentication);
     }
