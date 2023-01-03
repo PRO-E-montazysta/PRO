@@ -1,7 +1,7 @@
 package com.emontazysta.controller;
 
 import com.emontazysta.model.Company;
-import com.emontazysta.service.CompanyService;
+import com.emontazysta.service.impl.CompanyServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping("company")
 public class CompanyController {
 
-    private final CompanyService companyService;
+    private final CompanyServiceImpl companyService;
 
     @GetMapping
     public List<Company> getCompanies() {

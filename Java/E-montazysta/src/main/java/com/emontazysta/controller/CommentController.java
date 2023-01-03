@@ -1,7 +1,7 @@
 package com.emontazysta.controller;
 
 import com.emontazysta.model.Comment;
-import com.emontazysta.service.CommentService;
+import com.emontazysta.service.impl.CommentServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +14,7 @@ import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 @RequestMapping(API_BASE_CONSTANT + "/comments")
 public class CommentController {
 
-    private final CommentService commentService;
+    private final CommentServiceImpl commentService;
 
     @GetMapping
     public List<Comment> getComments() {
