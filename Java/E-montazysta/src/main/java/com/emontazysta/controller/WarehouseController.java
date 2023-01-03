@@ -1,6 +1,5 @@
 package com.emontazysta.controller;
 
-import com.emontazysta.data.WarehouseRequest;
 import com.emontazysta.model.Warehouse;
 import com.emontazysta.service.WarehouseService;
 import lombok.AllArgsConstructor;
@@ -17,27 +16,27 @@ public class WarehouseController {
 
     @GetMapping
     public List<Warehouse> getWarehouses() {
-        return warehouseService.getWarehouses();
+        return warehouseService.getAll();
     }
 
-    @GetMapping("{warehouseId}")
-    public Warehouse getWarehouse(@PathVariable("warehouseId")Long id) {
-        return warehouseService.getWarehouse(id);
+    @GetMapping("{id}")
+    public Warehouse getWarehouse(@PathVariable("id")Long id) {
+        return warehouseService.getById(id);
     }
 
     @PostMapping
-    public void addWarehouse(@RequestBody WarehouseRequest warehouseToAdd) {
-        warehouseService.addWarehouse(warehouseToAdd);
+    public void addWarehouse(@RequestBody Warehouse warehouse) {
+        warehouseService.add(warehouse);
     }
 
-    @DeleteMapping("{warehouseId}")
-    public void deleteWarehouse(@PathVariable("warehouseId") Long id) {
-        warehouseService.deleteWarehouse(id);
+    @DeleteMapping("{id}")
+    public void deleteWarehouse(@PathVariable("id") Long id) {
+        warehouseService.delete(id);
     }
 
-    @PutMapping("{warehouseId}")
-    public void updateWarehouse(@PathVariable("warehouseId") Long id,
-                                @RequestBody WarehouseRequest warehouseToUpdate) {
-        warehouseService.updateWarehouse(id, warehouseToUpdate);
+    @PutMapping("{id}")
+    public void updateWarehouse(@PathVariable("id") Long id,
+                                @RequestBody Warehouse warehouse) {
+        warehouseService.update(id, warehouse);
     }
 }

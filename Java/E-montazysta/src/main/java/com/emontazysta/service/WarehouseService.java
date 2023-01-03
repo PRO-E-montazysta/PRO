@@ -1,47 +1,13 @@
 package com.emontazysta.service;
 
-import com.emontazysta.data.WarehouseRequest;
 import com.emontazysta.model.Warehouse;
-import com.emontazysta.repository.WarehouseRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 
-@Service
-@AllArgsConstructor
-public class WarehouseService {
+public interface WarehouseService {
 
-    private final WarehouseRepository warehouseRepository;
-
-    public List<Warehouse> getWarehouses() {
-        return warehouseRepository.findAll();
-    }
-
-    public Warehouse getWarehouse(Long id) {
-        return warehouseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Warehouse with id " + id + " not found!"));
-    }
-
-    public void addWarehouse(WarehouseRequest warehouseToAdd) {
-        Warehouse newWarehouse = new Warehouse();
-        newWarehouse.setName(warehouseToAdd.getName());
-        newWarehouse.setDescription(warehouseToAdd.getDescription());
-        newWarehouse.setOpeningHours(warehouseToAdd.getOpeningHours());
-
-        warehouseRepository.save(newWarehouse);
-    }
-
-    public void deleteWarehouse(Long id) {
-        warehouseRepository.deleteById(id);
-    }
-
-    public void updateWarehouse(Long id, WarehouseRequest warehouseToUpdate) {
-        Warehouse updatedWarehouse = this.getWarehouse(id);
-        updatedWarehouse.setName(warehouseToUpdate.getName());
-        updatedWarehouse.setDescription(warehouseToUpdate.getDescription());
-        updatedWarehouse.setOpeningHours(warehouseToUpdate.getOpeningHours());
-
-        warehouseRepository.save(updatedWarehouse);
-    }
+    List<Warehouse> getAll();
+    Warehouse getById(Long id);
+    void add(Warehouse warehouse);
+    void delete(Long id);
+    void update(Long id, Warehouse warehouse);
 }
