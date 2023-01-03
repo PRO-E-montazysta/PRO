@@ -1,6 +1,5 @@
 package com.emontazysta.controller;
 
-import com.emontazysta.data.CommentRequest;
 import com.emontazysta.model.Comment;
 import com.emontazysta.service.CommentService;
 import lombok.AllArgsConstructor;
@@ -19,21 +18,21 @@ public class CommentController {
 
     @GetMapping
     public List<Comment> getComments() {
-        return commentService.getComments();
+        return commentService.getAll();
     }
 
     @GetMapping("{commentId}")
     public Comment getComment(@PathVariable("commentId") Long commentId) {
-        return commentService.getComment(commentId);
+        return commentService.getById(commentId);
     }
 
     @PostMapping
-    public void addComment(@RequestBody CommentRequest comment) {
-        commentService.addComment(comment);
+    public void addComment(@RequestBody Comment comment) {
+        commentService.add(comment);
     }
 
     @DeleteMapping("{commentId}")
     public void deleteComment(@PathVariable("commentId") Long commentId) {
-        commentService.deleteComment(commentId);
+        commentService.delete(commentId);
     }
 }
