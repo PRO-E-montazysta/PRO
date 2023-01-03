@@ -41,4 +41,14 @@ public class ElementServiceImpl implements ElementService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public void update(Long id, Element element) {
+        Element updatedElement = this.getById(id);
+        updatedElement.setName(element.getName());
+        updatedElement.setTypeOfUnit(element.getTypeOfUnit());
+        updatedElement.setQuantityInUnit(element.getQuantityInUnit());
+
+        repository.save(updatedElement);
+    }
 }

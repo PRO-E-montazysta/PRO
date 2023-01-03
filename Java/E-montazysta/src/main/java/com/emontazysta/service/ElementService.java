@@ -11,4 +11,5 @@ public interface ElementService {
     Element getByCode(String code);
     void add(Element element);
     void delete(Long id);
+    void update(Long id, Element element);
 }
