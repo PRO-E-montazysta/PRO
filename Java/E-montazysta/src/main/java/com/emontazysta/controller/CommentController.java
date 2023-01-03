@@ -2,7 +2,10 @@ package com.emontazysta.controller;
 
 import com.emontazysta.model.Comment;
 import com.emontazysta.service.impl.CommentServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,22 +20,27 @@ public class CommentController {
     private final CommentServiceImpl commentService;
 
     @GetMapping
-    public List<Comment> getComments() {
+    @Operation(description = "Allows to get all Comments.", security = @SecurityRequirement(name = "bearer-key"))
+    public List<Comment> getAll() {
         return commentService.getAll();
     }
 
-    @GetMapping("{commentId}")
-    public Comment getComment(@PathVariable("commentId") Long commentId) {
-        return commentService.getById(commentId);
+    @GetMapping("{id}")
+    @Operation(description = "Allows to get Comment by given Id.", security = @SecurityRequirement(name = "bearer-key"))
+    public Comment getById(@PathVariable("id") Long id) {
+        return commentService.getById(id);
     }
 
     @PostMapping
-    public void addComment(@RequestBody Comment comment) {
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(description = "Allows to add new Comment.", security = @SecurityRequirement(name = "bearer-key"))
+    public void add(@RequestBody Comment comment) {
         commentService.add(comment);
     }
 
-    @DeleteMapping("{commentId}")
-    public void deleteComment(@PathVariable("commentId") Long commentId) {
-        commentService.delete(commentId);
+    @DeleteMapping("{id}")
+    @Operation(description = "Allows to delete Comment by given Id.", security = @SecurityRequirement(name = "bearer-key"))
+    public void deleteById(@PathVariable("id") Long id) {
+        commentService.delete(id);
     }
 }

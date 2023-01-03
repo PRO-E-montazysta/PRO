@@ -2,7 +2,10 @@ package com.emontazysta.controller;
 
 import com.emontazysta.model.Company;
 import com.emontazysta.service.impl.CompanyServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,28 +18,34 @@ public class CompanyController {
     private final CompanyServiceImpl companyService;
 
     @GetMapping
-    public List<Company> getCompanies() {
+    @Operation(description = "Allows to get all Companies.", security = @SecurityRequirement(name = "bearer-key"))
+    public List<Company> getAll() {
         return companyService.getAll();
     }
 
-    @GetMapping("{companyId}")
-    public Company getCompany(@PathVariable("companyId") Long companyId) {
-        return companyService.getById(companyId);
+    @GetMapping("{id}")
+    @Operation(description = "Allows to get Company by given Id.", security = @SecurityRequirement(name = "bearer-key"))
+    public Company getById(@PathVariable("id") Long id) {
+        return companyService.getById(id);
     }
 
     @PostMapping
-    public void addCompany(@RequestBody Company company) {
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(description = "Allows to add new Company.", security = @SecurityRequirement(name = "bearer-key"))
+    public void add(@RequestBody Company company) {
         companyService.add(company);
     }
 
-    @DeleteMapping("{companyId}")
-    public void deleteCompany(@PathVariable("companyId") Long companyId) {
-         companyService.delete(companyId);
+    @DeleteMapping("{id}")
+    @Operation(description = "Allows to delete Company by given Id.", security = @SecurityRequirement(name = "bearer-key"))
+    public void deleteById(@PathVariable("id") Long id) {
+         companyService.delete(id);
     }
 
-    @PutMapping("{companyId}")
-    public void updateCompany(@PathVariable("companyId") Long companyId,
+    @PutMapping("{id}")
+    @Operation(description = "Allows to update Company by given Id, and Company.", security = @SecurityRequirement(name = "bearer-key"))
+    public void update(@PathVariable("id") Long id,
                               @RequestBody Company company) {
-        companyService.update(companyId, company);
+        companyService.update(id, company);
     }
 }

@@ -22,7 +22,7 @@ public class ToolController {
 
     @GetMapping
     @Operation(description = "Allows to get all Tools.", security = @SecurityRequirement(name = "bearer-key"))
-    public List<Tool> getTools() {
+    public List<Tool> getAll() {
         return toolService.getAll();
     }
 

@@ -2,7 +2,10 @@ package com.emontazysta.controller;
 
 import com.emontazysta.model.Warehouse;
 import com.emontazysta.service.WarehouseService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,27 +18,33 @@ public class WarehouseController {
     private final WarehouseService warehouseService;
 
     @GetMapping
-    public List<Warehouse> getWarehouses() {
+    @Operation(description = "Allows to get all Warehouses.", security = @SecurityRequirement(name = "bearer-key"))
+    public List<Warehouse> getAll() {
         return warehouseService.getAll();
     }
 
     @GetMapping("{id}")
-    public Warehouse getWarehouse(@PathVariable("id")Long id) {
+    @Operation(description = "Allows to get Warehouse by given Id.", security = @SecurityRequirement(name = "bearer-key"))
+    public Warehouse getById(@PathVariable("id")Long id) {
         return warehouseService.getById(id);
     }
 
     @PostMapping
-    public void addWarehouse(@RequestBody Warehouse warehouse) {
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(description = "Allows to add new Warehouse.", security = @SecurityRequirement(name = "bearer-key"))
+    public void add(@RequestBody Warehouse warehouse) {
         warehouseService.add(warehouse);
     }
 
     @DeleteMapping("{id}")
-    public void deleteWarehouse(@PathVariable("id") Long id) {
+    @Operation(description = "Allows to delete Warehouse by given Id.", security = @SecurityRequirement(name = "bearer-key"))
+    public void delete(@PathVariable("id") Long id) {
         warehouseService.delete(id);
     }
 
     @PutMapping("{id}")
-    public void updateWarehouse(@PathVariable("id") Long id,
+    @Operation(description = "Allows to update Warehouse by given Id, and Warehouse.", security = @SecurityRequirement(name = "bearer-key"))
+    public void update(@PathVariable("id") Long id,
                                 @RequestBody Warehouse warehouse) {
         warehouseService.update(id, warehouse);
     }

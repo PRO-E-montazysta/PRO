@@ -2,7 +2,10 @@ package com.emontazysta.controller;
 
 import com.emontazysta.model.Location;
 import com.emontazysta.service.impl.LocationServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,27 +20,33 @@ public class LocationController {
     private final LocationServiceImpl locationService;
 
     @GetMapping
-    public List<Location> getLocations() {
+    @Operation(description = "Allows to get all Locations.", security = @SecurityRequirement(name = "bearer-key"))
+    public List<Location> getAll() {
         return locationService.getAll();
     }
 
     @GetMapping("{id}")
-    public Location getLocation(@PathVariable("id") Long id) {
+    @Operation(description = "Allows to get Location by given Id.", security = @SecurityRequirement(name = "bearer-key"))
+    public Location getById(@PathVariable("id") Long id) {
         return locationService.getById(id);
     }
 
     @PostMapping
-    public void addLocation(@RequestBody Location location) {
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(description = "Allows to add new Location.", security = @SecurityRequirement(name = "bearer-key"))
+    public void add(@RequestBody Location location) {
         locationService.add(location);
     }
 
     @DeleteMapping("{id}")
-    public void deleteLocation(@PathVariable("id") Long id) {
+    @Operation(description = "Allows to delete Location by given Id.", security = @SecurityRequirement(name = "bearer-key"))
+    public void deleteById(@PathVariable("id") Long id) {
         locationService.delete(id);
     }
 
     @PutMapping("{id}")
-    public void updateLocation(@PathVariable("id") Long id,
+    @Operation(description = "Allows to update Location by given Id, and Location.", security = @SecurityRequirement(name = "bearer-key"))
+    public void update(@PathVariable("id") Long id,
                                @RequestBody Location location) {
         locationService.update(id, location);
     }
