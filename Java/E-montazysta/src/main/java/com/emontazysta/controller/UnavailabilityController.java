@@ -1,6 +1,5 @@
 package com.emontazysta.controller;
 
-import com.emontazysta.data.UnavailabilityRequest;
 import com.emontazysta.model.Unavailability;
 import com.emontazysta.service.UnavailabilityService;
 import lombok.AllArgsConstructor;
@@ -17,27 +16,27 @@ public class UnavailabilityController {
 
     @GetMapping
     public List<Unavailability> getUnavailabilities() {
-        return unavailabilityService.getUnavailabilities();
+        return unavailabilityService.getAll();
     }
 
-    @GetMapping("{unavailabilityId}")
-    public Unavailability getUnavailability(@PathVariable("unavailabilityId") Long unavailabilityId) {
-        return unavailabilityService.getUnavailability(unavailabilityId);
+    @GetMapping("{id}")
+    public Unavailability getUnavailability(@PathVariable("id") Long id) {
+        return unavailabilityService.getById(id);
     }
 
     @PostMapping
-    public void addUnavailability(@RequestBody UnavailabilityRequest unavailabilityToAdd) {
-        unavailabilityService.addUnavailability(unavailabilityToAdd);
+    public void addUnavailability(@RequestBody Unavailability unavailability) {
+        unavailabilityService.add(unavailability);
     }
 
-    @DeleteMapping("{unavailabilityId}")
-    public void deleteUnavailability(@PathVariable("unavailabilityId") Long unavailabilityId) {
-        unavailabilityService.deleteUnavailability(unavailabilityId);
+    @DeleteMapping("{id}")
+    public void deleteUnavailability(@PathVariable("id") Long id) {
+        unavailabilityService.delete(id);
     }
 
-    @PutMapping("{unavailabilityId}")
-    public void updateUnavailability(@PathVariable("unavailabilityId") Long unavailabilityId,
-                                     @RequestBody UnavailabilityRequest unavailabilityToUpdate) {
-        unavailabilityService.updateUnavailability(unavailabilityId, unavailabilityToUpdate);
+    @PutMapping("{id}")
+    public void updateUnavailability(@PathVariable("id") Long id,
+                                     @RequestBody Unavailability unavailability) {
+        unavailabilityService.update(id, unavailability);
     }
 }
