@@ -1,6 +1,6 @@
 package com.emontazysta.model;
 
-import com.emontazysta.Role;
+import com.emontazysta.enums.Role;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

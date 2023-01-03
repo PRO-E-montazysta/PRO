@@ -1,6 +1,6 @@
 package com.emontazysta.service.impl;
 
-import com.emontazysta.Role;
+import com.emontazysta.enums.Role;
 import com.emontazysta.model.AppUser;
 import com.emontazysta.repository.AppUserRepository;
 import com.emontazysta.service.AppUserService;
