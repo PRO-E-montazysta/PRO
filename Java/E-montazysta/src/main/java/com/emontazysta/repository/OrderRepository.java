@@ -1,7 +1,7 @@
 package com.emontazysta.repository;
 
-import com.emontazysta.model.Order;
+import com.emontazysta.model.Orders;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface OrderRepository extends JpaRepository<Order, Long> {
+public interface OrderRepository extends JpaRepository<Orders, Long> {
 }
