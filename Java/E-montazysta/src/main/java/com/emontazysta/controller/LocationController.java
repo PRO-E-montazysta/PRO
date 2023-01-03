@@ -1,8 +1,7 @@
 package com.emontazysta.controller;
 
-import com.emontazysta.data.LocationRequest;
 import com.emontazysta.model.Location;
-import com.emontazysta.service.LocationService;
+import com.emontazysta.service.impl.LocationServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,31 +14,31 @@ import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 @RequestMapping(API_BASE_CONSTANT + "/locations")
 public class LocationController {
 
-    private final LocationService locationService;
+    private final LocationServiceImpl locationService;
 
     @GetMapping
     public List<Location> getLocations() {
-        return locationService.getLocations();
+        return locationService.getAll();
     }
 
-    @GetMapping("{locationId}")
-    public Location getLocation(@PathVariable("locationId") Long locationId) {
-        return locationService.getLocation(locationId);
+    @GetMapping("{id}")
+    public Location getLocation(@PathVariable("id") Long id) {
+        return locationService.getById(id);
     }
 
     @PostMapping
-    public void addLocation(@RequestBody LocationRequest locationToAdd) {
-        locationService.addLocation(locationToAdd);
+    public void addLocation(@RequestBody Location location) {
+        locationService.add(location);
     }
 
-    @DeleteMapping("{locationId}")
-    public void deleteLocation(@PathVariable("locationId") Long locationId) {
-        locationService.deleteLocation(locationId);
+    @DeleteMapping("{id}")
+    public void deleteLocation(@PathVariable("id") Long id) {
+        locationService.delete(id);
     }
 
-    @PutMapping("{locationId}")
-    public void updateLocation(@PathVariable("locationId") Long locationId,
-                               @RequestBody LocationRequest locationToUpdate) {
-        locationService.updateLocation(locationId, locationToUpdate);
+    @PutMapping("{id}")
+    public void updateLocation(@PathVariable("id") Long id,
+                               @RequestBody Location location) {
+        locationService.update(id, location);
     }
 }
