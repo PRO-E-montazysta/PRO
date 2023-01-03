@@ -13,25 +13,18 @@ import javax.persistence.Id;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Location {
+public class ElementInWarehouse {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String name;
+    private int inWarehouseCount;
+    private int inUnitCount;
+    private String rack;
+    private String shelf;
 
-    private Double xCoordinate;
 
-    private Double yCoordinate;
 
-    private String city;
-
-    private String street;
-
-    private String propertyNumber;
-
-    private String apartmentNumber;
-
-    private String zipCode;
 }
+

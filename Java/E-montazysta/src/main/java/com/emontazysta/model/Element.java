@@ -1,5 +1,6 @@
 package com.emontazysta.model;
 
+import com.emontazysta.enums.TypeOfUnit;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import javax.persistence.Id;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Location {
+public class Element {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,17 +22,10 @@ public class Location {
 
     private String name;
 
-    private Double xCoordinate;
+    //TODO: Generate UNIQUE code
+    private String code;
 
-    private Double yCoordinate;
+    private TypeOfUnit typeOfUnit;
 
-    private String city;
-
-    private String street;
-
-    private String propertyNumber;
-
-    private String apartmentNumber;
-
-    private String zipCode;
+    private float quantityInUnit;
 }

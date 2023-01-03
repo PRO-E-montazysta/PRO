@@ -13,7 +13,7 @@ import javax.persistence.Id;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Location {
+public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,17 +21,5 @@ public class Location {
 
     private String name;
 
-    private Double xCoordinate;
-
-    private Double yCoordinate;
-
-    private String city;
-
-    private String street;
-
-    private String propertyNumber;
-
-    private String apartmentNumber;
-
-    private String zipCode;
+    private String contactDetails;
 }
