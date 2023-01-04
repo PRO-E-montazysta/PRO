@@ -2,29 +2,23 @@ package com.emontazysta.configuration;
 
 import com.emontazysta.Role;
 import com.emontazysta.model.AppUser;
+import com.emontazysta.security.JwtAuthenticationFilter;
 import com.emontazysta.service.AppUserService;
-import com.nimbusds.jose.JOSEException;
-import com.nimbusds.jose.jwk.JWKSet;
-import com.nimbusds.jose.jwk.RSAKey;
-import com.nimbusds.jose.jwk.source.JWKSource;
-import com.nimbusds.jose.proc.SecurityContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.PostConstruct;
 import java.util.Set;
@@ -42,8 +36,7 @@ public class SecurityConfig {
     private final AppUserService appuserDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final SecurityProperties securityProperties;
-
-    private RSAKey rsaKey;
+    private final JwtAuthenticationFilter jwtAuthFilter;
 
     @PostConstruct
     void setUp() {
@@ -55,44 +48,32 @@ public class SecurityConfig {
                         "tpyrzak@wp.pl",
                         securityProperties.getCloudManagerPassword(),
                         securityProperties.getCloudManagerUsername(),
-                        Set.of(Role.CLOUD_ADMIN)));
-    }
-
-    @Bean
-    public AuthenticationManager authManager(AppUserService appuserDetailsService) {
-        var authProvider = new DaoAuthenticationProvider();
-        authProvider.setPasswordEncoder(bCryptPasswordEncoder);
-        authProvider.setUserDetailsService(appuserDetailsService);
-        return new ProviderManager(authProvider);
+                        Set.of(Role.ROLE_CLOUD_ADMIN)));
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.headers().frameOptions().disable();
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.oauth2ResourceServer().jwt();
-        http.authorizeRequests().antMatchers("/api/v1/gettoken").permitAll();
+        http.authorizeRequests().antMatchers(Constants.API_BASE_CONSTANT + "/auth/**").permitAll();
         http.authorizeRequests().antMatchers(SWAGGER_AUTH_LIST).permitAll();
         http.authorizeRequests().anyRequest().authenticated();
+        http.authenticationProvider(authenticationProvider());
+        http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
     @Bean
-    public JWKSource<SecurityContext> jwkSource() {
-        rsaKey = Jwks.generateRsa();
-        JWKSet jwkSet = new JWKSet(rsaKey);
-        return (jwkSelector, securityContext) -> jwkSelector.select(jwkSet);
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(appuserDetailsService);
+        authProvider.setPasswordEncoder(bCryptPasswordEncoder);
+        return authProvider;
     }
 
     @Bean
-    JwtEncoder jwtEncoder(JWKSource<SecurityContext> jwks) {
-        return new NimbusJwtEncoder(jwks);
-    }
-
-    @Bean
-    JwtDecoder jwtDecoder() throws JOSEException {
-        return NimbusJwtDecoder.withPublicKey(rsaKey.toRSAPublicKey()).build();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
     }
 
 }

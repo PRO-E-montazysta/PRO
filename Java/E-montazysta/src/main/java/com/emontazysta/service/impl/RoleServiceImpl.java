@@ -32,7 +32,7 @@ public class RoleServiceImpl implements RoleService {
         log.info("Fetching all roles");
         List<String> allRoles = getAllRoles();
         Set<Role> principalRoles = userService.findByUsername(principal.getName()).getRoles();
-        if (!principalRoles.contains(Role.CLOUD_ADMIN)) {
+        if (!principalRoles.contains(Role.ROLE_CLOUD_ADMIN)) {
             allRoles.remove("CLOUD_ADMIN");
             return allRoles;
         }

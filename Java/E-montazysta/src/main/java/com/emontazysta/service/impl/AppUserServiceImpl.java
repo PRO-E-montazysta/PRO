@@ -6,6 +6,8 @@ import com.emontazysta.repository.AppUserRepository;
 import com.emontazysta.service.AppUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -78,18 +81,29 @@ public class AppUserServiceImpl  implements AppUserService {
         return appUserRepository.findByUsername(username);
     }
 
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        AppUser user = appUserRepository
+//                .findByUsername(username);
+//        if(user == null){
+//            log.error("User not found in database");
+//            throw new UsernameNotFoundException("User not found in database");
+//        } else {
+//            log.info("User found in the database: {}", username);
+//        }
+//        return user;
+//    }
+
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AppUser user = appUserRepository
-                .findByUsername(username);
-        if(user == null){
-            log.error("User not found in database");
-            throw new UsernameNotFoundException("User not found in database");
-        } else {
-            log.info("User found in the database: {}", username);
+//        return appUserRepository.findByEmailAndActivationTokenIsNull(email)
+        AppUser appUser = appUserRepository.findByUsername(username);
+        if (appUser == null) {
+            throw new UsernameNotFoundException(username);
         }
-        return user;
+        return new User(username, appUser.getPassword(), appUser.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.name()))
+                .collect(Collectors.toList()));
     }
-
-
 }

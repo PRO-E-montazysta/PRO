@@ -6,16 +6,14 @@ import com.emontazysta.model.AppUser;
 import com.emontazysta.model.dto.AppUserDto;
 import com.emontazysta.service.AppUserService;
 import com.emontazysta.service.RoleService;
-import com.emontazysta.service.impl.AppUserServiceImpl;
-import com.emontazysta.service.impl.RoleServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -35,6 +33,7 @@ public class AppUserController {
     private final RoleService roleService;
 
     @GetMapping("/all")
+    @PreAuthorize("hasRole('CLOUD_ADMIN')")
     @Operation(description = "Allows to get all Users.", security = @SecurityRequirement(name = "bearer-key"))
     public ResponseEntity<List<AppUserDto>> getAppUsers() {
         return ResponseEntity.ok().body(userService.getAll().stream()
@@ -46,16 +45,16 @@ public class AppUserController {
     @Operation(description = "Allows to add new User.", security = @SecurityRequirement(name = "bearer-key"))
     public ResponseEntity<AppUser> saveAppUser(@RequestBody final AppUser user, Principal principal) {
         Set<Role> roles = userService.findByUsername(principal.getName()).getRoles();
-        if (roles.contains(Role.CLOUD_ADMIN)) {
+        if (roles.contains(Role.ROLE_CLOUD_ADMIN)) {
             if (userService.findByUsername(user.getUsername()) == null) {
                 return ResponseEntity.status(HttpStatus.CREATED).body(userService.add(user));
             } else {
                 log.info("User {} already exists", user.getUsername());
                 return ResponseEntity.status(HttpStatus.CONFLICT).build();
             }
-        }else if(roles.contains(Role.ADMIN)
-                && !(roles.contains(Role.CLOUD_ADMIN))
-                && !user.getRoles().contains(Role.CLOUD_ADMIN)) {
+        }else if(roles.contains(Role.ROLE_ADMIN)
+                && !(roles.contains(Role.ROLE_CLOUD_ADMIN))
+                && !user.getRoles().contains(Role.ROLE_CLOUD_ADMIN)) {
             if (userService.findByUsername(user.getUsername()) == null ) {
                 return ResponseEntity.status(HttpStatus.CREATED).body(userService.add(user));
             } else {
