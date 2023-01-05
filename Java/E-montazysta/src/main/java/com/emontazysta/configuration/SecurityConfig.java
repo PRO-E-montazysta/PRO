@@ -72,7 +72,7 @@ public class SecurityConfig {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.oauth2ResourceServer().jwt();
-        http.authorizeRequests().antMatchers("/api/v1/gettoken").permitAll();
+        http.authorizeRequests().antMatchers("/api/v1/gettoken","/api/v1/h2-console/**").permitAll();
         http.authorizeRequests().antMatchers(SWAGGER_AUTH_LIST).permitAll();
         http.authorizeRequests().anyRequest().authenticated();
         return http.build();

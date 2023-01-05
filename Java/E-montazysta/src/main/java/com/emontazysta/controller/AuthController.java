@@ -24,9 +24,6 @@ import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 @RequestMapping(API_BASE_CONSTANT)
 public class AuthController {
 
-
-    private static final Logger LOG = LoggerFactory.getLogger(AuthController.class);
-
     private final TokenService tokenService;
     private final AuthenticationManager authenticationManager;
 
@@ -36,7 +33,6 @@ public class AuthController {
     @PostMapping("/gettoken")
     @Operation(description = "Allows authenticate user")
     public String token(@RequestBody LoginRequest userLogin) throws AuthenticationException {
-        System.out.println(bCryptPasswordEncoder.encode(userLogin.password()));
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLogin.username(), userLogin.password()));
         return tokenService.generateToken(authentication);
     }
