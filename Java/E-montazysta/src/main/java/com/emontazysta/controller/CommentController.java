@@ -1,36 +1,47 @@
 package com.emontazysta.controller;
 
 import com.emontazysta.model.Comment;
-import com.emontazysta.service.CommentService;
+import com.emontazysta.service.impl.CommentServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
+
 @RestController
 @AllArgsConstructor
-@RequestMapping("comment")
+@RequestMapping(value = API_BASE_CONSTANT + "/comments", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CommentController {
 
-    private final CommentService commentService;
+    private final CommentServiceImpl commentService;
 
     @GetMapping
-    public List<Comment> getComments() {
-        return commentService.getComments();
+    @Operation(description = "Allows to get all Comments.", security = @SecurityRequirement(name = "bearer-key"))
+    public List<Comment> getAll() {
+        return commentService.getAll();
     }
 
-    @GetMapping("{commentId}")
-    public Comment getComment(@PathVariable("commentId") Long commentId) {
-        return commentService.getComment(commentId);
+    @GetMapping("{id}")
+    @Operation(description = "Allows to get Comment by given Id.", security = @SecurityRequirement(name = "bearer-key"))
+    public Comment getById(@PathVariable("id") Long id) {
+        return commentService.getById(id);
     }
 
     @PostMapping
-    public void addComment(@RequestBody Comment comment) {
-        commentService.addComment(comment);
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(description = "Allows to add new Comment.", security = @SecurityRequirement(name = "bearer-key"))
+    public void add(@RequestBody Comment comment) {
+        commentService.add(comment);
     }
 
-    @DeleteMapping("{commentId}")
-    public void deleteComment(@PathVariable("commentId") Long commentId) {
-        commentService.deleteComment(commentId);
+    @DeleteMapping("{id}")
+    @Operation(description = "Allows to delete Comment by given Id.", security = @SecurityRequirement(name = "bearer-key"))
+    public void deleteById(@PathVariable("id") Long id) {
+        commentService.delete(id);
     }
 }
