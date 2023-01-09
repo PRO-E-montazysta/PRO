@@ -31,12 +31,12 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_REGISTRY }}/emontazysta/backend:latest
             ${{ secrets.DOCKER_REGISTRY }}/emontazysta/backend:${{ github.sha }}
-          cache: enabled
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
           
   java-deploy:
+    needs: [java-build]
     runs-on: ubuntu-latest
     steps:
       -
@@ -49,3 +49,22 @@ jobs:
           # Cluster Url
           k8s-url: ${{ secrets.KUBERNETES_URL }}
           k8s-secret: ${{ secrets.KUBERNETES_SECRET }}
+      - 
+        name: Checkout source code
+        uses: actions/checkout@v3
+      - 
+        name: Deploy to the Kubernetes cluster
+        uses: azure/k8s-deploy@v4.9
+        with:
+          namespace: production
+          manifests: |
+            Java/E-montazysta/.build/deployment.yml
+            Java/E-montazysta/.build/ingressroute.yml
+            Java/E-montazysta/.build/middleware.yml
+            Java/E-montazysta/.build/serverstransport.yml
+            Java/E-montazysta/.build/service.yml
+          images: |
+            ${{ secrets.DOCKER_REGISTRY }}/emontazysta/backend:latest
+          strategy: basic
+          action: deploy
+          token: ${{ github.token }}
