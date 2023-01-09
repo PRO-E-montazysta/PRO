@@ -2,6 +2,10 @@ name: Deploy to Portainer
 
 on:
   push:
+    branches:
+      - '*'
+    paths:
+      - 'React/'
   pull_request:
     branches:
       - '*'
