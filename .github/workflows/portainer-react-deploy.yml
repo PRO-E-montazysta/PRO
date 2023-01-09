@@ -5,6 +5,8 @@ on:
   pull_request:
     branches:
       - '*'
+    paths:
+      - 'React/'
 
 jobs:
   build-and-deploy:
