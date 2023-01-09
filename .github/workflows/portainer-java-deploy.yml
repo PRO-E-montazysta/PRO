@@ -24,8 +24,12 @@ jobs:
         with:
           file: Java/E-montazysta/Dockerfile
           context: Java/E-montazysta
-          tags: ${{ secrets.DOCKER_REGISTRY }}/emontazysta/backend:latest
+          tags: |
+            ${{ secrets.DOCKER_REGISTRY }}/emontazysta/backend:latest
+            ${{ secrets.DOCKER_REGISTRY }}/emontazysta/backend:${{ github.sha }}
           push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           
   java-deploy:
     runs-on: ubuntu-latest
