@@ -8,8 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -26,28 +25,22 @@ public class AppUser implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @NotEmpty
+    @NotBlank
     @Length(min = 3, max = 32, message = "First name has to be between 2 and 32 chars")
     private String firstName;
 
-    @NotNull
-    @NotNull
+    @NotBlank
     @Length(min = 2, max = 32, message = "Last name has to be between 2 and 32 chars")
     private String lastName;
 
-    @NotNull
-    @NotEmpty
-    @NotEmpty
+    @NotBlank
     private String email;
 
-    @NotNull
-    @NotEmpty
+    @NotBlank
     @Length(min = 5, message = "Password must contain at least 5 characters" )
     private String password;
 
-    @NotNull
-    @NotEmpty
+    @NotBlank
     @Length(min = 3, message = "Username must contain at least 3 characters" )
     @Column(unique = true)
     private String username;
