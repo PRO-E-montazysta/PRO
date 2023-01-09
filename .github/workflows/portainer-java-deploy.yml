@@ -64,7 +64,7 @@ jobs:
             Java/E-montazysta/.build/serverstransport.yml
             Java/E-montazysta/.build/service.yml
           images: |
-            ${{ secrets.DOCKER_REGISTRY }}/emontazysta/backend:latest
+            ${{ secrets.DOCKER_REGISTRY }}/emontazysta/backend:${{ github.sha }}
           imagepullsecrets: |
             regcred
           strategy: basic
