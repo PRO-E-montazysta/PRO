@@ -26,13 +26,3 @@ jobs:
           file: Dockerfile
           tags: ${{ secrets.DOCKER_REGISTRY }}/emontazysta/backend:latest
           push: true
-      - 
-        name: Create stack in Portainer
-        uses: carlrygart/portainer-stack-deploy@v1.3.0
-        with:
-          stack-definition: .build/stack-file.yml
-          portainer-host: ${{ secrets.PORTAINER_URL }}
-          username: ${{ secrets.PORTAINER_USERNAME }}
-          password: ${{ secrets.PORTAINER_PASSWORD }}
-          stack-name: production
-          endpoint-id: 1
