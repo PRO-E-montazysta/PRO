@@ -6,7 +6,7 @@ on:
       - '*'
 
 jobs:
-  java-build-and-deploy:
+  java-build:
     runs-on: ubuntu-latest
     steps:
       -
@@ -26,3 +26,8 @@ jobs:
           context: Java/E-montazysta
           tags: ${{ secrets.DOCKER_REGISTRY }}/emontazysta/backend:latest
           push: true
+          
+  java-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - 
