@@ -67,6 +67,6 @@ jobs:
             ${{ secrets.DOCKER_REGISTRY }}/emontazysta/backend:${{ github.sha }}
           imagepullsecrets: |
             regcred
-          strategy: basic
+          strategy: recrate
           action: deploy
           token: ${{ github.token }}
