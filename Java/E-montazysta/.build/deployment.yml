@@ -29,5 +29,3 @@ spec:
             path: /actuator/health/readiness
             port: 8080
           initialDelaySeconds: 5
-      imagePullSecrets:
-        - name: regcred
