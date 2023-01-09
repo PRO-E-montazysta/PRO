@@ -30,4 +30,14 @@ jobs:
   java-deploy:
     runs-on: ubuntu-latest
     steps:
-      - 
+      -
+        name: Kubernetes Set Context
+        uses: Azure/k8s-set-context@v3.0
+        with:
+          cluster-type: generic
+          # Acceptable values: kubeconfig or service-account or service-principal
+          method: service-account
+          # Cluster Url
+          k8s-url: "https://51.38.130.7:6443"
+          # Service account secret (run kubectl get serviceaccounts <service-account-name> -o yaml and copy the service-account-secret-name)
+          k8s-secret: production-deployment-token
