@@ -22,7 +22,7 @@ jobs:
         name: Build Docker image
         uses: docker/build-push-action@v2
         with:
-          context: Java/
+          context: Java/E-Montazysta
           file: Dockerfile
           tags: ${{ secrets.DOCKER_REGISTRY }}/emontazysta/backend:latest
           push: true
