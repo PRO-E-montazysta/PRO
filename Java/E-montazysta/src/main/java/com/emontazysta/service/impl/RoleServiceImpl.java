@@ -1,6 +1,6 @@
 package com.emontazysta.service.impl;
 
-import com.emontazysta.Role;
+import com.emontazysta.enums.Role;
 import com.emontazysta.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

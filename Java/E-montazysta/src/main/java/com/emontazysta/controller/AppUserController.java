@@ -1,25 +1,23 @@
 package com.emontazysta.controller;
 
-import com.emontazysta.Role;
+import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.UserMapper;
 import com.emontazysta.model.AppUser;
 import com.emontazysta.model.dto.AppUserDto;
 import com.emontazysta.service.AppUserService;
 import com.emontazysta.service.RoleService;
-import com.emontazysta.service.impl.AppUserServiceImpl;
-import com.emontazysta.service.impl.RoleServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.RolesAllowed;
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 import java.util.Set;
@@ -30,7 +28,8 @@ import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RolesAllowed({"CLOUD_ADMIN","ADMIN"})
+@EnableGlobalMethodSecurity(prePostEnabled=true)
+@PreAuthorize("hasAuthority('SCOPE_CLOUD_ADMIN')")
 @RequestMapping(value = API_BASE_CONSTANT+"/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AppUserController {
 
@@ -47,7 +46,7 @@ public class AppUserController {
 
     @PostMapping("/create")
     @Operation(description = "Allows to add new User.", security = @SecurityRequirement(name = "bearer-key"))
-    public ResponseEntity<AppUser> saveAppUser(@RequestBody final AppUser user, Principal principal) {
+    public ResponseEntity<AppUser> saveAppUser(@RequestBody @Valid final AppUser user, Principal principal) {
         Set<Role> roles = userService.findByUsername(principal.getName()).getRoles();
         if (roles.contains(Role.CLOUD_ADMIN)) {
             if (userService.findByUsername(user.getUsername()) == null) {
