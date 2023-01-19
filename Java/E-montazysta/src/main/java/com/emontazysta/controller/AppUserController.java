@@ -28,9 +28,9 @@ import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@EnableGlobalMethodSecurity(prePostEnabled=true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @PreAuthorize("hasAuthority('SCOPE_CLOUD_ADMIN')")
-@RequestMapping(value = API_BASE_CONSTANT+"/users", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = API_BASE_CONSTANT + "/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AppUserController {
 
     private final AppUserService userService;
@@ -46,20 +46,20 @@ public class AppUserController {
 
     @PostMapping("/create")
     @Operation(description = "Allows to add new User.", security = @SecurityRequirement(name = "bearer-key"))
-    public ResponseEntity<AppUser> saveAppUser(@RequestBody @Valid final AppUser user, Principal principal) {
-        Set<Role> roles = userService.findByUsername(principal.getName()).getRoles();
+    public ResponseEntity<AppUser> saveAppUser(@RequestBody @Valid final AppUserDto user, Principal principal) {
+        Set<Role> roles = userService.findByUsername(principal.getName()).getRoles(); //TODO: move logic to separate service
         if (roles.contains(Role.CLOUD_ADMIN)) {
             if (userService.findByUsername(user.getUsername()) == null) {
-                return ResponseEntity.status(HttpStatus.CREATED).body(userService.add(user));
+                return ResponseEntity.status(HttpStatus.CREATED).body(userService.add(UserMapper.toEntity(user)));
             } else {
                 log.info("User {} already exists", user.getUsername());
                 return ResponseEntity.status(HttpStatus.CONFLICT).build();
             }
-        }else if(roles.contains(Role.ADMIN)
+        } else if (roles.contains(Role.ADMIN)
                 && !(roles.contains(Role.CLOUD_ADMIN))
                 && !user.getRoles().contains(Role.CLOUD_ADMIN)) {
-            if (userService.findByUsername(user.getUsername()) == null ) {
-                return ResponseEntity.status(HttpStatus.CREATED).body(userService.add(user));
+            if (userService.findByUsername(user.getUsername()) == null) {
+                return ResponseEntity.status(HttpStatus.CREATED).body(userService.add(UserMapper.toEntity(user)));
             } else {
                 log.info("User {} already exists", user.getUsername());
                 return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -72,13 +72,14 @@ public class AppUserController {
 
     @PostMapping("/{id}/update")
     @Operation(description = "Allows to update User.", security = @SecurityRequirement(name = "bearer-key"))
-    public ResponseEntity<AppUser> updateAppUser(@PathVariable Long id, @RequestBody final AppUser user) {
-        if(userService.getById(id) != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(userService.update(id,user));
-        }else {
+    public ResponseEntity<AppUser> updateAppUser(@PathVariable Long id, @RequestBody final AppUserDto user) {
+        if (userService.getById(id) != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(userService.update(id, UserMapper.toEntity(user)));
+        } else {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
+
     @GetMapping("/{id}")
     @Operation(description = "Allows to get User by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public AppUserDto getUserById(@PathVariable Long id) {
@@ -88,16 +89,17 @@ public class AppUserController {
 
     @PostMapping("/{id}/setroles")
     @Operation(description = "Allows to assign list of roles to the user", security = @SecurityRequirement(name = "bearer-key"))
-    public ResponseEntity<String> addRoleToUser(@RequestParam Long id, @RequestBody Set<Role> role) {
-        ResponseEntity response = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        if (roleService.getAllRoles().contains(role)
-                && userService.getById(id) != null) {
-            userService.setRolesToUser(id, role);
-            response =  ResponseEntity.status(HttpStatus.OK).build();
-        }else if (!roleService.getAllRoles().contains(role)) {
-            log.info("Can't add role '{}' no such user role", role);
+    public ResponseEntity<String> addRoleToUser(@PathVariable Long id, @RequestBody Set<Role> roles) {
+        ResponseEntity<String> response = ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); //TODO: move logic to separate service
+        boolean correctRoles = roles.stream()
+                                    .allMatch(role -> roleService.getAllRoles().contains(role.name()));
+        if (correctRoles && userService.getById(id) != null) {
+            userService.setRolesToUser(id, roles);
+            response = ResponseEntity.status(HttpStatus.OK).build();
+        } else if (!correctRoles) {
+            log.info("Can't add role '{}' no such user role", roles); //TODO: change to point wrong role not whole set
         } else if (userService.getById(id) == null) {
-            log.info("Can't add role '{}' can't find user with id {}", id);
+            log.info("Can't add role '{}' can't find user with id {}", roles, id); //TODO: change to point wrong role not whole set
         }
         return response;
     }

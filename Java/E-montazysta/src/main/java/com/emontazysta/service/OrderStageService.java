@@ -10,4 +10,5 @@ public interface OrderStageService {
     OrderStage getById(Long id);
     void add(OrderStage orderStage);
     void delete(Long id);
+    OrderStage update(Long id, OrderStage orderStage);
 }

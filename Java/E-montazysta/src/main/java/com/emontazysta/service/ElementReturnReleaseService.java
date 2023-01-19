@@ -10,4 +10,5 @@ public interface ElementReturnReleaseService {
     ElementReturnRelease getById(Long id);
     void add(ElementReturnRelease elementReturnRelease);
     void delete(Long id);
+    ElementReturnRelease update(Long id, ElementReturnRelease elementReturnRelease);
 }

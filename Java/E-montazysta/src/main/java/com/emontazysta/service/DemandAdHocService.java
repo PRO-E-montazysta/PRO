@@ -10,4 +10,5 @@ public interface DemandAdHocService {
     DemandAdHoc getById(Long id);
     void add(DemandAdHoc demandAdHoc);
     void delete(Long id);
+    DemandAdHoc update(Long id, DemandAdHoc demandAdHoc);
 }
