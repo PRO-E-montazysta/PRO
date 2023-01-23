@@ -1,0 +1,63 @@
+services:
+  backend:
+    build:
+      context: Java/E-montazysta
+      target: dev-envs
+    restart: always
+    secrets:
+      - db-password
+    environment:
+      POSTGRES_DB: example
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - react-spring
+      - spring-postgres
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres
+    restart: always
+    secrets:
+      - db-password
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - spring-postgres
+    environment:
+      - POSTGRES_DB=example
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "example"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    expose:
+      - 5432
+
+  frontend:
+    build:
+      context: React
+      target: dev-envs
+    ports:
+      - 3000:3000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - react-spring
+    depends_on:
+      - backend
+    expose:
+      - 3306
+      - 33060
+
+volumes:
+  db-data: {}
+secrets:
+  db-password:
+    file: ../db/password.txt
+networks:
+  react-spring: {}
+  spring-postgres: {}
