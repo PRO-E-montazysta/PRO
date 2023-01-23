@@ -32,7 +32,7 @@ public class ToolController {
         return toolService.getById(id);
     }
 
-    @GetMapping("{code}")
+    @GetMapping("/bycode/{code}")
     @Operation(description = "Allows to get Tool by given Code.", security = @SecurityRequirement(name = "bearer-key"))
     public Tool getByCode(@PathVariable String code) {
         return toolService.getByCode(code);

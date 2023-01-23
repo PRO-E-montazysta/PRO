@@ -32,7 +32,7 @@ public class ElementController {
         return elementService.getById(id);
     }
 
-    @GetMapping("{code}")
+    @GetMapping("/bycode/{code}")
     @Operation(description = "Allows to get Element by given Code.", security = @SecurityRequirement(name = "bearer-key"))
     public Element getByCode(@PathVariable String code) {
         return elementService.getByCode(code);
