@@ -4,6 +4,7 @@ import com.emontazysta.model.Tool;
 import com.emontazysta.repository.ToolRepository;
 import com.emontazysta.service.ToolService;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -29,7 +30,11 @@ public class ToolServiceImpl implements ToolService {
 
     @Override
     public Tool getByCode(String code) {
-        return repository.findByCode(code);
+        Tool response = repository.findByCode(code);
+        if(response == null)
+            throw new EntityNotFoundException();
+        else
+            return response;
     }
 
     @Override
