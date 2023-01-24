@@ -1,14 +1,19 @@
 import { Button} from '@mui/material';
 import './style.less';
 
-const ConfirmDialog = () => {
+type ConfirmDialogTypes = {
+    dialogText: string;
+    confirmAction: string;
+}
+
+const ConfirmDialog = ({ dialogText, confirmAction }: ConfirmDialogTypes) => {
  
   return (
     <div className="blur-background">
         <div className="confirm-dialog">
             <form>
                 <p>
-                    Czy na pewno chcesz usunąć konto użytkownika o ID 95259849?
+                    {dialogText}
                 </p>
                 <div className="action-buttons">
                     <Button sx={{
@@ -23,7 +28,7 @@ const ConfirmDialog = () => {
                         'letter-spacing': '0.2px'
                         }}
                     >
-                        Usuń
+                        {confirmAction}
                     </Button>
                     <Button sx={{
                         color: 'white',
