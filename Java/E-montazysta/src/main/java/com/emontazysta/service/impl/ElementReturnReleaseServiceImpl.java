@@ -5,6 +5,7 @@ import com.emontazysta.repository.ElementReturnReleaseRepository;
 import com.emontazysta.service.ElementReturnReleaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -34,5 +35,17 @@ public class ElementReturnReleaseServiceImpl implements ElementReturnReleaseServ
     @Override
     public void delete(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public ElementReturnRelease update(Long id, ElementReturnRelease elementReturnRelease) {
+        ElementReturnRelease elementReturnReleaseDb = getById(id);
+        elementReturnReleaseDb.setReleaseTime(elementReturnRelease.getReleaseTime());
+        elementReturnReleaseDb.setReleasedQuantity(elementReturnRelease.getReleasedQuantity());
+        elementReturnReleaseDb.setReturnedQuantity(elementReturnRelease.getReturnedQuantity());
+        elementReturnReleaseDb.setReturnTime(elementReturnRelease.getReturnTime());
+
+        return elementReturnReleaseDb;
     }
 }
