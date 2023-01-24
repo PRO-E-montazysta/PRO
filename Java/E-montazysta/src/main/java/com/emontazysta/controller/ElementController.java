@@ -1,7 +1,7 @@
 package com.emontazysta.controller;
 
 import com.emontazysta.model.Element;
-import com.emontazysta.service.impl.ElementServiceImpl;
+import com.emontazysta.service.ElementService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 @RequestMapping(value = API_BASE_CONSTANT + "/elements", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ElementController {
 
-    private final ElementServiceImpl elementService;
+    private final ElementService elementService;
 
     @GetMapping
     @Operation(description = "Allows to get all Elements.", security = @SecurityRequirement(name = "bearer-key"))
