@@ -35,8 +35,8 @@ public class CommentController {
 
     @GetMapping("/{id}")
     @Operation(description = "Allows to get Comment by given Id.", security = @SecurityRequirement(name = "bearer-key"))
-    public Comment getById(@PathVariable("id") Long id) {
-        return commentService.getById(id);
+    public ResponseEntity<CommentDto> getById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok().body(CommentMapper.commentToDto(commentService.getById(id)));
     }
 
     @PostMapping
