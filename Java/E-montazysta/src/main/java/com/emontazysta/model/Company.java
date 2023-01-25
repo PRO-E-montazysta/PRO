@@ -24,6 +24,5 @@ public class Company {
     @NotBlank
     private String companyName;
 
-    @NotNull
     private Date createdAt;
 }
