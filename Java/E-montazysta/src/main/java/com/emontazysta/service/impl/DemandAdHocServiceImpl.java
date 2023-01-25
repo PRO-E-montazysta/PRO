@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -29,6 +30,7 @@ public class DemandAdHocServiceImpl implements DemandAdHocService {
 
     @Override
     public void add(DemandAdHoc demandAdHoc) {
+        demandAdHoc.setCreationTime(LocalDateTime.now());
         repository.save(demandAdHoc);
     }
 
