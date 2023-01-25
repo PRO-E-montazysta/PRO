@@ -6,8 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 import lombok.*;
 
 import java.util.Date;
@@ -26,5 +24,6 @@ public class Comment {
     @NotBlank
     private String content;
 
+    @NotBlank
     private Date createdAt;
 }
