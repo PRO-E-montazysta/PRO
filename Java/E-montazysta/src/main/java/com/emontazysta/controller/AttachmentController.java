@@ -3,7 +3,7 @@ package com.emontazysta.controller;
 import com.emontazysta.mapper.AttachmentMapper;
 import com.emontazysta.model.Attachment;
 import com.emontazysta.model.dto.AttachmentDto;
-import com.emontazysta.service.impl.AttachmentServiceImpl;
+import com.emontazysta.service.AttachmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 @RequestMapping(value = API_BASE_CONSTANT + "/attachments", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AttachmentController {
 
-    private final AttachmentServiceImpl attachmentService;
+    private final AttachmentService attachmentService;
 
     @GetMapping("/all")
     @Operation(description = "Allows to get all Attachments.", security = @SecurityRequirement(name = "bearer-key"))

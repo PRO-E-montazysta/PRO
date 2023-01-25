@@ -28,12 +28,10 @@ public class Attachment {
     @NotBlank
     private String url;
 
-    @NotBlank
     private String description;
 
     @NotNull
     private TypeOfAttachment typeOfAttachment;
 
-    @NotNull
     private Date createdAt;
 }

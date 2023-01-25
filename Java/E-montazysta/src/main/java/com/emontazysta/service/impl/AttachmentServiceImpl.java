@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -28,6 +29,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 
     @Override
     public void add(Attachment attachment) {
+        attachment.setCreatedAt(new Date());
         repository.save(attachment);
     }
 
