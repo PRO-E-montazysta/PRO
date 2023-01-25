@@ -3,7 +3,7 @@ package com.emontazysta.controller;
 import com.emontazysta.mapper.CommentMapper;
 import com.emontazysta.model.Comment;
 import com.emontazysta.model.dto.CommentDto;
-import com.emontazysta.service.impl.CommentServiceImpl;
+import com.emontazysta.service.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
@@ -23,7 +23,7 @@ import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 @RequestMapping(value = API_BASE_CONSTANT + "/comments", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CommentController {
 
-    private final CommentServiceImpl commentService;
+    private final CommentService commentService;
 
     @GetMapping("/all")
     @Operation(description = "Allows to get all Comments.", security = @SecurityRequirement(name = "bearer-key"))
