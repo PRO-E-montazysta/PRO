@@ -24,6 +24,5 @@ public class Comment {
     @NotBlank
     private String content;
 
-    @NotBlank
     private Date createdAt;
 }
