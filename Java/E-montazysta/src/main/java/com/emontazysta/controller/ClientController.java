@@ -3,7 +3,7 @@ package com.emontazysta.controller;
 import com.emontazysta.mapper.ClientMapper;
 import com.emontazysta.model.Client;
 import com.emontazysta.model.dto.ClientDto;
-import com.emontazysta.service.impl.ClientServiceImpl;
+import com.emontazysta.service.ClientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 @RequestMapping(value = API_BASE_CONSTANT + "/clients", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ClientController {
 
-    private final ClientServiceImpl clientService;
+    private final ClientService clientService;
 
     @GetMapping("/all")
     @Operation(description = "Allows to get all Clients.", security = @SecurityRequirement(name = "bearer-key"))

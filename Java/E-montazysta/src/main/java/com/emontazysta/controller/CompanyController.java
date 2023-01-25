@@ -3,7 +3,7 @@ package com.emontazysta.controller;
 import com.emontazysta.mapper.CompanyMapper;
 import com.emontazysta.model.Company;
 import com.emontazysta.model.dto.CompanyDto;
-import com.emontazysta.service.impl.CompanyServiceImpl;
+import com.emontazysta.service.CompanyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
@@ -23,7 +23,7 @@ import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 @RequestMapping(value = API_BASE_CONSTANT + "/companies", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CompanyController {
 
-    private final CompanyServiceImpl companyService;
+    private final CompanyService companyService;
 
     @GetMapping("/all")
     @Operation(description = "Allows to get all Companies.", security = @SecurityRequirement(name = "bearer-key"))
