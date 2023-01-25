@@ -35,8 +35,8 @@ public class CompanyController {
 
     @GetMapping("/{id}")
     @Operation(description = "Allows to get Company by given Id.", security = @SecurityRequirement(name = "bearer-key"))
-    public Company getById(@PathVariable("id") Long id) {
-        return companyService.getById(id);
+    public ResponseEntity<CompanyDto> getById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok().body(CompanyMapper.companyToDto(companyService.getById(id)));
     }
 
     @PostMapping

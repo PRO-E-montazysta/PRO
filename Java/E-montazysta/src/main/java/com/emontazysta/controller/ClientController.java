@@ -35,8 +35,8 @@ public class ClientController {
 
     @GetMapping("/{id}")
     @Operation(description = "Allows to get Client by given Id.", security = @SecurityRequirement(name = "bearer-key"))
-    public ClientDto getById(@PathVariable Long id) {
-        return ClientMapper.clientToDto(clientService.getById(id));
+    public ResponseEntity<ClientDto> getById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(ClientMapper.clientToDto(clientService.getById(id)));
     }
 
     @PostMapping
