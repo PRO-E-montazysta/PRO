@@ -49,7 +49,6 @@ public class ElementController {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Element.", security = @SecurityRequirement(name = "bearer-key"))
     public void add(@Valid @RequestBody Element element) {
-        element.setCode(UUID.randomUUID().toString());
         elementService.add(element);
     }
 
