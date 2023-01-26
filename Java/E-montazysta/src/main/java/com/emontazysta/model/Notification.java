@@ -1,37 +1,42 @@
 package com.emontazysta.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-@AllArgsConstructor
 @Data
 @NoArgsConstructor
-public class Employment {
+@AllArgsConstructor
+public class Notification {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonFormat(pattern="dd-MM-yyyy")
-    private Date dateOfEmployment;
+    @NotBlank
+    private String content;
 
-    @JsonFormat(pattern="dd-MM-yyyy")
-    private Date dateOfDismiss;
+    private LocalDateTime createdAt;
 
-    @ManyToOne
-    @JsonBackReference
-    private Company company;
+    private LocalDateTime readAt;
+
+    private String sender;
+
+    private String recipient;
 
     @ManyToOne
     @JsonBackReference
     private AppUser employee;
+
+    // ToDo topic Enum (decision?)
+
 
 
 }

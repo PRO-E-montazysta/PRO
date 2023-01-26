@@ -1,14 +1,13 @@
 package com.emontazysta.model;
 
 import com.emontazysta.enums.TypeOfStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -26,5 +25,14 @@ public class ToolEvent {
     private LocalDateTime movingDate;
     private LocalDateTime completionDate;
     private String description;
+
+    @NotNull
     private TypeOfStatus status;
+
+    @JsonBackReference
+    @ManyToOne
+    private AppUser employee;
+
+    @JsonBackReference
+    @ManyToOne Manager manager;
 }

@@ -39,4 +39,12 @@ public class Orders {
     @JsonBackReference
     @ManyToOne
     private Company company;
+
+    @JsonBackReference
+    @ManyToOne
+    private Manager manager;
+
+    @JsonBackReference
+    @ManyToOne
+    private Foreman foreman;
 }
