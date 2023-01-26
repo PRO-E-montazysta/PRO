@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -28,6 +29,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void add(Comment comment) {
+        comment.setCreatedAt(new Date());
         repository.save(comment);
     }
 

@@ -10,4 +10,5 @@ public interface ToolReleaseService {
     ToolRelease getById(Long id);
     void add(ToolRelease toolRelease);
     void delete(Long id);
+    ToolRelease update(Long id, ToolRelease toolRelease);
 }

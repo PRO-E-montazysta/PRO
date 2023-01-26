@@ -3,7 +3,7 @@ package com.emontazysta.controller;
 import com.emontazysta.mapper.ToolEventMapper;
 import com.emontazysta.model.ToolEvent;
 import com.emontazysta.model.dto.ToolEventDto;
-import com.emontazysta.service.ToolEventService;
+import com.emontazysta.service.impl.ToolEventServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 @RequestMapping(value = API_BASE_CONSTANT + "/toolEvent", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ToolEventController {
 
-    private final ToolEventService service;
+    private final ToolEventServiceImpl service;
 
     @GetMapping
     @Operation(description = "Allows to get all tool event.", security = @SecurityRequirement(name = "bearer-key"))

@@ -1,6 +1,6 @@
 package com.emontazysta.service;
 
-import com.emontazysta.Role;
+import com.emontazysta.enums.Role;
 import com.emontazysta.model.AppUser;
 import org.springframework.security.core.userdetails.UserDetailsService;
 

@@ -15,4 +15,16 @@ public class UserMapper {
                 .roles(user.getRoles())
                 .build();
     }
+
+    public static AppUser toEntity(AppUserDto appUserDto) {
+        return AppUser.builder()
+                .id(appUserDto.getId())
+                .firstName(appUserDto.getFirstName())
+                .lastName(appUserDto.getLastName())
+                .email(appUserDto.getEmail())
+                .password(appUserDto.getPassword())
+                .username(appUserDto.getUsername())
+                .roles(appUserDto.getRoles())
+                .build();
+    }
 }
