@@ -43,7 +43,10 @@ public class CompanyServiceImpl implements CompanyService {
     public void update(Long id, Company company) {
         Company updatedCompany = this.getById(id);
         updatedCompany.setCompanyName(company.getCompanyName());
-
+        updatedCompany.setClients(company.getClients());
+        updatedCompany.setEmployments(company.getEmployments());
+        updatedCompany.setOrders(company.getOrders());
+        updatedCompany.setWarehouses(company.getWarehouses());
         repository.save(updatedCompany);
     }
 }

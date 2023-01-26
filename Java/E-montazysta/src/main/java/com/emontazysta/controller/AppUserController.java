@@ -29,7 +29,7 @@ import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 @RestController
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@PreAuthorize("hasAuthority('SCOPE_CLOUD_ADMIN')")
+@PreAuthorize("hasAnyAuthority('SCOPE_CLOUD_ADMIN', 'SCOPE_ADMIN')")
 @RequestMapping(value = API_BASE_CONSTANT + "/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AppUserController {
 
@@ -72,12 +72,21 @@ public class AppUserController {
 
     @PostMapping("/{id}/update")
     @Operation(description = "Allows to update User.", security = @SecurityRequirement(name = "bearer-key"))
-    public ResponseEntity<AppUser> updateAppUser(@PathVariable Long id, @RequestBody final AppUserDto user) {
-        if (userService.getById(id) != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(userService.update(id, UserMapper.toEntity(user)));
-        } else {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+    public ResponseEntity<AppUser> updateAppUser(@PathVariable Long id, @Valid @RequestBody final AppUserDto user, Principal principal) {
+        Set<Role> roles = userService.findByUsername(principal.getName()).getRoles();
+        if (roles.contains(Role.CLOUD_ADMIN)) {
+            if (userService.getById(id) != null) {
+                return ResponseEntity.status(HttpStatus.OK).body(userService.update(id, UserMapper.toEntity(user)));
+            }
+        } else if(!roles.contains(Role.CLOUD_ADMIN) && roles.contains(Role.ADMIN)) {
+             if (!userService.getById(user.getId()).getRoles().contains(Role.CLOUD_ADMIN)){
+                 return ResponseEntity.status(HttpStatus.OK).body(userService.update(id, UserMapper.toEntity(user)));
+             } else {
+                 log.info("User {} does not have the required permissions", principal.getName());
+                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+             }
         }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     @GetMapping("/{id}")
