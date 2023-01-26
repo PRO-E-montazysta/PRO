@@ -1,7 +1,7 @@
 package com.emontazysta.model.dto;
 
 import lombok.Data;
-import lombok.experimental.Builder;
+import lombok.Builder;
 
 import java.util.Date;
 
