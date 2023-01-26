@@ -3,10 +3,12 @@ import './style.less';
 
 type ConfirmDialogTypes = {
     dialogText: string;
-    confirmAction: string;
+    confirmLabel: string;
+    confirmAction: any;
+    cancelAction: any;
 }
 
-const ConfirmDialog = ({ dialogText, confirmAction }: ConfirmDialogTypes) => {
+const ConfirmDialog = ({ dialogText, confirmLabel, confirmAction, cancelAction }: ConfirmDialogTypes) => {
  
   return (
     <div className="blur-background">
@@ -16,7 +18,9 @@ const ConfirmDialog = ({ dialogText, confirmAction }: ConfirmDialogTypes) => {
                     {dialogText}
                 </p>
                 <div className="action-buttons">
-                    <Button sx={{
+                    <Button 
+                        onClick={confirmAction}
+                        sx={{
                         color: 'white',
                         background: '#282A3A',
                         width: '100px',
@@ -28,9 +32,11 @@ const ConfirmDialog = ({ dialogText, confirmAction }: ConfirmDialogTypes) => {
                         'letter-spacing': '0.2px'
                         }}
                     >
-                        {confirmAction}
+                        {confirmLabel}
                     </Button>
-                    <Button sx={{
+                    <Button
+                        onClick={cancelAction}
+                        sx={{
                         color: 'white',
                         background: '#15171F',
                         width: '100px',
