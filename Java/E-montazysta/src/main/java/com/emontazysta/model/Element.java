@@ -25,7 +25,6 @@ public class Element {
     @NotBlank
     private String name;
 
-    //TODO: Generate UNIQUE code
     private String code;
 
     @NotNull
