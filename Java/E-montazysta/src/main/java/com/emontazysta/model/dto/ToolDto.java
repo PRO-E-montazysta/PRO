@@ -6,7 +6,7 @@ import lombok.experimental.SuperBuilder;
 import java.util.Date;
 
 @Data
-@SuperBuilder
+@Builder
 public class ToolDto {
 
     private Long id;
