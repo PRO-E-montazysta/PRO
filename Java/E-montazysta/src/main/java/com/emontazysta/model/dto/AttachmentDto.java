@@ -1,12 +1,12 @@
 package com.emontazysta.model.dto;
 
 import com.emontazysta.enums.TypeOfAttachment;
+import lombok.Builder;
 import lombok.Data;
-import lombok.experimental.SuperBuilder;
 import java.util.Date;
 
 @Data
-@SuperBuilder
+@Builder
 public class AttachmentDto {
 
     private Long id;
