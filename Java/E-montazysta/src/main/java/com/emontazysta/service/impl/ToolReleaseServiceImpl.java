@@ -5,6 +5,7 @@ import com.emontazysta.repository.ToolReleaseRepository;
 import com.emontazysta.service.ToolReleaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -34,5 +35,15 @@ public class ToolReleaseServiceImpl implements ToolReleaseService {
     @Override
     public void delete(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public ToolRelease update(Long id, ToolRelease toolRelease) {
+        ToolRelease toolReleaseDb = getById(id);
+        toolReleaseDb.setReleaseTime(toolRelease.getReleaseTime());
+        toolReleaseDb.setReturnTime(toolRelease.getReturnTime());
+
+        return toolReleaseDb;
     }
 }

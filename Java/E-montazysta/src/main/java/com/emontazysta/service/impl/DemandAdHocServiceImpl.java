@@ -5,6 +5,7 @@ import com.emontazysta.repository.DemandAdHocRepository;
 import com.emontazysta.service.DemandAdHocService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -34,5 +35,20 @@ public class DemandAdHocServiceImpl implements DemandAdHocService {
     @Override
     public void delete(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public DemandAdHoc update(Long id, DemandAdHoc demandAdHoc) {
+
+        DemandAdHoc demandAdHocDb = getById(id);
+        demandAdHocDb.setDescription(demandAdHoc.getDescription());
+        demandAdHocDb.setComments(demandAdHoc.getComments());
+        demandAdHocDb.setReadByWarehousemanTime(demandAdHoc.getReadByWarehousemanTime());
+        demandAdHocDb.setRealisationTime(demandAdHoc.getRealisationTime());
+        demandAdHocDb.setWarehousemanComment(demandAdHoc.getWarehousemanComment());
+        demandAdHocDb.setSpecialistComment(demandAdHoc.getSpecialistComment());
+
+        return demandAdHocDb;
     }
 }

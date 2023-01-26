@@ -1,6 +1,6 @@
 package com.emontazysta.model.dto;
 
-import com.emontazysta.Role;
+import com.emontazysta.enums.Role;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 

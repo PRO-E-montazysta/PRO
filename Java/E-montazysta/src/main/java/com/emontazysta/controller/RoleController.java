@@ -1,7 +1,5 @@
 package com.emontazysta.controller;
 
-import com.emontazysta.Role;
-import com.emontazysta.service.impl.AppUserServiceImpl;
 import com.emontazysta.service.impl.RoleServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

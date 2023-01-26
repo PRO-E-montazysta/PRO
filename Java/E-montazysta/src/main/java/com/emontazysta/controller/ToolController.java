@@ -1,7 +1,7 @@
 package com.emontazysta.controller;
 
 import com.emontazysta.model.Tool;
-import com.emontazysta.service.impl.ToolServiceImpl;
+import com.emontazysta.service.ToolService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 @RequestMapping(value = API_BASE_CONSTANT + "/tools", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ToolController {
 
-    private final ToolServiceImpl toolService;
+    private final ToolService toolService;
 
     @GetMapping
     @Operation(description = "Allows to get all Tools.", security = @SecurityRequirement(name = "bearer-key"))
@@ -32,7 +32,7 @@ public class ToolController {
         return toolService.getById(id);
     }
 
-    @GetMapping("{code}")
+    @GetMapping("/bycode/{code}")
     @Operation(description = "Allows to get Tool by given Code.", security = @SecurityRequirement(name = "bearer-key"))
     public Tool getByCode(@PathVariable String code) {
         return toolService.getByCode(code);

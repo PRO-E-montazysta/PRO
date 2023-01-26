@@ -1,6 +1,6 @@
 package com.emontazysta.configuration;
 
-import com.emontazysta.Role;
+import com.emontazysta.enums.Role;
 import com.emontazysta.model.AppUser;
 import com.emontazysta.service.AppUserService;
 import com.nimbusds.jose.JOSEException;

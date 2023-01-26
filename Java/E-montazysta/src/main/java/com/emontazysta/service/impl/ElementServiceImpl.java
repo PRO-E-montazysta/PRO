@@ -1,6 +1,7 @@
 package com.emontazysta.service.impl;
 
 import com.emontazysta.model.Element;
+import com.emontazysta.model.Tool;
 import com.emontazysta.repository.ElementRepository;
 import com.emontazysta.service.ElementService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,11 @@ public class ElementServiceImpl implements ElementService {
 
     @Override
     public Element getByCode(String code) {
-        return repository.findByCode(code);
+        Element response = repository.findByCode(code);
+        if(response == null)
+            throw new EntityNotFoundException();
+        else
+            return response;
     }
 
     @Override

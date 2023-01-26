@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -50,5 +51,11 @@ public class DemandAdHocController {
     @Operation(description = "Allows to delete Demand Ad Hoc by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public void deleteDemandAdHocById(@PathVariable Long id) {
         demandAdHocService.delete(id);
+    }
+
+    @PutMapping("{id}")
+    @Operation(description = "Allows to edit Demand Ad Hoc by given Id.", security = @SecurityRequirement(name = "bearer-key"))
+    public DemandAdHoc updateDemandAdHoc(@PathVariable Long id, @RequestBody DemandAdHoc demandAdHoc) {
+        return demandAdHocService.update(id, demandAdHoc);
     }
 }
