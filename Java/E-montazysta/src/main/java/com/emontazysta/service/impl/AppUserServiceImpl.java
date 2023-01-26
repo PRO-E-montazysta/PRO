@@ -52,7 +52,7 @@ public class AppUserServiceImpl  implements AppUserService {
     @Override
     public AppUser update(Long id, AppUser newUser) {
 
-        AppUser user = appUserRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        AppUser user = getById(id);
         AppUser updatedUser = AppUser.builder()
                 .id(id)
                 .firstName(newUser.getFirstName())
