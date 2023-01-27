@@ -1,6 +1,7 @@
 package com.emontazysta.model.dto;
 
 import com.emontazysta.enums.Role;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
@@ -8,6 +9,7 @@ import java.util.Set;
 
 @Data
 @SuperBuilder
+@AllArgsConstructor
 public class AppUserDto {
 
     private Long id;

@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Entity
@@ -20,10 +21,10 @@ public class Tool {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     private String name;
 
     private Date createdAt;
 
-    //TODO: Generate UNIQUE code
     private String code;
 }

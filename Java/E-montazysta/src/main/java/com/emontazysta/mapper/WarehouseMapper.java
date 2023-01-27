@@ -11,6 +11,7 @@ public class WarehouseMapper {
                 .name(warehouse.getName())
                 .description(warehouse.getDescription())
                 .openingHours(warehouse.getOpeningHours())
+                .company(warehouse.getCompany())
                 .build();
     }
 }

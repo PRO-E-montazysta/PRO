@@ -1,6 +1,8 @@
 package com.emontazysta.controller;
 
+import com.emontazysta.mapper.DemandAdHocMapper;
 import com.emontazysta.model.DemandAdHoc;
+import com.emontazysta.model.dto.DemandAdHocDto;
 import com.emontazysta.service.DemandAdHocService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -17,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 
@@ -28,32 +32,34 @@ public class DemandAdHocController {
 
     private final DemandAdHocService demandAdHocService;
 
-    @GetMapping
+    @GetMapping("/all")
     @Operation(description = "Allows to get all Demands Ad Hoc.", security = @SecurityRequirement(name = "bearer-key"))
-    public List<DemandAdHoc> getAllDemandsAdHoc() {
-        return demandAdHocService.getAll();
+    public List<DemandAdHocDto> getAllDemandsAdHoc() {
+        return demandAdHocService.getAll().stream()
+                .map(DemandAdHocMapper::demandAdHocDtoDto)
+                .collect(Collectors.toList());
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @Operation(description = "Allows to get Demand Ad Hoc by given Id.", security = @SecurityRequirement(name = "bearer-key"))
-    public DemandAdHoc getDemandAdHocById(@PathVariable Long id) {
-        return demandAdHocService.getById(id);
+    public DemandAdHocDto getDemandAdHocById(@PathVariable Long id) {
+        return DemandAdHocMapper.demandAdHocDtoDto(demandAdHocService.getById(id));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Demand Ad Hoc.", security = @SecurityRequirement(name = "bearer-key"))
-    public void addDemandAdHoc(@RequestBody DemandAdHoc demandAdHoc) {
+    public void addDemandAdHoc(@Valid @RequestBody DemandAdHoc demandAdHoc) {
         demandAdHocService.add(demandAdHoc);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @Operation(description = "Allows to delete Demand Ad Hoc by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public void deleteDemandAdHocById(@PathVariable Long id) {
         demandAdHocService.delete(id);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     @Operation(description = "Allows to edit Demand Ad Hoc by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public DemandAdHoc updateDemandAdHoc(@PathVariable Long id, @RequestBody DemandAdHoc demandAdHoc) {
         return demandAdHocService.update(id, demandAdHoc);
