@@ -27,7 +27,7 @@ CMD ["mvn", "spring-boot:run"]
 
 FROM builder as prepare-production
 RUN mkdir -p target/dependency
-WORKDIR /workdir/server/target/dependency
+WORKDIR /workspace/app/target/dependency
 RUN jar -xf ../*.jar
 
 FROM eclipse-temurin:17-jre-alpine
