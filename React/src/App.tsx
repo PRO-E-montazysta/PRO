@@ -6,6 +6,7 @@ import Header from './components/Headers/Header';
 import Employees from './components/Employees/Employees';
 import MockView from './components/MockView/MockView';
 import LoginPage from './Pages/LoginPage';
+import useToken from './Hooks/useToken';
 
 const theme = createTheme({
   palette: {
@@ -37,6 +38,15 @@ const theme = createTheme({
 //token prawdopodobnie powienien być sprawdzany z localstorage
 
 function App() {
+  const { token, setToken } = useToken();
+  const isAuthorized = token ? true : false;
+  
+  if (!isAuthorized) {
+    console.log('tutaj');
+    // return <LoginPage />
+    //Link?
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />

@@ -1,9 +1,8 @@
-import { Paper, Grid, Typography, Box, FormControlLabel, Checkbox, Button, Link, CssBaseline } from '@mui/material';
+import { Grid, Typography, Box, FormControlLabel, Checkbox, Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 
-import React from 'react';
-import TwoButtons from '../TwoButtons/TwoButtons';
+import { logIn } from '../../api/Authentication';
 
 const CustomeTextField = styled(TextField)(({ theme }) => ({
   border: '2px solid #96C0FB',
@@ -13,22 +12,30 @@ const CustomeTextField = styled(TextField)(({ theme }) => ({
 }));
 
 const LoginForm = () => {
-    const handleSubmit = (event: any) => {
-      event.preventDefault();
-      const data = new FormData(event.currentTarget);
-      console.log({ data });
-      console.log({
-        email: data.get('email'),
-        password: data.get('password'),
-        check: data.get('check'),
-      });
-    };
+  const handleSubmit = async (event: any) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const email = data.get('email')?.toString();
+    const password = data.get('password')?.toString();
+    console.log({ check: event.currentTarget });
+    console.log({
+      email,
+      password,
+      check: data.get('check'),
+    });
 
-//   const handleSubmit = (event: any) => {
-//     // wysyłam dane do bazy otrzymuje odpowiedź
-//     //jeśli zła to wypadałoby to jakoś pokazać
-//     //await odpowiedź
-//   };
+    if (!!email && !!password) {
+      const response = await logIn({ email, password });
+      console.log({ response });
+      //setToken, Link
+    }
+  };
+
+  //   const handleSubmit = (event: any) => {
+  //     // wysyłam dane do bazy otrzymuje odpowiedź
+  //     //jeśli zła to wypadałoby to jakoś pokazać
+  //     //await odpowiedź
+  //   };
   return (
     <Box
       bgcolor="secondary.main"
