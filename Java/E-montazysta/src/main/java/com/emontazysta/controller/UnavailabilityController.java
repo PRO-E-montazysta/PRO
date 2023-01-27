@@ -1,6 +1,8 @@
 package com.emontazysta.controller;
 
+import com.emontazysta.mapper.UnavailabilityMapper;
 import com.emontazysta.model.Unavailability;
+import com.emontazysta.model.dto.UnavailabilityDto;
 import com.emontazysta.service.UnavailabilityService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -9,46 +11,50 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping(value = API_BASE_CONSTANT + "/unavailability", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = API_BASE_CONSTANT + "/unavailabilities", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UnavailabilityController {
 
     private final UnavailabilityService unavailabilityService;
 
-    @GetMapping
+    @GetMapping("/all")
     @Operation(description = "Allows to get all Unavailabilities.", security = @SecurityRequirement(name = "bearer-key"))
-    public List<Unavailability> getAll() {
-        return unavailabilityService.getAll();
+    public List<UnavailabilityDto> getAll() {
+        return unavailabilityService.getAll().stream()
+                .map(UnavailabilityMapper::unavailabilityToDto)
+                .collect(Collectors.toList());
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @Operation(description = "Allows to get Unavailability by given Id.", security = @SecurityRequirement(name = "bearer-key"))
-    public Unavailability getById(@PathVariable("id") Long id) {
-        return unavailabilityService.getById(id);
+    public UnavailabilityDto getById(@PathVariable("id") Long id) {
+        return UnavailabilityMapper.unavailabilityToDto(unavailabilityService.getById(id));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Unavailability.", security = @SecurityRequirement(name = "bearer-key"))
-    public void add(@RequestBody Unavailability unavailability) {
+    public void add(@Valid @RequestBody Unavailability unavailability) {
         unavailabilityService.add(unavailability);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @Operation(description = "Allows to delete Unavailability by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public void delete(@PathVariable("id") Long id) {
         unavailabilityService.delete(id);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     @Operation(description = "Allows to update Unavailability by given Id, and Unavailability.", security = @SecurityRequirement(name = "bearer-key"))
     public void update(@PathVariable("id") Long id,
-                                     @RequestBody Unavailability unavailability) {
+                                     @Valid @RequestBody Unavailability unavailability) {
         unavailabilityService.update(id, unavailability);
     }
 }
