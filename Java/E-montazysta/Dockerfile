@@ -5,9 +5,6 @@ WORKDIR /workspace/app
 COPY mvnw .
 COPY .mvn .mvn
 COPY pom.xml .
-RUN mvn dependency:go-offline
-
-
 COPY src src
 
 RUN mvn install --no-transfer-progress -DskipTests
@@ -36,8 +33,8 @@ RUN addgroup -S spring && adduser -S spring -G spring
 USER spring:spring
 VOLUME /tmp
 ARG DEPENDENCY=/workspace/app/target/dependency
-COPY --from=builder ${DEPENDENCY}/BOOT-INF/lib /app/lib
-COPY --from=builder ${DEPENDENCY}/META-INF /app/META-INF
-COPY --from=builder ${DEPENDENCY}/BOOT-INF/classes /app
+COPY --from=prepare-production ${DEPENDENCY}/BOOT-INF/lib /app/lib
+COPY --from=prepare-production ${DEPENDENCY}/META-INF /app/META-INF
+COPY --from=prepare-production ${DEPENDENCY}/BOOT-INF/classes /app
 EXPOSE 8080
 ENTRYPOINT ["java","-cp","app:app/lib/*","com.emontazysta.EMontazystaApplication"]
