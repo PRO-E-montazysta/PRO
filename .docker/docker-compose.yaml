@@ -1,0 +1,92 @@
+services:
+  backend:
+    build:
+      context: ../Java/E-montazysta
+      target: dev-envs
+    restart: always
+    secrets:
+      - db-password
+    ports:
+      - 8080:8080
+    environment:
+      POSTGRES_DB: example
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - react-spring
+      - spring-postgres
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres
+    restart: always
+    secrets:
+      - db-password
+    ports:
+      - 5432:5432
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - spring-postgres
+      - pgadmin-postgres
+    environment:
+      - POSTGRES_DB=example
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "example"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+      start_period: 3s
+    expose:
+      - 5432
+
+  frontend:
+    build:
+      context: ../React
+      target: dev-envs
+    ports:
+      - 3000:3000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - react-spring
+    depends_on:
+      - backend
+    expose:
+      - 3306
+      - 33060
+
+  db-web:
+    image: dpage/pgadmin4
+    secrets:
+      - db-connection
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@emontazysta.pl
+      - PGADMIN_DEFAULT_PASSWORD=password
+      - PGADMIN_CONFIG_MAX_LOGIN_ATTEMPTS=0
+    ports:
+      - 5050:80
+    networks:
+      - pgadmin-postgres
+    volumes:
+      - db-web-data:/var/lib/pgadmin
+      - ../db/connection.json:/pgadmin4/servers.json
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  db-data: {}
+  db-web-data: {}
+secrets:
+  db-password:
+    file: ../db/password.txt
+  db-connection:
+    file: ../db/connection.json
+networks:
+  react-spring: {}
+  spring-postgres: {}
+  pgadmin-postgres: {}
