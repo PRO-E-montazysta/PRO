@@ -45,6 +45,8 @@ public class AppUser implements UserDetails {
     @Column(unique = true)
     private String username;
 
+    private String resetPasswordToken;
+
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles = new HashSet<>();
 

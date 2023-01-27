@@ -13,8 +13,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -70,6 +74,30 @@ public class AppUserServiceImpl  implements AppUserService {
         log.info("Adding roles {} to user {}", roles, appUserRepository.findById(id).get().getUsername());
         AppUser user = appUserRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         user.setRoles(roles);
+    }
+
+    @Override
+    @Transactional
+    public void generateResetPasswordToken(String username) {
+        AppUser user = appUserRepository.findByUsername(username);
+        if (user == null) {
+            throw new EntityNotFoundException();
+        }
+        user.setResetPasswordToken(UUID.randomUUID().toString());
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("link", ""); // TODO link to frontend with token
+        // TODO mailService.sendEmail()
+    }
+
+    @Override
+    @Transactional
+    public void changePassword(String token, String password) {
+        AppUser user = appUserRepository.findByResetPasswordToken(token);
+        if (user == null) {
+            throw new EntityNotFoundException();
+        }
+        user.setPassword(bCryptPasswordEncoder.encode(password));
+        user.setResetPasswordToken(null);
     }
 
     @Override
