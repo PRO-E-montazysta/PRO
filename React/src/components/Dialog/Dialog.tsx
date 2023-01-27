@@ -1,4 +1,5 @@
 import { Button, TextField } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import './style.less';
 
 type DialogTypes = {
@@ -9,14 +10,18 @@ type DialogTypes = {
     cancelAction: any;
 }
 
+const CustomTextField = styled(TextField)(({ theme }) => ({
+    border: '2px solid #96C0FB',
+    borderRadius: '8px',
+    label: { shrink: true, color: theme.palette.secondary.contrastText },
+    input: { color: theme.palette.secondary.contrastText },
+  }));
+
 const Dialog = ({ dialogText, confirmLabel, inputsInfo, confirmAction, cancelAction }: DialogTypes) => {
     const inputsHeight = 90 * inputsInfo.length;
     const dialogHeight = 110;
     const totalHeight = (inputsHeight+dialogHeight)+"px";
-    console.log(inputsInfo.lenght)
-    console.log(inputsHeight)
-    console.log(dialogHeight)
-    console.log(totalHeight)
+    
   return (
     <div className="blur-background">
         <div className="dialog" style={{height: totalHeight}}>
@@ -26,13 +31,12 @@ const Dialog = ({ dialogText, confirmLabel, inputsInfo, confirmAction, cancelAct
                 </p>
                 <div>
                     {inputsInfo.map((info: { inputType: string; inputName: string; inputLabel: string; }) => (
-                        <TextField
+                        <CustomTextField
                             name={info.inputName}
                             type={info.inputType}
                             label={info.inputLabel}
                             fullWidth
                             variant='outlined'
-                            focused 
                             style=
                             {{ 
                                 display: 'block',
