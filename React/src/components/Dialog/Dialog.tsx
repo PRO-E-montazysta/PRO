@@ -1,13 +1,15 @@
-import { Button, Input } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import './style.less';
 
 type DialogTypes = {
     dialogText: string;
     confirmLabel: string;
     inputsInfo: any;
+    confirmAction: any;
+    cancelAction: any;
 }
 
-const Dialog = ({ dialogText, confirmLabel, inputsInfo}: DialogTypes) => {
+const Dialog = ({ dialogText, confirmLabel, inputsInfo, confirmAction, cancelAction }: DialogTypes) => {
     const inputsHeight = 90 * inputsInfo.length;
     const dialogHeight = 110;
     const totalHeight = (inputsHeight+dialogHeight)+"px";
@@ -23,27 +25,29 @@ const Dialog = ({ dialogText, confirmLabel, inputsInfo}: DialogTypes) => {
                     {dialogText}
                 </p>
                 <div>
-                    {inputsInfo.map((info: { inputType: string | undefined; inputName: string; }) => (
-                        <Input
+                    {inputsInfo.map((info: { inputType: string; inputName: string; inputLabel: string; }) => (
+                        <TextField
                             name={info.inputName}
                             type={info.inputType}
-                            sx={{
+                            label={info.inputLabel}
+                            fullWidth
+                            variant='outlined'
+                            focused 
+                            style=
+                            {{ 
                                 display: 'block',
                                 width: '490px',
                                 height: '55px',
-                                alignItems: 'center',
                                 marginLeft: 'auto',
                                 marginRight: 'auto',
                                 marginBottom: '25px',
-                                border: '2px solid #F2F2F2',
-                                borderRadius:'8px',
-                                color: 'white'
                             }}
                         />
                     ))}
                 </div>
                 <div className="action-buttons">
-                    <Button 
+                    <Button
+                        onClick={confirmAction}
                         sx={{
                         color: 'white',
                         background: '#282A3A',
@@ -59,6 +63,7 @@ const Dialog = ({ dialogText, confirmLabel, inputsInfo}: DialogTypes) => {
                         {confirmLabel}
                     </Button>
                     <Button
+                        onClick={cancelAction}
                         sx={{
                         color: 'white',
                         background: '#15171F',
