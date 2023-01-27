@@ -20,13 +20,13 @@ public class LocationController {
 
     private final LocationServiceImpl locationService;
 
-    @GetMapping
+    @GetMapping("/all")
     @Operation(description = "Allows to get all Locations.", security = @SecurityRequirement(name = "bearer-key"))
     public List<Location> getAll() {
         return locationService.getAll();
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @Operation(description = "Allows to get Location by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public Location getById(@PathVariable("id") Long id) {
         return locationService.getById(id);
@@ -39,13 +39,13 @@ public class LocationController {
         locationService.add(location);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @Operation(description = "Allows to delete Location by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public void deleteById(@PathVariable("id") Long id) {
         locationService.delete(id);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     @Operation(description = "Allows to update Location by given Id, and Location.", security = @SecurityRequirement(name = "bearer-key"))
     public void update(@PathVariable("id") Long id,
                                @RequestBody Location location) {
