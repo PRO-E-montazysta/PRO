@@ -51,7 +51,7 @@ const Header = () => {
           <NavMenuItem name="Zlecenia" items={[{ subName: 'Moje zlecenia', link: '/else' }]} />
           <NavMenuItem name="Kalendarz" items={[{ subName: 'Mój kalendarz', link: '/else' }]} />
           <NavMenuItem name="Administracja" items={[{ subName: 'Panel administratora', link: '/else' }]} />
-          <NavMenuItem name="Magazyn" items={[{ subName: 'Lista magazynów', link: '/warehouses' }]} />
+          <NavMenuItem name="Magazyn" items={[{ subName: 'Lista magazynów', link: '/login' }]} />
           <NavMenuItem
             name="Pracownicy"
             items={[{ subName: 'Lista pracowników', link: '/employees' }]}
