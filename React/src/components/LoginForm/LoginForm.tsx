@@ -1,32 +1,62 @@
 import { Grid, Typography, Box, FormControlLabel, Checkbox, Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
-
+import * as yup from 'yup';
 import { logIn } from '../../api/Authentication';
+import { useFormik } from 'formik';
 
-const CustomeTextField = styled(TextField)(({ theme }) => ({
-  border: '2px solid #96C0FB',
-  borderRadius: '8px',
+const CustomTextField = styled(TextField)(({ theme }) => ({
   label: { shrink: true, color: theme.palette.secondary.contrastText },
   input: { color: theme.palette.secondary.contrastText },
+  '& label.Mui-focused': {
+    color: theme.palette.secondary.contrastText,
+  },
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: '#96C0FB',
+    },
+    '&:hover fieldset': {
+      borderColor: theme.palette.secondary.contrastText,
+    },
+  },
+  '&.Mui-focused fieldset': {
+    borderColor: 'green',
+  },
 }));
 
+const CustomCheckbox = styled(Checkbox)(({ theme }) => ({
+  color: theme.palette.secondary.contrastText,
+  '&.Mui-checked': {
+    color: theme.palette.secondary.contrastText,
+  },
+}));
+
+const validationSchema = yup.object({
+  email: yup.string().email('Wprowadź poprawny email').required('Email jest wymagany'),
+  password: yup.string().min(4, 'Hasło powinno składać się z minium 4 znaków ').required('Hasło jest wymagane'),
+});
+
 const LoginForm = () => {
-  const handleSubmit = async (event: any) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const email = data.get('email')?.toString();
-    const password = data.get('password')?.toString();
-    console.log({ check: event.currentTarget });
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      console.log(values);
+      return handleSubmit(values.email, values.password);
+    },
+  });
+
+  const handleSubmit = async (email: string, password: string) => {
     console.log({
       email,
       password,
-      check: data.get('check'),
     });
-
     if (!!email && !!password) {
-      const response = await logIn({ email, password });
-      console.log({ response });
+      // const response = await logIn({ email, password });
+      // console.log({ response });
       //setToken, Link
     }
   };
@@ -57,24 +87,34 @@ const LoginForm = () => {
       </Typography>
       <Box
         component="form"
-        onSubmit={handleSubmit}
+        onSubmit={formik.handleSubmit}
         noValidate
-        sx={{ maxWidth: 666, marginTop: '17px' }}
-        autoComplete="off"
+        sx={{ autoComplete: 'off', maxWidth: 666, marginTop: '17px' }}
       >
-        <CustomeTextField autoFocus fullWidth margin="normal" label="Email" name="email" required />
-        <CustomeTextField
-          autoFocus
+        <CustomTextField
+          fullWidth
+          margin="normal"
+          label="Email"
+          name="email"
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          error={formik.touched.email && Boolean(formik.errors.email)}
+          helperText={formik.touched.email && formik.errors.email}
+        />
+        <CustomTextField
           fullWidth
           margin="normal"
           label="Password"
           name="password"
           type="password"
-          required
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          error={formik.touched.password && Boolean(formik.errors.password)}
+          helperText={formik.touched.password && formik.errors.password}
         />
         <FormControlLabel
           sx={{ marginTop: '37px' }}
-          control={<Checkbox value="remember" color="primary" />}
+          control={<CustomCheckbox value="remember" />}
           label="Zapamiętaj moje dane logowania"
           name="check"
         />

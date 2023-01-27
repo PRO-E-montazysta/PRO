@@ -25,6 +25,11 @@ const itemData = [
 ];
 
 const Header = () => {
+
+  const handleLogout = () =>{
+    //setToken('')
+    //Link to /
+  }
   return (
     <AppBar position="static">
       <Box sx={{ flexGrow: 1, backgroundColor: '#1A1C26' }}>
@@ -57,7 +62,7 @@ const Header = () => {
             items={[{ subName: 'Lista pracowników', link: '/employees' }]}
             flexGrowStyle={1}
           />
-          <IconButton color="inherit">Login</IconButton>
+          <IconButton color="inherit">Log out</IconButton>
         </CustomizedToolbar>
       </Box>
     </AppBar>

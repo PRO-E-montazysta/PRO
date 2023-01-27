@@ -12,11 +12,13 @@ const theme = createTheme({
   palette: {
     primary: {
       main: '#282A3A',
+      
     },
     secondary: {
       main: '#1A1C26',
       contrastText: '#FFFFFF',
     },
+    
   },
   components: {
     MuiCssBaseline: {
@@ -40,7 +42,7 @@ const theme = createTheme({
 function App() {
   const { token, setToken } = useToken();
   const isAuthorized = token ? true : false;
-  
+
   if (!isAuthorized) {
     console.log('tutaj');
     // return <LoginPage />
