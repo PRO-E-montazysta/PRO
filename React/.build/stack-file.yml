@@ -1,0 +1,11 @@
+version: '3'
+services:
+  frontend:
+    image: registry.emontazysta.pl/emontazysta/frontend:latest
+    container_name: frontend
+    networks:
+      - utils_utils
+      
+networks:
+  utils_utils:
+    external: true
