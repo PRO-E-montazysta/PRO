@@ -8,7 +8,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
@@ -35,10 +37,8 @@ public class Unavailability {
     private Date unavailableTo;
 
     @ManyToOne
-    @JsonBackReference
     private AppUser employee;
 
     @ManyToOne
-    @JsonBackReference
     private AppUser manager;
 }

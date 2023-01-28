@@ -51,11 +51,9 @@ public class OrderStage {
     private int minimumImagesNumber;
 
     @ManyToMany
-    @JsonManagedReference
     private List<Fitter> fitterList;
 
     @ManyToOne
-    @JsonManagedReference
     private Foreman foreman;
 }
 

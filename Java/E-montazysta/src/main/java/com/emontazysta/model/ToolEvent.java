@@ -29,10 +29,11 @@ public class ToolEvent {
     @NotNull
     private TypeOfStatus status;
 
-    @JsonBackReference
+
     @ManyToOne
     private AppUser employee;
 
-    @JsonBackReference
-    @ManyToOne Manager manager;
+
+    @ManyToOne
+    private Manager manager;
 }

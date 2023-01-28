@@ -32,7 +32,6 @@ public class Notification {
     private String recipient;
 
     @ManyToOne
-    @JsonBackReference
     private AppUser employee;
 
     // ToDo topic Enum (decision?)

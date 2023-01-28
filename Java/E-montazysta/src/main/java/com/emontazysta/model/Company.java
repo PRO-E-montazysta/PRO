@@ -24,19 +24,4 @@ public class Company {
 
     private Date createdAt;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "company")
-    private List<Client> clients;
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "company")
-    private List<Orders> orders;
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "company")
-    private List<Warehouse> warehouses;
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "company")
-    private List<Employment> employments;
 }

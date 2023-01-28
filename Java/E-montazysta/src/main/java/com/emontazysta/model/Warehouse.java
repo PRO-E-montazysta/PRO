@@ -27,6 +27,5 @@ public class Warehouse {
     private String openingHours;
 
     @ManyToOne
-    @JsonBackReference
     private Company company;
 }

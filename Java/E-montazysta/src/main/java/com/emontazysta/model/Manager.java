@@ -9,19 +9,5 @@ import java.util.List;
 @Entity
 public class Manager extends Employee {
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "manager")
-    private List<Unavailability> unavailabilities;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "manager")
-    private List<ToolEvent> events;
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "manager")
-    private List<Orders> orders;
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "manager")
-    private List<DemandAdHoc> demandsAdHoc;
 }

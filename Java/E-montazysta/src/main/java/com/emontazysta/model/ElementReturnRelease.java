@@ -28,6 +28,5 @@ public class ElementReturnRelease {
     private LocalDateTime returnTime;
 
     @ManyToOne
-    @JsonBackReference
     private Foreman foreman;
 }

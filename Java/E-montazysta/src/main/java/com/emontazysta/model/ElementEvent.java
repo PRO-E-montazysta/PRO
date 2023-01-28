@@ -34,7 +34,6 @@ public class ElementEvent {
     @NotNull
     private int quantity;
 
-    @JsonBackReference
     @ManyToOne
     private AppUser employee;
 }

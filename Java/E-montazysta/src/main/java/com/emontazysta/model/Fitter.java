@@ -10,6 +10,5 @@ import java.util.List;
 public class Fitter extends Employee {
 
     @ManyToMany
-    @JsonBackReference
     private List<OrderStage> orderStages;
 }

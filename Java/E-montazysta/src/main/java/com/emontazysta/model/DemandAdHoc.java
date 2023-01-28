@@ -28,11 +28,11 @@ public class DemandAdHoc {
     private String specialistComment; // TODO: should be in other model if we want to have info about specialist + timestamp
     // TODO: status values not defined
 
-    @JsonBackReference
+
     @ManyToOne
     private Manager manager;
 
-    @JsonBackReference
+
     @ManyToOne
     private Foreman foreman;
 }

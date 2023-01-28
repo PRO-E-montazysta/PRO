@@ -10,6 +10,7 @@ public class ClientMapper {
                 .id(client.getId())
                 .name(client.getName())
                 .contactDetails(client.getContactDetails())
+                .company(client.getCompany())
                 .build();
     }
 }

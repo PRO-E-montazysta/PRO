@@ -26,11 +26,9 @@ public class Employment {
     private Date dateOfDismiss;
 
     @ManyToOne
-    @JsonBackReference
     private Company company;
 
     @ManyToOne
-    @JsonBackReference
     private AppUser employee;
 
 

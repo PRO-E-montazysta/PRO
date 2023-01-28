@@ -36,15 +36,13 @@ public class Orders {
     private Date editedAt;
 
     private TypeOfPriority typeOfPriority;
-    @JsonBackReference
+
     @ManyToOne
     private Company company;
 
-    @JsonBackReference
     @ManyToOne
     private Manager manager;
 
-    @JsonBackReference
     @ManyToOne
     private Foreman foreman;
 }
