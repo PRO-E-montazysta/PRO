@@ -4,6 +4,8 @@ import { styled } from '@mui/material/styles';
 import * as yup from 'yup';
 import { logIn } from '../../api/Authentication';
 import { useFormik } from 'formik';
+import useToken from '../../Hooks/useToken';
+import { useNavigate } from 'react-router-dom';
 
 const CustomTextField = styled(TextField)(({ theme }) => ({
   label: { shrink: true, color: theme.palette.secondary.contrastText },
@@ -32,11 +34,13 @@ const CustomCheckbox = styled(Checkbox)(({ theme }) => ({
 }));
 
 const validationSchema = yup.object({
-  email: yup.string().email('Wprowadź poprawny email').required('Email jest wymagany'),
+  // email: yup.string().email('Wprowadź poprawny email').required('Email jest wymagany'),
   password: yup.string().min(4, 'Hasło powinno składać się z minium 4 znaków ').required('Hasło jest wymagane'),
 });
 
 const LoginForm = () => {
+  const { setToken } = useToken();
+  const navigation = useNavigate();
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -44,7 +48,6 @@ const LoginForm = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(values);
       return handleSubmit(values.email, values.password);
     },
   });
@@ -55,17 +58,17 @@ const LoginForm = () => {
       password,
     });
     if (!!email && !!password) {
-      // const response = await logIn({ email, password });
-      // console.log({ response });
-      //setToken, Link
+      try {
+        const response: any = await logIn({ username: email, password });
+        setToken(response);
+        navigation('/else', { replace: true });
+      } catch (e) {
+        console.log({ e });
+      }
+
     }
   };
 
-  //   const handleSubmit = (event: any) => {
-  //     // wysyłam dane do bazy otrzymuje odpowiedź
-  //     //jeśli zła to wypadałoby to jakoś pokazać
-  //     //await odpowiedź
-  //   };
   return (
     <Box
       bgcolor="secondary.main"

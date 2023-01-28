@@ -4,22 +4,23 @@ const useToken = () => {
   const getToken = (): string | undefined => {
     const tokenString = localStorage.getItem('token');
     if (!!tokenString) {
-      const userToken = tokenString && JSON.parse(tokenString);
-      console.log({ userToken });
-      return userToken.token;
+      return tokenString;
     }
-    return;
+    return undefined;
   };
-  
+
   const [token, setToken] = useState(getToken());
 
   const saveToken = (userToken: any) => {
-    localStorage.setItem('token', JSON.parse(userToken));
+    localStorage.setItem('token', userToken.token);
     setToken(userToken.token);
   };
 
+  const removeToken = () => {
+    localStorage.removeItem('token');
+  };
 
-  return { token, setToken: saveToken };
+  return { token, setToken: saveToken, removeToken };
 };
 
 export default useToken;

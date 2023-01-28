@@ -6,11 +6,15 @@ interface PayloadProps {
 }
 
 export const makeServiceCall = async (url: string, httpMethod: Method, payload: PayloadProps) => {
+  console.log({ payload });
   const response = await axios({
     method: httpMethod,
     url: url,
     data: payload?.body || {},
     params: payload?.queryStringParams || {},
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
   return response.data;
 };

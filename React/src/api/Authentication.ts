@@ -1,10 +1,11 @@
 import { makeServiceCall } from './utils';
 
 type LogInPayloadType = {
-  email: string;
+  username: string;
   password: string;
 };
 
 export const logIn = (data: LogInPayloadType) => {
-  return makeServiceCall('localhost:8080/api/v1/gettoken', 'POST', { body: data });
+  console.log({ data });
+  return makeServiceCall('http://localhost:8080/api/v1/gettoken', 'POST', { body: data });
 };

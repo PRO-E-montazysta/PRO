@@ -1,11 +1,12 @@
 import React from 'react';
-import './style.less';
 import { AppBar, Box, IconButton, ImageList, ImageListItem, Toolbar } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import firstPicture from '../../assets/img/firstPicture.png';
 import secondPicture from '../../assets/img/secondPicture.png';
 import logo from '../../assets/img/logo.png';
 import NavMenuItem from '../NavMenuItem/NavMenuItem';
+import useToken from '../../Hooks/useToken';
+import { useNavigate } from 'react-router-dom';
 
 const CustomizedToolbar = styled(Toolbar)(({ theme }) => ({
   '@media (min-width: 600px)': {
@@ -25,11 +26,13 @@ const itemData = [
 ];
 
 const Header = () => {
+  const { removeToken } = useToken();
+  const navigation = useNavigate();
+  const handleLogout = () => {
+    removeToken();
+    navigation('/login', { replace: true });
+  };
 
-  const handleLogout = () =>{
-    //setToken('')
-    //Link to /
-  }
   return (
     <AppBar position="static">
       <Box sx={{ flexGrow: 1, backgroundColor: '#1A1C26' }}>
@@ -56,13 +59,16 @@ const Header = () => {
           <NavMenuItem name="Zlecenia" items={[{ subName: 'Moje zlecenia', link: '/else' }]} />
           <NavMenuItem name="Kalendarz" items={[{ subName: 'Mój kalendarz', link: '/else' }]} />
           <NavMenuItem name="Administracja" items={[{ subName: 'Panel administratora', link: '/else' }]} />
-          <NavMenuItem name="Magazyn" items={[{ subName: 'Lista magazynów', link: '/login' }]} />
+          <NavMenuItem name="Magazyn" items={[{ subName: 'Lista magazynów', link: '/' }]} />
           <NavMenuItem
             name="Pracownicy"
             items={[{ subName: 'Lista pracowników', link: '/employees' }]}
             flexGrowStyle={1}
           />
-          <IconButton color="inherit">Log out</IconButton>
+          <IconButton color="inherit" onClick={handleLogout}>
+            Log out
+          </IconButton>
+          <Box></Box>
         </CustomizedToolbar>
       </Box>
     </AppBar>
