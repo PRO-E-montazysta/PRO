@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,7 +48,7 @@ public class ForemanController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Foreman.", security = @SecurityRequirement(name = "bearer-key"))
-    public void addForeman(@RequestBody Foreman foreman) {
+    public void addForeman(@Valid @RequestBody Foreman foreman) {
         foremanService.add(foreman);
     }
 

@@ -4,6 +4,8 @@ import com.emontazysta.enums.TypeOfPriority;
 import com.emontazysta.enums.TypeOfStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +17,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Orders {
 
     @Id
@@ -36,7 +39,16 @@ public class Orders {
     private Date editedAt;
 
     private TypeOfPriority typeOfPriority;
-    @JsonBackReference
+
+//    @ManyToOne
+//    @JsonBackReference
+//    private Company company;
+//
+//    @ManyToOne
+//    @JsonBackReference
+//    private AppUser managedBy;
+
     @ManyToOne
-    private Company company;
+    @JsonBackReference
+    private AppUser assignedTo;
 }

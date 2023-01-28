@@ -38,7 +38,7 @@ public class UnavailabilityController {
         return UnavailabilityMapper.unavailabilityToDto(unavailabilityService.getById(id));
     }
 
-    @PostMapping
+    @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Unavailability.", security = @SecurityRequirement(name = "bearer-key"))
     public void add(@Valid @RequestBody Unavailability unavailability) {
@@ -53,6 +53,7 @@ public class UnavailabilityController {
 
     @PutMapping("/{id}")
     @Operation(description = "Allows to update Unavailability by given Id, and Unavailability.", security = @SecurityRequirement(name = "bearer-key"))
+
     public void update(@PathVariable("id") Long id,
                                      @Valid @RequestBody Unavailability unavailability) {
         unavailabilityService.update(id, unavailability);

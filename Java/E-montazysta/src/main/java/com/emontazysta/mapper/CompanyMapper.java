@@ -10,7 +10,6 @@ public class CompanyMapper {
                 .id(company.getId())
                 .companyName(company.getCompanyName())
                 .createdAt(company.getCreatedAt())
-                .warehouse(company.getWarehouses())
                 .build();
     }
 }

@@ -22,7 +22,7 @@ public class Client {
 
     @NotBlank
     private String contactDetails;
-    @JsonBackReference
+
     @ManyToOne
     private Company company;
 }

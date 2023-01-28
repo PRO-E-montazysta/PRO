@@ -2,6 +2,8 @@ package com.emontazysta.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Employment {
 
     @Id
@@ -26,8 +29,10 @@ public class Employment {
     private Date dateOfDismiss;
 
     @ManyToOne
-    @JsonBackReference
     private Company company;
+
+    @ManyToOne
+    private AppUser employee;
 
 
 }

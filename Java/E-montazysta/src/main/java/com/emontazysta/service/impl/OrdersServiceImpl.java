@@ -48,7 +48,6 @@ public class OrdersServiceImpl implements OrdersService {
         updatedOrders.setTypeOfPriority(orders.getTypeOfPriority());
         updatedOrders.setPlannedStart(orders.getPlannedStart());
         updatedOrders.setPlannedEnd(orders.getPlannedEnd());
-        updatedOrders.setCompany(orders.getCompany());
 
         repository.save(updatedOrders);
     }

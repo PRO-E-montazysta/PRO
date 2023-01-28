@@ -15,6 +15,7 @@ public class ForemanMapper {
                 .email(foreman.getEmail())
                 .phone(foreman.getPhone())
                 .pesel(foreman.getPesel())
+                .toolReleaseList(foreman.getReceivedTools())
                 .build();
     }
 }

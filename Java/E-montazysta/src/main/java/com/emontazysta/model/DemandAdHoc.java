@@ -1,13 +1,13 @@
 package com.emontazysta.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class DemandAdHoc {
 
     @Id
@@ -29,4 +30,14 @@ public class DemandAdHoc {
     private String warehousemanComment; // TODO: should be in other model if we want to have info about warehouseman + timestamp
     private String specialistComment; // TODO: should be in other model if we want to have info about specialist + timestamp
     // TODO: status values not defined
+
+
+//    @ManyToOne
+//    @JsonBackReference
+//    private AppUser manager;
+
+
+    @ManyToOne
+    @JsonBackReference
+    private AppUser createdBy;
 }
