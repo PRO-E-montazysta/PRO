@@ -35,5 +35,5 @@ public class ElementEvent {
     private int quantity;
 
     @ManyToOne
-    private AppUser employee;
+    private AppUser createdBy;
 }

@@ -32,7 +32,7 @@ public class Notification {
     private String recipient;
 
     @ManyToOne
-    private AppUser employee;
+    private AppUser notifiedEmployee;
 
     // ToDo topic Enum (decision?)
 

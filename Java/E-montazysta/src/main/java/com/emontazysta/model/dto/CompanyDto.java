@@ -1,5 +1,6 @@
 package com.emontazysta.model.dto;
 
+import com.emontazysta.model.Client;
 import com.emontazysta.model.Warehouse;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,4 +17,5 @@ public class CompanyDto {
     private String companyName;
     private Date createdAt;
     private List<Warehouse> warehouse;
+    private Client client;
 }

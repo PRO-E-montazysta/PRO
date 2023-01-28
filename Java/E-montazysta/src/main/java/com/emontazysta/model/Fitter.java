@@ -10,5 +10,5 @@ import java.util.List;
 public class Fitter extends Employee {
 
     @ManyToMany
-    private List<OrderStage> orderStages;
+    private List<OrderStage> workingOn;
 }

@@ -28,5 +28,5 @@ public class ElementReturnRelease {
     private LocalDateTime returnTime;
 
     @ManyToOne
-    private Foreman foreman;
+    private Foreman receivedBy;
 }

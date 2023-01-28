@@ -22,7 +22,7 @@ public class ToolRelease {
 
     @ManyToOne
     @JsonBackReference
-    private Foreman foreman;
+    private Foreman recivedBy;
 
 
 }

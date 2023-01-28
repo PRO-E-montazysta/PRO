@@ -41,8 +41,8 @@ public class Orders {
     private Company company;
 
     @ManyToOne
-    private Manager manager;
+    private Manager managedBy;
 
     @ManyToOne
-    private Foreman foreman;
+    private Foreman assignedTo;
 }

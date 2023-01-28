@@ -31,9 +31,9 @@ public class ToolEvent {
 
 
     @ManyToOne
-    private AppUser employee;
+    private AppUser createdBy;
 
 
     @ManyToOne
-    private Manager manager;
+    private Manager acceptedBy;
 }

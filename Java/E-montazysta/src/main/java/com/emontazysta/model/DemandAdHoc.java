@@ -34,5 +34,5 @@ public class DemandAdHoc {
 
 
     @ManyToOne
-    private Foreman foreman;
+    private Foreman createdBy;
 }

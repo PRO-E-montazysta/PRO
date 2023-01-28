@@ -24,4 +24,12 @@ public class Company {
 
     private Date createdAt;
 
+    @OneToMany
+    private List<Client> clients;
+
+    @OneToMany
+    private List<Warehouse> warehouses;
+
+    @OneToMany
+    private List<Employment> employments;
 }

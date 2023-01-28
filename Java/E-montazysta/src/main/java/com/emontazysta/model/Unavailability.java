@@ -37,8 +37,8 @@ public class Unavailability {
     private Date unavailableTo;
 
     @ManyToOne
-    private AppUser employee;
+    private AppUser assignedTo;
 
     @ManyToOne
-    private AppUser manager;
+    private AppUser assignedBy;
 }

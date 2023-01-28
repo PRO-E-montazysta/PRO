@@ -51,9 +51,12 @@ public class OrderStage {
     private int minimumImagesNumber;
 
     @ManyToMany
-    private List<Fitter> fitterList;
+    private List<Fitter> assignedTo;
 
     @ManyToOne
-    private Foreman foreman;
+    private Foreman managedBy;
+
+    @OneToMany
+    private List<Comment> comments;
 }
 
