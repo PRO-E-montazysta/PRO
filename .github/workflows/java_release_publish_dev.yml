@@ -48,7 +48,7 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_REGISTRY }}/emontazysta/backend:latest
             ${{ secrets.DOCKER_REGISTRY }}/emontazysta/backend:${{ github.sha }}
-            ${{ secrets.DOCKER_REGISTRY }}/emontazysta/backend:${{ steps.tag_version.outputs.new_tag }}
+            ${{ secrets.DOCKER_REGISTRY }}/emontazysta/backend:${{ steps.tag_version.outputs.new_version }}
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
