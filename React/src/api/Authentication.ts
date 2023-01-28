@@ -7,5 +7,5 @@ type LogInPayloadType = {
 
 export const logIn = (data: LogInPayloadType) => {
   console.log({ data });
-  return makeServiceCall('http://localhost:8080/api/v1/gettoken', 'POST', { body: data });
+  return makeServiceCall('/gettoken', 'POST', { body: data });
 };
