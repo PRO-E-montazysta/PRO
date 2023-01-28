@@ -4,12 +4,12 @@ import com.emontazysta.model.Tool;
 import com.emontazysta.repository.ToolRepository;
 import com.emontazysta.service.ToolService;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +40,7 @@ public class ToolServiceImpl implements ToolService {
     @Override
     public void add(Tool tool) {
         tool.setCreatedAt(new Date());
+        tool.setCode(UUID.randomUUID().toString());
         repository.save(tool);
     }
 

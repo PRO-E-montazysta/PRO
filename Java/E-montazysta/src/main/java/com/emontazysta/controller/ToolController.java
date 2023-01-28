@@ -1,6 +1,8 @@
 package com.emontazysta.controller;
 
+import com.emontazysta.mapper.ToolMapper;
 import com.emontazysta.model.Tool;
+import com.emontazysta.model.dto.ToolDto;
 import com.emontazysta.service.ToolService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -10,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 
@@ -20,16 +23,18 @@ public class ToolController {
 
     private final ToolService toolService;
 
-    @GetMapping
+    @GetMapping("/all")
     @Operation(description = "Allows to get all Tools.", security = @SecurityRequirement(name = "bearer-key"))
-    public List<Tool> getAll() {
-        return toolService.getAll();
+    public List<ToolDto> getAll() {
+        return toolService.getAll().stream()
+                .map(ToolMapper::toolToDto)
+                .collect(Collectors.toList());
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @Operation(description = "Allows to get Tool by given Id.", security = @SecurityRequirement(name = "bearer-key"))
-    public Tool getById(@PathVariable Long id) {
-        return toolService.getById(id);
+    public ToolDto getById(@PathVariable Long id) {
+        return ToolMapper.toolToDto(toolService.getById(id));
     }
 
     @GetMapping("/bycode/{code}")
@@ -45,13 +50,13 @@ public class ToolController {
         toolService.add(tool);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @Operation(description = "Allows to delete Tool by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public void deleteById(@PathVariable Long id) {
         toolService.delete(id);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     @Operation(description = "Allows to edit Tool by given Id and Tool data.", security = @SecurityRequirement(name = "bearer-key"))
     public void update(@PathVariable Long id, @RequestBody Tool tool) {
         toolService.update(id, tool);

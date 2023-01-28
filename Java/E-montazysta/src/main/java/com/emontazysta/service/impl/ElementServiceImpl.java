@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +40,7 @@ public class ElementServiceImpl implements ElementService {
 
     @Override
     public void add(Element element) {
+        element.setCode(UUID.randomUUID().toString());
         repository.save(element);
     }
 

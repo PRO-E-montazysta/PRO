@@ -1,5 +1,6 @@
 package com.emontazysta.model.dto;
 
+import com.emontazysta.model.Company;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,4 +12,5 @@ public class WarehouseDto {
     private String name;
     private String description;
     private String openingHours;
+    private Company company;
 }
