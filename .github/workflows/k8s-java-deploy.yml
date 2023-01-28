@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - '*'
-    paths:
-      - Java/**
+    # paths:
+    #   - Java/**
 
 jobs:
   release:

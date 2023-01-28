@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - '*'
-    paths:
-      - React/**
+    # paths:
+    #   - React/**
 
 jobs:
   release:
