@@ -1,4 +1,4 @@
-name: Build then deploy to k8s
+name: Release&Publish React
 
 on:
   push:
@@ -58,10 +58,10 @@ jobs:
         name: Deploy to the Kubernetes cluster
         uses: azure/k8s-deploy@v4.9
         with:
-          namespace: production
+          namespace: development
           manifests: |
             React/.build/deployment.yml
-            React/.build/ingressroute_prod.yml
+            React/.build/ingressroute_dev.yml
             React/.build/serverstransport.yml
             React/.build/service.yml
           images: |

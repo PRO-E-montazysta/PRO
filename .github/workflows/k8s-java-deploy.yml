@@ -1,4 +1,4 @@
-name: Build then deploy to k8s
+name: Release&Publish Java
 
 on:
   push:
@@ -58,10 +58,10 @@ jobs:
         name: Deploy to the Kubernetes cluster
         uses: azure/k8s-deploy@v4.9
         with:
-          namespace: production
+          namespace: development
           manifests: |
             Java/E-montazysta/.build/deployment.yml
-            Java/E-montazysta/.build/ingressroute.yml
+            Java/E-montazysta/.build/ingressroute_dev.yml
             Java/E-montazysta/.build/middleware.yml
             Java/E-montazysta/.build/serverstransport.yml
             Java/E-montazysta/.build/service.yml
