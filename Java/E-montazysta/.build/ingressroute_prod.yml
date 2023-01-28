@@ -1,0 +1,22 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: backend
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - kind: Rule
+    match: Host(`backend.emontazysta.pl`)
+    middlewares:
+    - name: backend-add-index-swagger
+      namespace: production
+    priority: 10
+    services:
+    - kind: Service
+      name: backend
+      namespace: production
+      port: 80
+  tls:
+    certResolver: cloudflare

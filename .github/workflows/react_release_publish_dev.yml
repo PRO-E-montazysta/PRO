@@ -1,0 +1,73 @@
+name: Release&Publish React Dev
+
+on:
+  push:
+    branches:
+      - 'master'
+    paths:
+      - React/**
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        uses: actions/checkout@v2
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ secrets.DOCKER_REGISTRY }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}    
+      - 
+        name: Build Docker image
+        uses: docker/build-push-action@v2
+        
+        with:
+          file: React/Dockerfile
+          context: React
+          tags: |
+            ${{ secrets.DOCKER_REGISTRY }}/emontazysta/frontend:latest
+            ${{ secrets.DOCKER_REGISTRY }}/emontazysta/frontend:${{ github.sha }}
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          
+  publish:
+    needs: [release]
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Kubernetes Set Context
+        uses: Azure/k8s-set-context@v3.0
+        with:
+          cluster-type: generic
+          # Acceptable values: kubeconfig or service-account or service-principal
+          method: service-account
+          # Cluster Url
+          k8s-url: ${{ secrets.KUBERNETES_URL }}
+          k8s-secret: ${{ secrets.KUBERNETES_SECRET_DEV }}
+      - 
+        name: Checkout source code
+        uses: actions/checkout@v3
+      - 
+        name: Deploy to the Kubernetes cluster
+        uses: azure/k8s-deploy@v4.9
+        with:
+          namespace: development
+          manifests: |
+            React/.build/deployment.yml
+            React/.build/ingressroute_dev.yml
+            React/.build/serverstransport.yml
+            React/.build/service.yml
+          images: |
+            ${{ secrets.DOCKER_REGISTRY }}/emontazysta/frontend:${{ github.sha }}
+          imagepullsecrets: |
+            regcred
+          strategy: basic
+          action: deploy
+          token: ${{ github.token }}

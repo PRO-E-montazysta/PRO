@@ -1,0 +1,10 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: backend-add-index-swagger
+spec:
+  redirectRegex:
+    permanent: true
+    regex: "^(.*/swagger-ui)/?$"
+    replacement: "${1}/index.html"

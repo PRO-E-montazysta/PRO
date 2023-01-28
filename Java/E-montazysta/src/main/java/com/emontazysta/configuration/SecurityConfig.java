@@ -80,6 +80,7 @@ public class SecurityConfig {
         http.oauth2ResourceServer().jwt();
         http.authorizeRequests().antMatchers("/api/v1/gettoken","/api/v1/h2-console/**").permitAll();
         http.authorizeRequests().antMatchers(SWAGGER_AUTH_LIST).permitAll();
+        http.authorizeRequests().antMatchers("/actuator/**").permitAll();
         http.authorizeRequests().anyRequest().authenticated();
         return http.build();
     }
