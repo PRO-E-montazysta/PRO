@@ -6,11 +6,6 @@ on:
       - 'master'
     paths:
       - Java/**
-  pull_request:
-    branches:
-      - 'master'
-    paths:
-      - Java/**
   workflow_dispatch:
 
 jobs:
@@ -29,7 +24,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           default_bump: patch
-          release_branches: release_.*
           tag_prefix: backend/v
       - 
         name: Create a GitHub release
@@ -54,11 +48,11 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_REGISTRY }}/emontazysta/backend:latest
             ${{ secrets.DOCKER_REGISTRY }}/emontazysta/backend:${{ github.sha }}
-            ${{ secrets.DOCKER_REGISTRY }}/emontazysta/backend:${{ needs.build-image.steps.tag_version.outputs.new_tag }}
+            ${{ secrets.DOCKER_REGISTRY }}/emontazysta/backend:${{ steps.tag_version.outputs.new_tag }}
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
-  
+
   publish:
     needs: [release]
     runs-on: ubuntu-latest
@@ -89,7 +83,7 @@ jobs:
             Java/E-montazysta/.build/serverstransport.yml
             Java/E-montazysta/.build/service.yml
           images: |
-            ${{ secrets.DOCKER_REGISTRY }}/emontazysta/backend:${{ github.sha }}
+            ${{ secrets.DOCKER_REGISTRY }}/emontazysta/backend:${{ needs.build-image.steps.tag_version.outputs.new_tag }}
           imagepullsecrets: |
             regcred
           strategy: basic
