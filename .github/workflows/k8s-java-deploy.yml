@@ -50,7 +50,7 @@ jobs:
           method: service-account
           # Cluster Url
           k8s-url: ${{ secrets.KUBERNETES_URL }}
-          k8s-secret: ${{ secrets.KUBERNETES_SECRET }}
+          k8s-secret: ${{ secrets.KUBERNETES_SECRET_DEV }}
       - 
         name: Checkout source code
         uses: actions/checkout@v3
