@@ -1,4 +1,4 @@
-name: Build Java Dev
+name: Release&Publish React Dev
 
 on:
   push:

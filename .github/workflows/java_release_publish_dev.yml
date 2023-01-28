@@ -1,4 +1,4 @@
-name: Build Java Dev
+name: Release&Publish Java Dev
 
 on:
   push:
