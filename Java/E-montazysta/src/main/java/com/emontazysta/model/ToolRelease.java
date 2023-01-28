@@ -1,6 +1,9 @@
 package com.emontazysta.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerator;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class ToolRelease {
 
     @Id
@@ -21,7 +25,6 @@ public class ToolRelease {
     private LocalDateTime returnTime;
 
     @ManyToOne
-    @JsonBackReference
     private Foreman recivedBy;
 
 

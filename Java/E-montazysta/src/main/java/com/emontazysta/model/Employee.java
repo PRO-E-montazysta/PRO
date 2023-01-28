@@ -1,5 +1,8 @@
 package com.emontazysta.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @MappedSuperclass
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public abstract class Employee extends AppUser {
 
     @NotBlank
@@ -27,23 +31,28 @@ public abstract class Employee extends AppUser {
     private String pesel;
 
 
-    @OneToMany
-    private List<Employment> employmentHistory;
-
-
-    @OneToMany
-    private List<Unavailability> unavailabilities;
-
-
-    @OneToMany
-    private List<Notification> notifications;
-
-
-    @OneToMany
-    private List<Comment> employeeComments;
-
-
-    @ManyToMany
-    private List<Comment>  allComments;
+//    @OneToMany(mappedBy = "employee")
+//    @JsonManagedReference
+//    private List<Employment> employmentHistory;
+//
+//
+//    @OneToMany(mappedBy = "assignedTo")
+//    @JsonManagedReference
+//    private List<Unavailability> unavailabilities;
+//
+//
+//    @OneToMany(mappedBy = "notifiedEmployee")
+//    @JsonManagedReference
+//    private List<Notification> notifications;
+//
+//
+//    @OneToMany(mappedBy = "messageCreator")
+//    @JsonManagedReference
+//    private List<Comment> employeeComments;
+//
+//
+//    @ManyToMany(mappedBy = "employees")
+//    @JsonManagedReference
+//    private List<Comment>  allComments;
 
 }

@@ -5,7 +5,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 
 import java.util.Date;
@@ -28,9 +30,11 @@ public class Comment {
     private Date createdAt;
 
     @ManyToOne
+    @JsonManagedReference
     private AppUser messageCreator;
 
-    @ManyToOne
-    private OrderStage orderStage;
+    @ManyToMany
+    @JsonBackReference
+    private List<AppUser> employees;
 
 }
