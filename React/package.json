@@ -27,7 +27,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "build": "craco build",
+    "build": "CI= craco build",
     "test": "craco test"
   },
   "eslintConfig": {
