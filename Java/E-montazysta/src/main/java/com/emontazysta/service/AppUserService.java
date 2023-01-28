@@ -15,6 +15,8 @@ public interface AppUserService extends UserDetailsService {
     AppUser add(AppUser user);
     void delete(Long id);
     void setRolesToUser(Long id, Set<Role> roles);
+    void generateResetPasswordToken(String username);
+    void changePassword(String token, String password);
 
     AppUser update(Long id, AppUser user);
 }

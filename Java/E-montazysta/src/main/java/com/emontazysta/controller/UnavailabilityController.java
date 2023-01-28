@@ -1,6 +1,8 @@
 package com.emontazysta.controller;
 
+import com.emontazysta.mapper.UnavailabilityMapper;
 import com.emontazysta.model.Unavailability;
+import com.emontazysta.model.dto.UnavailabilityDto;
 import com.emontazysta.service.UnavailabilityService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 
@@ -23,14 +26,16 @@ public class UnavailabilityController {
 
     @GetMapping("/all")
     @Operation(description = "Allows to get all Unavailabilities.", security = @SecurityRequirement(name = "bearer-key"))
-    public List<Unavailability> getAll() {
-        return unavailabilityService.getAll();
+    public List<UnavailabilityDto> getAll() {
+        return unavailabilityService.getAll().stream()
+                .map(UnavailabilityMapper::unavailabilityToDto)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
     @Operation(description = "Allows to get Unavailability by given Id.", security = @SecurityRequirement(name = "bearer-key"))
-    public Unavailability getById(@PathVariable("id") Long id) {
-        return unavailabilityService.getById(id);
+    public UnavailabilityDto getById(@PathVariable("id") Long id) {
+        return UnavailabilityMapper.unavailabilityToDto(unavailabilityService.getById(id));
     }
 
     @PostMapping("/add")
@@ -48,8 +53,9 @@ public class UnavailabilityController {
 
     @PutMapping("/{id}")
     @Operation(description = "Allows to update Unavailability by given Id, and Unavailability.", security = @SecurityRequirement(name = "bearer-key"))
-    public void update(@Valid @PathVariable("id") Long id,
-                                     @RequestBody Unavailability unavailability) {
+
+    public void update(@PathVariable("id") Long id,
+                                     @Valid @RequestBody Unavailability unavailability) {
         unavailabilityService.update(id, unavailability);
     }
 }

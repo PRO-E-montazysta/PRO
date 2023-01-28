@@ -60,6 +60,7 @@ public class SecurityConfig {
                         "tpyrzak@wp.pl",
                         securityProperties.getCloudManagerPassword(),
                         securityProperties.getCloudManagerUsername(),
+                        null,
                         Set.of(Role.CLOUD_ADMIN)));
     }
 
@@ -78,8 +79,13 @@ public class SecurityConfig {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.oauth2ResourceServer().jwt();
-        http.authorizeRequests().antMatchers("/api/v1/gettoken","/api/v1/h2-console/**").permitAll();
+        http.authorizeRequests().antMatchers("/api/v1/gettoken",
+                                            "/api/v1/h2-console/**",
+                                            "/api/v1/password/forgot",
+                                            "/api/v1/password/reset")
+                                            .permitAll();
         http.authorizeRequests().antMatchers(SWAGGER_AUTH_LIST).permitAll();
+        http.authorizeRequests().antMatchers("/actuator/**").permitAll();
         http.authorizeRequests().anyRequest().authenticated();
         return http.build();
     }
