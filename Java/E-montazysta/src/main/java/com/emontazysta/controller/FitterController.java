@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,7 +49,7 @@ public class FitterController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Fitter.", security = @SecurityRequirement(name = "bearer-key"))
-    public void addFitter(@RequestBody Fitter fitter) {
+    public void addFitter(@Valid @RequestBody Fitter fitter) {
         fitterService.add(fitter);
     }
 

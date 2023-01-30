@@ -54,7 +54,7 @@ public class ClientController {
 
     @PutMapping("/{id}")
     @Operation(description = "Allows to update Client by given Id and Client.", security = @SecurityRequirement(name = "bearer-key"))
-    public void update(@PathVariable Long id, @RequestBody Client client) {
+    public void update(@PathVariable Long id, @Valid @RequestBody Client client) {
         clientService.update(id, client);
     }
 }

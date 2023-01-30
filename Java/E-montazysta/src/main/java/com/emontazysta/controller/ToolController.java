@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,7 +47,7 @@ public class ToolController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Tool.", security = @SecurityRequirement(name = "bearer-key"))
-    public void add(@RequestBody Tool tool) {
+    public void add(@Valid @RequestBody Tool tool) {
         toolService.add(tool);
     }
 
@@ -58,7 +59,7 @@ public class ToolController {
 
     @PutMapping("/{id}")
     @Operation(description = "Allows to edit Tool by given Id and Tool data.", security = @SecurityRequirement(name = "bearer-key"))
-    public void update(@PathVariable Long id, @RequestBody Tool tool) {
+    public void update(@PathVariable Long id, @Valid @RequestBody Tool tool) {
         toolService.update(id, tool);
     }
 }

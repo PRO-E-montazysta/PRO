@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,7 +48,7 @@ public class WarehouseManagerController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Warehouse Manager.", security = @SecurityRequirement(name = "bearer-key"))
-    public void addWarehouseManager(@RequestBody WarehouseManager warehouseManager) {
+    public void addWarehouseManager(@Valid @RequestBody WarehouseManager warehouseManager) {
         warehouseManagerService.add(warehouseManager);
     }
 

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
@@ -43,7 +44,7 @@ public class OrderStageController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Order Stage.", security = @SecurityRequirement(name = "bearer-key"))
-    public void addOrderStage(@RequestBody OrderStage orderStage) {
+    public void addOrderStage(@Valid @RequestBody OrderStage orderStage) {
         orderStageService.add(orderStage);
     }
 
@@ -55,7 +56,7 @@ public class OrderStageController {
 
     @PutMapping("{id}")
     @Operation(description = "Allows to update Order Stage by given Id.", security = @SecurityRequirement(name = "bearer-key"))
-    public OrderStage updateOrderStage(@PathVariable Long id, @RequestBody OrderStage orderStage) {
+    public OrderStage updateOrderStage(@PathVariable Long id, @Valid @RequestBody OrderStage orderStage) {
         return orderStageService.update(id, orderStage);
     }
 }
