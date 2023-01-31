@@ -1,8 +1,6 @@
 package com.emontazysta.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerator;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,8 +23,17 @@ public class ToolRelease {
     private LocalDateTime returnTime;
 
     @ManyToOne
-    private AppUser recivedBy;
+    private Foreman receivedBy;
 
+    @ManyToOne
+    private Warehouseman releasedBy;
 
+    @ManyToOne
+    private Tool tool;
 
+    @ManyToOne
+    private DemandAdHoc demandAdHoc;
+
+    @ManyToOne
+    private OrderStage orderStage;
 }

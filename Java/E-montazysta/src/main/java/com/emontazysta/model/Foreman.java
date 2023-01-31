@@ -2,23 +2,26 @@ package com.emontazysta.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.List;
 
-@Entity
 @Data
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Foreman extends Fitter {
 
     @OneToMany(mappedBy = "managedBy")
     private List<OrderStage> ordersStagesList;
 
-    @OneToMany(mappedBy = "recivedBy")
+    @OneToMany(mappedBy = "receivedBy")
     private List<ToolRelease> receivedTools;
 
     @OneToMany(mappedBy = "receivedBy")

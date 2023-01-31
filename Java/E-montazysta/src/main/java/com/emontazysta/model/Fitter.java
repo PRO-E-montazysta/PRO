@@ -13,8 +13,9 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import java.util.List;
 
-@Entity
 @Data
+@Entity
+@AllArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Fitter extends Employee {
 
