@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
@@ -43,7 +44,7 @@ public class ElementReturnReleaseController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Element Return Release.", security = @SecurityRequirement(name = "bearer-key"))
-    public void addElementReturnRelease(@RequestBody ElementReturnRelease elementReturnRelease) {
+    public void addElementReturnRelease(@Valid @RequestBody ElementReturnRelease elementReturnRelease) {
         elementReturnReleaseService.add(elementReturnRelease);
     }
 
@@ -55,7 +56,7 @@ public class ElementReturnReleaseController {
 
     @PutMapping("{id}")
     @Operation(description = "Allows to update Element Return Release by given Id.", security = @SecurityRequirement(name = "bearer-key"))
-    public ElementReturnRelease updateElementReturnRelease(@PathVariable Long id, @RequestBody ElementReturnRelease elementReturnRelease) {
+    public ElementReturnRelease updateElementReturnRelease(@PathVariable Long id, @Valid @RequestBody ElementReturnRelease elementReturnRelease) {
         return elementReturnReleaseService.update(id, elementReturnRelease);
     }
 }

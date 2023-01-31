@@ -62,5 +62,6 @@ public class OrderStage {
 
     @OneToMany(mappedBy = "orderStage")
     private List<Comment> comments;
+
 }
 

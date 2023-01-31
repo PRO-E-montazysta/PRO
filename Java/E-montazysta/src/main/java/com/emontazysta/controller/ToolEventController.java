@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,7 +41,7 @@ public class ToolEventController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new tool event.", security = @SecurityRequirement(name = "bearer-key"))
-    public void addToolEvent(@RequestBody ToolEvent event) {
+    public void addToolEvent(@Valid @RequestBody ToolEvent event) {
         service.add(event);
     }
 

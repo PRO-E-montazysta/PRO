@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,7 +48,7 @@ public class SalesRepresentativeController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Sales Representative.", security = @SecurityRequirement(name = "bearer-key"))
-    public void addSalesRepresentative(@RequestBody SalesRepresentative salesRepresentative) {
+    public void addSalesRepresentative(@Valid @RequestBody SalesRepresentative salesRepresentative) {
         salesRepresentativeService.add(salesRepresentative);
     }
 

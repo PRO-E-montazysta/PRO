@@ -60,7 +60,7 @@ public class ElementController {
 
     @PutMapping("/{id}")
     @Operation(description = "Allows to update Element by given Id and Element.", security = @SecurityRequirement(name = "bearer-key"))
-    public void update(@PathVariable Long id, @RequestBody Element element) {
+    public void update(@PathVariable Long id, @Valid @RequestBody Element element) {
         elementService.update(id, element);
     }
 }

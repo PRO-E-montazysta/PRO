@@ -61,7 +61,7 @@ public class DemandAdHocController {
 
     @PutMapping("/{id}")
     @Operation(description = "Allows to edit Demand Ad Hoc by given Id.", security = @SecurityRequirement(name = "bearer-key"))
-    public DemandAdHoc updateDemandAdHoc(@PathVariable Long id, @RequestBody DemandAdHoc demandAdHoc) {
+    public DemandAdHoc updateDemandAdHoc(@PathVariable Long id, @Valid @RequestBody DemandAdHoc demandAdHoc) {
         return demandAdHocService.update(id, demandAdHoc);
     }
 }

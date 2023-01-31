@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +24,7 @@ public class ElementInWarehouseController {
 
     private final ElementInWarehouseService service;
 
-    @GetMapping
+    @GetMapping("/all")
     @Operation(description = "Allows to get all elements in the warehouse", security = @SecurityRequirement(name = "bearer-key"))
     public List<ElementInWarehouseDto> getAllElementsInWarehouse(){
         return service.getAll().stream()
@@ -31,7 +32,7 @@ public class ElementInWarehouseController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @Operation(description = "Allows to get element in warehouse by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public ElementInWarehouseDto getElementInWarehouseById(@PathVariable Long id) {
         return ElementInWarehouseMapper.toDto(service.getById(id));
@@ -40,11 +41,11 @@ public class ElementInWarehouseController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new element to warehouse.", security = @SecurityRequirement(name = "bearer-key"))
-    public void addElementInWarehouse(@RequestBody ElementInWarehouse element) {
+    public void addElementInWarehouse(@Valid @RequestBody ElementInWarehouse element) {
         service.add(element);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @Operation(description = "Allows to delete element from warehouse by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public void deleteElementInWarehouseById(@PathVariable Long id) {
         service.delete(id);

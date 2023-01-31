@@ -50,4 +50,5 @@ public abstract class Employee extends AppUser {
     @ManyToMany(mappedBy = "employees")
     private List<Comment>  allComments;
 
+
 }
