@@ -31,4 +31,19 @@ public class ElementReturnRelease {
 
     @ManyToOne
     private Foreman receivedBy;
+
+    @ManyToOne
+    private Warehouseman servedBy;
+
+    @ManyToOne
+    private Element element;
+
+    @ManyToOne
+    private DemandAdHoc demandAdHoc;
+
+    @ManyToOne
+    private Foreman foreman;
+
+    @ManyToOne
+    private OrderStage orderStage;
 }

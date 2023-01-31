@@ -19,4 +19,7 @@ public class Warehouseman extends Employee {
 
     @OneToMany(mappedBy = "releasedBy")
     private List<ToolRelease> releasedTools;
+
+    @OneToMany(mappedBy = "servedBy")
+    private List<ElementReturnRelease> elementReturnReleases;
 }

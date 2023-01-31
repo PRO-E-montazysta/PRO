@@ -44,4 +44,7 @@ public class DemandAdHoc {
 
     @OneToMany(mappedBy = "demandAdHoc")
     private List<ToolRelease> toolReleases;
+
+    @OneToMany(mappedBy = "demandAdHoc")
+    private List<ElementReturnRelease> elementReturnReleases;
 }
