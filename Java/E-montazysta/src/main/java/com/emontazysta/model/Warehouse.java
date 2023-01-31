@@ -1,6 +1,5 @@
 package com.emontazysta.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
@@ -31,4 +30,7 @@ public class Warehouse {
 
     @ManyToOne
     private Company company;
+
+    @ManyToOne
+    private Location location;
 }

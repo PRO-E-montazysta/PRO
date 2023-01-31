@@ -44,4 +44,7 @@ public class Location {
 
     @OneToMany(mappedBy = "location")
     private List<Orders> orders;
+
+    @OneToMany(mappedBy = "location")
+    private List<Warehouse> warehouses;
 }
