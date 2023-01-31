@@ -31,28 +31,23 @@ public abstract class Employee extends AppUser {
     private String pesel;
 
 
-//    @OneToMany(mappedBy = "employee")
-//    @JsonManagedReference
-//    private List<Employment> employmentHistory;
-//
-//
-//    @OneToMany(mappedBy = "assignedTo")
-//    @JsonManagedReference
-//    private List<Unavailability> unavailabilities;
-//
-//
-//    @OneToMany(mappedBy = "notifiedEmployee")
-//    @JsonManagedReference
-//    private List<Notification> notifications;
-//
-//
-//    @OneToMany(mappedBy = "messageCreator")
-//    @JsonManagedReference
-//    private List<Comment> employeeComments;
-//
-//
-//    @ManyToMany(mappedBy = "employees")
-//    @JsonManagedReference
-//    private List<Comment>  allComments;
+    @OneToMany(mappedBy = "employee")
+    private List<Employment> employmentHistory;
+
+
+    @OneToMany(mappedBy = "assignedTo")
+    private List<Unavailability> unavailabilities;
+
+
+    @OneToMany(mappedBy = "notifiedEmployee")
+    private List<Notification> notifications;
+
+
+    @OneToMany(mappedBy = "messageCreator")
+    private List<Comment> employeeComments;
+
+
+    @ManyToMany(mappedBy = "employees")
+    private List<Comment>  allComments;
 
 }

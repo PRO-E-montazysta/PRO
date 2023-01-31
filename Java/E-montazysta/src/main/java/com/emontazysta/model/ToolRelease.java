@@ -25,7 +25,7 @@ public class ToolRelease {
     private LocalDateTime returnTime;
 
     @ManyToOne
-    private Foreman recivedBy;
+    private AppUser recivedBy;
 
 
 }

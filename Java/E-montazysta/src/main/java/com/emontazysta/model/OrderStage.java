@@ -60,8 +60,7 @@ public class OrderStage {
     @ManyToOne
     private AppUser managedBy;
 
-//    @OneToMany(mappedBy = "")
-//    @JsonManagedReference
-//    private List<Comment> comments;
+    @OneToMany(mappedBy = "orderStage")
+    private List<Comment> comments;
 }
 
