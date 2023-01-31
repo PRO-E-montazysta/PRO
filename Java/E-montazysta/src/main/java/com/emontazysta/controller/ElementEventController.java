@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,7 +39,7 @@ public class ElementEventController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add event to element.", security = @SecurityRequirement(name= "bearer-key"))
-    public void addElementEvent(@RequestBody ElementEvent event ){
+    public void addElementEvent(@Valid @RequestBody ElementEvent event ){
         service.add(event);
     }
 

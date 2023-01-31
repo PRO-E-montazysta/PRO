@@ -54,7 +54,7 @@ public class CompanyController {
 
     @PutMapping("/{id}")
     @Operation(description = "Allows to update Company by given Id, and Company.", security = @SecurityRequirement(name = "bearer-key"))
-    public void update(@PathVariable("id") Long id, @RequestBody Company company) {
+    public void update(@PathVariable("id") Long id, @Valid @RequestBody Company company) {
         companyService.update(id, company);
     }
 }
