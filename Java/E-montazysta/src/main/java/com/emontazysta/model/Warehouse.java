@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Entity
 @Data
@@ -33,4 +34,10 @@ public class Warehouse {
 
     @ManyToOne
     private Location location;
+
+    @OneToMany(mappedBy = "warehouse")
+    private List<Element> elements;
+
+    @OneToMany(mappedBy = "warehouse")
+    private List<Tool> tools;
 }
