@@ -19,4 +19,7 @@ public class Specialist extends Employee {
 
     @OneToMany(mappedBy = "specialist")
     private List<Orders> orders;
+
+    @OneToMany(mappedBy = "specialist")
+    private List<DemandAdHoc> demandAdHocs;
 }

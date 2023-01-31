@@ -28,7 +28,6 @@ public class Manager extends Employee {
 //    @OneToMany(mappedBy = "managedBy")
 //    private List<Orders> managedOrders;
 
-//    @JsonManagedReference
-//    @OneToMany(mappedBy = "manager")
-//    private List<DemandAdHoc> demandsAdHocList;
+    @OneToMany(mappedBy = "manager")
+    private List<DemandAdHoc> demandsAdHocs;
 }

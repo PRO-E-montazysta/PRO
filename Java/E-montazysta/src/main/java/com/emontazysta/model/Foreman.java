@@ -30,9 +30,9 @@ public class Foreman extends Fitter {
     @OneToMany(mappedBy = "assignedTo")
     private List<Orders> assignedOrders;
 
-    @OneToMany(mappedBy = "createdBy")
-    private List<DemandAdHoc> createdDemandsAdHoc;
-
     @OneToMany(mappedBy = "foreman")
     private List<ElementReturnRelease> elementReturnReleases;
+
+    @OneToMany(mappedBy = "foreman")
+    private List<DemandAdHoc> demandsAdHocs;
 }

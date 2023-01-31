@@ -37,14 +37,26 @@ public class DemandAdHoc {
 //    @JsonBackReference
 //    private AppUser manager;
 
-
-    @ManyToOne
-//    @JsonBackReference
-    private AppUser createdBy;
-
     @OneToMany(mappedBy = "demandAdHoc")
     private List<ToolRelease> toolReleases;
 
     @OneToMany(mappedBy = "demandAdHoc")
     private List<ElementReturnRelease> elementReturnReleases;
+
+    @ManyToOne
+    private WarehouseManager warehouseManager;
+
+    @ManyToOne
+    private Warehouseman warehouseman;
+
+    @ManyToOne
+    private Specialist specialist;
+
+    @ManyToOne
+    private Manager manager;
+
+    @ManyToOne
+    private Foreman foreman;
+
+    //TODO: relationship to OrderStage
 }

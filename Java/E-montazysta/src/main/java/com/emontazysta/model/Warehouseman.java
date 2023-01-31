@@ -22,4 +22,7 @@ public class Warehouseman extends Employee {
 
     @OneToMany(mappedBy = "servedBy")
     private List<ElementReturnRelease> elementReturnReleases;
+
+    @OneToMany(mappedBy = "warehouseman")
+    private List<DemandAdHoc> demandAdHocs;
 }
