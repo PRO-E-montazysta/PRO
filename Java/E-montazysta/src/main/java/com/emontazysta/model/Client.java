@@ -7,6 +7,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Entity
 @Getter
@@ -28,4 +29,8 @@ public class Client {
 
     @ManyToOne
     private Company company;
+
+    @OneToMany(mappedBy = "client")
+    private List<Orders> orders;
+
 }

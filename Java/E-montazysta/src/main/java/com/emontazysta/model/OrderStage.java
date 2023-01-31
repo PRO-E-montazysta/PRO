@@ -66,5 +66,8 @@ public class OrderStage {
 
     @OneToMany(mappedBy = "orderStage")
     private List<ElementReturnRelease> elementReturnReleases;
+
+    @ManyToOne
+    private Orders orders;
 }
 

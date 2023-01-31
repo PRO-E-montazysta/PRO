@@ -2,7 +2,6 @@ package com.emontazysta.model;
 
 import com.emontazysta.enums.TypeOfPriority;
 import com.emontazysta.enums.TypeOfStatus;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -12,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -49,6 +49,23 @@ public class Orders {
 //    private AppUser managedBy;
 
     @ManyToOne
-    @JsonBackReference
-    private AppUser assignedTo;
+    private Foreman assignedTo;
+
+    @ManyToOne
+    private Specialist specialist;
+
+    @ManyToOne
+    private SalesRepresentative salesRepresentative;
+
+    @ManyToOne
+    private Location location;
+
+    @ManyToOne
+    private Client client;
+
+    @OneToMany(mappedBy = "orders")
+    private List<OrderStage> orderStages;
+
+    @OneToMany(mappedBy = "order")
+    private List<Attachment> attachments;
 }
