@@ -11,6 +11,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -24,13 +26,17 @@ public class Orders {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     private String name;
 
+    @NotNull
     private TypeOfStatus typeOfStatus;
 
+    @NotNull
     @JsonFormat(pattern="dd-MM-yyyy")
     private Date plannedStart;
 
+    @NotNull
     @JsonFormat(pattern="dd-MM-yyyy")
     private Date plannedEnd;
 
@@ -38,6 +44,7 @@ public class Orders {
 
     private Date editedAt;
 
+    @NotNull
     private TypeOfPriority typeOfPriority;
 
 //    @ManyToOne
