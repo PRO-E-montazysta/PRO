@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -43,4 +44,12 @@ public class Element {
 
     @OneToMany(mappedBy = "element")
     private List<ElementInWarehouse> elementInWarehouses;
+
+    @OneToMany(mappedBy = "element")
+    private List<ElementEvent> elementEvents;
+
+    @OneToOne
+    private Attachment attachment;
+
+    //TODO: relationship to OrderStage needed (many to many) should be replaced with association table in diagram
 }

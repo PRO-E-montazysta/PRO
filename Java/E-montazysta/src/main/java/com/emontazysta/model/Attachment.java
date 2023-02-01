@@ -49,4 +49,7 @@ public class Attachment {
 
     @ManyToOne
     private Orders order;
+
+    @OneToOne
+    private Element element;
 }

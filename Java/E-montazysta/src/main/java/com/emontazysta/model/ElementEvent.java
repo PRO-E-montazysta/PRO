@@ -42,4 +42,7 @@ public class ElementEvent {
 
     @ManyToOne
     private AppUser createdBy;
+
+    @ManyToOne
+    private Element element;
 }
