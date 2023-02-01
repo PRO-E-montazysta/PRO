@@ -1,8 +1,6 @@
 package com.emontazysta.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 
@@ -28,19 +26,15 @@ public class Company {
 
     private Date createdAt;
 
-//    @JsonManagedReference
-//    @OneToMany
-//    private List<Client> clients;
+    @OneToMany(mappedBy = "company")
+    private List<Warehouse> warehouses;
 
-//    @JsonManagedReference
-//    @OneToMany(mappedBy = "company")
-//    private List<Orders> orders;
+    @OneToMany(mappedBy = "company")
+    private List<Orders> orders;
 
-//    @JsonManagedReference
-//    @OneToMany(mappedBy = "company")
-//    private List<Warehouse> warehouses;
+    @OneToMany(mappedBy = "company")
+    private List<Client> clients;
 
-//    @JsonManagedReference
-//    @OneToMany(mappedBy = "company")
-//    private List<Employment> employments;
+    @OneToMany(mappedBy = "company")
+    private List<Employment> employments;
 }

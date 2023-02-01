@@ -40,9 +40,8 @@ public class Orders {
 
     private TypeOfPriority typeOfPriority;
 
-//    @ManyToOne
-//    @JsonBackReference
-//    private Company company;
+    @ManyToOne
+    private Company company;
 //
 //    @ManyToOne
 //    @JsonBackReference

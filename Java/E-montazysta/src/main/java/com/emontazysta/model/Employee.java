@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.Column;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
@@ -49,6 +50,4 @@ public abstract class Employee extends AppUser {
 
     @ManyToMany(mappedBy = "employees")
     private List<Comment>  allComments;
-
-
 }
