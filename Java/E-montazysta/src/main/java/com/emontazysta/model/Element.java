@@ -41,6 +41,6 @@ public class Element {
     @OneToMany(mappedBy = "element")
     private List<ElementReturnRelease> elementReturnReleases;
 
-    @ManyToOne
-    private Warehouse warehouse;
+    @OneToMany(mappedBy = "element")
+    private List<ElementInWarehouse> elementInWarehouses;
 }

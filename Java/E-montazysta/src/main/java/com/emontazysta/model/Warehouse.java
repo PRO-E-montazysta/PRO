@@ -36,7 +36,7 @@ public class Warehouse {
     private Location location;
 
     @OneToMany(mappedBy = "warehouse")
-    private List<Element> elements;
+    private List<ElementInWarehouse> elementInWarehouses;
 
     @OneToMany(mappedBy = "warehouse")
     private List<Tool> tools;
