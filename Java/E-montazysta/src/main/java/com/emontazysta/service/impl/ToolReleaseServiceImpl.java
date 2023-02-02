@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -29,6 +30,7 @@ public class ToolReleaseServiceImpl implements ToolReleaseService {
 
     @Override
     public void add(ToolRelease toolRelease) {
+        toolRelease.setReleaseTime(LocalDateTime.now());
         repository.save(toolRelease);
     }
 
@@ -41,7 +43,6 @@ public class ToolReleaseServiceImpl implements ToolReleaseService {
     @Transactional
     public ToolRelease update(Long id, ToolRelease toolRelease) {
         ToolRelease toolReleaseDb = getById(id);
-        toolReleaseDb.setReleaseTime(toolRelease.getReleaseTime());
         toolReleaseDb.setReturnTime(toolRelease.getReturnTime());
 
         return toolReleaseDb;
