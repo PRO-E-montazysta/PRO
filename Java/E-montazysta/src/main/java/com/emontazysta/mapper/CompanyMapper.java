@@ -10,6 +10,8 @@ public class CompanyMapper {
                 .id(company.getId())
                 .companyName(company.getCompanyName())
                 .createdAt(company.getCreatedAt())
+                .status(company.getStatus())
+                .statusReason(company.getStatusReason())
                 .build();
     }
 }
