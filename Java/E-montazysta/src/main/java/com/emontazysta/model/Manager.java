@@ -21,13 +21,15 @@ public class Manager extends Employee {
     @OneToMany(mappedBy = "assignedBy")
     private List<Unavailability> createdUnavailabilities;
 
-    @OneToMany(mappedBy = "createdBy")
+    @OneToMany(mappedBy = "acceptedBy")
     private List<ToolEvent> acceptedEvents;
 
-//    @JsonManagedReference
-//    @OneToMany(mappedBy = "managedBy")
-//    private List<Orders> managedOrders;
+    @OneToMany(mappedBy = "managedBy")
+    private List<Orders> managedOrders;
 
     @OneToMany(mappedBy = "manager")
     private List<DemandAdHoc> demandsAdHocs;
+
+    @OneToMany(mappedBy = "acceptedBy")
+    private List<ElementEvent> elementEvents;
 }

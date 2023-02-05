@@ -42,10 +42,9 @@ public class Orders {
 
     @ManyToOne
     private Company company;
-//
-//    @ManyToOne
-//    @JsonBackReference
-//    private AppUser managedBy;
+
+    @ManyToOne
+    private Manager managedBy;
 
     @ManyToOne
     private Foreman assignedTo;
