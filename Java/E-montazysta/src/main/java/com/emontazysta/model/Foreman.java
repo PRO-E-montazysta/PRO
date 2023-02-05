@@ -24,9 +24,6 @@ public class Foreman extends Fitter {
     @OneToMany(mappedBy = "receivedBy")
     private List<ToolRelease> receivedTools;
 
-    @OneToMany(mappedBy = "receivedBy")
-    private List<ElementReturnRelease> receivedElements;
-
     @OneToMany(mappedBy = "assignedTo")
     private List<Orders> assignedOrders;
 

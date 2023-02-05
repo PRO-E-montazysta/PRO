@@ -56,7 +56,7 @@ public class OrderStage {
     private List<Fitter> assignedTo;
 
     @ManyToOne
-    private AppUser managedBy;
+    private Foreman managedBy;
 
     @OneToMany(mappedBy = "orderStage")
     private List<Comment> comments;

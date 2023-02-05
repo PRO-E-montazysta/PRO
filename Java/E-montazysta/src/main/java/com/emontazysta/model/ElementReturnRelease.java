@@ -30,9 +30,6 @@ public class ElementReturnRelease {
     private LocalDateTime returnTime;
 
     @ManyToOne
-    private Foreman receivedBy;
-
-    @ManyToOne
     private Warehouseman servedBy;
 
     @ManyToOne
