@@ -39,10 +39,8 @@ public abstract class Employee extends AppUser {
     @OneToMany(mappedBy = "assignedTo")
     private List<Unavailability> unavailabilities;
 
-
-    @OneToMany(mappedBy = "notifiedEmployee")
+    @OneToMany(mappedBy = "createdBy")
     private List<Notification> notifications;
-
 
     @OneToMany(mappedBy = "messageCreator")
     private List<Comment> employeeComments;

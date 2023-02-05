@@ -72,5 +72,8 @@ public class OrderStage {
 
     @OneToMany(mappedBy = "orderStage")
     private List<Attachment> attachments;
+
+    @OneToMany(mappedBy = "orderStage")
+    private List<Notification> notifications;
 }
 
