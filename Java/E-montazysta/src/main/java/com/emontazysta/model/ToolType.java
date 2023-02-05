@@ -35,5 +35,8 @@ public class ToolType {
     @OneToMany(mappedBy = "toolType")
     private List<Attachment> attachments;
 
+    @ManyToMany(mappedBy = "tools")
+    private List<OrderStage> orderStages;
+
 
 }

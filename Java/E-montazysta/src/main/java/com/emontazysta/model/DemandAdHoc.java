@@ -32,11 +32,6 @@ public class DemandAdHoc {
     private String specialistComment; // TODO: should be in other model if we want to have info about specialist + timestamp
     // TODO: status values not defined
 
-
-//    @ManyToOne
-//    @JsonBackReference
-//    private AppUser manager;
-
     @OneToMany(mappedBy = "demandAdHoc")
     private List<ToolRelease> toolReleases;
 
@@ -58,5 +53,8 @@ public class DemandAdHoc {
     @ManyToOne
     private Foreman foreman;
 
-    //TODO: relationship to OrderStage
+    @ManyToMany(mappedBy = "demandsAdHoc")
+    private List<OrderStage> ordersStages;
+
+    //TODO: relationship to OrderStage needed (many to many) should be replaced with association table in diagram
 }

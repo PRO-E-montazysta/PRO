@@ -22,4 +22,6 @@ public class Fitter extends Employee {
 
      @ManyToMany
      private List<OrderStage> workingOn;
+
+     //TODO: relationship to OrderStage needed (many to many) should be replaced with association table in diagram
 }

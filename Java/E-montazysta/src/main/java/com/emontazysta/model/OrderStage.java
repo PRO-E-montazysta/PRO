@@ -35,7 +35,7 @@ public class OrderStage {
     private BigDecimal price;
 
     @NotBlank
-    private String order;
+    private Integer order;
 
     private LocalDate plannedEndDate;
 
@@ -75,5 +75,18 @@ public class OrderStage {
 
     @OneToMany(mappedBy = "orderStage")
     private List<Notification> notifications;
+
+    @ManyToMany
+    private List<ToolType> tools;
+
+    @ManyToMany
+    private List<Element> elements;
+
+    @ManyToMany
+    private List<DemandAdHoc> demandsAdHoc;
+
+
+
+    //TODO: relationship to Element, ToolType, Fitter, DemandAdHoc  needed (many to many) should be replaced with association table in diagram
 }
 
