@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -38,4 +39,10 @@ public class ToolEvent {
 
     @ManyToOne
     private Manager acceptedBy;
+
+    @ManyToOne
+    private Tool tool;
+
+    @OneToMany(mappedBy = "toolEvent")
+    private List<Attachment> attachments;
 }

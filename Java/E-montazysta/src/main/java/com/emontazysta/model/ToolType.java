@@ -38,5 +38,7 @@ public class ToolType {
     @ManyToMany(mappedBy = "tools")
     private List<OrderStage> orderStages;
 
+    @OneToMany(mappedBy = "toolType")
+    private List<Tool> tools;
 
 }

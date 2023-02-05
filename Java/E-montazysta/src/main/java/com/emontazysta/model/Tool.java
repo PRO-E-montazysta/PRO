@@ -39,4 +39,11 @@ public class Tool {
 
     @ManyToOne
     private Warehouse warehouse;
+
+    @OneToMany(mappedBy = "tool")
+    private List<ToolEvent> toolEvents;
+
+    @ManyToOne
+    private ToolType toolType;
+
 }
