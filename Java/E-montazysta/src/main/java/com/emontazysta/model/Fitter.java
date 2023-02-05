@@ -16,10 +16,10 @@ import java.util.List;
 @Data
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Fitter extends Employee {
 
-//    @ManyToMany
-//    @JsonBackReference
-//    private List<OrderStage> workingOn;
+     @ManyToMany
+     private List<OrderStage> workingOn;
 }

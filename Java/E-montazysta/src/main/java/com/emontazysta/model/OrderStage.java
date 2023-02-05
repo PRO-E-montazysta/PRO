@@ -52,7 +52,7 @@ public class OrderStage {
     @NotNull
     private int minimumImagesNumber;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "workingOn")
     private List<Fitter> assignedTo;
 
     @ManyToOne
