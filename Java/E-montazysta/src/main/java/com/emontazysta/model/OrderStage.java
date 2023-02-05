@@ -69,5 +69,8 @@ public class OrderStage {
 
     @ManyToOne
     private Orders orders;
+
+    @OneToMany(mappedBy = "orderStage")
+    private List<Attachment> attachments;
 }
 

@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -41,8 +42,14 @@ public class ElementEvent {
     private int quantity;
 
     @ManyToOne
-    private AppUser createdBy;
+    private Manager acceptedBy;
+
+    @ManyToOne
+    private AppUser updatedBy;
 
     @ManyToOne
     private Element element;
+
+    @OneToMany(mappedBy = "elementEvent")
+    private List<Attachment> attachments;
 }

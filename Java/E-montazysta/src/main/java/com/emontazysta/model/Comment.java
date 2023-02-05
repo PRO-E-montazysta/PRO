@@ -32,11 +32,11 @@ public class Comment {
     @ManyToOne
     private AppUser messageCreator;
 
-    @ManyToMany
-    private List<AppUser> employees;
-
     @ManyToOne
     private OrderStage orderStage;
+
+    @OneToMany(mappedBy = "comment")
+    private List<Attachment> attachments;
 
 
 

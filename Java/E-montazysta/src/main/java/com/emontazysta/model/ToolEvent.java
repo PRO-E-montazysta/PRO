@@ -34,9 +34,8 @@ public class ToolEvent {
 
 
     @ManyToOne
-    private AppUser createdBy;
-
+    private AppUser updatedBy;
 
     @ManyToOne
-    private AppUser acceptedBy;
+    private Manager acceptedBy;
 }

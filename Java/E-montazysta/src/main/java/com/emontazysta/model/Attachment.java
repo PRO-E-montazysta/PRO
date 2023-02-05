@@ -50,6 +50,12 @@ public class Attachment {
     @ManyToOne
     private Orders order;
 
-    @OneToOne
+    @OneToOne(mappedBy = "attachment")
     private Element element;
+
+    @ManyToOne
+    private OrderStage orderStage;
+
+    @ManyToOne
+    private ElementEvent elementEvent;
 }
