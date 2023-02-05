@@ -1,6 +1,8 @@
 package com.emontazysta.controller;
 
+import com.emontazysta.mapper.OrderStageMapper;
 import com.emontazysta.model.OrderStage;
+import com.emontazysta.model.dto.OrderStageDto;
 import com.emontazysta.service.OrderStageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 
@@ -29,16 +32,18 @@ public class OrderStageController {
 
     private final OrderStageService orderStageService;
 
-    @GetMapping
+    @GetMapping("/all")
     @Operation(description = "Allows to get all Order Stages.", security = @SecurityRequirement(name = "bearer-key"))
-    public List<OrderStage> getAllOrderStages() {
-        return orderStageService.getAll();
+    public List<OrderStageDto> getAllOrderStages() {
+        return orderStageService.getAll().stream()
+                .map(OrderStageMapper::orderStageToDto)
+                .collect(Collectors.toList());
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @Operation(description = "Allows to get Order Stage by given Id.", security = @SecurityRequirement(name = "bearer-key"))
-    public OrderStage getOrderStageById(@PathVariable Long id) {
-        return orderStageService.getById(id);
+    public OrderStageDto getOrderStageById(@PathVariable Long id) {
+        return OrderStageMapper.orderStageToDto(orderStageService.getById(id));
     }
 
     @PostMapping
@@ -48,13 +53,13 @@ public class OrderStageController {
         orderStageService.add(orderStage);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @Operation(description = "Allows to delete Order Stage by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public void deleteOrderStageById(@PathVariable Long id) {
         orderStageService.delete(id);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     @Operation(description = "Allows to update Order Stage by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public OrderStage updateOrderStage(@PathVariable Long id, @Valid @RequestBody OrderStage orderStage) {
         return orderStageService.update(id, orderStage);
