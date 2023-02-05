@@ -1,9 +1,8 @@
 package com.emontazysta.controller;
 
-import com.emontazysta.mapper.FitterMapper;
-import com.emontazysta.model.Fitter;
+import com.emontazysta.mapper.ToolReleaseMapper;
 import com.emontazysta.model.ToolRelease;
-import com.emontazysta.model.dto.FitterDto;
+import com.emontazysta.model.dto.ToolReleaseDto;
 import com.emontazysta.service.ToolReleaseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -32,16 +31,18 @@ public class ToolReleaseController {
 
     private final ToolReleaseService toolReleaseService;
 
-    @GetMapping
+    @GetMapping("/all")
     @Operation(description = "Allows to get all Tool Releases.", security = @SecurityRequirement(name = "bearer-key"))
-    public List<ToolRelease> getAllToolReleases() {
-        return toolReleaseService.getAll();
+    public List<ToolReleaseDto> getAllToolReleases() {
+        return toolReleaseService.getAll().stream()
+                .map(ToolReleaseMapper::toolReleaseToDto)
+                .collect(Collectors.toList());
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @Operation(description = "Allows to get Tool Release by given Id.", security = @SecurityRequirement(name = "bearer-key"))
-    public ToolRelease getToolReleaseById(@PathVariable Long id) {
-        return toolReleaseService.getById(id);
+    public ToolReleaseDto getToolReleaseById(@PathVariable Long id) {
+        return ToolReleaseMapper.toolReleaseToDto(toolReleaseService.getById(id));
     }
 
     @PostMapping
@@ -51,13 +52,13 @@ public class ToolReleaseController {
         toolReleaseService.add(toolRelease);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @Operation(description = "Allows to delete Tool Release by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public void deleteToolReleaseById(@PathVariable Long id) {
         toolReleaseService.delete(id);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     @Operation(description = "Allows to update Tool Release by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public ToolRelease updateToolRelease(@PathVariable Long id, @RequestBody ToolRelease toolRelease) {
         return toolReleaseService.update(id, toolRelease);

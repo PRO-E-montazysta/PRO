@@ -1,5 +1,6 @@
 package com.emontazysta.model.dto;
 
+import com.emontazysta.enums.CompanyStatus;
 import com.emontazysta.model.Client;
 import com.emontazysta.model.Warehouse;
 import lombok.Builder;
@@ -16,6 +17,8 @@ public class CompanyDto {
     private Long id;
     private String companyName;
     private Date createdAt;
-    private List<Warehouse> warehouse;
-    private Client client;
+    private CompanyStatus status;
+    private String statusReason;
+    //private List<Warehouse> warehouse;
+    //private Client client;
 }

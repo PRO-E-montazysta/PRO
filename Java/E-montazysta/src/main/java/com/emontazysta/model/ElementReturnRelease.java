@@ -20,6 +20,7 @@ public class ElementReturnRelease {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private LocalDateTime releaseTime;
 
     @NotNull
