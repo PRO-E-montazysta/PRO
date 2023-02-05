@@ -47,7 +47,16 @@ public abstract class Employee extends AppUser {
     @OneToMany(mappedBy = "messageCreator")
     private List<Comment> employeeComments;
 
+    @OneToMany(mappedBy = "updatedBy")
+    private List<ElementEvent> elementEvents;
 
-    @ManyToMany(mappedBy = "employees")
-    private List<Comment>  allComments;
+    @OneToMany(mappedBy = "employee")
+    private List<Employment> employments;
+
+    @OneToMany(mappedBy = "employee")
+    private List<Attachment> attachments;
+
+    @OneToMany(mappedBy = "updatedBy")
+    private List<ToolEvent> toolEvents;
+
 }
