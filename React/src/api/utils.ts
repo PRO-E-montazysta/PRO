@@ -39,25 +39,3 @@ export const makeServiceCall: any = async (url: string, httpMethod: Method, payl
   return response.data;
 };
 
-
-
-export const useRequest = (url: string, httpMethod: Method, payload: PayloadProps) => {
-  // return 
-  const { body, queryStringParams } = payload;
-  console.log({ payload });
-  const token = getToken();
-  const response = axios({
-    method: httpMethod,
-    baseURL: getBaseUrl(),
-    url: url,
-    data: body,
-    params: queryStringParams,
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + token
-    },
-  });
-  return response;
-}
-
-
