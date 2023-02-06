@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.Column;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
@@ -31,28 +32,29 @@ public abstract class Employee extends AppUser {
     private String pesel;
 
 
-//    @OneToMany(mappedBy = "employee")
-//    @JsonManagedReference
-//    private List<Employment> employmentHistory;
-//
-//
-//    @OneToMany(mappedBy = "assignedTo")
-//    @JsonManagedReference
-//    private List<Unavailability> unavailabilities;
-//
-//
-//    @OneToMany(mappedBy = "notifiedEmployee")
-//    @JsonManagedReference
-//    private List<Notification> notifications;
-//
-//
-//    @OneToMany(mappedBy = "messageCreator")
-//    @JsonManagedReference
-//    private List<Comment> employeeComments;
-//
-//
-//    @ManyToMany(mappedBy = "employees")
-//    @JsonManagedReference
-//    private List<Comment>  allComments;
+    @OneToMany(mappedBy = "employee")
+    private List<Employment> employmentHistory;
+
+
+    @OneToMany(mappedBy = "assignedTo")
+    private List<Unavailability> unavailabilities;
+
+    @OneToMany(mappedBy = "createdBy")
+    private List<Notification> notifications;
+
+    @OneToMany(mappedBy = "messageCreator")
+    private List<Comment> employeeComments;
+
+    @OneToMany(mappedBy = "updatedBy")
+    private List<ElementEvent> elementEvents;
+
+    @OneToMany(mappedBy = "employee")
+    private List<Employment> employments;
+
+    @OneToMany(mappedBy = "employee")
+    private List<Attachment> attachments;
+
+    @OneToMany(mappedBy = "updatedBy")
+    private List<ToolEvent> toolEvents;
 
 }

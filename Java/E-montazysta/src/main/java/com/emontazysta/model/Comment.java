@@ -30,11 +30,14 @@ public class Comment {
     private Date createdAt;
 
     @ManyToOne
-    @JsonManagedReference
     private AppUser messageCreator;
 
-    @ManyToMany
-    @JsonBackReference
-    private List<AppUser> employees;
+    @ManyToOne
+    private OrderStage orderStage;
+
+    @OneToMany(mappedBy = "comment")
+    private List<Attachment> attachments;
+
+
 
 }
