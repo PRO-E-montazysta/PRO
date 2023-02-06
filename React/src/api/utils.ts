@@ -1,4 +1,5 @@
 import axios, { Method } from 'axios';
+import { getToken } from '../utils/token';
 
 interface PayloadProps {
   body?: undefined | Record<string, unknown> | unknown;
@@ -8,7 +9,7 @@ interface PayloadProps {
 
 const getBaseUrl = (): string => {
   let url: string;
-  switch(process.env.NODE_ENV) {
+  switch (process.env.NODE_ENV) {
     case 'production':
       url = 'http://backend/api/v1';
       break;
@@ -22,7 +23,7 @@ const getBaseUrl = (): string => {
 }
 
 
-export const makeServiceCall = async (url: string, httpMethod: Method, payload: PayloadProps) => {
+export const makeServiceCall: any = async (url: string, httpMethod: Method, payload: PayloadProps) => {
   console.log({ payload });
   const response = await axios({
     method: httpMethod,
@@ -31,8 +32,9 @@ export const makeServiceCall = async (url: string, httpMethod: Method, payload: 
     data: payload?.body || {},
     params: payload?.queryStringParams || {},
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
   });
   return response.data;
 };
+

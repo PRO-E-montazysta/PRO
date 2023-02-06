@@ -2,10 +2,10 @@ import { Grid, Typography, Box, FormControlLabel, Checkbox, Button } from '@mui/
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 import * as yup from 'yup';
-import { logIn } from '../../api/Authentication';
 import { useFormik } from 'formik';
-import useToken from '../../Hooks/useToken';
 import { useNavigate } from 'react-router-dom';
+import { setToken } from '../../utils/token';
+import { logIn } from '../../api/authentication';
 
 const CustomTextField = styled(TextField)(({ theme }) => ({
   label: { shrink: true, color: theme.palette.secondary.contrastText },
@@ -39,7 +39,6 @@ const validationSchema = yup.object({
 });
 
 const LoginForm = () => {
-  const { setToken } = useToken();
   const navigation = useNavigate();
   const formik = useFormik({
     initialValues: {
@@ -61,7 +60,7 @@ const LoginForm = () => {
       try {
         const response: any = await logIn({ username: email, password });
         setToken(response);
-        navigation('/else', { replace: true });
+        navigation('/mock', { replace: true });
       } catch (e) {
         console.log({ e });
       }

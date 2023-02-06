@@ -1,12 +1,14 @@
 import React from 'react';
-import { AppBar, Box, IconButton, ImageList, ImageListItem, Toolbar } from '@mui/material';
+import { AppBar, Box, Button, IconButton, ImageList, ImageListItem, Toolbar } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import firstPicture from '../../assets/img/firstPicture.png';
 import secondPicture from '../../assets/img/secondPicture.png';
 import logo from '../../assets/img/logo.png';
 import NavMenuItem from '../NavMenuItem/NavMenuItem';
-import useToken from '../../Hooks/useToken';
 import { useNavigate } from 'react-router-dom';
+import { pageList } from '../../utils/pageList';
+import NavMenuButton from '../NavMenuItem/NavMenuButton';
+import { removeToken } from '../../utils/token';
 
 const CustomizedToolbar = styled(Toolbar)(({ theme }) => ({
   '@media (min-width: 600px)': {
@@ -26,13 +28,14 @@ const itemData = [
 ];
 
 const Header = () => {
-  const { removeToken } = useToken();
   const navigation = useNavigate();
   const handleLogout = () => {
     removeToken();
-    navigation('/login', { replace: true });
+    navigation('/login');
   };
 
+  const rootPage = pageList.find(p => p.path === '/');
+  const rootPageChildrens = rootPage?.children;
   return (
     <AppBar position="static">
       <Box sx={{ flexGrow: 1, backgroundColor: '#1A1C26' }}>
@@ -56,16 +59,14 @@ const Header = () => {
         </ImageList>
         <CustomizedToolbar>
           <Box component="img" sx={{ mr: 5 }} alt="Your logo." src={logo}></Box>
-          <NavMenuItem name="Zlecenia" items={[{ subName: 'Moje zlecenia', link: '/else' }]} />
-          <NavMenuItem name="Kalendarz" items={[{ subName: 'Mój kalendarz', link: '/else' }]} />
-          <NavMenuItem name="Administracja" items={[{ subName: 'Panel administratora', link: '/else' }]} />
-          <NavMenuItem name="Magazyn" items={[{ subName: 'Lista magazynów', link: '/' }]} />
-          <NavMenuItem
-            name="Pracownicy"
-            items={[{ subName: 'Lista pracowników', link: '/employees' }]}
-            flexGrowStyle={1}
-          />
-          <IconButton color="inherit" onClick={handleLogout}>
+          {
+            rootPageChildrens ? rootPageChildrens.map(page => {
+              return <NavMenuButton {...page} />
+            })
+              :
+              null
+          }
+          <IconButton sx={{marginLeft: 'auto'}} color="inherit" onClick={handleLogout}>
             Log out
           </IconButton>
           <Box></Box>
