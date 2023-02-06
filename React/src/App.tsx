@@ -1,13 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CssBaseline } from '@mui/material';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, createBrowserRouter, RouteObject, RouterProvider, Outlet } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Header from './components/Headers/Header';
-import Employees from './components/Employees/Employees';
-import MockView from './components/MockView/MockView';
-import LoginPage from './Pages/LoginPage';
-import useToken from './Hooks/useToken';
-import PrivateRoutes from './components/PrivateRoutes/PrivateRoutes';
+import { pageList, PageProps } from './utils/pageList';
+import { AutorizedRoute, isAuthorized } from './utils/authorize';
 
 const theme = createTheme({
   palette: {
@@ -35,24 +31,42 @@ const theme = createTheme({
   },
 });
 
+
+
+
+
+const browserRouterMapper = (pages: Array<PageProps>) => {
+  const result: Array<RouteObject> =
+    pages.map(page => {
+      return {
+        element: <AutorizedRoute allowedRoles={page.allowedRoles} />,
+        children: [
+          {
+            path: page.path,
+            element: page.component,
+            children: page.children ? browserRouterMapper(page.children) : undefined
+          }
+        ]
+      }
+    })
+  return result;
+}
+
+const router = createBrowserRouter(browserRouterMapper(pageList));
+
+
 function App() {
-  const { token, setToken } = useToken();
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Router>
-        <Routes>
-          <Route element={<PrivateRoutes />}>
-            <Route path="/" element={<MockView />} />
-            <Route path="/else" element={<MockView />} />
-            <Route path="/employees" element={<Employees />} />
-          </Route>
-          <Route path="/login" element={<LoginPage />} />
-        </Routes>
-      </Router>
+      <RouterProvider router={router} />
     </ThemeProvider>
   );
 }
 
+
+
+
 export default App;
+
