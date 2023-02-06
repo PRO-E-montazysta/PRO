@@ -32,8 +32,7 @@ export const makeServiceCall: any = async (url: string, httpMethod: Method, payl
     data: payload?.body || {},
     params: payload?.queryStringParams || {},
     headers: {
-      'Content-Type': 'application/json',
-      // 'bearer-key': useToken().token
+      'Content-Type': 'application/json'
     },
   });
   return response.data;

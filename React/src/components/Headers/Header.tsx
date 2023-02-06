@@ -34,7 +34,7 @@ const Header = () => {
     navigation('/login');
   };
 
-  const rootPage = pageList.find(p => p.path == '/');
+  const rootPage = pageList.find(p => p.path === '/');
   const rootPageChildrens = rootPage?.children;
   return (
     <AppBar position="static">
