@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +27,8 @@ public class DataSeeding {
     private final ToolService toolService;
     private final AttachmentService attachmentService;
     private final CommentService commentService;
+    private final ToolTypeService toolTypeService;
+    private final ToolEventService toolEventService;
 
     @PostConstruct
     void setUp() {
@@ -87,15 +90,35 @@ public class DataSeeding {
                 "Opening Hours", company2, location4, new ArrayList<>(), new ArrayList<>());
         List<Warehouse> warehouseList = List.of(warehouse1, warehouse2, warehouse3, warehouse4);
 
+        ToolType toolType1 = new ToolType(null, "Test ToolType 1", 10,
+                5, 10, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        ToolType toolType2 = new ToolType(null, "Test ToolType 2", 10,
+                5, 7, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        ToolType toolType3 = new ToolType(null, "Test ToolType 3", 10,
+                5, 5, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        ToolType toolType4 = new ToolType(null, "Test ToolType 4", 10,
+                5, 3, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        List<ToolType> toolTypeList = List.of(toolType1, toolType2, toolType3, toolType4);
+
         Tool tool1 = new Tool(null, "Test Tool 1", null, null, new ArrayList<>(),
-                warehouse1, new ArrayList<>(), null);
+                warehouse1, new ArrayList<>(), toolType1);
         Tool tool2 = new Tool(null, "Test Tool 2", null, null, new ArrayList<>(),
-                warehouse1, new ArrayList<>(), null);
+                warehouse1, new ArrayList<>(), toolType2);
         Tool tool3 = new Tool(null, "Test Tool 3", null, null, new ArrayList<>(),
-                warehouse2, new ArrayList<>(), null);
+                warehouse2, new ArrayList<>(), toolType3);
         Tool tool4 = new Tool(null, "Test Tool 4", null, null, new ArrayList<>(),
-                warehouse2, new ArrayList<>(), null);
+                warehouse2, new ArrayList<>(), toolType4);
         List<Tool> toolList = List.of(tool1, tool2, tool3,tool4);
+
+        ToolEvent toolEvent1 = new ToolEvent(null, LocalDateTime.now(), null, null,
+                "Test ToolEvent 1", TypeOfStatus.IN_PROGRESS, null, null, tool1, new ArrayList<>());
+        ToolEvent toolEvent2 = new ToolEvent(null, LocalDateTime.now(), null, null,
+                "Test ToolEvent 2", TypeOfStatus.IN_PROGRESS, null, null, tool1, new ArrayList<>());
+        ToolEvent toolEvent3 = new ToolEvent(null, LocalDateTime.now(), null, null,
+                "Test ToolEvent 3", TypeOfStatus.IN_PROGRESS, null, null, tool2, new ArrayList<>());
+        ToolEvent toolEvent4 = new ToolEvent(null, LocalDateTime.now(), null, null,
+                "Test ToolEvent 4", TypeOfStatus.IN_PROGRESS, null, null, tool3, new ArrayList<>());
+        List<ToolEvent> toolEventList = List.of(toolEvent1, toolEvent2, toolEvent3, toolEvent4);
 
         Comment comment1 = new Comment(null, "Test Comment 1", null, null,
                 null, new ArrayList<>());
@@ -114,10 +137,10 @@ public class DataSeeding {
                 TypeOfAttachment.MANUAL, null, null, comment1, null, null,
                 null, null, null, null);
         Attachment attachment3 = new Attachment(null, "Test Attachment 3", "URL", "Description",
-                TypeOfAttachment.PROFILE_PICTURE, null, null, null, null, null,
+                TypeOfAttachment.PROFILE_PICTURE, null, null, null, null, toolEvent1,
                 null, null, null, null);
         Attachment attachment4 = new Attachment(null, "Test Attachment 4", "URL", "Description",
-                TypeOfAttachment.FAULT_PHOTO, null, null, null, null, null,
+                TypeOfAttachment.FAULT_PHOTO, null, null, null, null, toolEvent1,
                 null, null, null, null);
         List<Attachment> attachmentList = List.of(attachment1, attachment2, attachment3, attachment4);
 
@@ -136,8 +159,14 @@ public class DataSeeding {
         warehouseList.forEach(warehouse -> {
             warehouseService.add(warehouse);
         });
+        toolTypeList.forEach(toolType -> {
+            toolTypeService.add(toolType);
+        });
         toolList.forEach(tool -> {
             toolService.add(tool);
+        });
+        toolEventList.forEach(toolEvent -> {
+            toolEventService.add(toolEvent);
         });
         commentList.forEach(comment -> {
             commentService.add(comment);
