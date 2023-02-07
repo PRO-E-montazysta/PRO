@@ -32,6 +32,8 @@ public class DataSeeding {
     private final ElementService elementService;
     private final DemandAdHocService demandAdHocService;
     private final ElementEventService elementEventService;
+    private final ElementInWarehouseService elementInWarehouseService;
+    private final ElementReturnReleaseService elementReturnReleaseService;
 
     @PostConstruct
     void setUp() {
@@ -217,6 +219,32 @@ public class DataSeeding {
                 element3, new ArrayList<>());
         List<ElementEvent> elementEventList = List.of(elementEvent1, elementEvent2, elementEvent3, elementEvent4);
 
+        ElementInWarehouse elementInWarehouse1 = new ElementInWarehouse(null, 1, 1,
+                "1", "1", element1, warehouse1);
+        ElementInWarehouse elementInWarehouse2 = new ElementInWarehouse(null, 1, 1,
+                "2", "1", element2, warehouse1);
+        ElementInWarehouse elementInWarehouse3 = new ElementInWarehouse(null, 1, 1,
+                "1", "2", element1, warehouse2);
+        ElementInWarehouse elementInWarehouse4 = new ElementInWarehouse(null, 1, 1,
+                "2", "2", element2, warehouse2);
+        List<ElementInWarehouse> elementInWarehouseList = List.of(elementInWarehouse1, elementInWarehouse2,
+                elementInWarehouse3, elementInWarehouse4);
+
+        ElementReturnRelease elementReturnRelease1 = new ElementReturnRelease(null, LocalDateTime.now(),
+                1, 1, LocalDateTime.now(), null, element1, demandAdHoc1,
+                null, orderStage1);
+        ElementReturnRelease elementReturnRelease2 = new ElementReturnRelease(null, LocalDateTime.now(),
+                1, 0, null, null, element2, demandAdHoc1,
+                null, orderStage1);
+        ElementReturnRelease elementReturnRelease3 = new ElementReturnRelease(null, LocalDateTime.now(),
+                1, 0, null, null, element3, demandAdHoc3,
+                null, orderStage1);
+        ElementReturnRelease elementReturnRelease4 = new ElementReturnRelease(null, LocalDateTime.now(),
+                1, 0, null, null, element4, demandAdHoc4,
+                null, orderStage1);
+        List<ElementReturnRelease> elementReturnReleaseList = List.of(elementReturnRelease1, elementReturnRelease2,
+                elementReturnRelease3, elementReturnRelease4);
+
         companyList.forEach(company -> {
             companyService.add(company);
         });
@@ -261,6 +289,12 @@ public class DataSeeding {
         });
         elementEventList.forEach(elementEvent -> {
             elementEventService.add(elementEvent);
+        });
+        elementInWarehouseList.forEach(elementInWarehouse -> {
+            elementInWarehouseService.add(elementInWarehouse);
+        });
+        elementReturnReleaseList.forEach(elementReturnRelease -> {
+            elementReturnReleaseService.add(elementReturnRelease);
         });
     }
 }
