@@ -1,12 +1,12 @@
 package com.emontazysta.configuration;
 
 import com.emontazysta.enums.CompanyStatus;
+import com.emontazysta.enums.TypeOfAttachment;
 import com.emontazysta.enums.TypeOfPriority;
 import com.emontazysta.enums.TypeOfStatus;
 import com.emontazysta.model.*;
 import com.emontazysta.service.*;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
@@ -24,6 +24,8 @@ public class DataSeeding {
     private final OrdersService ordersService;
     private final WarehouseService warehouseService;
     private final ToolService toolService;
+    private final AttachmentService attachmentService;
+    private final CommentService commentService;
 
     @PostConstruct
     void setUp() {
@@ -95,6 +97,30 @@ public class DataSeeding {
                 warehouse2, new ArrayList<>(), null);
         List<Tool> toolList = List.of(tool1, tool2, tool3,tool4);
 
+        Comment comment1 = new Comment(null, "Test Comment 1", null, null,
+                null, new ArrayList<>());
+        Comment comment2 = new Comment(null, "Test Comment 2", null, null,
+                null, new ArrayList<>());
+        Comment comment3 = new Comment(null, "Test Comment 3", null, null,
+                null, new ArrayList<>());
+        Comment comment4 = new Comment(null, "Test Comment 4", null, null,
+                null, new ArrayList<>());
+        List<Comment> commentList = List.of(comment1, comment2, comment3, comment4);
+
+        Attachment attachment1 = new Attachment(null, "Test Attachment 1", "URL", "Description",
+                TypeOfAttachment.OTHER, null, null, comment1, null, null,
+                null, null, null, null);
+        Attachment attachment2 = new Attachment(null, "Test Attachment 2", "URL", "Description",
+                TypeOfAttachment.MANUAL, null, null, comment1, null, null,
+                null, null, null, null);
+        Attachment attachment3 = new Attachment(null, "Test Attachment 3", "URL", "Description",
+                TypeOfAttachment.PROFILE_PICTURE, null, null, null, null, null,
+                null, null, null, null);
+        Attachment attachment4 = new Attachment(null, "Test Attachment 4", "URL", "Description",
+                TypeOfAttachment.FAULT_PHOTO, null, null, null, null, null,
+                null, null, null, null);
+        List<Attachment> attachmentList = List.of(attachment1, attachment2, attachment3, attachment4);
+
         companyList.forEach(company -> {
             companyService.add(company);
         });
@@ -112,6 +138,12 @@ public class DataSeeding {
         });
         toolList.forEach(tool -> {
             toolService.add(tool);
+        });
+        commentList.forEach(comment -> {
+            commentService.add(comment);
+        });
+        attachmentList.forEach(attachment -> {
+            attachmentService.add(attachment);
         });
     }
 }
