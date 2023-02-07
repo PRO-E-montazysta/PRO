@@ -1,9 +1,6 @@
 package com.emontazysta.configuration;
 
-import com.emontazysta.enums.CompanyStatus;
-import com.emontazysta.enums.TypeOfAttachment;
-import com.emontazysta.enums.TypeOfPriority;
-import com.emontazysta.enums.TypeOfStatus;
+import com.emontazysta.enums.*;
 import com.emontazysta.model.*;
 import com.emontazysta.service.*;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +28,8 @@ public class DataSeeding {
     private final ToolTypeService toolTypeService;
     private final ToolEventService toolEventService;
     private final OrderStageService orderStageService;
+    private final ToolReleaseService toolReleaseService;
+    private final ElementService elementService;
 
     @PostConstruct
     void setUp() {
@@ -164,6 +163,26 @@ public class DataSeeding {
                 null, null, null, null);
         List<Attachment> attachmentList = List.of(attachment1, attachment2, attachment3, attachment4);
 
+        ToolRelease toolRelease1 = new ToolRelease(null, LocalDateTime.now(), LocalDateTime.now(),
+                null, null, tool1, null, orderStage1);
+        ToolRelease toolRelease2 = new ToolRelease(null, LocalDateTime.now(), LocalDateTime.now(),
+                null, null, tool2, null, orderStage1);
+        ToolRelease toolRelease3 = new ToolRelease(null, LocalDateTime.now(), null,
+                null, null, tool1, null, orderStage2);
+        ToolRelease toolRelease4 = new ToolRelease(null, LocalDateTime.now(), null,
+                null, null, tool2, null, orderStage3);
+        List<ToolRelease> toolReleaseList = List.of(toolRelease1, toolRelease2, toolRelease3, toolRelease4);
+
+        Element element1 = new Element(null, "Test Element 1", null, TypeOfUnit.KILOGRAM, 1,
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>());
+        Element element2 = new Element(null, "Test Element 2", null, TypeOfUnit.KILOGRAM, 2,
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>());
+        Element element3 = new Element(null, "Test Element 3", null, TypeOfUnit.LITER, 3.3f,
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>());
+        Element element4 = new Element(null, "Test Element 4", null, TypeOfUnit.LITER, 4.4f,
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>());
+        List<Element> elementList = List.of(element1, element2, element3, element4);
+
         companyList.forEach(company -> {
             companyService.add(company);
         });
@@ -196,6 +215,12 @@ public class DataSeeding {
         });
         attachmentList.forEach(attachment -> {
             attachmentService.add(attachment);
+        });
+        toolReleaseList.forEach(toolRelease -> {
+            toolReleaseService.add(toolRelease);
+        });
+        elementList.forEach(element -> {
+            elementService.add(element);
         });
     }
 }
