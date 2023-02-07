@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,6 +30,7 @@ public class DataSeeding {
     private final CommentService commentService;
     private final ToolTypeService toolTypeService;
     private final ToolEventService toolEventService;
+    private final OrderStageService orderStageService;
 
     @PostConstruct
     void setUp() {
@@ -79,6 +81,24 @@ public class DataSeeding {
                 new Date(), null, null, TypeOfPriority.NORMAL, company4, null,
                 null, null, null, location4, client4, new ArrayList<>(), new ArrayList<>());
         List<Orders> ordersList = List.of(order1, order2, order3, order4);
+
+        OrderStage orderStage1 = new OrderStage(null, "Test OrderStage 1", OrderStatus.TODO, new BigDecimal(1),
+                1, null, null, null, 1, 1,
+                1, new ArrayList<>(), null, new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        OrderStage orderStage2 = new OrderStage(null, "Test OrderStage 2", OrderStatus.TODO, new BigDecimal(2),
+                2, null, null, null, 1, 1,
+                1, new ArrayList<>(), null, new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        OrderStage orderStage3 = new OrderStage(null, "Test OrderStage 3", OrderStatus.TODO, new BigDecimal(3),
+                3, null, null, null, 1, 1,
+                1, new ArrayList<>(), null, new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        OrderStage orderStage4 = new OrderStage(null, "Test OrderStage 4", OrderStatus.TODO, new BigDecimal(4),
+                1, null, null, null, 1, 1,
+                1, new ArrayList<>(), null, new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), order2, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        List<OrderStage> orderStageList = List.of(orderStage1, orderStage2, orderStage3, orderStage4);
 
         Warehouse warehouse1 = new Warehouse(null, "Test Warehouse 1", "Description",
                 "Opening Hours", company1, location1, new ArrayList<>(), new ArrayList<>());
@@ -155,6 +175,9 @@ public class DataSeeding {
         });
         ordersList.forEach(order -> {
             ordersService.add(order);
+        });
+        orderStageList.forEach(orderStage -> {
+            orderStageService.add(orderStage);
         });
         warehouseList.forEach(warehouse -> {
             warehouseService.add(warehouse);
