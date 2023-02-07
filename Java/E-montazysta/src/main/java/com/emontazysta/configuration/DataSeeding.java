@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
@@ -38,6 +39,7 @@ public class DataSeeding {
                 "They don't pay", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         Company company4 = new Company(null, "Test Comapny 4", null, CompanyStatus.DISABLED,
                 "Closed company", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        List<Company> companyList = List.of(company1, company2, company3, company4);
 
         Client client1 = new Client(null, "Test Client 1 - from Company 1", "em@i.l",
                 company1, new ArrayList<>());
@@ -47,6 +49,7 @@ public class DataSeeding {
                 company3, new ArrayList<>());
         Client client4 = new Client(null, "Test Client 4 - from Company 4", "em@i.l",
                 company4, new ArrayList<>());
+        List<Client> clientList = List.of(client1, client2, client3, client4);
 
         Location location1 = new Location(null, "Test Location 1", 1.1, 1.1, "City",
                 "Street", "Property Number", "Apartment Number", "Zip Code",
@@ -60,6 +63,7 @@ public class DataSeeding {
         Location location4 = new Location(null, "Test Location 4", 1.1, 1.1, "City",
                 "Street", "Property Number", "Apartment Number", "Zip Code",
                 new ArrayList<>(), new ArrayList<>());
+        List<Location> locationList = List.of(location1, location2, location3, location4);
 
         Orders order1 = new Orders(null, "Test Order 1 - from Client 1", TypeOfStatus.PLANNED, new Date(),
                 new Date(), null, null, TypeOfPriority.NORMAL, company1, null,
@@ -73,23 +77,20 @@ public class DataSeeding {
         Orders order4 = new Orders(null, "Test Order 4 - from Client 4", TypeOfStatus.PLANNED, new Date(),
                 new Date(), null, null, TypeOfPriority.NORMAL, company4, null,
                 null, null, null, location4, client4, new ArrayList<>(), new ArrayList<>());
+        List<Orders> ordersList = List.of(order1, order2, order3, order4);
 
 
-        companyService.add(company1);
-        companyService.add(company2);
-        companyService.add(company3);
-        companyService.add(company4);
-        clientService.add(client1);
-        clientService.add(client2);
-        clientService.add(client3);
-        clientService.add(client4);
-        locationService.add(location1);
-        locationService.add(location2);
-        locationService.add(location3);
-        locationService.add(location4);
-        ordersService.add(order1);
-        ordersService.add(order2);
-        ordersService.add(order3);
-        ordersService.add(order4);
+        companyList.forEach(company -> {
+            companyService.add(company);
+        });
+        clientList.forEach(client -> {
+            clientService.add(client);
+        });
+        locationList.forEach(location -> {
+            locationService.add(location);
+        });
+        ordersList.forEach(order -> {
+            ordersService.add(order);
+        });
     }
 }
