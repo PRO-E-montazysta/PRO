@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Configuration
 @RequiredArgsConstructor
@@ -34,9 +35,13 @@ public class DataSeeding {
     private final ElementEventService elementEventService;
     private final ElementInWarehouseService elementInWarehouseService;
     private final ElementReturnReleaseService elementReturnReleaseService;
+    private final AppUserService appUserService;
 
     @PostConstruct
     void setUp() {
+        AppUser appUser = new AppUser(null, "Test AppUser", "Test AppUser", "em@i.l",
+                "password", "testuser", null, Set.of(Role.CLOUD_ADMIN));
+
         Company company1 = new Company(null, "Test Comapny 1", null, CompanyStatus.ACTIVE,
                 "They pay", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         Company company2 = new Company(null, "Test Comapny 2", null, CompanyStatus.ACTIVE,
@@ -245,6 +250,7 @@ public class DataSeeding {
         List<ElementReturnRelease> elementReturnReleaseList = List.of(elementReturnRelease1, elementReturnRelease2,
                 elementReturnRelease3, elementReturnRelease4);
 
+        appUserService.add(appUser);
         companyList.forEach(company -> {
             companyService.add(company);
         });
