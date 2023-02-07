@@ -30,6 +30,8 @@ public class DataSeeding {
     private final OrderStageService orderStageService;
     private final ToolReleaseService toolReleaseService;
     private final ElementService elementService;
+    private final DemandAdHocService demandAdHocService;
+    private final ElementEventService elementEventService;
 
     @PostConstruct
     void setUp() {
@@ -99,6 +101,24 @@ public class DataSeeding {
                 new ArrayList<>(), order2, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         List<OrderStage> orderStageList = List.of(orderStage1, orderStage2, orderStage3, orderStage4);
 
+        DemandAdHoc demandAdHoc1 = new DemandAdHoc(null, "Test DemandAdHoc 1", null,
+                null, null, null, null,
+                null, new ArrayList<>(), new ArrayList<>(), null, null,
+                null, null, null, new ArrayList<>());
+        DemandAdHoc demandAdHoc2 = new DemandAdHoc(null, "Test DemandAdHoc 2", null,
+                null, null, null, null,
+                null, new ArrayList<>(), new ArrayList<>(), null, null,
+                null, null, null, new ArrayList<>());
+        DemandAdHoc demandAdHoc3 = new DemandAdHoc(null, "Test DemandAdHoc 3", null,
+                null, null, null, null,
+                null, new ArrayList<>(), new ArrayList<>(), null, null,
+                null, null, null, new ArrayList<>());
+        DemandAdHoc demandAdHoc4 = new DemandAdHoc(null, "Test DemandAdHoc 4", null,
+                null, null, null, null,
+                null, new ArrayList<>(), new ArrayList<>(), null, null,
+                null, null, null, new ArrayList<>());
+        List<DemandAdHoc> demandAdHocList = List.of(demandAdHoc1, demandAdHoc2, demandAdHoc3, demandAdHoc4);
+
         Warehouse warehouse1 = new Warehouse(null, "Test Warehouse 1", "Description",
                 "Opening Hours", company1, location1, new ArrayList<>(), new ArrayList<>());
         Warehouse warehouse2 = new Warehouse(null, "Test Warehouse 2", "Description",
@@ -164,7 +184,7 @@ public class DataSeeding {
         List<Attachment> attachmentList = List.of(attachment1, attachment2, attachment3, attachment4);
 
         ToolRelease toolRelease1 = new ToolRelease(null, LocalDateTime.now(), LocalDateTime.now(),
-                null, null, tool1, null, orderStage1);
+                null, null, tool1, demandAdHoc1, orderStage1);
         ToolRelease toolRelease2 = new ToolRelease(null, LocalDateTime.now(), LocalDateTime.now(),
                 null, null, tool2, null, orderStage1);
         ToolRelease toolRelease3 = new ToolRelease(null, LocalDateTime.now(), null,
@@ -182,6 +202,20 @@ public class DataSeeding {
         Element element4 = new Element(null, "Test Element 4", null, TypeOfUnit.LITER, 4.4f,
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>());
         List<Element> elementList = List.of(element1, element2, element3, element4);
+
+        ElementEvent elementEvent1 = new ElementEvent(null, LocalDateTime.now(), null, LocalDateTime.now(),
+                "Test ElementEvent 1", TypeOfStatus.FINISHED, 1, null, null,
+                element1, new ArrayList<>());
+        ElementEvent elementEvent2 = new ElementEvent(null, LocalDateTime.now(), null, LocalDateTime.now(),
+                "Test ElementEvent 2", TypeOfStatus.IN_PROGRESS, 1, null, null,
+                element1, new ArrayList<>());
+        ElementEvent elementEvent3 = new ElementEvent(null, LocalDateTime.now(), null, LocalDateTime.now(),
+                "Test ElementEvent 3", TypeOfStatus.IN_PROGRESS, 1, null, null,
+                element2, new ArrayList<>());
+        ElementEvent elementEvent4 = new ElementEvent(null, LocalDateTime.now(), null, LocalDateTime.now(),
+                "Test ElementEvent 4", TypeOfStatus.IN_PROGRESS, 1, null, null,
+                element3, new ArrayList<>());
+        List<ElementEvent> elementEventList = List.of(elementEvent1, elementEvent2, elementEvent3, elementEvent4);
 
         companyList.forEach(company -> {
             companyService.add(company);
@@ -221,6 +255,12 @@ public class DataSeeding {
         });
         elementList.forEach(element -> {
             elementService.add(element);
+        });
+        demandAdHocList.forEach(demandAdHoc -> {
+            demandAdHocService.add(demandAdHoc);
+        });
+        elementEventList.forEach(elementEvent -> {
+            elementEventService.add(elementEvent);
         });
     }
 }
