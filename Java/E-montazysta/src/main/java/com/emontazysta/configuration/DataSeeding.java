@@ -3,14 +3,8 @@ package com.emontazysta.configuration;
 import com.emontazysta.enums.CompanyStatus;
 import com.emontazysta.enums.TypeOfPriority;
 import com.emontazysta.enums.TypeOfStatus;
-import com.emontazysta.model.Client;
-import com.emontazysta.model.Company;
-import com.emontazysta.model.Location;
-import com.emontazysta.model.Orders;
-import com.emontazysta.service.ClientService;
-import com.emontazysta.service.CompanyService;
-import com.emontazysta.service.LocationService;
-import com.emontazysta.service.OrdersService;
+import com.emontazysta.model.*;
+import com.emontazysta.service.*;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +22,8 @@ public class DataSeeding {
     private final ClientService clientService;
     private final LocationService locationService;
     private final OrdersService ordersService;
+    private final WarehouseService warehouseService;
+    private final ToolService toolService;
 
     @PostConstruct
     void setUp() {
@@ -79,6 +75,25 @@ public class DataSeeding {
                 null, null, null, location4, client4, new ArrayList<>(), new ArrayList<>());
         List<Orders> ordersList = List.of(order1, order2, order3, order4);
 
+        Warehouse warehouse1 = new Warehouse(null, "Test Warehouse 1", "Description",
+                "Opening Hours", company1, location1, new ArrayList<>(), new ArrayList<>());
+        Warehouse warehouse2 = new Warehouse(null, "Test Warehouse 2", "Description",
+                "Opening Hours", company1, location2, new ArrayList<>(), new ArrayList<>());
+        Warehouse warehouse3 = new Warehouse(null, "Test Warehouse 3", "Description",
+                "Opening Hours", company1, location3, new ArrayList<>(), new ArrayList<>());
+        Warehouse warehouse4 = new Warehouse(null, "Test Warehouse 4", "Description",
+                "Opening Hours", company2, location4, new ArrayList<>(), new ArrayList<>());
+        List<Warehouse> warehouseList = List.of(warehouse1, warehouse2, warehouse3, warehouse4);
+
+        Tool tool1 = new Tool(null, "Test Tool 1", null, null, new ArrayList<>(),
+                warehouse1, new ArrayList<>(), null);
+        Tool tool2 = new Tool(null, "Test Tool 2", null, null, new ArrayList<>(),
+                warehouse1, new ArrayList<>(), null);
+        Tool tool3 = new Tool(null, "Test Tool 3", null, null, new ArrayList<>(),
+                warehouse2, new ArrayList<>(), null);
+        Tool tool4 = new Tool(null, "Test Tool 4", null, null, new ArrayList<>(),
+                warehouse2, new ArrayList<>(), null);
+        List<Tool> toolList = List.of(tool1, tool2, tool3,tool4);
 
         companyList.forEach(company -> {
             companyService.add(company);
@@ -91,6 +106,12 @@ public class DataSeeding {
         });
         ordersList.forEach(order -> {
             ordersService.add(order);
+        });
+        warehouseList.forEach(warehouse -> {
+            warehouseService.add(warehouse);
+        });
+        toolList.forEach(tool -> {
+            toolService.add(tool);
         });
     }
 }
