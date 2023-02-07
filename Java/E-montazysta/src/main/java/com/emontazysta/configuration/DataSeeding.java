@@ -278,14 +278,14 @@ public class DataSeeding {
         attachmentList.forEach(attachment -> {
             attachmentService.add(attachment);
         });
+        demandAdHocList.forEach(demandAdHoc -> {
+            demandAdHocService.add(demandAdHoc);
+        });
         toolReleaseList.forEach(toolRelease -> {
             toolReleaseService.add(toolRelease);
         });
         elementList.forEach(element -> {
             elementService.add(element);
-        });
-        demandAdHocList.forEach(demandAdHoc -> {
-            demandAdHocService.add(demandAdHoc);
         });
         elementEventList.forEach(elementEvent -> {
             elementEventService.add(elementEvent);
