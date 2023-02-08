@@ -8,9 +8,10 @@ import org.tests.SetUp;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ToolControllerTests {
+
     private static String names[] = new String[]{"screwdriver", "drill", "knife", "lopata", "dluto"};
     private static int[] indexRangeForDeletion;
 
@@ -44,6 +45,7 @@ public class ToolControllerTests {
 
 
     }
+
     @Test
     @Order(2)
     public void checkIfToolIsInDB() {
