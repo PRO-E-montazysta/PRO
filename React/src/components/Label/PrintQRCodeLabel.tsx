@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import ReactToPrint from 'react-to-print';
 import QRCodeLabel from './QRCodeLabel';
+import { Box, Button } from '@mui/material';
 
 type LabelTypes = {
   label: string;
@@ -11,17 +12,17 @@ const PrintQRCodeLabel = ({ label, code }: LabelTypes) => {
   const componentRef = useRef(null);
 
   return (
-    <div>
+    <Box>
       <ReactToPrint
-        trigger={() => <button>Wydrukuj etykietę</button>}
+        trigger={() => <Button color="secondary" variant="contained">Wydrukuj etykietę</Button>}
         content={() => componentRef.current}
       />
-      <div  style={{display: "none"}}>
-        <div ref={componentRef}>
+      <Box display="none" >
+        <Box ref={componentRef}>
           <QRCodeLabel label={label} code={code}/>
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

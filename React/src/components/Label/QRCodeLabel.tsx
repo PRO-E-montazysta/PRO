@@ -1,3 +1,4 @@
+import { Box, Typography } from '@mui/material';
 import QRCode from 'react-qr-code';
 
 type LabelTypes = {
@@ -8,15 +9,32 @@ type LabelTypes = {
 const QRCodeLabel = ({ label, code }: LabelTypes) => {
 
   return (
-    <div style={{textAlign: "center", width: 500, backgroundColor: "white",padding: "10px", borderRadius: "5px", marginLeft:"auto", marginRight:"auto"}}>
-      <h1 style={{color: "#15171F", fontSize: 40, lineHeight: 1, marginBottom: 10, marginTop: 0, maxWidth: 500, wordWrap: "break-word"}}>
+    <Box
+      bgcolor="white"
+      width={500}
+      textAlign="center"
+      marginLeft="auto"
+      marginRight="auto"
+      padding="10px"
+      borderRadius="5px"
+    >
+      <Typography
+        fontWeight="bold"
+        color="#15171F"
+        fontSize={40}
+        lineHeight={1}
+        marginBottom="10px"
+        marginTop={0}
+        maxWidth="500px"
+        style={{wordWrap: "break-word"}}
+      >
         {label}
-      </h1>
-        <QRCode
-          value={code}
-          size={192}
+      </Typography>
+      <QRCode
+        value={code}
+        size={192}
         />
-    </div>
+    </Box>
   );
 }
 
