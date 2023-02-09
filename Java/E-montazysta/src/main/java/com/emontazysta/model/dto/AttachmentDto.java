@@ -15,4 +15,12 @@ public class AttachmentDto {
     private String description;
     private TypeOfAttachment typeOfAttachment;
     private Date createdAt;
+    private Long toolTypeId;
+    private Long commentId;
+    private Long employeeId;
+    private Long toolEventId;
+    private Long orderId;
+    private Long elementId;
+    private Long orderStageId;
+    private Long elementEventId;
 }

@@ -8,6 +8,6 @@ public interface AttachmentService {
 
     List<Attachment> getAll();
     Attachment getById(Long id);
-    void add(Attachment attachment);
+    Attachment add(Attachment attachment);
     void delete(Long id);
 }

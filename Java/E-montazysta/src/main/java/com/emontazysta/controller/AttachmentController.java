@@ -1,7 +1,6 @@
 package com.emontazysta.controller;
 
 import com.emontazysta.mapper.AttachmentMapper;
-import com.emontazysta.model.Attachment;
 import com.emontazysta.model.dto.AttachmentDto;
 import com.emontazysta.service.AttachmentService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,26 +23,27 @@ import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 public class AttachmentController {
 
     private final AttachmentService attachmentService;
+    private final AttachmentMapper attachmentMapper;
 
     @GetMapping("/all")
     @Operation(description = "Allows to get all Attachments.", security = @SecurityRequirement(name = "bearer-key"))
-    public ResponseEntity <List<AttachmentDto>> getAll() {
+    public ResponseEntity<List<AttachmentDto>> getAll() {
         return ResponseEntity.ok().body(attachmentService.getAll().stream()
-                .map(AttachmentMapper::attachmentDto)
+                .map(attachmentMapper::attachmentDto)
                 .collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
     @Operation(description = "Allows to get Attachment by given Id.", security = @SecurityRequirement(name = "bearer-key"))
-    public ResponseEntity <AttachmentDto> getById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(AttachmentMapper.attachmentDto(attachmentService.getById(id)));
+    public ResponseEntity<AttachmentDto> getById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(attachmentMapper.attachmentDto(attachmentService.getById(id)));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Attachment.", security = @SecurityRequirement(name = "bearer-key"))
-    public void add(@Valid @RequestBody Attachment attachment) {
-        attachmentService.add(attachment);
+    public AttachmentDto add(@Valid @RequestBody AttachmentDto attachmentDto) {
+        return attachmentMapper.attachmentDto(attachmentService.add(attachmentMapper.toEntity(attachmentDto)));
     }
 
     @DeleteMapping("/{id}")

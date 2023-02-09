@@ -28,9 +28,9 @@ public class AttachmentServiceImpl implements AttachmentService {
     }
 
     @Override
-    public void add(Attachment attachment) {
+    public Attachment add(Attachment attachment) {
         attachment.setCreatedAt(new Date());
-        repository.save(attachment);
+        return repository.save(attachment);
     }
 
     @Override
