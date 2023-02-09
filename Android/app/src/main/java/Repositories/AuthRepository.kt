@@ -1,0 +1,4 @@
+package Repositories
+
+class AuthRepository {
+}
