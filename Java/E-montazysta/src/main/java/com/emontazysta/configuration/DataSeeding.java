@@ -36,6 +36,7 @@ public class DataSeeding {
     private final ElementInWarehouseService elementInWarehouseService;
     private final ElementReturnReleaseService elementReturnReleaseService;
     private final AppUserService appUserService;
+    private final UnavailabilityService unavailabilityService;
 
     @PostConstruct
     void setUp() {
@@ -142,6 +143,12 @@ public class DataSeeding {
         Employment employment12 = new Employment(null, new Date(), null, company1, salesRepresentative2);
         Employment employment13 = new Employment(null, new Date(), null, company1, manager1);
         Employment employment14 = new Employment(null, new Date(), null, company1, manager2);
+
+        Unavailability unavailability1 = new Unavailability(null, TypeOfUnavailability.TYPE1,
+                "Test Unavailability 1", new Date(), new Date(), fitter1, manager1);
+        Unavailability unavailability2 = new Unavailability(null, TypeOfUnavailability.TYPE1,
+                "Test Unavailability 2", new Date(), new Date(), fitter2, manager1);
+        List<Unavailability> unavailabilityList = List.of(unavailability1, unavailability2);
 
         Client client1 = new Client(null, "Test Client 1 - from Company 1", "em@i.l",
                 company1, new ArrayList<>());
@@ -394,6 +401,9 @@ public class DataSeeding {
         });
         elementReturnReleaseList.forEach(elementReturnRelease -> {
             elementReturnReleaseService.add(elementReturnRelease);
+        });
+        unavailabilityList.forEach(unavailability -> {
+            unavailabilityService.add(unavailability);
         });
     }
 }
