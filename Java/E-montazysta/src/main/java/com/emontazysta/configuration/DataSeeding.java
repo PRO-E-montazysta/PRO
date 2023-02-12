@@ -128,6 +128,21 @@ public class DataSeeding {
                 "Closed company", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         List<Company> companyList = List.of(company1, company2, company3, company4);
 
+        Employment employment1 = new Employment(null, new Date(), null, company1, fitter1);
+        Employment employment2 = new Employment(null, new Date(), null, company1, fitter2);
+        Employment employment3 = new Employment(null, new Date(), null, company1, foreman1);
+        Employment employment4 = new Employment(null, new Date(), null, company1, foreman2);
+        Employment employment5 = new Employment(null, new Date(), null, company1, warehouseman1);
+        Employment employment6 = new Employment(null, new Date(), null, company1, warehouseman2);
+        Employment employment7 = new Employment(null, new Date(), null, company1, warehouseManager1);
+        Employment employment8 = new Employment(null, new Date(), null, company1, warehouseManager2);
+        Employment employment9 = new Employment(null, new Date(), null, company1, specialist1);
+        Employment employment10 = new Employment(null, new Date(), null, company1, specialist2);
+        Employment employment11 = new Employment(null, new Date(), null, company1, salesRepresentative1);
+        Employment employment12 = new Employment(null, new Date(), null, company1, salesRepresentative2);
+        Employment employment13 = new Employment(null, new Date(), null, company1, manager1);
+        Employment employment14 = new Employment(null, new Date(), null, company1, manager2);
+
         Client client1 = new Client(null, "Test Client 1 - from Company 1", "em@i.l",
                 company1, new ArrayList<>());
         Client client2 = new Client(null, "Test Client 2 - from Company 1", "em@i.l",
