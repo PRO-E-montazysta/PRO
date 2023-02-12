@@ -175,14 +175,14 @@ public class DataSeeding {
         List<Location> locationList = List.of(location1, location2, location3, location4);
 
         Orders order1 = new Orders(null, "Test Order 1 - from Client 1", TypeOfStatus.PLANNED, new Date(),
-                new Date(), null, null, TypeOfPriority.NORMAL, company1, null,
-                null, null, null, location1, client1, new ArrayList<>(), new ArrayList<>());
+                new Date(), null, null, TypeOfPriority.NORMAL, company1, manager1,
+                foreman1, specialist1, salesRepresentative1, location1, client1, new ArrayList<>(), new ArrayList<>());
         Orders order2 = new Orders(null, "Test Order 2 - from Client 1", TypeOfStatus.PLANNED, new Date(),
-                new Date(), null, null, TypeOfPriority.NORMAL, company1, null,
-                null, null, null, location2, client1, new ArrayList<>(), new ArrayList<>());
+                new Date(), null, null, TypeOfPriority.NORMAL, company1, manager2,
+                foreman2, specialist2, salesRepresentative2, location2, client1, new ArrayList<>(), new ArrayList<>());
         Orders order3 = new Orders(null, "Test Order 3 - from Client 2", TypeOfStatus.PLANNED, new Date(),
-                new Date(), null, null, TypeOfPriority.NORMAL, company1, null,
-                null, null, null, location3, client2, new ArrayList<>(), new ArrayList<>());
+                new Date(), null, null, TypeOfPriority.NORMAL, company1, manager1,
+                foreman1, specialist1, salesRepresentative1, location3, client2, new ArrayList<>(), new ArrayList<>());
         Orders order4 = new Orders(null, "Test Order 4 - from Client 4", TypeOfStatus.PLANNED, new Date(),
                 new Date(), null, null, TypeOfPriority.NORMAL, company4, null,
                 null, null, null, location4, client4, new ArrayList<>(), new ArrayList<>());
@@ -190,38 +190,38 @@ public class DataSeeding {
 
         OrderStage orderStage1 = new OrderStage(null, "Test OrderStage 1", OrderStatus.TODO, new BigDecimal(1),
                 1, null, null, null, 1, 1,
-                1, new ArrayList<>(), null, new ArrayList<>(), new ArrayList<>(),
+                1, new ArrayList<>(), foreman1, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         OrderStage orderStage2 = new OrderStage(null, "Test OrderStage 2", OrderStatus.TODO, new BigDecimal(2),
                 2, null, null, null, 1, 1,
-                1, new ArrayList<>(), null, new ArrayList<>(), new ArrayList<>(),
+                1, new ArrayList<>(), foreman1, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         OrderStage orderStage3 = new OrderStage(null, "Test OrderStage 3", OrderStatus.TODO, new BigDecimal(3),
                 3, null, null, null, 1, 1,
-                1, new ArrayList<>(), null, new ArrayList<>(), new ArrayList<>(),
+                1, new ArrayList<>(), foreman1, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         OrderStage orderStage4 = new OrderStage(null, "Test OrderStage 4", OrderStatus.TODO, new BigDecimal(4),
                 1, null, null, null, 1, 1,
-                1, new ArrayList<>(), null, new ArrayList<>(), new ArrayList<>(),
+                1, new ArrayList<>(), foreman2, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), order2, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         List<OrderStage> orderStageList = List.of(orderStage1, orderStage2, orderStage3, orderStage4);
 
         DemandAdHoc demandAdHoc1 = new DemandAdHoc(null, "Test DemandAdHoc 1", null,
                 null, null, null, null,
-                null, new ArrayList<>(), new ArrayList<>(), null, null,
-                null, null, null, new ArrayList<>());
+                null, new ArrayList<>(), new ArrayList<>(), warehouseManager1, warehouseman1,
+                specialist1, manager1, foreman1, new ArrayList<>());
         DemandAdHoc demandAdHoc2 = new DemandAdHoc(null, "Test DemandAdHoc 2", null,
                 null, null, null, null,
-                null, new ArrayList<>(), new ArrayList<>(), null, null,
-                null, null, null, new ArrayList<>());
+                null, new ArrayList<>(), new ArrayList<>(), warehouseManager1, warehouseman1,
+                specialist1, manager1, foreman1, new ArrayList<>());
         DemandAdHoc demandAdHoc3 = new DemandAdHoc(null, "Test DemandAdHoc 3", null,
                 null, null, null, null,
-                null, new ArrayList<>(), new ArrayList<>(), null, null,
-                null, null, null, new ArrayList<>());
+                null, new ArrayList<>(), new ArrayList<>(), warehouseManager2, warehouseman2,
+                specialist2, manager2, foreman2, new ArrayList<>());
         DemandAdHoc demandAdHoc4 = new DemandAdHoc(null, "Test DemandAdHoc 4", null,
                 null, null, null, null,
-                null, new ArrayList<>(), new ArrayList<>(), null, null,
-                null, null, null, new ArrayList<>());
+                null, new ArrayList<>(), new ArrayList<>(), warehouseManager2, warehouseman2,
+                specialist2, manager2, foreman2, new ArrayList<>());
         List<DemandAdHoc> demandAdHocList = List.of(demandAdHoc1, demandAdHoc2, demandAdHoc3, demandAdHoc4);
 
         Warehouse warehouse1 = new Warehouse(null, "Test Warehouse 1", "Description",
@@ -264,14 +264,14 @@ public class DataSeeding {
                 "Test ToolEvent 4", TypeOfStatus.IN_PROGRESS, null, null, tool3, new ArrayList<>());
         List<ToolEvent> toolEventList = List.of(toolEvent1, toolEvent2, toolEvent3, toolEvent4);
 
-        Comment comment1 = new Comment(null, "Test Comment 1", null, null,
-                null, new ArrayList<>());
-        Comment comment2 = new Comment(null, "Test Comment 2", null, null,
-                null, new ArrayList<>());
-        Comment comment3 = new Comment(null, "Test Comment 3", null, null,
-                null, new ArrayList<>());
-        Comment comment4 = new Comment(null, "Test Comment 4", null, null,
-                null, new ArrayList<>());
+        Comment comment1 = new Comment(null, "Test Comment 1", null, fitter1,
+                orderStage1, new ArrayList<>());
+        Comment comment2 = new Comment(null, "Test Comment 2", null, fitter1,
+                orderStage1, new ArrayList<>());
+        Comment comment3 = new Comment(null, "Test Comment 3", null, fitter2,
+                orderStage1, new ArrayList<>());
+        Comment comment4 = new Comment(null, "Test Comment 4", null, fitter2,
+                orderStage1, new ArrayList<>());
         List<Comment> commentList = List.of(comment1, comment2, comment3, comment4);
 
         Attachment attachment1 = new Attachment(null, "Test Attachment 1", "URL", "Description",
@@ -334,17 +334,17 @@ public class DataSeeding {
                 elementInWarehouse3, elementInWarehouse4);
 
         ElementReturnRelease elementReturnRelease1 = new ElementReturnRelease(null, LocalDateTime.now(),
-                1, 1, LocalDateTime.now(), null, element1, demandAdHoc1,
-                null, orderStage1);
+                1, 1, LocalDateTime.now(), warehouseman1, element1, demandAdHoc1,
+                foreman1, orderStage1);
         ElementReturnRelease elementReturnRelease2 = new ElementReturnRelease(null, LocalDateTime.now(),
-                1, 0, null, null, element2, demandAdHoc1,
-                null, orderStage1);
+                1, 0, null, warehouseman1, element2, demandAdHoc1,
+                foreman1, orderStage1);
         ElementReturnRelease elementReturnRelease3 = new ElementReturnRelease(null, LocalDateTime.now(),
-                1, 0, null, null, element3, demandAdHoc3,
-                null, orderStage1);
+                1, 0, null, warehouseManager1, element3, demandAdHoc3,
+                foreman2, orderStage1);
         ElementReturnRelease elementReturnRelease4 = new ElementReturnRelease(null, LocalDateTime.now(),
-                1, 0, null, null, element4, demandAdHoc4,
-                null, orderStage1);
+                1, 0, null, warehouseman2, element4, demandAdHoc4,
+                foreman2, orderStage1);
         List<ElementReturnRelease> elementReturnReleaseList = List.of(elementReturnRelease1, elementReturnRelease2,
                 elementReturnRelease3, elementReturnRelease4);
 
