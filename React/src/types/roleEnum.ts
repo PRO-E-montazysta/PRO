@@ -1,7 +1,12 @@
 export enum Role {
     '*' ='*',
-    a = 'a',
-    b = 'b',
     ADMIN = 'ADMIN',
-    CLOUD_ADMIN = 'CLOUD_ADMIN'
+    CLOUD_ADMIN = 'CLOUD_ADMIN',
+    MANAGER = 'MANAGER', 
+    MERCHANT = 'MERCHANT',
+    EXPERT = 'EXPERT',
+    WAREHOUSEMAN = 'WAREHOUSEMAN',
+    WAREHOUSE_MANAGER = 'WAREHOUSE MANAGER',
+    ASSEMBLER = 'ASSEMBLER',
+    BRIGADE_LEADER = 'BRIGADE_LEADER'
 }

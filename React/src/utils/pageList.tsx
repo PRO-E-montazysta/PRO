@@ -49,80 +49,119 @@ export const pageList: Array<PageProps> =
                 [
                     {
                         inNav: true,
-                        name: 'Mock',
-                        path: '/mock',
-                        allowedRoles: [Role["*"]],
-                        component: <MockView />
+                        name: 'Lista Kont',
+                        path: '/account-list',
+                        allowedRoles: [Role["*"]], // admin 
+                        component: <Employees />
                     },
                     {
                         inNav: true,
-                        name: 'Pracownicy',
-                        path: '/employees',
-                        allowedRoles: [Role["*"]],
+                        name: 'Lista Firm',
+                        path: '/company-list',
+                        allowedRoles: [Role["*"]], // cloud-admin 
                         component: <Employees />
                     },
-
+                    {
+                        inNav: true,
+                        name: 'Strona główna',
+                        path: '/home-warehouseman',
+                        allowedRoles: [Role["*"]], // warehouseman / magazynier
+                        component: <Employees />
+                    },
+                    {
+                        inNav: true,
+                        name: 'Lista Magazynów',
+                        path: '/warehouse-list',
+                        allowedRoles: [Role["*"]], // assembler / magazynier, specjalist, handlowiec, menager, kierownik magazynu, montazysta, brygadzista
+                        component: <Employees />
+                    },
+                    {
+                        inNav: true,
+                        name: 'Wydanie / Przyjęcie',
+                        path: '/delivery-receipt',
+                        allowedRoles: [Role["*"]], // assembler / magazynier, kierownik magazynu
+                        component: <Employees />
+                    },
+                    {
+                        inNav: true,
+                        name: 'Zapotrzebowania',
+                        path: '/demand',
+                        allowedRoles: [Role["*"]], // assembler / magazynier, kierownik magazynu
+                        component: <Employees />
+                    },
+                    {
+                        inNav: true,
+                        name: 'Usterki',
+                        path: '/issues',
+                        allowedRoles: [Role["*"]], // assembler / magazynier, manager, brygadzista
+                        component: <Employees />
+                    },
+                    {
+                        inNav: true,
+                        name: 'Strona główna',
+                        path: '/home-assembler',
+                        allowedRoles: [Role["*"]], // assembler / montażysta
+                        component: <Employees />
+                    },
                     {
                         inNav: true,
                         name: 'Zlecenia',
-                        path: '/zlecenia',
-                        allowedRoles: [Role.a, Role.b, Role.CLOUD_ADMIN],
-                        children: [
-                            {
-                                inNav: true,
-                                name: 'Moje',
-                                path: '/zlecenia/moje',
-                                allowedRoles: [Role.a],
-                                component: <div>moje zlecenia</div>
-                            },
-                            {
-                                inNav: true,
-                                name: 'Twoje',
-                                path: '/zlecenia/twoje',
-                                allowedRoles: [Role.b],
-                                component: <div>twje zlecenia</div>
-                            },
-                            {
-                                inNav: true,
-                                name: 'Nasze',
-                                path: '/zlecenia/nasze',
-                                allowedRoles: [Role.a, Role.b],
-                                component: <div>Nasze zlecenia</div>
-                            },
-                            {
-                                inNav: true,
-                                name: 'Wszystkich',
-                                path: '/zlecenia/wszystkich',
-                                allowedRoles: [Role["*"]],
-                                component: <div>Wszystkich zlecenia</div>
-                            },
-                            {
-                                inNav: true,
-                                name: 'Nasze',
-                                path: '/zlecenia/niczyje',
-                                allowedRoles: [],
-                                component: <div>Niczyje zlecenia</div>
-                            },
-                            {
-                                inNav: true,
-                                name: 'Admin',
-                                path: '/zlecenia/admin',
-                                allowedRoles: [Role.ADMIN],
-                                component: <div>Admina zlecenia</div>
-                            },
-                            {
-                                inNav: true,
-                                name: 'Cloud admin',
-                                path: '/zlecenia/cloudadmin',
-                                allowedRoles: [Role.CLOUD_ADMIN],
-                                component: <div>Admina chmury zlecenia</div>
-                            },
-                        ]
-                    }
+                        path: '/orders',
+                        allowedRoles: [Role["*"]], // assembler / montażysta, specjalista, manager, handlowiec, brygadzista
+                        component: <Employees />
+                    },
+                    {
+                        inNav: true,
+                        name: 'Strona główna',
+                        path: '/home-warehouse-manager',
+                        allowedRoles: [Role["*"]], // assembler / kierownik magazynu
+                        component: <Employees />
+                    },
+                    {
+                        inNav: true,
+                        name: 'Strona główna',
+                        path: '/home-brigade-leader',
+                        allowedRoles: [Role["*"]], // assembler / brygadzista
+                        component: <Employees />
+                    },
+                    {
+                        inNav: true,
+                        name: 'Pobranie / Zdanie',
+                        path: '/home-retrieve-return',
+                        allowedRoles: [Role["*"]], // assembler / brygadzista
+                        component: <Employees />
+                    },
+                    {
+                        inNav: true,
+                        name: 'Harmonogram',
+                        path: '/home-schedule',
+                        allowedRoles: [Role["*"]], // assembler / brygadzista, manager
+                        component: <Employees />
+                    },
+                    {
+                        inNav: true,
+                        name: 'Strona główna',
+                        path: '/home-manager',
+                        allowedRoles: [Role["*"]], // assembler / manager
+                        component: <Employees />
+                    },
+                    {
+                        inNav: true,
+                        name: 'Strona główna',
+                        path: '/home-espert',
+                        allowedRoles: [Role["*"]], // assembler / specjalista
+                        component: <Employees />
+                    },
+                    {
+                        inNav: true,
+                        name: 'Strona główna',
+                        path: '/home-merchant',
+                        allowedRoles: [Role["*"]], // assembler / handlowiec
+                        component: <Employees />
+                    },
                 ]
         }
     ]
-
 
 
 // export const getAbsolutePath = () {
