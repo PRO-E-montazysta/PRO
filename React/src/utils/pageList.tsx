@@ -8,15 +8,15 @@ import HomePageWarehousemen from "../components/Warehousemen/HomePage"
 import HomePageWarehouseManager from "../components/WarehouseManagers/HomePage"
 import HomePageExpert from "../components/Experts/HomePage"
 import HomePageManager from "../components/Managers/HomePage"
-import HomePageMerchant from "../components/Merchants/HomePage"
-import HomePageBrigadeLeader from "../components/BrigadeLeaders/HomePage"
-import HomePageAssembler from "../components/Assemblers/HomePage"
+import HomePageSalesRepresentative from "../components/SalesRepresentatives/HomePage"
+import HomePageForeman from "../components/Foremen/HomePage"
+import HomePageFitter from "../components/Fitters/HomePage"
 import WarehouseList from "../components/WarehouseList/WarehouseList"
 import DeliveryReceipt from "../components/DeliveryReceipt/DeliveryReceipt"
 import Demand from "../components/Demand/Demand"
 import Issues from "../components/Issues/Issues"
 import Orders from "../components/Orders/Orders"
-import RetrieveReturn from "../components/BrigadeLeaders/RetrieveReturn"
+import RetrieveReturn from "../components/Foremen/RetrieveReturn"
 import Schedules from "../components/Schedules/Schedules"
 import LoginPage from "../Pages/LoginPage"
 import Unauthorized from "../Pages/Unauthorized"
@@ -95,85 +95,85 @@ export const pageList: Array<PageProps> =
                         inNav: true,
                         name: 'Wydanie / Przyjęcie',
                         path: '/delivery-receipt',
-                        allowedRoles: [Role["*"]], // assembler / magazynier, kierownik magazynu
+                        allowedRoles: [Role["*"]], //  magazynier, kierownik magazynu
                         component: <DeliveryReceipt />
                     },
                     {
                         inNav: true,
                         name: 'Zapotrzebowania',
                         path: '/demand',
-                        allowedRoles: [Role["*"]], // assembler / magazynier, kierownik magazynu
+                        allowedRoles: [Role["*"]], // magazynier, kierownik magazynu
                         component: <Demand />
                     },
                     {
                         inNav: true,
                         name: 'Usterki',
                         path: '/issues',
-                        allowedRoles: [Role["*"]], // assembler / magazynier, manager, brygadzista
+                        allowedRoles: [Role["*"]], //  / magazynier, manager, brygadzista
                         component: <Issues />
                     },
                     {
                         inNav: true,
                         name: 'Strona główna',
-                        path: '/home-assembler',
-                        allowedRoles: [Role["*"]], // assembler / montażysta
-                        component: <HomePageAssembler />
+                        path: '/home-fitter',
+                        allowedRoles: [Role["*"]], //  / montażysta
+                        component: <HomePageFitter />
                     },
                     {
                         inNav: true,
                         name: 'Zlecenia',
                         path: '/orders',
-                        allowedRoles: [Role["*"]], // assembler / montażysta, specjalista, manager, handlowiec, brygadzista
+                        allowedRoles: [Role["*"]], //  / montażysta, specjalista, manager, handlowiec, brygadzista
                         component: <Orders />
                     },
                     {
                         inNav: true,
                         name: 'Strona główna',
                         path: '/home-warehouse-manager',
-                        allowedRoles: [Role["*"]], // assembler / kierownik magazynu
+                        allowedRoles: [Role["*"]], //  / kierownik magazynu
                         component: <HomePageWarehouseManager />
                     },
                     {
                         inNav: true,
                         name: 'Strona główna',
                         path: '/home-brigade-leader',
-                        allowedRoles: [Role["*"]], // assembler / brygadzista
-                        component: <HomePageBrigadeLeader />
+                        allowedRoles: [Role["*"]], //  / brygadzista
+                        component: <HomePageForeman />
                     },
                     {
                         inNav: true,
                         name: 'Pobranie / Zdanie',
                         path: '/home-retrieve-return',
-                        allowedRoles: [Role["*"]], // assembler / brygadzista
+                        allowedRoles: [Role["*"]], //  / brygadzista
                         component: <RetrieveReturn />
                     },
                     {
                         inNav: true,
                         name: 'Harmonogram',
                         path: '/home-schedule',
-                        allowedRoles: [Role["*"]], // assembler / brygadzista, manager
+                        allowedRoles: [Role["*"]], //  / brygadzista, manager
                         component: <Schedules />
                     },
                     {
                         inNav: true,
                         name: 'Strona główna',
                         path: '/home-manager',
-                        allowedRoles: [Role["*"]], // assembler / manager
+                        allowedRoles: [Role["*"]], //  / manager
                         component: <HomePageManager />
                     },
                     {
                         inNav: true,
                         name: 'Strona główna',
                         path: '/home-expert',
-                        allowedRoles: [Role["*"]], // assembler / specjalista
+                        allowedRoles: [Role["*"]], //  / specjalista
                         component: <HomePageExpert />
                     },
                     {
                         inNav: true,
                         name: 'Strona główna',
-                        path: '/home-merchant',
-                        allowedRoles: [Role["*"]], // assembler / handlowiec
-                        component: <HomePageMerchant />
+                        path: '/home-SalesRepresentative',
+                        allowedRoles: [Role["*"]], //  / handlowiec
+                        component: <HomePageSalesRepresentative />
                     },
                 ]
         }
