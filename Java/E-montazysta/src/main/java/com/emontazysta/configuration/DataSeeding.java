@@ -42,6 +42,85 @@ public class DataSeeding {
         AppUser appUser = new AppUser(null, "Test AppUser", "Test AppUser", "em@i.l",
                 "password", "testuser", null, Set.of(Role.CLOUD_ADMIN));
 
+        Fitter fitter1 = new Fitter(null, "Test Fitter 1", "Test Fitter 1", "fitter1@ema.il",
+                "password", "fitter1", null, Set.of(Role.FITTER), "fitter1Phone",
+                "fitter1Pesel", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        Fitter fitter2 = new Fitter(null, "Test Fitter 2", "Test Fitter 2", "fitter2@ema.il",
+                "password", "fitter2", null, Set.of(Role.FITTER), "fitter2Phone",
+                "fitter2Pesel", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        Foreman foreman1 = new Foreman(null, "Test Foreman 1", "Test Foreman 1", "foreman1@ema.il",
+                "password", "foreman2", null, Set.of(Role.FOREMAN), "foreman1Phone",
+                "foreman1Pesel", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        Foreman foreman2 = new Foreman(null, "Test Foreman 2", "Test Foreman 2", "foreman2@ema.il",
+                "password", "foreman2", null, Set.of(Role.FOREMAN), "foreman2Phone",
+                "foreman2Pesel", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        Warehouseman warehouseman1 = new Warehouseman(null, "Test Warehouseman 1", "Test Warehouseman 1",
+                "warehouseman1@ema.il", "password", "warehouseman1", null,
+                Set.of(Role.WAREHOUSE_MAN), "warehouseman1Phone", "warehouseman1Pesel", new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        Warehouseman warehouseman2 = new Warehouseman(null, "Test Warehouseman 2", "Test Warehouseman 2",
+                "warehouseman2@ema.il", "password", "warehouseman2", null,
+                Set.of(Role.WAREHOUSE_MAN), "warehouseman2Phone", "warehouseman2Pesel", new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        WarehouseManager warehouseManager1 = new WarehouseManager(null, "Test WarehouseManager 1", "Test WarehouseManager 1",
+                "warehouseManager1@ema.il", "password", "warehouseManager1", null,
+                Set.of(Role.WAREHOUSE_MANAGER), "warehouseManager1Phone", "warehouseManager1Pesel", new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        WarehouseManager warehouseManager2 = new WarehouseManager(null, "Test WarehouseManager 2", "Test WarehouseManager 2",
+                "warehouseManager2@ema.il", "password", "warehouseManager1", null,
+                Set.of(Role.WAREHOUSE_MANAGER), "warehouseManager2Phone", "warehouseManager2Pesel", new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        Specialist specialist1 = new Specialist(null, "Test Specialist 1", "Test Specialist 1",
+                "specialist1@ema.il", "password", "specialist1", null,
+                Set.of(Role.SPECIALIST), "specialist1Phone", "specialist1Pesel", new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        Specialist specialist2 = new Specialist(null, "Test Specialist 2", "Test Specialist 2",
+                "specialist2@ema.il", "password", "specialist2", null,
+                Set.of(Role.SPECIALIST), "specialist2Phone", "specialist2Pesel", new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        SalesRepresentative salesRepresentative1 = new SalesRepresentative(null, "Test SalesRepresentative 1",
+                "Test SalesRepresentative 1", "salesRepresentative1@ema.il", "password",
+                "salesRepresentative1", null, Set.of(Role.SALES_REPRESENTATIVE),
+                "salesRepresentative1Phone", "salesRepresentative1Pesel", new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        SalesRepresentative salesRepresentative2 = new SalesRepresentative(null, "Test SalesRepresentative 2",
+                "Test SalesRepresentative 2", "salesRepresentative2@ema.il", "password",
+                "salesRepresentative2", null, Set.of(Role.SALES_REPRESENTATIVE),
+                "salesRepresentative2Phone", "salesRepresentative2Pesel", new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        Manager manager1 = new Manager(null, "Test Manager 1", "Test Manager 1", "manager1@ema.il",
+                "password", "manager1", null, Set.of(Role.MANAGER),
+                "manager1Phone", "manager1Pesel", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        Manager manager2 = new Manager(null, "Test Manager 2", "Test Manager 2", "manager2@ema.il",
+                "password", "manager2", null, Set.of(Role.MANAGER),
+                "manager2Phone", "manager2Pesel", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+//        List<AppUser> appUserList = List.of(appUser, fitter1, fitter2, foreman1, foreman2, warehouseman1, warehouseman2,
+//                warehouseManager1, warehouseManager2, specialist1, specialist2, salesRepresentative1, salesRepresentative2,
+//                manager1, manager2);
+        List<AppUser> appUserList = List.of(appUser, fitter1, fitter2, foreman1, foreman2, warehouseman1, warehouseman2,
+                warehouseManager1, specialist1, specialist2, salesRepresentative1, salesRepresentative2,
+                manager1, manager2);
+
         Company company1 = new Company(null, "Test Comapny 1", null, CompanyStatus.ACTIVE,
                 "They pay", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         Company company2 = new Company(null, "Test Comapny 2", null, CompanyStatus.ACTIVE,
@@ -250,7 +329,9 @@ public class DataSeeding {
         List<ElementReturnRelease> elementReturnReleaseList = List.of(elementReturnRelease1, elementReturnRelease2,
                 elementReturnRelease3, elementReturnRelease4);
 
-        appUserService.add(appUser);
+        appUserList.forEach(user -> {
+            appUserService.add(user);
+        });
         companyList.forEach(company -> {
             companyService.add(company);
         });
