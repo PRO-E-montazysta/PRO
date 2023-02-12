@@ -1,5 +1,5 @@
 import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
-import Unauthorized from "../pages/Unauthorized";
+import Unauthorized from "../Pages/Unauthorized";
 import { Role } from "../types/roleEnum";
 import { getRolesFromToken, getToken } from "./token";
 

@@ -5,7 +5,7 @@ import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { setToken } from '../../utils/token';
-import { logIn } from '../../api/authentication';
+import { logIn } from '../../api/Authentication';
 
 const CustomTextField = styled(TextField)(({ theme }) => ({
   label: { shrink: true, color: theme.palette.secondary.contrastText },
