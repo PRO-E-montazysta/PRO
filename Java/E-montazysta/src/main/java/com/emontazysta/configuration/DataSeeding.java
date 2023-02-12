@@ -51,7 +51,7 @@ public class DataSeeding {
                 "fitter2Pesel", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         Foreman foreman1 = new Foreman(null, "Test Foreman 1", "Test Foreman 1", "foreman1@ema.il",
-                "password", "foreman2", null, Set.of(Role.FOREMAN), "foreman1Phone",
+                "password", "foreman1", null, Set.of(Role.FOREMAN), "foreman1Phone",
                 "foreman1Pesel", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
@@ -77,7 +77,7 @@ public class DataSeeding {
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         WarehouseManager warehouseManager2 = new WarehouseManager(null, "Test WarehouseManager 2", "Test WarehouseManager 2",
-                "warehouseManager2@ema.il", "password", "warehouseManager1", null,
+                "warehouseManager2@ema.il", "password", "warehouseManager2", null,
                 Set.of(Role.WAREHOUSE_MANAGER), "warehouseManager2Phone", "warehouseManager2Pesel", new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
@@ -114,11 +114,8 @@ public class DataSeeding {
                 "manager2Phone", "manager2Pesel", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-//        List<AppUser> appUserList = List.of(appUser, fitter1, fitter2, foreman1, foreman2, warehouseman1, warehouseman2,
-//                warehouseManager1, warehouseManager2, specialist1, specialist2, salesRepresentative1, salesRepresentative2,
-//                manager1, manager2);
         List<AppUser> appUserList = List.of(appUser, fitter1, fitter2, foreman1, foreman2, warehouseman1, warehouseman2,
-                warehouseManager1, specialist1, specialist2, salesRepresentative1, salesRepresentative2,
+                warehouseManager1, warehouseManager2, specialist1, specialist2, salesRepresentative1, salesRepresentative2,
                 manager1, manager2);
 
         Company company1 = new Company(null, "Test Comapny 1", null, CompanyStatus.ACTIVE,
