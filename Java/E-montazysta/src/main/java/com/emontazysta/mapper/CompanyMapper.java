@@ -1,17 +1,69 @@
 package com.emontazysta.mapper;
 
+import com.emontazysta.model.Client;
 import com.emontazysta.model.Company;
+import com.emontazysta.model.Employment;
+import com.emontazysta.model.Orders;
+import com.emontazysta.model.Warehouse;
 import com.emontazysta.model.dto.CompanyDto;
+import com.emontazysta.repository.ClientRepository;
+import com.emontazysta.repository.EmploymentRepository;
+import com.emontazysta.repository.OrderRepository;
+import com.emontazysta.repository.WarehouseRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Component
+@RequiredArgsConstructor
 public class CompanyMapper {
 
-    public static CompanyDto companyToDto(Company company) {
+    private final WarehouseRepository warehouseRepository;
+    private final OrderRepository orderRepository;
+    private final ClientRepository clientRepository;
+    private final EmploymentRepository employmentRepository;
+
+    public CompanyDto toDto(Company company) {
         return CompanyDto.builder()
                 .id(company.getId())
                 .companyName(company.getCompanyName())
                 .createdAt(company.getCreatedAt())
                 .status(company.getStatus())
                 .statusReason(company.getStatusReason())
+                .warehouses(company.getWarehouses().stream().map(Warehouse::getId).collect(Collectors.toList()))
+                .orders(company.getOrders().stream().map(Orders::getId).collect(Collectors.toList()))
+                .clients(company.getClients().stream().map(Client::getId).collect(Collectors.toList()))
+                .employments(company.getEmployments().stream().map(Employment::getId).collect(Collectors.toList()))
+                .build();
+    }
+
+    public Company toEntity(CompanyDto companyDto) {
+
+        List<Warehouse> warehouseList = new ArrayList<>();
+        companyDto.getWarehouses().forEach(warehouseId -> warehouseList.add(warehouseRepository.getReferenceById(warehouseId)));
+
+        List<Orders> ordersList = new ArrayList<>();
+        companyDto.getOrders().forEach(orderId -> ordersList.add(orderRepository.getReferenceById(orderId)));
+
+        List<Client> clientList = new ArrayList<>();
+        companyDto.getClients().forEach(clientId -> clientList.add(clientRepository.getReferenceById(clientId)));
+
+        List<Employment> employmentList = new ArrayList<>();
+        companyDto.getEmployments().forEach(employmentId -> employmentList.add(employmentRepository.getReferenceById(employmentId)));
+
+        return Company.builder()
+                .id(companyDto.getId())
+                .companyName(companyDto.getCompanyName())
+                .createdAt(companyDto.getCreatedAt())
+                .status(companyDto.getStatus())
+                .statusReason(companyDto.getStatusReason())
+                .warehouses(warehouseList)
+                .orders(ordersList)
+                .clients(clientList)
+                .employments(employmentList)
                 .build();
     }
 }

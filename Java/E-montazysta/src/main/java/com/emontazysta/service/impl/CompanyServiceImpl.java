@@ -1,6 +1,8 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.mapper.CompanyMapper;
 import com.emontazysta.model.Company;
+import com.emontazysta.model.dto.CompanyDto;
 import com.emontazysta.repository.CompanyRepository;
 import com.emontazysta.service.CompanyService;
 import lombok.RequiredArgsConstructor;
@@ -9,29 +11,34 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CompanyServiceImpl implements CompanyService {
 
     private final CompanyRepository repository;
+    private final CompanyMapper companyMapper;
 
     @Override
-    public List<Company> getAll() {
-        return repository.findAll();
+    public List<CompanyDto> getAll() {
+        return repository.findAll().stream()
+                .map(companyMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Company getById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
+    public CompanyDto getById(Long id) {
+        Company company = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return companyMapper.toDto(company);
     }
 
     @Override
-    public void add(Company company) {
+    public CompanyDto add(CompanyDto companyDto) {
+        Company company = companyMapper.toEntity(companyDto);
         company.setCreatedAt(new Date());
 
-        repository.save(company);
+        return companyMapper.toDto(repository.save(company));
     }
 
     @Override
@@ -40,11 +47,17 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public void update(Long id, Company company) {
-        Company updatedCompany = this.getById(id);
-        updatedCompany.setCompanyName(company.getCompanyName());
-        updatedCompany.setStatus(company.getStatus());
-        updatedCompany.setStatusReason(company.getStatusReason());
-        repository.save(updatedCompany);
+    public CompanyDto update(Long id, CompanyDto companyDto) {
+
+        Company updatedCompany = companyMapper.toEntity(companyDto);
+        Company companyToUpdate = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        companyToUpdate.setCompanyName(updatedCompany.getCompanyName());
+        companyToUpdate.setStatus(updatedCompany.getStatus());
+        companyToUpdate.setStatusReason(updatedCompany.getStatusReason());
+        companyToUpdate.setWarehouses(updatedCompany.getWarehouses());
+        companyToUpdate.setOrders(updatedCompany.getOrders());
+        companyToUpdate.setClients(updatedCompany.getClients());
+        companyToUpdate.setEmployments(updatedCompany.getEmployments());
+        return companyMapper.toDto(repository.save(companyToUpdate));
     }
 }

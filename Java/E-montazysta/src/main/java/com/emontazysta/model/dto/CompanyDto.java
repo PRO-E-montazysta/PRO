@@ -19,6 +19,8 @@ public class CompanyDto {
     private Date createdAt;
     private CompanyStatus status;
     private String statusReason;
-    //private List<Warehouse> warehouse;
-    //private Client client;
+    private List<Long> warehouses;
+    private List<Long> orders;
+    private List<Long> clients;
+    private List<Long> employments;
 }

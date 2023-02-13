@@ -1,13 +1,14 @@
 package com.emontazysta.service;
 
-import com.emontazysta.model.Company;
+import com.emontazysta.model.dto.CompanyDto;
+
 import java.util.List;
 
 public interface CompanyService {
 
-    List<Company> getAll();
-    Company getById(Long id);
-    void add(Company company);
+    List<CompanyDto> getAll();
+    CompanyDto getById(Long id);
+    CompanyDto add(CompanyDto company);
     void delete(Long id);
-    void update(Long id, Company company);
+    CompanyDto update(Long id, CompanyDto company);
 }
