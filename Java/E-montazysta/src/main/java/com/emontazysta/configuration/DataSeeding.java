@@ -348,62 +348,24 @@ public class DataSeeding {
         List<ElementReturnRelease> elementReturnReleaseList = List.of(elementReturnRelease1, elementReturnRelease2,
                 elementReturnRelease3, elementReturnRelease4);
 
-        appUserList.forEach(user -> {
-            appUserService.add(user);
-        });
-        companyList.forEach(company -> {
-            companyService.add(company);
-        });
-        clientList.forEach(client -> {
-            clientService.add(client);
-        });
-        locationList.forEach(location -> {
-            locationService.add(location);
-        });
-        ordersList.forEach(order -> {
-            ordersService.add(order);
-        });
-        orderStageList.forEach(orderStage -> {
-            orderStageService.add(orderStage);
-        });
-        warehouseList.forEach(warehouse -> {
-            warehouseService.add(warehouse);
-        });
-        toolTypeList.forEach(toolType -> {
-            toolTypeService.add(toolType);
-        });
-        toolList.forEach(tool -> {
-            toolService.add(tool);
-        });
-        toolEventList.forEach(toolEvent -> {
-            toolEventService.add(toolEvent);
-        });
-        commentList.forEach(comment -> {
-            commentService.add(comment);
-        });
-        attachmentList.forEach(attachment -> {
-            attachmentService.add(attachment);
-        });
-        demandAdHocList.forEach(demandAdHoc -> {
-            demandAdHocService.add(demandAdHoc);
-        });
-        toolReleaseList.forEach(toolRelease -> {
-            toolReleaseService.add(toolRelease);
-        });
-        elementList.forEach(element -> {
-            elementService.add(element);
-        });
-        elementEventList.forEach(elementEvent -> {
-            elementEventService.add(elementEvent);
-        });
-        elementInWarehouseList.forEach(elementInWarehouse -> {
-            elementInWarehouseService.add(elementInWarehouse);
-        });
-        elementReturnReleaseList.forEach(elementReturnRelease -> {
-            elementReturnReleaseService.add(elementReturnRelease);
-        });
-        unavailabilityList.forEach(unavailability -> {
-            unavailabilityService.add(unavailability);
-        });
+        appUserList.forEach(appUserService::add);
+        companyList.forEach(companyService::add);
+        clientList.forEach(clientService::add);
+        locationList.forEach(locationService::add);
+        ordersList.forEach(ordersService::add);
+        orderStageList.forEach(orderStageService::add);
+        warehouseList.forEach(warehouseService::add);
+        toolTypeList.forEach(toolTypeService::add);
+        toolList.forEach(toolService::add);
+        toolEventList.forEach(toolEventService::add);
+        commentList.forEach(commentService::add);
+        attachmentList.forEach(attachmentService::add);
+        demandAdHocList.forEach(demandAdHocService::add);
+        toolReleaseList.forEach(toolReleaseService::add);
+        elementList.forEach(elementService::add);
+        elementEventList.forEach(elementEventService::add);
+        elementInWarehouseList.forEach(elementInWarehouseService::add);
+        elementReturnReleaseList.forEach(elementReturnReleaseService::add);
+        unavailabilityList.forEach(unavailabilityService::add);
     }
 }
