@@ -2,13 +2,13 @@ package com.emontazysta.mapper;
 
 import com.emontazysta.model.Attachment;
 import com.emontazysta.model.dto.AttachmentDto;
-import com.emontazysta.service.AppUserService;
-import com.emontazysta.service.CommentService;
-import com.emontazysta.service.ElementEventService;
-import com.emontazysta.service.ElementService;
-import com.emontazysta.service.OrderStageService;
-import com.emontazysta.service.OrdersService;
-import com.emontazysta.service.ToolEventService;
+import com.emontazysta.repository.AppUserRepository;
+import com.emontazysta.repository.CommentRepository;
+import com.emontazysta.repository.ElementEventRepository;
+import com.emontazysta.repository.ElementRepository;
+import com.emontazysta.repository.OrderRepository;
+import com.emontazysta.repository.OrderStageRepository;
+import com.emontazysta.repository.ToolEventRepository;
 import com.emontazysta.service.ToolTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -18,13 +18,13 @@ import org.springframework.stereotype.Component;
 public class AttachmentMapper {
 
     private final ToolTypeService toolTypeService;
-    private final CommentService commentService;
-    private final AppUserService appUserService;
-    private final ToolEventService toolEventService;
-    private final OrdersService orderService;
-    private final ElementService elementService;
-    private final OrderStageService orderStageService;
-    private final ElementEventService elementEventService;
+    private final CommentRepository commentRepository;
+    private final AppUserRepository appUserRepository;
+    private final ToolEventRepository toolEventRepository;
+    private final OrderRepository orderRepository;
+    private final ElementRepository elementRepository;
+    private final OrderStageRepository orderStageRepository;
+    private final ElementEventRepository elementEventRepository;
 
     public AttachmentDto attachmentDto(Attachment attachment) {
         return AttachmentDto.builder()
@@ -34,14 +34,14 @@ public class AttachmentMapper {
                 .description(attachment.getDescription())
                 .typeOfAttachment(attachment.getTypeOfAttachment())
                 .createdAt(attachment.getCreatedAt())
-                .toolTypeId(attachment.getToolType().getId())
-                .commentId(attachment.getComment().getId())
-                .employeeId(attachment.getEmployee().getId())
-                .toolEventId(attachment.getToolEvent().getId())
-                .orderId(attachment.getOrder().getId())
-                .elementId(attachment.getElement().getId())
-                .orderStageId(attachment.getOrderStage().getId())
-                .elementEventId(attachment.getElementEvent().getId())
+                .toolTypeId(attachment.getToolType() == null ? null : attachment.getToolType().getId())
+                .commentId(attachment.getComment() == null ? null : attachment.getComment().getId())
+                .employeeId(attachment.getEmployee() == null ? null : attachment.getEmployee().getId())
+                .toolEventId(attachment.getToolEvent() == null ? null : attachment.getToolEvent().getId())
+                .orderId(attachment.getOrder() == null ? null : attachment.getOrder().getId())
+                .elementId(attachment.getElement() == null ? null : attachment.getElement().getId())
+                .orderStageId(attachment.getOrderStage() == null ? null :attachment.getOrderStage().getId())
+                .elementEventId(attachment.getElementEvent() == null ? null : attachment.getElementEvent().getId())
                 .build();
     }
 
@@ -53,14 +53,14 @@ public class AttachmentMapper {
                 .description(attachmentDto.getDescription())
                 .typeOfAttachment(attachmentDto.getTypeOfAttachment())
                 .createdAt(attachmentDto.getCreatedAt())
-                .toolType(toolTypeService.getById(attachmentDto.getToolTypeId()))
-                .comment(commentService.getById(attachmentDto.getCommentId()))
-                .employee(appUserService.getById(attachmentDto.getEmployeeId()))
-                .toolEvent(toolEventService.getById(attachmentDto.getToolEventId()))
-                .order(orderService.getById(attachmentDto.getOrderId()))
-                .element(elementService.getById(attachmentDto.getElementId()))
-                .orderStage(orderStageService.getById(attachmentDto.getOrderStageId()))
-                .elementEvent(elementEventService.getById(attachmentDto.getElementEventId()))
+                .toolType(attachmentDto.getToolTypeId() == null ? null : toolTypeService.getById(attachmentDto.getToolTypeId()))
+                .comment(attachmentDto.getCommentId() == null ? null : commentRepository.getReferenceById(attachmentDto.getCommentId()))
+                .employee(attachmentDto.getEmployeeId() == null ? null : appUserRepository.getReferenceById(attachmentDto.getEmployeeId()))
+                .toolEvent(attachmentDto.getToolEventId() == null ? null : toolEventRepository.getReferenceById(attachmentDto.getToolEventId()))
+                .order(attachmentDto.getOrderId() == null ? null : orderRepository.getReferenceById(attachmentDto.getOrderId()))
+                .element(attachmentDto.getElementId() == null ? null : elementRepository.getReferenceById(attachmentDto.getElementId()))
+                .orderStage(attachmentDto.getOrderStageId() == null ? null : orderStageRepository.getReferenceById(attachmentDto.getOrderStageId()))
+                .elementEvent(attachmentDto.getElementEventId() == null ? null : elementEventRepository.getReferenceById(attachmentDto.getElementEventId()))
                 .build();
     }
 }
