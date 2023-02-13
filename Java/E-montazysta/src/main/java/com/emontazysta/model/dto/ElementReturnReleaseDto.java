@@ -13,4 +13,9 @@ public class ElementReturnReleaseDto {
     private int releasedQuantity;
     private int returnedQuantity;
     private LocalDateTime returnTime;
+    private Long servedById;
+    private Long elementId;
+    private Long demandAdHocId;
+    private Long foremanId;
+    private Long orderStageId;
 }

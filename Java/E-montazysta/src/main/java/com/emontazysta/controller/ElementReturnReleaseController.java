@@ -1,7 +1,5 @@
 package com.emontazysta.controller;
 
-import com.emontazysta.mapper.ElementReturnReleaseMapper;
-import com.emontazysta.model.ElementReturnRelease;
 import com.emontazysta.model.dto.ElementReturnReleaseDto;
 import com.emontazysta.service.ElementReturnReleaseService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 
@@ -35,22 +32,20 @@ public class ElementReturnReleaseController {
     @GetMapping("/all")
     @Operation(description = "Allows to get all Element Return Releases.", security = @SecurityRequirement(name = "bearer-key"))
     public List<ElementReturnReleaseDto> getAllElementReturnReleases() {
-        return elementReturnReleaseService.getAll().stream()
-                .map(ElementReturnReleaseMapper::elementReturnReleaseToDto)
-                .collect(Collectors.toList());
+        return elementReturnReleaseService.getAll();
     }
 
     @GetMapping("/{id}")
     @Operation(description = "Allows to get Element Return Release by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public ElementReturnReleaseDto getElementReturnReleaseById(@PathVariable Long id) {
-        return ElementReturnReleaseMapper.elementReturnReleaseToDto(elementReturnReleaseService.getById(id));
+        return elementReturnReleaseService.getById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Element Return Release.", security = @SecurityRequirement(name = "bearer-key"))
-    public void addElementReturnRelease(@Valid @RequestBody ElementReturnRelease elementReturnRelease) {
-        elementReturnReleaseService.add(elementReturnRelease);
+    public ElementReturnReleaseDto addElementReturnRelease(@Valid @RequestBody ElementReturnReleaseDto elementReturnRelease) {
+        return elementReturnReleaseService.add(elementReturnRelease);
     }
 
     @DeleteMapping("/{id}")
@@ -61,7 +56,7 @@ public class ElementReturnReleaseController {
 
     @PutMapping("/{id}")
     @Operation(description = "Allows to update Element Return Release by given Id.", security = @SecurityRequirement(name = "bearer-key"))
-    public ElementReturnRelease updateElementReturnRelease(@PathVariable Long id, @Valid @RequestBody ElementReturnRelease elementReturnRelease) {
+    public ElementReturnReleaseDto updateElementReturnRelease(@PathVariable Long id, @Valid @RequestBody ElementReturnReleaseDto elementReturnRelease) {
         return elementReturnReleaseService.update(id, elementReturnRelease);
     }
 }
