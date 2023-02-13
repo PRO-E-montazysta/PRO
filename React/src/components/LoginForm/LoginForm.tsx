@@ -60,7 +60,7 @@ const LoginForm = () => {
       try {
         const response: any = await logIn({ username: email, password });
         setToken(response);
-        navigation('/mock', { replace: true });
+        navigation('/', { replace: true });
       } catch (e) {
         console.log({ e });
       }

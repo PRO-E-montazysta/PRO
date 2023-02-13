@@ -6,7 +6,7 @@ import AccountList from "../components/Admins/AccountList"
 import CompanyList from "../components/CloudAdmins/CompanyList"
 import HomePageWarehousemen from "../components/Warehousemen/HomePage"
 import HomePageWarehouseManager from "../components/WarehouseManagers/HomePage"
-import HomePageExpert from "../components/Experts/HomePage"
+import HomePageSpecialist from "../components/Specialists/HomePage"
 import HomePageManager from "../components/Managers/HomePage"
 import HomePageSalesRepresentative from "../components/SalesRepresentatives/HomePage"
 import HomePageForeman from "../components/Foremen/HomePage"
@@ -67,112 +67,112 @@ export const pageList: Array<PageProps> =
                         inNav: true,
                         name: 'Lista Kont',
                         path: '/account-list',
-                        allowedRoles: [Role["*"]], // admin 
+                        allowedRoles: [Role.ADMIN], 
                         component: <AccountList />
                     },
                     {
                         inNav: true,
                         name: 'Lista Firm',
                         path: '/company-list',
-                        allowedRoles: [Role["*"]], // cloud-admin 
+                        allowedRoles: [Role.CLOUD_ADMIN], 
                         component: <CompanyList />
                     },
                     {
                         inNav: true,
                         name: 'Strona główna',
                         path: '/home-warehouseman',
-                        allowedRoles: [Role["*"]], // warehouseman / magazynier
+                        allowedRoles: [Role.WAREHOUSE_MAN],
                         component: <HomePageWarehousemen />
                     },
                     {
                         inNav: true,
                         name: 'Lista Magazynów',
                         path: '/warehouse-list',
-                        allowedRoles: [Role["*"]], // magazynier, specjalist, handlowiec, menager, kierownik magazynu, montazysta, brygadzista
+                        allowedRoles: [Role.WAREHOUSE_MAN, Role.SPECIALIST, Role.FITTER, Role.MANAGER, Role.WAREHOUSE_MANAGER, Role.FOREMAN, Role.SALES_REPRESENTATIVE], 
                         component: <WarehouseList />
                     },
                     {
                         inNav: true,
                         name: 'Wydanie / Przyjęcie',
                         path: '/delivery-receipt',
-                        allowedRoles: [Role["*"]], //  magazynier, kierownik magazynu
+                        allowedRoles: [Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER], 
                         component: <DeliveryReceipt />
                     },
                     {
                         inNav: true,
                         name: 'Zapotrzebowania',
                         path: '/demand',
-                        allowedRoles: [Role["*"]], // magazynier, kierownik magazynu
+                        allowedRoles: [Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER], 
                         component: <Demand />
                     },
                     {
                         inNav: true,
                         name: 'Usterki',
                         path: '/issues',
-                        allowedRoles: [Role["*"]], //  / magazynier, manager, brygadzista
+                        allowedRoles: [Role.WAREHOUSE_MAN, Role.MANAGER, Role.FOREMAN], 
                         component: <Issues />
                     },
                     {
                         inNav: true,
                         name: 'Strona główna',
                         path: '/home-fitter',
-                        allowedRoles: [Role["*"]], //  / montażysta
+                        allowedRoles: [Role.FITTER], 
                         component: <HomePageFitter />
                     },
                     {
                         inNav: true,
                         name: 'Zlecenia',
                         path: '/orders',
-                        allowedRoles: [Role["*"]], //  / montażysta, specjalista, manager, handlowiec, brygadzista
+                        allowedRoles: [Role.FITTER, Role.SPECIALIST, Role.MANAGER, Role.SALES_REPRESENTATIVE, Role.FOREMAN],
                         component: <Orders />
                     },
                     {
                         inNav: true,
                         name: 'Strona główna',
                         path: '/home-warehouse-manager',
-                        allowedRoles: [Role["*"]], //  / kierownik magazynu
+                        allowedRoles: [Role.WAREHOUSE_MANAGER], 
                         component: <HomePageWarehouseManager />
                     },
                     {
                         inNav: true,
                         name: 'Strona główna',
                         path: '/home-brigade-leader',
-                        allowedRoles: [Role["*"]], //  / brygadzista
+                        allowedRoles: [Role.FOREMAN], 
                         component: <HomePageForeman />
                     },
                     {
                         inNav: true,
                         name: 'Pobranie / Zdanie',
                         path: '/home-retrieve-return',
-                        allowedRoles: [Role["*"]], //  / brygadzista
+                        allowedRoles: [Role.FOREMAN], 
                         component: <RetrieveReturn />
                     },
                     {
                         inNav: true,
                         name: 'Harmonogram',
                         path: '/home-schedule',
-                        allowedRoles: [Role["*"]], //  / brygadzista, manager
+                        allowedRoles: [Role.FOREMAN, Role.MANAGER], 
                         component: <Schedules />
                     },
                     {
                         inNav: true,
                         name: 'Strona główna',
                         path: '/home-manager',
-                        allowedRoles: [Role["*"]], //  / manager
+                        allowedRoles: [Role.MANAGER], 
                         component: <HomePageManager />
                     },
                     {
                         inNav: true,
                         name: 'Strona główna',
-                        path: '/home-expert',
-                        allowedRoles: [Role["*"]], //  / specjalista
-                        component: <HomePageExpert />
+                        path: '/home-Specialist',
+                        allowedRoles: [Role.SPECIALIST], 
+                        component: <HomePageSpecialist />
                     },
                     {
                         inNav: true,
                         name: 'Strona główna',
                         path: '/home-SalesRepresentative',
-                        allowedRoles: [Role["*"]], //  / handlowiec
+                        allowedRoles: [Role.SALES_REPRESENTATIVE],
                         component: <HomePageSalesRepresentative />
                     },
                 ]
