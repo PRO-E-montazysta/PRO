@@ -49,5 +49,5 @@ public class Manager extends Employee {
     private List<DemandAdHoc> demandsAdHocs;
 
     @OneToMany(mappedBy = "acceptedBy")
-    private List<ElementEvent> elementEvents;
+    private List<ElementEvent> elementEvents; //TODO: duplicated from Employee?
 }
