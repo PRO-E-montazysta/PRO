@@ -36,7 +36,6 @@ public class FitterMapper {
     private final ToolEventRepository toolEventRepository;
 
     public FitterDto toDto(Fitter fitter) {
-
         return FitterDto.builder()
                 .id(fitter.getId())
                 .firstName(fitter.getFirstName())

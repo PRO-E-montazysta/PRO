@@ -1,16 +1,8 @@
 package com.emontazysta.model.dto;
 
-import com.emontazysta.model.Attachment;
-import com.emontazysta.model.Comment;
-import com.emontazysta.model.ElementEvent;
-import com.emontazysta.model.Employment;
-import com.emontazysta.model.Notification;
-import com.emontazysta.model.ToolEvent;
-import com.emontazysta.model.Unavailability;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.OneToMany;
 import java.util.List;
 
 @Data

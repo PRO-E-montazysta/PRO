@@ -1,6 +1,5 @@
 package com.emontazysta.model.dto;
 
-import com.emontazysta.model.ToolRelease;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
@@ -10,5 +9,9 @@ import java.util.List;
 @SuperBuilder
 public class ForemanDto extends FitterDto {
 
-    private List<ToolRelease> toolReleaseList;
+    private List<Long> ordersStagesList;
+    private List<Long> receivedTools;
+    private List<Long> assignedOrders;
+    private List<Long> elementReturnReleases;
+    private List<Long> demandsAdHocs;
 }
