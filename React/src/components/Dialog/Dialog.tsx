@@ -26,11 +26,11 @@ const Dialog = ({ dialogText, confirmLabel, inputsInfo, confirmAction, cancelAct
     <div className="blur-background">
         <div className="dialog" style={{height: totalHeight}}>
             <form>
-                <p>
+                <p className="dialogText">
                     {dialogText}
                 </p>
                 <div>
-                    {inputsInfo.map((info: { inputType: string; inputName: string; inputLabel: string; }) => (
+                    {inputsInfo.map((info: { inputName: string; inputType: string; inputLabel: string; }) => (
                         <CustomTextField
                             name={info.inputName}
                             type={info.inputType}
