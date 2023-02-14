@@ -18,17 +18,25 @@ public class WarehouseControllerTests {
             "  \"name\": \"Scaffolds\",\n" +
             "  \"description\": \"ciekawa\",\n" +
             "  \"openingHours\": \"08:00 - 20:00\",\n" +
-            "  \"company\": \"null\",\n" ;
+            "  \"company\": null\n" +
+            "}";
+
+    private String putBody = "{\n" +
+            "  \"name\": \"Screwdrivers\",\n" +
+            "  \"description\": \"boring\",\n" +
+            "  \"openingHours\": \"08:00 - 20:00\",\n" +
+            "  \"company\": null\n" +
+            "}";
 
     @Test
-    @Order(2)
+    @Order(3)
     public void getAll() {
 
         Response response = given()
                 .header("Authorization", "Bearer "+ AbstractTest.TOKEN)
                 .contentType(ContentType.JSON)
                 .when()
-                .get(AbstractTest.BASE_PATH + "/warehouse")
+                .get(AbstractTest.BASE_PATH + "/warehouses/all")
                 .then()
                 .extract().response();
 
@@ -47,7 +55,7 @@ public class WarehouseControllerTests {
                 .and()
                 .body(postBody)
                 .when()
-                .post(AbstractTest.BASE_PATH + "/warehouse")
+                .post(AbstractTest.BASE_PATH + "/warehouses")
                 .then()
                 .extract().response();
 
@@ -57,7 +65,26 @@ public class WarehouseControllerTests {
     }
 
     @Test
-    @Order(3)
+    @Order(2)
+    public void put() {
+
+        Response response = given()
+                .header("Content-type", "application/json")
+                .header("Authorization", "Bearer "+ AbstractTest.TOKEN)
+                .and()
+                .body(putBody)
+                .when()
+                .put(AbstractTest.BASE_PATH + "/warehouses/1")
+                .then()
+                .extract().response();
+
+        response.getBody().prettyPeek();
+
+        Assertions.assertEquals(200, response.statusCode());
+    }
+
+    @Test
+    @Order(4)
     public void getById() {
 
         Response response = given()
@@ -66,21 +93,21 @@ public class WarehouseControllerTests {
                 .and()
                 .body(postBody)
                 .when()
-                .get(AbstractTest.BASE_PATH + "/warehouse/2")
+                .get(AbstractTest.BASE_PATH + "/warehouses/1")
                 .then()
                 .extract().response();
 
         response.getBody().prettyPeek();
 
         Assertions.assertEquals(200, response.statusCode());
-        Assertions.assertEquals("Scaffolds", response.getBody().jsonPath().getString("name"));
-        Assertions.assertEquals("ciekawa", response.jsonPath().getString("description"));
+        Assertions.assertEquals("Screwdrivers", response.getBody().jsonPath().getString("name"));
+        Assertions.assertEquals("boring", response.jsonPath().getString("description"));
         Assertions.assertEquals("08:00 - 20:00", response.jsonPath().getString("openingHours"));
-        Assertions.assertEquals("null", response.jsonPath().getString("company"));
+        Assertions.assertNull( response.jsonPath().getString("company"));
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     public void delete() {
         Response response = given()
                 .header("Content-type", "application/json")
@@ -88,7 +115,7 @@ public class WarehouseControllerTests {
                 .and()
                 .body(postBody)
                 .when()
-                .delete(AbstractTest.BASE_PATH + "/warehouse/2")
+                .delete(AbstractTest.BASE_PATH + "/warehouses/1")
                 .then()
                 .extract().response();
 
