@@ -1,9 +1,13 @@
 package com.emontazysta.service.impl;
 
 import com.emontazysta.model.Tool;
+import com.emontazysta.model.page.ToolPage;
+import com.emontazysta.model.searchcriteria.ToolSearchCriteria;
 import com.emontazysta.repository.ToolRepository;
+import com.emontazysta.repository.criteria.ToolCriteriaRepository;
 import com.emontazysta.service.ToolService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -16,6 +20,7 @@ import java.util.UUID;
 public class ToolServiceImpl implements ToolService {
 
     private final ToolRepository repository;
+    private final ToolCriteriaRepository toolCriteriaRepository;
 
     @Override
     public List<Tool> getAll() {
@@ -56,4 +61,9 @@ public class ToolServiceImpl implements ToolService {
 
         repository.save(updatedTool);
     }
+
+    public Page<Tool> getTools(ToolPage toolPage, ToolSearchCriteria toolSearchCriteria){
+        return toolCriteriaRepository.finadAllWithFilter(toolPage, toolSearchCriteria);
+    }
+
 }

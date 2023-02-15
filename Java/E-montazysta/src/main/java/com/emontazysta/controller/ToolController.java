@@ -3,12 +3,16 @@ package com.emontazysta.controller;
 import com.emontazysta.mapper.ToolMapper;
 import com.emontazysta.model.Tool;
 import com.emontazysta.model.dto.ToolDto;
+import com.emontazysta.model.page.ToolPage;
+import com.emontazysta.model.searchcriteria.ToolSearchCriteria;
 import com.emontazysta.service.ToolService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -62,4 +66,16 @@ public class ToolController {
     public void update(@PathVariable Long id, @Valid @RequestBody Tool tool) {
         toolService.update(id, tool);
     }
+
+    @GetMapping("/filter")
+    @Operation(description = "Allows to get filtered tools data.", security = @SecurityRequirement(name = "bearer-key"))
+    public ResponseEntity<Page<Tool>> getfilteredTools(ToolPage toolPage, ToolSearchCriteria toolSearchCriteria){
+        return new ResponseEntity<>(toolService.getTools(toolPage, toolSearchCriteria),HttpStatus.OK);
+    }
+
+//    @GetMapping("/filter")
+//    @Operation(description = "Allows to get filtered tools data.", security = @SecurityRequirement(name = "bearer-key"))
+//    public ResponseEntity<Page<Tool>> getfilteredTools(ToolPage toolPage, ToolSearchCriteria toolSearchCriteria){
+//        return new ResponseEntity<>(toolService.getTools(toolPage, toolSearchCriteria),HttpStatus.OK);
+//    }
 }

@@ -2,7 +2,11 @@ package com.emontazysta.configuration;
 
 import com.emontazysta.enums.Role;
 import com.emontazysta.model.AppUser;
+import com.emontazysta.model.Tool;
+import com.emontazysta.model.ToolType;
 import com.emontazysta.service.AppUserService;
+import com.emontazysta.service.ToolService;
+import com.emontazysta.service.ToolTypeService;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -31,7 +35,9 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.annotation.PostConstruct;
+import java.time.Instant;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Set;
 
 
@@ -45,6 +51,8 @@ public class SecurityConfig {
             // -- swagger ui"
             "/v3/**", "/swagger-ui", "/swagger-ui.html", "/swagger-ui/**"};
     private final AppUserService appuserDetailsService;
+    private final ToolService toolService;
+    private final ToolTypeService toolTypeService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final SecurityProperties securityProperties;
 
@@ -62,6 +70,21 @@ public class SecurityConfig {
                         securityProperties.getCloudManagerUsername(),
                         null,
                         Set.of(Role.CLOUD_ADMIN)));
+
+        ToolType toolType1 = new ToolType(null,"Wiertarka Ręczna",1,3,10,null,null,null);
+        ToolType toolType2 = new ToolType(null,"Wiertarka Stołowa",1,3,10,null,null,null);
+        toolTypeService.add(toolType1);
+        toolTypeService.add(toolType2);
+
+        toolService.add(
+                 new Tool(null,"Wiertarka", new Date(),"12345",null,null,null,toolType1));
+        toolService.add(
+                 new Tool(null,"Młotek", new Date(),"12345",null,null,null,null));
+        toolService.add(
+                 new Tool(null,"Piła", new Date(),"12345",null,null,null,null));
+        toolService.add(
+                 new Tool(null,"Wiertarka", new Date(),"12345",null,null,null,toolType2));
+
     }
 
     @Bean
