@@ -1,4 +1,4 @@
-import { makeServiceCall } from './utils';
+import { makeServiceCall } from './utils.api';
 
 type LogInPayloadType = {
   username: string;
@@ -6,6 +6,5 @@ type LogInPayloadType = {
 };
 
 export const logIn = (data: LogInPayloadType) => {
-  console.log({ data });
   return makeServiceCall('/gettoken', 'POST', { body: data });
 };
