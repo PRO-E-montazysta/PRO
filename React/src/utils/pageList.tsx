@@ -1,7 +1,5 @@
 import { Outlet } from "react-router-dom"
 import Header from "../components/Headers/Header"
-import MockView from "../components/MockView/MockView"
-import Employees from "../components/Employees/Employees"
 import AccountList from "../components/Admins/AccountList"
 import CompanyList from "../components/CloudAdmins/CompanyList"
 import HomePageWarehousemen from "../components/Warehousemen/HomePage"
@@ -18,9 +16,9 @@ import Issues from "../components/Issues/Issues"
 import Orders from "../components/Orders/Orders"
 import RetrieveReturn from "../components/Foremen/RetrieveReturn"
 import Schedules from "../components/Schedules/Schedules"
-import LoginPage from "../Pages/LoginPage"
-import Unauthorized from "../Pages/Unauthorized"
+import LoginPage from "../pages/LoginPage"
 import { Role } from "../types/roleEnum"
+import Error from "../components/Error/Error"
 
 export interface PageProps {
     name: string
@@ -50,13 +48,6 @@ export const pageList: Array<PageProps> =
         },
         {
             inNav: false,
-            name: 'Nieautoryzowany dostęp',
-            path: '/unauthorized',
-            allowedRoles: [Role["*"]],
-            component: <Unauthorized />
-        },
-        {
-            inNav: false,
             name: '',
             path: '/',
             allowedRoles: [Role["*"]],
@@ -67,14 +58,14 @@ export const pageList: Array<PageProps> =
                         inNav: true,
                         name: 'Lista Kont',
                         path: '/account-list',
-                        allowedRoles: [Role.ADMIN], 
+                        allowedRoles: [Role.ADMIN],
                         component: <AccountList />
                     },
                     {
                         inNav: true,
                         name: 'Lista Firm',
                         path: '/company-list',
-                        allowedRoles: [Role.CLOUD_ADMIN], 
+                        allowedRoles: [Role.CLOUD_ADMIN],
                         component: <CompanyList />
                     },
                     {
@@ -88,35 +79,35 @@ export const pageList: Array<PageProps> =
                         inNav: true,
                         name: 'Lista Magazynów',
                         path: '/warehouse-list',
-                        allowedRoles: [Role.WAREHOUSE_MAN, Role.SPECIALIST, Role.FITTER, Role.MANAGER, Role.WAREHOUSE_MANAGER, Role.FOREMAN, Role.SALES_REPRESENTATIVE], 
+                        allowedRoles: [Role.WAREHOUSE_MAN, Role.SPECIALIST, Role.FITTER, Role.MANAGER, Role.WAREHOUSE_MANAGER, Role.FOREMAN, Role.SALES_REPRESENTATIVE],
                         component: <WarehouseList />
                     },
                     {
                         inNav: true,
                         name: 'Wydanie / Przyjęcie',
                         path: '/delivery-receipt',
-                        allowedRoles: [Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER], 
+                        allowedRoles: [Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER],
                         component: <DeliveryReceipt />
                     },
                     {
                         inNav: true,
                         name: 'Zapotrzebowania',
                         path: '/demand',
-                        allowedRoles: [Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER], 
+                        allowedRoles: [Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER],
                         component: <Demand />
                     },
                     {
                         inNav: true,
                         name: 'Usterki',
                         path: '/issues',
-                        allowedRoles: [Role.WAREHOUSE_MAN, Role.MANAGER, Role.FOREMAN], 
+                        allowedRoles: [Role.WAREHOUSE_MAN, Role.MANAGER, Role.FOREMAN],
                         component: <Issues />
                     },
                     {
                         inNav: true,
                         name: 'Strona główna',
                         path: '/home-fitter',
-                        allowedRoles: [Role.FITTER], 
+                        allowedRoles: [Role.FITTER],
                         component: <HomePageFitter />
                     },
                     {
@@ -130,42 +121,42 @@ export const pageList: Array<PageProps> =
                         inNav: true,
                         name: 'Strona główna',
                         path: '/home-warehouse-manager',
-                        allowedRoles: [Role.WAREHOUSE_MANAGER], 
+                        allowedRoles: [Role.WAREHOUSE_MANAGER],
                         component: <HomePageWarehouseManager />
                     },
                     {
                         inNav: true,
                         name: 'Strona główna',
                         path: '/home-brigade-leader',
-                        allowedRoles: [Role.FOREMAN], 
+                        allowedRoles: [Role.FOREMAN],
                         component: <HomePageForeman />
                     },
                     {
                         inNav: true,
                         name: 'Pobranie / Zdanie',
                         path: '/home-retrieve-return',
-                        allowedRoles: [Role.FOREMAN], 
+                        allowedRoles: [Role.FOREMAN],
                         component: <RetrieveReturn />
                     },
                     {
                         inNav: true,
                         name: 'Harmonogram',
                         path: '/home-schedule',
-                        allowedRoles: [Role.FOREMAN, Role.MANAGER], 
+                        allowedRoles: [Role.FOREMAN, Role.MANAGER],
                         component: <Schedules />
                     },
                     {
                         inNav: true,
                         name: 'Strona główna',
                         path: '/home-manager',
-                        allowedRoles: [Role.MANAGER], 
+                        allowedRoles: [Role.MANAGER],
                         component: <HomePageManager />
                     },
                     {
                         inNav: true,
                         name: 'Strona główna',
                         path: '/home-Specialist',
-                        allowedRoles: [Role.SPECIALIST], 
+                        allowedRoles: [Role.SPECIALIST],
                         component: <HomePageSpecialist />
                     },
                     {
@@ -176,10 +167,13 @@ export const pageList: Array<PageProps> =
                         component: <HomePageSalesRepresentative />
                     },
                 ]
-        }
+        },
+        {
+            inNav: false,
+            name: 'Error',
+            path: '*',
+            allowedRoles: [Role["*"]],
+            component: <Error code={404} message={'Nie znaleziono strony'} description={'Zgubiłeś się ? Wróć na stronę główną!'} />
+        },
     ]
 
-
-// export const getAbsolutePath = () {
-
-// }
