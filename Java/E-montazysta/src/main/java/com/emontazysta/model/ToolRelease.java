@@ -23,7 +23,17 @@ public class ToolRelease {
     private LocalDateTime returnTime;
 
     @ManyToOne
-    private Foreman recivedBy;
+    private Foreman receivedBy;
 
+    @ManyToOne
+    private Warehouseman releasedBy;
 
+    @ManyToOne
+    private Tool tool;
+
+    @ManyToOne
+    private DemandAdHoc demandAdHoc;
+
+    @ManyToOne
+    private OrderStage orderStage;
 }

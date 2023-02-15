@@ -1,7 +1,39 @@
 package com.emontazysta.model;
 
-import javax.persistence.Entity;
+import com.emontazysta.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import java.util.List;
+import java.util.Set;
+
+@Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Specialist extends Employee {
+
+    public Specialist(Long id, String firstName, String lastName, String email, String password, String username,
+                      String resetPasswordToken, Set<Role> roles, String phone, String pesel,
+                      List<Unavailability> unavailabilities, List<Notification> notifications,
+                      List<Comment> employeeComments, List<ElementEvent> elementEvents, List<Employment> employments,
+                      List<Attachment> attachments, List<ToolEvent> toolEvents, List<Orders> orders, List<DemandAdHoc> demandAdHocs) {
+
+        super(id, firstName, lastName, email, password, username, resetPasswordToken, roles, phone, pesel,
+                unavailabilities, notifications, employeeComments, elementEvents, employments, attachments, toolEvents);
+        this.orders = orders;
+        this.demandAdHocs = demandAdHocs;
+    }
+
+    @OneToMany(mappedBy = "specialist")
+    private List<Orders> orders;
+
+    @OneToMany(mappedBy = "specialist")
+    private List<DemandAdHoc> demandAdHocs;
 }

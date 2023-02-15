@@ -11,7 +11,6 @@ public class OrderStageMapper {
                 .name(orderStage.getName())
                 .status(orderStage.getStatus())
                 .price(orderStage.getPrice())
-                .order(orderStage.getOrder())
                 .plannedEndDate(orderStage.getPlannedEndDate())
                 .startDate(orderStage.getStartDate())
                 .endDate(orderStage.getEndDate())

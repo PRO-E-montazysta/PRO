@@ -2,8 +2,8 @@ import { Outlet } from "react-router-dom"
 import Header from "../components/Headers/Header"
 import MockView from "../components/MockView/MockView"
 import Employees from "../components/Employees/Employees"
-import LoginPage from "../pages/LoginPage"
-import Unauthorized from "../pages/Unauthorized"
+import LoginPage from "../Pages/LoginPage"
+import Unauthorized from "../Pages/Unauthorized"
 import { Role } from "../types/roleEnum"
 
 export type PageProps = {

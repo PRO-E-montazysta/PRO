@@ -1,8 +1,6 @@
 package com.emontazysta.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,8 +34,8 @@ public class OrderStage {
     @NotNull
     private BigDecimal price;
 
-    @NotBlank
-    private String order;
+    @NotNull
+    private Integer order;
 
     private LocalDate plannedEndDate;
 
@@ -54,14 +52,41 @@ public class OrderStage {
     @NotNull
     private int minimumImagesNumber;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "workingOn")
     private List<Fitter> assignedTo;
 
     @ManyToOne
-    private AppUser managedBy;
+    private Foreman managedBy;
 
-//    @OneToMany(mappedBy = "")
-//    @JsonManagedReference
-//    private List<Comment> comments;
+    @OneToMany(mappedBy = "orderStage")
+    private List<Comment> comments;
+
+    @OneToMany(mappedBy = "orderStage")
+    private List<ToolRelease> toolReleases;
+
+    @OneToMany(mappedBy = "orderStage")
+    private List<ElementReturnRelease> elementReturnReleases;
+
+    @ManyToOne
+    private Orders orders;
+
+    @OneToMany(mappedBy = "orderStage")
+    private List<Attachment> attachments;
+
+    @OneToMany(mappedBy = "orderStage")
+    private List<Notification> notifications;
+
+    @ManyToMany
+    private List<ToolType> tools;
+
+    @ManyToMany
+    private List<Element> elements;
+
+    @ManyToMany
+    private List<DemandAdHoc> demandsAdHoc;
+
+
+
+    //TODO: relationship to Element, ToolType, Fitter, DemandAdHoc  needed (many to many) should be replaced with association table in diagram
 }
 

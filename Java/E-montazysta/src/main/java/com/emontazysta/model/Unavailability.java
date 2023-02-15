@@ -42,5 +42,5 @@ public class Unavailability {
     private AppUser assignedTo;
 
     @ManyToOne
-    private AppUser assignedBy;
+    private Manager assignedBy;
 }

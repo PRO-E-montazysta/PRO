@@ -1,6 +1,5 @@
 package com.emontazysta.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
@@ -9,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Entity
 @Data
@@ -31,4 +31,13 @@ public class Warehouse {
 
     @ManyToOne
     private Company company;
+
+    @ManyToOne
+    private Location location;
+
+    @OneToMany(mappedBy = "warehouse")
+    private List<ElementInWarehouse> elementInWarehouses;
+
+    @OneToMany(mappedBy = "warehouse")
+    private List<Tool> tools;
 }

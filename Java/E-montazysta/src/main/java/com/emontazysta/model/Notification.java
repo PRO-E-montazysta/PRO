@@ -11,6 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -30,12 +31,14 @@ public class Notification {
 
     private LocalDateTime readAt;
 
-    private String sender;
+    @ManyToOne
+    private AppUser createdBy;
 
-    private String recipient;
+    @OneToMany
+    private List<AppUser> notifiedEmployees;
 
     @ManyToOne
-    private AppUser notifiedEmployee;
+    private OrderStage orderStage;
 
     // ToDo topic Enum
 
