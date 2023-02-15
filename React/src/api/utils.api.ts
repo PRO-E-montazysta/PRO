@@ -1,13 +1,13 @@
 import axios, { Method } from 'axios';
 import { getToken } from '../utils/token';
 
-interface PayloadProps {
+type PayloadProps = {
   body?: undefined | Record<string, unknown> | unknown;
   queryStringParams?: undefined | Record<string, unknown>;
 }
 
 
-const getBaseUrl = (): string => {
+export const getBaseUrl = (): string => {
   let url: string;
   switch (process.env.NODE_ENV) {
     case 'production':
@@ -23,17 +23,24 @@ const getBaseUrl = (): string => {
 }
 
 
-export const makeServiceCall: any = async (url: string, httpMethod: Method, payload: PayloadProps) => {
+export const makeServiceCall = async (url: string, httpMethod: Method, payload: PayloadProps) => {
   console.log({ payload });
+  const { body, queryStringParams } = payload
+  const token = getToken();
+
+  let headers = {
+    'Content-Type': 'application/json',
+    'Authorization': ''
+  };
+  if (token)
+    headers.Authorization = 'Bearer ' + token;
   const response = await axios({
     method: httpMethod,
     baseURL: getBaseUrl(),
     url: url,
-    data: payload?.body || {},
-    params: payload?.queryStringParams || {},
-    headers: {
-      'Content-Type': 'application/json'
-    },
+    data: body,
+    params: queryStringParams,
+    headers: headers
   });
   return response.data;
 };

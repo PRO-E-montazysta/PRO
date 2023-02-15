@@ -4,11 +4,14 @@ import { BrowserRouter as Router, Routes, Route, createBrowserRouter, RouteObjec
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { pageList, PageProps } from './utils/pageList';
 import { AutorizedRoute, isAuthorized } from './utils/authorize';
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from 'react-query/devtools'
 
 const theme = createTheme({
   palette: {
     primary: {
       main: '#282A3A',
+      contrastText: '#FFFFFF',
     },
     secondary: {
       main: '#1A1C26',
@@ -53,15 +56,18 @@ const browserRouterMapper = (pages: Array<PageProps>) => {
 }
 
 const router = createBrowserRouter(browserRouterMapper(pageList));
-
+const queryClient = new QueryClient();
 
 function App() {
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <RouterProvider router={router} />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <RouterProvider router={router} />
+      </ThemeProvider>
+      <ReactQueryDevtools initialIsOpen/>
+    </QueryClientProvider>
   );
 }
 

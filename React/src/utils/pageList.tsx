@@ -6,7 +6,7 @@ import LoginPage from "../pages/LoginPage"
 import Unauthorized from "../pages/Unauthorized"
 import { Role } from "../types/roleEnum"
 
-export interface PageProps {
+export type PageProps = {
     name: string
     path: string
     allowedRoles: Array<Role>
