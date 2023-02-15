@@ -2,9 +2,10 @@ import { Outlet } from "react-router-dom"
 import Header from "../components/Headers/Header"
 import MockView from "../components/MockView/MockView"
 import Employees from "../components/Employees/Employees"
-import LoginPage from "../Pages/LoginPage"
-import Unauthorized from "../Pages/Unauthorized"
+import LoginPage from "../pages/LoginPage"
 import { Role } from "../types/roleEnum"
+import Unauthorized from "../pages/Unauthorized"
+import Error from "../components/Error/Error"
 
 export interface PageProps {
     name: string
@@ -120,7 +121,14 @@ export const pageList: Array<PageProps> =
                         ]
                     }
                 ]
-        }
+        },
+        {
+            inNav: false,
+            name: 'Error',
+            path: '*',
+            allowedRoles: [Role["*"]],
+            component: <Error code={404} message={'Nie znaleziono strony'} description={'Zgubiłeś się ? Wróć na stronę główną!'}/>
+        },
     ]
 
 
