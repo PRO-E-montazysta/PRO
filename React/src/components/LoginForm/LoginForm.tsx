@@ -74,22 +74,6 @@ const LoginForm = () => {
     },
   });
 
-  const handleSubmit = async (email: string, password: string) => {
-    console.log({
-      email,
-      password,
-    });
-    if (!!email && !!password) {
-      try {
-        const response: any = await logIn({ username: email, password });
-        setToken(response);
-        navigation('/', { replace: true });
-      } catch (e) {
-        console.log({ e });
-      }
-    }
-  }
-
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
