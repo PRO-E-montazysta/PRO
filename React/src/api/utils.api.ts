@@ -11,13 +11,13 @@ export const getBaseUrl = (): string => {
   let url: string;
   switch (process.env.NODE_ENV) {
     case 'production':
-      url = 'http://backend/api/v1';
+      url = 'https://dev.emontazysta.pl/api/v1';
       break;
     case 'development':
       url = 'http://localhost:8080/api/v1';
       break;
     default:
-      url = 'http://backend/api/v1';
+      url = 'https://dev.emontazysta.pl/api/v1';
   }
   return url;
 }
