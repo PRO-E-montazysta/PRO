@@ -1,12 +1,8 @@
 package com.emontazysta.configuration;
 
 import com.emontazysta.enums.Role;
-import com.emontazysta.model.AppUser;
-import com.emontazysta.model.Tool;
-import com.emontazysta.model.ToolType;
-import com.emontazysta.service.AppUserService;
-import com.emontazysta.service.ToolService;
-import com.emontazysta.service.ToolTypeService;
+import com.emontazysta.model.*;
+import com.emontazysta.service.*;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -36,8 +32,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.annotation.PostConstruct;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 
@@ -53,8 +51,12 @@ public class SecurityConfig {
     private final AppUserService appuserDetailsService;
     private final ToolService toolService;
     private final ToolTypeService toolTypeService;
+    private final WarehouseService warehouseService;
+    private final ToolReleaseService toolReleaseService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final SecurityProperties securityProperties;
+
+
 
     private RSAKey rsaKey;
 
@@ -76,14 +78,25 @@ public class SecurityConfig {
         toolTypeService.add(toolType1);
         toolTypeService.add(toolType2);
 
-        toolService.add(
-                 new Tool(null,"Wiertarka", new Date(),"12345",null,null,null,toolType1));
-        toolService.add(
-                 new Tool(null,"Młotek", new Date(),"12345",null,null,null,null));
-        toolService.add(
-                 new Tool(null,"Piła", new Date(),"12345",null,null,null,null));
-        toolService.add(
-                 new Tool(null,"Wiertarka", new Date(),"12345",null,null,null,toolType2));
+        Warehouse warehouse1 = new Warehouse(null,"Magazyn1","jakiś opis","8.00-16.00",null, null,null,null);
+        warehouseService.add(warehouse1);
+
+       Tool tool1 =  new Tool(null,"Wiertarka", new Date(),"12345", null,warehouse1,null,toolType1);
+       Tool tool2 = new Tool(null,"Młotek", new Date(),"12345",null,null,null,null);
+       Tool tool3 = new Tool(null,"Piła", new Date(),"12345",null,null,null,null);
+       Tool tool4 = new Tool(null,"Wiertarka", new Date(),"12345",null,null,null,toolType2);
+
+        toolService.add(tool1);
+        toolService.add(tool2);
+        toolService.add(tool3);
+        toolService.add(tool4);
+
+        ToolRelease toolRelease1 = new ToolRelease(null, LocalDateTime.now(),null,null,null,tool1,null,null);
+        ToolRelease toolRelease2 = new ToolRelease(null, LocalDateTime.now(),null,null,null,tool1,null,null);
+        ToolRelease toolRelease3 = new ToolRelease(null, LocalDateTime.now(),null,null,null,tool3,null,null);
+        toolReleaseService.add(toolRelease1);
+        toolReleaseService.add(toolRelease2);
+        toolReleaseService.add(toolRelease3);
 
     }
 
