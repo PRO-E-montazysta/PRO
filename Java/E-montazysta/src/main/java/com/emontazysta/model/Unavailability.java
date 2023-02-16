@@ -1,7 +1,6 @@
 package com.emontazysta.model;
 
 import com.emontazysta.enums.TypeOfUnavailability;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
@@ -17,6 +16,7 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Unavailability {
