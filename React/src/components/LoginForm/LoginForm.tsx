@@ -87,6 +87,8 @@ const LoginForm = () => {
       } catch (e) {
         console.log({ e });
       }
+    }
+  }
 
   const [showPassword, setShowPassword] = useState(false);
 
