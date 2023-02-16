@@ -2,7 +2,6 @@ package com.emontazysta.repository.criteria;
 
 import com.emontazysta.model.Tool;
 import com.emontazysta.model.ToolType;
-import com.emontazysta.model.Warehouse;
 import com.emontazysta.model.page.ToolPage;
 import com.emontazysta.model.searchcriteria.ToolSearchCriteria;
 import org.springframework.data.domain.*;
@@ -29,9 +28,8 @@ public class ToolCriteriaRepository {
     public Page<Tool> finadAllWithFilter(ToolPage toolPage, ToolSearchCriteria toolSearchCriteria){
         CriteriaQuery<Tool> criteriaQuery = criteriaBuilder.createQuery(Tool.class);
         Root<Tool> toolRoot = criteriaQuery.from(Tool.class);
-        toolRoot.join("toolType");
+        Join<Tool,ToolType> tools = toolRoot.join("toolType");
         toolRoot.join("warehouse");
-//        toolRoot.join("toolReleases");
         Predicate predicate = getPredicate(toolSearchCriteria, toolRoot);
         criteriaQuery.where(predicate);
         setOrder(toolPage, criteriaQuery,toolRoot);
@@ -64,7 +62,8 @@ public class ToolCriteriaRepository {
                     "%" + toolSearchCriteria.getCode() + "%"));
         }
         if(Objects.nonNull(toolSearchCriteria.getToolReleases_Id())){
-            predicates.add(criteriaBuilder.in(toolRoot.get("toolReleases")));
+            predicates.add(criteriaBuilder.like(toolRoot.get("toolReleases"),
+                    "%" + toolSearchCriteria.getToolReleases_Id() + "%"));
         }
         if(Objects.nonNull(toolSearchCriteria.getWarehouse_Id())){
             predicates.add(criteriaBuilder.equal(toolRoot.get("warehouse").get("id"),

@@ -24,7 +24,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class  AppUserServiceImpl  implements AppUserService {
+public class AppUserServiceImpl  implements AppUserService {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AppUserRepository appUserRepository;
