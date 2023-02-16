@@ -20,7 +20,7 @@ import LoginPage from "../Pages/LoginPage"
 import { Role } from "../types/roleEnum"
 import Error from "../components/Error/Error"
 
-export interface PageProps {
+export type PageProps = {
     name: string
     path: string
     allowedRoles: Array<Role>

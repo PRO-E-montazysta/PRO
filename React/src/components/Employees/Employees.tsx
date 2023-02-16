@@ -13,6 +13,10 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { styled } from '@mui/material/styles';
+import { getAllUsers } from '../../api/user.api';
+import { useQuery } from 'react-query'
+import { AxiosError } from 'axios';
+
 
 function createData(number: number, name: string, phone: string, email: string, status: string) {
   return { number, name, phone, email, status };
@@ -36,9 +40,15 @@ const StyledTableCellHeader = styled(TableCell)({
 });
 
 const Employees = () => {
-  return (
+  const { isLoading, isError, error: usersError, data: usersData } = useQuery<Array<any>, AxiosError>('all-users', getAllUsers)
+
+  let content;
+  if (isLoading) content = <p>Loading...</p>
+  else if (isError) content = <p>{usersError.message}</p>
+  else content = (
     <Box sx={{ flexGrow: 1, padding: 3 }}>
       <Grid container spacing={2}>
+        {JSON.stringify(usersData)}
         <Grid item xs={2}>
           <Paper sx={{ height: '100%' }}>Osobny komponent na filtry</Paper>
         </Grid>
@@ -80,6 +90,8 @@ const Employees = () => {
       </Grid>
     </Box>
   );
+
+  return content;
 };
 
 export default Employees;

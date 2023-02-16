@@ -13,7 +13,7 @@ export const isAuthorized = (allowedRoles: Array<Role>) => {
     return found;
 }
 
-interface AutorizedRouteParams {
+type AutorizedRouteParams = {
     allowedRoles: Array<Role>
 }
 
