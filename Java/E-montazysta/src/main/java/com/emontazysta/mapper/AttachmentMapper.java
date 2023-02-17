@@ -9,7 +9,7 @@ import com.emontazysta.repository.ElementRepository;
 import com.emontazysta.repository.OrderRepository;
 import com.emontazysta.repository.OrderStageRepository;
 import com.emontazysta.repository.ToolEventRepository;
-import com.emontazysta.service.ToolTypeService;
+import com.emontazysta.repository.ToolTypeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class AttachmentMapper {
 
-    private final ToolTypeService toolTypeService;
+    private final ToolTypeRepository toolTypeRepository;
     private final CommentRepository commentRepository;
     private final AppUserRepository appUserRepository;
     private final ToolEventRepository toolEventRepository;
@@ -53,7 +53,7 @@ public class AttachmentMapper {
                 .description(attachmentDto.getDescription())
                 .typeOfAttachment(attachmentDto.getTypeOfAttachment())
                 .createdAt(attachmentDto.getCreatedAt())
-                .toolType(attachmentDto.getToolTypeId() == null ? null : toolTypeService.getById(attachmentDto.getToolTypeId()))
+                .toolType(attachmentDto.getToolTypeId() == null ? null : toolTypeRepository.getReferenceById(attachmentDto.getToolTypeId()))
                 .comment(attachmentDto.getCommentId() == null ? null : commentRepository.getReferenceById(attachmentDto.getCommentId()))
                 .employee(attachmentDto.getEmployeeId() == null ? null : appUserRepository.getReferenceById(attachmentDto.getEmployeeId()))
                 .toolEvent(attachmentDto.getToolEventId() == null ? null : toolEventRepository.getReferenceById(attachmentDto.getToolEventId()))
