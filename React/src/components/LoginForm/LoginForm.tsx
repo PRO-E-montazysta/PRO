@@ -10,8 +10,7 @@ import { useMutation } from 'react-query';
 import { MouseEvent, useState } from 'react';
 import './style.less';
 
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 
 const CustomTextField = styled(TextField)(({ theme }) => ({

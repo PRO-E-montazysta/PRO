@@ -1,22 +1,22 @@
 import { Outlet } from "react-router-dom"
 import Header from "../components/Headers/Header"
-import AccountList from "../Pages/AccountList"
-import CompanyList from "../Pages/CompanyList"
-import HomePageWarehousemen from "../Pages/WarehousemenHomePage"
-import HomePageWarehouseManager from "../Pages/WarehouseManagersHomePage"
-import HomePageSpecialist from "../Pages/SpecialistsHomePage"
-import HomePageManager from "../Pages/ManagersHomePage"
-import HomePageSalesRepresentative from "../Pages/SalesRepresentativesHomePage"
-import HomePageForeman from "../Pages/ForemenHomePage"
-import HomePageFitter from "../Pages/FittersHomePage"
-import WarehouseList from "../Pages/WarehouseList"
-import DeliveryReceipt from "../Pages/DeliveryReceipt"
-import Demand from "../Pages/Demand"
+import AccountList from "../pages/AccountList"
+import CompanyList from "../pages/CompanyList"
+import HomePageWarehousemen from "../pages/WarehousemenHomePage"
+import HomePageWarehouseManager from "../pages/WarehouseManagersHomePage"
+import Homepagespecialist from "../pages/SpecialistsHomePage"
+import HomePageManager from "../pages/ManagersHomePage"
+import HomepagesalesRepresentative from "../pages/SalesRepresentativesHomePage"
+import HomePageForeman from "../pages/ForemenHomePage"
+import HomePageFitter from "../pages/FittersHomePage"
+import WarehouseList from "../pages/WarehouseList"
+import DeliveryReceipt from "../pages/DeliveryReceipt"
+import Demand from "../pages/Demand"
 import Issues from "../components/Issues/Issues"
-import Orders from "../Pages/Orders"
-import RetrieveReturn from "../Pages/RetrieveReturn"
-import Schedules from "../Pages/Schedules"
-import LoginPage from "../Pages/LoginPage"
+import Orders from "../pages/Orders"
+import RetrieveReturn from "../pages/RetrieveReturn"
+import Schedules from "../pages/Schedules"
+import LoginPage from "../pages/LoginPage"
 import { Role } from "../types/roleEnum"
 import Error from "../components/Error/Error"
 
@@ -157,14 +157,14 @@ export const pageList: Array<PageProps> =
                         name: 'Strona główna',
                         path: '/home-Specialist',
                         allowedRoles: [Role.SPECIALIST],
-                        component: <HomePageSpecialist />
+                        component: <Homepagespecialist />
                     },
                     {
                         inNav: true,
                         name: 'Strona główna',
                         path: '/home-SalesRepresentative',
                         allowedRoles: [Role.SALES_REPRESENTATIVE],
-                        component: <HomePageSalesRepresentative />
+                        component: <HomepagesalesRepresentative />
                     },
                 ]
         },
