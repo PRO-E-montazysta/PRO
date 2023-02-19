@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="PrimaryText" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">@dimen/text_size_primary</item>
+        <item name="android:textColor">@color/textprimary</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily">Arial</item>
+    </style>
+    <style name="SecondaryText" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">@dimen/text_size_secondary</item>
+        <item name="android:textColor">@color/textsecondary</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily">Arial</item>
+
+    </style>
+</resources>
