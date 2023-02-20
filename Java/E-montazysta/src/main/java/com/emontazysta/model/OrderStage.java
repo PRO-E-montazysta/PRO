@@ -36,7 +36,7 @@ public class OrderStage {
     @NotNull
     private BigDecimal price;
 
-    @NotBlank
+    @NotNull
     private Integer order;
 
     private LocalDate plannedEndDate;

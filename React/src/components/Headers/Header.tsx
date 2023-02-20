@@ -4,7 +4,6 @@ import { styled } from '@mui/material/styles';
 import firstPicture from '../../assets/img/firstPicture.png';
 import secondPicture from '../../assets/img/secondPicture.png';
 import logo from '../../assets/img/logo.png';
-import NavMenuItem from '../NavMenuItem/NavMenuItem';
 import { useNavigate } from 'react-router-dom';
 import { pageList } from '../../utils/pageList';
 import NavMenuButton from '../NavMenuItem/NavMenuButton';

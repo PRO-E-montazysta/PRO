@@ -1,5 +1,5 @@
 import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
-import Unauthorized from "../pages/Unauthorized";
+import Error from "../components/Error/Error";
 import { Role } from "../types/roleEnum";
 import { getRolesFromToken, getToken } from "./token";
 
@@ -13,7 +13,7 @@ export const isAuthorized = (allowedRoles: Array<Role>) => {
     return found;
 }
 
-interface AutorizedRouteParams {
+type AutorizedRouteParams = {
     allowedRoles: Array<Role>
 }
 
@@ -29,5 +29,5 @@ export const AutorizedRoute = (params: AutorizedRouteParams) => {
 
     return isAuthorized(allowedRoles)
         ? <Outlet />
-        : <Unauthorized />
+        : <Error code={401} message={"Nie masz uprawnień do oglądania tej strony"} />
 }

@@ -1,11 +1,18 @@
-import { Grid, Typography, Box, FormControlLabel, Checkbox, Button } from '@mui/material';
+import { Grid, Typography, Box, FormControlLabel, Checkbox, Button, InputAdornment, IconButton, OutlinedInput } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { setToken } from '../../utils/token';
-import { logIn } from '../../api/authentication';
+import { logIn } from '../../api/authentication.api';
+import { useMutation } from 'react-query';
+import { MouseEvent, useState } from 'react';
+import './style.less';
+
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+
 
 const CustomTextField = styled(TextField)(({ theme }) => ({
   label: { shrink: true, color: theme.palette.secondary.contrastText },
@@ -39,7 +46,23 @@ const validationSchema = yup.object({
 });
 
 const LoginForm = () => {
+  const theme = useTheme();
   const navigation = useNavigate();
+  const { isLoading, isError, error, mutate } = useMutation({
+    // pokazanie jak przekazwyane są zmienne
+    // można odkomentować i sprawdzić  
+    // mutationFn: (variables: any) => logIn(variables),
+    mutationFn: logIn,
+    onSuccess(data) {
+      setToken(data);
+      navigation('/', { replace: true });
+    },
+    onError(error: Error) {
+      alert(error.message);
+      console.error(error);
+    }
+  });
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -47,25 +70,16 @@ const LoginForm = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      return handleSubmit(values.email, values.password);
+      return mutate({ username: values.email, password: values.password });
     },
   });
 
-  const handleSubmit = async (email: string, password: string) => {
-    console.log({
-      email,
-      password,
-    });
-    if (!!email && !!password) {
-      try {
-        const response: any = await logIn({ username: email, password });
-        setToken(response);
-        navigation('/mock', { replace: true });
-      } catch (e) {
-        console.log({ e });
-      }
+  const [showPassword, setShowPassword] = useState(false);
 
-    }
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
   };
 
   return (
@@ -93,11 +107,15 @@ const LoginForm = () => {
         noValidate
         sx={{ autoComplete: 'off', maxWidth: 666, marginTop: '17px' }}
       >
+
         <CustomTextField
           fullWidth
           margin="normal"
           label="Email"
           name="email"
+          InputLabelProps={{
+            shrink: true,
+          }}
           value={formik.values.email}
           onChange={formik.handleChange}
           error={formik.touched.email && Boolean(formik.errors.email)}
@@ -108,11 +126,30 @@ const LoginForm = () => {
           margin="normal"
           label="Password"
           name="password"
-          type="password"
+          type={showPassword ? 'text' : 'password'}
+          InputLabelProps={{
+            shrink: true,
+          }}
           value={formik.values.password}
           onChange={formik.handleChange}
           error={formik.touched.password && Boolean(formik.errors.password)}
           helperText={formik.touched.password && formik.errors.password}
+          InputProps={{
+            endAdornment:
+              <InputAdornment position="end" >
+                <IconButton
+                  sx={{
+                    color: theme.palette.secondary.contrastText
+                  }}
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+          }}
         />
         <FormControlLabel
           sx={{ marginTop: '37px' }}
@@ -123,7 +160,9 @@ const LoginForm = () => {
 
         <Grid spacing={2} container justifyContent="flex-end" sx={{ marginTop: '62px' }}>
           <Grid item>
-            <Button type="submit" color="primary" variant="contained">
+            <Button type="submit" color="primary" variant="contained"
+              disabled={isLoading}
+            >
               Zaloguj się
             </Button>
           </Grid>
@@ -134,7 +173,7 @@ const LoginForm = () => {
           </Grid>
         </Grid>
       </Box>
-    </Box>
+    </Box >
   );
 };
 
