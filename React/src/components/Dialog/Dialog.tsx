@@ -11,10 +11,22 @@ type DialogTypes = {
 }
 
 const CustomTextField = styled(TextField)(({ theme }) => ({
-    border: '2px solid #96C0FB',
-    borderRadius: '8px',
     label: { shrink: true, color: theme.palette.secondary.contrastText },
     input: { color: theme.palette.secondary.contrastText },
+    '& label.Mui-focused': {
+      color: theme.palette.secondary.contrastText,
+    },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: '#96C0FB',
+      },
+      '&:hover fieldset': {
+        borderColor: theme.palette.secondary.contrastText,
+      },
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: 'green',
+    },
   }));
 
 const Dialog = ({ dialogText, confirmLabel, inputsInfo, confirmAction, cancelAction }: DialogTypes) => {
@@ -36,7 +48,6 @@ const Dialog = ({ dialogText, confirmLabel, inputsInfo, confirmAction, cancelAct
                             type={info.inputType}
                             label={info.inputLabel}
                             fullWidth
-                            variant='outlined'
                             style=
                             {{ 
                                 display: 'block',
