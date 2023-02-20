@@ -114,7 +114,7 @@ export const pageList: Array<PageProps> =
                         inNav: true,
                         name: 'Zlecenia',
                         path: '/orders',
-                        allowedRoles: [Role.FITTER, Role.SPECIALIST, Role.MANAGER, Role.SALES_REPRESENTATIVE, Role.FOREMAN],
+                        allowedRoles: [Role.FITTER, Role.SPECIALIST, Role.MANAGER, Role.SALES_REPRESENTATIVE, Role.FOREMAN, Role["*"]],
                         component: <Orders />
                     },
                     {
