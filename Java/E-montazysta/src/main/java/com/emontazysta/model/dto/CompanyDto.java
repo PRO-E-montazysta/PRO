@@ -1,8 +1,6 @@
 package com.emontazysta.model.dto;
 
 import com.emontazysta.enums.CompanyStatus;
-import com.emontazysta.model.Client;
-import com.emontazysta.model.Warehouse;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
