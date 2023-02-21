@@ -23,21 +23,21 @@ public class AttachmentServiceImpl implements AttachmentService {
     @Override
     public List<AttachmentDto> getAll() {
         return repository.findAll().stream()
-                .map(attachmentMapper::attachmentDto)
+                .map(attachmentMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public AttachmentDto getById(Long id) {
         Attachment attachment = repository.findById(id).orElseThrow(EntityNotFoundException::new);
-        return attachmentMapper.attachmentDto(attachment);
+        return attachmentMapper.toDto(attachment);
     }
 
     @Override
     public AttachmentDto add(AttachmentDto attachmentDto) {
         Attachment attachment = attachmentMapper.toEntity(attachmentDto);
         attachment.setCreatedAt(new Date());
-        return attachmentMapper.attachmentDto(repository.save(attachment));
+        return attachmentMapper.toDto(repository.save(attachment));
     }
 
     @Override

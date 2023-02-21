@@ -26,7 +26,7 @@ public class AttachmentMapper {
     private final OrderStageRepository orderStageRepository;
     private final ElementEventRepository elementEventRepository;
 
-    public AttachmentDto attachmentDto(Attachment attachment) {
+    public AttachmentDto toDto(Attachment attachment) {
         return AttachmentDto.builder()
                 .id(attachment.getId())
                 .name(attachment.getName())
