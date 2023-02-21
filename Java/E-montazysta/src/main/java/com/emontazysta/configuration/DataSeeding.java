@@ -1,6 +1,7 @@
 package com.emontazysta.configuration;
 
 import com.emontazysta.enums.*;
+import com.emontazysta.mapper.*;
 import com.emontazysta.model.*;
 import com.emontazysta.service.*;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,25 @@ public class DataSeeding {
     private final ElementReturnReleaseService elementReturnReleaseService;
     private final AppUserService appUserService;
     private final UnavailabilityService unavailabilityService;
+
+    private final CompanyMapper companyMapper;
+    private final ClientMapper clientMapper;
+    private final LocationMapper locationMapper;
+    private final OrdersMapper ordersMapper;
+    private final OrderStageMapper orderStageMapper;
+    private final WarehouseMapper warehouseMapper;
+    private final ToolTypeMapper toolTypeMapper;
+    private final ToolMapper toolMapper;
+    private final ToolEventMapper toolEventMapper;
+    private final CommentMapper commentMapper;
+    private final AttachmentMapper attachmentMapper;
+    private final DemandAdHocMapper demandAdHocMapper;
+    private final ToolReleaseMapper toolReleaseMapper;
+    private final ElementMapper elementMapper;
+    private final ElementEventMapper elementEventMapper;
+    private final ElementInWarehouseMapper elementInWarehouseMapper;
+    private final ElementReturnReleaseMapper elementReturnReleaseMapper;
+    private final UnavailabilityMapper unavailabilityMapper;
 
     @PostConstruct
     void setUp() {
@@ -349,23 +369,59 @@ public class DataSeeding {
                 elementReturnRelease3, elementReturnRelease4);
 
         appUserList.forEach(appUserService::add);
-        companyList.forEach(companyService::add);
-        clientList.forEach(clientService::add);
-        locationList.forEach(locationService::add);
-        ordersList.forEach(ordersService::add);
-        orderStageList.forEach(orderStageService::add);
-        warehouseList.forEach(warehouseService::add);
-        toolTypeList.forEach(toolTypeService::add);
-        toolList.forEach(toolService::add);
-        toolEventList.forEach(toolEventService::add);
-        commentList.forEach(commentService::add);
-        attachmentList.forEach(attachmentService::add);
-        demandAdHocList.forEach(demandAdHocService::add);
-        toolReleaseList.forEach(toolReleaseService::add);
-        elementList.forEach(elementService::add);
-        elementEventList.forEach(elementEventService::add);
-        elementInWarehouseList.forEach(elementInWarehouseService::add);
-        elementReturnReleaseList.forEach(elementReturnReleaseService::add);
-        unavailabilityList.forEach(unavailabilityService::add);
+        companyList.forEach(company -> {
+            companyService.add(companyMapper.toDto(company));
+        });
+        clientList.forEach(client -> {
+            clientService.add(clientMapper.toDto(client));
+        });
+        locationList.forEach(location -> {
+            locationService.add(locationMapper.toDto(location));
+        });
+        ordersList.forEach(orders -> {
+            ordersService.add(ordersMapper.toDto(orders));
+        });
+        orderStageList.forEach(orderStage -> {
+            orderStageService.add(orderStageMapper.toDto(orderStage));
+        });
+        warehouseList.forEach(warehouse -> {
+            warehouseService.add(warehouseMapper.toDto(warehouse));
+        });
+        toolTypeList.forEach(toolType -> {
+            toolTypeService.add(toolTypeMapper.toDto(toolType));
+        });
+        toolList.forEach(tool -> {
+            toolService.add(toolMapper.toDto(tool));
+        });
+        toolEventList.forEach(toolEvent -> {
+            toolEventService.add(toolEventMapper.toDto(toolEvent));
+        });
+        commentList.forEach(comment -> {
+            commentService.add(commentMapper.toDto(comment));
+        });
+        attachmentList.forEach(attachment -> {
+            attachmentService.add(attachmentMapper.toDto(attachment));
+        });
+        demandAdHocList.forEach(demandAdHoc -> {
+            demandAdHocService.add(demandAdHocMapper.toDto(demandAdHoc));
+        });
+        toolReleaseList.forEach(toolRelease -> {
+            toolReleaseService.add(toolReleaseMapper.toDto(toolRelease));
+        });
+        elementList.forEach(element -> {
+            elementService.add(elementMapper.toDto(element));
+        });
+        elementEventList.forEach(elementEvent -> {
+            elementEventService.add(elementEventMapper.toDto(elementEvent));
+        });
+        elementInWarehouseList.forEach(elementInWarehouse -> {
+            elementInWarehouseService.add(elementInWarehouseMapper.toDto(elementInWarehouse));
+        });
+        elementReturnReleaseList.forEach(elementReturnRelease -> {
+            elementReturnReleaseService.add(elementReturnReleaseMapper.toDto(elementReturnRelease));
+        });
+        unavailabilityList.forEach(unavailability -> {
+            unavailabilityService.add(unavailabilityMapper.toDto(unavailability));
+        });
     }
 }
