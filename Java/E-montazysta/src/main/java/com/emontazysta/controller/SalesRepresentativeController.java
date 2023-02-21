@@ -31,7 +31,7 @@ public class SalesRepresentativeController {
 
     private final SalesRepresentativeService salesRepresentativeService;
 
-    @GetMapping
+    @GetMapping("/all")
     @Operation(description = "Allows to get all Sales Representatives.", security = @SecurityRequirement(name = "bearer-key"))
     public List<SalesRepresentativeDto> getAllSalesRepresentatives() {
         return salesRepresentativeService.getAll().stream()
@@ -39,7 +39,7 @@ public class SalesRepresentativeController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @Operation(description = "Allows to get Sales Representative by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public SalesRepresentativeDto getSalesRepresentativeById(@PathVariable Long id) {
         return SalesRepresentativeMapper.toDto(salesRepresentativeService.getById(id));
@@ -52,7 +52,7 @@ public class SalesRepresentativeController {
         salesRepresentativeService.add(salesRepresentative);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @Operation(description = "Allows to delete Sales Representative by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public void deleteSalesRepresentativeById(@PathVariable Long id) {
         salesRepresentativeService.delete(id);

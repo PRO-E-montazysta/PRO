@@ -31,7 +31,7 @@ public class ManagerController {
 
     private final ManagerService managerService;
 
-    @GetMapping
+    @GetMapping("/all")
     @Operation(description = "Allows to get all Managers.", security = @SecurityRequirement(name = "bearer-key"))
     public List<ManagerDto> getAllManagers() {
         return managerService.getAll().stream()
@@ -39,7 +39,7 @@ public class ManagerController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @Operation(description = "Allows to get Manager by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public ManagerDto getManagerById(@PathVariable Long id) {
         return ManagerMapper.toDto(managerService.getById(id));
@@ -52,7 +52,7 @@ public class ManagerController {
         managerService.add(manager);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @Operation(description = "Allows to delete Manager by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public void deleteManagerById(@PathVariable Long id) {
         managerService.delete(id);

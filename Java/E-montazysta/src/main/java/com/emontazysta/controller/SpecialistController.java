@@ -31,7 +31,7 @@ public class SpecialistController {
 
     private final SpecialistService specialistService;
 
-    @GetMapping
+    @GetMapping("/all")
     @Operation(description = "Allows to get all Specialists.", security = @SecurityRequirement(name = "bearer-key"))
     public List<SpecialistDto> getAllSpecialists() {
         return specialistService.getAll().stream()
@@ -39,7 +39,7 @@ public class SpecialistController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @Operation(description = "Allows to get Specialist by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public SpecialistDto getSpecialistById(@PathVariable Long id) {
         return SpecialistMapper.toDto(specialistService.getById(id));
@@ -52,7 +52,7 @@ public class SpecialistController {
         specialistService.add(specialist);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @Operation(description = "Allows to delete Specialist by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public void deleteSpecialistById(@PathVariable Long id) {
         specialistService.delete(id);

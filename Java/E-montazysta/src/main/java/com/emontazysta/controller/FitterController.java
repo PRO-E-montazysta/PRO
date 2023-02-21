@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +31,7 @@ public class FitterController {
 
     private final FitterService fitterService;
 
-    @GetMapping
+    @GetMapping("/all")
     @Operation(description = "Allows to get all Fitters.", security = @SecurityRequirement(name = "bearer-key"))
     public List<FitterDto> getAllFitters() {
         return fitterService.getAll().stream()
@@ -40,7 +39,7 @@ public class FitterController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @Operation(description = "Allows to get Fitter by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public FitterDto getFitterById(@PathVariable Long id) {
         return FitterMapper.toDto(fitterService.getById(id));
@@ -53,7 +52,7 @@ public class FitterController {
         fitterService.add(fitter);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @Operation(description = "Allows to delete Fitter by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public void deleteFitterById(@PathVariable Long id) {
         fitterService.delete(id);

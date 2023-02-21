@@ -1,7 +1,6 @@
 package com.emontazysta.controller;
 
 import com.emontazysta.mapper.EmploymentMapper;
-import com.emontazysta.model.Attachment;
 import com.emontazysta.model.Employment;
 import com.emontazysta.model.dto.EmploymentDto;
 import com.emontazysta.service.EmploymentService;
@@ -13,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 

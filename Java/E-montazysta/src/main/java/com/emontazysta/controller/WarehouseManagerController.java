@@ -31,7 +31,7 @@ public class WarehouseManagerController {
 
     private final WarehouseManagerService warehouseManagerService;
 
-    @GetMapping
+    @GetMapping("/all")
     @Operation(description = "Allows to get all Warehouse Managers.", security = @SecurityRequirement(name = "bearer-key"))
     public List<WarehouseManagerDto> getAllWarehouseManagers() {
         return warehouseManagerService.getAll().stream()
@@ -39,7 +39,7 @@ public class WarehouseManagerController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @Operation(description = "Allows to Warehouse Manager by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public WarehouseManagerDto getWarehouseManagerById(@PathVariable Long id) {
         return WarehouseManagerMapper.toDto(warehouseManagerService.getById(id));
@@ -52,7 +52,7 @@ public class WarehouseManagerController {
         warehouseManagerService.add(warehouseManager);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @Operation(description = "Allows to delete Warehouse Manager by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public void deleteWarehouseManagerById(@PathVariable Long id) {
         warehouseManagerService.delete(id);

@@ -24,7 +24,7 @@ public class ToolEventController {
 
     private final ToolEventServiceImpl service;
 
-    @GetMapping
+    @GetMapping("/all")
     @Operation(description = "Allows to get all tool event.", security = @SecurityRequirement(name = "bearer-key"))
     public List<ToolEventDto> getAllToolEvents() {
         return  service.getAll().stream()
@@ -32,7 +32,7 @@ public class ToolEventController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @Operation(description = "Allows to get tool event by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public ToolEventDto getToolEventById(@PathVariable Long id) {
         return ToolEventMapper.toDto(service.getById(id));
@@ -45,7 +45,7 @@ public class ToolEventController {
         service.add(event);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @Operation(description = "Allows to delete tool event by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public void deleteToolEventById(@PathVariable Long id) {
         service.delete(id);
