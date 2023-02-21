@@ -108,6 +108,7 @@ const LoginForm = () => {
       >
 
         <CustomTextField
+          className={'login-form-input'}
           fullWidth
           margin="normal"
           label="Email"
@@ -121,6 +122,7 @@ const LoginForm = () => {
           helperText={formik.touched.email && formik.errors.email}
         />
         <CustomTextField
+          className={'login-form-input'}
           fullWidth
           margin="normal"
           label="Password"

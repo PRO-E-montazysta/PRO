@@ -7,36 +7,7 @@ import { AutorizedRoute, isAuthorized } from './utils/authorize';
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from 'react-query/devtools'
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#282A3A',
-      contrastText: '#FFFFFF',
-    },
-    secondary: {
-      main: '#1A1C26',
-      contrastText: '#FFFFFF',
-    },
-  },
-  components: {
-    MuiCssBaseline: {
-      styleOverrides: {
-        body: { backgroundColor: '#282A3A' },
-      },
-    },
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          color: '#FFFFFF',
-        },
-      },
-    },
-  },
-});
-
-
-
-
+import { theme } from './themes/baseTheme';
 
 const browserRouterMapper = (pages: Array<PageProps>) => {
   const result: Array<RouteObject> =
