@@ -82,21 +82,33 @@ public class SecurityConfig {
         warehouseService.add(warehouse1);
 
        Tool tool1 =  new Tool(null,"Wiertarka", new Date(),"12345", null,warehouse1,null,toolType1);
-       Tool tool2 = new Tool(null,"Młotek", new Date(),"12345",null,null,null,null);
-       Tool tool3 = new Tool(null,"Piła", new Date(),"12345",null,null,null,null);
-       Tool tool4 = new Tool(null,"Wiertarka", new Date(),"12345",null,null,null,toolType2);
+       Tool tool2 = new Tool(null,"Młotek", new Date(),"12345",null,warehouse1,null,toolType2);
+       Tool tool3 = new Tool(null,"Piła", new Date(),"12345",null,warehouse1,null,toolType2);
+       Tool tool4 = new Tool(null,"Wiertarka", new Date(),"12345",null,warehouse1,null,toolType2);
+       Tool tool6 = new Tool(null,"Piła", new Date(),"12345",null,null,null,toolType2);
+       Tool tool7 = new Tool(null,"Młotek", new Date(),"12345",null,warehouse1,null,toolType2);
+       Tool tool5 =  new Tool(null,"Wiertarka", new Date(),"12345", null,warehouse1,null,toolType1);
 
         toolService.add(tool1);
         toolService.add(tool2);
         toolService.add(tool3);
         toolService.add(tool4);
+        toolService.add(tool5);
+        toolService.add(tool6);
+        toolService.add(tool7);
 
         ToolRelease toolRelease1 = new ToolRelease(null, LocalDateTime.now(),null,null,null,tool1,null,null);
         ToolRelease toolRelease2 = new ToolRelease(null, LocalDateTime.now(),null,null,null,tool1,null,null);
         ToolRelease toolRelease3 = new ToolRelease(null, LocalDateTime.now(),null,null,null,tool3,null,null);
+        ToolRelease toolRelease4 = new ToolRelease(null, LocalDateTime.now(),null,null,null,tool5,null,null);
+        ToolRelease toolRelease5 = new ToolRelease(null, LocalDateTime.now(),null,null,null,tool2,null,null);
+        ToolRelease toolRelease6 = new ToolRelease(null, LocalDateTime.now(),null,null,null,tool7,null,null);
         toolReleaseService.add(toolRelease1);
         toolReleaseService.add(toolRelease2);
-        toolReleaseService.add(toolRelease3);
+//        toolReleaseService.add(toolRelease3);
+        toolReleaseService.add(toolRelease4);
+        toolReleaseService.add(toolRelease5);
+        toolReleaseService.add(toolRelease6);
 
     }
 

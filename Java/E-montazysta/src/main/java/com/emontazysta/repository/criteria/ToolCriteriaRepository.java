@@ -1,9 +1,13 @@
 package com.emontazysta.repository.criteria;
 
+import com.emontazysta.mapper.ToolMapper;
 import com.emontazysta.model.Tool;
+import com.emontazysta.model.ToolRelease;
 import com.emontazysta.model.ToolType;
 import com.emontazysta.model.Warehouse;
+import com.emontazysta.model.dto.ToolDto;
 import com.emontazysta.model.page.ToolPage;
+import com.emontazysta.model.searchcriteria.ToolReleaseSearchCriteria;
 import com.emontazysta.model.searchcriteria.ToolSearchCriteria;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Repository;
@@ -14,6 +18,7 @@ import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Repository
 public class ToolCriteriaRepository {
@@ -26,13 +31,17 @@ public class ToolCriteriaRepository {
         this.criteriaBuilder = entityManager.getCriteriaBuilder();
     }
 
-    public Page<Tool> finadAllWithFilter(ToolPage toolPage, ToolSearchCriteria toolSearchCriteria){
+    public Page<ToolDto> finadAllWithFilter(ToolPage toolPage, ToolSearchCriteria toolSearchCriteria, ToolReleaseSearchCriteria toolReleaseSearchCriteria){
         CriteriaQuery<Tool> criteriaQuery = criteriaBuilder.createQuery(Tool.class);
+        CriteriaQuery<ToolRelease> criteriaQueryToolRelease = criteriaBuilder.createQuery(ToolRelease.class);
+        Root<ToolRelease> toolReleaseRoot = criteriaQueryToolRelease.from(ToolRelease.class);
         Root<Tool> toolRoot = criteriaQuery.from(Tool.class);
         toolRoot.join("toolType");
         toolRoot.join("warehouse");
-//        toolRoot.join("toolReleases");
-        Predicate predicate = getPredicate(toolSearchCriteria, toolRoot);
+        toolRoot.join("toolReleases");
+
+
+        Predicate predicate = getPredicate(toolSearchCriteria, toolRoot, toolReleaseRoot, toolReleaseSearchCriteria);
         criteriaQuery.where(predicate);
         setOrder(toolPage, criteriaQuery,toolRoot);
 
@@ -43,14 +52,19 @@ public class ToolCriteriaRepository {
         Pageable pageable = getPageable(toolPage);
 
         long toolsCount = getToolsCount(predicate);
+        List<Tool> tools = typedQuery.getResultList();
 
-        return new PageImpl<>(typedQuery.getResultList(), pageable, toolsCount);
+        return new PageImpl<>(typedQuery.getResultList().stream().map(ToolMapper::toolToDto).collect(Collectors.toList()), pageable, toolsCount);
     }
 
 
 
-    private Predicate getPredicate(ToolSearchCriteria toolSearchCriteria, Root<Tool> toolRoot) {
+    private Predicate getPredicate(ToolSearchCriteria toolSearchCriteria, Root<Tool> toolRoot, Root<ToolRelease> toolReleaseRoot, ToolReleaseSearchCriteria toolReleaseSearchCriteria) {
         List<Predicate> predicates = new ArrayList<>();
+        if(Objects.nonNull(toolSearchCriteria.getId())){
+            predicates.add(criteriaBuilder.equal(toolRoot.get("id"),toolSearchCriteria.getId()));
+        }
+
         if(Objects.nonNull(toolSearchCriteria.getName())){
             predicates.add(criteriaBuilder.like(toolRoot.get("name"),
                     "%" + toolSearchCriteria.getName() + "%"));
@@ -64,7 +78,7 @@ public class ToolCriteriaRepository {
                     "%" + toolSearchCriteria.getCode() + "%"));
         }
         if(Objects.nonNull(toolSearchCriteria.getToolReleases_Id())){
-            predicates.add(criteriaBuilder.in(toolRoot.get("toolReleases")));
+            predicates.add(criteriaBuilder.equal(toolReleaseRoot.get("id"),toolSearchCriteria.getToolReleases_Id()));
         }
         if(Objects.nonNull(toolSearchCriteria.getWarehouse_Id())){
             predicates.add(criteriaBuilder.equal(toolRoot.get("warehouse").get("id"),

@@ -7,4 +7,6 @@ public interface ToolRepository extends JpaRepository<Tool, Long> {
     Tool findByCode(String code);
 
     Tool findAllByToolType_Id(long toolTypeId);
+
+    Tool findAllByToolReleasesId(long toolReleasesId);
 }

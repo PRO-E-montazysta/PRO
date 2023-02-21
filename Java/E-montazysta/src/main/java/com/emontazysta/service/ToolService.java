@@ -1,7 +1,9 @@
 package com.emontazysta.service;
 
 import com.emontazysta.model.Tool;
+import com.emontazysta.model.dto.ToolDto;
 import com.emontazysta.model.page.ToolPage;
+import com.emontazysta.model.searchcriteria.ToolReleaseSearchCriteria;
 import com.emontazysta.model.searchcriteria.ToolSearchCriteria;
 import org.springframework.data.domain.Page;
 
@@ -15,5 +17,7 @@ public interface ToolService {
     void add(Tool tool);
     void delete(Long id);
     void update(Long id, Tool tool);
-    Page<Tool> getTools(ToolPage toolPage, ToolSearchCriteria toolSearchCriteria);
+    Page<ToolDto> getTools(ToolPage toolPage, ToolSearchCriteria toolSearchCriteria, ToolReleaseSearchCriteria toolReleaseSearchCriteria);
+
+
 }
