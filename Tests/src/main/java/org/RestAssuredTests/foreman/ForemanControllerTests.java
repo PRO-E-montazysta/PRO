@@ -1,4 +1,4 @@
-package org.tests.foreman;
+package org.RestAssuredTests.foreman;
 
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.tests.util.AbstractTest;
+import org.RestAssuredTests.util.AbstractTest;
 
 import static io.restassured.RestAssured.given;
 
