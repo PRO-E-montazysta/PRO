@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -34,6 +35,7 @@ public class ElementEventMapper {
                 .acceptedById(event.getAcceptedBy() == null ? null : event.getAcceptedBy().getId())
                 .updatedById(event.getUpdatedBy() == null ? null : event.getUpdatedBy().getId())
                 .elementId(event.getElement() == null ? null : event.getElement().getId())
+                .attachments(event.getAttachments().stream().map(Attachment::getId).collect(Collectors.toList()))
                 .build();
     }
 
