@@ -43,7 +43,6 @@
             android:layout_gravity="center"
             android:layout_marginBottom="20dp"
             android:text="@string/app_description"
-            style="@style/PrimaryText"
             />
 
         <Button
@@ -53,10 +52,7 @@
             android:layout_gravity="center"
             android:background="@drawable/button"
             android:textColor="@color/textprimary"
-            style="@style/PrimaryText"
-
-            >
-        </Button>
+            style="@style/button"
+            />
     </LinearLayout>
-
 </RelativeLayout>

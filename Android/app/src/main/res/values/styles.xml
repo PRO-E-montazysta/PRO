@@ -11,6 +11,22 @@
         <item name="android:textColor">@color/textsecondary</item>
         <item name="android:textStyle">normal</item>
         <item name="android:fontFamily">Arial</item>
-
+    </style>
+    <style name="button" >
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:textColor">@color/textprimary</item>
+        <item name="android:background">@drawable/button</item>
+    </style>
+    <style name="text_field">
+        <item name="android:minHeight">48dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:background">"@drawable/text_input"</item>
+        <item name="android:textColorHint">"@color/white"</item>
     </style>
 </resources>
