@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ElementInWarehouseMapper {
 
-    private ElementRepository elementRepository;
-    private WarehouseRepository warehouseRepository;
+    private final ElementRepository elementRepository;
+    private final WarehouseRepository warehouseRepository;
 
     public ElementInWarehouseDto toDto(ElementInWarehouse elementInWarehouse) {
         return ElementInWarehouseDto.builder()
