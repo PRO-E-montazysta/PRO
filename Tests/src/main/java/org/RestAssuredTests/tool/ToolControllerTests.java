@@ -5,10 +5,6 @@ import io.restassured.response.Response;
 import org.RestAssuredTests.util.AbstractTest;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.*;
-<<<<<<< HEAD:Tests/src/main/java/org/RestAssuredTests/tool/ToolControllerTests.java
-=======
-import org.tests.util.AbstractTest;
->>>>>>> master:Tests/src/main/java/org/tests/tool/ToolControllerTests.java
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
@@ -17,14 +13,9 @@ import static org.hamcrest.Matchers.*;
 public class ToolControllerTests extends AbstractTest {
 
     private static String names[] = new String[]{"screwdriver", "drill", "knife", "lopata", "dluto"};
-<<<<<<< HEAD:Tests/src/main/java/org/RestAssuredTests/tool/ToolControllerTests.java
     private static int[] indexRangeForDeletion;
 
     private String bearerToken = TOKEN;
-
-=======
-    private static int[] indexRangeForDeletion = {1,2};
->>>>>>> master:Tests/src/main/java/org/tests/tool/ToolControllerTests.java
 
     private String toolCode = "";
     @Test
