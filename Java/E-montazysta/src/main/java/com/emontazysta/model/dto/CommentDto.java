@@ -2,8 +2,7 @@ package com.emontazysta.model.dto;
 
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
@@ -12,7 +11,7 @@ public class CommentDto {
 
     private Long id;
     private String content;
-    private Date createdAt;
+    private LocalDateTime createdAt;
     private Long messageCreatorId;
     private Long orderStageId;
     private List<Long> attachments;

@@ -3,10 +3,8 @@ package com.emontazysta.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-
 import lombok.*;
-
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -24,7 +22,7 @@ public class Comment {
     @NotBlank
     private String content;
 
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     @ManyToOne
     private AppUser messageCreator;
