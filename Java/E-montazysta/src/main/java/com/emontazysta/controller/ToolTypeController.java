@@ -21,13 +21,13 @@ public class ToolTypeController {
 
     private final ToolTypeService toolTypeService;
 
-    @GetMapping
+    @GetMapping("/all")
     @Operation(description = "Allows to get all tool types.", security = @SecurityRequirement(name = "bearer-key"))
     public List<ToolTypeDto> getAllToolTypes() {
         return  toolTypeService.getAll();
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @Operation(description = "Allows to get tool type by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public ToolTypeDto getToolTypeById(@PathVariable Long id) {
         return toolTypeService.getById(id);
@@ -40,7 +40,7 @@ public class ToolTypeController {
         return toolTypeService.add(toolType);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @Operation(description = "Allows to delete tool type by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public void deleteToolTypeById(@PathVariable Long id) {
         toolTypeService.delete(id);

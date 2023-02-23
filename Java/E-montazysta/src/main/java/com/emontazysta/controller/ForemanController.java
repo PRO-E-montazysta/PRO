@@ -28,13 +28,13 @@ public class ForemanController {
 
     private final ForemanService foremanService;
 
-    @GetMapping
+    @GetMapping("/all")
     @Operation(description = "Allows to get all Foremen.", security = @SecurityRequirement(name = "bearer-key"))
     public List<ForemanDto> getAllForemen() {
         return foremanService.getAll();
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @Operation(description = "Allows to get Foreman by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public ForemanDto getForemanById(@PathVariable Long id) {
         return foremanService.getById(id);
@@ -47,7 +47,7 @@ public class ForemanController {
         return foremanService.add(foreman);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @Operation(description = "Allows to delete Foreman by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public void deleteForemanById(@PathVariable Long id) {
         foremanService.delete(id);

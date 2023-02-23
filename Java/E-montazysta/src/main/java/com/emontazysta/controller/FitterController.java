@@ -28,13 +28,13 @@ public class FitterController {
 
     private final FitterService fitterService;
 
-    @GetMapping
+    @GetMapping("/all")
     @Operation(description = "Allows to get all Fitters.", security = @SecurityRequirement(name = "bearer-key"))
     public List<FitterDto> getAllFitters() {
         return fitterService.getAll();
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @Operation(description = "Allows to get Fitter by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public FitterDto getFitterById(@PathVariable Long id) {
         return fitterService.getById(id);
@@ -47,7 +47,7 @@ public class FitterController {
         return fitterService.add(fitter);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @Operation(description = "Allows to delete Fitter by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public void deleteFitterById(@PathVariable Long id) {
         fitterService.delete(id);

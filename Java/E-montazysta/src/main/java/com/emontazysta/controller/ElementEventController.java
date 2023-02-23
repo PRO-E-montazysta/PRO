@@ -21,13 +21,13 @@ public class ElementEventController {
 
     private final ElementEventService service;
 
-    @GetMapping
+    @GetMapping("/all")
     @Operation(description = "Allows to get list of all events", security= @SecurityRequirement(name = "bearer-key"))
     public List<ElementEventDto> getAllEvents() {
         return service.getAll();
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @Operation(description = "Allows to get specific event by id", security = @SecurityRequirement(name= "bearer-key"))
     public ElementEventDto getEventById(@PathVariable Long id){
         return service.getById(id);
@@ -40,7 +40,7 @@ public class ElementEventController {
         return service.add(event);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @Operation(description = "Allows to delete element event by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public void deleteElementEventById(@PathVariable Long id) {
         service.delete(id);
