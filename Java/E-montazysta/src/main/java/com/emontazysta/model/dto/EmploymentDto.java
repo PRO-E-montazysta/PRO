@@ -2,14 +2,13 @@ package com.emontazysta.model.dto;
 
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @Builder
 public class EmploymentDto {
 
     private Long id;
-    private Date dateOfEmployment;
-    private Date dateOfDismiss;
+    private LocalDate dateOfEmployment;
+    private LocalDate dateOfDismiss;
 }

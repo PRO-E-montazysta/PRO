@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +37,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentDto add(CommentDto commentDto) {
         Comment comment = commentMapper.toEntity(commentDto);
-        comment.setCreatedAt(new Date());
+        comment.setCreatedAt(LocalDateTime.now());
         return commentMapper.toDto(repository.save(comment));
     }
 

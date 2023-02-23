@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,7 +36,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CompanyDto add(CompanyDto companyDto) {
         Company company = companyMapper.toEntity(companyDto);
-        company.setCreatedAt(new Date());
+        company.setCreatedAt(LocalDate.now());
 
         return companyMapper.toDto(repository.save(company));
     }

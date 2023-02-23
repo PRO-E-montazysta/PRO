@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,7 +36,7 @@ public class AttachmentServiceImpl implements AttachmentService {
     @Override
     public AttachmentDto add(AttachmentDto attachmentDto) {
         Attachment attachment = attachmentMapper.toEntity(attachmentDto);
-        attachment.setCreatedAt(new Date());
+        attachment.setCreatedAt(LocalDateTime.now());
         return attachmentMapper.toDto(repository.save(attachment));
     }
 

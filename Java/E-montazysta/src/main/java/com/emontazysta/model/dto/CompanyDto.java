@@ -4,7 +4,7 @@ import com.emontazysta.enums.CompanyStatus;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -14,7 +14,7 @@ public class CompanyDto {
 
     private Long id;
     private String companyName;
-    private Date createdAt;
+    private LocalDate createdAt;
     private CompanyStatus status;
     private String statusReason;
     private List<Long> warehouses;

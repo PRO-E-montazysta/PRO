@@ -8,7 +8,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -27,7 +27,7 @@ public class Company {
     @NotBlank
     private String companyName;
 
-    private Date createdAt;
+    private LocalDate createdAt;
 
     @NotNull
     private CompanyStatus status;

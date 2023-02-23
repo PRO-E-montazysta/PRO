@@ -3,7 +3,7 @@ package com.emontazysta.model.dto;
 import com.emontazysta.enums.TypeOfAttachment;
 import lombok.Builder;
 import lombok.Data;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -14,7 +14,7 @@ public class AttachmentDto {
     private String url;
     private String description;
     private TypeOfAttachment typeOfAttachment;
-    private Date createdAt;
+    private LocalDateTime createdAt;
     private Long toolTypeId;
     private Long commentId;
     private Long employeeId;
