@@ -1,7 +1,5 @@
 package com.emontazysta.controller;
 
-import com.emontazysta.mapper.ClientMapper;
-import com.emontazysta.model.Client;
 import com.emontazysta.model.dto.ClientDto;
 import com.emontazysta.service.ClientService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 
@@ -28,22 +25,20 @@ public class ClientController {
     @GetMapping("/all")
     @Operation(description = "Allows to get all Clients.", security = @SecurityRequirement(name = "bearer-key"))
     public ResponseEntity <List<ClientDto>> getAll() {
-        return ResponseEntity.ok().body(clientService.getAll().stream()
-                .map(ClientMapper::clientToDto)
-                .collect(Collectors.toList()));
+        return ResponseEntity.ok().body(clientService.getAll());
     }
 
     @GetMapping("/{id}")
     @Operation(description = "Allows to get Client by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public ResponseEntity<ClientDto> getById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(ClientMapper.clientToDto(clientService.getById(id)));
+        return ResponseEntity.ok().body(clientService.getById(id));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Client.", security = @SecurityRequirement(name = "bearer-key"))
-    public void add(@Valid @RequestBody Client client) {
-        clientService.add(client);
+    public ClientDto add(@Valid @RequestBody ClientDto clientDto) {
+        return clientService.add(clientDto);
     }
 
     @DeleteMapping("/{id}")
@@ -54,7 +49,7 @@ public class ClientController {
 
     @PutMapping("/{id}")
     @Operation(description = "Allows to update Client by given Id and Client.", security = @SecurityRequirement(name = "bearer-key"))
-    public void update(@PathVariable Long id, @Valid @RequestBody Client client) {
-        clientService.update(id, client);
+    public ClientDto update(@PathVariable Long id, @Valid @RequestBody ClientDto clientDto) {
+        return clientService.update(id, clientDto);
     }
 }

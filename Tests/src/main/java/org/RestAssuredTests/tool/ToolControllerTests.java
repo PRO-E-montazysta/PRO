@@ -5,6 +5,10 @@ import io.restassured.response.Response;
 import org.RestAssuredTests.util.AbstractTest;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.*;
+<<<<<<< HEAD:Tests/src/main/java/org/RestAssuredTests/tool/ToolControllerTests.java
+=======
+import org.tests.util.AbstractTest;
+>>>>>>> master:Tests/src/main/java/org/tests/tool/ToolControllerTests.java
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
@@ -13,14 +17,19 @@ import static org.hamcrest.Matchers.*;
 public class ToolControllerTests extends AbstractTest {
 
     private static String names[] = new String[]{"screwdriver", "drill", "knife", "lopata", "dluto"};
+<<<<<<< HEAD:Tests/src/main/java/org/RestAssuredTests/tool/ToolControllerTests.java
     private static int[] indexRangeForDeletion;
 
     private String bearerToken = TOKEN;
 
+=======
+    private static int[] indexRangeForDeletion = {1,2};
+>>>>>>> master:Tests/src/main/java/org/tests/tool/ToolControllerTests.java
 
+    private String toolCode = "";
     @Test
     @Order(1)
-    public void postTool(){
+    public void postToolTest(){
 
         for (String s : names) {
             String requestBody ="" +
@@ -30,14 +39,14 @@ public class ToolControllerTests extends AbstractTest {
             Response response =
                     given()
                             .headers(
-                                    "Authorization","Bearer " + bearerToken,
+                                    "Authorization","Bearer " + TOKEN,
                                     "Content-Type", ContentType.JSON,
                                     "Accept", ContentType.JSON
                             )
                             .and()
                             .body(requestBody)
                             .when()
-                            .post("/api/v1/tools");
+                            .post(BASE_PATH + "/tools");
 
 
             Assertions.assertEquals(HttpStatus.SC_CREATED, response.statusCode());
@@ -49,16 +58,16 @@ public class ToolControllerTests extends AbstractTest {
 
     @Test
     @Order(2)
-    public void checkIfToolIsInDB() {
+    public void getAllToolsTest() {
         int i = 0;
         for (String toolName : names) {
             given()
                     .headers(
-                            "Authorization","Bearer " + bearerToken,
+                            "Authorization","Bearer " + TOKEN,
                             "Content-Type",ContentType.JSON,
                             "Accept", ContentType.JSON)
 
-                    .get("/api/v1/tools/all").
+                    .get(BASE_PATH + "/tools/all").
                     prettyPeek().
                     then().
                     statusCode(HttpStatus.SC_OK).
@@ -68,23 +77,39 @@ public class ToolControllerTests extends AbstractTest {
 
                     i++;
         }
-
     }
-
     @Test
     @Order(3)
+    public void getToolByCodeTests(){
+        Response response = given()
+                .headers(
+                        "Authorization","Bearer " + TOKEN,
+                        "Content-Type",ContentType.JSON,
+                        "Accept", ContentType.JSON)
+
+                .get(BASE_PATH + "/bycode/"+toolCode).
+                prettyPeek().
+                then().
+                statusCode(HttpStatus.SC_OK)
+                .extract().response();
+
+        //Assertions.assertEquals(1, response.getBody().jsonPath().getList("$").size());
+
+    }
+    @Test
+    @Order(4)
     public void deleteToolTest(){
 
         for (int i = indexRangeForDeletion[0]; i < indexRangeForDeletion[1]; i++) {
 
             Response response = given()
                     .headers(
-                            "Authorization","Bearer " + bearerToken,
+                            "Authorization","Bearer " + TOKEN,
                             "Content-Type", ContentType.JSON,
                             "Accept", ContentType.JSON
                     )
                     .and()
-                    .delete("/api/v1/tools/"+i)
+                    .delete(BASE_PATH+ "/tools/"+i)
                     .then()
                     .extract().response();
 

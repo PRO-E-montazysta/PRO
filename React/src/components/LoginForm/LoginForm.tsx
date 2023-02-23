@@ -74,8 +74,6 @@ const LoginForm = () => {
     },
   });
 
-
-
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);

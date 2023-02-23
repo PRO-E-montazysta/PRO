@@ -1,14 +1,14 @@
 package com.emontazysta.service;
 
-import com.emontazysta.model.Fitter;
+import com.emontazysta.model.dto.FitterDto;
 
 import java.util.List;
 
 public interface FitterService {
 
-    List<Fitter> getAll();
-    Fitter getById(Long id);
-    void add(Fitter fitter);
+    List<FitterDto> getAll();
+    FitterDto getById(Long id);
+    FitterDto add(FitterDto fitter);
     void delete(Long id);
 
 }

@@ -1,4 +1,5 @@
 package com.emontazysta.model.dto;
+
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
@@ -11,4 +12,6 @@ public class ElementInWarehouseDto {
     private int inUnitCount;
     private String rack;
     private String shelf;
+    private Long elementId;
+    private Long warehouseId;
 }
