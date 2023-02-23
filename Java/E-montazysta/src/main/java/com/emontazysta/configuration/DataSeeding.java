@@ -9,9 +9,9 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -225,25 +225,25 @@ public class DataSeeding {
                 CompanyStatus.DISABLED, "Closed company", new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>()));
 
-        Employment employment1 = new Employment(null, new Date(), null, company1, fitter1);
-        Employment employment2 = new Employment(null, new Date(), null, company1, fitter2);
-        Employment employment3 = new Employment(null, new Date(), null, company1, foreman1);
-        Employment employment4 = new Employment(null, new Date(), null, company1, foreman2);
-        Employment employment5 = new Employment(null, new Date(), null, company1, warehouseman1);
-        Employment employment6 = new Employment(null, new Date(), null, company1, warehouseman2);
-        Employment employment7 = new Employment(null, new Date(), null, company1, warehouseManager1);
-        Employment employment8 = new Employment(null, new Date(), null, company1, warehouseManager2);
-        Employment employment9 = new Employment(null, new Date(), null, company1, specialist1);
-        Employment employment10 = new Employment(null, new Date(), null, company1, specialist2);
-        Employment employment11 = new Employment(null, new Date(), null, company1, salesRepresentative1);
-        Employment employment12 = new Employment(null, new Date(), null, company1, salesRepresentative2);
-        Employment employment13 = new Employment(null, new Date(), null, company1, manager1);
-        Employment employment14 = new Employment(null, new Date(), null, company1, manager2);
+        Employment employment1 = new Employment(null, LocalDate.now(), null, company1, fitter1);
+        Employment employment2 = new Employment(null, LocalDate.now(), null, company1, fitter2);
+        Employment employment3 = new Employment(null, LocalDate.now(), null, company1, foreman1);
+        Employment employment4 = new Employment(null, LocalDate.now(), null, company1, foreman2);
+        Employment employment5 = new Employment(null, LocalDate.now(), null, company1, warehouseman1);
+        Employment employment6 = new Employment(null, LocalDate.now(), null, company1, warehouseman2);
+        Employment employment7 = new Employment(null, LocalDate.now(), null, company1, warehouseManager1);
+        Employment employment8 = new Employment(null, LocalDate.now(), null, company1, warehouseManager2);
+        Employment employment9 = new Employment(null, LocalDate.now(), null, company1, specialist1);
+        Employment employment10 = new Employment(null, LocalDate.now(), null, company1, specialist2);
+        Employment employment11 = new Employment(null, LocalDate.now(), null, company1, salesRepresentative1);
+        Employment employment12 = new Employment(null, LocalDate.now(), null, company1, salesRepresentative2);
+        Employment employment13 = new Employment(null, LocalDate.now(), null, company1, manager1);
+        Employment employment14 = new Employment(null, LocalDate.now(), null, company1, manager2);
 
         Unavailability unavailability1 = addUnavailabilityFromModel(new Unavailability(null,
-                TypeOfUnavailability.TYPE1, "Test Unavailability 1", new Date(), new Date(), fitter1, manager1));
+                TypeOfUnavailability.TYPE1, "Test Unavailability 1", LocalDate.now(), LocalDate.now(), fitter1, manager1));
         Unavailability unavailability2 = addUnavailabilityFromModel(new Unavailability(null,
-                TypeOfUnavailability.TYPE1,"Test Unavailability 2", new Date(), new Date(), fitter2, manager1));
+                TypeOfUnavailability.TYPE1,"Test Unavailability 2", LocalDate.now(), LocalDate.now(), fitter2, manager1));
 
         Client client1 = addClientFromModel(new Client(null, "Test Client 1 - from Company 1",
                 "em@i.l", company1, new ArrayList<>()));
@@ -268,19 +268,19 @@ public class DataSeeding {
                 "Apartment Number", "Zip Code", new ArrayList<>(), new ArrayList<>()));
 
         Orders order1 = addOrdersFromModel(new Orders(null, "Test Order 1 - from Client 1",
-                TypeOfStatus.PLANNED, new Date(), new Date(), null, null, TypeOfPriority.NORMAL,
+                TypeOfStatus.PLANNED, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.NORMAL,
                 company1, manager1, foreman1, specialist1, salesRepresentative1, location1, client1, new ArrayList<>(),
                 new ArrayList<>()));
         Orders order2 = addOrdersFromModel(new Orders(null, "Test Order 2 - from Client 1",
-                TypeOfStatus.PLANNED, new Date(), new Date(), null, null, TypeOfPriority.NORMAL,
+                TypeOfStatus.PLANNED, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.NORMAL,
                 company1, manager2, foreman2, specialist2, salesRepresentative2, location2, client1, new ArrayList<>(),
                 new ArrayList<>()));
         Orders order3 = addOrdersFromModel(new Orders(null, "Test Order 3 - from Client 2",
-                TypeOfStatus.PLANNED, new Date(), new Date(), null, null, TypeOfPriority.NORMAL,
+                TypeOfStatus.PLANNED, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.NORMAL,
                 company1, manager1, foreman1, specialist1, salesRepresentative1, location3, client2, new ArrayList<>(),
                 new ArrayList<>()));
         Orders order4 = addOrdersFromModel(new Orders(null, "Test Order 4 - from Client 4",
-                TypeOfStatus.PLANNED, new Date(), new Date(), null, null, TypeOfPriority.NORMAL,
+                TypeOfStatus.PLANNED, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.NORMAL,
                 company4, null, null, null, null, location4, client4,
                 new ArrayList<>(), new ArrayList<>()));
 
