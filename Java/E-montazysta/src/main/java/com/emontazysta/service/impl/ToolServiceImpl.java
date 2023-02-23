@@ -1,6 +1,8 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.mapper.ToolMapper;
 import com.emontazysta.model.Tool;
+import com.emontazysta.model.dto.ToolDto;
 import com.emontazysta.repository.ToolRepository;
 import com.emontazysta.service.ToolService;
 import lombok.RequiredArgsConstructor;
@@ -10,38 +12,43 @@ import javax.persistence.EntityNotFoundException;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ToolServiceImpl implements ToolService {
 
     private final ToolRepository repository;
+    private final ToolMapper toolMapper;
 
     @Override
-    public List<Tool> getAll() {
-        return repository.findAll();
+    public List<ToolDto> getAll() {
+        return repository.findAll().stream()
+                .map(toolMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Tool getById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
+    public ToolDto getById(Long id) {
+        Tool tool = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return toolMapper.toDto(tool);
     }
 
     @Override
-    public Tool getByCode(String code) {
+    public ToolDto getByCode(String code) {
         Tool response = repository.findByCode(code);
         if(response == null)
             throw new EntityNotFoundException();
         else
-            return response;
+            return toolMapper.toDto(response);
     }
 
     @Override
-    public void add(Tool tool) {
+    public ToolDto add(ToolDto toolDto) {
+        Tool tool = toolMapper.toEntity(toolDto);
         tool.setCreatedAt(new Date());
         tool.setCode(UUID.randomUUID().toString());
-        repository.save(tool);
+        return toolMapper.toDto(repository.save(tool));
     }
 
     @Override
@@ -50,10 +57,16 @@ public class ToolServiceImpl implements ToolService {
     }
 
     @Override
-    public void update(Long id, Tool tool) {
-        Tool updatedTool = this.getById(id);
-        updatedTool.setName(tool.getName());
+    public ToolDto update(Long id, ToolDto toolDto) {
 
-        repository.save(updatedTool);
+        Tool updatedTool = toolMapper.toEntity(toolDto);
+        Tool tool = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        tool.setName(updatedTool.getName());
+        tool.setToolReleases(updatedTool.getToolReleases());
+        tool.setWarehouse(updatedTool.getWarehouse());
+        tool.setToolEvents(updatedTool.getToolEvents());
+        tool.setToolType(updatedTool.getToolType());
+
+        return toolMapper.toDto(repository.save(tool));
     }
 }

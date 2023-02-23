@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @SuperBuilder
@@ -18,4 +19,8 @@ public class ElementEventDto {
     private String description;
     private TypeOfStatus status;
     private int quantity;
+    private Long acceptedById;
+    private Long updatedById;
+    private Long elementId;
+    private List<Long> attachments;
 }

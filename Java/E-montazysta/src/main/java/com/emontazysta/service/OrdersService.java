@@ -1,14 +1,14 @@
 package com.emontazysta.service;
 
-import com.emontazysta.model.Orders;
+import com.emontazysta.model.dto.OrdersDto;
 
 import java.util.List;
 
 public interface OrdersService {
 
-    List<Orders> getAll();
-    Orders getById(Long id);
-    void add(Orders orders);
+    List<OrdersDto> getAll();
+    OrdersDto getById(Long id);
+    OrdersDto add(OrdersDto orders);
     void delete(Long id);
-    void update(Long id, Orders orders);
+    OrdersDto update(Long id, OrdersDto orders);
 }

@@ -1,14 +1,14 @@
 package com.emontazysta.service;
 
-import com.emontazysta.model.OrderStage;
+import com.emontazysta.model.dto.OrderStageDto;
 
 import java.util.List;
 
 public interface OrderStageService {
 
-    List<OrderStage> getAll();
-    OrderStage getById(Long id);
-    void add(OrderStage orderStage);
+    List<OrderStageDto> getAll();
+    OrderStageDto getById(Long id);
+    OrderStageDto add(OrderStageDto orderStage);
     void delete(Long id);
-    OrderStage update(Long id, OrderStage orderStage);
+    OrderStageDto update(Long id, OrderStageDto orderStage);
 }

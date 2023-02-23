@@ -2,7 +2,6 @@ package com.emontazysta.controller;
 
 import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.UserMapper;
-import com.emontazysta.model.AppUser;
 import com.emontazysta.model.dto.AppUserDto;
 import com.emontazysta.service.AppUserService;
 import com.emontazysta.service.RoleService;
@@ -44,13 +43,13 @@ public class AppUserController {
                 .collect(Collectors.toList()));
     }
 
-    @PostMapping("/create")
+    @PostMapping
     @Operation(description = "Allows to add new User.", security = @SecurityRequirement(name = "bearer-key"))
-    public ResponseEntity<AppUser> saveAppUser(@RequestBody @Valid final AppUserDto user, Principal principal) {
+    public ResponseEntity<AppUserDto> saveAppUser(@RequestBody @Valid final AppUserDto user, Principal principal) {
         Set<Role> roles = userService.findByUsername(principal.getName()).getRoles(); //TODO: move logic to separate service
         if (roles.contains(Role.CLOUD_ADMIN)) {
             if (userService.findByUsername(user.getUsername()) == null) {
-                return ResponseEntity.status(HttpStatus.CREATED).body(userService.add(UserMapper.toEntity(user)));
+                return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.toDto(userService.add(UserMapper.toEntity(user))));
             } else {
                 log.info("User {} already exists", user.getUsername());
                 return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -59,7 +58,7 @@ public class AppUserController {
                 && !(roles.contains(Role.CLOUD_ADMIN))
                 && !user.getRoles().contains(Role.CLOUD_ADMIN)) {
             if (userService.findByUsername(user.getUsername()) == null) {
-                return ResponseEntity.status(HttpStatus.CREATED).body(userService.add(UserMapper.toEntity(user)));
+                return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.toDto(userService.add(UserMapper.toEntity(user))));
             } else {
                 log.info("User {} already exists", user.getUsername());
                 return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -70,17 +69,17 @@ public class AppUserController {
         }
     }
 
-    @PostMapping("/{id}/update")
+    @PutMapping("/{id}")
     @Operation(description = "Allows to update User.", security = @SecurityRequirement(name = "bearer-key"))
-    public ResponseEntity<AppUser> updateAppUser(@PathVariable Long id, @Valid @RequestBody final AppUserDto user, Principal principal) {
+    public ResponseEntity<AppUserDto> updateAppUser(@PathVariable Long id, @Valid @RequestBody final AppUserDto user, Principal principal) {
         Set<Role> roles = userService.findByUsername(principal.getName()).getRoles();
         if (roles.contains(Role.CLOUD_ADMIN)) {
             if (userService.getById(id) != null) {
-                return ResponseEntity.status(HttpStatus.OK).body(userService.update(id, UserMapper.toEntity(user)));
+                return ResponseEntity.status(HttpStatus.OK).body(UserMapper.toDto(userService.update(id, UserMapper.toEntity(user))));
             }
         } else if(!roles.contains(Role.CLOUD_ADMIN) && roles.contains(Role.ADMIN)) {
              if (!userService.getById(user.getId()).getRoles().contains(Role.CLOUD_ADMIN)){
-                 return ResponseEntity.status(HttpStatus.OK).body(userService.update(id, UserMapper.toEntity(user)));
+                 return ResponseEntity.status(HttpStatus.OK).body(UserMapper.toDto(userService.update(id, UserMapper.toEntity(user))));
              } else {
                  log.info("User {} does not have the required permissions", principal.getName());
                  return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

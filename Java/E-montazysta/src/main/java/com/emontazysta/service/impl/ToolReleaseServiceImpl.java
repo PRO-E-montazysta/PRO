@@ -1,6 +1,8 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.mapper.ToolReleaseMapper;
 import com.emontazysta.model.ToolRelease;
+import com.emontazysta.model.dto.ToolReleaseDto;
 import com.emontazysta.repository.ToolReleaseRepository;
 import com.emontazysta.service.ToolReleaseService;
 import lombok.RequiredArgsConstructor;
@@ -10,28 +12,33 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ToolReleaseServiceImpl implements ToolReleaseService {
 
     private final ToolReleaseRepository repository;
+    private final ToolReleaseMapper toolReleaseMapper;
 
     @Override
-    public List<ToolRelease> getAll() {
-        return repository.findAll();
+    public List<ToolReleaseDto> getAll() {
+        return repository.findAll().stream()
+                .map(toolReleaseMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public ToolRelease getById(Long id) {
-        return repository.findById(id)
-                         .orElseThrow(EntityNotFoundException::new);
+    public ToolReleaseDto getById(Long id) {
+        ToolRelease toolRelease = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return toolReleaseMapper.toDto(toolRelease);
     }
 
     @Override
-    public void add(ToolRelease toolRelease) {
+    public ToolReleaseDto add(ToolReleaseDto toolReleaseDto) {
+        ToolRelease toolRelease = toolReleaseMapper.toEntity(toolReleaseDto);
         toolRelease.setReleaseTime(LocalDateTime.now());
-        repository.save(toolRelease);
+        return toolReleaseMapper.toDto(repository.save(toolRelease));
     }
 
     @Override
@@ -41,10 +48,17 @@ public class ToolReleaseServiceImpl implements ToolReleaseService {
 
     @Override
     @Transactional
-    public ToolRelease update(Long id, ToolRelease toolRelease) {
-        ToolRelease toolReleaseDb = getById(id);
-        toolReleaseDb.setReturnTime(toolRelease.getReturnTime());
+    public ToolReleaseDto update(Long id, ToolReleaseDto toolReleaseDto) {
 
-        return toolReleaseDb;
+        ToolRelease updatedToolRelease = toolReleaseMapper.toEntity(toolReleaseDto);
+        ToolRelease toolReleaseDb = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        toolReleaseDb.setReturnTime(updatedToolRelease.getReturnTime());
+        toolReleaseDb.setReceivedBy(updatedToolRelease.getReceivedBy());
+        toolReleaseDb.setReleasedBy(updatedToolRelease.getReleasedBy());
+        toolReleaseDb.setTool(updatedToolRelease.getTool());
+        toolReleaseDb.setDemandAdHoc(updatedToolRelease.getDemandAdHoc());
+        toolReleaseDb.setOrderStage(updatedToolRelease.getOrderStage());
+
+        return toolReleaseMapper.toDto(toolReleaseDb);
     }
 }

@@ -1,14 +1,14 @@
 package com.emontazysta.service;
 
-import com.emontazysta.model.Client;
+import com.emontazysta.model.dto.ClientDto;
 
 import java.util.List;
 
 public interface ClientService {
 
-    List<Client> getAll();
-    Client getById(Long id);
-    void add(Client client);
+    List<ClientDto> getAll();
+    ClientDto getById(Long id);
+    ClientDto add(ClientDto client);
     void delete(Long id);
-    void update(Long id, Client client);
+    ClientDto update(Long id, ClientDto client);
 }
