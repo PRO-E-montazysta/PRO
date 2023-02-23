@@ -1,14 +1,14 @@
 package com.emontazysta.service;
 
-import com.emontazysta.model.ElementReturnRelease;
+import com.emontazysta.model.dto.ElementReturnReleaseDto;
 
 import java.util.List;
 
 public interface ElementReturnReleaseService {
 
-    List<ElementReturnRelease> getAll();
-    ElementReturnRelease getById(Long id);
-    void add(ElementReturnRelease elementReturnRelease);
+    List<ElementReturnReleaseDto> getAll();
+    ElementReturnReleaseDto getById(Long id);
+    ElementReturnReleaseDto add(ElementReturnReleaseDto elementReturnRelease);
     void delete(Long id);
-    ElementReturnRelease update(Long id, ElementReturnRelease elementReturnRelease);
+    ElementReturnReleaseDto update(Long id, ElementReturnReleaseDto elementReturnRelease);
 }

@@ -1,13 +1,13 @@
 package com.emontazysta.service;
 
-import com.emontazysta.model.ToolEvent;
+import com.emontazysta.model.dto.ToolEventDto;
 
 import java.util.List;
 
 public interface ToolEventService {
 
-    List<ToolEvent> getAll();
-    ToolEvent getById(Long id);
-    void add(ToolEvent event);
+    List<ToolEventDto> getAll();
+    ToolEventDto getById(Long id);
+    ToolEventDto add(ToolEventDto event);
     void delete(Long id);
 }

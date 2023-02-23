@@ -1,7 +1,5 @@
 package com.emontazysta.controller;
 
-import com.emontazysta.mapper.CompanyMapper;
-import com.emontazysta.model.Company;
 import com.emontazysta.model.dto.CompanyDto;
 import com.emontazysta.service.CompanyService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 
@@ -28,22 +25,20 @@ public class CompanyController {
     @GetMapping("/all")
     @Operation(description = "Allows to get all Companies.", security = @SecurityRequirement(name = "bearer-key"))
     public ResponseEntity<List<CompanyDto>> getAll() {
-        return ResponseEntity.ok().body(companyService.getAll().stream()
-                .map(CompanyMapper::companyToDto)
-                .collect(Collectors.toList()));
+        return ResponseEntity.ok().body(companyService.getAll());
     }
 
     @GetMapping("/{id}")
     @Operation(description = "Allows to get Company by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public ResponseEntity<CompanyDto> getById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok().body(CompanyMapper.companyToDto(companyService.getById(id)));
+        return ResponseEntity.ok().body(companyService.getById(id));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Company.", security = @SecurityRequirement(name = "bearer-key"))
-    public void add(@Valid @RequestBody Company company) {
-        companyService.add(company);
+    public CompanyDto add(@Valid @RequestBody CompanyDto company) {
+        return companyService.add(company);
     }
 
     @DeleteMapping("/{id}")
@@ -54,7 +49,7 @@ public class CompanyController {
 
     @PutMapping("/{id}")
     @Operation(description = "Allows to update Company by given Id, and Company.", security = @SecurityRequirement(name = "bearer-key"))
-    public void update(@PathVariable("id") Long id, @Valid @RequestBody Company company) {
-        companyService.update(id, company);
+    public CompanyDto update(@PathVariable("id") Long id, @Valid @RequestBody CompanyDto company) {
+        return companyService.update(id, company);
     }
 }

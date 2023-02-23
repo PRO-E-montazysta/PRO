@@ -1,7 +1,5 @@
 package com.emontazysta.controller;
 
-import com.emontazysta.mapper.WarehouseManagerMapper;
-import com.emontazysta.model.WarehouseManager;
 import com.emontazysta.model.dto.WarehouseManagerDto;
 import com.emontazysta.service.WarehouseManagerService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 
@@ -34,22 +31,20 @@ public class WarehouseManagerController {
     @GetMapping
     @Operation(description = "Allows to get all Warehouse Managers.", security = @SecurityRequirement(name = "bearer-key"))
     public List<WarehouseManagerDto> getAllWarehouseManagers() {
-        return warehouseManagerService.getAll().stream()
-                .map(WarehouseManagerMapper::toDto)
-                .collect(Collectors.toList());
+        return warehouseManagerService.getAll();
     }
 
     @GetMapping("{id}")
     @Operation(description = "Allows to Warehouse Manager by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public WarehouseManagerDto getWarehouseManagerById(@PathVariable Long id) {
-        return WarehouseManagerMapper.toDto(warehouseManagerService.getById(id));
+        return warehouseManagerService.getById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Warehouse Manager.", security = @SecurityRequirement(name = "bearer-key"))
-    public void addWarehouseManager(@Valid @RequestBody WarehouseManager warehouseManager) {
-        warehouseManagerService.add(warehouseManager);
+    public WarehouseManagerDto addWarehouseManager(@Valid @RequestBody WarehouseManagerDto warehouseManager) {
+        return warehouseManagerService.add(warehouseManager);
     }
 
     @DeleteMapping("{id}")

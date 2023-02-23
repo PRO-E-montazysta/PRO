@@ -5,8 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import java.util.Date;
 
-@Builder
 @Data
+@Builder
 public class UnavailabilityDto {
 
     private Long id;
@@ -14,4 +14,6 @@ public class UnavailabilityDto {
     private String description;
     private Date unavailableFrom;
     private Date unavailableTo;
+    private Long assignedToId;
+    private Long assignedById;
 }

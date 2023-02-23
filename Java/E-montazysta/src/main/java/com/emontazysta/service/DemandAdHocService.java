@@ -1,14 +1,14 @@
 package com.emontazysta.service;
 
-import com.emontazysta.model.DemandAdHoc;
+import com.emontazysta.model.dto.DemandAdHocDto;
 
 import java.util.List;
 
 public interface DemandAdHocService {
 
-    List<DemandAdHoc> getAll();
-    DemandAdHoc getById(Long id);
-    void add(DemandAdHoc demandAdHoc);
+    List<DemandAdHocDto> getAll();
+    DemandAdHocDto getById(Long id);
+    DemandAdHocDto add(DemandAdHocDto demandAdHoc);
     void delete(Long id);
-    DemandAdHoc update(Long id, DemandAdHoc demandAdHoc);
+    DemandAdHocDto update(Long id, DemandAdHocDto demandAdHoc);
 }

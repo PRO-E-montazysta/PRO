@@ -1,13 +1,13 @@
 package com.emontazysta.service;
 
-import com.emontazysta.model.Foreman;
+import com.emontazysta.model.dto.ForemanDto;
 
 import java.util.List;
 
 public interface ForemanService {
 
-    List<Foreman> getAll();
-    Foreman getById(Long id);
-    void add(Foreman foreman);
+    List<ForemanDto> getAll();
+    ForemanDto getById(Long id);
+    ForemanDto add(ForemanDto foreman);
     void delete(Long id);
 }

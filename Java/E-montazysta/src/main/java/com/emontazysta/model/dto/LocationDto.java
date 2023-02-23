@@ -3,7 +3,7 @@ package com.emontazysta.model.dto;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Data
 @Builder
@@ -18,4 +18,6 @@ public class LocationDto {
     private String propertyNumber;
     private String apartmentNumber;
     private String zipCode;
+    private List<Long> orders;
+    private List<Long> warehouses;
 }
