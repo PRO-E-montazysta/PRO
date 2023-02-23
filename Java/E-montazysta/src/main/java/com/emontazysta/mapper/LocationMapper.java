@@ -4,7 +4,6 @@ import com.emontazysta.model.Location;
 import com.emontazysta.model.Orders;
 import com.emontazysta.model.Warehouse;
 import com.emontazysta.model.dto.LocationDto;
-import com.emontazysta.repository.LocationRepository;
 import com.emontazysta.repository.OrderRepository;
 import com.emontazysta.repository.WarehouseRepository;
 import lombok.RequiredArgsConstructor;

@@ -5,9 +5,6 @@ import com.emontazysta.model.Orders;
 import com.emontazysta.model.dto.ClientDto;
 import com.emontazysta.repository.CompanyRepository;
 import com.emontazysta.repository.OrderRepository;
-import com.emontazysta.service.CompanyService;
-import com.emontazysta.service.OrdersService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -19,9 +16,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ClientMapper {
 
-//    private final CompanyService companyService;
     private final CompanyRepository companyRepository;
-//    private final OrdersService orderService;
     private final OrderRepository orderRepository;
 
     public ClientDto toDto(Client client) {
