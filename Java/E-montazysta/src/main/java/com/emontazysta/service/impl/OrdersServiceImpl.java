@@ -6,6 +6,7 @@ import com.emontazysta.model.dto.OrdersDto;
 import com.emontazysta.repository.OrderRepository;
 import com.emontazysta.service.OrdersService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -69,5 +70,9 @@ public class OrdersServiceImpl implements OrdersService {
         order.setAttachments(updatedOrder.getAttachments());
 
         return ordersMapper.toDto(repository.save(order));
+    }
+
+    public Page<OrdersDto> getFilteredOrders(OrdersPage ordersPage, OrdersSearchCriteria ordersSearchCriteria){
+        return ordersCriteriaRepository.findAllWithFilters(ordersPage, ordersSearchCriteria);
     }
 }
