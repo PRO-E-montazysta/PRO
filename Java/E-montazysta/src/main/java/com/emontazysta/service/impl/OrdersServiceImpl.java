@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,7 +38,7 @@ public class OrdersServiceImpl implements OrdersService {
     public OrdersDto add(OrdersDto ordersDto) {
 
         Orders order = ordersMapper.toEntity(ordersDto);
-        order.setCreatedAt(new Date());
+        order.setCreatedAt(LocalDateTime.now());
         order.setEditedAt(null);
         return ordersMapper.toDto(repository.save(order));
     }
@@ -57,7 +58,7 @@ public class OrdersServiceImpl implements OrdersService {
         order.setTypeOfPriority(updatedOrder.getTypeOfPriority());
         order.setPlannedStart(updatedOrder.getPlannedStart());
         order.setPlannedEnd(updatedOrder.getPlannedEnd());
-        order.setEditedAt(new Date());
+        order.setEditedAt(LocalDateTime.now());
         order.setCompany(updatedOrder.getCompany());
         order.setManagedBy(updatedOrder.getManagedBy());
         order.setAssignedTo(updatedOrder.getAssignedTo());

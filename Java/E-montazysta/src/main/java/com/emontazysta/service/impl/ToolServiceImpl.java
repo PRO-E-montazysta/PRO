@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -46,7 +46,7 @@ public class ToolServiceImpl implements ToolService {
     @Override
     public ToolDto add(ToolDto toolDto) {
         Tool tool = toolMapper.toEntity(toolDto);
-        tool.setCreatedAt(new Date());
+        tool.setCreatedAt(LocalDate.now());
         tool.setCode(UUID.randomUUID().toString());
         return toolMapper.toDto(repository.save(tool));
     }
