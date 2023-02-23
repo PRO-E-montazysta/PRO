@@ -43,7 +43,7 @@ public class AppUserController {
                 .collect(Collectors.toList()));
     }
 
-    @PostMapping("/create")
+    @PostMapping
     @Operation(description = "Allows to add new User.", security = @SecurityRequirement(name = "bearer-key"))
     public ResponseEntity<AppUserDto> saveAppUser(@RequestBody @Valid final AppUserDto user, Principal principal) {
         Set<Role> roles = userService.findByUsername(principal.getName()).getRoles(); //TODO: move logic to separate service
@@ -69,7 +69,7 @@ public class AppUserController {
         }
     }
 
-    @PutMapping("/{id}/update")
+    @PutMapping("/{id}")
     @Operation(description = "Allows to update User.", security = @SecurityRequirement(name = "bearer-key"))
     public ResponseEntity<AppUserDto> updateAppUser(@PathVariable Long id, @Valid @RequestBody final AppUserDto user, Principal principal) {
         Set<Role> roles = userService.findByUsername(principal.getName()).getRoles();

@@ -34,7 +34,7 @@ public class ClientController {
         return ResponseEntity.ok().body(clientService.getById(id));
     }
 
-    @PostMapping("/create")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Client.", security = @SecurityRequirement(name = "bearer-key"))
     public ClientDto add(@Valid @RequestBody ClientDto clientDto) {
@@ -47,7 +47,7 @@ public class ClientController {
         clientService.delete(id);
     }
 
-    @PutMapping("/{id}/update")
+    @PutMapping("/{id}")
     @Operation(description = "Allows to update Client by given Id and Client.", security = @SecurityRequirement(name = "bearer-key"))
     public ClientDto update(@PathVariable Long id, @Valid @RequestBody ClientDto clientDto) {
         return clientService.update(id, clientDto);

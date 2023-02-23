@@ -34,14 +34,14 @@ public class CommentController {
         return ResponseEntity.ok().body(commentService.getById(id));
     }
 
-    @PostMapping("/create")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Comment.", security = @SecurityRequirement(name = "bearer-key"))
     public CommentDto add(@Valid @RequestBody CommentDto commentDto) {
         return commentService.add(commentDto);
     }
 
-    @DeleteMapping("/{id}/update")
+    @DeleteMapping("/{id}")
     @Operation(description = "Allows to delete Comment by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public void deleteById(@PathVariable("id") Long id) {
         commentService.delete(id);
