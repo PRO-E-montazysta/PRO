@@ -1,10 +1,10 @@
-package org.tests.tool;
+package org.RestAssuredTests.tool;
 
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.RestAssuredTests.util.AbstractTest;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.*;
-import org.tests.util.AbstractTest;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
@@ -13,7 +13,9 @@ import static org.hamcrest.Matchers.*;
 public class ToolControllerTests extends AbstractTest {
 
     private static String names[] = new String[]{"screwdriver", "drill", "knife", "lopata", "dluto"};
-    private static int[] indexRangeForDeletion = {1,2};
+    private static int[] indexRangeForDeletion;
+
+    private String bearerToken = TOKEN;
 
     private String toolCode = "";
     @Test
@@ -36,6 +38,7 @@ public class ToolControllerTests extends AbstractTest {
                             .body(requestBody)
                             .when()
                             .post(BASE_PATH + "/tools");
+
 
             Assertions.assertEquals(HttpStatus.SC_CREATED, response.statusCode());
             System.out.println("wstawiono "+ s);
