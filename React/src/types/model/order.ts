@@ -12,13 +12,13 @@ export type Order = {
 
 
 export enum OrderStatus {
-    PLANNED = "PLANNED",
-    IN_PROGRESS = "IN_PROGRESS",
-    FINISHED = "FINISHED"
+    PLANNED = "PLANOWANIE",
+    IN_PROGRESS = "W TRAKCIE",
+    FINISHED = "ZAKOŃCZONE"
 }
 
 export enum OrderPriority {
-    NORMAL = "NORMAL",
-    IMPORTANT = "IMPORTANT",
-    IMMEDIATE = "IMMEDIATE"
+    NORMAL = "NORMALNY",
+    IMPORTANT = "WAŻNY",
+    IMMEDIATE = "NATYCHMIASTOWY"
 }
