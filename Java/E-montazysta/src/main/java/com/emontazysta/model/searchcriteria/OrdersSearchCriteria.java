@@ -11,7 +11,8 @@ import java.util.List;
 public class OrdersSearchCriteria {
 
     private String name;
-    private List<TypeOfStatus> typeOfStatus;
-    private List<TypeOfPriority> typeOfPriority;
-    private Date plannedStart;
+    private List<String> typeOfStatus;
+    private List<String> typeOfPriority;
+    private String plannedStartMin;
+    private String plannedStartMax;
 }

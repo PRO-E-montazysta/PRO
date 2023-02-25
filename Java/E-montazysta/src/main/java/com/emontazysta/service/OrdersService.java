@@ -1,7 +1,7 @@
 package com.emontazysta.service;
 
 import com.emontazysta.model.dto.OrdersDto;
-import org.springframework.data.domain.Page;
+import com.emontazysta.model.searchcriteria.OrdersSearchCriteria;
 
 import java.util.List;
 
@@ -13,5 +13,5 @@ public interface OrdersService {
     void delete(Long id);
     OrdersDto update(Long id, OrdersDto orders);
 
-    public Page<OrdersDto> getFilteredOrders(OrdersPage ordersPage, OrdersSearchCriteria ordersSearchCriteria);
+    public List<OrdersDto> getFilteredOrders(OrdersSearchCriteria ordersSearchCriteria);
 }

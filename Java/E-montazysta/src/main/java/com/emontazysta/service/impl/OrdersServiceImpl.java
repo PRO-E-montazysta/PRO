@@ -3,7 +3,9 @@ package com.emontazysta.service.impl;
 import com.emontazysta.mapper.OrdersMapper;
 import com.emontazysta.model.Orders;
 import com.emontazysta.model.dto.OrdersDto;
+import com.emontazysta.model.searchcriteria.OrdersSearchCriteria;
 import com.emontazysta.repository.OrderRepository;
+import com.emontazysta.repository.criteria.OrdersCriteriaRepository;
 import com.emontazysta.service.OrdersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,6 +22,7 @@ public class OrdersServiceImpl implements OrdersService {
 
     private final OrderRepository repository;
     private final OrdersMapper ordersMapper;
+    private final OrdersCriteriaRepository ordersCriteriaRepository;
 
     @Override
     public List<OrdersDto> getAll() {
@@ -72,7 +75,8 @@ public class OrdersServiceImpl implements OrdersService {
         return ordersMapper.toDto(repository.save(order));
     }
 
-    public Page<OrdersDto> getFilteredOrders(OrdersPage ordersPage, OrdersSearchCriteria ordersSearchCriteria){
-        return ordersCriteriaRepository.findAllWithFilters(ordersPage, ordersSearchCriteria);
+    @Override
+    public List<OrdersDto> getFilteredOrders( OrdersSearchCriteria ordersSearchCriteria){
+        return ordersCriteriaRepository.findAllWithFilters(ordersSearchCriteria);
     }
 }

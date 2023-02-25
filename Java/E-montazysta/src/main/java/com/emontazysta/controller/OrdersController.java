@@ -1,13 +1,13 @@
 package com.emontazysta.controller;
 
 import com.emontazysta.model.dto.OrdersDto;
-import com.emontazysta.model.page.OrdersPage;
+
 import com.emontazysta.model.searchcriteria.OrdersSearchCriteria;
 import com.emontazysta.service.impl.OrdersServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -58,7 +58,7 @@ public class OrdersController {
 
     @GetMapping("/filter")
     @Operation(description = "Return filtered Orders by given parameters.", security = @SecurityRequirement(name = "bearer-key"))
-    public ResponseEntity<Page<OrdersDto>> filterOrders(OrdersPage ordersPage, OrdersSearchCriteria ordersSearchCriteria){
-        return new ResponseEntity<>(orderService.getFilteredOrders(ordersPage, ordersSearchCriteria), HttpStatus.OK);
+    public ResponseEntity<List<OrdersDto>> filterOrders(OrdersSearchCriteria ordersSearchCriteria){
+        return new ResponseEntity<>(orderService.getFilteredOrders(ordersSearchCriteria), HttpStatus.OK);
     }
 }
