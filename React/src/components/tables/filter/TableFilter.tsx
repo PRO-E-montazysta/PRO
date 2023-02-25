@@ -8,10 +8,10 @@ import './style.less'
 
 
 export type FilterFormProps = {
-    form: Array<FilterInputType>
+    filterStructure: Array<FilterInputType>
     onSearch: (filters: any) => void
     onResetFilter: () => void
-    formStyle?: CSSProperties
+    structureStyle?: CSSProperties
     resetBtnStyle?: CSSProperties
     submitBtnStyle?: CSSProperties
 }
@@ -19,12 +19,12 @@ export type FilterFormProps = {
 
 export type FilterInputType = {
     id: string
-    type: HTMLInputTypeAttribute
-    placefolder?: string
+    type: HTMLInputTypeAttribute | 'multiselect'
+    placeholder?: string
     label?: string
 
     value: string | number | Date
-    typeValue?: 'string' | 'number' | 'date' | 'select'
+    typeValue?: 'string' | 'number' | 'date' | 'select' | 'multiselect'
     // options?: Array<Opt>
     // validations?: Array<Validation>
 
@@ -34,9 +34,9 @@ export type FilterInputType = {
 
 
 const TableFilter = (props: FilterFormProps) => {
-    const { form, onSearch, onResetFilter, formStyle, resetBtnStyle, submitBtnStyle } = props
+    const { filterStructure, onSearch, onResetFilter, structureStyle, resetBtnStyle, submitBtnStyle } = props
 
-    const { initialValues, inputs } = getInputs(form)
+    const { initialValues, inputs } = getInputs(filterStructure)
 
     const formik = useFormik({
         initialValues: initialValues,
@@ -57,28 +57,33 @@ const TableFilter = (props: FilterFormProps) => {
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '15px',
-                        ...formStyle
+                        ...structureStyle
                     }}
                     onReset={formik.handleReset}
                     className='filter'>
                     {
                         inputs.map(({ id, type, value, ...props }) => {
-                            return <TextField
-                                key={id}
-                                id={id}
-                                name={id}
-                                label={props.label}
-                                value={formik.values[id]}
-                                type={type}
-                                onChange={formik.handleChange}
-                                error={formik.touched[id] && Boolean(formik.errors[id])}
-                                style={props.style}
-                                variant={'outlined'}
-                                InputLabelProps={{
-                                    shrink: true
-                                }}
-                                className={'filter-form'}
-                            />
+                            switch (type) {
+                                case 'multiselect':
+                                    return <div key={id}>multiselect not implemented yet</div>
+                                default:
+                                    return <TextField
+                                        key={id}
+                                        id={id}
+                                        name={id}
+                                        label={props.label}
+                                        value={formik.values[id]}
+                                        type={type}
+                                        onChange={formik.handleChange}
+                                        error={formik.touched[id] && Boolean(formik.errors[id])}
+                                        style={props.style}
+                                        variant={'outlined'}
+                                        InputLabelProps={{
+                                            shrink: true
+                                        }}
+                                        className={'filter-form'}
+                                    />
+                            }
                         })
                     }
 

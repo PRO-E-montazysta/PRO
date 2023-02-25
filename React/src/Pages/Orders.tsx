@@ -1,14 +1,17 @@
-import { FilterInputType } from "../components/tables/filter/TableFilter";
+import { FilterFormProps, FilterInputType } from "../components/tables/filter/TableFilter";
 import OrdersTable from "../components/tables/OrdersTable";
-import { setNewFilterValues } from "../components/tables/filter/helper";
-import { useState } from "react";
+import { getFilterParams, setNewFilterValues } from "../components/tables/filter/helper";
+import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import { AxiosError } from "axios";
+import { getAllOrders } from "../api/order.api";
 
 
 
-const filterInitValues: Array<FilterInputType> = [
+const filterInitStructure: Array<FilterInputType> = [
     {
         id: 'name',
-        value: '',
+        value: 'hahah',
         label: 'Nazwa',
         type: 'text',
         typeValue: 'string'
@@ -20,23 +23,64 @@ const filterInitValues: Array<FilterInputType> = [
         type: 'datetime-local',
         typeValue: 'date',
     },
+    {
+        id: 'createdAtMax',
+        value: '',
+        label: 'Czas utworzenia do',
+        type: 'datetime-local',
+        typeValue: 'date',
+    },
+    {
+        id: 'typeOfStatus',
+        value: '',
+        label: 'Status',
+        type: 'multiselect',
+        typeValue: 'date',
+    }
 ]
 
 
 
 const Orders = () => {
-    const [filter, setFilter] = useState(filterInitValues)
+    const [filterStructure, setFilterStructure] = useState(filterInitStructure)
+    const [filterParams, setFilterParams] = useState(getFilterParams(filterInitStructure))
 
 
-    const handleOnSearch = (filterForm: Object) => {
-        setFilter(setNewFilterValues(filterForm, filterInitValues))
+    const queryOrders = useQuery<Array<any>, AxiosError>(
+        ['orders', filterParams],
+        async () => getAllOrders({ queryParams: filterParams })
+    )
+
+    useEffect(() => {
+        console.log(filterParams)
+        setFilterParams(getFilterParams(filterStructure))
+    }, [filterStructure])
+
+
+    const handleOnSearch = (filterParams: Object) => {
+        setFilterStructure(setNewFilterValues(filterParams, filterInitStructure))
     }
+
 
     const handleResetFilter = () => {
-        setFilter(filterInitValues)
+        setFilterStructure(filterInitStructure)
     }
 
-    return <OrdersTable filter={filter} onSearch={handleOnSearch} onResetFilter={handleResetFilter} />
+
+
+    const filterForm: (FilterFormProps) = {
+        filterStructure: filterStructure,
+        onSearch: handleOnSearch,
+        onResetFilter: handleResetFilter
+    }
+
+
+
+
+    return <OrdersTable
+        query={queryOrders}
+        filterForm={filterForm}
+    />
 
 
 }

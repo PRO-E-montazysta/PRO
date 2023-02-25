@@ -49,7 +49,7 @@ function getComparator<T>(
 
 interface SortedTableProps<T> {
     headCells: HeadCell<T>[],
-    data: Array<T>,
+    data?: Array<T>,
     initOrderBy: keyof T,
     onClickRow: (event: React.MouseEvent<unknown>, row: T) => void
 }
@@ -62,9 +62,8 @@ export default function SortedTable<T>(props: SortedTableProps<T>) {
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
     useEffect(() => {
-        console.log('le')
+        console.log(data)
         setOrderBy(initOrderBy)
-
     }, [])
 
     const handleRequestSort = (
@@ -93,8 +92,7 @@ export default function SortedTable<T>(props: SortedTableProps<T>) {
 
 
     // Avoid a layout jump when reaching the last page with empty rows.
-    const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
+    const emptyRows = (page > 0 && data) ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
 
     return (
         <Box sx={{ width: '100%' }}>
@@ -114,41 +112,43 @@ export default function SortedTable<T>(props: SortedTableProps<T>) {
                             headCells={headCells}
                         />
                         <TableBody>
-                            {data.sort(getComparator<T>(order, orderBy))
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((row: T, index) => {
-                                    return (
-                                        <TableRow
-                                            hover
-                                            onClick={(event) => handleClickRow(event, row)}
-                                            tabIndex={-1}
-                                            key={uuidv4()}
-                                            style={{
-                                                height: 53
-                                            }}
-                                        >
-                                            {headCells.map((headCell: HeadCell<T>, index: number) => {
-                                                let cellValue = row[headCell.id] as any;
-                                                if (headCell.formatFn)
-                                                    cellValue = headCell.formatFn(cellValue)
-                                                return (
-                                                    <TableCell
-                                                        key={uuidv4()}
-                                                        align={headCell.numeric ? 'right' : 'left'}
-                                                        sx={{ padding: headCell.disablePadding ? '0 16px' : '' }}
-                                                    >
-                                                        {headCell.type === 'string' ? cellValue :
-                                                            <Avatar
-                                                                sx={{ width: 40, height: 40, bgcolor: green[500] }}
-                                                                variant="rounded"
-                                                                src={cellValue} />
-                                                        }
-                                                    </TableCell>
-                                                )
-                                            })}
-                                        </TableRow>
-                                    );
-                                })}
+                            {
+                                data &&
+                                data.sort(getComparator<T>(order, orderBy))
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((row: T, index) => {
+                                        return (
+                                            <TableRow
+                                                hover
+                                                onClick={(event) => handleClickRow(event, row)}
+                                                tabIndex={-1}
+                                                key={uuidv4()}
+                                                style={{
+                                                    height: 53
+                                                }}
+                                            >
+                                                {headCells.map((headCell: HeadCell<T>, index: number) => {
+                                                    let cellValue = row[headCell.id] as any;
+                                                    if (headCell.formatFn)
+                                                        cellValue = headCell.formatFn(cellValue)
+                                                    return (
+                                                        <TableCell
+                                                            key={uuidv4()}
+                                                            align={headCell.numeric ? 'right' : 'left'}
+                                                            sx={{ padding: headCell.disablePadding ? '0 16px' : '' }}
+                                                        >
+                                                            {headCell.type === 'string' ? cellValue :
+                                                                <Avatar
+                                                                    sx={{ width: 40, height: 40, bgcolor: green[500] }}
+                                                                    variant="rounded"
+                                                                    src={cellValue} />
+                                                            }
+                                                        </TableCell>
+                                                    )
+                                                })}
+                                            </TableRow>
+                                        );
+                                    })}
                             {emptyRows > 0 && (
                                 <TableRow
                                     style={{
@@ -168,7 +168,7 @@ export default function SortedTable<T>(props: SortedTableProps<T>) {
                         labelDisplayedRows={({ from, to, count }) => {
                             return `${from}–${to} z ${count !== -1 ? count : `więcej niż ${to}`}`;
                         }}
-                        count={data.length}
+                        count={data ? data.length : 0}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}

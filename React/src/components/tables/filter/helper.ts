@@ -16,6 +16,16 @@ export const getInputs = (form: Array<FilterInputType>) => {
 }
 
 
+export const getFilterParams = (filterStructure: Array<FilterInputType>) => {
+    const filterParams: any = {}
+    filterStructure.forEach((f: FilterInputType) => {
+        if (f.value)
+            filterParams[f.id] = f.value
+    })
+
+    return filterParams;
+}
+
 
 export const removeEmptyFilterValues = (filterForm: Object) => {
     let filterParams: { [key: string]: any } = {};

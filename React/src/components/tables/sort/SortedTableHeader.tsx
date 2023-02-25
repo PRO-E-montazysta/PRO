@@ -19,7 +19,7 @@ export interface HeadCell<T> {
     id: keyof T;
     label: string;
     numeric: boolean;
-    formatFn?: (value: HeadCellType) => string;
+    formatFn?: (value: any) => string;
 }
 
 
