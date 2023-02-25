@@ -104,6 +104,7 @@ public class WarehousemanMapper {
         warehouseman.setFirstName(warehousemanDto.getFirstName());
         warehouseman.setLastName(warehousemanDto.getLastName());
         warehouseman.setUsername(warehousemanDto.getUsername());
+        warehouseman.setPassword(warehousemanDto.getPassword());
         warehouseman.setEmail(warehousemanDto.getEmail());
         warehouseman.setPhone(warehousemanDto.getPhone());
         warehouseman.setPesel(warehousemanDto.getPesel());

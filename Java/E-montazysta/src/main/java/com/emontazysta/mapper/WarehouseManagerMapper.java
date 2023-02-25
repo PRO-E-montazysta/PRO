@@ -104,6 +104,7 @@ public class WarehouseManagerMapper {
         warehouseManager.setFirstName(warehouseManagerDto.getFirstName());
         warehouseManager.setLastName(warehouseManagerDto.getLastName());
         warehouseManager.setUsername(warehouseManagerDto.getUsername());
+        warehouseManager.setPassword(warehouseManagerDto.getPassword());
         warehouseManager.setEmail(warehouseManagerDto.getEmail());
         warehouseManager.setPhone(warehouseManagerDto.getPhone());
         warehouseManager.setPesel(warehouseManagerDto.getPesel());

@@ -82,6 +82,7 @@ public class FitterMapper {
         fitter.setFirstName(fitterDto.getFirstName());
         fitter.setLastName(fitterDto.getLastName());
         fitter.setUsername(fitterDto.getUsername());
+        fitter.setPassword(fitterDto.getPassword());
         fitter.setEmail(fitterDto.getEmail());
         fitter.setPhone(fitterDto.getPhone());
         fitter.setPesel(fitterDto.getPesel());

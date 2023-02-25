@@ -1,18 +1,21 @@
 package com.emontazysta.model.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
 @Data
 @SuperBuilder
+@NoArgsConstructor
 public class EmployeeDto {
 
     private Long id;
     private String firstName;
     private String lastName;
     private String username;
+    private String password;
     private String email;
     private String phone;
     private String pesel;
