@@ -1,9 +1,11 @@
 import { Box, Button, Paper, TextField } from "@mui/material";
 import { useFormik, ErrorMessage, useField, Form, Formik, Field } from "formik";
 import { CSSProperties, HTMLInputTypeAttribute, useState } from "react";
+import { getInputs } from "../../../helpers/filter.helper";
 import { theme } from "../../../themes/baseTheme";
+import { OrderStatus } from "../../../types/model/Order";
+import MultipleSelectChip, { SelectMenuItemProps } from "../../base/Multiselect";
 
-import { getInputs } from "./helper";
 import './style.less'
 
 
@@ -19,13 +21,13 @@ export type FilterFormProps = {
 
 export type FilterInputType = {
     id: string
-    type: HTMLInputTypeAttribute | 'multiselect'
+    inputType: HTMLInputTypeAttribute | 'multiselect'
     placeholder?: string
     label?: string
 
-    value: string | number | Date
-    typeValue?: 'string' | 'number' | 'date' | 'select' | 'multiselect'
-    // options?: Array<Opt>
+    value: string | number | Date | Array<any>
+    typeValue?: 'string' | 'number' | 'date' | 'Array'
+    options?: Array<SelectMenuItemProps>
     // validations?: Array<Validation>
 
     style?: CSSProperties
@@ -46,7 +48,6 @@ const TableFilter = (props: FilterFormProps) => {
     })
 
 
-
     return <div>
         <Box sx={{ width: '100%', minWidth: '250px', }}>
             <Paper sx={{ width: '100%', borderRadius: '5px', padding: '20px' }}>
@@ -62,10 +63,19 @@ const TableFilter = (props: FilterFormProps) => {
                     onReset={formik.handleReset}
                     className='filter'>
                     {
-                        inputs.map(({ id, type, value, ...props }) => {
-                            switch (type) {
+                        inputs.map(({ id, inputType, value, ...props }) => {
+                            switch (inputType) {
                                 case 'multiselect':
-                                    return <div key={id}>multiselect not implemented yet</div>
+                                    return <MultipleSelectChip
+                                        key={id}
+                                        menuItems={props.options ? props.options : []}
+                                        id={id}
+                                        label={props.label}
+                                        name={id}
+                                        value={formik.values[id]}
+                                        formikSetFieldValue={formik.setFieldValue}
+                                    />
+
                                 default:
                                     return <TextField
                                         key={id}
@@ -73,7 +83,7 @@ const TableFilter = (props: FilterFormProps) => {
                                         name={id}
                                         label={props.label}
                                         value={formik.values[id]}
-                                        type={type}
+                                        type={inputType}
                                         onChange={formik.handleChange}
                                         error={formik.touched[id] && Boolean(formik.errors[id])}
                                         style={props.style}

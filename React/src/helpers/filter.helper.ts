@@ -1,6 +1,5 @@
-import React from "react";
+import { FilterInputType } from "../components/table/filter/TableFilter"
 
-import { FilterInputType } from "./TableFilter"
 
 export const getInputs = (form: Array<FilterInputType>) => {
     let initialValues: { [key: string]: any } = {}
@@ -19,22 +18,25 @@ export const getInputs = (form: Array<FilterInputType>) => {
 export const getFilterParams = (filterStructure: Array<FilterInputType>) => {
     const filterParams: any = {}
     filterStructure.forEach((f: FilterInputType) => {
-        if (f.value)
-            filterParams[f.id] = f.value
+        if (!!f.value) {
+            switch (f.typeValue) {
+                case 'Array':
+                    if (Array.isArray(f.value) && f.value.length > 0) {
+                        const arr: Array<any> = f.value
+                        filterParams[f.id] = arr.join(',')
+                    }
+                    break
+                default:
+                    filterParams[f.id] = f.value
+                    break
+            }
+        }
     })
 
     return filterParams;
 }
 
 
-export const removeEmptyFilterValues = (filterForm: Object) => {
-    let filterParams: { [key: string]: any } = {};
-    for (const [key, value] of Object.entries(filterForm))
-        if (value != '')
-            filterParams[key] = value
-
-    return filterParams
-}
 
 export const setNewFilterValues = (filterForm: any, filterInitValues: Array<FilterInputType>) => {
     let filtersWithNewValues = filterInitValues;

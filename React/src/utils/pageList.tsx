@@ -13,12 +13,13 @@ import WarehouseList from "../pages/WarehouseList"
 import DeliveryReceipt from "../pages/DeliveryReceipt"
 import Demand from "../pages/Demand"
 import Issues from "../components/Issues/Issues"
-import Orders from "../pages/Orders"
+
 import RetrieveReturn from "../pages/RetrieveReturn"
 import Schedules from "../pages/Schedules"
 import LoginPage from "../pages/LoginPage"
 import { Role } from "../types/roleEnum"
 import Error from "../components/Error/Error"
+import Orders from "../pages/orders"
 
 export type PageProps = {
     name: string
