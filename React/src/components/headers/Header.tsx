@@ -6,7 +6,7 @@ import secondPicture from '../../assets/img/secondPicture.png';
 import logo from '../../assets/img/logo.png';
 import { useNavigate } from 'react-router-dom';
 import { pageList } from '../../utils/pageList';
-import NavMenuButton from '../NavMenuItem/NavMenuButton';
+import NavMenuButton from '../navMenuItem/NavMenuButton';
 import { removeToken } from '../../utils/token';
 import { v4 as uuidv4 } from 'uuid';
 
