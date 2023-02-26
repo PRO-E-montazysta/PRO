@@ -7,6 +7,7 @@ import { getAllOrders } from "../../api/order.api";
 import { filterInitStructure, headCells } from "./helper";
 import { useNavigate } from "react-router-dom";
 import { getFilterParams, setNewFilterValues } from "../../helpers/filter.helper";
+import { Order } from "../../types/model/Order";
 
 
 
@@ -16,7 +17,7 @@ const Orders = () => {
     const [filterParams, setFilterParams] = useState(getFilterParams(filterInitStructure))
     const navigation = useNavigate();
 
-    const queryOrders = useQuery<Array<any>, AxiosError>(
+    const queryOrders = useQuery<Array<Order>, AxiosError>(
         ['orders', filterParams],
         async () => getAllOrders({ queryParams: filterParams })
     )

@@ -37,7 +37,7 @@ function App() {
         <CssBaseline />
         <RouterProvider router={router} />
       </ThemeProvider>
-      <ReactQueryDevtools initialIsOpen/>
+      <ReactQueryDevtools initialIsOpen />
     </QueryClientProvider>
   );
 }
