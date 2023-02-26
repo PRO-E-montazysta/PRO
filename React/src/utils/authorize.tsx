@@ -1,5 +1,5 @@
 import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
-import Error from "../components/Error/Error";
+import Error from "../components/error/Error";
 import { Role } from "../types/roleEnum";
 import { getRolesFromToken, getToken } from "./token";
 
