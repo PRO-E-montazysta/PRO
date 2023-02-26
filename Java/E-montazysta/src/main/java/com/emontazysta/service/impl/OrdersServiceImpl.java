@@ -2,10 +2,14 @@ package com.emontazysta.service.impl;
 
 import com.emontazysta.mapper.OrdersMapper;
 import com.emontazysta.model.Orders;
+import com.emontazysta.model.dto.OrdersCompanyManagerDto;
 import com.emontazysta.model.dto.OrdersDto;
+import com.emontazysta.model.searchcriteria.OrdersSearchCriteria;
 import com.emontazysta.repository.OrderRepository;
+import com.emontazysta.repository.criteria.OrdersCriteriaRepository;
 import com.emontazysta.service.OrdersService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -19,6 +23,7 @@ public class OrdersServiceImpl implements OrdersService {
 
     private final OrderRepository repository;
     private final OrdersMapper ordersMapper;
+    private final OrdersCriteriaRepository ordersCriteriaRepository;
 
     @Override
     public List<OrdersDto> getAll() {
@@ -69,5 +74,10 @@ public class OrdersServiceImpl implements OrdersService {
         order.setAttachments(updatedOrder.getAttachments());
 
         return ordersMapper.toDto(repository.save(order));
+    }
+
+    @Override
+    public List<OrdersCompanyManagerDto> getFilteredOrders(OrdersSearchCriteria ordersSearchCriteria){
+        return ordersCriteriaRepository.findAllWithFilters(ordersSearchCriteria);
     }
 }
