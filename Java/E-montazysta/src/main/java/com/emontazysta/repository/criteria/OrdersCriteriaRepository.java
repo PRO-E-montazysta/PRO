@@ -1,9 +1,9 @@
 package com.emontazysta.repository.criteria;
 import com.emontazysta.enums.TypeOfPriority;
 import com.emontazysta.enums.TypeOfStatus;
-import com.emontazysta.mapper.OrdersMapper;
+import com.emontazysta.mapper.OrdersCompanyManagerMapper;
 import com.emontazysta.model.Orders;
-import com.emontazysta.model.dto.OrdersDto;
+import com.emontazysta.model.dto.OrdersCompanyManagerDto;
 
 import com.emontazysta.model.searchcriteria.OrdersSearchCriteria;
 
@@ -25,14 +25,14 @@ public class OrdersCriteriaRepository {
 
     private final EntityManager entityManager;
     private final CriteriaBuilder criteriaBuilder;
-    private final OrdersMapper ordersMapper;
-    public OrdersCriteriaRepository(EntityManager entityManager, OrdersMapper ordersMapper) {
+    private final OrdersCompanyManagerMapper ordersMapper;
+    public OrdersCriteriaRepository(EntityManager entityManager, OrdersCompanyManagerMapper ordersMapper) {
         this.entityManager = entityManager;
         this.criteriaBuilder = entityManager.getCriteriaBuilder();
         this.ordersMapper = ordersMapper;
     }
 
-    public List<OrdersDto> findAllWithFilters(OrdersSearchCriteria ordersSearchCriteria ) {
+    public List<OrdersCompanyManagerDto> findAllWithFilters(OrdersSearchCriteria ordersSearchCriteria ) {
 
         CriteriaQuery<Orders> criteriaQuery = criteriaBuilder.createQuery(Orders.class);
         Root<Orders> ordersRoot = criteriaQuery.from(Orders.class);

@@ -2,6 +2,7 @@ package com.emontazysta.service.impl;
 
 import com.emontazysta.mapper.OrdersMapper;
 import com.emontazysta.model.Orders;
+import com.emontazysta.model.dto.OrdersCompanyManagerDto;
 import com.emontazysta.model.dto.OrdersDto;
 import com.emontazysta.model.searchcriteria.OrdersSearchCriteria;
 import com.emontazysta.repository.OrderRepository;
@@ -76,7 +77,7 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public List<OrdersDto> getFilteredOrders( OrdersSearchCriteria ordersSearchCriteria){
+    public List<OrdersCompanyManagerDto> getFilteredOrders(OrdersSearchCriteria ordersSearchCriteria){
         return ordersCriteriaRepository.findAllWithFilters(ordersSearchCriteria);
     }
 }

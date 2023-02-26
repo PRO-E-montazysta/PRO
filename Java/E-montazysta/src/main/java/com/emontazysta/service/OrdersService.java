@@ -1,5 +1,6 @@
 package com.emontazysta.service;
 
+import com.emontazysta.model.dto.OrdersCompanyManagerDto;
 import com.emontazysta.model.dto.OrdersDto;
 import com.emontazysta.model.searchcriteria.OrdersSearchCriteria;
 
@@ -13,5 +14,5 @@ public interface OrdersService {
     void delete(Long id);
     OrdersDto update(Long id, OrdersDto orders);
 
-    public List<OrdersDto> getFilteredOrders(OrdersSearchCriteria ordersSearchCriteria);
+    public List<OrdersCompanyManagerDto> getFilteredOrders(OrdersSearchCriteria ordersSearchCriteria);
 }

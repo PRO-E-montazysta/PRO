@@ -1,5 +1,6 @@
 package com.emontazysta.controller;
 
+import com.emontazysta.model.dto.OrdersCompanyManagerDto;
 import com.emontazysta.model.dto.OrdersDto;
 
 import com.emontazysta.model.searchcriteria.OrdersSearchCriteria;
@@ -58,7 +59,7 @@ public class OrdersController {
 
     @GetMapping("/filter")
     @Operation(description = "Return filtered Orders by given parameters.", security = @SecurityRequirement(name = "bearer-key"))
-    public ResponseEntity<List<OrdersDto>> filterOrders(OrdersSearchCriteria ordersSearchCriteria){
+    public ResponseEntity<List<OrdersCompanyManagerDto>> filterOrders(OrdersSearchCriteria ordersSearchCriteria){
         return new ResponseEntity<>(orderService.getFilteredOrders(ordersSearchCriteria), HttpStatus.OK);
     }
 }
