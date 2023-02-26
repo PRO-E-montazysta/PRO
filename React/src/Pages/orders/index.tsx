@@ -1,6 +1,6 @@
 import { FilterFormProps } from "../../components/table/filter/TableFilter";
 import FatTable from "../../components/table/FatTable";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "react-query";
 import { AxiosError } from "axios";
 import { getAllOrders } from "../../api/order.api";

@@ -1,9 +1,8 @@
 import { Box, Button, Paper, TextField } from "@mui/material";
-import { useFormik, ErrorMessage, useField, Form, Formik, Field } from "formik";
-import { CSSProperties, HTMLInputTypeAttribute, useState } from "react";
+import { useFormik } from "formik";
+import { CSSProperties, HTMLInputTypeAttribute } from "react";
 import { getInputs } from "../../../helpers/filter.helper";
 import { theme } from "../../../themes/baseTheme";
-import { OrderStatus } from "../../../types/model/Order";
 import MultipleSelectChip, { SelectMenuItemProps } from "../../base/Multiselect";
 
 import './style.less'
@@ -71,7 +70,6 @@ const TableFilter = (props: FilterFormProps) => {
                                         menuItems={props.options ? props.options : []}
                                         id={id}
                                         label={props.label}
-                                        name={id}
                                         value={formik.values[id]}
                                         formikSetFieldValue={formik.setFieldValue}
                                     />

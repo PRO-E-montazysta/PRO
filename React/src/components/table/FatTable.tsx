@@ -1,7 +1,6 @@
 import { Box, Grid } from "@mui/material"
 import { AxiosError } from "axios"
 import { UseQueryResult } from 'react-query'
-import { useNavigate } from "react-router-dom"
 import TableFilter, { FilterFormProps } from "./filter/TableFilter"
 import SortedTable from "./sort/SortedTable"
 import { HeadCell } from "./sort/SortedTableHeader"

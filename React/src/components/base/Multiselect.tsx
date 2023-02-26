@@ -19,13 +19,12 @@ type MultipleSelectProps = {
     initValues?: Array<any>
     menuItems: Array<SelectMenuItemProps>
     id: string
-    name: string
     value: Array<any>
     formikSetFieldValue: (id: string, value: any) => void
 }
 
 export default function MultipleSelect(props: MultipleSelectProps) {
-    const { id, label, menuItems, initValues, name, formikSetFieldValue, value } = props
+    const { id, label, menuItems, initValues, formikSetFieldValue, value } = props
     const [selectedValues, setSelectedValues] = useState<Array<any>>(initValues ? initValues : []);
 
     const handleChange = (event: SelectChangeEvent<typeof selectedValues>) => {
@@ -49,7 +48,7 @@ export default function MultipleSelect(props: MultipleSelectProps) {
             <FormControl variant='outlined' fullWidth>
                 <InputLabel id={`label-${id}`} shrink>{label}</InputLabel>
                 <Select
-                    name={name}
+                    name={id}
                     labelId={`label-${id}`}
                     multiple
                     value={value ? value : []}
