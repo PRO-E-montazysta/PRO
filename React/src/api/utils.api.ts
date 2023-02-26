@@ -1,9 +1,9 @@
 import axios, { Method } from 'axios';
 import { getToken } from '../utils/token';
 
-type PayloadProps = {
+export type PayloadProps = {
   body?: undefined | Record<string, unknown> | unknown;
-  queryStringParams?: undefined | Record<string, unknown>;
+  queryParams?: undefined | Record<string, unknown>;
 }
 
 
@@ -24,8 +24,8 @@ export const getBaseUrl = (): string => {
 
 
 export const makeServiceCall = async (url: string, httpMethod: Method, payload: PayloadProps) => {
-  console.log({ payload });
-  const { body, queryStringParams } = payload
+  console.log(payload);
+  const { body, queryParams } = payload
   const token = getToken();
 
   let headers = {
@@ -39,7 +39,7 @@ export const makeServiceCall = async (url: string, httpMethod: Method, payload: 
     baseURL: getBaseUrl(),
     url: url,
     data: body,
-    params: queryStringParams,
+    params: queryParams,
     headers: headers
   });
   return response.data;

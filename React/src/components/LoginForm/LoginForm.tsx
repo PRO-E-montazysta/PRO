@@ -10,8 +10,7 @@ import { useMutation } from 'react-query';
 import { MouseEvent, useState } from 'react';
 import './style.less';
 
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 
 const CustomTextField = styled(TextField)(({ theme }) => ({
@@ -109,6 +108,7 @@ const LoginForm = () => {
       >
 
         <CustomTextField
+          className={'login-form-input'}
           fullWidth
           margin="normal"
           label="Email"
@@ -122,6 +122,7 @@ const LoginForm = () => {
           helperText={formik.touched.email && formik.errors.email}
         />
         <CustomTextField
+          className={'login-form-input'}
           fullWidth
           margin="normal"
           label="Password"

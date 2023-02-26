@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { pageList } from '../../utils/pageList';
 import NavMenuButton from '../NavMenuItem/NavMenuButton';
 import { removeToken } from '../../utils/token';
+import { v4 as uuidv4 } from 'uuid';
 
 const CustomizedToolbar = styled(Toolbar)(({ theme }) => ({
   '@media (min-width: 600px)': {
@@ -51,7 +52,7 @@ const Header = () => {
           }}
         >
           {itemData.map((item) => (
-            <ImageListItem key={item.img}>
+            <ImageListItem key={uuidv4()}>
               <img src={`${item.img}`} srcSet={`${item.img}`} alt={item.title} loading="lazy" />
             </ImageListItem>
           ))}
@@ -60,7 +61,7 @@ const Header = () => {
           <Box component="img" sx={{ mr: 5 }} alt="Your logo." src={logo}></Box>
           {
             rootPageChildrens ? rootPageChildrens.map(page => {
-              return <NavMenuButton {...page} />
+              return <NavMenuButton {...page} key={uuidv4()}/>
             })
               :
               null
