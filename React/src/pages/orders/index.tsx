@@ -3,7 +3,7 @@ import FatTable from "../../components/table/FatTable";
 import { useState } from "react";
 import { useQuery } from "react-query";
 import { AxiosError } from "axios";
-import { getAllOrders } from "../../api/order.api";
+import { getFilteredOrders } from "../../api/order.api";
 import { filterInitStructure, headCells } from "./helper";
 import { useNavigate } from "react-router-dom";
 import { getFilterParams, setNewFilterValues } from "../../helpers/filter.helper";
@@ -19,7 +19,7 @@ const Orders = () => {
 
     const queryOrders = useQuery<Array<Order>, AxiosError>(
         ['orders', filterParams],
-        async () => getAllOrders({ queryParams: filterParams })
+        async () => getFilteredOrders({ queryParams: filterParams })
     )
 
     const handleOnSearch = (filterParams: Object) => {
