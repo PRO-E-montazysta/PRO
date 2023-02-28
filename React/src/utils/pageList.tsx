@@ -9,7 +9,6 @@ import HomePageManager from "../pages/ManagersHomePage"
 import HomepagesalesRepresentative from "../pages/SalesRepresentativesHomePage"
 import HomePageForeman from "../pages/ForemenHomePage"
 import HomePageFitter from "../pages/FittersHomePage"
-import WarehouseList from "../pages/WarehouseList"
 import DeliveryReceipt from "../pages/DeliveryReceipt"
 import Demand from "../pages/Demand"
 import Issues from "../components/issues/Issues"
@@ -76,13 +75,6 @@ export const pageList: Array<PageProps> =
                         path: '/home-warehouseman',
                         allowedRoles: [Role.WAREHOUSE_MAN],
                         component: <HomePageWarehousemen />
-                    },
-                    {
-                        inNav: true,
-                        name: 'Lista Magazynów',
-                        path: '/warehouse-list',
-                        allowedRoles: [Role.WAREHOUSE_MAN, Role.SPECIALIST, Role.FITTER, Role.MANAGER, Role.WAREHOUSE_MANAGER, Role.FOREMAN, Role.SALES_REPRESENTATIVE],
-                        component: <WarehouseList />
                     },
                     {
                         inNav: true,
