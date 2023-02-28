@@ -1,5 +1,5 @@
 
-export type Order = {
+export type Warehouse = {
     id: number,
     name: string,
     description: string,
