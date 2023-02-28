@@ -128,7 +128,7 @@ public class WarehouseControllerTests extends AbstractTest{
 
         response.getBody().prettyPeek();
 
-        Assertions.assertEquals(500, response.statusCode());
+        Assertions.assertEquals(404, response.statusCode());
     }
 
     @Test
