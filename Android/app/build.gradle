@@ -44,4 +44,9 @@ dependencies {
 
     // Koin
     implementation "io.insert-koin:koin-android:$koin_version"
+
+    implementation 'com.github.kittinunf.fuel:fuel:2.3.1'
+    implementation 'com.github.kittinunf.fuel:fuel-android:2.3.1'
+    implementation 'com.github.kittinunf.fuel:fuel-coroutines:2.3.1'
+    implementation 'com.google.code.gson:gson:2.8.9'
 }

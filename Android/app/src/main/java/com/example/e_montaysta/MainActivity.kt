@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val button: Button = findViewById(R.id.loginButton)
         button.setOnClickListener {
-            val text = authController.login("login", "password")
+            val text = authController.login("admin", "password")
             val textView : TextView = findViewById(R.id.label)
             textView.text = text
         }
