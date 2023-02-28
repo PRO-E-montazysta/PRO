@@ -1,13 +1,16 @@
 package com.emontazysta.model.dto;
 
-import com.emontazysta.model.Company;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Builder
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class WarehouseDto {
 
     private Long id;
