@@ -1,0 +1,11 @@
+
+export type Order = {
+    id: number,
+    name: string,
+    description: string,
+    openingHours: string,
+    companyId: number,
+    locationId: number,
+    elementInWarehouses: Array<number>,
+    tools: Array<number>
+}
