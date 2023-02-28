@@ -117,6 +117,7 @@ public class ForemanMapper {
         foreman.setFirstName(foremanDto.getFirstName());
         foreman.setLastName(foremanDto.getLastName());
         foreman.setUsername(foremanDto.getUsername());
+        foreman.setPassword(foremanDto.getPassword());
         foreman.setEmail(foremanDto.getEmail());
         foreman.setPhone(foremanDto.getPhone());
         foreman.setPesel(foremanDto.getPesel());

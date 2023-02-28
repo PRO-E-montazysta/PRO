@@ -67,7 +67,7 @@ export const headCells: Array<HeadCell<Order>> = [
 export const filterInitStructure: Array<FilterInputType> = [
     {
         id: 'name',
-        value: 'test order',
+        value: '',
         label: 'Nazwa',
         inputType: 'text',
         typeValue: 'string'
