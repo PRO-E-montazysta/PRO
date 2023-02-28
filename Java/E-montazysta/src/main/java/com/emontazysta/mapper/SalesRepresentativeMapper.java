@@ -91,6 +91,7 @@ public class SalesRepresentativeMapper {
         salesRepresentative.setFirstName(salesRepresentativeDto.getFirstName());
         salesRepresentative.setLastName(salesRepresentativeDto.getLastName());
         salesRepresentative.setUsername(salesRepresentativeDto.getUsername());
+        salesRepresentative.setPassword(salesRepresentativeDto.getPassword());
         salesRepresentative.setEmail(salesRepresentativeDto.getEmail());
         salesRepresentative.setPhone(salesRepresentativeDto.getPhone());
         salesRepresentative.setPesel(salesRepresentativeDto.getPesel());

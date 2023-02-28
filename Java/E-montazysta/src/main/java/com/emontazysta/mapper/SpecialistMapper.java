@@ -97,6 +97,7 @@ public class SpecialistMapper {
         specialist.setFirstName(specialistDto.getFirstName());
         specialist.setLastName(specialistDto.getLastName());
         specialist.setUsername(specialistDto.getUsername());
+        specialist.setPassword(specialistDto.getPassword());
         specialist.setEmail(specialistDto.getEmail());
         specialist.setPhone(specialistDto.getPhone());
         specialist.setPesel(specialistDto.getPesel());
