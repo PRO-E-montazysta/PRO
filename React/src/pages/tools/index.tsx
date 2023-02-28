@@ -51,6 +51,7 @@ const Tools = () => {
             navigation(`/tools/${row.id}`)
             console.log(row)
         }}
+        pageHeader='Lista narzędzi'
     />
 
 

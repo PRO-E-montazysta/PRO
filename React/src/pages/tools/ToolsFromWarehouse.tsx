@@ -51,6 +51,7 @@ const ToolsFromWarehouse = () => {
             navigation(`/tools/${row.id}`)
             console.log(row)
         }}
+        pageHeader='Lista narzędzi'
     />
 
 
