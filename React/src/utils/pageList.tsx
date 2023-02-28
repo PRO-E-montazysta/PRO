@@ -21,6 +21,9 @@ import { Role } from "../types/roleEnum"
 import Error from "../components/error/Error"
 import Orders from "../pages/orders"
 import OrderDetails from "../pages/orders/OrderDetails"
+import Tools from "../pages/tools"
+import ToolDetails from "../pages/tools/ToolDetails"
+import ToolsFromWarehouse from "../pages/tools/ToolsFromWarehouse"
 
 export type PageProps = {
     name: string
@@ -118,6 +121,27 @@ export const pageList: Array<PageProps> =
                         path: '/orders',
                         allowedRoles: [Role.FITTER, Role.SPECIALIST, Role.MANAGER, Role.SALES_REPRESENTATIVE, Role.FOREMAN, Role["*"]],
                         component: <Orders />
+                    },
+                    {
+                        inNav: true,
+                        name: 'Narzędzia',
+                        path: '/tools',
+                        allowedRoles: [Role["*"]],
+                        component: <Tools />
+                    },
+                    {
+                        inNav: false,
+                        name: '',
+                        path: '/tools-warehouse/:warehouseId',
+                        allowedRoles: [Role["*"]],
+                        component: <ToolsFromWarehouse />
+                    },
+                    {
+                        inNav: false,
+                        name: '',
+                        path: '/tools/:id',
+                        allowedRoles: [Role["*"]],
+                        component: <ToolDetails />
                     },
                     {
                         inNav: false,
