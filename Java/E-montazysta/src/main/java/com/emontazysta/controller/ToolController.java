@@ -69,7 +69,7 @@ public class ToolController {
 
     @GetMapping("/filter")
     @Operation(description = "Allows to get filtered tools data.", security = @SecurityRequirement(name = "bearer-key"))
-    public ResponseEntity<List<ToolDto>> getfilteredTools( ToolSearchCriteria toolSearchCriteria, ToolReleaseSearchCriteria toolReleaseSearchCriteria){
+    public ResponseEntity<List<ToolDto>> getfilteredTools( ToolSearchCriteria toolSearchCriteria){
         return new ResponseEntity<>(toolService.getTools(toolSearchCriteria),HttpStatus.OK);
     }
 
