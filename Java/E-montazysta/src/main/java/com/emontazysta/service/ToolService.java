@@ -16,7 +16,7 @@ public interface ToolService {
     void add(Tool tool);
     void delete(Long id);
     void update(Long id, Tool tool);
-    Page<ToolDto> getTools(ToolSearchCriteria toolSearchCriteria, ToolReleaseSearchCriteria toolReleaseSearchCriteria);
+    List<ToolDto> getTools(ToolSearchCriteria toolSearchCriteria);
 
 
 }

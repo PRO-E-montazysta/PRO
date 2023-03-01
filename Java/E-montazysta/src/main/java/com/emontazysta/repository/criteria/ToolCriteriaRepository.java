@@ -1,6 +1,7 @@
 package com.emontazysta.repository.criteria;
 
 import com.emontazysta.mapper.ToolMapper;
+import com.emontazysta.model.Orders;
 import com.emontazysta.model.Tool;
 import com.emontazysta.model.ToolRelease;
 import com.emontazysta.model.dto.ToolDto;
@@ -28,15 +29,16 @@ public class ToolCriteriaRepository {
         this.criteriaBuilder = entityManager.getCriteriaBuilder();
     }
 
-    public Page<ToolDto> finadAllWithFilter( ToolSearchCriteria toolSearchCriteria, ToolReleaseSearchCriteria toolReleaseSearchCriteria){
+    public List<ToolDto> finadAllWithFilter( ToolSearchCriteria toolSearchCriteria){
         CriteriaQuery<Tool> criteriaQuery = criteriaBuilder.createQuery(Tool.class);
         Root<Tool> toolRoot = criteriaQuery.from(Tool.class);
         Predicate predicate = getPredicate(toolSearchCriteria, toolRoot);
         criteriaQuery.where(predicate);
 
         TypedQuery<Tool> typedQuery = entityManager.createQuery(criteriaQuery);
+        List<Tool> toolList = typedQuery.getResultList();
 
-        return new (typedQuery.getResultList().stream().map(ToolMapper::toolToDto).collect(Collectors.toList()));
+        return toolList.stream().map(ToolMapper::toolToDto).collect(Collectors.toList());
     }
 
 
@@ -54,7 +56,7 @@ public class ToolCriteriaRepository {
         }
         if(Objects.nonNull(toolSearchCriteria.getWarehouse_Id())){
             predicates.add(criteriaBuilder.equal(toolRoot.get("warehouse").get("id"),
-                    toolSearchCriteria.getWarehouse_Id()));
+                    (Long)toolSearchCriteria.getWarehouse_Id()));
         }
         if(Objects.nonNull(toolSearchCriteria.getToolType_Id())){
             predicates.add(criteriaBuilder.equal(toolRoot.get("toolType").get("id"),

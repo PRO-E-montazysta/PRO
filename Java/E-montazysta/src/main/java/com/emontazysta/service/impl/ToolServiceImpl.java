@@ -63,8 +63,8 @@ public class ToolServiceImpl implements ToolService {
         repository.save(updatedTool);
     }
 
-    public Page<ToolDto> getTools(ToolSearchCriteria toolSearchCriteria, ToolReleaseSearchCriteria toolReleaseSearchCriteria){
-        return toolCriteriaRepository.finadAllWithFilter(toolSearchCriteria, toolReleaseSearchCriteria);
+    public List<ToolDto> getTools(ToolSearchCriteria toolSearchCriteria){
+        return toolCriteriaRepository.finadAllWithFilter(toolSearchCriteria);
     }
 
 }
