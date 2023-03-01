@@ -3,7 +3,6 @@ package com.emontazysta.controller;
 import com.emontazysta.mapper.ToolMapper;
 import com.emontazysta.model.Tool;
 import com.emontazysta.model.dto.ToolDto;
-import com.emontazysta.model.page.ToolPage;
 import com.emontazysta.model.searchcriteria.ToolReleaseSearchCriteria;
 import com.emontazysta.model.searchcriteria.ToolSearchCriteria;
 import com.emontazysta.service.ToolService;
@@ -70,8 +69,8 @@ public class ToolController {
 
     @GetMapping("/filter")
     @Operation(description = "Allows to get filtered tools data.", security = @SecurityRequirement(name = "bearer-key"))
-    public ResponseEntity<Page<ToolDto>> getfilteredTools(ToolPage toolPage, ToolSearchCriteria toolSearchCriteria, ToolReleaseSearchCriteria toolReleaseSearchCriteria){
-        return new ResponseEntity<>(toolService.getTools(toolPage, toolSearchCriteria, toolReleaseSearchCriteria),HttpStatus.OK);
+    public ResponseEntity<Page<ToolDto>> getfilteredTools( ToolSearchCriteria toolSearchCriteria, ToolReleaseSearchCriteria toolReleaseSearchCriteria){
+        return new ResponseEntity<>(toolService.getTools(toolSearchCriteria, toolReleaseSearchCriteria),HttpStatus.OK);
     }
 
 }

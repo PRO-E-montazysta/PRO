@@ -2,7 +2,6 @@ package com.emontazysta.service.impl;
 
 import com.emontazysta.model.Tool;
 import com.emontazysta.model.dto.ToolDto;
-import com.emontazysta.model.page.ToolPage;
 import com.emontazysta.model.searchcriteria.ToolReleaseSearchCriteria;
 import com.emontazysta.model.searchcriteria.ToolSearchCriteria;
 import com.emontazysta.repository.ToolRepository;
@@ -64,8 +63,8 @@ public class ToolServiceImpl implements ToolService {
         repository.save(updatedTool);
     }
 
-    public Page<ToolDto> getTools(ToolPage toolPage, ToolSearchCriteria toolSearchCriteria, ToolReleaseSearchCriteria toolReleaseSearchCriteria){
-        return toolCriteriaRepository.finadAllWithFilter(toolPage, toolSearchCriteria, toolReleaseSearchCriteria);
+    public Page<ToolDto> getTools(ToolSearchCriteria toolSearchCriteria, ToolReleaseSearchCriteria toolReleaseSearchCriteria){
+        return toolCriteriaRepository.finadAllWithFilter(toolSearchCriteria, toolReleaseSearchCriteria);
     }
 
 }
