@@ -23,10 +23,12 @@ public class ToolCriteriaRepository {
 
     private final EntityManager entityManager;
     private final CriteriaBuilder criteriaBuilder;
+    private final ToolMapper toolMapper;
 
-    public ToolCriteriaRepository(EntityManager entityManager) {
+    public ToolCriteriaRepository(EntityManager entityManager, ToolMapper toolMapper) {
         this.entityManager = entityManager;
         this.criteriaBuilder = entityManager.getCriteriaBuilder();
+        this.toolMapper = toolMapper;
     }
 
     public List<ToolDto> finadAllWithFilter( ToolSearchCriteria toolSearchCriteria){
@@ -38,7 +40,7 @@ public class ToolCriteriaRepository {
         TypedQuery<Tool> typedQuery = entityManager.createQuery(criteriaQuery);
         List<Tool> toolList = typedQuery.getResultList();
 
-        return toolList.stream().map(ToolMapper::toolToDto).collect(Collectors.toList());
+        return toolList.stream().map(toolMapper::toDto).collect(Collectors.toList());
     }
 
 

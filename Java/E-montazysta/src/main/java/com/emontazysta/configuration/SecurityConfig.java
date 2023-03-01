@@ -72,44 +72,6 @@ public class SecurityConfig {
                         securityProperties.getCloudManagerUsername(),
                         null,
                         Set.of(Role.CLOUD_ADMIN)));
-
-        ToolType toolType1 = new ToolType(null,"Wiertarka Ręczna",1,3,10,null,null,null);
-        ToolType toolType2 = new ToolType(null,"Wiertarka Stołowa",1,3,10,null,null,null);
-        toolTypeService.add(toolType1);
-        toolTypeService.add(toolType2);
-
-        Warehouse warehouse1 = new Warehouse(null,"Magazyn1","jakiś opis","8.00-16.00",null, null,null,null);
-        warehouseService.add(warehouse1);
-
-       Tool tool1 =  new Tool(null,"Wiertarka", new Date(),"12345", null,warehouse1,null,toolType1);
-       Tool tool2 = new Tool(null,"Młotek", new Date(),"12345",null,warehouse1,null,toolType2);
-       Tool tool3 = new Tool(null,"Piła", new Date(),"12345",null,warehouse1,null,toolType2);
-       Tool tool4 = new Tool(null,"Wiertarka", new Date(),"12345",null,warehouse1,null,toolType2);
-       Tool tool6 = new Tool(null,"Piła", new Date(),"12345",null,null,null,toolType2);
-       Tool tool7 = new Tool(null,"Młotek", new Date(),"12345",null,warehouse1,null,toolType2);
-       Tool tool5 =  new Tool(null,"Wiertarka", new Date(),"12345", null,warehouse1,null,toolType1);
-
-        toolService.add(tool1);
-        toolService.add(tool2);
-        toolService.add(tool3);
-        toolService.add(tool4);
-        toolService.add(tool5);
-        toolService.add(tool6);
-        toolService.add(tool7);
-
-        ToolRelease toolRelease1 = new ToolRelease(null, LocalDateTime.now(),null,null,null,tool1,null,null);
-        ToolRelease toolRelease2 = new ToolRelease(null, LocalDateTime.now(),null,null,null,tool1,null,null);
-        ToolRelease toolRelease3 = new ToolRelease(null, LocalDateTime.now(),null,null,null,tool3,null,null);
-        ToolRelease toolRelease4 = new ToolRelease(null, LocalDateTime.now(),null,null,null,tool5,null,null);
-        ToolRelease toolRelease5 = new ToolRelease(null, LocalDateTime.now(),null,null,null,tool2,null,null);
-        ToolRelease toolRelease6 = new ToolRelease(null, LocalDateTime.now(),null,null,null,tool7,null,null);
-        toolReleaseService.add(toolRelease1);
-        toolReleaseService.add(toolRelease2);
-//        toolReleaseService.add(toolRelease3);
-        toolReleaseService.add(toolRelease4);
-        toolReleaseService.add(toolRelease5);
-        toolReleaseService.add(toolRelease6);
-
     }
 
     @Bean
