@@ -18,11 +18,11 @@ class AuthRepository : IAuthRepository {
             )
             rsp = token.getToken()
             if(token != null){
-                var secondResp = HttpRequestHelper.sendHttpRequest<>(
+                var secondResp = HttpRequestHelper.sendHttpRequest<LoginCredentials, LoginCredentials>(
                     RequestType.GET,
-                    "",
-                    query,
-                    token
+                    "https://dev.emontazysta.pl/api/v1/",
+                    creds,
+                    rsp
                 )
             }
         } catch (e : Throwable) {
