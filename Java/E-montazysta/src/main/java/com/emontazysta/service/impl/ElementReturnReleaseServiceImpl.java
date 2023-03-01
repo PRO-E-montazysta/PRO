@@ -1,6 +1,8 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.mapper.ElementReturnReleaseMapper;
 import com.emontazysta.model.ElementReturnRelease;
+import com.emontazysta.model.dto.ElementReturnReleaseDto;
 import com.emontazysta.repository.ElementReturnReleaseRepository;
 import com.emontazysta.service.ElementReturnReleaseService;
 import lombok.RequiredArgsConstructor;
@@ -9,27 +11,32 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ElementReturnReleaseServiceImpl implements ElementReturnReleaseService {
 
     private final ElementReturnReleaseRepository repository;
+    private final ElementReturnReleaseMapper elementReturnReleaseMapper;
 
     @Override
-    public List<ElementReturnRelease> getAll() {
-        return repository.findAll();
+    public List<ElementReturnReleaseDto> getAll() {
+        return repository.findAll().stream()
+                .map(elementReturnReleaseMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public ElementReturnRelease getById(Long id) {
-        return repository.findById(id)
-                         .orElseThrow(EntityNotFoundException::new);
+    public ElementReturnReleaseDto getById(Long id) {
+        ElementReturnRelease elementReturnRelease = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return elementReturnReleaseMapper.toDto(elementReturnRelease);
     }
 
     @Override
-    public void add(ElementReturnRelease elementReturnRelease) {
-        repository.save(elementReturnRelease);
+    public ElementReturnReleaseDto add(ElementReturnReleaseDto elementReturnReleaseDto) {
+        ElementReturnRelease elementReturnRelease = elementReturnReleaseMapper.toEntity(elementReturnReleaseDto);
+        return elementReturnReleaseMapper.toDto(repository.save(elementReturnRelease));
     }
 
     @Override
@@ -39,13 +46,18 @@ public class ElementReturnReleaseServiceImpl implements ElementReturnReleaseServ
 
     @Override
     @Transactional
-    public ElementReturnRelease update(Long id, ElementReturnRelease elementReturnRelease) {
-        ElementReturnRelease elementReturnReleaseDb = getById(id);
-        elementReturnReleaseDb.setReleaseTime(elementReturnRelease.getReleaseTime());
-        elementReturnReleaseDb.setReleasedQuantity(elementReturnRelease.getReleasedQuantity());
-        elementReturnReleaseDb.setReturnedQuantity(elementReturnRelease.getReturnedQuantity());
-        elementReturnReleaseDb.setReturnTime(elementReturnRelease.getReturnTime());
-
-        return elementReturnReleaseDb;
+    public ElementReturnReleaseDto update(Long id, ElementReturnReleaseDto elementReturnReleaseDto) {
+        ElementReturnRelease updatedElementReturnRelease = elementReturnReleaseMapper.toEntity(elementReturnReleaseDto);
+        ElementReturnRelease elementReturnReleaseDb = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        elementReturnReleaseDb.setReleaseTime(updatedElementReturnRelease.getReleaseTime());
+        elementReturnReleaseDb.setReleasedQuantity(updatedElementReturnRelease.getReleasedQuantity());
+        elementReturnReleaseDb.setReturnedQuantity(updatedElementReturnRelease.getReturnedQuantity());
+        elementReturnReleaseDb.setReturnTime(updatedElementReturnRelease.getReturnTime());
+        elementReturnReleaseDb.setServedBy(updatedElementReturnRelease.getServedBy());
+        elementReturnReleaseDb.setElement(updatedElementReturnRelease.getElement());
+        elementReturnReleaseDb.setDemandAdHoc(updatedElementReturnRelease.getDemandAdHoc());
+        elementReturnReleaseDb.setForeman(updatedElementReturnRelease.getForeman());
+        elementReturnReleaseDb.setOrderStage(updatedElementReturnRelease.getOrderStage());
+        return elementReturnReleaseMapper.toDto(elementReturnReleaseDb);
     }
 }

@@ -14,11 +14,12 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
-@Entity
 @Data
+@Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -32,7 +33,7 @@ public class Tool {
     @NotBlank
     private String name;
 
-    private Date createdAt;
+    private LocalDate createdAt;
 
     private String code;
 

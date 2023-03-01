@@ -1,15 +1,15 @@
 package com.emontazysta.service;
 
-import com.emontazysta.model.Element;
+import com.emontazysta.model.dto.ElementDto;
 
 import java.util.List;
 
 public interface ElementService {
 
-    List<Element> getAll();
-    Element getById(Long id);
-    Element getByCode(String code);
-    void add(Element element);
+    List<ElementDto> getAll();
+    ElementDto getById(Long id);
+    ElementDto getByCode(String code);
+    ElementDto add(ElementDto element);
     void delete(Long id);
-    void update(Long id, Element element);
+    ElementDto update(Long id, ElementDto element);
 }

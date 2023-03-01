@@ -8,11 +8,12 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
@@ -33,7 +34,7 @@ public class Attachment {
     @NotNull
     private TypeOfAttachment typeOfAttachment;
 
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     @ManyToOne
     private ToolType toolType;

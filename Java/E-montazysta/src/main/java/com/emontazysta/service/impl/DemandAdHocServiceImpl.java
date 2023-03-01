@@ -1,6 +1,8 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.mapper.DemandAdHocMapper;
 import com.emontazysta.model.DemandAdHoc;
+import com.emontazysta.model.dto.DemandAdHocDto;
 import com.emontazysta.repository.DemandAdHocRepository;
 import com.emontazysta.service.DemandAdHocService;
 import lombok.RequiredArgsConstructor;
@@ -10,28 +12,35 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class DemandAdHocServiceImpl implements DemandAdHocService {
 
     private final DemandAdHocRepository repository;
+    private final DemandAdHocMapper demandAdHocMapper;
 
     @Override
-    public List<DemandAdHoc> getAll() {
-        return repository.findAll();
+    public List<DemandAdHocDto> getAll() {
+        return repository.findAll().stream()
+                .map(demandAdHocMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public DemandAdHoc getById(Long id) {
-        return repository.findById(id)
-                         .orElseThrow(EntityNotFoundException::new);
+    public DemandAdHocDto getById(Long id) {
+
+        DemandAdHoc demandAdHoc = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return demandAdHocMapper.toDto(demandAdHoc);
     }
 
     @Override
-    public void add(DemandAdHoc demandAdHoc) {
+    public DemandAdHocDto add(DemandAdHocDto demandAdHocDto) {
+
+        DemandAdHoc demandAdHoc = demandAdHocMapper.toEntity(demandAdHocDto);
         demandAdHoc.setCreationTime(LocalDateTime.now());
-        repository.save(demandAdHoc);
+        return demandAdHocMapper.toDto(repository.save(demandAdHoc));
     }
 
     @Override
@@ -41,16 +50,17 @@ public class DemandAdHocServiceImpl implements DemandAdHocService {
 
     @Override
     @Transactional
-    public DemandAdHoc update(Long id, DemandAdHoc demandAdHoc) {
+    public DemandAdHocDto update(Long id, DemandAdHocDto demandAdHocDto) {
 
-        DemandAdHoc demandAdHocDb = getById(id);
-        demandAdHocDb.setDescription(demandAdHoc.getDescription());
-        demandAdHocDb.setComments(demandAdHoc.getComments());
-        demandAdHocDb.setReadByWarehousemanTime(demandAdHoc.getReadByWarehousemanTime());
-        demandAdHocDb.setRealisationTime(demandAdHoc.getRealisationTime());
-        demandAdHocDb.setWarehousemanComment(demandAdHoc.getWarehousemanComment());
-        demandAdHocDb.setSpecialistComment(demandAdHoc.getSpecialistComment());
+        DemandAdHoc updatedDemandAdHoc = demandAdHocMapper.toEntity(demandAdHocDto);
+        DemandAdHoc demandAdHocDb = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        demandAdHocDb.setDescription(updatedDemandAdHoc.getDescription());
+        demandAdHocDb.setComments(updatedDemandAdHoc.getComments());
+        demandAdHocDb.setReadByWarehousemanTime(updatedDemandAdHoc.getReadByWarehousemanTime());
+        demandAdHocDb.setRealisationTime(updatedDemandAdHoc.getRealisationTime());
+        demandAdHocDb.setWarehousemanComment(updatedDemandAdHoc.getWarehousemanComment());
+        demandAdHocDb.setSpecialistComment(updatedDemandAdHoc.getSpecialistComment());
 
-        return demandAdHocDb;
+        return demandAdHocMapper.toDto(demandAdHocDb);
     }
 }

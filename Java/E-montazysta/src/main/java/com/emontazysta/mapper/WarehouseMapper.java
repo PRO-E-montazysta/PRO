@@ -1,17 +1,59 @@
 package com.emontazysta.mapper;
 
+import com.emontazysta.model.ElementInWarehouse;
+import com.emontazysta.model.Tool;
 import com.emontazysta.model.Warehouse;
 import com.emontazysta.model.dto.WarehouseDto;
+import com.emontazysta.repository.CompanyRepository;
+import com.emontazysta.repository.ElementInWarehouseRepository;
+import com.emontazysta.repository.LocationRepository;
+import com.emontazysta.repository.ToolRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Component
+@RequiredArgsConstructor
 public class WarehouseMapper {
 
-    public static WarehouseDto warehouseToDto(Warehouse warehouse) {
+    private final CompanyRepository companyRepository;
+    private final LocationRepository locationRepository;
+    private final ElementInWarehouseRepository elementInWarehouseRepository;
+    private final ToolRepository toolRepository;
+
+    public WarehouseDto toDto(Warehouse warehouse) {
         return WarehouseDto.builder()
                 .id(warehouse.getId())
                 .name(warehouse.getName())
                 .description(warehouse.getDescription())
                 .openingHours(warehouse.getOpeningHours())
-                .company(warehouse.getCompany())
+                .companyId(warehouse.getCompany() == null ? null : warehouse.getCompany().getId())
+                .locationId(warehouse.getLocation() == null ? null : warehouse.getLocation().getId())
+                .elementInWarehouses(warehouse.getElementInWarehouses().stream().map(ElementInWarehouse::getId).collect(Collectors.toList()))
+                .tools(warehouse.getTools().stream().map(Tool::getId).collect(Collectors.toList()))
+                .build();
+    }
+
+    public Warehouse toEntity(WarehouseDto warehouseDto) {
+
+        List<ElementInWarehouse> elementInWarehouseList = new ArrayList<>();
+        warehouseDto.getElementInWarehouses().forEach(elementInWarehouseId -> elementInWarehouseList.add(elementInWarehouseRepository.getReferenceById(elementInWarehouseId)));
+
+        List<Tool> toolList = new ArrayList<>();
+        warehouseDto.getTools().forEach(toolId -> toolList.add(toolRepository.getReferenceById(toolId)));
+
+        return Warehouse.builder()
+                .id(warehouseDto.getId())
+                .name(warehouseDto.getName())
+                .description(warehouseDto.getDescription())
+                .openingHours(warehouseDto.getOpeningHours())
+                .company(warehouseDto.getCompanyId() == null ? null : companyRepository.getReferenceById(warehouseDto.getCompanyId()))
+                .location(warehouseDto.getLocationId() == null ? null : locationRepository.getReferenceById(warehouseDto.getLocationId()))
+                .elementInWarehouses(elementInWarehouseList)
+                .tools(toolList)
                 .build();
     }
 }

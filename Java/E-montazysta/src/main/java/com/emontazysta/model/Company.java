@@ -1,7 +1,6 @@
 package com.emontazysta.model;
 
 import com.emontazysta.enums.CompanyStatus;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
@@ -9,12 +8,13 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
@@ -27,7 +27,7 @@ public class Company {
     @NotBlank
     private String companyName;
 
-    private Date createdAt;
+    private LocalDate createdAt;
 
     @NotNull
     private CompanyStatus status;

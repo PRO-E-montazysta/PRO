@@ -1,17 +1,24 @@
 package com.emontazysta.model.dto;
 
 import com.emontazysta.enums.TypeOfUnavailability;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import java.util.Date;
+import lombok.NoArgsConstructor;
 
-@Builder
+import java.time.LocalDate;
+
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UnavailabilityDto {
 
     private Long id;
     private TypeOfUnavailability typeOfUnavailability;
     private String description;
-    private Date unavailableFrom;
-    private Date unavailableTo;
+    private LocalDate unavailableFrom;
+    private LocalDate unavailableTo;
+    private Long assignedToId;
+    private Long assignedById;
 }

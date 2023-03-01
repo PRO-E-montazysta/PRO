@@ -10,13 +10,11 @@ import java.util.List;
 
 public interface ToolService {
 
-    List<Tool> getAll();
-    Tool getById(Long id);
-    Tool getByCode(String code);
-    void add(Tool tool);
+    List<ToolDto> getAll();
+    ToolDto getById(Long id);
+    ToolDto getByCode(String code);
+    ToolDto add(ToolDto tool);
     void delete(Long id);
-    void update(Long id, Tool tool);
     List<ToolDto> getTools(ToolSearchCriteria toolSearchCriteria);
-
-
+    ToolDto update(Long id, ToolDto tool);
 }

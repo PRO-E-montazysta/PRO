@@ -1,13 +1,14 @@
 package com.emontazysta.service;
 
-import com.emontazysta.model.Unavailability;
+import com.emontazysta.model.dto.UnavailabilityDto;
+
 import java.util.List;
 
 public interface UnavailabilityService {
 
-    List<Unavailability> getAll();
-    Unavailability getById(Long id);
-    void add(Unavailability unavailability);
+    List<UnavailabilityDto> getAll();
+    UnavailabilityDto getById(Long id);
+    UnavailabilityDto add(UnavailabilityDto unavailability);
     void delete(Long id);
-    void update(Long id, Unavailability unavailability);
+    UnavailabilityDto update(Long id, UnavailabilityDto unavailability);
 }

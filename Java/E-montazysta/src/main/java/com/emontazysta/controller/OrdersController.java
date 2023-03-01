@@ -1,19 +1,21 @@
 package com.emontazysta.controller;
 
-import com.emontazysta.mapper.OrdersMapper;
-import com.emontazysta.model.Orders;
+import com.emontazysta.model.dto.OrdersCompanyManagerDto;
 import com.emontazysta.model.dto.OrdersDto;
+
+import com.emontazysta.model.searchcriteria.OrdersSearchCriteria;
 import com.emontazysta.service.impl.OrdersServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 
@@ -27,22 +29,20 @@ public class OrdersController {
     @GetMapping("/all")
     @Operation(description = "Allows to get all Orders.", security = @SecurityRequirement(name = "bearer-key"))
     public List<OrdersDto> getAll() {
-        return orderService.getAll().stream()
-                .map(OrdersMapper::ordersToDto)
-                .collect(Collectors.toList());
+        return orderService.getAll();
     }
 
     @GetMapping("/{id}")
     @Operation(description = "Allows to get Order by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public OrdersDto getById(@PathVariable Long id) {
-        return OrdersMapper.ordersToDto(orderService.getById(id));
+        return orderService.getById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Order.", security = @SecurityRequirement(name = "bearer-key"))
-    public void add(@Valid @RequestBody Orders orders) {
-        orderService.add(orders);
+    public OrdersDto add(@Valid @RequestBody OrdersDto orders) {
+        return orderService.add(orders);
     }
 
     @DeleteMapping("/{id}")
@@ -53,7 +53,13 @@ public class OrdersController {
 
     @PutMapping("/{id}")
     @Operation(description = "Allows to edit Order by given Id and Order data.", security = @SecurityRequirement(name = "bearer-key"))
-    public void update(@PathVariable Long id, @Valid @RequestBody Orders orders) {
-        orderService.update(id, orders);
+    public OrdersDto update(@PathVariable Long id, @Valid @RequestBody OrdersDto orders) {
+        return orderService.update(id, orders);
+    }
+
+    @GetMapping("/filter")
+    @Operation(description = "Return filtered Orders by given parameters.", security = @SecurityRequirement(name = "bearer-key"))
+    public ResponseEntity<List<OrdersCompanyManagerDto>> filterOrders(OrdersSearchCriteria ordersSearchCriteria){
+        return new ResponseEntity<>(orderService.getFilteredOrders(ordersSearchCriteria), HttpStatus.OK);
     }
 }

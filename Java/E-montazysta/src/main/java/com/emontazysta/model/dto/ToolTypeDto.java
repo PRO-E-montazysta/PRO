@@ -1,10 +1,16 @@
 package com.emontazysta.model.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.experimental.SuperBuilder;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
-@SuperBuilder
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ToolTypeDto {
     private Long id;
 
@@ -15,4 +21,7 @@ public class ToolTypeDto {
     private int criticalNumber;
 
     private int availableCount;
+    private List<Long> attachments;
+    private List<Long> orderStages;
+    private List<Long> tools;
 }

@@ -2,21 +2,23 @@ package com.emontazysta.model;
 
 import com.emontazysta.enums.TypeOfPriority;
 import com.emontazysta.enums.TypeOfStatus;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity
 @Data
+@Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
@@ -33,16 +35,14 @@ public class Orders {
     private TypeOfStatus typeOfStatus;
 
     @NotNull
-    @JsonFormat(pattern="dd-MM-yyyy")
-    private Date plannedStart;
+    private LocalDateTime plannedStart;
 
     @NotNull
-    @JsonFormat(pattern="dd-MM-yyyy")
-    private Date plannedEnd;
+    private LocalDateTime plannedEnd;
 
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
-    private Date editedAt;
+    private LocalDateTime editedAt;
 
     @NotNull
     private TypeOfPriority typeOfPriority;

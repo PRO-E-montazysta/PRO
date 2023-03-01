@@ -1,7 +1,5 @@
 package com.emontazysta.controller;
 
-import com.emontazysta.mapper.ElementEventMapper;
-import com.emontazysta.model.ElementEvent;
 import com.emontazysta.model.dto.ElementEventDto;
 import com.emontazysta.service.ElementEventService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 
@@ -24,26 +21,26 @@ public class ElementEventController {
 
     private final ElementEventService service;
 
-    @GetMapping
+    @GetMapping("/all")
     @Operation(description = "Allows to get list of all events", security= @SecurityRequirement(name = "bearer-key"))
     public List<ElementEventDto> getAllEvents() {
-        return service.getAll().stream().map(ElementEventMapper::toDto).collect(Collectors.toList());
+        return service.getAll();
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @Operation(description = "Allows to get specific event by id", security = @SecurityRequirement(name= "bearer-key"))
-    public ElementEventDto getEventById(Long id){
-        return ElementEventMapper.toDto(service.getById(id));
+    public ElementEventDto getEventById(@PathVariable Long id){
+        return service.getById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add event to element.", security = @SecurityRequirement(name= "bearer-key"))
-    public void addElementEvent(@Valid @RequestBody ElementEvent event ){
-        service.add(event);
+    public ElementEventDto addElementEvent(@Valid @RequestBody ElementEventDto event ){
+        return service.add(event);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @Operation(description = "Allows to delete element event by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public void deleteElementEventById(@PathVariable Long id) {
         service.delete(id);

@@ -1,13 +1,13 @@
 package com.emontazysta.service;
 
-import com.emontazysta.model.WarehouseManager;
+import com.emontazysta.model.dto.WarehouseManagerDto;
 
 import java.util.List;
 
 public interface WarehouseManagerService {
 
-    List<WarehouseManager> getAll();
-    WarehouseManager getById(Long id);
-    void add(WarehouseManager warehouseManager);
+    List<WarehouseManagerDto> getAll();
+    WarehouseManagerDto getById(Long id);
+    WarehouseManagerDto add(WarehouseManagerDto warehouseManager);
     void delete(Long id);
 }

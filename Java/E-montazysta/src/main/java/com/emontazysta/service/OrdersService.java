@@ -1,14 +1,18 @@
 package com.emontazysta.service;
 
-import com.emontazysta.model.Orders;
+import com.emontazysta.model.dto.OrdersCompanyManagerDto;
+import com.emontazysta.model.dto.OrdersDto;
+import com.emontazysta.model.searchcriteria.OrdersSearchCriteria;
 
 import java.util.List;
 
 public interface OrdersService {
 
-    List<Orders> getAll();
-    Orders getById(Long id);
-    void add(Orders orders);
+    List<OrdersDto> getAll();
+    OrdersDto getById(Long id);
+    OrdersDto add(OrdersDto orders);
     void delete(Long id);
-    void update(Long id, Orders orders);
+    OrdersDto update(Long id, OrdersDto orders);
+
+    public List<OrdersCompanyManagerDto> getFilteredOrders(OrdersSearchCriteria ordersSearchCriteria);
 }
