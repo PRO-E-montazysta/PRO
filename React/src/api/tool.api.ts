@@ -8,6 +8,6 @@ export const getToolDetails = (id?: string) => {
     return makeServiceCall(`/tools/${id}`, 'GET', {});
 }
 
-export const getToolsFromWarehouse = (warehouseId: string, payload: PayloadProps) => {
+export const getToolsFromWarehouse = (payload: PayloadProps, warehouseId?: string) => {
     return makeServiceCall(`/tools/tools-from-warehouse/${warehouseId}`, 'GET', { ...payload });
 }

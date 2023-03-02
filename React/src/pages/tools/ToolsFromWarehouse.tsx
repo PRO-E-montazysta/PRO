@@ -3,9 +3,9 @@ import FatTable from "../../components/table/FatTable";
 import { useState } from "react";
 import { useQuery } from "react-query";
 import { AxiosError } from "axios";
-import { getFilteredTools } from "../../api/tool.api";
+import { getToolsFromWarehouse } from "../../api/tool.api";
 import { selectedFilterInitStructure, selectedHeadCells } from "./helper";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getFilterParams, setNewFilterValues } from "../../helpers/filter.helper";
 import { Tool } from "../../types/model/Tool";
 
@@ -13,13 +13,14 @@ import { Tool } from "../../types/model/Tool";
 
 
 const ToolsFromWarehouse = () => {
+    const params = useParams();
     const [filterStructure, setFilterStructure] = useState(selectedFilterInitStructure)
     const [filterParams, setFilterParams] = useState(getFilterParams(selectedFilterInitStructure))
     const navigation = useNavigate();
 
     const queryTools = useQuery<Array<Tool>, AxiosError>(
         ['tools', filterParams],
-        async () => getFilteredTools({ queryParams: filterParams })
+        async () => getToolsFromWarehouse({ queryParams: filterParams }, params.warehouseId )
     )
 
     const handleOnSearch = (filterParams: Object) => {
