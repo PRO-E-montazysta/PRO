@@ -20,14 +20,14 @@ export const headCells: Array<HeadCell<Tool>> = [
     },
     {
         type: 'string',
-        id: 'warehouseId',
+        id: 'warehouse',
         label: 'Magazyn',
         disablePadding: false,
         numeric: false,
     },
     {
         type: 'string',
-        id: 'toolTypeId',
+        id: 'toolType',
         label: 'Typ narzędzia',
         disablePadding: false,
         numeric: false,
@@ -50,7 +50,7 @@ export const filterInitStructure: Array<FilterInputType> = [
         typeValue: 'string'
     },
     {
-        id: 'warehouseId',
+        id: 'warehouse_Id',
         value: '',
         label: 'Magazyn',
         inputType: 'multiselect',
@@ -63,7 +63,7 @@ export const filterInitStructure: Array<FilterInputType> = [
         })*/
     },
     {
-        id: 'toolTypeId',
+        id: 'toolType_Id',
         value: '',
         label: 'Typ narzędzia',
         inputType: 'multiselect',
@@ -94,7 +94,7 @@ export const selectedHeadCells: Array<HeadCell<Tool>> = [
     },
     {
         type: 'string',
-        id: 'toolTypeId',
+        id: 'toolType',
         label: 'Typ narzędzia',
         disablePadding: false,
         numeric: false,
@@ -117,7 +117,7 @@ export const selectedFilterInitStructure: Array<FilterInputType> = [
         typeValue: 'string'
     },
     {
-        id: 'toolTypeId',
+        id: 'toolType_Id',
         value: '',
         label: 'Typ narzędzia',
         inputType: 'multiselect',
