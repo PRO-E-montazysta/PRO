@@ -69,4 +69,11 @@ public class ToolController {
         return new ResponseEntity<>(toolService.getTools(toolSearchCriteria),HttpStatus.OK);
     }
 
+    @GetMapping("/tools-from-warehouse/{id}")
+    @Operation(description = "Allows to get filtered tools data.", security = @SecurityRequirement(name = "bearer-key"))
+    public ResponseEntity<List<ToolFilterDto>> getfilteredToolsFromWarehouse(@PathVariable Long id, ToolSearchCriteria toolSearchCriteria){
+        toolSearchCriteria.setWarehouse_Id(id);
+        return new ResponseEntity<>(toolService.getTools(toolSearchCriteria),HttpStatus.OK);
+    }
+
 }
