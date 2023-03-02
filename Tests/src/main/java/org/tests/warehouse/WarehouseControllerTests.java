@@ -2,12 +2,12 @@ package org.tests.warehouse;
 
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.RestAssuredTests.util.AbstractTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.tests.util.AbstractTest;
 
 import static io.restassured.RestAssured.given;
 
