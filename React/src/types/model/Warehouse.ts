@@ -4,8 +4,5 @@ export type Warehouse = {
     name: string,
     description: string,
     openingHours: string,
-    companyId: number,
-    locationId: number,
-    elementInWarehouses: Array<number>,
-    tools: Array<number>
+    fullAddress: string
 }

@@ -27,7 +27,7 @@ export const headCells: Array<HeadCell<Warehouse>> = [
     },
     {
         type: 'string',
-        id: 'locationId',
+        id: 'fullAddress',
         label: 'Adres',
         disablePadding: false,
         numeric: false,
