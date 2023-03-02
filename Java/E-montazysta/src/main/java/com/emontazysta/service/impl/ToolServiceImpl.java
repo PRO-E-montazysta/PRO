@@ -3,13 +3,12 @@ package com.emontazysta.service.impl;
 import com.emontazysta.mapper.ToolMapper;
 import com.emontazysta.model.Tool;
 import com.emontazysta.model.dto.ToolDto;
-import com.emontazysta.model.searchcriteria.ToolReleaseSearchCriteria;
+import com.emontazysta.model.dto.filterDto.ToolFilterDto;
 import com.emontazysta.model.searchcriteria.ToolSearchCriteria;
 import com.emontazysta.repository.ToolRepository;
 import com.emontazysta.repository.criteria.ToolCriteriaRepository;
 import com.emontazysta.service.ToolService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -77,7 +76,7 @@ public class ToolServiceImpl implements ToolService {
         return toolMapper.toDto(repository.save(tool));
     }
 
-    public List<ToolDto> getTools(ToolSearchCriteria toolSearchCriteria){
+    public List<ToolFilterDto> getTools(ToolSearchCriteria toolSearchCriteria){
         return toolCriteriaRepository.finadAllWithFilter(toolSearchCriteria);
     }
 

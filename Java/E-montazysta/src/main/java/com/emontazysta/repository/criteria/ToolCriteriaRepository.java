@@ -1,13 +1,9 @@
 package com.emontazysta.repository.criteria;
 
-import com.emontazysta.mapper.ToolMapper;
-import com.emontazysta.model.Orders;
+import com.emontazysta.mapper.filterMapper.ToolFilterMapper;
 import com.emontazysta.model.Tool;
-import com.emontazysta.model.ToolRelease;
-import com.emontazysta.model.dto.ToolDto;
-import com.emontazysta.model.searchcriteria.ToolReleaseSearchCriteria;
+import com.emontazysta.model.dto.filterDto.ToolFilterDto;
 import com.emontazysta.model.searchcriteria.ToolSearchCriteria;
-import org.springframework.data.domain.*;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -23,15 +19,15 @@ public class ToolCriteriaRepository {
 
     private final EntityManager entityManager;
     private final CriteriaBuilder criteriaBuilder;
-    private final ToolMapper toolMapper;
+    private final ToolFilterMapper toolFilterMapper;
 
-    public ToolCriteriaRepository(EntityManager entityManager, ToolMapper toolMapper) {
+    public ToolCriteriaRepository(EntityManager entityManager, ToolFilterMapper toolFilterMapper) {
         this.entityManager = entityManager;
         this.criteriaBuilder = entityManager.getCriteriaBuilder();
-        this.toolMapper = toolMapper;
+        this.toolFilterMapper = toolFilterMapper;
     }
 
-    public List<ToolDto> finadAllWithFilter( ToolSearchCriteria toolSearchCriteria){
+    public List<ToolFilterDto> finadAllWithFilter(ToolSearchCriteria toolSearchCriteria){
         CriteriaQuery<Tool> criteriaQuery = criteriaBuilder.createQuery(Tool.class);
         Root<Tool> toolRoot = criteriaQuery.from(Tool.class);
         Predicate predicate = getPredicate(toolSearchCriteria, toolRoot);
@@ -40,7 +36,7 @@ public class ToolCriteriaRepository {
         TypedQuery<Tool> typedQuery = entityManager.createQuery(criteriaQuery);
         List<Tool> toolList = typedQuery.getResultList();
 
-        return toolList.stream().map(toolMapper::toDto).collect(Collectors.toList());
+        return toolList.stream().map(toolFilterMapper::toDto).collect(Collectors.toList());
     }
 
 
