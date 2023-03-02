@@ -1,10 +1,8 @@
 package com.emontazysta.mapper;
 
+import com.emontazysta.model.Location;
 import com.emontazysta.model.Warehouse;
 import com.emontazysta.model.dto.WarehouseLocationDto;
-import com.emontazysta.repository.ElementInWarehouseRepository;
-import com.emontazysta.repository.LocationRepository;
-import com.emontazysta.repository.ToolRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,21 +10,27 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class WarehouseLocationMapper {
 
-    private final LocationRepository locationRepository;
-    private final ElementInWarehouseRepository elementInWarehouseRepository;
-    private final ToolRepository toolRepository;
-
     public WarehouseLocationDto toDto(Warehouse warehouse) {
         return WarehouseLocationDto.builder()
                 .id(warehouse.getId())
                 .name(warehouse.getName())
                 .description(warehouse.getDescription())
                 .openingHours(warehouse.getOpeningHours())
-                .city(warehouse.getLocation().getCity())
-                .street(warehouse.getLocation().getStreet())
-                .propertyNumber(warehouse.getLocation().getPropertyNumber())
-                .apartmentNumber(warehouse.getLocation().getApartmentNumber())
-                .zipCode(warehouse.getLocation().getZipCode())
+                .fullAddress(warehouse.getLocation() != null ? createFullAddress(warehouse.getLocation()) : "")
                 .build();
+    }
+
+    private String createFullAddress(Location location) {
+        String fullAddres = "";
+
+        if(location.getStreet() != null) {
+            fullAddres += location.getStreet();
+            fullAddres += location.getPropertyNumber() != null ? (" " + location.getPropertyNumber()) : "";
+            fullAddres += location.getApartmentNumber() != null ? ("/" + location.getApartmentNumber()) : "";
+        }
+        fullAddres += location.getZipCode() != null ? (", " + location.getZipCode()) : "";
+        fullAddres += location.getCity() != null ? (" " + location.getCity()) : "";
+
+        return fullAddres;
     }
 }

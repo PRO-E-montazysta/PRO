@@ -15,9 +15,5 @@ public class WarehouseLocationDto {
     private String name;
     private String description;
     private String openingHours;
-    private String city;
-    private String street;
-    private String propertyNumber;
-    private String apartmentNumber;
-    private String zipCode;
+    private String fullAddress;
 }
