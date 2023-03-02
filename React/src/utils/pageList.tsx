@@ -124,14 +124,14 @@ export const pageList: Array<PageProps> =
                         inNav: true,
                         name: 'Magazyny',
                         path: '/warehouses',
-                        allowedRoles: [Role["*"]],
+                        allowedRoles: [Role.MANAGER, Role.SALES_REPRESENTATIVE, Role.SPECIALIST, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER, Role.FITTER, Role.FOREMAN],
                         component: <Warehouses />
                     },
                     {
                         inNav: false,
                         name: '',
                         path: '/warehouses/:id',
-                        allowedRoles: [Role["*"]],
+                        allowedRoles: [Role.MANAGER, Role.SALES_REPRESENTATIVE, Role.SPECIALIST, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER, Role.FITTER, Role.FOREMAN],
                         component: <WarehouseDetails />
                     },
                     {
