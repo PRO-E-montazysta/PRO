@@ -255,17 +255,17 @@ public class DataSeeding {
                 "em@i.l", company4, new ArrayList<>()));
 
         Location location1 = addLocationFromModel(new Location(null, "Test Location 1", 1.1,
-                1.1, "City", "Street", "Property Number",
-                "Apartment Number", "Zip Code", new ArrayList<>(), new ArrayList<>()));
+                1.1, "Miasto1", "Miła", "1",
+                "1A", "01-123", new ArrayList<>(), new ArrayList<>()));
         Location location2 = addLocationFromModel(new Location(null, "Test Location 2", 1.1,
-                1.1, "City", "Street", "Property Number",
-                "Apartment Number", "Zip Code", new ArrayList<>(), new ArrayList<>()));
+                1.1, "Miasto1", "Miła", "1",
+                "1B", "01-123", new ArrayList<>(), new ArrayList<>()));
         Location location3 = addLocationFromModel(new Location(null, "Test Location 3", 1.1,
-                1.1, "City", "Street", "Property Number",
-                "Apartment Number", "Zip Code", new ArrayList<>(), new ArrayList<>()));
+                1.1, "Miasto2", "Ładna", "1",
+                null, "01-124", new ArrayList<>(), new ArrayList<>()));
         Location location4 = addLocationFromModel(new Location(null, "Test Location 4", 1.1,
-                1.1, "City", "Street", "Property Number",
-                "Apartment Number", "Zip Code", new ArrayList<>(), new ArrayList<>()));
+                1.1, "Miasto3", "Pogodna", "1",
+                null, null, new ArrayList<>(), new ArrayList<>()));
 
         Orders order1 = addOrdersFromModel(new Orders(null, "Test Order 1 - from Client 1",
                 TypeOfStatus.PLANNED, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.IMPORTANT,
@@ -322,14 +322,14 @@ public class DataSeeding {
                 null, new ArrayList<>(), new ArrayList<>(), warehouseManager2, warehouseman2,
                 specialist2, manager2, foreman2, new ArrayList<>()));
 
-        Warehouse warehouse1 = addWarehouseFromModel(new Warehouse(null, "Test Warehouse 1", "Description",
-                "Opening Hours", company1, location1, new ArrayList<>(), new ArrayList<>()));
-        Warehouse warehouse2 = addWarehouseFromModel(new Warehouse(null, "Test Warehouse 2", "Description",
-                "Opening Hours", company1, location2, new ArrayList<>(), new ArrayList<>()));
-        Warehouse warehouse3 = addWarehouseFromModel(new Warehouse(null, "Test Warehouse 3", "Description",
-                "Opening Hours", company1, location3, new ArrayList<>(), new ArrayList<>()));
-        Warehouse warehouse4 = addWarehouseFromModel(new Warehouse(null, "Test Warehouse 4", "Description",
-                "Opening Hours", company2, location4, new ArrayList<>(), new ArrayList<>()));
+        Warehouse warehouse1 = addWarehouseFromModel(new Warehouse(null, "Test Warehouse 1", "Warehouse 1",
+                "8:00 - 16:00", company1, null, new ArrayList<>(), new ArrayList<>()));
+        Warehouse warehouse2 = addWarehouseFromModel(new Warehouse(null, "Test Warehouse 2", "Warehouse 2",
+                "9:00 - 17:00", company1, location2, new ArrayList<>(), new ArrayList<>()));
+        Warehouse warehouse3 = addWarehouseFromModel(new Warehouse(null, "Test Warehouse 3", "Warehouse 3",
+                "8:00 - 10:00", company1, location3, new ArrayList<>(), new ArrayList<>()));
+        Warehouse warehouse4 = addWarehouseFromModel(new Warehouse(null, "Test Warehouse 4", "Warehouse 4",
+                "8:00 - 15:00", company2, location4, new ArrayList<>(), new ArrayList<>()));
 
         ToolType toolType1 = addToolTypeFromModel(new ToolType(null, "Test ToolType 1", 10,
                 5, 10, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
