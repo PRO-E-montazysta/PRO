@@ -44,4 +44,22 @@ public class AttachmentServiceImpl implements AttachmentService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public AttachmentDto update(Long id, AttachmentDto attachmentDto) {
+        Attachment updatedAttachment = attachmentMapper.toEntity(attachmentDto);
+        Attachment attachment = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        attachment.setName(updatedAttachment.getName());
+        attachment.setUrl(updatedAttachment.getUrl());
+        attachment.setDescription(updatedAttachment.getDescription());
+        attachment.setToolType(updatedAttachment.getToolType());
+        attachment.setComment(updatedAttachment.getComment());
+        attachment.setEmployee(updatedAttachment.getEmployee());
+        attachment.setToolEvent(updatedAttachment.getToolEvent());
+        attachment.setOrder(updatedAttachment.getOrder());
+        attachment.setElement(updatedAttachment.getElement());
+        attachment.setOrderStage(updatedAttachment.getOrderStage());
+        attachment.setElementEvent(updatedAttachment.getElementEvent());
+        return attachmentMapper.toDto(repository.save(attachment));
+    }
 }

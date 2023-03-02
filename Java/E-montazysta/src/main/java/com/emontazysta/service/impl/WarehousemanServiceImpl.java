@@ -42,4 +42,27 @@ public class WarehousemanServiceImpl implements WarehousemanService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public WarehousemanDto update(Long id, WarehousemanDto warehousemanDto) {
+        Warehouseman updatedWarehouseman = warehousemanMapper.toEntity(warehousemanDto);
+        Warehouseman warehouseman = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        warehouseman.setFirstName(updatedWarehouseman.getFirstName());
+        warehouseman.setLastName(updatedWarehouseman.getLastName());
+        warehouseman.setEmail(updatedWarehouseman.getEmail());
+        warehouseman.setUsername(updatedWarehouseman.getUsername());
+        warehouseman.setPhone(updatedWarehouseman.getPhone());
+        warehouseman.setPesel(updatedWarehouseman.getPesel());
+        warehouseman.setUnavailabilities(updatedWarehouseman.getUnavailabilities());
+        warehouseman.setNotifications(updatedWarehouseman.getNotifications());
+        warehouseman.setEmployeeComments(updatedWarehouseman.getEmployeeComments());
+        warehouseman.setElementEvents(updatedWarehouseman.getElementEvents());
+        warehouseman.setEmployments(updatedWarehouseman.getEmployments());
+        warehouseman.setAttachments(updatedWarehouseman.getAttachments());
+        warehouseman.setToolEvents(updatedWarehouseman.getToolEvents());
+        warehouseman.setReleasedTools(updatedWarehouseman.getReleasedTools());
+        warehouseman.setElementReturnReleases(updatedWarehouseman.getElementReturnReleases());
+        warehouseman.setDemandAdHocs(updatedWarehouseman.getDemandAdHocs());
+        return warehousemanMapper.toDto(repository.save(warehouseman));
+    }
 }
