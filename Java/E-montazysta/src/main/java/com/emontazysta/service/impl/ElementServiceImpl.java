@@ -3,7 +3,9 @@ package com.emontazysta.service.impl;
 import com.emontazysta.mapper.ElementMapper;
 import com.emontazysta.model.Element;
 import com.emontazysta.model.dto.ElementDto;
+import com.emontazysta.model.searchcriteria.ElementSearchCriteria;
 import com.emontazysta.repository.ElementRepository;
+import com.emontazysta.repository.criteria.ElementCriteriaRepository;
 import com.emontazysta.service.ElementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ public class ElementServiceImpl implements ElementService {
 
     private final ElementRepository repository;
     private final ElementMapper elementMapper;
+    private final ElementCriteriaRepository elementCriteriaRepository;
 
 
     @Override
@@ -69,5 +72,10 @@ public class ElementServiceImpl implements ElementService {
         element.setAttachment(updatedElement.getAttachment());
         element.setOrdersStages(updatedElement.getOrdersStages());
         return elementMapper.toDto(repository.save(element));
+    }
+
+    @Override
+    public List<ElementDto> getFilteredOrders(ElementSearchCriteria elementSearchCriteria) {
+        return elementCriteriaRepository.findAllWithFilters(elementSearchCriteria);
     }
 }

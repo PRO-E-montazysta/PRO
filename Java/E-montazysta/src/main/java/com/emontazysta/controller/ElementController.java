@@ -1,12 +1,14 @@
 package com.emontazysta.controller;
 
 import com.emontazysta.model.dto.ElementDto;
+import com.emontazysta.model.searchcriteria.ElementSearchCriteria;
 import com.emontazysta.service.ElementService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -56,5 +58,11 @@ public class ElementController {
     @Operation(description = "Allows to update Element by given Id and Element.", security = @SecurityRequirement(name = "bearer-key"))
     public ElementDto update(@PathVariable Long id, @Valid @RequestBody ElementDto element) {
         return elementService.update(id, element);
+    }
+
+    @GetMapping("/filter")
+    @Operation(description = "Return filtered Orders by given parameters.", security = @SecurityRequirement(name = "bearer-key"))
+    public ResponseEntity<List<ElementDto>> filterOrders(ElementSearchCriteria elementSearchCriteria){
+        return new ResponseEntity<>(elementService.getFilteredOrders(elementSearchCriteria), HttpStatus.OK);
     }
 }
