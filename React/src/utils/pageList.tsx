@@ -21,6 +21,8 @@ import { Role } from "../types/roleEnum"
 import Error from "../components/error/Error"
 import Orders from "../pages/orders"
 import OrderDetails from "../pages/orders/OrderDetails"
+import ToolTypes from "../pages/toolTypes"
+import ToolTypeDetails from "../pages/toolTypes/ToolTypeDetails"
 
 export type PageProps = {
     name: string
@@ -111,6 +113,20 @@ export const pageList: Array<PageProps> =
                         path: '/home-fitter',
                         allowedRoles: [Role.FITTER],
                         component: <HomePageFitter />
+                    },
+                    {
+                        inNav: true,
+                        name: 'Typy narzędzi',
+                        path: '/tooltypes',
+                        allowedRoles: [Role.WAREHOUSE_MANAGER],
+                        component: <ToolTypes />
+                    },
+                    {
+                        inNav: false,
+                        name: '',
+                        path: '/tooltypes/:id',
+                        allowedRoles: [Role.WAREHOUSE_MANAGER],
+                        component: <ToolTypeDetails />
                     },
                     {
                         inNav: true,
