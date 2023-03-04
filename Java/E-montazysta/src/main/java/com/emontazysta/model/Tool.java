@@ -48,4 +48,16 @@ public class Tool {
     @ManyToOne
     private ToolType toolType;
 
+
+    public boolean isAvailable() {
+        if(toolReleases.size() > 0) {
+            if(toolReleases.get(toolReleases.size() - 1).getReturnTime() == null)
+                return false;
+        }
+        if(toolEvents.size() > 0) {
+            if(toolEvents.get(toolEvents.size() - 1).getCompletionDate() == null)
+                return false;
+        }
+        return true;
+    }
 }
