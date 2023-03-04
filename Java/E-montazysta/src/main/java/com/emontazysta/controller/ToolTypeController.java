@@ -2,12 +2,14 @@ package com.emontazysta.controller;
 
 
 import com.emontazysta.model.dto.ToolTypeDto;
+import com.emontazysta.model.searchcriteria.ToolTypeSearchCriteria;
 import com.emontazysta.service.ToolTypeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,4 +47,9 @@ public class ToolTypeController {
     public void deleteToolTypeById(@PathVariable Long id) {
         toolTypeService.delete(id);
     }
+
+    @GetMapping("/filter")
+    @Operation(description = "Allows to get filtered tooltypes.", security = @SecurityRequirement(name = "bearer-key"))
+    public ResponseEntity<List<ToolTypeDto>> getfilteredTools(ToolTypeSearchCriteria toolTypeSearchCriteria){
+        return new ResponseEntity<>(toolTypeService.findAllWithFilters(toolTypeSearchCriteria),HttpStatus.OK);}
 }
