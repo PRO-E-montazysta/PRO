@@ -1,5 +1,6 @@
 package com.emontazysta.model;
 
+import com.emontazysta.enums.ToolStatus;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
@@ -49,15 +50,15 @@ public class Tool {
     private ToolType toolType;
 
 
-    public boolean isAvailable() {
+    public ToolStatus getStatus() {
         if(toolReleases.size() > 0) {
             if(toolReleases.get(toolReleases.size() - 1).getReturnTime() == null)
-                return false;
+                return ToolStatus.RELEASED;
         }
         if(toolEvents.size() > 0) {
             if(toolEvents.get(toolEvents.size() - 1).getCompletionDate() == null)
-                return false;
+                return ToolStatus.IN_REPAIR;
         }
-        return true;
+        return ToolStatus.AVAILABLE;
     }
 }

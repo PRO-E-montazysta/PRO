@@ -1,5 +1,6 @@
 package com.emontazysta.mapper;
 
+import com.emontazysta.enums.ToolStatus;
 import com.emontazysta.model.Attachment;
 import com.emontazysta.model.OrderStage;
 import com.emontazysta.model.Tool;
@@ -27,7 +28,7 @@ public class ToolTypeMapper {
     public ToolTypeDto toDto(ToolType toolType){
         AtomicInteger availableCount = new AtomicInteger();
         toolType.getTools().forEach(tool -> {
-            if(tool.isAvailable())
+            if(tool.getStatus().equals(ToolStatus.AVAILABLE))
                 availableCount.addAndGet(1);
         });
 
