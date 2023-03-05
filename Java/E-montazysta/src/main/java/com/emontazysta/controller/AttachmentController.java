@@ -46,4 +46,10 @@ public class AttachmentController {
     public void deleteById(@PathVariable Long id) {
         attachmentService.delete(id);
     }
+
+    @PutMapping("/{id}")
+    @Operation(description = "Allows to update Attachment by given Id.", security = @SecurityRequirement(name = "bearer-key"))
+    public AttachmentDto update(@PathVariable Long id, @Valid @RequestBody AttachmentDto attachmentDto) {
+        return attachmentService.update(id, attachmentDto);
+    }
 }

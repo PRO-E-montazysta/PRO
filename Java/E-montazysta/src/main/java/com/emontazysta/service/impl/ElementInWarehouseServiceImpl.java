@@ -42,4 +42,17 @@ public class ElementInWarehouseServiceImpl implements ElementInWarehouseService 
     public void delete(Long id) {
         elementInWarehouseRepository.deleteById(id);
     }
+
+    @Override
+    public ElementInWarehouseDto update(Long id, ElementInWarehouseDto elementInWarehouseDto) {
+        ElementInWarehouse updatedElementInWarehouse = elementInWarehouseMapper.toEntity(elementInWarehouseDto);
+        ElementInWarehouse elementInWarehouse = elementInWarehouseRepository.findById(id).orElseThrow(() -> new RuntimeException("Element with id " + id + " not found in warehouse!"));
+        elementInWarehouse.setInWarehouseCount(updatedElementInWarehouse.getInWarehouseCount());
+        elementInWarehouse.setInUnitCount(updatedElementInWarehouse.getInUnitCount());
+        elementInWarehouse.setRack(updatedElementInWarehouse.getRack());
+        elementInWarehouse.setShelf(updatedElementInWarehouse.getShelf());
+        elementInWarehouse.setElement(updatedElementInWarehouse.getElement());
+        elementInWarehouse.setWarehouse(updatedElementInWarehouse.getWarehouse());
+        return elementInWarehouseMapper.toDto(elementInWarehouseRepository.save(elementInWarehouse));
+    }
 }

@@ -48,8 +48,16 @@ public class ToolTypeController {
         toolTypeService.delete(id);
     }
 
+
     @GetMapping("/filter")
     @Operation(description = "Allows to get filtered tooltypes.", security = @SecurityRequirement(name = "bearer-key"))
     public ResponseEntity<List<ToolTypeDto>> getfilteredTools(ToolTypeSearchCriteria toolTypeSearchCriteria){
         return new ResponseEntity<>(toolTypeService.findAllWithFilters(toolTypeSearchCriteria),HttpStatus.OK);}
+
+    @PutMapping("/{id}")
+    @Operation(description = "Allows to delete tool type by given Id.", security = @SecurityRequirement(name = "bearer-key"))
+    public ToolTypeDto updateToolType(@PathVariable Long id, @RequestBody ToolTypeDto toolType) {
+        return toolTypeService.update(id, toolType);
+    }
+
 }

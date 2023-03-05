@@ -42,4 +42,28 @@ public class SpecialistServiceImpl implements SpecialistService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public SpecialistDto update(Long id, SpecialistDto specialistDto) {
+        Specialist updatedSpecialist = specialistMapper.toEntity(specialistDto);
+        Specialist specialist = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        specialist.setFirstName(updatedSpecialist.getFirstName());
+        specialist.setLastName(updatedSpecialist.getLastName());
+        specialist.setEmail(updatedSpecialist.getEmail());
+        specialist.setUsername(updatedSpecialist.getUsername());
+        specialist.setPhone(updatedSpecialist.getPhone());
+        specialist.setPesel(updatedSpecialist.getPesel());
+        specialist.setUnavailabilities(updatedSpecialist.getUnavailabilities());
+        specialist.setNotifications(updatedSpecialist.getNotifications());
+        specialist.setEmployeeComments(updatedSpecialist.getEmployeeComments());
+        specialist.setElementEvents(updatedSpecialist.getElementEvents());
+        specialist.setEmployments(updatedSpecialist.getEmployments());
+        specialist.setAttachments(updatedSpecialist.getAttachments());
+        specialist.setToolEvents(updatedSpecialist.getToolEvents());
+        specialist.setOrders(updatedSpecialist.getOrders());
+        specialist.setDemandAdHocs(updatedSpecialist.getDemandAdHocs());
+        specialist.setOrders(updatedSpecialist.getOrders());
+        specialist.setDemandAdHocs(updatedSpecialist.getDemandAdHocs());
+        return specialistMapper.toDto(repository.save(specialist));
+    }
 }

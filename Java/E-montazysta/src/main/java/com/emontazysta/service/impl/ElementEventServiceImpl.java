@@ -42,4 +42,21 @@ public class ElementEventServiceImpl implements ElementEventService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public ElementEventDto update(Long id, ElementEventDto event) {
+        ElementEvent updatedElementEvent = elementEventMapper.toEntity(event);
+        ElementEvent elementEvent = repository.findById(id).orElseThrow( () -> new RuntimeException("Element Event with id " + id +" not found"));
+        elementEvent.setEventDate(updatedElementEvent.getEventDate());
+        elementEvent.setMovingDate(updatedElementEvent.getMovingDate());
+        elementEvent.setCompletionDate(updatedElementEvent.getCompletionDate());
+        elementEvent.setDescription(updatedElementEvent.getDescription());
+        elementEvent.setStatus(updatedElementEvent.getStatus());
+        elementEvent.setQuantity(updatedElementEvent.getQuantity());
+        elementEvent.setAcceptedBy(updatedElementEvent.getAcceptedBy());
+        elementEvent.setUpdatedBy(updatedElementEvent.getUpdatedBy());
+        elementEvent.setElement(updatedElementEvent.getElement());
+        elementEvent.setAttachments(elementEvent.getAttachments());
+        return elementEventMapper.toDto(repository.save(elementEvent));
+    }
 }

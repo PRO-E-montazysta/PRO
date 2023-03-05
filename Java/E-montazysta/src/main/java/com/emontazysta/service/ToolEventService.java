@@ -10,4 +10,5 @@ public interface ToolEventService {
     ToolEventDto getById(Long id);
     ToolEventDto add(ToolEventDto event);
     void delete(Long id);
+    ToolEventDto update(Long id, ToolEventDto event);
 }

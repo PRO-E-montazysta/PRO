@@ -12,4 +12,6 @@ public interface ToolTypeService {
     ToolTypeDto add(ToolTypeDto toolType);
     void delete(Long id);
     List <ToolTypeDto> findAllWithFilters(ToolTypeSearchCriteria toolTypeSearchCriteria);
+    ToolTypeDto update(Long id, ToolTypeDto toolType);
+
 }
