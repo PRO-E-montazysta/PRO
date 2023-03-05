@@ -1,12 +1,17 @@
 package com.emontazysta.controller;
 
 import com.emontazysta.model.dto.ToolDto;
+import com.emontazysta.model.dto.filterDto.ToolFilterDto;
+import com.emontazysta.model.searchcriteria.ToolReleaseSearchCriteria;
+import com.emontazysta.model.searchcriteria.ToolSearchCriteria;
 import com.emontazysta.service.ToolService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -57,4 +62,18 @@ public class ToolController {
     public ToolDto update(@PathVariable Long id, @Valid @RequestBody ToolDto tool) {
         return toolService.update(id, tool);
     }
+
+    @GetMapping("/filter")
+    @Operation(description = "Allows to get filtered tools data.", security = @SecurityRequirement(name = "bearer-key"))
+    public ResponseEntity<List<ToolFilterDto>> getfilteredTools(ToolSearchCriteria toolSearchCriteria){
+        return new ResponseEntity<>(toolService.getTools(toolSearchCriteria),HttpStatus.OK);
+    }
+
+    @GetMapping("/tools-from-warehouse/{id}")
+    @Operation(description = "Allows to get filtered tools data.", security = @SecurityRequirement(name = "bearer-key"))
+    public ResponseEntity<List<ToolFilterDto>> getfilteredToolsFromWarehouse(@PathVariable Long id, ToolSearchCriteria toolSearchCriteria){
+        toolSearchCriteria.setWarehouse_Id(id);
+        return new ResponseEntity<>(toolService.getTools(toolSearchCriteria),HttpStatus.OK);
+    }
+
 }
