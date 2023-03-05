@@ -42,4 +42,29 @@ public class ForemanServiceImpl implements ForemanService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public ForemanDto update(Long id, ForemanDto foremanDto) {
+        Foreman updatedForeman = foremanMapper.toEntity(foremanDto);
+        Foreman foreman = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        foreman.setFirstName(updatedForeman.getFirstName());
+        foreman.setLastName(updatedForeman.getLastName());
+        foreman.setUsername(updatedForeman.getUsername());
+        foreman.setEmail(updatedForeman.getEmail());
+        foreman.setPhone(updatedForeman.getPhone());
+        foreman.setPesel(updatedForeman.getPesel());
+        foreman.setUnavailabilities(updatedForeman.getUnavailabilities());
+        foreman.setNotifications(updatedForeman.getNotifications());
+        foreman.setEmployeeComments(updatedForeman.getEmployeeComments());
+        foreman.setElementEvents(updatedForeman.getElementEvents());
+        foreman.setEmployments(updatedForeman.getEmployments());
+        foreman.setAttachments(updatedForeman.getAttachments());
+        foreman.setToolEvents(updatedForeman.getToolEvents());
+        foreman.setOrdersStagesList(updatedForeman.getOrdersStagesList());
+        foreman.setReceivedTools(updatedForeman.getReceivedTools());
+        foreman.setAssignedOrders(updatedForeman.getAssignedOrders());
+        foreman.setElementReturnReleases(updatedForeman.getElementReturnReleases());
+        foreman.setDemandsAdHocs(updatedForeman.getDemandsAdHocs());
+        return foremanMapper.toDto(repository.save(foreman));
+    }
 }

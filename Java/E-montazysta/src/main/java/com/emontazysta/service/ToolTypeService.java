@@ -10,4 +10,5 @@ public interface ToolTypeService {
     ToolTypeDto getById(Long id);
     ToolTypeDto add(ToolTypeDto toolType);
     void delete(Long id);
+    ToolTypeDto update(Long id, ToolTypeDto toolType);
 }

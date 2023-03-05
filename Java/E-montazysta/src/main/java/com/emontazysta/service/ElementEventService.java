@@ -10,4 +10,5 @@ public interface ElementEventService {
     ElementEventDto getById(Long id);
     ElementEventDto add(ElementEventDto event);
     void delete(Long id);
+    ElementEventDto update(Long id, ElementEventDto event);
 }
