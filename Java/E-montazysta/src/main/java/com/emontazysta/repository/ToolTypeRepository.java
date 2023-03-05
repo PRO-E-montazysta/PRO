@@ -7,6 +7,4 @@ import java.util.Optional;
 
 public interface ToolTypeRepository extends JpaRepository<ToolType, Long> {
     Optional<ToolType> findById(Long id);
-
-
 }

@@ -39,8 +39,6 @@ public class ToolCriteriaRepository {
         return toolList.stream().map(toolFilterMapper::toDto).collect(Collectors.toList());
     }
 
-
-
     private Predicate getPredicate(ToolSearchCriteria toolSearchCriteria, Root<Tool> toolRoot) {
         List<Predicate> predicates = new ArrayList<>();
 

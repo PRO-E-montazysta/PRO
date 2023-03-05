@@ -1,8 +1,8 @@
 package com.emontazysta.configuration;
 
 import com.emontazysta.enums.Role;
-import com.emontazysta.model.*;
-import com.emontazysta.service.*;
+import com.emontazysta.model.AppUser;
+import com.emontazysta.service.AppUserService;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -31,11 +31,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.annotation.PostConstruct;
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 
@@ -49,10 +45,6 @@ public class SecurityConfig {
             // -- swagger ui"
             "/v3/**", "/swagger-ui", "/swagger-ui.html", "/swagger-ui/**"};
     private final AppUserService appuserDetailsService;
-    private final ToolService toolService;
-    private final ToolTypeService toolTypeService;
-    private final WarehouseService warehouseService;
-    private final ToolReleaseService toolReleaseService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final SecurityProperties securityProperties;
 
