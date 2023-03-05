@@ -50,14 +50,13 @@ public class ToolTypeServiceImpl implements ToolTypeService {
 
     public List<ToolTypeDto> findAllWithFilters(ToolTypeSearchCriteria toolTypeSearchCriteria) {
         return toolTypeCriteriaRepository.findAllWithFilters(toolTypeSearchCriteria);
+    }
 
     public ToolTypeDto update(Long id, ToolTypeDto toolTypeDto) {
         ToolType updatedToolType = toolTypeMapper.toEntity(toolTypeDto);
         ToolType toolType = repository.findById(id).orElseThrow(() -> new RuntimeException("Tool type with id " + id + " not found!"));
         toolType.setName(updatedToolType.getName());
-        toolType.setInServiceCount(updatedToolType.getInServiceCount());
         toolType.setCriticalNumber(updatedToolType.getCriticalNumber());
-        toolType.setAvailableCount(updatedToolType.getAvailableCount());
         toolType.setAttachments(updatedToolType.getAttachments());
         toolType.setOrderStages(updatedToolType.getOrderStages());
         toolType.setTools(updatedToolType.getTools());
