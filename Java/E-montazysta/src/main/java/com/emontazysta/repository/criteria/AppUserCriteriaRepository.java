@@ -1,9 +1,8 @@
 package com.emontazysta.repository.criteria;
 
 import com.emontazysta.enums.Role;
-import com.emontazysta.mapper.EployeeMapper;
+import com.emontazysta.mapper.EmployeeMapper;
 import com.emontazysta.model.AppUser;
-import com.emontazysta.model.Employee;
 import com.emontazysta.model.Unavailability;
 import com.emontazysta.model.dto.EmployeeDto;
 import com.emontazysta.model.searchcriteria.AppUserSearchCriteria;
@@ -28,12 +27,12 @@ public class AppUserCriteriaRepository {
 
     private final EntityManager entityManager;
     private final CriteriaBuilder criteriaBuilder;
-    private final EployeeMapper employeeMapper;
+    private final EmployeeMapper employeeMapper;
     private final UnavailabilityRepository unavailabilityRepository;
     private final AppUserRepository usersRepository;
 
 
-    public AppUserCriteriaRepository(EntityManager entityManager, EployeeMapper employeeMapper, UnavailabilityRepository unavailabilityRepository, AppUserRepository usersRepository) {
+    public AppUserCriteriaRepository(EntityManager entityManager, EmployeeMapper employeeMapper, UnavailabilityRepository unavailabilityRepository, AppUserRepository usersRepository) {
         this.entityManager = entityManager;
         this.criteriaBuilder = entityManager.getCriteriaBuilder();
         this.employeeMapper = employeeMapper;
@@ -52,7 +51,7 @@ public class AppUserCriteriaRepository {
         TypedQuery<AppUser> typedQuery = entityManager.createQuery(criteriaQuery);
         List<AppUser> orders = typedQuery.getResultList();
 
-        return orders.stream().map(employeeMapper::employeeToDto).collect(Collectors.toList());
+        return orders.stream().map(employeeMapper::toDto).collect(Collectors.toList());
     }
 
     private Predicate getPredicate(AppUserSearchCriteria appUserSearchCriteria, Root<AppUser> appUserRoot) {
