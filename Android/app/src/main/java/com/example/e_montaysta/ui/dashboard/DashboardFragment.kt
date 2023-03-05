@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.e_montaysta.R
 import com.example.e_montaysta.databinding.FragmentDashboardBinding
 
 class DashboardFragment : Fragment() {
@@ -28,9 +30,9 @@ class DashboardFragment : Fragment() {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textDashboard
+        val scrollView: ScrollView = binding.textDashboard // Replace textView with scrollView
         dashboardViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+            scrollView.getChildAt(0).findViewById<TextView>(R.id.text_dashboard).text = it // Set text of ScrollView
         }
         return root
     }

@@ -6,53 +6,47 @@
     android:id="@+id/splash_screen"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/background"
     android:elevation="4dp"
     tools:context=".MainActivity">
+
     <LinearLayout
+        style="@style/backdrop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
         android:layout_marginBottom="0dp"
-        android:background="@drawable/backdrop"
+        android:elevation="4dp"
         android:orientation="vertical"
-        android:padding="30dp"
-        android:elevation="4dp">
+        android:padding="30dp">
 
         <ImageView
             android:layout_width="74dp"
             android:layout_height="74dp"
             android:layout_gravity="center"
-            android:contentDescription="@string/logo_desc"
-            android:src="@drawable/logo"
             android:layout_marginBottom="20dp"
-            />
+            android:contentDescription="@string/logo_desc"
+            android:src="@drawable/logo" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="20dp"
-            android:text="@string/app_description_header"
-            />
+            android:text="@string/app_description_header" />
 
         <TextView
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="20dp"
-            android:text="@string/app_description"
-            />
+            android:text="@string/app_description" />
 
         <Button
+            android:id="@+id/button_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/start_button"
             android:layout_gravity="center"
-            android:background="@drawable/button"
-            android:textColor="@color/textprimary"
-            style="@style/button"
-            />
+            android:text="@string/start_button" />
     </LinearLayout>
 </RelativeLayout>

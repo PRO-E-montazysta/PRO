@@ -32,8 +32,8 @@
     <color name="md_theme_light_outlineVariant">#C4C6D0</color>
     <color name="md_theme_light_scrim">#000000</color>
     <color name="md_theme_dark_primary">#ADC6FF</color>
-    <color name="md_theme_dark_onPrimary">#002E69</color>
-    <color name="md_theme_dark_primaryContainer">#004494</color>
+    <color name="md_theme_dark_onPrimary">#FFFFFF</color>
+    <color name="md_theme_dark_primaryContainer">#1A1C26</color>
     <color name="md_theme_dark_onPrimaryContainer">#D8E2FF</color>
     <color name="md_theme_dark_secondary">#BFC6DC</color>
     <color name="md_theme_dark_onSecondary">#293041</color>
