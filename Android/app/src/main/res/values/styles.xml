@@ -2,24 +2,20 @@
 <resources>
     <style name="PrimaryText" parent="@android:style/Widget.TextView">
         <item name="android:textSize">@dimen/text_size_primary</item>
-        <item name="android:textColor">@color/textprimary</item>
         <item name="android:textStyle">normal</item>
         <item name="android:fontFamily">Arial</item>
     </style>
     <style name="SecondaryText" parent="@android:style/Widget.TextView">
         <item name="android:textSize">@dimen/text_size_secondary</item>
-        <item name="android:textColor">@color/textsecondary</item>
         <item name="android:textStyle">normal</item>
         <item name="android:fontFamily">Arial</item>
     </style>
-    <style name="button" >
+    <style name="button" parent="@style/Widget.AppCompat.Button.Borderless">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:minHeight">48dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
-        <item name="android:textColor">@color/textprimary</item>
-        <item name="android:background">@drawable/button</item>
     </style>
     <style name="text_field">
         <item name="android:minHeight">48dp</item>
@@ -39,5 +35,8 @@
         <item name="android:paddingRight">16dp</item>
         <item name="android:paddingLeft">16dp</item>
         <item name="cardCornerRadius">12dp</item>
+    </style>
+    <style name="backdrop" >
+        <item name="android:background">@color/md_theme_dark_primaryContainer</item>
     </style>
 </resources>
