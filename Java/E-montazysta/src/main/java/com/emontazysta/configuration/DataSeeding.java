@@ -331,14 +331,14 @@ public class DataSeeding {
         Warehouse warehouse4 = addWarehouseFromModel(new Warehouse(null, "Test Warehouse 4", "Warehouse 4",
                 "8:00 - 15:00", company2, location4, new ArrayList<>(), new ArrayList<>()));
 
-        ToolType toolType1 = addToolTypeFromModel(new ToolType(null, "Test ToolType 1", 10,
-                5, 10, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
-        ToolType toolType2 = addToolTypeFromModel(new ToolType(null, "Test ToolType 2", 10,
-                5, 7, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
-        ToolType toolType3 = addToolTypeFromModel(new ToolType(null, "Test ToolType 3", 10,
-                5, 5, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
-        ToolType toolType4 = addToolTypeFromModel(new ToolType(null, "Test ToolType 4", 10,
-                5, 3, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        ToolType toolType1 = addToolTypeFromModel(new ToolType(null, "Test ToolType 1",
+                5, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        ToolType toolType2 = addToolTypeFromModel(new ToolType(null, "Test ToolType 2",
+                5, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        ToolType toolType3 = addToolTypeFromModel(new ToolType(null, "Test ToolType 3",
+                5, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        ToolType toolType4 = addToolTypeFromModel(new ToolType(null, "Test ToolType 4",
+                5, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
         Tool tool1 = addToolFromModel(new Tool(null, "Test Tool 1", null, null, new ArrayList<>(),
                 warehouse1, new ArrayList<>(), toolType1));

@@ -25,13 +25,7 @@ public class ToolType {
 
     private String name;
 
-    @NotNull
-    private int inServiceCount;
-
     private int criticalNumber;
-
-    @NotNull
-    private int availableCount;
 
     @OneToMany(mappedBy = "toolType")
     private List<Attachment> attachments;
