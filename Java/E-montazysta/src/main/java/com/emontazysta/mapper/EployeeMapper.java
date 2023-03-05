@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class EployeeMapper {
+public class EmployeeMapper {
 
     private final UnavailabilityRepository unavailabilityRepository;
 
