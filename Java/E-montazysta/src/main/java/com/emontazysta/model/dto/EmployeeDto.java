@@ -1,7 +1,6 @@
 package com.emontazysta.model.dto;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
@@ -25,4 +24,5 @@ public class EmployeeDto extends AppUserDto {
     private List<Long> employments;
     private List<Long> attachments;
     private List<Long> toolEvents;
+    private String status;
 }
