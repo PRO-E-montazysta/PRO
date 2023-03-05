@@ -2,7 +2,6 @@ package com.emontazysta.service.impl;
 
 import com.emontazysta.enums.Role;
 import com.emontazysta.model.AppUser;
-import com.emontazysta.model.dto.AppUserDto;
 import com.emontazysta.model.dto.EmployeeDto;
 import com.emontazysta.model.searchcriteria.AppUserSearchCriteria;
 import com.emontazysta.repository.AppUserRepository;

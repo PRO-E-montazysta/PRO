@@ -82,4 +82,8 @@ public class AppUser implements UserDetails {
     public List<Attachment> getAttachments() {
         return null;
     }
+
+    public List<Employment> getEmployments(){
+        return null;
+    }
 }
