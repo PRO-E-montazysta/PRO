@@ -241,9 +241,9 @@ public class DataSeeding {
         Employment employment14 = new Employment(null, LocalDate.now(), null, company1, manager2);
 
         Unavailability unavailability1 = addUnavailabilityFromModel(new Unavailability(null,
-                TypeOfUnavailability.TYPE1, "Test Unavailability 1", LocalDate.now(), LocalDate.now(), fitter1, manager1));
+                TypeOfUnavailability.TYPE1, "Test Unavailability 1", LocalDateTime.parse( "2023-03-05T12:00:00.000"), LocalDateTime.parse("2023-03-05T16:00:00.000"), fitter1, manager1));
         Unavailability unavailability2 = addUnavailabilityFromModel(new Unavailability(null,
-                TypeOfUnavailability.TYPE1,"Test Unavailability 2", LocalDate.now(), LocalDate.now(), fitter2, manager1));
+                TypeOfUnavailability.TYPE1,"Test Unavailability 2",LocalDateTime.parse( "2023-03-05T12:00:00.000"),LocalDateTime.parse("2023-03-05T16:00:00.000"), fitter2, manager1));
 
         Client client1 = addClientFromModel(new Client(null, "Test Client 1 - from Company 1",
                 "em@i.l", company1, new ArrayList<>()));

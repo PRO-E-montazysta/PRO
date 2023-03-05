@@ -3,6 +3,7 @@ package com.emontazysta.controller;
 import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.UserMapper;
 import com.emontazysta.model.dto.AppUserDto;
+import com.emontazysta.model.dto.EmployeeDto;
 import com.emontazysta.model.searchcriteria.AppUserSearchCriteria;
 import com.emontazysta.service.AppUserService;
 import com.emontazysta.service.RoleService;
@@ -116,7 +117,7 @@ public class AppUserController {
 
     @GetMapping("/filter")
     @Operation(description = "Return filtered Users by given parameters.", security = @SecurityRequirement(name = "bearer-key"))
-    public ResponseEntity<List<AppUserDto>> filterUsers(AppUserSearchCriteria appUserSearchCriteria){
+    public ResponseEntity<List<EmployeeDto>> filterUsers(AppUserSearchCriteria appUserSearchCriteria){
         return new ResponseEntity<>(userService.getFilteredUsers(appUserSearchCriteria), HttpStatus.OK);
     }
 

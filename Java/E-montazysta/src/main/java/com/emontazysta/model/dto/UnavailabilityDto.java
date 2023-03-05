@@ -5,8 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -17,8 +16,8 @@ public class UnavailabilityDto {
     private Long id;
     private TypeOfUnavailability typeOfUnavailability;
     private String description;
-    private LocalDate unavailableFrom;
-    private LocalDate unavailableTo;
+    private LocalDateTime unavailableFrom;
+    private LocalDateTime unavailableTo;
     private Long assignedToId;
     private Long assignedById;
 }

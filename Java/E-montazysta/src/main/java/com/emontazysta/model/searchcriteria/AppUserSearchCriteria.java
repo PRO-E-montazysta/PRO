@@ -6,7 +6,7 @@ import lombok.Data;
 public class AppUserSearchCriteria {
 
     private String id;
-    private String firstname;
+    private String firstName;
     private String lastName;
     private String availableFrom;
     private String availableTo;

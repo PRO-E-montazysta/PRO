@@ -8,8 +8,7 @@ import java.util.List;
 
 @Data
 @SuperBuilder
-@NoArgsConstructor
-public class EmployeeDto {
+public class EmployeeDto extends AppUserDto {
 
     private Long id;
     private String firstName;

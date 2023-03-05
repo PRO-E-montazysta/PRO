@@ -3,6 +3,7 @@ package com.emontazysta.service;
 import com.emontazysta.enums.Role;
 import com.emontazysta.model.AppUser;
 import com.emontazysta.model.dto.AppUserDto;
+import com.emontazysta.model.dto.EmployeeDto;
 import com.emontazysta.model.searchcriteria.AppUserSearchCriteria;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -22,5 +23,5 @@ public interface AppUserService extends UserDetailsService {
 
     AppUser update(Long id, AppUser user);
 
-    List <AppUserDto> getFilteredUsers(AppUserSearchCriteria appUserSearchCriteria);
+    List <EmployeeDto> getFilteredUsers(AppUserSearchCriteria appUserSearchCriteria);
 }

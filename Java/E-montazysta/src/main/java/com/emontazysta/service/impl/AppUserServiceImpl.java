@@ -3,6 +3,7 @@ package com.emontazysta.service.impl;
 import com.emontazysta.enums.Role;
 import com.emontazysta.model.AppUser;
 import com.emontazysta.model.dto.AppUserDto;
+import com.emontazysta.model.dto.EmployeeDto;
 import com.emontazysta.model.searchcriteria.AppUserSearchCriteria;
 import com.emontazysta.repository.AppUserRepository;
 import com.emontazysta.repository.criteria.AppUserCriteriaRepository;
@@ -123,7 +124,7 @@ public class AppUserServiceImpl  implements AppUserService {
     }
 
     @Override
-    public List <AppUserDto> getFilteredUsers(AppUserSearchCriteria appUserSearchCriteria){
+    public List <EmployeeDto> getFilteredUsers(AppUserSearchCriteria appUserSearchCriteria){
     return appUserCriteriaRepository.findAllWithFilters(appUserSearchCriteria);
     }
 }

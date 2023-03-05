@@ -1,10 +1,13 @@
 package com.emontazysta.repository.criteria;
 
-import com.emontazysta.mapper.UserMapper;
+import com.emontazysta.enums.Role;
+import com.emontazysta.mapper.EployeeMapper;
 import com.emontazysta.model.AppUser;
+import com.emontazysta.model.Employee;
 import com.emontazysta.model.Unavailability;
-import com.emontazysta.model.dto.AppUserDto;
+import com.emontazysta.model.dto.EmployeeDto;
 import com.emontazysta.model.searchcriteria.AppUserSearchCriteria;
+import com.emontazysta.repository.AppUserRepository;
 import com.emontazysta.repository.UnavailabilityRepository;
 import org.springframework.stereotype.Repository;
 
@@ -25,19 +28,20 @@ public class AppUserCriteriaRepository {
 
     private final EntityManager entityManager;
     private final CriteriaBuilder criteriaBuilder;
-    private final UserMapper userMapper;
-
+    private final EployeeMapper employeeMapper;
     private final UnavailabilityRepository unavailabilityRepository;
+    private final AppUserRepository usersRepository;
 
 
-    public AppUserCriteriaRepository(EntityManager entityManager, UserMapper userMapper, UnavailabilityRepository unavailabilityRepository) {
+    public AppUserCriteriaRepository(EntityManager entityManager, EployeeMapper employeeMapper, UnavailabilityRepository unavailabilityRepository, AppUserRepository usersRepository) {
         this.entityManager = entityManager;
         this.criteriaBuilder = entityManager.getCriteriaBuilder();
-        this.userMapper = userMapper;
+        this.employeeMapper = employeeMapper;
         this.unavailabilityRepository = unavailabilityRepository;
+        this.usersRepository = usersRepository;
     }
 
-    public List<AppUserDto> findAllWithFilters(AppUserSearchCriteria appUserSearchCriteria) {
+    public List<EmployeeDto> findAllWithFilters(AppUserSearchCriteria appUserSearchCriteria) {
 
         CriteriaQuery<AppUser> criteriaQuery = criteriaBuilder.createQuery(AppUser.class);
         Root<AppUser> appUserRoot = criteriaQuery.from(AppUser.class);
@@ -48,15 +52,15 @@ public class AppUserCriteriaRepository {
         TypedQuery<AppUser> typedQuery = entityManager.createQuery(criteriaQuery);
         List<AppUser> orders = typedQuery.getResultList();
 
-        return orders.stream().map(userMapper::toDto).collect(Collectors.toList());
+        return orders.stream().map(employeeMapper::employeeToDto).collect(Collectors.toList());
     }
 
     private Predicate getPredicate(AppUserSearchCriteria appUserSearchCriteria, Root<AppUser> appUserRoot) {
         List<Predicate> predicates = new ArrayList<>();
 
-        if(Objects.nonNull(appUserSearchCriteria.getFirstname())){
+        if(Objects.nonNull(appUserSearchCriteria.getFirstName())){
             predicates.add(criteriaBuilder.like(appUserRoot.get("firstName"),
-                    "%" + appUserSearchCriteria.getFirstname() + "%"));
+                    "%" + appUserSearchCriteria.getFirstName() + "%"));
         }
 
         if(Objects.nonNull(appUserSearchCriteria.getLastName())){
@@ -69,25 +73,33 @@ public class AppUserCriteriaRepository {
         }
 
         if(Objects.nonNull(appUserSearchCriteria.getAvailableFrom()) && Objects.nonNull(appUserSearchCriteria.getAvailableTo())){
-            List <Long> avaibleUsers = new ArrayList<>();
-            List <Unavailability> unavailabilities = new ArrayList();
-            unavailabilities = unavailabilityRepository.findAll();
-            if(unavailabilities != null && !unavailabilities.isEmpty()){
-                for (Unavailability unavailability: unavailabilities) {
-                    if(!((LocalDateTime.parse(appUserSearchCriteria.getAvailableFrom()).isAfter(unavailability.getUnavailableFrom()) &&
-                            LocalDateTime.parse(appUserSearchCriteria.getAvailableFrom()).isBefore(unavailability.getUnavailableTo())) ||
-                            (LocalDateTime.parse(appUserSearchCriteria.getAvailableTo()).isAfter(unavailability.getUnavailableFrom()) &&
-                             LocalDateTime.parse(appUserSearchCriteria.getAvailableTo()).isBefore(unavailability.getUnavailableTo())) ||
-                            (unavailability.getUnavailableFrom().isAfter(LocalDateTime.parse(appUserSearchCriteria.getAvailableFrom())) &&
-                             unavailability.getUnavailableFrom().isBefore(LocalDateTime.parse(appUserSearchCriteria.getAvailableTo()))) ||
-                            (unavailability.getUnavailableTo().isAfter(LocalDateTime.parse(appUserSearchCriteria.getAvailableFrom())) &&
-                            unavailability.getUnavailableTo().isBefore(LocalDateTime.parse(appUserSearchCriteria.getAvailableTo()))))){
-                                 avaibleUsers.add(unavailability.getAssignedTo().getId());
-                    }
+            predicates.add(appUserRoot.get("id").in(findAvaibleUsers(appUserSearchCriteria)));
+        }
+
+        return  criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+    }
+
+    private List<Long> findAvaibleUsers(AppUserSearchCriteria appUserSearchCriteria) {
+        List <Long> avaibleEmployees = usersRepository.findAllByRolesNotContaining(Role.CLOUD_ADMIN)
+                .stream()
+                .map(appUser -> appUser.getId())
+                .collect(Collectors.toList());
+
+        List <Unavailability> unavailabilities = unavailabilityRepository.findAll();
+        if(unavailabilities != null && !unavailabilities.isEmpty()){
+            for (Unavailability unavailability: unavailabilities) {
+                if((LocalDateTime.parse(appUserSearchCriteria.getAvailableFrom()).isAfter(unavailability.getUnavailableFrom()) &&
+                        LocalDateTime.parse(appUserSearchCriteria.getAvailableFrom()).isBefore(unavailability.getUnavailableTo())) ||
+                        (LocalDateTime.parse(appUserSearchCriteria.getAvailableTo()).isAfter(unavailability.getUnavailableFrom()) &&
+                         LocalDateTime.parse(appUserSearchCriteria.getAvailableTo()).isBefore(unavailability.getUnavailableTo())) ||
+                        (unavailability.getUnavailableFrom().isAfter(LocalDateTime.parse(appUserSearchCriteria.getAvailableFrom())) &&
+                         unavailability.getUnavailableFrom().isBefore(LocalDateTime.parse(appUserSearchCriteria.getAvailableTo()))) ||
+                        (unavailability.getUnavailableTo().isAfter(LocalDateTime.parse(appUserSearchCriteria.getAvailableFrom())) &&
+                        unavailability.getUnavailableTo().isBefore(LocalDateTime.parse(appUserSearchCriteria.getAvailableTo())))){
+                    avaibleEmployees.remove(unavailability.getAssignedTo().getId());
                 }
             }
-            predicates.add(appUserRoot.get("id").in(avaibleUsers));
         }
-            return  criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        return avaibleEmployees;
     }
 }
