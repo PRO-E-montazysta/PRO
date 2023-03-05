@@ -17,7 +17,7 @@ public class EployeeMapper {
 
     private final UnavailabilityRepository unavailabilityRepository;
 
-    public EmployeeDto employeeToDto(AppUser employee){
+    public EmployeeDto toDto(AppUser employee){
        return EmployeeDto.builder()
                 .firstName(employee.getFirstName())
                 .lastName(employee.getLastName())
