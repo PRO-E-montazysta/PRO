@@ -13,12 +13,13 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class EployeeMapper {
+public class EmployeeMapper {
 
     private final UnavailabilityRepository unavailabilityRepository;
 
-    public EmployeeDto employeeToDto(AppUser employee){
+    public EmployeeDto toDto(AppUser employee){
        return EmployeeDto.builder()
+                .id(employee.getId())
                 .firstName(employee.getFirstName())
                 .lastName(employee.getLastName())
                 .email(employee.getEmail())
