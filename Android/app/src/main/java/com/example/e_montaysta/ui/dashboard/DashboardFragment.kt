@@ -30,10 +30,10 @@ class DashboardFragment : Fragment() {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val scrollView: ScrollView = binding.textDashboard // Replace textView with scrollView
-        dashboardViewModel.text.observe(viewLifecycleOwner) {
-            scrollView.getChildAt(0).findViewById<TextView>(R.id.text_dashboard).text = it // Set text of ScrollView
-        }
+//        val scrollView: ScrollView = binding.textDashboard // Replace textView with scrollView
+//        dashboardViewModel.text.observe(viewLifecycleOwner) {
+//            scrollView.getChildAt(0).findViewById<TextView>(R.id.text_dashboard).text = it // Set text of ScrollView
+//        }
         return root
     }
 

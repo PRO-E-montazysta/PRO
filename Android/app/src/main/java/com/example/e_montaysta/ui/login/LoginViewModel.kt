@@ -1,5 +1,6 @@
 package com.example.e_montaysta.ui.login
 
+import Controllers.Interfaces.IAuthController
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,7 +10,7 @@ import com.example.e_montaysta.data.Result
 
 import com.example.e_montaysta.R
 
-class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
+class LoginViewModel(private val loginRepository: IAuthController) : ViewModel() {
 
     private val _loginForm = MutableLiveData<LoginFormState>()
     val loginFormState: LiveData<LoginFormState> = _loginForm

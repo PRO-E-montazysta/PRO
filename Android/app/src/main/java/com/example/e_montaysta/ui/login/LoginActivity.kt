@@ -1,6 +1,8 @@
 package com.example.e_montaysta.ui.login
 
+import DI.appModule
 import android.app.Activity
+import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -12,9 +14,13 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
+import com.example.e_montaysta.DashboardActivity
 import com.example.e_montaysta.databinding.ActivityLoginBinding
 
 import com.example.e_montaysta.R
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
 
 class LoginActivity : AppCompatActivity() {
 
@@ -23,7 +29,11 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        startKoin{
+            androidLogger()
+            androidContext(this@LoginActivity)
+            modules(appModule)
+        }
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -101,6 +111,8 @@ class LoginActivity : AppCompatActivity() {
     private fun updateUiWithUser(model: LoggedInUserView) {
         val welcome = getString(R.string.welcome)
         val displayName = model.displayName
+        val intent = Intent(this, DashboardActivity::class.java)
+        startActivity(intent)
         // TODO : initiate successful logged in experience
         Toast.makeText(
             applicationContext,

@@ -1,5 +1,7 @@
 package com.example.e_montaysta.ui.login
 
+import Controllers.AuthController
+import Repositories.AuthRepository
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.e_montaysta.data.LoginDataSource
@@ -15,8 +17,8 @@ class LoginViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
             return LoginViewModel(
-                loginRepository = LoginRepository(
-                    dataSource = LoginDataSource()
+                loginRepository = AuthController(
+                    repository = AuthRepository()
                 )
             ) as T
         }
