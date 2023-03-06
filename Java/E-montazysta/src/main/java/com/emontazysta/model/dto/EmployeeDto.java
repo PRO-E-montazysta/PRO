@@ -3,6 +3,7 @@ package com.emontazysta.model.dto;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -25,4 +26,7 @@ public class EmployeeDto extends AppUserDto {
     private List<Long> attachments;
     private List<Long> toolEvents;
     private String status;
+    private String unavailbilityDescription;
+    private LocalDateTime unavailableFrom;
+    private LocalDateTime unavailableTo;
 }

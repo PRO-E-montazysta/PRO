@@ -28,23 +28,23 @@ public class EmployeeMapper {
                 .attachments( employee.getAttachments() == null ? null :employee.getAttachments().stream()
                         .map(attachment -> attachment.getId())
                         .collect(Collectors.toList()))
-                .status(checkStatus(employee, LocalDateTime.now() ))
+                .status(checkStatus(employee, LocalDateTime.now()) == null ? "AVAIBLE" : String.valueOf(checkStatus(employee, LocalDateTime.now()).getTypeOfUnavailability()))
+                .unavailableFrom(checkStatus(employee, LocalDateTime.now()) == null ? null : checkStatus(employee, LocalDateTime.now()).getUnavailableFrom())
+                .unavailableTo(checkStatus(employee, LocalDateTime.now()) == null ? null : checkStatus(employee, LocalDateTime.now()).getUnavailableTo())
+                .unavailbilityDescription(checkStatus(employee, LocalDateTime.now()) == null ? null : checkStatus(employee, LocalDateTime.now()).getDescription())
                 .build();
     }
 
-    private String checkStatus(AppUser employee, LocalDateTime now) {
+    private Unavailability checkStatus(AppUser employee, LocalDateTime now) {
         List<Unavailability> unavailabilities = unavailabilityRepository.findAll();
         if (unavailabilities != null && !unavailabilities.isEmpty()) {
             for (Unavailability unavailability : unavailabilities) {
                 if ((unavailability.getAssignedTo().getId() == employee.getId()) &&
                         (now.isAfter(unavailability.getUnavailableFrom()) && now.isBefore(unavailability.getUnavailableTo()))) {
-                    return String.valueOf(unavailability.getTypeOfUnavailability());
-                } else {
-                    return "AVAIBLE";
+                    return unavailability;
                 }
             }
         }
-        return "AVAIBLE";
+        return null;
     }
-
 }
