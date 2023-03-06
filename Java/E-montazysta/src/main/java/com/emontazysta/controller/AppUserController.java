@@ -1,6 +1,7 @@
 package com.emontazysta.controller;
 
 import com.emontazysta.enums.Role;
+import com.emontazysta.mapper.EmployeeMapper;
 import com.emontazysta.mapper.UserMapper;
 import com.emontazysta.model.dto.AppUserDto;
 import com.emontazysta.model.dto.EmployeeDto;
@@ -37,6 +38,7 @@ public class AppUserController {
     private final AppUserService userService;
     private final RoleService roleService;
     private final UserMapper userMapper;
+    private final EmployeeMapper employeeMapper;
 
     @GetMapping("/all")
     @Operation(description = "Allows to get all Users.", security = @SecurityRequirement(name = "bearer-key"))
@@ -94,7 +96,11 @@ public class AppUserController {
     @GetMapping("/{id}")
     @Operation(description = "Allows to get User by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public AppUserDto getUserById(@PathVariable Long id) {
-        return userMapper.toDto(userService.getById(id));
+        if (userService.getById(id).getRoles().contains(Role.CLOUD_ADMIN)) {
+            return userMapper.toDto(userService.getById(id));
+        }else{
+            return employeeMapper.toDto(userService.getById(id));
+        }
     }
 
 
