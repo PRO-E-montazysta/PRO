@@ -54,15 +54,6 @@ public class ElementCriteriaRepository {
             predicates.add(criteriaBuilder.like(elementRoot.get("code"), "%" + elementSearchCriteria.getCode() + "%"));
         }
 
-        if(Objects.nonNull(elementSearchCriteria.getTypeOfUnit())){
-            List<Predicate> typeOfUnitPredicates = new ArrayList<>();
-            for (String type: elementSearchCriteria.getTypeOfUnit()) {
-                typeOfUnitPredicates.add(criteriaBuilder.equal(elementRoot.get("typeOfUnit"), TypeOfUnit.valueOf(type)));
-            }
-            return  criteriaBuilder.or(typeOfUnitPredicates.toArray(new Predicate[0]));
-        }
-
-
         return  criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 }
