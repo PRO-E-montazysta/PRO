@@ -5,3 +5,9 @@ export type Element = {
     typeOfUnit: string,
     quantityInUnit: number
 }
+
+export const TypeOfUnit = {
+    KILOGRAM: "Kilogram",
+    LITER: "Litr",
+    PIECE: "Sztuka"
+}

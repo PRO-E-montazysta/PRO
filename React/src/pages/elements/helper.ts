@@ -1,5 +1,5 @@
 import { FilterInputType } from "../../components/table/filter/TableFilter";
-import { Element } from "../../types/model/Element";
+import { Element, TypeOfUnit } from "../../types/model/Element";
 import { HeadCell } from "../../components/table/sort/SortedTableHeader";
 
 export const headCells: Array<HeadCell<Element>> = [
@@ -23,6 +23,7 @@ export const headCells: Array<HeadCell<Element>> = [
         label: 'Jednostka',
         disablePadding: false,
         numeric: false,
+        formatFn: (status: string) => Object.values(TypeOfUnit)[Object.keys(TypeOfUnit).indexOf(status)],
     },
     {
         type: 'string',
