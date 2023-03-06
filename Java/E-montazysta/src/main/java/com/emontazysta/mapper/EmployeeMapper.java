@@ -40,11 +40,11 @@ public class EmployeeMapper {
                         (now.isAfter(unavailability.getUnavailableFrom()) && now.isBefore(unavailability.getUnavailableTo()))) {
                     return String.valueOf(unavailability.getTypeOfUnavailability());
                 } else {
-                    return "DOSTEPNY";
+                    return "AVAIBLE";
                 }
             }
         }
-        return "DOSTEPNY";
+        return "AVAIBLE";
     }
 
 }
