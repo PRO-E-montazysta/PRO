@@ -2,6 +2,8 @@ import { FilterInputType } from "../../components/table/filter/TableFilter";
 import { Order, OrderPriority, OrderStatus } from "../../types/model/Order";
 import { SelectMenuItemProps } from "../../components/base/Multiselect";
 import { HeadCell } from "../../components/table/sort/SortedTableHeader";
+import { formatDate } from "../../helpers/format.helper";
+import { priorityName, priorityOptions, statusName, statusOptions } from "../../helpers/enum.helper";
 
 
 export const headCells: Array<HeadCell<Order>> = [
@@ -18,7 +20,7 @@ export const headCells: Array<HeadCell<Order>> = [
         label: 'Czas utworzenia',
         disablePadding: false,
         numeric: false,
-        formatFn: (date: string) => date ? date.slice(0, 16).replace('T', ' ') : ''
+        formatFn: (date: string) => date ? formatDate(date) : ''
     },
     {
         type: 'string',
@@ -26,7 +28,7 @@ export const headCells: Array<HeadCell<Order>> = [
         label: 'Priorytet',
         disablePadding: false,
         numeric: false,
-        formatFn: (status: string) => Object.values(OrderPriority)[Object.keys(OrderPriority).indexOf(status)],
+        formatFn: (status: string) => priorityName(status),
     },
     {
         type: 'string',
@@ -34,7 +36,7 @@ export const headCells: Array<HeadCell<Order>> = [
         label: 'Planowany czas rozpoczęcia',
         disablePadding: false,
         numeric: false,
-        formatFn: (date: string) => date ? date.slice(0, 16).replace('T', ' ') : ''
+        formatFn: (date: string) => date ? formatDate(date) : ''
     },
     {
         type: 'string',
@@ -50,7 +52,7 @@ export const headCells: Array<HeadCell<Order>> = [
         label: 'Status',
         disablePadding: false,
         numeric: false,
-        formatFn: (status: string) => Object.values(OrderStatus)[Object.keys(OrderStatus).indexOf(status)]
+        formatFn: (status: string) => statusName(status)
     },
     {
         type: 'string',
@@ -92,12 +94,7 @@ export const filterInitStructure: Array<FilterInputType> = [
         label: 'Status',
         inputType: 'multiselect',
         typeValue: 'Array',
-        options: Object.entries(OrderStatus).map((s): SelectMenuItemProps => {
-            return {
-                key: s[0],
-                value: s[1]
-            }
-        })
+        options: statusOptions()
     }
 ]
 

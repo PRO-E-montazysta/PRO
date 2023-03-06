@@ -7,7 +7,7 @@ import { HeadCell } from "./sort/SortedTableHeader"
 
 
 
-type BreaksTableParams<T> = {
+type FatTableParams<T> = {
     query: UseQueryResult<T[], AxiosError>
     filterForm: FilterFormProps
     headCells: Array<HeadCell<T>>
@@ -15,7 +15,7 @@ type BreaksTableParams<T> = {
     onClickRow: (event: React.MouseEvent<unknown>, row: T) => void
 }
 
-function FatTable<T>(props: BreaksTableParams<T>) {
+function FatTable<T>(props: FatTableParams<T>) {
     const { query, filterForm, headCells, initOrderBy, onClickRow } = props
 
 
