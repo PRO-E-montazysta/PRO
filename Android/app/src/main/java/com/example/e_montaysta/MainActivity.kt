@@ -22,17 +22,11 @@ class MainActivity : AppCompatActivity() {
         val preferencesModule = module {
             single<ISharedPreferencesHelper> { SharedPreferencesHelper(PreferenceManager.getDefaultSharedPreferences(applicationContext)) }
         }
-        startKoin{
-            androidLogger()
-            androidContext(this@MainActivity)
-            modules(DI.appModule, preferencesModule)
-        }
         setContentView(R.layout.activity_main)
-        val button: Button = findViewById(R.id.loginButton)
-        button.setOnClickListener {
-            val text = authController.login("admin", "password")
-            val textView : TextView = findViewById(R.id.label)
-            textView.text = text
+        val buttonClick = findViewById<Button>(R.id.button_start)
+        buttonClick.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
         }
     }
 }
