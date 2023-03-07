@@ -1,6 +1,6 @@
-import { FilterInputType } from "../../components/table/filter/TableFilter";
-import { HeadCell } from "../../components/table/sort/SortedTableHeader";
-import { Employee } from "../../types/model/Employee";
+import { FilterInputType } from '../../components/table/filter/TableFilter'
+import { HeadCell } from '../../components/table/sort/SortedTableHeader'
+import { Employee } from '../../types/model/Employee'
 
 export const headCells: Array<HeadCell<Employee>> = [
     {
@@ -38,8 +38,6 @@ export const headCells: Array<HeadCell<Employee>> = [
         disablePadding: false,
         numeric: false,
     },
-    
-    
 ]
 
 export const filterInitStructure: Array<FilterInputType> = [
@@ -48,14 +46,14 @@ export const filterInitStructure: Array<FilterInputType> = [
         value: '',
         label: 'FirstName',
         inputType: 'text',
-        typeValue: 'string'
+        typeValue: 'string',
     },
     {
         id: 'lastName',
         value: '',
         label: 'LastName',
         inputType: 'text',
-        typeValue: 'string'
+        typeValue: 'string',
     },
     {
         id: 'email',
@@ -78,7 +76,4 @@ export const filterInitStructure: Array<FilterInputType> = [
         inputType: 'text',
         typeValue: 'string',
     },
-   
-    
-    
 ]
