@@ -20,6 +20,8 @@ import { Role } from "../types/roleEnum"
 import Error from "../components/error/Error"
 import Orders from "../pages/orders"
 import OrderDetails from "../pages/orders/OrderDetails"
+import ToolTypes from "../pages/toolTypes"
+import ToolTypeDetails from "../pages/toolTypes/ToolTypeDetails"
 import WarehouseDetails from "../pages/warehouses/WarehouseDetails"
 import Warehouses from "../pages/warehouses"
 
@@ -105,6 +107,20 @@ export const pageList: Array<PageProps> =
                         path: '/home-fitter',
                         allowedRoles: [Role.FITTER],
                         component: <HomePageFitter />
+                    },
+                    {
+                        inNav: true,
+                        name: 'Typy narzędzi',
+                        path: '/tooltypes',
+                        allowedRoles: [Role.WAREHOUSE_MANAGER, Role["*"]],
+                        component: <ToolTypes />
+                    },
+                    {
+                        inNav: false,
+                        name: '',
+                        path: '/tooltypes/:id',
+                        allowedRoles: [Role.WAREHOUSE_MANAGER, Role["*"]],
+                        component: <ToolTypeDetails />
                     },
                     {
                         inNav: true,
