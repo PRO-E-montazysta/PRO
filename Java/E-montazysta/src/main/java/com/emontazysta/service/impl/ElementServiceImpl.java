@@ -75,7 +75,7 @@ public class ElementServiceImpl implements ElementService {
     }
 
     @Override
-    public List<ElementDto> getFilteredOrders(ElementSearchCriteria elementSearchCriteria) {
+    public List<ElementDto> getFilteredElements(ElementSearchCriteria elementSearchCriteria) {
         return elementCriteriaRepository.findAllWithFilters(elementSearchCriteria);
     }
 }

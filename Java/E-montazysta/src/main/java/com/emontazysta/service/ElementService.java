@@ -13,6 +13,5 @@ public interface ElementService {
     ElementDto add(ElementDto element);
     void delete(Long id);
     ElementDto update(Long id, ElementDto element);
-
-    List<ElementDto> getFilteredOrders(ElementSearchCriteria elementSearchCriteria);
+    List<ElementDto> getFilteredElements(ElementSearchCriteria elementSearchCriteria);
 }

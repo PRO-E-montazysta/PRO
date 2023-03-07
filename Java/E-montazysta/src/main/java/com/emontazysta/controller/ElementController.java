@@ -62,7 +62,7 @@ public class ElementController {
 
     @GetMapping("/filter")
     @Operation(description = "Allows to get filtered elements.", security = @SecurityRequirement(name = "bearer-key"))
-    public ResponseEntity<List<ElementDto>> filterOrders(ElementSearchCriteria elementSearchCriteria){
-        return new ResponseEntity<>(elementService.getFilteredOrders(elementSearchCriteria), HttpStatus.OK);
+    public ResponseEntity<List<ElementDto>> filterElements(ElementSearchCriteria elementSearchCriteria){
+        return new ResponseEntity<>(elementService.getFilteredElements(elementSearchCriteria), HttpStatus.OK);
     }
 }
