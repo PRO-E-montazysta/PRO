@@ -1,0 +1,41 @@
+.blur-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(5px);
+}
+
+.confirm-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 550px;
+  // height: 150px;
+  background: #15171F;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.confirm-dialog p {
+  color: #FFFFFF;
+  font-weight: 500;
+  font-size: 14px;
+  margin: 5px;
+  text-align: center;
+  overflow-y: auto;
+}
+
+.confirm-dialog .action-buttons {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 20px
+}
+
+.confirm-dialog .action-buttons button {
+  width: 120px;
+  transition: .5s;
+}

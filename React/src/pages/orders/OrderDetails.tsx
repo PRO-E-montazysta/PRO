@@ -1,13 +1,13 @@
-import { Button, CircularProgress, Divider, Grid, Paper } from "@mui/material";
+import { Button, CircularProgress, Divider, Grid, Paper, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { AxiosError } from "axios";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
-import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { useMutation, useQuery } from "react-query";
+import { useNavigate, useParams } from "react-router-dom";
 import { getAllCompanies } from "../../api/company.api";
-import { getOrderDetails } from "../../api/order.api";
-import { formatArrayToOptions,  formatLocation } from "../../helpers/format.helper";
+import { deleteOrder, getOrderDetails, postOrder, updateOrder } from "../../api/order.api";
+import { formatArrayToOptions, formatLocation } from "../../helpers/format.helper";
 import { priorityOptions, statusOptions } from "../../helpers/enum.helper";
 import { theme } from "../../themes/baseTheme";
 import { Client } from "../../types/model/Client";
@@ -30,6 +30,7 @@ import { emptyForm, validationSchema } from "./helper";
 import FormInput from "../../components/form/FormInput";
 import FormLabel from "../../components/form/FormLabel";
 import FormSelect from "../../components/form/FormSelect";
+import DialogInfo, { DialogInfoParams } from "../../components/dialogInfo/DialogInfo";
 
 
 
@@ -37,36 +38,111 @@ const OrderDetails = () => {
     const params = useParams();
     const [readonlyMode, setReadonlyMode] = useState(true)
     const [initData, setInitData] = useState(emptyForm)
+    const navigation = useNavigate();
+
+    const [dialog, setDialog] = useState({
+        open: false,
+        dialogText: [''],
+        confirmAction: () => { },
+        confirmLabel: ''
+    })
 
 
     const handleSubmit = () => {
-
+        if (params.id == "new")
+            mutationPost.mutate(JSON.parse(JSON.stringify(formik.values)))
+        else
+            mutationUpdate.mutate(JSON.parse(JSON.stringify(formik.values)))
     }
 
-    const formik = useFormik({
-        initialValues: emptyForm,
-        validationSchema: validationSchema,
-        onSubmit: handleSubmit
-    })
 
     const handleDelete = () => {
-        
+        displayInfo({
+            dialogText: ['Czy na pewno chcesz usunąć zlecenie?'],
+            confirmAction: () => {
+                setDialog({ ...dialog, open: false });
+                mutationDelete.mutate(formik.values.id)
+            },
+            confirmLabel: 'Usuń',
+            cancelAction: () => { setDialog({ ...dialog, open: false }) },
+            cancelLabel: 'Anuluj'
+        })
     }
 
-    const handleReset = () => {
-        formik.resetForm()
-        formik.setValues(JSON.parse(JSON.stringify(initData)))
-    }
-
-    const handleCancel = () => {
-        handleReset()
-        setReadonlyMode(true)
-    }
 
 
-    const { isLoading, isError, error, isSuccess, data } = useQuery<Order, AxiosError>(
+    const mutationPost = useMutation({
+        mutationFn: postOrder,
+        onSuccess(data) {
+            displayInfo({
+                dialogText: ['Nowe zlecenie utworzono pomyślnie'],
+                confirmAction: () => {
+                    setDialog({ ...dialog, open: false })
+                    if (data.id) navigation(`/orders/${data.id}`)
+                    else navigation(`/orders`)
+                },
+                confirmLabel: 'Ok'
+            })
+        },
+        onError(error: Error) {
+            console.error(error);
+            displayInfo({
+                dialogText: ['Błąd poczas tworzenia nowego zlecenia', error.message],
+                confirmAction: () => { setDialog({ ...dialog, open: false }) },
+                confirmLabel: 'Ok'
+            })
+        }
+    });
+
+    const mutationUpdate = useMutation({
+        mutationFn: updateOrder,
+        onSuccess(data) {
+            queryData.refetch({
+                queryKey: ['order', { id: data.id }]
+            })
+            displayInfo({
+                dialogText: ['Zmiany w zleceniu zostały zapisane'],
+                confirmAction: () => { setDialog({ ...dialog, open: false }) },
+                confirmLabel: 'Ok'
+            })
+        },
+        onError(error: Error) {
+            console.error(error);
+            displayInfo({
+                dialogText: ['Błąd poczas zapisywania zlecenia', error.message],
+                confirmAction: () => { setDialog({ ...dialog, open: false }) },
+                confirmLabel: 'Ok'
+            })
+        }
+    });
+
+    const mutationDelete = useMutation({
+        mutationFn: deleteOrder,
+        onSuccess(data) {
+            displayInfo({
+                dialogText: ['Zlecenie zostało usunięte'],
+                confirmAction: () => {
+                    setDialog({ ...dialog, open: false })
+                    queryData.remove()
+                    navigation('/orders')
+                },
+                confirmLabel: 'Ok'
+            })
+        },
+        onError(error: Error) {
+            console.error(error);
+            displayInfo({
+                dialogText: ['Błąd poczas usuwania zlecenia', error.message],
+                confirmAction: () => { setDialog({ ...dialog, open: false }) },
+                confirmLabel: 'Ok'
+            })
+        }
+    });
+
+
+    const queryData = useQuery<Order, AxiosError>(
         ['order', { id: params.id }],
-        async () => getOrderDetails(params.id),
+        async () => getOrderDetails(params.id && params.id != 'new' ? params.id : ''),
         {
             enabled: !!params.id && params.id != 'new'
         }
@@ -94,36 +170,66 @@ const OrderDetails = () => {
         ['specialist-list'], getAllSpecialists
     )
 
+    const formik = useFormik({
+        initialValues: initData,
+        validationSchema: validationSchema,
+        onSubmit: handleSubmit
+    })
+
+
+    const handleReset = () => {
+        formik.resetForm()
+        formik.setValues(JSON.parse(JSON.stringify(initData)))
+    }
+
+    const handleCancel = () => {
+        handleReset()
+        setReadonlyMode(true)
+    }
+
 
     useEffect(() => {
-        if (data) {
-            formik.setValues(JSON.parse(JSON.stringify(data)))
-            setInitData(JSON.parse(JSON.stringify(data)))
+        if (queryData.data) {
+            formik.setValues(JSON.parse(JSON.stringify(queryData.data)))
+            setInitData(JSON.parse(JSON.stringify(queryData.data)))
         }
 
-    }, [data])
+    }, [queryData.data])
 
     useEffect(() => {
-        if (params.id == 'new') setReadonlyMode(false)
-        else setReadonlyMode(true)
+        if (params.id == 'new') {
+            setReadonlyMode(false)
+            formik.setValues(JSON.parse(JSON.stringify(emptyForm)))
+            setInitData(JSON.parse(JSON.stringify(emptyForm)))
+        } else setReadonlyMode(true)
     }, [params.id])
+
+
+
+    const displayInfo = (params: DialogInfoParams) => {
+        setDialog({
+            ...params,
+            open: true
+        })
+    }
+
 
 
 
     return <>
         <Box maxWidth={800} style={{ margin: 'auto', marginTop: '20px' }}>
-
             <Paper sx={{ p: '10px' }}>
                 {
-                    isLoading ? <Box sx={{
-                        display: 'flex',
-                        minHeight: '200px',
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }}>
-                        <CircularProgress />
-                    </Box>
-                        : <>
+                    queryData.isLoading || queryData.isError ?
+                        <Box sx={{
+                            display: 'flex',
+                            minHeight: '200px',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>{queryData.isLoading ? <CircularProgress /> : <Typography >Nie znaleziono zlecenia</Typography>}
+                        </Box>
+                        :
+                        <>
                             <Grid container>
                                 <Grid item xs={6} style={{
                                     textAlign: 'end'
@@ -275,6 +381,10 @@ const OrderDetails = () => {
                 }
             </Paper>
         </Box >
+        {
+            dialog.open &&
+            <DialogInfo {...dialog} />
+        }
     </>
 }
 
