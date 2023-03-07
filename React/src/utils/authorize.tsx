@@ -5,6 +5,8 @@ import { pageList, PageProps } from "./pageList";
 import { getRolesFromToken, getToken } from "./token";
 
 
+
+
 export const isAuthorized = (page: PageProps) => {
     let ar = page.allowedRoles
     if (!ar) ar = getParentAllowedRoles(page)
