@@ -16,7 +16,7 @@ const NavMenuButton = (props: PageProps) => {
 
     useLayoutEffect(() => {
         if (!!children)
-            setAllowedChilds(children.filter(child => child.inNav && isAuthorized(child.allowedRoles)));
+            setAllowedChilds(children.filter(child => child.inNav && isAuthorized(child)));
     }, []);
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -30,6 +30,7 @@ const NavMenuButton = (props: PageProps) => {
     };
 
     const handleMenuItemClick = (page: PageProps) => {
+        console.log(page.path)
         navigate(page.path);
         handleClose();
 
@@ -37,7 +38,7 @@ const NavMenuButton = (props: PageProps) => {
 
 
 
-    if (!inNav || !isAuthorized(allowedRoles)) return null;
+    if (!inNav || !isAuthorized(props)) return null;
 
     return <>
         <Button

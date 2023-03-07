@@ -25,7 +25,7 @@ import OrderDetails from "../pages/orders/OrderDetails"
 export type PageProps = {
     name: string
     path: string
-    allowedRoles: Array<Role>
+    allowedRoles?: Array<Role>
     children?: Array<PageProps>
     component?: JSX.Element
     inNav: boolean
@@ -117,7 +117,19 @@ export const pageList: Array<PageProps> =
                         name: 'Zlecenia',
                         path: '/orders',
                         allowedRoles: [Role.FITTER, Role.SPECIALIST, Role.MANAGER, Role.SALES_REPRESENTATIVE, Role.FOREMAN, Role["*"]],
-                        component: <Orders />
+                        component: <Orders />,
+                        children: [
+                            {
+                                inNav: true,
+                                name: 'Lista zleceń',
+                                path: '/orders'
+                            },
+                            {
+                                inNav: true,
+                                name: 'Dodaj zlecenie',
+                                path: '/orders/new'
+                            }
+                        ]
                     },
                     {
                         inNav: false,
