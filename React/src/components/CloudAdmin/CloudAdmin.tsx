@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 import { styled } from '@mui/material/styles';
 import { AxiosError } from 'axios';
 import { useQuery } from 'react-query';
-//import { getAllCompanies } from '../../api/company.api';
+import { getAllCompanies } from '../../api/company.api';
 
 const CustomTextField = styled(TextField)(({ theme }) => ({
     label: { shrink: true, color: theme.palette.secondary.contrastText },
@@ -64,13 +64,30 @@ const ToolElementButton = styled(Button)({
 });
 
 const CloudAdmin = () => {
-    //const { isLoading, isError, error: warehousesError, data: warehousesData } = useQuery<Array<any>, AxiosError>('all-warehouses', getAllCompanies)
+    let isLoading = false;
+    let isError = false;
+    let error = {
+        message: "PRZYKŁADOWY BŁĄD"
+    };
+    let data = [{
+        id: 123,
+        name: "Nazwa", 
+        date: "07-09-2012",
+        status: "Aktywna"
+    },
+    {
+        id: 123,
+        name: "Nazwa", 
+        date: "07-09-2012",
+        status: "Aktywna"
+    }];
+    //const { isLoading, isError, error, data } = useQuery<Array<any>, AxiosError>('all-companies', getAllCompanies)
 
     let content;
 
-    // if (isLoading) content = <p>Ładowanie danych</p>
-    // else if (isError) content = <p>{warehousesError.message}</p>
-    /*else*/ content = (
+    if (isLoading) content = <p>Ładowanie danych</p>
+    else if (isError) content = <p>{error.message}</p>
+    else content = (
         <Box sx={{ flexGrow: 1, padding: 3 }}>
             <Grid container spacing={2}>
                 <Grid item xs={2}
@@ -139,39 +156,24 @@ const CloudAdmin = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                <TableRow>
-                                    <StyledTableCell>123</StyledTableCell>
-                                    <StyledTableCell align="left">Jakis z doopy name</StyledTableCell>
-                                    <StyledTableCell align="left">10.05.2005</StyledTableCell>.
-                                    <StyledTableCell align="left">Aktywna</StyledTableCell>
-                                    <StyledTableCell align="left" style={{ textAlign: "center" }}>
-                                        <Link to='/'>
-                                            <ToolElementButton>Edytuj</ToolElementButton>
-                                        </Link>
-                                        <Link to='/'>
-                                            <ToolElementButton>Blokuj</ToolElementButton>
-                                        </Link>
-                                    </StyledTableCell>
-                                </TableRow>
-                                {/* {
-                                    warehousesData && warehousesData.map(warehouse => (
+                                {
+                                    data && data.map(company => (
                                         <TableRow>
-                                            <StyledTableCell>{warehouse.id}</StyledTableCell>
-                                            <StyledTableCell align="left">{warehouse.name}</StyledTableCell>
-                                            <StyledTableCell align="left"></StyledTableCell>
-                                            <StyledTableCell align="left">{warehouse.description}</StyledTableCell>
-                                            <StyledTableCell align="left">{warehouse.openingHours}</StyledTableCell>
+                                            <StyledTableCell>{company.id}</StyledTableCell>
+                                            <StyledTableCell align="left">{company.name}</StyledTableCell>
+                                            <StyledTableCell align="left">{company.date}</StyledTableCell>
+                                            <StyledTableCell align="left">{company.status}</StyledTableCell>
                                             <StyledTableCell align="left" style={{ textAlign: "center" }}>
-                                                <Link to='/'>
-                                                    <ToolElementButton>Narzędzia</ToolElementButton>
+                                                <Link to='/company-list/edit/{company.id}'>
+                                                    <ToolElementButton>Edytuj</ToolElementButton>
                                                 </Link>
-                                                <Link to='/'>
-                                                    <ToolElementButton>Elementy</ToolElementButton>
+                                                <Link to='/company-list/block/{company.id}'>
+                                                    <ToolElementButton>Blokuj</ToolElementButton>
                                                 </Link>
                                             </StyledTableCell>
                                         </TableRow>
                                     ))
-                                } */}
+                                }
                             </TableBody>
                         </Table>
                     </TableContainer>
