@@ -10,4 +10,5 @@ public interface WarehouseManagerService {
     WarehouseManagerDto getById(Long id);
     WarehouseManagerDto add(WarehouseManagerDto warehouseManager);
     void delete(Long id);
+    WarehouseManagerDto update(Long id, WarehouseManagerDto warehouseManager);
 }

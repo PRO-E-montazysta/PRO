@@ -10,5 +10,6 @@ public interface FitterService {
     FitterDto getById(Long id);
     FitterDto add(FitterDto fitter);
     void delete(Long id);
+    FitterDto update(Long id, FitterDto fitter);
 
 }

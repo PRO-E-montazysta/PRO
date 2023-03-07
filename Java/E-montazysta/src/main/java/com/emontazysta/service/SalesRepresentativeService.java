@@ -10,4 +10,5 @@ public interface SalesRepresentativeService {
     SalesRepresentativeDto getById(Long id);
     SalesRepresentativeDto add(SalesRepresentativeDto salesRepresentative);
     void delete(Long id);
+    SalesRepresentativeDto update(Long id, SalesRepresentativeDto salesRepresentative);
 }

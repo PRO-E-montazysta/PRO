@@ -48,6 +48,8 @@ public class SecurityConfig {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final SecurityProperties securityProperties;
 
+
+
     private RSAKey rsaKey;
 
     @PostConstruct

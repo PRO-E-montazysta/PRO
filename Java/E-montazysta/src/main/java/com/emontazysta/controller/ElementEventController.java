@@ -46,4 +46,10 @@ public class ElementEventController {
         service.delete(id);
     }
 
+    @PutMapping("/{id}")
+    @Operation(description = "Allows to update element event by given Id.", security = @SecurityRequirement(name = "bearer-key"))
+    public ElementEventDto update(@PathVariable Long id, @Valid @RequestBody ElementEventDto event) {
+        return service.update(id, event);
+    }
+
 }

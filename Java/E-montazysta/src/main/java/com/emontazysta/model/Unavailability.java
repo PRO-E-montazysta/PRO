@@ -10,7 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -30,12 +30,11 @@ public class Unavailability {
     private String description;
 
     @NotNull
-    @JsonFormat(pattern="dd-MM-yyyy")
-    private LocalDate unavailableFrom;
+    private LocalDateTime unavailableFrom;
 
     @NotNull
     @JsonFormat(pattern="dd-MM-yyyy")
-    private LocalDate unavailableTo;
+    private LocalDateTime unavailableTo;
 
     @ManyToOne
     private AppUser assignedTo;

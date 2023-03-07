@@ -10,4 +10,5 @@ public interface SpecialistService {
     SpecialistDto getById(Long id);
     SpecialistDto add(SpecialistDto specialist);
     void delete(Long id);
+    SpecialistDto update(Long id, SpecialistDto specialist);
 }

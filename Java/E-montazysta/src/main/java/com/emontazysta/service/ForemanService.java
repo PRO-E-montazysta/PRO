@@ -10,4 +10,5 @@ public interface ForemanService {
     ForemanDto getById(Long id);
     ForemanDto add(ForemanDto foreman);
     void delete(Long id);
+    ForemanDto update(Long id, ForemanDto foreman);
 }

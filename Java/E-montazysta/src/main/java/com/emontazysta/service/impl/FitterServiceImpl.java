@@ -43,4 +43,24 @@ public class FitterServiceImpl implements FitterService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public FitterDto update(Long id, FitterDto fitterDto) {
+        Fitter updatedFitter = fitterMapper.toEntity(fitterDto);
+        Fitter fitter = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        fitter.setFirstName(updatedFitter.getFirstName());
+        fitter.setLastName(updatedFitter.getLastName());
+        fitter.setUsername(updatedFitter.getUsername());
+        fitter.setEmail(updatedFitter.getEmail());
+        fitter.setPhone(updatedFitter.getPhone());
+        fitter.setPesel(updatedFitter.getPesel());
+        fitter.setUnavailabilities(updatedFitter.getUnavailabilities());
+        fitter.setNotifications(updatedFitter.getNotifications());
+        fitter.setEmployeeComments(updatedFitter.getEmployeeComments());
+        fitter.setElementEvents(updatedFitter.getElementEvents());
+        fitter.setEmployments(updatedFitter.getEmployments());
+        fitter.setAttachments(updatedFitter.getAttachments());
+        fitter.setToolEvents(updatedFitter.getToolEvents());
+        return fitterMapper.toDto(repository.save(fitter));
+    }
 }

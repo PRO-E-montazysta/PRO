@@ -46,4 +46,10 @@ public class CommentController {
     public void deleteById(@PathVariable("id") Long id) {
         commentService.delete(id);
     }
+
+    @PutMapping("/{id}")
+    @Operation(description = "Allows to update Comment by given Id.", security = @SecurityRequirement(name = "bearer-key"))
+    public CommentDto update(@PathVariable("id") Long id, @Valid @RequestBody CommentDto commentDto) {
+        return commentService.update(id, commentDto);
+    }
 }
