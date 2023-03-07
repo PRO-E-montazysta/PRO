@@ -118,14 +118,14 @@ export const pageList: Array<PageProps> =
                         inNav: true,
                         name: 'Typy narzędzi',
                         path: '/tooltypes',
-                        allowedRoles: [Role.WAREHOUSE_MANAGER],
+                        allowedRoles: [Role.WAREHOUSE_MANAGER, Role["*"]],
                         component: <ToolTypes />
                     },
                     {
                         inNav: false,
                         name: '',
                         path: '/tooltypes/:id',
-                        allowedRoles: [Role.WAREHOUSE_MANAGER],
+                        allowedRoles: [Role.WAREHOUSE_MANAGER, Role["*"]],
                         component: <ToolTypeDetails />
                     },
                     {
