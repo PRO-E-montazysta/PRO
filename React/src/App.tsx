@@ -25,7 +25,6 @@ const browserRouterMapper = (pages: Array<PageProps>) => {
         }
       }
       else {
-        console.log(page)
         return {}
       }
     })

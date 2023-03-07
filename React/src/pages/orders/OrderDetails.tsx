@@ -1,15 +1,14 @@
-import { Button, CircularProgress, Divider, Grid, MenuItem, Paper, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
+import { Button, CircularProgress, Divider, Grid, Paper } from "@mui/material";
 import { Box } from "@mui/system";
 import { AxiosError } from "axios";
 import { useFormik } from "formik";
-import { ChangeEvent, CSSProperties, HTMLInputTypeAttribute, StyleHTMLAttributes, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { getAllCompanies } from "../../api/company.api";
 import { getOrderDetails } from "../../api/order.api";
-import { SelectMenuItemProps } from "../../components/base/Multiselect";
-import { formatArrayToOptions, formatDate, formatLocation } from "../../helpers/format.helper";
-import { priorityName, priorityOptions, statusName, statusOptions } from "../../helpers/enum.helper";
+import { formatArrayToOptions,  formatLocation } from "../../helpers/format.helper";
+import { priorityOptions, statusOptions } from "../../helpers/enum.helper";
 import { theme } from "../../themes/baseTheme";
 import { Client } from "../../types/model/Client";
 import { Company } from "../../types/model/Company";
@@ -27,26 +26,12 @@ import ReplayIcon from '@mui/icons-material/Replay';
 import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { emptyForm, validationSchema } from "./helper";
+import FormInput from "../../components/form/FormInput";
+import FormLabel from "../../components/form/FormLabel";
+import FormSelect from "../../components/form/FormSelect";
 
-const emptyForm = {
-    id: -1,
-    name: '',
-    typeOfStatus: '',
-    plannedStart: '',
-    plannedEnd: '',
-    createdAt: '',
-    editedAt: '',
-    typeOfPriority: '',
-    companyId: -1,
-    managerId: -1,
-    foremanId: -1,
-    specialistId: -1,
-    salesRepresentativeId: -1,
-    locationId: -1,
-    clientId: -1,
-    orderStages: [],
-    attachments: []
-}
+
 
 const OrderDetails = () => {
     const params = useParams();
@@ -54,20 +39,30 @@ const OrderDetails = () => {
     const [initData, setInitData] = useState(emptyForm)
 
 
+    const handleSubmit = () => {
+
+    }
 
     const formik = useFormik({
         initialValues: emptyForm,
-        onSubmit: values => {
-            console.log(values)
-        }
+        validationSchema: validationSchema,
+        onSubmit: handleSubmit
     })
 
-    const handleReset = () => {
-        formik.setValues(JSON.parse(JSON.stringify(initData)))
-    }
     const handleDelete = () => {
         
     }
+
+    const handleReset = () => {
+        formik.resetForm()
+        formik.setValues(JSON.parse(JSON.stringify(initData)))
+    }
+
+    const handleCancel = () => {
+        handleReset()
+        setReadonlyMode(true)
+    }
+
 
     const { isLoading, isError, error, isSuccess, data } = useQuery<Order, AxiosError>(
         ['order', { id: params.id }],
@@ -104,7 +99,6 @@ const OrderDetails = () => {
         if (data) {
             formik.setValues(JSON.parse(JSON.stringify(data)))
             setInitData(JSON.parse(JSON.stringify(data)))
-            console.log(formik.values)
         }
 
     }, [data])
@@ -112,8 +106,6 @@ const OrderDetails = () => {
     useEffect(() => {
         if (params.id == 'new') setReadonlyMode(false)
         else setReadonlyMode(true)
-        console.log("readonly: ", params.id != 'new')
-        // setReadonlyMode(false)
     }, [params.id])
 
 
@@ -136,20 +128,20 @@ const OrderDetails = () => {
                                 <Grid item xs={6} style={{
                                     textAlign: 'end'
                                 }}>
-                                    <Typography m={2}>Nazwa zlecenia</Typography>
-                                    <Typography m={2}>Firma</Typography>
-                                    <Typography m={2}>Priorytet</Typography>
-                                    <Typography m={2}>Status</Typography>
-                                    <Typography m={2}>Planowany czas rozpoczęcia</Typography>
-                                    <Typography m={2}>Planowany czas zakończenia</Typography>
-                                    <Typography m={2}>Klient</Typography>
-                                    <Typography m={2}>Foreman</Typography>
-                                    <Typography m={2}>Lokalizacja</Typography>
-                                    <Typography m={2}>Manager</Typography>
-                                    <Typography m={2}>Specjalista</Typography>
-                                    <Typography m={2}>Sales Reprezentative</Typography>
-                                    <Typography m={2}>Czas utworzenia</Typography>
-                                    <Typography m={2}>Czas ostatniej edycji</Typography>
+                                    <FormLabel label="Nazwa zlecenia" formik={formik} id={'name'} />
+                                    <FormLabel label="Firma" formik={formik} id={'companyId'} />
+                                    <FormLabel label="Priorytet" formik={formik} id={'typeOfPriority'} />
+                                    <FormLabel label="Status" formik={formik} id={'typeOfStatus'} />
+                                    <FormLabel label="Planowany czas rozpoczęcia" formik={formik} id={'plannedStart'} />
+                                    <FormLabel label="Planowany czas zakończenia" formik={formik} id={'plannedEnd'} />
+                                    <FormLabel label="Klient" formik={formik} id={'clientId'} />
+                                    <FormLabel label="Foreman" formik={formik} id={'foremanId'} />
+                                    <FormLabel label="Lokalizacja" formik={formik} id={'locationId'} />
+                                    <FormLabel label="Manager" formik={formik} id={'managerId'} />
+                                    <FormLabel label="Specjalista" formik={formik} id={'specialistId'} />
+                                    <FormLabel label="Sales Reprezentative" formik={formik} id={'salesRepresentativeId'} />
+                                    <FormLabel label="Czas utworzenia" formik={formik} id={'createdAt'} />
+                                    <FormLabel label="Czas ostatniej edycji" formik={formik} id={'editedAt'} />
                                 </Grid>
                                 <Divider
                                     orientation="vertical"
@@ -161,98 +153,88 @@ const OrderDetails = () => {
                                 <Grid item xs={6}>
                                     <FormInput
                                         id={'name'}
+                                        formik={formik}
                                         readonly={readonlyMode}
-                                        value={formik.values.name}
                                         firstChild
-                                        onChange={formik.handleChange}
                                     />
                                     <FormSelect
                                         id={'companyId'}
+                                        formik={formik}
                                         readonly={readonlyMode}
-                                        value={formik.values.companyId}
                                         options={formatArrayToOptions('id', (x: Company) => x.companyName, queryCompany.data)}
-                                        formikSetFieldValue={formik.setFieldValue}
                                     />
                                     <FormSelect
                                         id={'typeOfPriority'}
+                                        formik={formik}
                                         readonly={readonlyMode}
-                                        value={formik.values.typeOfPriority}
                                         options={priorityOptions()}
-                                        formikSetFieldValue={formik.setFieldValue}
                                     />
                                     <FormSelect
                                         id={'typeOfStatus'}
+                                        formik={formik}
                                         readonly={readonlyMode}
-                                        value={formik.values.typeOfStatus}
                                         options={statusOptions()}
-                                        formikSetFieldValue={formik.setFieldValue}
                                     />
                                     <FormInput
                                         id={'plannedStart'}
+                                        formik={formik}
                                         readonly={readonlyMode}
-                                        value={formatDate(formik.values.plannedStart)}
                                         type='datetime-local'
-                                        onChange={formik.handleChange}
                                     />
                                     <FormInput
                                         id={'plannedEnd'}
+                                        formik={formik}
                                         readonly={readonlyMode}
-                                        value={formatDate(formik.values.plannedEnd)}
                                         type='datetime-local'
-                                        onChange={formik.handleChange}
                                     />
                                     <FormSelect
                                         id={'clientId'}
+                                        formik={formik}
                                         readonly={readonlyMode}
-                                        value={formik.values.clientId}
                                         options={formatArrayToOptions('id', (x: Client) => x.name, queryClient.data)}
-                                        formikSetFieldValue={formik.setFieldValue}
                                     />
                                     <FormSelect
                                         id={'foremanId'}
+                                        formik={formik}
                                         readonly={readonlyMode}
-                                        value={formik.values.foremanId}
                                         options={formatArrayToOptions('id', (x: AppUser) => x.firstName + " " + x.lastName, queryForeman.data)}
-                                        formikSetFieldValue={formik.setFieldValue}
                                     />
                                     <FormSelect
                                         id={'locationId'}
+                                        formik={formik}
                                         readonly={readonlyMode}
-                                        value={formik.values.locationId}
                                         options={formatArrayToOptions('id', formatLocation, queryLocation.data)}
-                                        formikSetFieldValue={formik.setFieldValue}
                                     />
                                     <FormSelect
                                         id={'managerId'}
+                                        formik={formik}
                                         readonly={readonlyMode}
-                                        value={formik.values.managerId}
                                         options={formatArrayToOptions('id', (x: AppUser) => x.firstName + " " + x.lastName, queryManager.data)}
-                                        formikSetFieldValue={formik.setFieldValue}
                                     />
                                     <FormSelect
                                         id={'specialistId'}
+                                        formik={formik}
                                         readonly={readonlyMode}
-                                        value={formik.values.specialistId}
                                         options={formatArrayToOptions('id', (x: AppUser) => x.firstName + " " + x.lastName, querySpecialist.data)}
-                                        formikSetFieldValue={formik.setFieldValue}
                                     />
                                     <FormSelect
                                         id={'salesRepresentativeId'}
+                                        formik={formik}
                                         readonly={readonlyMode}
-                                        value={formik.values.salesRepresentativeId}
                                         options={formatArrayToOptions('id', (x: AppUser) => x.firstName + " " + x.lastName, querySalesReprezentative.data)}
-                                        formikSetFieldValue={formik.setFieldValue}
                                     />
                                     <FormInput
                                         id={'createdAt'}
+                                        formik={formik}
                                         readonly
-                                        value={formatDate(formik.values.createdAt)}
                                         style={{ marginTop: !readonlyMode ? '12px' : '' }}
+                                        type='datetime-local'
                                     />
                                     <FormInput
                                         id={'editedAt'}
+                                        formik={formik}
                                         readonly
-                                        value={formatDate(formik.values.editedAt)}
+                                        type='datetime-local'
                                     />
                                 </Grid>
                             </Grid>
@@ -279,10 +261,13 @@ const OrderDetails = () => {
                                                 style={{ color: theme.palette.primary.main, width: 120 }} variant="outlined" onClick={handleReset} >
                                                 Reset
                                             </Button>
-                                            <Button color="primary" startIcon={<CloseIcon style={{ transform: 'rotate(-0.25turn)' }} />}
-                                                style={{ color: theme.palette.primary.main, width: 120 }} variant="outlined" onClick={() => { handleReset(); setReadonlyMode(true) }} >
-                                                Anuluj
-                                            </Button>
+                                            {
+                                                params.id != 'new' &&
+                                                <Button color="primary" startIcon={<CloseIcon style={{ transform: 'rotate(-0.25turn)' }} />}
+                                                    style={{ color: theme.palette.primary.main, width: 120 }} variant="outlined" onClick={handleCancel} >
+                                                    Anuluj
+                                                </Button>
+                                            }
                                         </>
                                 }
                             </Box>
@@ -294,98 +279,3 @@ const OrderDetails = () => {
 }
 
 export default OrderDetails
-
-type FormInputParams = {
-    readonly: boolean
-    id: string
-    value: string | number | undefined
-    onChange?: (value: ChangeEvent<HTMLInputElement>) => void
-    formikSetFieldValue?: (id: string, value: any) => void
-    firstChild?: boolean
-    options?: Array<SelectMenuItemProps>
-    style?: CSSProperties
-    type?: HTMLInputTypeAttribute
-}
-
-const FormInput = (params: FormInputParams) => {
-    const { id, readonly, value, onChange, firstChild, style, type } = params
-    if (readonly) {
-        if (value) return <Typography m={2} style={{
-            textOverflow: 'ellipsis',
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-            ...style
-        }}
-        >{value}</Typography>
-        else return <Typography m={2} style={{ opacity: 0, ...style }}>{'null'}</Typography>
-    }
-    else {
-        return <TextField
-            type={type ? type : 'text'}
-            value={value}
-            onChange={onChange}
-            id={id}
-            name={id}
-            style={{
-                display: 'block', margin: '8px', lineHeight: '32px',
-                marginTop: firstChild ? '12px' : '8px',
-                ...style
-            }}
-            inputProps={{
-                style: {
-                    padding: '4px 10px', lineHeight: '24px', width: '290px'
-                }
-
-            }}
-        />
-    }
-}
-
-
-const FormSelect = (params: FormInputParams) => {
-    const { id, readonly, value, formikSetFieldValue, firstChild, options, style } = params
-
-    const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const newValue = event.target.value;
-        if (formikSetFieldValue) formikSetFieldValue(id, newValue);
-    }
-
-    if (readonly) {
-        if (value) {
-            const thisOpt = options?.find(o => o.key == value)
-            return <Typography m={2} style={{
-                textOverflow: 'ellipsis',
-                overflow: 'hidden',
-                whiteSpace: 'nowrap',
-                ...style
-            }}>{thisOpt?.value}</Typography>
-        }
-        else return <Typography m={2} style={{ opacity: 0, ...style }}>{'null'}</Typography>
-    }
-    else {
-        return <TextField select
-
-            style={{
-                display: 'block', margin: '8px', lineHeight: '32px', height: '32px',
-                marginTop: firstChild ? '12px' : '8px', ...style
-            }}
-
-            sx={{
-                '& .MuiSelect-select': { m: 0, p: '4px 0 4px 10px', width: '268px' },
-            }}
-
-            value={value ? value : -1} onChange={handleOnChange} >
-            <MenuItem key={-1} value={-1} disabled hidden style={{ display: 'none' }}>
-                -- WYBIERZ --
-            </MenuItem>
-            {
-                options?.map(o => (
-                    <MenuItem key={o.key} value={o.key}>
-                        {o.value}
-                    </MenuItem>
-                ))
-            }
-
-        </TextField >
-    }
-}

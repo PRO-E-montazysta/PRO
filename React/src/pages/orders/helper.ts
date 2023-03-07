@@ -6,6 +6,9 @@ import { formatDate } from "../../helpers/format.helper";
 import { priorityName, priorityOptions, statusName, statusOptions } from "../../helpers/enum.helper";
 
 
+import * as yup from 'yup';
+
+
 export const headCells: Array<HeadCell<Order>> = [
     {
         type: 'string',
@@ -98,3 +101,28 @@ export const filterInitStructure: Array<FilterInputType> = [
     }
 ]
 
+
+export const emptyForm = {
+    id: -1,
+    name: '',
+    typeOfStatus: '',
+    plannedStart: '',
+    plannedEnd: '',
+    createdAt: '',
+    editedAt: '',
+    typeOfPriority: '',
+    companyId: -1,
+    managerId: -1,
+    foremanId: -1,
+    specialistId: -1,
+    salesRepresentativeId: -1,
+    locationId: -1,
+    clientId: -1,
+    orderStages: [],
+    attachments: []
+}
+
+export const validationSchema = yup.object({
+    name: yup.string().min(3, 'Nazwa musi zaweirać co najmniej 3 znaki').required('Wprowadź nazwę'),
+    companyId: yup.number().min(0, 'Wybierz firmę')
+});

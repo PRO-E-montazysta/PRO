@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { isAuthorized } from "../../utils/authorize";
 import { PageProps } from "../../utils/pageList";
 
-
+import { v4 as uuidv4 } from 'uuid';
 
 const NavMenuButton = (props: PageProps) => {
     const { allowedRoles, inNav, name, path, children } = props;
@@ -59,7 +59,7 @@ const NavMenuButton = (props: PageProps) => {
             {
                 allowedChilds
                     .map(child => {
-                        return <MenuItem onClick={() => handleMenuItemClick(child)}>
+                        return <MenuItem onClick={() => handleMenuItemClick(child)} key={uuidv4()}>
                             {child.name}
                         </MenuItem>
 
