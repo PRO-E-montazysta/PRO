@@ -9,7 +9,6 @@ import HomePageManager from "../pages/ManagersHomePage"
 import HomepagesalesRepresentative from "../pages/SalesRepresentativesHomePage"
 import HomePageForeman from "../pages/ForemenHomePage"
 import HomePageFitter from "../pages/FittersHomePage"
-import WarehouseList from "../pages/WarehouseList"
 import DeliveryReceipt from "../pages/DeliveryReceipt"
 import Demand from "../pages/Demand"
 import Issues from "../components/issues/Issues"
@@ -21,6 +20,8 @@ import { Role } from "../types/roleEnum"
 import Error from "../components/error/Error"
 import Orders from "../pages/orders"
 import OrderDetails from "../pages/orders/OrderDetails"
+import WarehouseDetails from "../pages/warehouses/WarehouseDetails"
+import Warehouses from "../pages/warehouses"
 
 export type PageProps = {
     name: string
@@ -79,13 +80,6 @@ export const pageList: Array<PageProps> =
                     },
                     {
                         inNav: true,
-                        name: 'Lista Magazynów',
-                        path: '/warehouse-list',
-                        allowedRoles: [Role.WAREHOUSE_MAN, Role.SPECIALIST, Role.FITTER, Role.MANAGER, Role.WAREHOUSE_MANAGER, Role.FOREMAN, Role.SALES_REPRESENTATIVE],
-                        component: <WarehouseList />
-                    },
-                    {
-                        inNav: true,
                         name: 'Wydanie / Przyjęcie',
                         path: '/delivery-receipt',
                         allowedRoles: [Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER],
@@ -125,6 +119,20 @@ export const pageList: Array<PageProps> =
                         path: '/orders/:id',
                         allowedRoles: [Role.FITTER, Role.SPECIALIST, Role.MANAGER, Role.SALES_REPRESENTATIVE, Role.FOREMAN, Role["*"]],
                         component: <OrderDetails />
+                    },
+                    {
+                        inNav: true,
+                        name: 'Magazyny',
+                        path: '/warehouses',
+                        allowedRoles: [Role.MANAGER, Role.SALES_REPRESENTATIVE, Role.SPECIALIST, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER, Role.FITTER, Role.FOREMAN],
+                        component: <Warehouses />
+                    },
+                    {
+                        inNav: false,
+                        name: '',
+                        path: '/warehouses/:id',
+                        allowedRoles: [Role.MANAGER, Role.SALES_REPRESENTATIVE, Role.SPECIALIST, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER, Role.FITTER, Role.FOREMAN],
+                        component: <WarehouseDetails />
                     },
                     {
                         inNav: true,
