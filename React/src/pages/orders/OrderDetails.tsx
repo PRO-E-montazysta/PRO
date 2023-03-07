@@ -22,6 +22,10 @@ import { getAllManagers } from "../../api/manager.api";
 import { getAllSalesReprezentatives } from "../../api/salesReprezentatives.api";
 import { getAllSpecialists } from "../../api/specialist.api";
 
+import SaveIcon from '@mui/icons-material/Save';
+import ReplayIcon from '@mui/icons-material/Replay';
+import CloseIcon from '@mui/icons-material/Close';
+import EditIcon from '@mui/icons-material/Edit';
 
 
 const OrderDetails = () => {
@@ -49,8 +53,12 @@ const OrderDetails = () => {
         },
         onSubmit: values => {
             console.log(values)
+        },
+        onReset: () => {
+
         }
     })
+
 
     const { isLoading, isError, error, data } = useQuery<Order, AxiosError>(
         ['order', { id: params.id }],
@@ -103,13 +111,8 @@ const OrderDetails = () => {
 
     return <>
         <Box maxWidth={800} style={{ margin: 'auto' }}>
-            {
-                (readonlyMode && params.id != 'new') ?
-                    <Button onClick={() => setReadonlyMode(false)}>Edytuj</Button>
-                    :
-                    <Button onClick={() => setReadonlyMode(true)}>Anuluj</Button>
-            }
-            <Paper>
+
+            <Paper sx={{ p: '10px' }}>
                 <Grid container>
                     <Grid item xs={6} style={{
                         textAlign: 'end'
@@ -206,6 +209,30 @@ const OrderDetails = () => {
                         />
                     </Grid>
                 </Grid>
+                <Box sx={{ margin: '20px', gap: '20px', display: 'flex', flexDirection: 'row-reverse' }}>
+
+                    {
+                        (readonlyMode && params.id != 'new') ?
+                            <Button color="primary" startIcon={<EditIcon />} variant="contained" type="submit" style={{ width: 120 }}
+                                onClick={() => setReadonlyMode(false)}>
+                                Edytuj
+                            </Button>
+                            :
+                            <>
+                                <Button color="primary" startIcon={<SaveIcon />} variant="contained" type="submit" style={{ width: 120 }}>
+                                    Zapisz
+                                </Button>
+                                <Button color="primary" startIcon={<ReplayIcon style={{ transform: 'rotate(-0.25turn)' }} />}
+                                    style={{ color: theme.palette.primary.main, width: 120 }} variant="outlined" type="reset" >
+                                    Reset
+                                </Button>
+                                <Button color="primary" startIcon={<CloseIcon style={{ transform: 'rotate(-0.25turn)' }} />}
+                                    style={{ color: theme.palette.primary.main, width: 120 }} variant="outlined" type="reset" onClick={() => setReadonlyMode(true)} >
+                                    Anuluj
+                                </Button>
+                            </>
+                    }
+                </Box>
             </Paper>
         </Box>
         {JSON.stringify(queryCompany.data)}

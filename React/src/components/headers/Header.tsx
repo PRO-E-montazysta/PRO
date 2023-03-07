@@ -10,6 +10,10 @@ import NavMenuButton from '../navMenuItem/NavMenuButton';
 import { removeToken } from '../../utils/token';
 import { v4 as uuidv4 } from 'uuid';
 
+
+import LogoutIcon from '@mui/icons-material/Logout';
+
+
 const CustomizedToolbar = styled(Toolbar)(({ theme }) => ({
   '@media (min-width: 600px)': {
     minHeight: 32,
@@ -61,13 +65,13 @@ const Header = () => {
           <Box component="img" sx={{ mr: 5 }} alt="Your logo." src={logo}></Box>
           {
             rootPageChildrens ? rootPageChildrens.map(page => {
-              return <NavMenuButton {...page} key={uuidv4()}/>
+              return <NavMenuButton {...page} key={uuidv4()} />
             })
               :
               null
           }
-          <IconButton sx={{marginLeft: 'auto'}} color="inherit" onClick={handleLogout}>
-            Log out
+          <IconButton sx={{ marginLeft: 'auto' }} color="inherit" onClick={handleLogout}>
+            <LogoutIcon />
           </IconButton>
           <Box></Box>
         </CustomizedToolbar>
