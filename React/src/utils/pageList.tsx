@@ -22,21 +22,25 @@ import Orders from "../pages/orders"
 import OrderDetails from "../pages/orders/OrderDetails"
 import WarehouseDetails from "../pages/warehouses/WarehouseDetails"
 import Warehouses from "../pages/warehouses"
+import Employees from "../pages/employees/Employees"
+import EmpDetails from "../pages/employees/employeesDetails/EmpDetails"
 
 export type PageProps = {
-    name: string
-    path: string
-    allowedRoles: Array<Role>
-    children?: Array<PageProps>
-    component?: JSX.Element
-    inNav: boolean
-}
+  name: string;
+  path: string;
+  allowedRoles: Array<Role>;
+  children?: Array<PageProps>;
+  component?: JSX.Element;
+  inNav: boolean;
+};
 
 const Root = () => {
-    return <>
-        <Header />
-        <Outlet />
+  return (
+    <>
+      <Header />
+      <Outlet />
     </>
+  )
 }
 
 
@@ -122,6 +126,20 @@ export const pageList: Array<PageProps> =
                     },
                     {
                         inNav: true,
+                        name: 'Pracownicy',
+                        path: '/employees',
+                        allowedRoles: [Role.FITTER, Role.SPECIALIST, Role.MANAGER, Role.SALES_REPRESENTATIVE, Role.FOREMAN, Role['*']],
+                        component: <Employees />,
+                      },
+                      {
+                        inNav: false,
+                        name: '',
+                        path: '/employees/:id',
+                        allowedRoles: [Role.MANAGER, Role['*']],
+                        component: <EmpDetails />,
+                      },
+                    {
+                        inNav: true,
                         name: 'Magazyny',
                         path: '/warehouses',
                         allowedRoles: [Role.MANAGER, Role.SALES_REPRESENTATIVE, Role.SPECIALIST, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER, Role.FITTER, Role.FOREMAN],
@@ -193,4 +211,3 @@ export const pageList: Array<PageProps> =
             component: <Error code={404} message={'Nie znaleziono strony'} description={'Zgubiłeś się ? Wróć na stronę główną!'} />
         },
     ]
-
