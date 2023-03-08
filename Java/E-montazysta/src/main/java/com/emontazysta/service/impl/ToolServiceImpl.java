@@ -3,7 +3,10 @@ package com.emontazysta.service.impl;
 import com.emontazysta.mapper.ToolMapper;
 import com.emontazysta.model.Tool;
 import com.emontazysta.model.dto.ToolDto;
+import com.emontazysta.model.dto.filterDto.ToolFilterDto;
+import com.emontazysta.model.searchcriteria.ToolSearchCriteria;
 import com.emontazysta.repository.ToolRepository;
+import com.emontazysta.repository.criteria.ToolCriteriaRepository;
 import com.emontazysta.service.ToolService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,9 @@ import java.util.stream.Collectors;
 public class ToolServiceImpl implements ToolService {
 
     private final ToolRepository repository;
+    
+    private final ToolCriteriaRepository toolCriteriaRepository;
+
     private final ToolMapper toolMapper;
 
     @Override
@@ -69,4 +75,9 @@ public class ToolServiceImpl implements ToolService {
 
         return toolMapper.toDto(repository.save(tool));
     }
+
+    public List<ToolFilterDto> getTools(ToolSearchCriteria toolSearchCriteria){
+        return toolCriteriaRepository.finadAllWithFilter(toolSearchCriteria);
+    }
+
 }

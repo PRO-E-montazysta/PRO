@@ -10,4 +10,5 @@ public interface AttachmentService {
     AttachmentDto getById(Long id);
     AttachmentDto add(AttachmentDto attachment);
     void delete(Long id);
+    AttachmentDto update(Long id, AttachmentDto attachment);
 }

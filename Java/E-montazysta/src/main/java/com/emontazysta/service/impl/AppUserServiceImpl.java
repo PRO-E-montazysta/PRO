@@ -2,7 +2,10 @@ package com.emontazysta.service.impl;
 
 import com.emontazysta.enums.Role;
 import com.emontazysta.model.AppUser;
+import com.emontazysta.model.dto.EmployeeDto;
+import com.emontazysta.model.searchcriteria.AppUserSearchCriteria;
 import com.emontazysta.repository.AppUserRepository;
+import com.emontazysta.repository.criteria.AppUserCriteriaRepository;
 import com.emontazysta.service.AppUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +19,6 @@ import javax.persistence.EntityNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -28,6 +30,7 @@ public class AppUserServiceImpl  implements AppUserService {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AppUserRepository appUserRepository;
+    private final AppUserCriteriaRepository  appUserCriteriaRepository;
 
     @Override
     public List<AppUser> getAll() {
@@ -119,5 +122,8 @@ public class AppUserServiceImpl  implements AppUserService {
         return user;
     }
 
-
+    @Override
+    public List <EmployeeDto> getFilteredUsers(AppUserSearchCriteria appUserSearchCriteria){
+    return appUserCriteriaRepository.findAllWithFilters(appUserSearchCriteria);
+    }
 }

@@ -6,7 +6,6 @@ import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
-@NoArgsConstructor
 public class FitterDto extends EmployeeDto {
 
 }

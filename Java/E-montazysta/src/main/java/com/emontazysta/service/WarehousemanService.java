@@ -10,4 +10,5 @@ public interface WarehousemanService {
     WarehousemanDto getById(Long id);
     WarehousemanDto add(WarehousemanDto warehouseman);
     void delete(Long id);
+    WarehousemanDto update(Long id, WarehousemanDto warehouseman);
 }

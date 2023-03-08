@@ -45,4 +45,15 @@ public class CommentServiceImpl implements CommentService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public CommentDto update(Long id, CommentDto commentDto) {
+        Comment updatedComment = commentMapper.toEntity(commentDto);
+        Comment comment = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        comment.setContent(updatedComment.getContent());
+        comment.setMessageCreator(updatedComment.getMessageCreator());
+        comment.setOrderStage(updatedComment.getOrderStage());
+        comment.setAttachments(updatedComment.getAttachments());
+        return commentMapper.toDto(repository.save(comment));
+    }
 }

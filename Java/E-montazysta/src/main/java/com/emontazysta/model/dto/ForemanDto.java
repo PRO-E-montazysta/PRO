@@ -8,7 +8,6 @@ import java.util.List;
 
 @Data
 @SuperBuilder
-@NoArgsConstructor
 public class ForemanDto extends FitterDto {
 
     private List<Long> ordersStagesList;

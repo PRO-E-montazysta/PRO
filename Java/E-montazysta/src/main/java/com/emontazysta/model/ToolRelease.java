@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 public class ToolRelease {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDateTime releaseTime;
     private LocalDateTime returnTime;
