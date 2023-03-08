@@ -1,7 +1,5 @@
 package com.emontazysta.controller;
 
-import com.emontazysta.mapper.EmploymentMapper;
-import com.emontazysta.model.Employment;
 import com.emontazysta.model.dto.EmploymentDto;
 import com.emontazysta.service.EmploymentService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 
@@ -27,21 +24,31 @@ public class EmploymentController {
     @GetMapping("/all")
     @Operation(description = "Allows to get all Employments.", security = @SecurityRequirement(name = "bearer-key"))
     public List<EmploymentDto> getAll() {
-        return employmentService.getAll().stream()
-                .map(EmploymentMapper::employmentToDto)
-                .collect(Collectors.toList());
+        return employmentService.getAll();
     }
 
     @GetMapping("/{id}")
     @Operation(description = "Allows to get Employment by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public EmploymentDto getById(@PathVariable Long id) {
-        return EmploymentMapper.employmentToDto(employmentService.getById(id));
+        return employmentService.getById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Employment.", security = @SecurityRequirement(name = "bearer-key"))
-    public void add(@Valid @RequestBody Employment employment) {
-        employmentService.add(employment);
+    public EmploymentDto add(@Valid @RequestBody EmploymentDto employment) {
+        return employmentService.add(employment);
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(description = "Allows to delete new Employment.", security = @SecurityRequirement(name = "bearer-key"))
+    public void delete(@PathVariable Long id) {
+        employmentService.delete(id);
+    }
+
+    @PutMapping("/{id}")
+    @Operation(description = "Allows to update new Employment.", security = @SecurityRequirement(name = "bearer-key"))
+    public EmploymentDto update(@PathVariable Long id, @Valid @RequestBody EmploymentDto employment) {
+        return employmentService.update(id, employment);
     }
 }

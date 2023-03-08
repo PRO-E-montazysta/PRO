@@ -8,7 +8,6 @@ import java.util.List;
 
 @Data
 @SuperBuilder
-@NoArgsConstructor
 public class SalesRepresentativeDto extends EmployeeDto {
 
     private List<Long> orders;

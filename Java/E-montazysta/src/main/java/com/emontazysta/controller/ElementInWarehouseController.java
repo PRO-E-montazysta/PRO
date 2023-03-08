@@ -45,4 +45,10 @@ public class ElementInWarehouseController {
     public void deleteElementInWarehouseById(@PathVariable Long id) {
         service.delete(id);
     }
+
+    @PutMapping("/{id}")
+    @Operation(description = "Allows to update element from warehouse by given Id.", security = @SecurityRequirement(name = "bearer-key"))
+    public ElementInWarehouseDto updateElementInWarehouse(@PathVariable Long id, @Valid @RequestBody ElementInWarehouseDto element) {
+        return service.update(id, element);
+    }
 }

@@ -20,18 +20,12 @@ import java.util.List;
 public class ToolType {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
 
-    @NotNull
-    private int inServiceCount;
-
     private int criticalNumber;
-
-    @NotNull
-    private int availableCount;
 
     @OneToMany(mappedBy = "toolType")
     private List<Attachment> attachments;

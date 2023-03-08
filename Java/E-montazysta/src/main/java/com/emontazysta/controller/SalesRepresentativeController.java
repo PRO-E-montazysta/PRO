@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -51,5 +52,11 @@ public class SalesRepresentativeController {
     @Operation(description = "Allows to delete Sales Representative by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public void deleteSalesRepresentativeById(@PathVariable Long id) {
         salesRepresentativeService.delete(id);
+    }
+
+    @PutMapping("/{id}")
+    @Operation(description = "Allows to update Sales Representative by given Id.", security = @SecurityRequirement(name = "bearer-key"))
+    public SalesRepresentativeDto updateSalesRepresentative(@PathVariable Long id, @Valid @RequestBody SalesRepresentativeDto salesRepresentative) {
+        return salesRepresentativeService.update(id, salesRepresentative);
     }
 }

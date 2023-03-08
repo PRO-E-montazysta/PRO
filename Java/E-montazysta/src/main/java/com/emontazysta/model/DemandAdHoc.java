@@ -21,7 +21,7 @@ import java.util.List;
 public class DemandAdHoc {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
     private String description;
