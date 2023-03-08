@@ -395,8 +395,8 @@ public class DataSeeding {
                 2, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>()));
         Element element3 = addElementFromModel(new Element(null, "Test Element 3", null, TypeOfUnit.LITER,
                 3.3f, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>()));
-        Element element4 = addElementFromModel(new Element(null, "Test Element 4", null, TypeOfUnit.LITER,
-                4.4f, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>()));
+        Element element4 = addElementFromModel(new Element(null, "Test Element 4", null, TypeOfUnit.PIECE,
+                1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>()));
 
         ElementEvent elementEvent1 = addElementEventFromModel(new ElementEvent(null, LocalDateTime.now(),
                 null, LocalDateTime.now(), "Test ElementEvent 1", TypeOfStatus.FINISHED, 1,
