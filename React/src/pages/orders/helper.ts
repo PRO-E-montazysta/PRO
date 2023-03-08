@@ -1,9 +1,8 @@
 import { FilterInputType } from '../../components/table/filter/TableFilter'
-import { Order, OrderPriority, OrderStatus } from '../../types/model/Order'
-import { SelectMenuItemProps } from '../../components/base/Multiselect'
+import { Order } from '../../types/model/Order'
 import { HeadCell } from '../../components/table/sort/SortedTableHeader'
 import { formatDate } from '../../helpers/format.helper'
-import { priorityName, priorityOptions, statusName, statusOptions } from '../../helpers/enum.helper'
+import { priorityName, statusName, statusOptions } from '../../helpers/enum.helper'
 
 import * as yup from 'yup'
 
