@@ -45,7 +45,7 @@ export const headCells: Array<HeadCell<Order>> = [
         label: 'Planowany czas zakończenia',
         disablePadding: false,
         numeric: false,
-        formatFn: (date: string) => (date ? date.slice(0, 16).replace('T', ' ') : ''),
+        formatFn: (date: string) => formatDate(date),
     },
     {
         type: 'string',
@@ -98,7 +98,7 @@ export const filterInitStructure: Array<FilterInputType> = [
 ]
 
 export const emptyForm = {
-    id: -1,
+    id: null,
     name: '',
     typeOfStatus: '',
     plannedStart: '',
@@ -106,20 +106,22 @@ export const emptyForm = {
     createdAt: '',
     editedAt: '',
     typeOfPriority: '',
-    companyId: -1,
-    managerId: -1,
-    foremanId: -1,
-    specialistId: -1,
-    salesRepresentativeId: -1,
-    locationId: -1,
-    clientId: -1,
+    companyId: null,
+    managerId: null,
+    foremanId: null,
+    specialistId: null,
+    salesRepresentativeId: null,
+    locationId: null,
+    clientId: null,
     orderStages: [],
     attachments: [],
 }
 
 export const validationSchema = yup.object({
     name: yup.string().min(3, 'Nazwa musi zaweirać co najmniej 3 znaki').required('Wprowadź nazwę'),
-    companyId: yup.number().min(0, 'Wybierz firmę'),
+    companyId: yup.number().typeError('Wybierz firmę'),
     typeOfStatus: yup.string().required('Wybierz status'),
     typeOfPriority: yup.string().required('Wybierz priorytet'),
+    plannedStart: yup.date().required('Wybierz datę'),
+    plannedEnd: yup.date().required('Wybierz datę'),
 })

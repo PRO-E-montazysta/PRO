@@ -23,9 +23,9 @@ const FormInput = (params: FormInputParams) => {
             onChange={formik.handleChange}
             id={id}
             name={id}
-
             error={formik.touched[id] && Boolean(formik.errors[id])}
             helperText={formik.touched[id] && formik.errors[id]}
+            autoComplete="off"
 
             style={{
                 display: 'block', margin: '8px', lineHeight: '32px',
