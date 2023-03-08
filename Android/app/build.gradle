@@ -51,4 +51,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.9'
 
     implementation 'androidx.preference:preference:1.2.0'
+    implementation 'com.auth0.android:jwtdecode:2.0.2'
+
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.21")
 }

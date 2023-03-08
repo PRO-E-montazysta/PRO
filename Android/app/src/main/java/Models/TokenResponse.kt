@@ -1,7 +1,7 @@
 package Models
 
 class TokenResponse {
-    private val token: String?;
+    private var token: String?;
 
     constructor(token: String?) {
         this.token = token

@@ -3,6 +3,7 @@ package Repositories
 
 import Helpers.HttpRequestHelper
 import Helpers.Interfaces.ISharedPreferencesHelper
+import Helpers.JwtTokenHelper
 import Models.LoginCredentials
 import Models.TokenResponse
 import Models.User
@@ -24,7 +25,7 @@ class AuthRepository : IAuthRepository, KoinComponent {
             rsp = token.getToken()
             sharedPreferencesHelper.set("lama", rsp)
             var storedToken = sharedPreferencesHelper.get("lama")
-
+            var roles = JwtTokenHelper.decode(storedToken)
             if(storedToken != null){
                 var secondResp = HttpRequestHelper.sendHttpGetRequest<LoginCredentials, List<User>>(
                     "https://dev.emontazysta.pl/api/v1/users/all",
