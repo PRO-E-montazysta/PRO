@@ -9,7 +9,7 @@ import kotlinx.coroutines.runBlocking
 class HttpRequestHelper {
     companion object {
         inline fun <T1, reified T2> sendHttpPostRequest(url: String, data: T1, token: String? = null): T2 {
-            return runBlocking {
+            var response = runBlocking {
                 var headers = emptyMap<String, String>();
                 if(token != null) {
                     headers = mapOf("Authorization" to "Bearer $token");
@@ -19,16 +19,18 @@ class HttpRequestHelper {
                     .jsonBody(Gson().toJson(data))
                     .awaitStringResponseResult()
                 result.fold(
-                        { data ->
-                            var i = 1
-                            return@runBlocking Gson().fromJson(data, T2::class.java) },
-                        { error -> throw Throwable(error) }
+                        { data -> return@runBlocking data},
+                        { error -> return@runBlocking "ERROR $error" }
                     )
             }
+            if (response.startsWith("ERROR")) {
+                throw Exception(response)
+            }
+            return Gson().fromJson(response, T2::class.java)
         }
 
         inline fun <T1, reified T2> sendHttpGetRequest(url: String, data: T1, token: String? = null): T2 {
-            return runBlocking {
+            var response = runBlocking {
                 var headers = emptyMap<String, String>();
                 if(token != null) {
                     headers = mapOf("Authorization" to "Bearer $token");
@@ -37,16 +39,18 @@ class HttpRequestHelper {
                     .header(headers)
                     .awaitStringResponseResult()
                 result.fold(
-                    { data ->
-                        var i = 1
-                        return@runBlocking Gson().fromJson(data, T2::class.java) },
-                    { error -> throw Throwable(error) }
+                    { data -> return@runBlocking data },
+                    { error -> return@runBlocking "ERROR $error" }
                 )
             }
+            if (response.startsWith("ERROR")) {
+                throw Exception(response)
+            }
+            return Gson().fromJson(response, T2::class.java)
         }
 
         inline fun <reified T> sendHttpPutRequest(url: String, data: T, token: String? = null) : T {
-            return runBlocking {
+            var response = runBlocking {
                 var headers = emptyMap<String, String>();
                 if(token != null) {
                     headers = mapOf("Authorization" to "Bearer $token");
@@ -56,16 +60,18 @@ class HttpRequestHelper {
                     .jsonBody(Gson().toJson(data))
                     .awaitStringResponseResult()
                 result.fold(
-                    { data ->
-                        var i = 1
-                        return@runBlocking Gson().fromJson(data, T::class.java) },
-                    { error -> throw Throwable(error) }
+                    { data -> return@runBlocking data },
+                    { error -> return@runBlocking "ERROR $error" }
                 )
             }
+            if (response.startsWith("ERROR")) {
+                throw Exception(response)
+            }
+            return Gson().fromJson(response, T::class.java)
         }
 
         inline fun sendHttpDeleteRequest(url: String, token: String? = null) : Boolean {
-            return runBlocking {
+            var response = runBlocking {
                 var headers = emptyMap<String, String>();
                 if(token != null) {
                     headers = mapOf("Authorization" to "Bearer $token");
@@ -74,12 +80,14 @@ class HttpRequestHelper {
                     .header(headers)
                     .awaitStringResponseResult()
                 result.fold(
-                    { data ->
-                        var i = 1
-                        return@runBlocking true },
-                    { error -> throw Throwable(error) }
+                    { _ -> return@runBlocking "ok" },
+                    { error -> return@runBlocking "ERROR $error" }
                 )
             }
+            if (response.startsWith("ERROR")) {
+                throw Exception(response)
+            }
+            return true
         }
     }
 }
