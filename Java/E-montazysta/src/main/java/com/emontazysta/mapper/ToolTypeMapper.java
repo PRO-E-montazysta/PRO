@@ -1,5 +1,6 @@
 package com.emontazysta.mapper;
 
+import com.emontazysta.enums.ToolStatus;
 import com.emontazysta.model.Attachment;
 import com.emontazysta.model.OrderStage;
 import com.emontazysta.model.Tool;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Component
@@ -24,12 +26,18 @@ public class ToolTypeMapper {
     private final ToolRepository toolRepository;
 
     public ToolTypeDto toDto(ToolType toolType){
+        AtomicInteger availableCount = new AtomicInteger();
+        toolType.getTools().forEach(tool -> {
+            if(tool.getStatus().equals(ToolStatus.AVAILABLE))
+                availableCount.addAndGet(1);
+        });
+
         return ToolTypeDto.builder()
                 .id(toolType.getId())
                 .name(toolType.getName())
-                .inServiceCount(toolType.getInServiceCount())
+                .inServiceCount(toolType.getTools().size())
                 .criticalNumber(toolType.getCriticalNumber())
-                .availableCount(toolType.getAvailableCount())
+                .availableCount(availableCount.intValue())
                 .attachments(toolType.getAttachments().stream().map(Attachment::getId).collect(Collectors.toList()))
                 .orderStages(toolType.getOrderStages().stream().map(OrderStage::getId).collect(Collectors.toList()))
                 .tools(toolType.getTools().stream().map(Tool::getId).collect(Collectors.toList()))
@@ -50,9 +58,7 @@ public class ToolTypeMapper {
         return ToolType.builder()
                 .id(toolTypeDto.getId())
                 .name(toolTypeDto.getName())
-                .inServiceCount(toolTypeDto.getInServiceCount())
                 .criticalNumber(toolTypeDto.getCriticalNumber())
-                .availableCount(toolTypeDto.getAvailableCount())
                 .attachments(attachmentList)
                 .orderStages(orderStageList)
                 .tools(toolList)

@@ -3,16 +3,18 @@ package com.emontazysta.model.dto;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 @SuperBuilder
-public class EmployeeDto {
+public class EmployeeDto extends AppUserDto {
 
     private Long id;
     private String firstName;
     private String lastName;
     private String username;
+    private String password;
     private String email;
     private String phone;
     private String pesel;
@@ -23,4 +25,8 @@ public class EmployeeDto {
     private List<Long> employments;
     private List<Long> attachments;
     private List<Long> toolEvents;
+    private String status;
+    private String unavailbilityDescription;
+    private LocalDateTime unavailableFrom;
+    private LocalDateTime unavailableTo;
 }

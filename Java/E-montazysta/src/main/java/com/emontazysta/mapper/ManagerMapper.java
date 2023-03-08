@@ -110,6 +110,7 @@ public class ManagerMapper {
         manager.setLastName(managerDto.getLastName());
         manager.setEmail(managerDto.getEmail());
         manager.setUsername(managerDto.getUsername());
+        manager.setPassword(managerDto.getPassword());
         manager.setPhone(managerDto.getPhone());
         manager.setPesel(managerDto.getPesel());
         manager.setUnavailabilities(unavailabilityList);

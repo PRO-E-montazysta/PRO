@@ -1,6 +1,7 @@
 package com.emontazysta.model.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
@@ -15,3 +16,4 @@ public class ForemanDto extends FitterDto {
     private List<Long> elementReturnReleases;
     private List<Long> demandsAdHocs;
 }
+

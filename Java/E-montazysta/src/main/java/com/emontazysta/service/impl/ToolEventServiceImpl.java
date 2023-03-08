@@ -18,24 +18,44 @@ public class ToolEventServiceImpl implements ToolEventService {
     private final ToolEventRepository repository;
     private final ToolEventMapper toolEventMapper;
 
+    @Override
     public List<ToolEventDto> getAll() {
         return repository.findAll().stream()
                 .map(toolEventMapper::toDto)
                 .collect(Collectors.toList());
     }
 
+    @Override
     public ToolEventDto getById(Long id) {
         ToolEvent toolEvent = repository.findById(id).orElseThrow(() -> new RuntimeException("Tool event with id " + id + " not found!"));
         return toolEventMapper.toDto(toolEvent);
 
     }
 
+    @Override
     public ToolEventDto add(ToolEventDto toolEventDto) {
         ToolEvent toolEvent = toolEventMapper.toEntity(toolEventDto);
         return toolEventMapper.toDto(repository.save(toolEvent));
     }
 
+    @Override
     public void delete(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public ToolEventDto update(Long id, ToolEventDto toolEventDto) {
+        ToolEvent updatedToolEvent = toolEventMapper.toEntity(toolEventDto);
+        ToolEvent toolEvent = repository.findById(id).orElseThrow(() -> new RuntimeException("Tool event with id " + id + " not found!"));
+        toolEvent.setEventDate(updatedToolEvent.getEventDate());
+        toolEvent.setMovingDate(updatedToolEvent.getMovingDate());
+        toolEvent.setCompletionDate(updatedToolEvent.getCompletionDate());
+        toolEvent.setDescription(updatedToolEvent.getDescription());
+        toolEvent.setStatus(updatedToolEvent.getStatus());
+        toolEvent.setUpdatedBy(updatedToolEvent.getUpdatedBy());
+        toolEvent.setAcceptedBy(updatedToolEvent.getAcceptedBy());
+        toolEvent.setTool(updatedToolEvent.getTool());
+        toolEvent.setAttachments(updatedToolEvent.getAttachments());
+        return toolEventMapper.toDto(repository.save(toolEvent));
     }
 }

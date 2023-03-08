@@ -42,4 +42,27 @@ public class WarehouseManagerServiceImpl implements WarehouseManagerService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public WarehouseManagerDto update(Long id, WarehouseManagerDto warehouseManagerDto) {
+        WarehouseManager updatedWarehouseManager = warehouseManagerMapper.toEntity(warehouseManagerDto);
+        WarehouseManager warehouseManager = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        warehouseManager.setFirstName(updatedWarehouseManager.getFirstName());
+        warehouseManager.setLastName(updatedWarehouseManager.getLastName());
+        warehouseManager.setEmail(updatedWarehouseManager.getEmail());
+        warehouseManager.setUsername(updatedWarehouseManager.getUsername());
+        warehouseManager.setPhone(updatedWarehouseManager.getPhone());
+        warehouseManager.setPesel(updatedWarehouseManager.getPesel());
+        warehouseManager.setUnavailabilities(updatedWarehouseManager.getUnavailabilities());
+        warehouseManager.setNotifications(updatedWarehouseManager.getNotifications());
+        warehouseManager.setEmployeeComments(updatedWarehouseManager.getEmployeeComments());
+        warehouseManager.setElementEvents(updatedWarehouseManager.getElementEvents());
+        warehouseManager.setEmployments(updatedWarehouseManager.getEmployments());
+        warehouseManager.setAttachments(updatedWarehouseManager.getAttachments());
+        warehouseManager.setToolEvents(updatedWarehouseManager.getToolEvents());
+        warehouseManager.setReleasedTools(updatedWarehouseManager.getReleasedTools());
+        warehouseManager.setElementReturnReleases(updatedWarehouseManager.getElementReturnReleases());
+        warehouseManager.setDemandAdHocs(updatedWarehouseManager.getDemandAdHocs());
+        return warehouseManagerMapper.toDto(repository.save(warehouseManager));
+    }
 }

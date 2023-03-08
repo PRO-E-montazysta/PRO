@@ -3,8 +3,7 @@ import { makeServiceCall, PayloadProps } from "./utils.api";
 
 
 
-
-export const getAllOrders = (payload: PayloadProps) => {
+export const getFilteredOrders = (payload: PayloadProps) => {
     return makeServiceCall('/orders/filter', 'GET', { ...payload });
 }
 

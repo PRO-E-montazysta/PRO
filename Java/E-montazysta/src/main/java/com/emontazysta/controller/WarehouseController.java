@@ -1,12 +1,15 @@
 package com.emontazysta.controller;
 
 import com.emontazysta.model.dto.WarehouseDto;
+import com.emontazysta.model.dto.WarehouseLocationDto;
+import com.emontazysta.model.searchcriteria.WarehouseSearchCriteria;
 import com.emontazysta.service.WarehouseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -52,4 +55,8 @@ public class WarehouseController {
                                 @Valid @RequestBody WarehouseDto warehouse) {
         return warehouseService.update(id, warehouse);
     }
+    @GetMapping("/filter")
+    @Operation(description = "Allows to get filtered warehouses.", security = @SecurityRequirement(name = "bearer-key"))
+    public ResponseEntity<List<WarehouseLocationDto>> getfilteredTools(WarehouseSearchCriteria warehouseSearchCriteria){
+        return new ResponseEntity<>(warehouseService.findAllWithFilters(warehouseSearchCriteria),HttpStatus.OK);}
 }
