@@ -4,6 +4,8 @@ import { CSSProperties, HTMLInputTypeAttribute } from "react";
 import { getInputs } from "../../../helpers/filter.helper";
 import { theme } from "../../../themes/baseTheme";
 import MultipleSelectChip, { SelectMenuItemProps } from "../../base/Multiselect";
+import SearchIcon from '@mui/icons-material/Search';
+import ReplayIcon from '@mui/icons-material/Replay';
 
 import './style.less'
 
@@ -99,10 +101,10 @@ const TableFilter = (props: FilterFormProps) => {
                         display: 'flex',
                         flexDirection: 'column'
                     }}>
-                        <Button color="primary" style={submitBtnStyle} variant="contained" type="submit">
+                        <Button color="primary" startIcon={<SearchIcon />} style={submitBtnStyle} variant="contained" type="submit">
                             Szukaj
                         </Button>
-                        <Button color="primary" style={{ marginTop: '10px', color: theme.palette.primary.main, ...resetBtnStyle }} variant="outlined" type="reset" >
+                        <Button color="primary" startIcon={<ReplayIcon style={{transform: 'rotate(-0.25turn)'}} />} style={{ marginTop: '10px', color: theme.palette.primary.main, ...resetBtnStyle }} variant="outlined" type="reset" >
                             Reset
                         </Button>
                     </Box>

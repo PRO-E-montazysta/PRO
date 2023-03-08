@@ -8,7 +8,15 @@ export type Order = {
     createdAt: Date,
     editedAt: Date,
     typeOfPriority: string
+    companyId: number,
+    managerId: number,
+    foremanId: number,
+    specialistId: number,
+    salesRepresentativeId: number,
+    locationId: number,
+    clientId: number,
     orderStages: Array<number>
+    attachments: Array<number>
 }
 
 
