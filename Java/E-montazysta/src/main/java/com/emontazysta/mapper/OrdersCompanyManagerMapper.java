@@ -4,27 +4,14 @@ import com.emontazysta.model.Attachment;
 import com.emontazysta.model.OrderStage;
 import com.emontazysta.model.Orders;
 import com.emontazysta.model.dto.OrdersCompanyManagerDto;
-import com.emontazysta.model.dto.OrdersDto;
-import com.emontazysta.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class OrdersCompanyManagerMapper {
-    private final CompanyRepository companyRepository;
-    private final ManagerRepository managerRepository;
-    private final ForemanRepository foremanRepository;
-    private final SpecialistRepository specialistRepository;
-    private final SalesRepresentativeRepository salesRepresentativeRepository;
-    private final LocationRepository locationRepository;
-    private final ClientRepository clientRepository;
-    private final OrderStageRepository orderStageRepository;
-    private final AttachmentRepository attachmentRepository;
 
     public OrdersCompanyManagerDto toDto (Orders orders) {
         return OrdersCompanyManagerDto.builder()

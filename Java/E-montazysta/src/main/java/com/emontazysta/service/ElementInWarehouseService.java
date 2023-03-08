@@ -10,4 +10,5 @@ public interface ElementInWarehouseService {
     ElementInWarehouseDto getById(Long id);
     ElementInWarehouseDto add(ElementInWarehouseDto elementInWarehouse);
     void delete(Long id);
+    ElementInWarehouseDto update(Long id, ElementInWarehouseDto elementInWarehouse);
 }

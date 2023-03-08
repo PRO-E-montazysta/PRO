@@ -2,10 +2,14 @@ package com.emontazysta.mapper;
 
 import com.emontazysta.model.AppUser;
 import com.emontazysta.model.dto.AppUserDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component
+@RequiredArgsConstructor
 public class UserMapper {
 
-    public static AppUserDto toDto(AppUser user) {
+    public AppUserDto toDto(AppUser user) {
         return AppUserDto.builder()
                 .id(user.getId())
                 .firstName(user.getFirstName())
