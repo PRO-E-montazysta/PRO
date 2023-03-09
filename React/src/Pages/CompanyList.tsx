@@ -1,5 +1,7 @@
+import CloudAdmin from "../components/CloudAdmin/CloudAdmin";
+
 const CompanyList = () => {
-    return <div>Company List</div>
+    return <CloudAdmin />
 }
 
 export default CompanyList;

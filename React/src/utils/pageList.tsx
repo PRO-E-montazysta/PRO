@@ -11,20 +11,18 @@ import WarehousemenHomePage from "../pages/ForemenHomePage"
 import HomePageFitter from "../pages/FittersHomePage"
 import DeliveryReceipt from "../pages/DeliveryReceipt"
 import Demand from "../pages/Demand"
-import Issues from "../components/issues/Issues"
 
 import RetrieveReturn from '../pages/RetrieveReturn'
 import Schedules from '../pages/Schedules'
 import LoginPage from '../pages/LoginPage'
 import { Role } from '../types/roleEnum'
 import Error from '../components/error/Error'
-import Orders from '../pages/orders'
 import OrderDetails from '../pages/orders/OrderDetails'
 
-import ToolTypes from '../pages/toolTypes'
-import ToolTypeDetails from '../pages/toolTypes/ToolTypeDetails'
 import WarehouseDetails from '../pages/warehouses/WarehouseDetails'
 import Warehouses from '../pages/warehouses'
+import Issues from "../components/Issues/Issues"
+import Orders from "../pages/Orders"
 
 export type PageProps = {
     name: string
