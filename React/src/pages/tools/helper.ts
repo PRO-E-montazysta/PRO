@@ -67,7 +67,7 @@ export const filterInitStructure: Array<FilterInputType> = [
         // options: formatArrayToOptions('id', (x: Warehouse) => x.name, queryWarehouse.data),
         // queryObject: Warehouse,
         // queryValueName: 'warehouse-list',
-        // queryApiCall: getAllWarehouses
+        queryApiCall: getAllWarehouses
     },
     {
         id: 'toolType_Id',
