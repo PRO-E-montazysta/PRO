@@ -29,6 +29,9 @@ export type FilterInputType = {
     value: string | number | Date | Array<any>
     typeValue?: 'string' | 'number' | 'date' | 'Array'
     options?: Array<SelectMenuItemProps>
+    queryObject?: any
+    queryValueName?: string
+    queryApiCall?: () => Promise<any>
     // validations?: Array<Validation>
 
     style?: CSSProperties

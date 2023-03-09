@@ -9,8 +9,8 @@ import { getAllWarehouses } from "../../api/warehouse.api";
 import { getAllToolTypes } from "../../api/toolType.api";
 import { formatArrayToOptions } from "../../helpers/format.helper";
 
-const queryWarehouse = useQuery<Array<Warehouse>, AxiosError>(['warehouse-list'], getAllWarehouses)
-const queryToolType = useQuery<Array<ToolType>, AxiosError>(['tooltype-list'], getAllToolTypes)
+// const queryWarehouse = useQuery<Array<any>, AxiosError>(['warehouse-list'], getAllWarehouses)
+// const queryToolType = useQuery<Array<ToolType>, AxiosError>(['tooltype-list'], getAllToolTypes)
 
 export const headCells: Array<HeadCell<Tool>> = [
     {
@@ -64,7 +64,10 @@ export const filterInitStructure: Array<FilterInputType> = [
         label: 'Magazyn',
         inputType: 'multiselect',
         typeValue: 'Array',
-        options: formatArrayToOptions('id', (x: Warehouse) => x.name, queryWarehouse.data)
+        // options: formatArrayToOptions('id', (x: Warehouse) => x.name, queryWarehouse.data),
+        // queryObject: Warehouse,
+        // queryValueName: 'warehouse-list',
+        // queryApiCall: getAllWarehouses
     },
     {
         id: 'toolType_Id',
@@ -72,7 +75,7 @@ export const filterInitStructure: Array<FilterInputType> = [
         label: 'Typ narzędzia',
         inputType: 'multiselect',
         typeValue: 'Array',
-        options: formatArrayToOptions('id', (x: ToolType) => x.name, queryToolType.data)
+        // options: formatArrayToOptions('id', (x: ToolType) => x.name, queryToolType.data)
     }
 ]
 
