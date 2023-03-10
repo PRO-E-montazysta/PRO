@@ -24,7 +24,6 @@ export const getBaseUrl = (): string => {
 
 
 export const makeServiceCall = async (url: string, httpMethod: Method, payload: PayloadProps) => {
-  console.log(payload);
   const { body, queryParams } = payload
   const token = getToken();
 

@@ -1,6 +1,6 @@
 import { Box, Button, Paper, TextField } from "@mui/material";
 import { useFormik } from "formik";
-import { CSSProperties, HTMLInputTypeAttribute, useEffect, useState } from "react";
+import { CSSProperties, HTMLInputTypeAttribute } from "react";
 import { getInputs } from "../../../helpers/filter.helper";
 import { theme } from "../../../themes/baseTheme";
 import MultipleSelectChip, { SelectMenuItemProps } from "../../base/Multiselect";
@@ -8,9 +8,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import ReplayIcon from '@mui/icons-material/Replay';
 
 import './style.less'
-import { useQuery } from "react-query";
-import { AxiosError } from "axios";
-import { formatArrayToOptions } from "../../../helpers/format.helper";
 
 
 export type FilterFormProps = {
@@ -32,9 +29,6 @@ export type FilterInputType = {
     value: string | number | Date | Array<any>
     typeValue?: 'string' | 'number' | 'date' | 'Array'
     options?: Array<SelectMenuItemProps>
-    queryObject?: any
-    queryValueName?: string
-    queryApiCall?: () => Promise<any>
     // validations?: Array<Validation>
 
     style?: CSSProperties
@@ -43,9 +37,7 @@ export type FilterInputType = {
 
 
 const TableFilter = (props: FilterFormProps) => {
-    const { filterStructure, onSearch, onResetFilter, structureStyle, resetBtnStyle, submitBtnStyle} = props
-    const [alterOptions, setAlterOptions] = useState<Array<SelectMenuItemProps>>([])
-
+    const { filterStructure, onSearch, onResetFilter, structureStyle, resetBtnStyle, submitBtnStyle } = props
     const { initialValues, inputs } = getInputs(filterStructure)
 
     const formik = useFormik({
@@ -54,13 +46,6 @@ const TableFilter = (props: FilterFormProps) => {
         onSubmit: onSearch,
         onReset: onResetFilter
     })
-    
-    useEffect(() => {
-        if(queryApiCall) {
-            const query = useQuery<Array<any>, AxiosError>([''], queryApiCall);
-            setAlterOptions(formatArrayToOptions('id', (x: any) => x.name, query.data))
-        }
-    }, []);
 
 
     return <div>
