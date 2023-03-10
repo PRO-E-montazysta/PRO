@@ -207,6 +207,8 @@ const ToolTypeDetails = () => {
                                 >
                                     <FormLabel label="Nazwa typu narzędzia" formik={formik} id={'name'} />
                                     <FormLabel label="Liczba krytyczna" formik={formik} id={'criticalNumber'} />
+                                    <FormLabel label="Liczba narzędzi" formik={formik} id={'inServiceCount'} />
+                                    <FormLabel label="Liczba dostępnych" formik={formik} id={'availableCount'} />
                                 </Grid>
                                 <Divider
                                     orientation="vertical"
@@ -218,6 +220,8 @@ const ToolTypeDetails = () => {
                                 <Grid item xs={6}>
                                     <FormInput id={'name'} formik={formik} readonly={readonlyMode} firstChild />
                                     <FormInput id={'criticalNumber'} formik={formik} readonly={readonlyMode} />
+                                    <FormInput id={'inServiceCount'} formik={formik} readonly/>
+                                    <FormInput id={'availableCount'} formik={formik} readonly />
                                 </Grid>
                             </Grid>
                             <Box sx={{ margin: '20px', gap: '20px', display: 'flex', flexDirection: 'row-reverse' }}>
