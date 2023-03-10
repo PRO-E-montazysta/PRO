@@ -56,9 +56,8 @@ export default function SortedTable<T>(props: SortedTableProps<T>) {
     const [rowsPerPage, setRowsPerPage] = useState(10)
 
     useEffect(() => {
-        console.log(query.data)
         setOrderBy(initOrderBy)
-    }, [])
+    }, [initOrderBy])
 
     const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof T | undefined) => {
         const isAsc = orderBy === property && order === 'asc'
