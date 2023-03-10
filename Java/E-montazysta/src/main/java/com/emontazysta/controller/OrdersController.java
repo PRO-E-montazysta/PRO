@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
@@ -59,7 +60,7 @@ public class OrdersController {
 
     @GetMapping("/filter")
     @Operation(description = "Return filtered Orders by given parameters.", security = @SecurityRequirement(name = "bearer-key"))
-    public ResponseEntity<List<OrdersCompanyManagerDto>> filterOrders(OrdersSearchCriteria ordersSearchCriteria){
-        return new ResponseEntity<>(orderService.getFilteredOrders(ordersSearchCriteria), HttpStatus.OK);
+    public ResponseEntity<List<OrdersCompanyManagerDto>> filterOrders(OrdersSearchCriteria ordersSearchCriteria, Principal principal){
+        return new ResponseEntity<>(orderService.getFilteredOrders(ordersSearchCriteria, principal), HttpStatus.OK);
     }
 }
