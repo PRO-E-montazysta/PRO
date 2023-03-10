@@ -15,7 +15,7 @@ export const headCells: Array<HeadCell<ToolType>> = [
     {
         type: 'string',
         id: 'inServiceCount',
-        label: 'Liczba w serwisie',
+        label: 'Liczba narzędzi',
         disablePadding: false,
         numeric: true,
     },
