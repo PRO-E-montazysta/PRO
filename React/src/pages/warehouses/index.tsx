@@ -7,7 +7,7 @@ import { getFilteredWarehouses } from "../../api/warehouse.api";
 import { filterInitStructure, headCells } from "./helper";
 import { useNavigate } from "react-router-dom";
 import { getFilterParams, setNewFilterValues } from "../../helpers/filter.helper";
-import { Warehouse } from "../../types/model/Warehouse";
+import { WarehouseFilterDto } from "../../types/model/Warehouse";
 
 
 
@@ -17,7 +17,7 @@ const Warehouses = () => {
     const [filterParams, setFilterParams] = useState(getFilterParams(filterInitStructure))
     const navigation = useNavigate();
 
-    const queryWarehouses = useQuery<Array<Warehouse>, AxiosError>(
+    const queryWarehouses = useQuery<Array<WarehouseFilterDto>, AxiosError>(
         ['warehouses', filterParams],
         async () => getFilteredWarehouses({ queryParams: filterParams })
     )
