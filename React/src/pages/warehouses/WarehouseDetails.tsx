@@ -10,7 +10,6 @@ import { deleteWarehouse, getWarehouseDetails, postWarehouse, updateWarehouse } 
 import { formatArrayToOptions, formatLocation } from '../../helpers/format.helper'
 import { theme } from '../../themes/baseTheme'
 import { Company } from '../../types/model/Company'
-import { Order } from '../../types/model/Order'
 import { getAllLocations } from '../../api/location.api'
 
 import SaveIcon from '@mui/icons-material/Save'
@@ -23,6 +22,7 @@ import FormInput from '../../components/form/FormInput'
 import FormLabel from '../../components/form/FormLabel'
 import FormSelect from '../../components/form/FormSelect'
 import DialogInfo, { DialogInfoParams } from '../../components/dialogInfo/DialogInfo'
+import { Warehouse } from '../../types/model/Warehouse'
 
 const WarehouseDetails = () => {
     const params = useParams()
@@ -132,7 +132,7 @@ const WarehouseDetails = () => {
         },
     })
 
-    const queryData = useQuery<Order, AxiosError>(
+    const queryData = useQuery<Warehouse, AxiosError>(
         ['warehouse', { id: params.id }],
         async () => getWarehouseDetails(params.id && params.id != 'new' ? params.id : ''),
         {
