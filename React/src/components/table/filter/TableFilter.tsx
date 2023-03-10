@@ -91,6 +91,7 @@ const TableFilter = (props: FilterFormProps) => {
                                             shrink: true
                                         }}
                                         className={'filter-form'}
+                                        autoComplete='off'
                                     />
                             }
                         })
