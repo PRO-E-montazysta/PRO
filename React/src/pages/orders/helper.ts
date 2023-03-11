@@ -1,8 +1,10 @@
-import { FilterInputType } from "../../components/table/filter/TableFilter";
-import { Order, OrderPriority, OrderStatus } from "../../types/model/Order";
-import { SelectMenuItemProps } from "../../components/base/Multiselect";
-import { HeadCell } from "../../components/table/sort/SortedTableHeader";
+import { FilterInputType } from '../../components/table/filter/TableFilter'
+import { Order } from '../../types/model/Order'
+import { HeadCell } from '../../components/table/sort/SortedTableHeader'
+import { formatDate } from '../../helpers/format.helper'
+import { priorityName, statusName, statusOptions } from '../../helpers/enum.helper'
 
+import * as yup from 'yup'
 
 export const headCells: Array<HeadCell<Order>> = [
     {
@@ -18,7 +20,7 @@ export const headCells: Array<HeadCell<Order>> = [
         label: 'Czas utworzenia',
         disablePadding: false,
         numeric: false,
-        formatFn: (date: string) => date ? date.slice(0, 16).replace('T', ' ') : ''
+        formatFn: (date: string) => (date ? formatDate(date) : ''),
     },
     {
         type: 'string',
@@ -26,7 +28,7 @@ export const headCells: Array<HeadCell<Order>> = [
         label: 'Priorytet',
         disablePadding: false,
         numeric: false,
-        formatFn: (status: string) => Object.values(OrderPriority)[Object.keys(OrderPriority).indexOf(status)],
+        formatFn: (status: string) => priorityName(status),
     },
     {
         type: 'string',
@@ -34,7 +36,7 @@ export const headCells: Array<HeadCell<Order>> = [
         label: 'Planowany czas rozpoczęcia',
         disablePadding: false,
         numeric: false,
-        formatFn: (date: string) => date ? date.slice(0, 16).replace('T', ' ') : ''
+        formatFn: (date: string) => (date ? formatDate(date) : ''),
     },
     {
         type: 'string',
@@ -42,7 +44,7 @@ export const headCells: Array<HeadCell<Order>> = [
         label: 'Planowany czas zakończenia',
         disablePadding: false,
         numeric: false,
-        formatFn: (date: string) => date ? date.slice(0, 16).replace('T', ' ') : ''
+        formatFn: (date: string) => formatDate(date),
     },
     {
         type: 'string',
@@ -50,7 +52,7 @@ export const headCells: Array<HeadCell<Order>> = [
         label: 'Status',
         disablePadding: false,
         numeric: false,
-        formatFn: (status: string) => Object.values(OrderStatus)[Object.keys(OrderStatus).indexOf(status)]
+        formatFn: (status: string) => statusName(status),
     },
     {
         type: 'string',
@@ -58,11 +60,9 @@ export const headCells: Array<HeadCell<Order>> = [
         label: 'Liczba etapów',
         disablePadding: false,
         numeric: false,
-        formatFn: (orderStages) => orderStages.length
+        formatFn: (orderStages) => orderStages.length,
     },
 ]
-
-
 
 export const filterInitStructure: Array<FilterInputType> = [
     {
@@ -70,7 +70,7 @@ export const filterInitStructure: Array<FilterInputType> = [
         value: '',
         label: 'Nazwa',
         inputType: 'text',
-        typeValue: 'string'
+        typeValue: 'string',
     },
     {
         id: 'createdAtMin',
@@ -92,12 +92,35 @@ export const filterInitStructure: Array<FilterInputType> = [
         label: 'Status',
         inputType: 'multiselect',
         typeValue: 'Array',
-        options: Object.entries(OrderStatus).map((s): SelectMenuItemProps => {
-            return {
-                key: s[0],
-                value: s[1]
-            }
-        })
-    }
+        options: statusOptions(),
+    },
 ]
 
+export const emptyForm = {
+    id: null,
+    name: '',
+    typeOfStatus: '',
+    plannedStart: '',
+    plannedEnd: '',
+    createdAt: '',
+    editedAt: '',
+    typeOfPriority: '',
+    companyId: null,
+    managerId: null,
+    foremanId: null,
+    specialistId: null,
+    salesRepresentativeId: null,
+    locationId: null,
+    clientId: null,
+    orderStages: [],
+    attachments: [],
+}
+
+export const validationSchema = yup.object({
+    name: yup.string().min(3, 'Nazwa musi zaweirać co najmniej 3 znaki').required('Wprowadź nazwę'),
+    companyId: yup.number().typeError('Wybierz firmę'),
+    typeOfStatus: yup.string().required('Wybierz status'),
+    typeOfPriority: yup.string().required('Wybierz priorytet'),
+    plannedStart: yup.date().required('Wybierz datę'),
+    plannedEnd: yup.date().required('Wybierz datę'),
+})

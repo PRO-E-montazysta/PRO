@@ -37,6 +37,7 @@ public class DataSeeding {
     private final ElementInWarehouseService elementInWarehouseService;
     private final ElementReturnReleaseService elementReturnReleaseService;
     private final AppUserService appUserService;
+    private final EmploymentService employmentService;
     private final UnavailabilityService unavailabilityService;
 
     private final CompanyMapper companyMapper;
@@ -57,6 +58,11 @@ public class DataSeeding {
     private final ElementInWarehouseMapper elementInWarehouseMapper;
     private final ElementReturnReleaseMapper elementReturnReleaseMapper;
     private final UnavailabilityMapper unavailabilityMapper;
+    private final EmploymentMapper employmentMapper;
+
+    private Employment addEmploymentFromModel(Employment employment) {
+        return employmentMapper.toEntity(employmentService.add(employmentMapper.toDto(employment)));
+    }
 
     private Company addCompanyFromModel(Company company) {
         return companyMapper.toEntity(companyService.add(companyMapper.toDto(company)));
@@ -143,6 +149,10 @@ public class DataSeeding {
                 "password", "fitter2", null, Set.of(Role.FITTER), "fitter2Phone",
                 "fitter2Pesel", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        Fitter fitter3 = new Fitter(null, "Test Fitter 3", "Test Fitter 3", "fitter1@ema.il",
+                "password", "fitter3", null, Set.of(Role.FITTER), "fitter3Phone",
+                "fitter3Pesel", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         Foreman foreman1 = new Foreman(null, "Test Foreman 1", "Test Foreman 1", "foreman1@ema.il",
                 "password", "foreman1", null, Set.of(Role.FOREMAN), "foreman1Phone",
                 "foreman1Pesel", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
@@ -207,7 +217,7 @@ public class DataSeeding {
                 "manager2Phone", "manager2Pesel", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-        List<AppUser> appUserList = List.of(appUser, fitter1, fitter2, foreman1, foreman2, warehouseman1, warehouseman2,
+        List<AppUser> appUserList = List.of(appUser, fitter1, fitter2, fitter3, foreman1, foreman2, warehouseman1, warehouseman2,
                 warehouseManager1, warehouseManager2, specialist1, specialist2, salesRepresentative1, salesRepresentative2,
                 manager1, manager2);
         appUserList.forEach(appUserService::add);
@@ -225,23 +235,23 @@ public class DataSeeding {
                 CompanyStatus.DISABLED, "Closed company", new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>()));
 
-        Employment employment1 = new Employment(null, LocalDate.now(), null, company1, fitter1);
-        Employment employment2 = new Employment(null, LocalDate.now(), null, company1, fitter2);
-        Employment employment3 = new Employment(null, LocalDate.now(), null, company1, foreman1);
-        Employment employment4 = new Employment(null, LocalDate.now(), null, company1, foreman2);
-        Employment employment5 = new Employment(null, LocalDate.now(), null, company1, warehouseman1);
-        Employment employment6 = new Employment(null, LocalDate.now(), null, company1, warehouseman2);
-        Employment employment7 = new Employment(null, LocalDate.now(), null, company1, warehouseManager1);
-        Employment employment8 = new Employment(null, LocalDate.now(), null, company1, warehouseManager2);
-        Employment employment9 = new Employment(null, LocalDate.now(), null, company1, specialist1);
-        Employment employment10 = new Employment(null, LocalDate.now(), null, company1, specialist2);
-        Employment employment11 = new Employment(null, LocalDate.now(), null, company1, salesRepresentative1);
-        Employment employment12 = new Employment(null, LocalDate.now(), null, company1, salesRepresentative2);
-        Employment employment13 = new Employment(null, LocalDate.now(), null, company1, manager1);
-        Employment employment14 = new Employment(null, LocalDate.now(), null, company1, manager2);
+        Employment employment1 = addEmploymentFromModel(new Employment(null, LocalDate.now(), null, company1, fitter1));
+        Employment employment2 = addEmploymentFromModel(new Employment(null, LocalDate.now(), null, company1, fitter2));
+        Employment employment3 = addEmploymentFromModel(new Employment(null, LocalDate.now(), null, company1, foreman1));
+        Employment employment4 = addEmploymentFromModel(new Employment(null, LocalDate.now(), null, company1, foreman2));
+        Employment employment5 = addEmploymentFromModel(new Employment(null, LocalDate.now(), null, company1, warehouseman1));
+        Employment employment6 = addEmploymentFromModel(new Employment(null, LocalDate.now(), null, company1, warehouseman2));
+        Employment employment7 = addEmploymentFromModel(new Employment(null, LocalDate.now(), null, company1, warehouseManager1));
+        Employment employment8 = addEmploymentFromModel(new Employment(null, LocalDate.now(), null, company1, warehouseManager2));
+        Employment employment9 = addEmploymentFromModel(new Employment(null, LocalDate.now(), null, company1, specialist1));
+        Employment employment10 = addEmploymentFromModel(new Employment(null, LocalDate.now(), null, company1, specialist2));
+        Employment employment11 = addEmploymentFromModel(new Employment(null, LocalDate.now(), null, company1, salesRepresentative1));
+        Employment employment12 = addEmploymentFromModel(new Employment(null, LocalDate.now(), null, company1, salesRepresentative2));
+        Employment employment13 = addEmploymentFromModel(new Employment(null, LocalDate.now(), null, company1, manager1));
+        Employment employment14 = addEmploymentFromModel(new Employment(null, LocalDate.now(), null, company1, manager2));
 
         Unavailability unavailability1 = addUnavailabilityFromModel(new Unavailability(null,
-                TypeOfUnavailability.TYPE1, "Test Unavailability 1", LocalDateTime.parse( "2023-03-05T12:00:00.000"), LocalDateTime.parse("2023-03-05T16:00:00.000"), fitter1, manager1));
+                TypeOfUnavailability.TYPE1, "Test Unavailability 1", LocalDateTime.parse( "2023-03-06T12:00:00.000"), LocalDateTime.parse("2023-03-06T23:00:00.000"), fitter1, manager1));
         Unavailability unavailability2 = addUnavailabilityFromModel(new Unavailability(null,
                 TypeOfUnavailability.TYPE1,"Test Unavailability 2",LocalDateTime.parse( "2023-03-05T12:00:00.000"),LocalDateTime.parse("2023-03-05T16:00:00.000"), fitter2, manager1));
 
@@ -395,8 +405,8 @@ public class DataSeeding {
                 2, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>()));
         Element element3 = addElementFromModel(new Element(null, "Test Element 3", null, TypeOfUnit.LITER,
                 3.3f, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>()));
-        Element element4 = addElementFromModel(new Element(null, "Test Element 4", null, TypeOfUnit.LITER,
-                4.4f, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>()));
+        Element element4 = addElementFromModel(new Element(null, "Test Element 4", null, TypeOfUnit.PIECE,
+                1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>()));
 
         ElementEvent elementEvent1 = addElementEventFromModel(new ElementEvent(null, LocalDateTime.now(),
                 null, LocalDateTime.now(), "Test ElementEvent 1", TypeOfStatus.FINISHED, 1,

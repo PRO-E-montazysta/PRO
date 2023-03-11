@@ -12,15 +12,20 @@ import { theme } from './themes/baseTheme';
 const browserRouterMapper = (pages: Array<PageProps>) => {
   const result: Array<RouteObject> =
     pages.map(page => {
-      return {
-        element: <AutorizedRoute allowedRoles={page.allowedRoles} />,
-        children: [
-          {
-            path: page.path,
-            element: page.component,
-            children: page.children ? browserRouterMapper(page.children) : undefined
-          }
-        ]
+      if (page.component) {
+        return {
+          element: <AutorizedRoute {...page} />,
+          children: [
+            {
+              path: page.path,
+              element: page.component,
+              children: page.children ? browserRouterMapper(page.children) : undefined
+            }
+          ]
+        }
+      }
+      else {
+        return {}
       }
     })
   return result;
@@ -41,7 +46,6 @@ function App() {
     </QueryClientProvider>
   );
 }
-
 
 
 
