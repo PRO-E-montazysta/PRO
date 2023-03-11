@@ -49,7 +49,6 @@ const Orders = () => {
         initOrderBy={'name'}
         onClickRow={(e, row) => {
             navigation(`/orders/${row.id}`)
-            console.log(row)
         }}
         pageHeader='Lista zleceń'
     />

@@ -38,7 +38,6 @@ export type FilterInputType = {
 
 const TableFilter = (props: FilterFormProps) => {
     const { filterStructure, onSearch, onResetFilter, structureStyle, resetBtnStyle, submitBtnStyle } = props
-
     const { initialValues, inputs } = getInputs(filterStructure)
 
     const formik = useFormik({
@@ -92,6 +91,7 @@ const TableFilter = (props: FilterFormProps) => {
                                             shrink: true
                                         }}
                                         className={'filter-form'}
+                                        autoComplete='off'
                                     />
                             }
                         })
