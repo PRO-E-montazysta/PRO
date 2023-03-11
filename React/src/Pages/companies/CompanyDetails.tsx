@@ -5,20 +5,10 @@ import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { useMutation, useQuery } from 'react-query'
 import { useNavigate, useParams } from 'react-router-dom'
-import { getFilteredCompanies, getAllCompanies } from '../../api/company.api'
 import { deleteCompany, getCompanyDetails, postCompany, updateCompany } from '../../api/company.api'
-import { formatArrayToOptions, formatLocation } from '../../helpers/format.helper'
-import { priorityOptions, statusOptions } from '../../helpers/enum.helper'
+import { companyStatusOptions } from '../../helpers/enum.helper'
 import { theme } from '../../themes/baseTheme'
-import { Client } from '../../types/model/Client'
 import { Company } from '../../types/model/Company'
-import { AppUser } from '../../types/model/AppUser'
-import { getAllClients } from '../../api/client.api'
-import { getAllForemans } from '../../api/foreman.api'
-import { getAllLocations } from '../../api/location.api'
-import { getAllManagers } from '../../api/manager.api'
-import { getAllSalesReprezentatives } from '../../api/salesReprezentatives.api'
-import { getAllSpecialists } from '../../api/specialist.api'
 
 import SaveIcon from '@mui/icons-material/Save'
 import ReplayIcon from '@mui/icons-material/Replay'
@@ -78,7 +68,6 @@ const CompanyDetails = () => {
             })
         },
         onError(error: Error) {
-            console.error(error)
             displayInfo({
                 dialogText: ['Błąd poczas tworzenia nowej firmy', error.message],
                 confirmAction: () => {
@@ -105,7 +94,6 @@ const CompanyDetails = () => {
             })
         },
         onError(error: Error) {
-            console.error(error)
             displayInfo({
                 dialogText: ['Błąd poczas zapisywania firmy', error.message],
                 confirmAction: () => {
@@ -130,7 +118,6 @@ const CompanyDetails = () => {
             })
         },
         onError(error: Error) {
-            console.error(error)
             displayInfo({
                 dialogText: ['Błąd poczas usuwania firmy', error.message],
                 confirmAction: () => {
@@ -148,8 +135,6 @@ const CompanyDetails = () => {
             enabled: !!params.id && params.id != 'new',
         },
     )
-
-    const queryCompany = useQuery<Array<Company>, AxiosError>(['company-list'], getAllCompanies)
 
     const formik = useFormik({
         initialValues: initData,
@@ -202,11 +187,7 @@ const CompanyDetails = () => {
                                 alignItems: 'center',
                             }}
                         >
-                            {queryData.isLoading ? (
-                                <CircularProgress />
-                            ) : (
-                                <Typography>Nie znaleziono firmy</Typography>
-                            )}
+                            {queryData.isLoading ? <CircularProgress /> : <Typography>Nie znaleziono firmy</Typography>}
                         </Box>
                     ) : (
                         <>
@@ -218,7 +199,6 @@ const CompanyDetails = () => {
                                         textAlign: 'end',
                                     }}
                                 >
-                                    <FormLabel label="Id" formik={formik} id={'id'} />
                                     <FormLabel label="Nazwa firmy" formik={formik} id={'companyName'} />
                                     <FormLabel label="Data utworzenia" formik={formik} id={'createdAt'} />
                                     <FormLabel label="Status" formik={formik} id={'status'} />
@@ -232,7 +212,6 @@ const CompanyDetails = () => {
                                     flexItem
                                 />
                                 <Grid item xs={6}>
-                                    <FormInput id={'id'} formik={formik} readonly={readonlyMode} />
                                     <FormInput id={'companyName'} formik={formik} readonly={readonlyMode} />
                                     <FormInput
                                         id={'createdAt'}
@@ -241,7 +220,12 @@ const CompanyDetails = () => {
                                         style={{ marginTop: !readonlyMode ? '12px' : '' }}
                                         type="datetime-local"
                                     />
-                                    <FormInput id={'status'} formik={formik} readonly={readonlyMode} />
+                                    <FormSelect
+                                        id={'status'}
+                                        formik={formik}
+                                        readonly={readonlyMode}
+                                        options={companyStatusOptions()}
+                                    />
                                     <FormInput id={'statusReason'} formik={formik} readonly={readonlyMode} />
                                 </Grid>
                             </Grid>
