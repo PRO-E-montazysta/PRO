@@ -3,7 +3,6 @@ import { FilterInputType } from '../../components/table/filter/TableFilter'
 import { HeadCell } from '../../components/table/sort/SortedTableHeader'
 import { Employee, EmployeeStatus } from '../../types/model/Employee'
 
-
 export const headCells: Array<HeadCell<Employee>> = [
     {
         type: 'string',
@@ -66,16 +65,16 @@ export const filterInitStructure: Array<FilterInputType> = [
     },
     {
         id: 'status',
-        value: ['AKTYWNY','NIEAKTYWNY'],
+        value: ['AKTYWNY', 'NIEAKTYWNY'],
         label: 'Status',
-        inputType: 'text',
+        inputType: 'multiselect',
         typeValue: 'Array',
         options: Object.entries(EmployeeStatus).map((s): SelectMenuItemProps => {
             return {
                 key: s[0],
-                value: s[1]
+                value: s[1],
             }
-        })
+        }),
     },
     {
         id: 'roles',
