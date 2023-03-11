@@ -6,10 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".ui.dashboard.DashboardFragment">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/text_dashboard"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="-77dp">
 
@@ -23,18 +24,22 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card1"
-                style="@style/card">
-
+                android:id="@+id/warehouses"
+                style="@style/card"
+                >
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    >
 
                     <!-- Media -->
                     <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/warehouse"
+                        android:layout_gravity="center"
                         android:contentDescription="@string/content_description_media"
                         android:scaleType="centerCrop" />
 
@@ -45,24 +50,28 @@
                         android:layout_height="wrap_content"
                         android:padding="10dp"
                         android:layout_gravity="center"
-                        android:text="@string/title" />
+                        android:text="@string/title_warehouses" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card2"
+                android:id="@+id/tools"
                 style="@style/card">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    >
 
                     <!-- Media -->
                     <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:contentDescription="@string/content_description_media"
+                        android:layout_gravity="center"
+                        android:src="@drawable/baseline_tools_24"
                         android:scaleType="centerCrop" />
 
 
@@ -72,118 +81,9 @@
                         android:layout_height="wrap_content"
                         android:padding="10dp"
                         android:layout_gravity="center"
-                        android:text="@string/title" />
+                        android:text="@string/title_tools" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card3"
-                style="@style/card">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <!-- Media -->
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:contentDescription="@string/content_description_media"
-                        android:scaleType="centerCrop" />
-
-
-                    <!-- @string/title, secondary and supporting text -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:layout_gravity="center"
-                        android:text="@string/title" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card4"
-                style="@style/card">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <!-- Media -->
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:contentDescription="@string/content_description_media"
-                        android:scaleType="centerCrop" />
-
-
-                    <!-- @string/title, secondary and supporting text -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:layout_gravity="center"
-                        android:text="@string/title" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card5"
-                style="@style/card">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <!-- Media -->
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:contentDescription="@string/content_description_media"
-                        android:scaleType="centerCrop" />
-
-
-                    <!-- @string/title, secondary and supporting text -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:layout_gravity="center"
-                        android:text="@string/title" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card6"
-                style="@style/card">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <!-- Media -->
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:contentDescription="@string/content_description_media"
-                        android:scaleType="centerCrop" />
-
-
-                    <!-- @string/title, secondary and supporting text -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:layout_gravity="center"
-                        android:text="@string/title" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
         </GridLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,7 @@
         tools:context=".ui.login.LoginActivity">
 
         <LinearLayout
+            android:background="@drawable/backdrop"
             android:id="@+id/backdrop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -17,10 +18,13 @@
             android:elevation="4dp"
             android:orientation="vertical"
             android:padding="30dp"
+            android:topRightRadius="45dp"
+            android:topLeftRadius="45dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0"
-            tools:layout_editor_absoluteX="-16dp">
+            tools:layout_editor_absoluteX="-16dp"
+            >
 
             <ImageView
                 android:layout_width="74dp"

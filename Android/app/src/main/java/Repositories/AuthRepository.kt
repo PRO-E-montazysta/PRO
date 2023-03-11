@@ -5,7 +5,6 @@ import Helpers.Interfaces.ISharedPreferencesHelper
 import Helpers.JwtTokenHelper
 import Models.LoginCredentials
 import Models.TokenResponse
-import Models.User
 import Repositories.Interfaces.IAuthRepository
 import com.example.e_montaysta.data.model.LoggedInUser
 import com.example.e_montaysta.data.Result
@@ -27,8 +26,8 @@ class AuthRepository : IAuthRepository, KoinComponent {
             rsp = token.getToken()
             sharedPreferencesHelper.set("lama", rsp)
             var storedToken = sharedPreferencesHelper.get("lama")
-            var roles = JwtTokenHelper.decode(rsp.toString())
-            val user = LoggedInUser("Tu będzie ID", rsp.toString() , roles)
+            var roles = JwtTokenHelper.getRole(storedToken)
+            val user = LoggedInUser("Tu będzie ID", storedToken.toString(), roles)
 
             return Result.Success(user)
 

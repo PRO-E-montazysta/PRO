@@ -20,4 +20,6 @@
     <string name="title_settings">Settings</string>
     <string name="content_description_media">content_description_media</string>
     <string name="title">title</string>
+    <string name="title_warehouses">Magazyny</string>
+    <string name="title_tools">Narzędzia</string>
 </resources>
