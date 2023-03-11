@@ -167,8 +167,21 @@ export const pageList: Array<PageProps> = [
                     Role.WAREHOUSE_MANAGER,
                     Role.FITTER,
                     Role.FOREMAN,
+                    Role['*'],
                 ],
                 component: <Warehouses />,
+                children: [
+                    {
+                        inNav: true,
+                        name: 'Lista magazynów',
+                        path: '/warehouses'
+                    },
+                    {
+                        inNav: true,
+                        name: 'Dodaj magazyn',
+                        path: '/warehouses/new'
+                    }
+                ]
             },
             {
                 inNav: false,
@@ -182,6 +195,7 @@ export const pageList: Array<PageProps> = [
                     Role.WAREHOUSE_MANAGER,
                     Role.FITTER,
                     Role.FOREMAN,
+                    Role['*'],
                 ],
                 component: <WarehouseDetails />,
             },
