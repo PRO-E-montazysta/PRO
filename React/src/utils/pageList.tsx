@@ -1,7 +1,6 @@
 import { Outlet } from 'react-router-dom'
 import Header from '../components/headers/Header'
 import AccountList from '../pages/AccountList'
-import CompanyList from '../pages/CompanyList'
 import HomePageWarehousemen from '../pages/WarehousemenHomePage'
 import HomePageWarehouseManager from '../pages/WarehouseManagersHomePage'
 import Homepagespecialist from '../pages/SpecialistsHomePage'
@@ -18,13 +17,15 @@ import Schedules from '../pages/Schedules'
 import LoginPage from '../pages/LoginPage'
 import { Role } from '../types/roleEnum'
 import Error from '../components/error/Error'
-import Orders from '../pages/Orders'
+import Orders from '../pages/orders'
 import OrderDetails from '../pages/orders/OrderDetails'
 
 import ToolTypes from '../pages/toolTypes'
 import ToolTypeDetails from '../pages/toolTypes/ToolTypeDetails'
 import WarehouseDetails from '../pages/warehouses/WarehouseDetails'
 import Warehouses from '../pages/warehouses'
+import Companies from '../pages/companies'
+import CompanyDetails from '../pages/companies/CompanyDetails'
 
 export type PageProps = {
     name: string
@@ -69,9 +70,28 @@ export const pageList: Array<PageProps> = [
             {
                 inNav: true,
                 name: 'Lista Firm',
-                path: '/company-list',
+                path: '/companies',
                 allowedRoles: [Role.CLOUD_ADMIN],
-                component: <CompanyList />,
+                component: <Companies />,
+                children: [
+                    {
+                        inNav: true,
+                        name: 'Lista firm',
+                        path: '/companies'
+                    },
+                    {
+                        inNav: true,
+                        name: 'Dodaj firmę',
+                        path: '/companies/new'
+                    }
+                ]
+            },
+            {
+                inNav: false,
+                name: '',
+                path: '/companies/:id',
+                allowedRoles: [Role.CLOUD_ADMIN],
+                component: <CompanyDetails />,
             },
             {
                 inNav: true,
