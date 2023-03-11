@@ -1,21 +1,21 @@
-import { FilterFormProps } from '../../components/table/filter/TableFilter'
-import FatTable from '../../components/table/FatTable'
-import { useState } from 'react'
 import { useQuery } from 'react-query'
 import { AxiosError } from 'axios'
-import { getFilteredOrders } from '../../api/order.api'
-import { filterInitStructure, headCells } from './helper'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import FatTable from '../../components/table/FatTable'
+import { filterInitStructure, headCells } from './helper'
 import { getFilterParams, setNewFilterValues } from '../../helpers/filter.helper'
-import { Order } from '../../types/model/Order'
+import { FilterFormProps } from '../../components/table/filter/TableFilter'
+import { Employee } from '../../types/model/Employee'
+import { getFilteredUsers } from '../../api/user.api'
 
-const Orders = () => {
+const Employees = () => {
     const [filterStructure, setFilterStructure] = useState(filterInitStructure)
     const [filterParams, setFilterParams] = useState(getFilterParams(filterInitStructure))
     const navigation = useNavigate()
 
-    const queryOrders = useQuery<Array<Order>, AxiosError>(['orders', filterParams], async () =>
-        getFilteredOrders({ queryParams: filterParams }),
+    const queryData = useQuery<Array<Employee>, AxiosError>(['users', filterParams], async () =>
+        getFilteredUsers({ queryParams: filterParams }),
     )
 
     const handleOnSearch = (filterParams: Object) => {
@@ -35,16 +35,16 @@ const Orders = () => {
 
     return (
         <FatTable
-            query={queryOrders}
+            query={queryData}
             filterForm={filterForm}
             headCells={headCells}
-            initOrderBy={'name'}
+            initOrderBy={'firstName'}
             onClickRow={(e, row) => {
-                navigation(`/orders/${row.id}`)
+                navigation(`/employees/${row.id}`)
             }}
-            pageHeader="Lista zleceń"
+            pageHeader="Lista pracowników"
         />
     )
 }
 
-export default Orders
+export default Employees
