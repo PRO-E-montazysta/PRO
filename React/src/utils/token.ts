@@ -5,8 +5,10 @@ import { Navigate } from 'react-router-dom'
 export const getToken = (): string | undefined => {
     const tokenString = localStorage.getItem('token')
     if (!!tokenString) {
+        checkTokenExpiration(tokenString)
         return tokenString
     }
+    logout()
     return undefined
 }
 
@@ -30,13 +32,26 @@ export const getRolesFromToken = () => {
     const token = getToken()
     if (!token) return []
     const decodedToken: DecodedTokenType = jwt_decode(token)
-    const { exp } = decodedToken
     const decodedUserRoles = decodedToken.scope.split(' ')
 
-    if (Date.now() >= exp * 1000) {
-        console.warn('Token wygasł')
-        removeToken()
-        window.location.href = '/login'
-    }
     return decodedUserRoles
+}
+
+const checkTokenExpiration = (token: string) => {
+    if (!token) {
+        logout()
+        return
+    }
+    const decodedToken: DecodedTokenType = jwt_decode(token)
+    const { exp } = decodedToken
+
+    if (Date.now() >= exp * 1000) {
+        logout()
+    }
+}
+
+const logout = () => {
+    console.warn('Token wygasł')
+    // removeToken()
+    // window.location.href = '/login'
 }
