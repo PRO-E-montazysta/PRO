@@ -1,34 +1,45 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.mapper.WarehouseMapper;
 import com.emontazysta.model.Warehouse;
+import com.emontazysta.model.dto.WarehouseDto;
+import com.emontazysta.model.dto.WarehouseLocationDto;
+import com.emontazysta.model.searchcriteria.WarehouseSearchCriteria;
 import com.emontazysta.repository.WarehouseRepository;
+import com.emontazysta.repository.criteria.WarehouseCriteriaRepository;
 import com.emontazysta.service.WarehouseService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class WarehouseServiceImpl implements WarehouseService {
 
     private final WarehouseRepository repository;
+    private final WarehouseMapper warehouseMapper;
+    private final WarehouseCriteriaRepository warehouseCriteriaRepository;
 
     @Override
-    public List<Warehouse> getAll() {
-        return repository.findAll();
+    public List<WarehouseDto> getAll() {
+        return repository.findAll().stream()
+                .map(warehouseMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Warehouse getById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
+    public WarehouseDto getById(Long id) {
+        Warehouse warehouse = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return warehouseMapper.toDto(warehouse);
     }
 
     @Override
-    public void add(Warehouse warehouse) {
-        repository.save(warehouse);
+    public WarehouseDto add(WarehouseDto warehouseDto) {
+        Warehouse warehouse = warehouseMapper.toEntity(warehouseDto);
+        return warehouseMapper.toDto(repository.save(warehouse));
     }
 
     @Override
@@ -37,12 +48,22 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     @Override
-    public void update(Long id, Warehouse warehouse) {
-        Warehouse updatedWarehouse = this.getById(id);
-        updatedWarehouse.setName(warehouse.getName());
-        updatedWarehouse.setDescription(warehouse.getDescription());
-        updatedWarehouse.setOpeningHours(warehouse.getOpeningHours());
+    public WarehouseDto update(Long id, WarehouseDto warehouseDto) {
 
-        repository.save(updatedWarehouse);
+        Warehouse updatedWarehouse = warehouseMapper.toEntity(warehouseDto);
+        Warehouse warehouse = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        warehouse.setName(updatedWarehouse.getName());
+        warehouse.setDescription(updatedWarehouse.getDescription());
+        warehouse.setOpeningHours(updatedWarehouse.getOpeningHours());
+        warehouse.setCompany(updatedWarehouse.getCompany());
+        warehouse.setLocation(updatedWarehouse.getLocation());
+        warehouse.setElementInWarehouses(updatedWarehouse.getElementInWarehouses());
+        warehouse.setTools(updatedWarehouse.getTools());
+
+        return warehouseMapper.toDto(repository.save(warehouse));
     }
+
+    public List<WarehouseLocationDto> findAllWithFilters(WarehouseSearchCriteria warehouseSearchCriteria){
+        return warehouseCriteriaRepository.findAllWithFilters(warehouseSearchCriteria);
+    };
 }

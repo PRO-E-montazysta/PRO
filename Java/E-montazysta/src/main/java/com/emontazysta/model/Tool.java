@@ -1,8 +1,10 @@
 package com.emontazysta.model;
 
+import com.emontazysta.enums.ToolStatus;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,13 +15,14 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
-@Entity
 @Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Tool {
 
@@ -30,7 +33,7 @@ public class Tool {
     @NotBlank
     private String name;
 
-    private Date createdAt;
+    private LocalDate createdAt;
 
     private String code;
 
@@ -46,4 +49,16 @@ public class Tool {
     @ManyToOne
     private ToolType toolType;
 
+
+    public ToolStatus getStatus() {
+        if(toolReleases.size() > 0) {
+            if(toolReleases.get(toolReleases.size() - 1).getReturnTime() == null)
+                return ToolStatus.RELEASED;
+        }
+        if(toolEvents.size() > 0) {
+            if(toolEvents.get(toolEvents.size() - 1).getCompletionDate() == null)
+                return ToolStatus.IN_REPAIR;
+        }
+        return ToolStatus.AVAILABLE;
+    }
 }

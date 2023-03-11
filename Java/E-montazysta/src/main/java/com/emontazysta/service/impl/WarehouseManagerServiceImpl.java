@@ -1,6 +1,8 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.mapper.WarehouseManagerMapper;
 import com.emontazysta.model.WarehouseManager;
+import com.emontazysta.model.dto.WarehouseManagerDto;
 import com.emontazysta.repository.WarehouseManagerRepository;
 import com.emontazysta.service.WarehouseManagerService;
 import lombok.RequiredArgsConstructor;
@@ -8,31 +10,59 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class WarehouseManagerServiceImpl implements WarehouseManagerService {
 
     private final WarehouseManagerRepository repository;
+    private final WarehouseManagerMapper warehouseManagerMapper;
 
     @Override
-    public List<WarehouseManager> getAll() {
-        return repository.findAll();
+    public List<WarehouseManagerDto> getAll() {
+        return repository.findAll().stream()
+                .map(warehouseManagerMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public WarehouseManager getById(Long id) {
-        return repository.findById(id)
-                         .orElseThrow(EntityNotFoundException::new);
+    public WarehouseManagerDto getById(Long id) {
+        WarehouseManager warehouseManager = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return warehouseManagerMapper.toDto(warehouseManager);
     }
 
     @Override
-    public void add(WarehouseManager warehouseManager) {
-        repository.save(warehouseManager);
+    public WarehouseManagerDto add(WarehouseManagerDto warehouseManagerDto) {
+        WarehouseManager warehouseManager = warehouseManagerMapper.toEntity(warehouseManagerDto);
+        return warehouseManagerMapper.toDto(repository.save(warehouseManager));
     }
 
     @Override
     public void delete(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public WarehouseManagerDto update(Long id, WarehouseManagerDto warehouseManagerDto) {
+        WarehouseManager updatedWarehouseManager = warehouseManagerMapper.toEntity(warehouseManagerDto);
+        WarehouseManager warehouseManager = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        warehouseManager.setFirstName(updatedWarehouseManager.getFirstName());
+        warehouseManager.setLastName(updatedWarehouseManager.getLastName());
+        warehouseManager.setEmail(updatedWarehouseManager.getEmail());
+        warehouseManager.setUsername(updatedWarehouseManager.getUsername());
+        warehouseManager.setPhone(updatedWarehouseManager.getPhone());
+        warehouseManager.setPesel(updatedWarehouseManager.getPesel());
+        warehouseManager.setUnavailabilities(updatedWarehouseManager.getUnavailabilities());
+        warehouseManager.setNotifications(updatedWarehouseManager.getNotifications());
+        warehouseManager.setEmployeeComments(updatedWarehouseManager.getEmployeeComments());
+        warehouseManager.setElementEvents(updatedWarehouseManager.getElementEvents());
+        warehouseManager.setEmployments(updatedWarehouseManager.getEmployments());
+        warehouseManager.setAttachments(updatedWarehouseManager.getAttachments());
+        warehouseManager.setToolEvents(updatedWarehouseManager.getToolEvents());
+        warehouseManager.setReleasedTools(updatedWarehouseManager.getReleasedTools());
+        warehouseManager.setElementReturnReleases(updatedWarehouseManager.getElementReturnReleases());
+        warehouseManager.setDemandAdHocs(updatedWarehouseManager.getDemandAdHocs());
+        return warehouseManagerMapper.toDto(repository.save(warehouseManager));
     }
 }

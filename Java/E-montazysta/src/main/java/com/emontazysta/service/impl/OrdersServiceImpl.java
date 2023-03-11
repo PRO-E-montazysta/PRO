@@ -1,38 +1,51 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.mapper.OrdersMapper;
 import com.emontazysta.model.Orders;
+import com.emontazysta.model.dto.OrdersCompanyManagerDto;
+import com.emontazysta.model.dto.OrdersDto;
+import com.emontazysta.model.searchcriteria.OrdersSearchCriteria;
 import com.emontazysta.repository.OrderRepository;
+import com.emontazysta.repository.criteria.OrdersCriteriaRepository;
 import com.emontazysta.service.OrdersService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Date;
+import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class OrdersServiceImpl implements OrdersService {
 
     private final OrderRepository repository;
+    private final OrdersMapper ordersMapper;
+    private final OrdersCriteriaRepository ordersCriteriaRepository;
 
     @Override
-    public List<Orders> getAll() {
-        return repository.findAll();
+    public List<OrdersDto> getAll() {
+        return repository.findAll().stream()
+                .map(ordersMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Orders getById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
+    public OrdersDto getById(Long id) {
+        Orders order = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return ordersMapper.toDto(order);
     }
 
     @Override
-    public void add(Orders orders) {
-        orders.setCreatedAt(new Date());
-        orders.setEditedAt(null);
+    public OrdersDto add(OrdersDto ordersDto) {
 
-        repository.save(orders);
+        Orders order = ordersMapper.toEntity(ordersDto);
+        order.setCreatedAt(LocalDateTime.now());
+        order.setEditedAt(null);
+        return ordersMapper.toDto(repository.save(order));
     }
 
     @Override
@@ -41,15 +54,31 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public void update(Long id, Orders orders) {
-        Orders updatedOrders = this.getById(id);
-        updatedOrders.setName(orders.getName());
-        updatedOrders.setTypeOfStatus(orders.getTypeOfStatus());
-        updatedOrders.setTypeOfPriority(orders.getTypeOfPriority());
-        updatedOrders.setPlannedStart(orders.getPlannedStart());
-        updatedOrders.setPlannedEnd(orders.getPlannedEnd());
-        updatedOrders.setEditedAt(new Date());
+    public OrdersDto update(Long id, OrdersDto ordersDto) {
 
-        repository.save(updatedOrders);
+        Orders updatedOrder = ordersMapper.toEntity(ordersDto);
+        Orders order = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        order.setName(updatedOrder.getName());
+        order.setTypeOfStatus(updatedOrder.getTypeOfStatus());
+        order.setTypeOfPriority(updatedOrder.getTypeOfPriority());
+        order.setPlannedStart(updatedOrder.getPlannedStart());
+        order.setPlannedEnd(updatedOrder.getPlannedEnd());
+        order.setEditedAt(LocalDateTime.now());
+        order.setCompany(updatedOrder.getCompany());
+        order.setManagedBy(updatedOrder.getManagedBy());
+        order.setAssignedTo(updatedOrder.getAssignedTo());
+        order.setSpecialist(updatedOrder.getSpecialist());
+        order.setSalesRepresentative(updatedOrder.getSalesRepresentative());
+        order.setLocation(updatedOrder.getLocation());
+        order.setClient(updatedOrder.getClient());
+        order.setOrderStages(updatedOrder.getOrderStages());
+        order.setAttachments(updatedOrder.getAttachments());
+
+        return ordersMapper.toDto(repository.save(order));
+    }
+
+    @Override
+    public List<OrdersCompanyManagerDto> getFilteredOrders(OrdersSearchCriteria ordersSearchCriteria, Principal principal){
+        return ordersCriteriaRepository.findAllWithFilters(ordersSearchCriteria, principal);
     }
 }

@@ -1,34 +1,66 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.mapper.ToolTypeMapper;
 import com.emontazysta.model.ToolType;
+import com.emontazysta.model.dto.ToolTypeDto;
+import com.emontazysta.model.searchcriteria.ToolTypeSearchCriteria;
 import com.emontazysta.repository.ToolTypeRepository;
+import com.emontazysta.repository.criteria.ToolTypeCriteriaRepository;
 import com.emontazysta.service.ToolTypeService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class ToolTypeServiceImpl implements ToolTypeService {
 
     private final ToolTypeRepository repository;
+    private final ToolTypeMapper toolTypeMapper;
+    private final ToolTypeCriteriaRepository toolTypeCriteriaRepository;
 
-    public List<ToolType> getAll() {
-        return repository.findAll();
+    @Override
+    public List<ToolTypeDto> getAll() {
+        return repository.findAll().stream()
+                .map(toolTypeMapper::toDto)
+                .collect(Collectors.toList());
     }
 
-    public ToolType getById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Tool type with id " + id + " not found!"));
+    @Override
+    public ToolTypeDto getById(Long id) {
+        ToolType toolType = repository.findById(id).orElseThrow(() -> new RuntimeException("Tool type with id " + id + " not found!"));
+        return toolTypeMapper.toDto(toolType);
 
     }
 
-    public void add(ToolType toolType) {
-        repository.save(toolType);
+    @Override
+    public ToolTypeDto add(ToolTypeDto toolTypeDto) {
+        ToolType toolType = toolTypeMapper.toEntity(toolTypeDto);
+        return toolTypeMapper.toDto(repository.save(toolType));
     }
 
+    @Override
     public void delete(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+
+    public List<ToolTypeDto> findAllWithFilters(ToolTypeSearchCriteria toolTypeSearchCriteria) {
+        return toolTypeCriteriaRepository.findAllWithFilters(toolTypeSearchCriteria);
+    }
+
+    public ToolTypeDto update(Long id, ToolTypeDto toolTypeDto) {
+        ToolType updatedToolType = toolTypeMapper.toEntity(toolTypeDto);
+        ToolType toolType = repository.findById(id).orElseThrow(() -> new RuntimeException("Tool type with id " + id + " not found!"));
+        toolType.setName(updatedToolType.getName());
+        toolType.setCriticalNumber(updatedToolType.getCriticalNumber());
+        toolType.setAttachments(updatedToolType.getAttachments());
+        toolType.setOrderStages(updatedToolType.getOrderStages());
+        toolType.setTools(updatedToolType.getTools());
+        return toolTypeMapper.toDto(repository.save(toolType));
+
     }
 }

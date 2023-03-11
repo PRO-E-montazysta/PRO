@@ -1,15 +1,18 @@
 package com.emontazysta.service;
 
-import com.emontazysta.model.Tool;
+import com.emontazysta.model.dto.ToolDto;
+import com.emontazysta.model.dto.filterDto.ToolFilterDto;
+import com.emontazysta.model.searchcriteria.ToolSearchCriteria;
 
 import java.util.List;
 
 public interface ToolService {
 
-    List<Tool> getAll();
-    Tool getById(Long id);
-    Tool getByCode(String code);
-    void add(Tool tool);
+    List<ToolDto> getAll();
+    ToolDto getById(Long id);
+    ToolDto getByCode(String code);
+    ToolDto add(ToolDto tool);
     void delete(Long id);
-    void update(Long id, Tool tool);
+    List<ToolFilterDto> getTools(ToolSearchCriteria toolSearchCriteria);
+    ToolDto update(Long id, ToolDto tool);
 }

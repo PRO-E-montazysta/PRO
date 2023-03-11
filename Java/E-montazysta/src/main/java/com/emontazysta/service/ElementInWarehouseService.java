@@ -1,13 +1,14 @@
 package com.emontazysta.service;
 
-import com.emontazysta.model.ElementInWarehouse;
+import com.emontazysta.model.dto.ElementInWarehouseDto;
 
 import java.util.List;
 
 public interface ElementInWarehouseService {
 
-    List<ElementInWarehouse> getAll();
-    ElementInWarehouse getById(Long id);
-    void add(ElementInWarehouse elementInWarehouse);
+    List<ElementInWarehouseDto> getAll();
+    ElementInWarehouseDto getById(Long id);
+    ElementInWarehouseDto add(ElementInWarehouseDto elementInWarehouse);
     void delete(Long id);
+    ElementInWarehouseDto update(Long id, ElementInWarehouseDto elementInWarehouse);
 }

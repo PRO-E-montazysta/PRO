@@ -1,20 +1,19 @@
 package com.emontazysta.controller;
 
-import com.emontazysta.mapper.ManagerMapper;
-import com.emontazysta.mapper.WarehouseMapper;
-import com.emontazysta.model.Warehouse;
 import com.emontazysta.model.dto.WarehouseDto;
+import com.emontazysta.model.dto.WarehouseLocationDto;
+import com.emontazysta.model.searchcriteria.WarehouseSearchCriteria;
 import com.emontazysta.service.WarehouseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 
@@ -28,25 +27,20 @@ public class WarehouseController {
     @GetMapping("/all")
     @Operation(description = "Allows to get all Warehouses.", security = @SecurityRequirement(name = "bearer-key"))
     public List<WarehouseDto> getAll() {
-        /*return ResponseEntity.ok().body(warehouseService.getAll().stream()
-                .map(WarehouseMapper::warehouseToDto)
-                .collect(Collectors.toList()));*/
-        return warehouseService.getAll().stream()
-                .map(WarehouseMapper::warehouseToDto)
-                .collect(Collectors.toList());
+        return warehouseService.getAll();
     }
 
     @GetMapping("/{id}")
     @Operation(description = "Allows to get Warehouse by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public WarehouseDto getById(@PathVariable("id")Long id) {
-        return WarehouseMapper.warehouseToDto(warehouseService.getById(id));
+        return warehouseService.getById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Warehouse.", security = @SecurityRequirement(name = "bearer-key"))
-    public void add(@Valid @RequestBody Warehouse warehouse) {
-        warehouseService.add(warehouse);
+    public WarehouseDto add(@Valid @RequestBody WarehouseDto warehouse) {
+        return warehouseService.add(warehouse);
     }
 
     @DeleteMapping("/{id}")
@@ -57,8 +51,12 @@ public class WarehouseController {
 
     @PutMapping("/{id}")
     @Operation(description = "Allows to update Warehouse by given Id, and Warehouse.", security = @SecurityRequirement(name = "bearer-key"))
-    public void update(@PathVariable("id") Long id,
-                                @Valid @RequestBody Warehouse warehouse) {
-        warehouseService.update(id, warehouse);
+    public WarehouseDto update(@PathVariable("id") Long id,
+                                @Valid @RequestBody WarehouseDto warehouse) {
+        return warehouseService.update(id, warehouse);
     }
+    @GetMapping("/filter")
+    @Operation(description = "Allows to get filtered warehouses.", security = @SecurityRequirement(name = "bearer-key"))
+    public ResponseEntity<List<WarehouseLocationDto>> getfilteredTools(WarehouseSearchCriteria warehouseSearchCriteria){
+        return new ResponseEntity<>(warehouseService.findAllWithFilters(warehouseSearchCriteria),HttpStatus.OK);}
 }

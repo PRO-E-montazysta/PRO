@@ -1,7 +1,5 @@
 package com.emontazysta.controller;
 
-import com.emontazysta.mapper.DemandAdHocMapper;
-import com.emontazysta.model.DemandAdHoc;
 import com.emontazysta.model.dto.DemandAdHocDto;
 import com.emontazysta.service.DemandAdHocService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 
@@ -35,22 +32,20 @@ public class DemandAdHocController {
     @GetMapping("/all")
     @Operation(description = "Allows to get all Demands Ad Hoc.", security = @SecurityRequirement(name = "bearer-key"))
     public List<DemandAdHocDto> getAllDemandsAdHoc() {
-        return demandAdHocService.getAll().stream()
-                .map(DemandAdHocMapper::demandAdHocDtoDto)
-                .collect(Collectors.toList());
+        return demandAdHocService.getAll();
     }
 
     @GetMapping("/{id}")
     @Operation(description = "Allows to get Demand Ad Hoc by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public DemandAdHocDto getDemandAdHocById(@PathVariable Long id) {
-        return DemandAdHocMapper.demandAdHocDtoDto(demandAdHocService.getById(id));
+        return demandAdHocService.getById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Demand Ad Hoc.", security = @SecurityRequirement(name = "bearer-key"))
-    public void addDemandAdHoc(@Valid @RequestBody DemandAdHoc demandAdHoc) {
-        demandAdHocService.add(demandAdHoc);
+    public DemandAdHocDto addDemandAdHoc(@Valid @RequestBody DemandAdHocDto demandAdHoc) {
+        return demandAdHocService.add(demandAdHoc);
     }
 
     @DeleteMapping("/{id}")
@@ -61,7 +56,7 @@ public class DemandAdHocController {
 
     @PutMapping("/{id}")
     @Operation(description = "Allows to edit Demand Ad Hoc by given Id.", security = @SecurityRequirement(name = "bearer-key"))
-    public DemandAdHoc updateDemandAdHoc(@PathVariable Long id, @Valid @RequestBody DemandAdHoc demandAdHoc) {
+    public DemandAdHocDto updateDemandAdHoc(@PathVariable Long id, @Valid @RequestBody DemandAdHocDto demandAdHoc) {
         return demandAdHocService.update(id, demandAdHoc);
     }
 }

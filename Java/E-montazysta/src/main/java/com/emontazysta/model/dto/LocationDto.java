@@ -1,12 +1,16 @@
 package com.emontazysta.model.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class LocationDto {
 
     private Long id;
@@ -18,4 +22,6 @@ public class LocationDto {
     private String propertyNumber;
     private String apartmentNumber;
     private String zipCode;
+    private List<Long> orders;
+    private List<Long> warehouses;
 }

@@ -1,20 +1,20 @@
 package com.emontazysta.model;
 
+import com.emontazysta.enums.Role;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.UniqueElements;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -23,6 +23,24 @@ import java.util.List;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public abstract class Employee extends AppUser {
 
+    public Employee(Long id, String firstName, String lastName, String email, String password, String username,
+                    String resetPasswordToken, Set<Role> roles, String phone, String pesel,
+                    List<Unavailability> unavailabilities, List<Notification> notifications,
+                    List<Comment> employeeComments, List<ElementEvent> elementEvents,
+                    List<Employment> employments, List<Attachment> attachments, List<ToolEvent> toolEvents) {
+
+        super(id, firstName, lastName, email, password, username, resetPasswordToken, roles);
+        this.phone = phone;
+        this.pesel = pesel;
+        this.unavailabilities = unavailabilities;
+        this.notifications = notifications;
+        this.employeeComments = employeeComments;
+        this.elementEvents = elementEvents;
+        this.employments = employments;
+        this.attachments = attachments;
+        this.toolEvents = toolEvents;
+    }
+
     @NotBlank
     @Column(unique = true)
     private String phone;
@@ -30,11 +48,6 @@ public abstract class Employee extends AppUser {
     @NotBlank
     @Column(unique = true)
     private String pesel;
-
-
-    @OneToMany(mappedBy = "employee")
-    private List<Employment> employmentHistory;
-
 
     @OneToMany(mappedBy = "assignedTo")
     private List<Unavailability> unavailabilities;

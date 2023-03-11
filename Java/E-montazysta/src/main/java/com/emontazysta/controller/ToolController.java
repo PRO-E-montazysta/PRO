@@ -1,19 +1,21 @@
 package com.emontazysta.controller;
 
-import com.emontazysta.mapper.ToolMapper;
-import com.emontazysta.model.Tool;
 import com.emontazysta.model.dto.ToolDto;
+import com.emontazysta.model.dto.filterDto.ToolFilterDto;
+import com.emontazysta.model.searchcriteria.ToolReleaseSearchCriteria;
+import com.emontazysta.model.searchcriteria.ToolSearchCriteria;
 import com.emontazysta.service.ToolService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 
@@ -27,28 +29,26 @@ public class ToolController {
     @GetMapping("/all")
     @Operation(description = "Allows to get all Tools.", security = @SecurityRequirement(name = "bearer-key"))
     public List<ToolDto> getAll() {
-        return toolService.getAll().stream()
-                .map(ToolMapper::toolToDto)
-                .collect(Collectors.toList());
+        return toolService.getAll();
     }
 
     @GetMapping("/{id}")
     @Operation(description = "Allows to get Tool by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public ToolDto getById(@PathVariable Long id) {
-        return ToolMapper.toolToDto(toolService.getById(id));
+        return toolService.getById(id);
     }
 
     @GetMapping("/bycode/{code}")
     @Operation(description = "Allows to get Tool by given Code.", security = @SecurityRequirement(name = "bearer-key"))
-    public Tool getByCode(@PathVariable String code) {
+    public ToolDto getByCode(@PathVariable String code) {
         return toolService.getByCode(code);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Tool.", security = @SecurityRequirement(name = "bearer-key"))
-    public void add(@Valid @RequestBody Tool tool) {
-        toolService.add(tool);
+    public ToolDto add(@Valid @RequestBody ToolDto tool) {
+        return toolService.add(tool);
     }
 
     @DeleteMapping("/{id}")
@@ -59,7 +59,21 @@ public class ToolController {
 
     @PutMapping("/{id}")
     @Operation(description = "Allows to edit Tool by given Id and Tool data.", security = @SecurityRequirement(name = "bearer-key"))
-    public void update(@PathVariable Long id, @Valid @RequestBody Tool tool) {
-        toolService.update(id, tool);
+    public ToolDto update(@PathVariable Long id, @Valid @RequestBody ToolDto tool) {
+        return toolService.update(id, tool);
     }
+
+    @GetMapping("/filter")
+    @Operation(description = "Allows to get filtered tools data.", security = @SecurityRequirement(name = "bearer-key"))
+    public ResponseEntity<List<ToolFilterDto>> getfilteredTools(ToolSearchCriteria toolSearchCriteria){
+        return new ResponseEntity<>(toolService.getTools(toolSearchCriteria),HttpStatus.OK);
+    }
+
+    @GetMapping("/tools-from-warehouse/{id}")
+    @Operation(description = "Allows to get filtered tools data.", security = @SecurityRequirement(name = "bearer-key"))
+    public ResponseEntity<List<ToolFilterDto>> getfilteredToolsFromWarehouse(@PathVariable Long id, ToolSearchCriteria toolSearchCriteria){
+        toolSearchCriteria.setWarehouse_Id(id);
+        return new ResponseEntity<>(toolService.getTools(toolSearchCriteria),HttpStatus.OK);
+    }
+
 }

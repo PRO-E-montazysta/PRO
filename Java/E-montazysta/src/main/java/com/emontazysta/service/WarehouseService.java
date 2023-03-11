@@ -1,13 +1,17 @@
 package com.emontazysta.service;
 
-import com.emontazysta.model.Warehouse;
+import com.emontazysta.model.dto.WarehouseDto;
+import com.emontazysta.model.dto.WarehouseLocationDto;
+import com.emontazysta.model.searchcriteria.WarehouseSearchCriteria;
+
 import java.util.List;
 
 public interface WarehouseService {
 
-    List<Warehouse> getAll();
-    Warehouse getById(Long id);
-    void add(Warehouse warehouse);
+    List<WarehouseDto> getAll();
+    WarehouseDto getById(Long id);
+    WarehouseDto add(WarehouseDto warehouse);
     void delete(Long id);
-    void update(Long id, Warehouse warehouse);
+    WarehouseDto update(Long id, WarehouseDto warehouse);
+    List <WarehouseLocationDto> findAllWithFilters(WarehouseSearchCriteria warehouseSearchCriteria);
 }

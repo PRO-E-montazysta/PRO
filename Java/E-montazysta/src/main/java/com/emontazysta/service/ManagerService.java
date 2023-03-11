@@ -1,13 +1,14 @@
 package com.emontazysta.service;
 
-import com.emontazysta.model.Manager;
+import com.emontazysta.model.dto.ManagerDto;
 
 import java.util.List;
 
 public interface ManagerService {
 
-    List<Manager> getAll();
-    Manager getById(Long id);
-    void add(Manager manager);
+    List<ManagerDto> getAll();
+    ManagerDto getById(Long id);
+    ManagerDto add(ManagerDto manager);
     void delete(Long id);
+    ManagerDto update(Long id, ManagerDto manager);
 }

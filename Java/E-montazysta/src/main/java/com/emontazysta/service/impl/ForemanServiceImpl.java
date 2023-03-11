@@ -1,6 +1,8 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.mapper.ForemanMapper;
 import com.emontazysta.model.Foreman;
+import com.emontazysta.model.dto.ForemanDto;
 import com.emontazysta.repository.ForemanRepository;
 import com.emontazysta.service.ForemanService;
 import lombok.RequiredArgsConstructor;
@@ -8,31 +10,61 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ForemanServiceImpl implements ForemanService {
 
     private final ForemanRepository repository;
+    private final ForemanMapper foremanMapper;
 
     @Override
-    public List<Foreman> getAll() {
-        return repository.findAll();
+    public List<ForemanDto> getAll() {
+        return repository.findAll().stream()
+                .map(foremanMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Foreman getById(Long id) {
-        return repository.findById(id)
-                         .orElseThrow(EntityNotFoundException::new);
+    public ForemanDto getById(Long id) {
+        Foreman foreman = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return foremanMapper.toDto(foreman);
     }
 
     @Override
-    public void add(Foreman foreman) {
-        repository.save(foreman);
+    public ForemanDto add(ForemanDto foremanDto) {
+        Foreman foreman = foremanMapper.toEntity(foremanDto);
+        return foremanMapper.toDto(repository.save(foreman));
     }
 
     @Override
     public void delete(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public ForemanDto update(Long id, ForemanDto foremanDto) {
+        Foreman updatedForeman = foremanMapper.toEntity(foremanDto);
+        Foreman foreman = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        foreman.setFirstName(updatedForeman.getFirstName());
+        foreman.setLastName(updatedForeman.getLastName());
+        foreman.setUsername(updatedForeman.getUsername());
+        foreman.setEmail(updatedForeman.getEmail());
+        foreman.setPhone(updatedForeman.getPhone());
+        foreman.setPesel(updatedForeman.getPesel());
+        foreman.setUnavailabilities(updatedForeman.getUnavailabilities());
+        foreman.setNotifications(updatedForeman.getNotifications());
+        foreman.setEmployeeComments(updatedForeman.getEmployeeComments());
+        foreman.setElementEvents(updatedForeman.getElementEvents());
+        foreman.setEmployments(updatedForeman.getEmployments());
+        foreman.setAttachments(updatedForeman.getAttachments());
+        foreman.setToolEvents(updatedForeman.getToolEvents());
+        foreman.setOrdersStagesList(updatedForeman.getOrdersStagesList());
+        foreman.setReceivedTools(updatedForeman.getReceivedTools());
+        foreman.setAssignedOrders(updatedForeman.getAssignedOrders());
+        foreman.setElementReturnReleases(updatedForeman.getElementReturnReleases());
+        foreman.setDemandsAdHocs(updatedForeman.getDemandsAdHocs());
+        return foremanMapper.toDto(repository.save(foreman));
     }
 }

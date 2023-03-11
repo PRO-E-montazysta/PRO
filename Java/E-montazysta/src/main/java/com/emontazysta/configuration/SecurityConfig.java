@@ -48,6 +48,8 @@ public class SecurityConfig {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final SecurityProperties securityProperties;
 
+
+
     private RSAKey rsaKey;
 
     @PostConstruct
@@ -61,7 +63,8 @@ public class SecurityConfig {
                         securityProperties.getCloudManagerPassword(),
                         securityProperties.getCloudManagerUsername(),
                         null,
-                        Set.of(Role.CLOUD_ADMIN)));
+                        Set.of(Role.CLOUD_ADMIN,Role.ADMIN,Role.SALES_REPRESENTATIVE,Role.FITTER, Role.FOREMAN,
+                                Role.MANAGER, Role.SPECIALIST, Role.WAREHOUSE_MANAGER, Role.WAREHOUSE_MAN)));
     }
 
     @Bean

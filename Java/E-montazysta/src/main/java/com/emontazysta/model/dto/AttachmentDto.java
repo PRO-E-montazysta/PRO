@@ -1,12 +1,17 @@
 package com.emontazysta.model.dto;
 
 import com.emontazysta.enums.TypeOfAttachment;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import java.util.Date;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class AttachmentDto {
 
     private Long id;
@@ -14,5 +19,13 @@ public class AttachmentDto {
     private String url;
     private String description;
     private TypeOfAttachment typeOfAttachment;
-    private Date createdAt;
+    private LocalDateTime createdAt;
+    private Long toolTypeId;
+    private Long commentId;
+    private Long employeeId;
+    private Long toolEventId;
+    private Long orderId;
+    private Long elementId;
+    private Long orderStageId;
+    private Long elementEventId;
 }

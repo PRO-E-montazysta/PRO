@@ -1,13 +1,14 @@
 package com.emontazysta.service;
 
-import com.emontazysta.model.Attachment;
+import com.emontazysta.model.dto.AttachmentDto;
 
 import java.util.List;
 
 public interface AttachmentService {
 
-    List<Attachment> getAll();
-    Attachment getById(Long id);
-    void add(Attachment attachment);
+    List<AttachmentDto> getAll();
+    AttachmentDto getById(Long id);
+    AttachmentDto add(AttachmentDto attachment);
     void delete(Long id);
+    AttachmentDto update(Long id, AttachmentDto attachment);
 }
