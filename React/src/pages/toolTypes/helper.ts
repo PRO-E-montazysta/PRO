@@ -1,6 +1,6 @@
-import { FilterInputType } from "../../components/table/filter/TableFilter";
-import { ToolType } from "../../types/model/ToolType";
-import { HeadCell } from "../../components/table/sort/SortedTableHeader";
+import { FilterInputType } from '../../components/table/filter/TableFilter'
+import { ToolType } from '../../types/model/ToolType'
+import { HeadCell } from '../../components/table/sort/SortedTableHeader'
 
 import * as yup from 'yup'
 
@@ -32,10 +32,8 @@ export const headCells: Array<HeadCell<ToolType>> = [
         label: 'Liczba krytyczna',
         disablePadding: false,
         numeric: true,
-    }
+    },
 ]
-
-
 
 export const filterInitStructure: Array<FilterInputType> = [
     {
@@ -43,8 +41,8 @@ export const filterInitStructure: Array<FilterInputType> = [
         value: '',
         label: 'Nazwa',
         inputType: 'text',
-        typeValue: 'string'
-    }
+        typeValue: 'string',
+    },
 ]
 
 export const emptyForm = {
@@ -55,10 +53,10 @@ export const emptyForm = {
     availableCount: null,
     attachments: [],
     orderStages: [],
-    tools: []
+    tools: [],
 }
 
 export const validationSchema = yup.object({
     name: yup.string().min(3, 'Nazwa musi zaweirać co najmniej 3 znaki').required('Wprowadź nazwę'),
-    criticalNumber: yup.number().typeError('Wprowadź liczbę krytyczną')
+    criticalNumber: yup.number().typeError('Wprowadź liczbę krytyczną'),
 })

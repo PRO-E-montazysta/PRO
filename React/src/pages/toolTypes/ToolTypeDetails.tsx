@@ -220,7 +220,7 @@ const ToolTypeDetails = () => {
                                 <Grid item xs={6}>
                                     <FormInput id={'name'} formik={formik} readonly={readonlyMode} firstChild />
                                     <FormInput id={'criticalNumber'} formik={formik} readonly={readonlyMode} />
-                                    <FormInput id={'inServiceCount'} formik={formik} readonly/>
+                                    <FormInput id={'inServiceCount'} formik={formik} readonly />
                                     <FormInput id={'availableCount'} formik={formik} readonly />
                                 </Grid>
                             </Grid>
