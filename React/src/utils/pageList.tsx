@@ -25,6 +25,8 @@ import ToolTypes from '../pages/toolTypes'
 import ToolTypeDetails from '../pages/toolTypes/ToolTypeDetails'
 import WarehouseDetails from '../pages/warehouses/WarehouseDetails'
 import Warehouses from '../pages/warehouses'
+import Elements from '../pages/elements'
+import ElementDetails from '../pages/elements/ElementDetails'
 
 export type PageProps = {
     name: string
@@ -210,6 +212,20 @@ export const pageList: Array<PageProps> = [
                     Role['*'],
                 ],
                 component: <WarehouseDetails />,
+            },
+            {
+                inNav: true,
+                name: 'Elementy',
+                path: '/elements',
+                allowedRoles: [Role.MANAGER, Role.SPECIALIST, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER, Role["*"]],
+                component: <Elements />
+            },
+            {
+                inNav: false,
+                name: '',
+                path: '/elements/:id',
+                allowedRoles: [Role.MANAGER, Role.SPECIALIST, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER, Role["*"]],
+                component: <ElementDetails />
             },
             {
                 inNav: true,
