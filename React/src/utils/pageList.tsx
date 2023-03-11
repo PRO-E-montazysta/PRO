@@ -144,7 +144,7 @@ export const pageList: Array<PageProps> = [
                     Role.SPECIALIST,
                     Role.MANAGER,
                     Role.SALES_REPRESENTATIVE,
-                    Role.FOREMAN,
+                    Role.FOREMAN, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER,
                     Role['*'],
                 ],
                 component: <Employees />,

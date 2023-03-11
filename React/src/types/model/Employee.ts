@@ -10,3 +10,8 @@ export type Employee = {
   phone: string;
   unavailbilityDescription:string;
 };
+
+export const EmployeeStatus = {
+  AKTYWNY: "AKTYWNY",
+  NIEAKTYWNY: "NIEAKTYWNY",
+}

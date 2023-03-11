@@ -3,7 +3,6 @@ import { AxiosError } from 'axios'
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Employee } from '../../../types/model/Employee'
-import { getUser } from '../../../api/user.api'
 import { styled } from '@mui/material/styles'
 import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
@@ -18,6 +17,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert'
 import WorkHistoryIcon from '@mui/icons-material/WorkHistory'
 import { Grid } from '@mui/material'
 import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar'
+import { getUserById } from '../../../api/user.api'
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean
@@ -40,7 +40,7 @@ const EmpDetails = () => {
     const [expandedInformation, setExpandedInformation] = useState(false)
     const [expandedStatus, setExpandedStatus] = useState(false)
 
-    const queryData = useQuery<Employee, AxiosError>(['users', { id: params.id }], async () => getUser(params.id!), {
+    const queryData = useQuery<Employee, AxiosError>(['users', { id: params.id }], async () => getUserById(params.id!), {
         enabled: !!params.id,
     })
     console.log(queryData)

@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import FatTable from '../../components/table/FatTable'
 import { filterInitStructure, headCells } from './helper'
-import { getAllUsers } from '../../api/user.api'
 import { getFilterParams, setNewFilterValues } from '../../helpers/filter.helper'
 import { FilterFormProps } from '../../components/table/filter/TableFilter'
 import { Employee } from '../../types/model/Employee'
+import { getFilteredUsers } from '../../api/user.api'
 
 const Employees = () => {
     const [filterStructure, setFilterStructure] = useState(filterInitStructure)
@@ -15,7 +15,7 @@ const Employees = () => {
     const navigation = useNavigate()
 
     const queryData = useQuery<Array<Employee>, AxiosError>(['users', filterParams], async () =>
-        getAllUsers({ queryParams: filterParams }),
+        getFilteredUsers({ queryParams: filterParams }),
     )
 
     const handleOnSearch = (filterParams: Object) => {
@@ -41,7 +41,6 @@ const Employees = () => {
             initOrderBy={'firstName'}
             onClickRow={(e, row) => {
                 navigation(`/employees/${row.id}`)
-                console.log(row)
             }}
             pageHeader="Lista pracowników"
         />
