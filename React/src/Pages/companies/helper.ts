@@ -9,13 +9,6 @@ import * as yup from 'yup'
 export const headCells: Array<HeadCell<Company>> = [
     {
         type: 'string',
-        id: 'id',
-        label: 'Id',
-        disablePadding: false,
-        numeric: true,
-    },
-    {
-        type: 'string',
         id: 'companyName',
         label: 'Nazwa firmy',
         disablePadding: false,
@@ -43,16 +36,9 @@ export const headCells: Array<HeadCell<Company>> = [
         disablePadding: false,
         numeric: false,
     },
-];
+]
 
 export const filterInitStructure: Array<FilterInputType> = [
-    {
-        id: 'id',
-        value: '',
-        label: 'Id',
-        inputType: 'text',
-        typeValue: 'string',
-    },
     {
         id: 'companyName',
         value: '',
@@ -61,37 +47,23 @@ export const filterInitStructure: Array<FilterInputType> = [
         typeValue: 'string',
     },
     {
-        id: 'createdAtMin',
+        id: 'status',
         value: '',
-        label: 'Czas utworzenia od',
-        inputType: 'datetime-local',
-        typeValue: 'date',
-    },
-    {
-        id: 'createdAtMax',
-        value: '',
-        label: 'Czas utworzenia do',
-        inputType: 'datetime-local',
-        typeValue: 'date',
-    },
-    {
-        id: 'typeOfStatus',
-        value: ['ACTIVE', 'BLOCKED'],
         label: 'Status',
         inputType: 'multiselect',
         typeValue: 'Array',
-        options: statusOptions(),
     },
-];
+]
 
 export const emptyForm = {
     id: null,
     companyName: '',
     createdAt: '',
     status: '',
-    statusReason: ''
-};
+    statusReason: '',
+}
 
 export const validationSchema = yup.object({
     companyName: yup.string().min(2, 'Nazwa musi zawierać co najmniej 2 znaki').required('Wprowadź nazwę'),
-});
+    status: yup.string().required('Wybierz status'),
+})
