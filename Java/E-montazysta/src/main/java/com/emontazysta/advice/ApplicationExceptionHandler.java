@@ -39,4 +39,12 @@ public class ApplicationExceptionHandler {
 
         log.debug(entityNotFoundException.getMessage());
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public String illegalArgumentException(IllegalArgumentException illegalArgumentException) {
+
+       return  illegalArgumentException.getMessage();
+
+    }
 }

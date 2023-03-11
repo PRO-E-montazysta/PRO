@@ -19,13 +19,17 @@ import { Role } from '../types/roleEnum'
 import Error from '../components/error/Error'
 import Orders from '../pages/orders'
 import OrderDetails from '../pages/orders/OrderDetails'
-
 import ToolTypes from '../pages/toolTypes'
 import ToolTypeDetails from '../pages/toolTypes/ToolTypeDetails'
 import WarehouseDetails from '../pages/warehouses/WarehouseDetails'
 import Warehouses from '../pages/warehouses'
 import Companies from '../pages/companies'
 import CompanyDetails from '../pages/companies/CompanyDetails'
+import Tools from '../pages/tools'
+import ToolsFromWarehouse from '../pages/tools/ToolsFromWarehouse'
+import ToolDetails from '../pages/tools/ToolDetails'
+import Elements from '../pages/elements'
+import ElementDetails from '../pages/elements/ElementDetails'
 
 export type PageProps = {
     name: string
@@ -77,14 +81,14 @@ export const pageList: Array<PageProps> = [
                     {
                         inNav: true,
                         name: 'Lista firm',
-                        path: '/companies'
+                        path: '/companies',
                     },
                     {
                         inNav: true,
                         name: 'Dodaj firmę',
-                        path: '/companies/new'
-                    }
-                ]
+                        path: '/companies/new',
+                    },
+                ],
             },
             {
                 inNav: false,
@@ -134,6 +138,18 @@ export const pageList: Array<PageProps> = [
                 path: '/tooltypes',
                 allowedRoles: [Role.WAREHOUSE_MANAGER, Role['*']],
                 component: <ToolTypes />,
+                children: [
+                    {
+                        inNav: true,
+                        name: 'Lista typów narzędzi',
+                        path: '/tooltypes',
+                    },
+                    {
+                        inNav: true,
+                        name: 'Dodaj typ narzędzi',
+                        path: '/tooltypes/new',
+                    },
+                ],
             },
             {
                 inNav: false,
@@ -144,22 +160,50 @@ export const pageList: Array<PageProps> = [
             },
             {
                 inNav: true,
+                name: 'Narzędzia',
+                path: '/tools',
+                allowedRoles: [Role['*']],
+                component: <Tools />,
+            },
+            {
+                inNav: false,
+                name: '',
+                path: '/tools-warehouse/:warehouseId',
+                allowedRoles: [Role['*']],
+                component: <ToolsFromWarehouse />,
+            },
+            {
+                inNav: false,
+                name: '',
+                path: '/tools/:id',
+                allowedRoles: [Role['*']],
+                component: <ToolDetails />,
+            },
+            {
+                inNav: true,
                 name: 'Zlecenia',
                 path: '/orders',
-                allowedRoles: [Role.FITTER, Role.SPECIALIST, Role.MANAGER, Role.SALES_REPRESENTATIVE, Role.FOREMAN, Role["*"]],
+                allowedRoles: [
+                    Role.FITTER,
+                    Role.SPECIALIST,
+                    Role.MANAGER,
+                    Role.SALES_REPRESENTATIVE,
+                    Role.FOREMAN,
+                    Role['*'],
+                ],
                 component: <Orders />,
                 children: [
                     {
                         inNav: true,
                         name: 'Lista zleceń',
-                        path: '/orders'
+                        path: '/orders',
                     },
                     {
                         inNav: true,
                         name: 'Dodaj zlecenie',
-                        path: '/orders/new'
-                    }
-                ]
+                        path: '/orders/new',
+                    },
+                ],
             },
             {
                 inNav: false,
@@ -187,8 +231,21 @@ export const pageList: Array<PageProps> = [
                     Role.WAREHOUSE_MANAGER,
                     Role.FITTER,
                     Role.FOREMAN,
+                    Role['*'],
                 ],
                 component: <Warehouses />,
+                children: [
+                    {
+                        inNav: true,
+                        name: 'Lista magazynów',
+                        path: '/warehouses',
+                    },
+                    {
+                        inNav: true,
+                        name: 'Dodaj magazyn',
+                        path: '/warehouses/new',
+                    },
+                ],
             },
             {
                 inNav: false,
@@ -202,8 +259,23 @@ export const pageList: Array<PageProps> = [
                     Role.WAREHOUSE_MANAGER,
                     Role.FITTER,
                     Role.FOREMAN,
+                    Role['*'],
                 ],
                 component: <WarehouseDetails />,
+            },
+            {
+                inNav: true,
+                name: 'Elementy',
+                path: '/elements',
+                allowedRoles: [Role.MANAGER, Role.SPECIALIST, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER, Role['*']],
+                component: <Elements />,
+            },
+            {
+                inNav: false,
+                name: '',
+                path: '/elements/:id',
+                allowedRoles: [Role.MANAGER, Role.SPECIALIST, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER, Role['*']],
+                component: <ElementDetails />,
             },
             {
                 inNav: true,

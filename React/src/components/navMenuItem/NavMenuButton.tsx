@@ -36,6 +36,7 @@ const NavMenuButton = (props: PageProps) => {
     return (
         <>
             <Button
+                style={{ minWidth: '200px' }}
                 aria-controls={open ? 'basic-menu' : undefined}
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
