@@ -9,7 +9,6 @@ import { deleteCompany, getCompanyDetails, postCompany, updateCompany } from '..
 import { companyStatusOptions } from '../../helpers/enum.helper'
 import { theme } from '../../themes/baseTheme'
 import { Company } from '../../types/model/Company'
-
 import SaveIcon from '@mui/icons-material/Save'
 import ReplayIcon from '@mui/icons-material/Replay'
 import CloseIcon from '@mui/icons-material/Close'

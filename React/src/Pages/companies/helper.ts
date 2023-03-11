@@ -3,7 +3,6 @@ import { Company } from '../../types/model/Company'
 import { HeadCell } from '../../components/table/sort/SortedTableHeader'
 import { formatDate } from '../../helpers/format.helper'
 import { companyStatusName, companyStatusOptions } from '../../helpers/enum.helper'
-
 import * as yup from 'yup'
 
 export const headCells: Array<HeadCell<Company>> = [
