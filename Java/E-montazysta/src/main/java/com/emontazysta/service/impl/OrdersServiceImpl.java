@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -77,7 +78,7 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public List<OrdersCompanyManagerDto> getFilteredOrders(OrdersSearchCriteria ordersSearchCriteria){
-        return ordersCriteriaRepository.findAllWithFilters(ordersSearchCriteria);
+    public List<OrdersCompanyManagerDto> getFilteredOrders(OrdersSearchCriteria ordersSearchCriteria, Principal principal){
+        return ordersCriteriaRepository.findAllWithFilters(ordersSearchCriteria, principal);
     }
 }

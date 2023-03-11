@@ -3,19 +3,19 @@ import FatTable from '../../components/table/FatTable'
 import { useState } from 'react'
 import { useQuery } from 'react-query'
 import { AxiosError } from 'axios'
-import { getFilteredWarehouses } from '../../api/warehouse.api'
 import { filterInitStructure, headCells } from './helper'
 import { useNavigate } from 'react-router-dom'
 import { getFilterParams, setNewFilterValues } from '../../helpers/filter.helper'
-import { WarehouseFilterDto } from '../../types/model/Warehouse'
+import { Element } from '../../types/model/Element'
+import { getFilteredElements } from '../../api/element.api'
 
-const Warehouses = () => {
+const Elements = () => {
     const [filterStructure, setFilterStructure] = useState(filterInitStructure)
     const [filterParams, setFilterParams] = useState(getFilterParams(filterInitStructure))
     const navigation = useNavigate()
 
-    const queryWarehouses = useQuery<Array<WarehouseFilterDto>, AxiosError>(['warehouses', filterParams], async () =>
-        getFilteredWarehouses({ queryParams: filterParams }),
+    const queryOrders = useQuery<Array<Element>, AxiosError>(['orders', filterParams], async () =>
+        getFilteredElements({ queryParams: filterParams }),
     )
 
     const handleOnSearch = (filterParams: Object) => {
@@ -35,17 +35,16 @@ const Warehouses = () => {
 
     return (
         <FatTable
-            query={queryWarehouses}
+            query={queryOrders}
             filterForm={filterForm}
             headCells={headCells}
             initOrderBy={'name'}
             onClickRow={(e, row) => {
-                navigation(`/warehouses/${row.id}`)
-                console.log(row)
+                navigation(`/elements/${row.id}`)
             }}
-            pageHeader="Lista magazynów"
+            pageHeader="Lista elementów"
         />
     )
 }
 
-export default Warehouses
+export default Elements
