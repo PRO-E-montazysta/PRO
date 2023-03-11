@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
@@ -65,15 +66,16 @@ public class ToolController {
 
     @GetMapping("/filter")
     @Operation(description = "Allows to get filtered tools data.", security = @SecurityRequirement(name = "bearer-key"))
-    public ResponseEntity<List<ToolFilterDto>> getfilteredTools(ToolSearchCriteria toolSearchCriteria){
-        return new ResponseEntity<>(toolService.getTools(toolSearchCriteria),HttpStatus.OK);
+    public ResponseEntity<List<ToolFilterDto>> getfilteredTools(ToolSearchCriteria toolSearchCriteria, Principal principal){
+        return new ResponseEntity<>(toolService.getTools(toolSearchCriteria, principal),HttpStatus.OK);
     }
 
     @GetMapping("/tools-from-warehouse/{id}")
     @Operation(description = "Allows to get filtered tools data.", security = @SecurityRequirement(name = "bearer-key"))
-    public ResponseEntity<List<ToolFilterDto>> getfilteredToolsFromWarehouse(@PathVariable Long id, ToolSearchCriteria toolSearchCriteria){
-        toolSearchCriteria.setWarehouse_Id(id);
-        return new ResponseEntity<>(toolService.getTools(toolSearchCriteria),HttpStatus.OK);
+    public ResponseEntity<List<ToolFilterDto>> getfilteredToolsFromWarehouse(@PathVariable String id,
+                                     ToolSearchCriteria toolSearchCriteria, Principal principal){
+        toolSearchCriteria.setWarehouse_Id(List.of(id));
+        return new ResponseEntity<>(toolService.getTools(toolSearchCriteria, principal),HttpStatus.OK);
     }
 
 }
