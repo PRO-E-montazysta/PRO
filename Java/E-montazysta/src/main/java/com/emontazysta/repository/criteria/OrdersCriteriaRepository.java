@@ -84,7 +84,8 @@ public class OrdersCriteriaRepository {
         if (Objects.nonNull(ordersSearchCriteria.getTypeOfPriority())) {
             List<Predicate> typeOfPriorityPredicates = new ArrayList<>();
             for (String type : ordersSearchCriteria.getTypeOfPriority()) {
-                typeOfPriorityPredicates.add(criteriaBuilder.equal(ordersRoot.get("typeOfPriority"), TypeOfPriority.valueOf(type)));
+                typeOfPriorityPredicates.add(criteriaBuilder.equal(ordersRoot.get("typeOfPriority"),
+                TypeOfPriority.valueOf(type)));
             }
             predicates.add(criteriaBuilder.or(typeOfPriorityPredicates.toArray(new Predicate[0])));
         }
