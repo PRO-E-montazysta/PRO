@@ -1,6 +1,6 @@
-import { FilterInputType } from "../../components/table/filter/TableFilter";
-import { Element, TypeOfUnit } from "../../types/model/Element";
-import { HeadCell } from "../../components/table/sort/SortedTableHeader";
+import { FilterInputType } from '../../components/table/filter/TableFilter'
+import { Element, TypeOfUnit } from '../../types/model/Element'
+import { HeadCell } from '../../components/table/sort/SortedTableHeader'
 
 export const headCells: Array<HeadCell<Element>> = [
     {
@@ -31,7 +31,7 @@ export const headCells: Array<HeadCell<Element>> = [
         label: 'Ilość w jednostce',
         disablePadding: false,
         numeric: false,
-    }
+    },
 ]
 
 export const filterInitStructure: Array<FilterInputType> = [
@@ -40,13 +40,13 @@ export const filterInitStructure: Array<FilterInputType> = [
         value: '',
         label: 'Nazwa',
         inputType: 'text',
-        typeValue: 'string'
+        typeValue: 'string',
     },
     {
         id: 'code',
         value: '',
         label: 'Kod',
         inputType: 'text',
-        typeValue: 'string'
-    }
+        typeValue: 'string',
+    },
 ]
