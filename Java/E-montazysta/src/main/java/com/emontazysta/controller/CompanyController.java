@@ -1,6 +1,7 @@
 package com.emontazysta.controller;
 
 import com.emontazysta.model.dto.CompanyDto;
+import com.emontazysta.model.searchcriteria.CompanySearchCriteria;
 import com.emontazysta.service.CompanyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -51,5 +52,11 @@ public class CompanyController {
     @Operation(description = "Allows to update Company by given Id, and Company.", security = @SecurityRequirement(name = "bearer-key"))
     public CompanyDto update(@PathVariable("id") Long id, @Valid @RequestBody CompanyDto company) {
         return companyService.update(id, company);
+    }
+
+    @GetMapping("/filter")
+    @Operation(description = "Return filtered Companies by given parameters.", security = @SecurityRequirement(name = "bearer-key"))
+    public ResponseEntity<List<CompanyDto>> getFiltered(CompanySearchCriteria companySearchCriteria) {
+        return new ResponseEntity<>(companyService.getFilteredCompanies(companySearchCriteria),HttpStatus.OK);
     }
 }

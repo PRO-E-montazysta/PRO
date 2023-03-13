@@ -1,6 +1,7 @@
 package com.emontazysta.service;
 
 import com.emontazysta.model.dto.CompanyDto;
+import com.emontazysta.model.searchcriteria.CompanySearchCriteria;
 
 import java.util.List;
 
@@ -11,4 +12,5 @@ public interface CompanyService {
     CompanyDto add(CompanyDto company);
     void delete(Long id);
     CompanyDto update(Long id, CompanyDto company);
+    List<CompanyDto> getFilteredCompanies(CompanySearchCriteria companySearchCriteria);
 }
