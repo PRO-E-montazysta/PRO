@@ -6,7 +6,7 @@ export const getAllCompanies = () => {
 }
 
 export const getFilteredCompanies = (payload: PayloadProps) => {
-    return makeServiceCall('/companies/all', 'GET', { ...payload })
+    return makeServiceCall('/companies/filter', 'GET', { ...payload })
 }
 
 export const getCompanyDetails = (id: string) => {
