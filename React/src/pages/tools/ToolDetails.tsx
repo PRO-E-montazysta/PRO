@@ -24,6 +24,7 @@ import { getAllWarehouses } from '../../api/warehouse.api'
 import { formatArrayToOptions } from '../../helpers/format.helper'
 import { ToolType } from '../../types/model/ToolType'
 import { getAllToolTypes } from '../../api/toolType.api'
+import PrintQRCodeLabel from '../../components/label/PrintQRCodeLabel'
 
 const ToolDetails = () => {
     const params = useParams()
@@ -254,6 +255,7 @@ const ToolDetails = () => {
                             <Box sx={{ margin: '20px', gap: '20px', display: 'flex', flexDirection: 'row-reverse' }}>
                                 {readonlyMode && params.id != 'new' ? (
                                     <>
+                                        <PrintQRCodeLabel label={queryData.data?.name!} code={queryData.data?.code!} />
                                         <Button
                                             color="primary"
                                             startIcon={<EditIcon />}
