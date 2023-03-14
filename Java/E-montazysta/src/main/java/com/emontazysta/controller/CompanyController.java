@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,6 +19,7 @@ import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 
 @RestController
 @AllArgsConstructor
+@PreAuthorize("hasAuthority('SCOPE_CLOUD_ADMIN')")
 @RequestMapping(value = API_BASE_CONSTANT + "/companies", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CompanyController {
 
