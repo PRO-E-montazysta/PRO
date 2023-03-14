@@ -3,7 +3,9 @@ package com.emontazysta.service.impl;
 import com.emontazysta.mapper.CompanyMapper;
 import com.emontazysta.model.Company;
 import com.emontazysta.model.dto.CompanyDto;
+import com.emontazysta.model.searchcriteria.CompanySearchCriteria;
 import com.emontazysta.repository.CompanyRepository;
+import com.emontazysta.repository.criteria.CompanyCriteriaRepository;
 import com.emontazysta.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     private final CompanyRepository repository;
     private final CompanyMapper companyMapper;
+    private final CompanyCriteriaRepository companyCriteriaRepository;
 
     @Override
     public List<CompanyDto> getAll() {
@@ -59,5 +62,10 @@ public class CompanyServiceImpl implements CompanyService {
         companyToUpdate.setClients(updatedCompany.getClients());
         companyToUpdate.setEmployments(updatedCompany.getEmployments());
         return companyMapper.toDto(repository.save(companyToUpdate));
+    }
+
+    @Override
+    public List<CompanyDto> getFilteredCompanies(CompanySearchCriteria companySearchCriteria) {
+        return companyCriteriaRepository.findAllWithFilters(companySearchCriteria);
     }
 }
