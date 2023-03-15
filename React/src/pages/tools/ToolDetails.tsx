@@ -195,7 +195,11 @@ const ToolDetails = () => {
                                 alignItems: 'center',
                             }}
                         >
-                            {queryData.isLoading ? <CircularProgress /> : <Typography>Nie znaleziono firmy</Typography>}
+                            {queryData.isLoading ? (
+                                <CircularProgress />
+                            ) : (
+                                <Typography>Nie znaleziono narzędzia</Typography>
+                            )}
                         </Box>
                     ) : (
                         <>
