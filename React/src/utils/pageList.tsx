@@ -236,14 +236,26 @@ export const pageList: Array<PageProps> = [
                 inNav: true,
                 name: 'Elementy',
                 path: '/elements',
-                allowedRoles: [Role.MANAGER, Role.SPECIALIST, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER, Role['*']],
+                allowedRoles: [Role.MANAGER, Role.SPECIALIST, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER],
                 component: <Elements />,
+                children: [
+                    {
+                        inNav: true,
+                        name: 'Lista elementów',
+                        path: '/elements',
+                    },
+                    {
+                        inNav: true,
+                        name: 'Dodaj element',
+                        path: '/elements/new',
+                    },
+                ],
             },
             {
                 inNav: false,
                 name: '',
                 path: '/elements/:id',
-                allowedRoles: [Role.MANAGER, Role.SPECIALIST, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER, Role['*']],
+                allowedRoles: [Role.MANAGER, Role.SPECIALIST, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER],
                 component: <ElementDetails />,
             },
         ],
