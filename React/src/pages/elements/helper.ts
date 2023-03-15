@@ -2,6 +2,8 @@ import { FilterInputType } from '../../components/table/filter/TableFilter'
 import { Element, TypeOfUnit } from '../../types/model/Element'
 import { HeadCell } from '../../components/table/sort/SortedTableHeader'
 
+import * as yup from 'yup'
+
 export const headCells: Array<HeadCell<Element>> = [
     {
         type: 'string',
@@ -50,3 +52,21 @@ export const filterInitStructure: Array<FilterInputType> = [
         typeValue: 'string',
     },
 ]
+
+export const emptyForm = {
+    id: null,
+    name: '',
+    code: '',
+    typeOfUnit: '',
+    quantityInUnit: '',
+    elementReturnReleases: [],
+    elementInWarehouses: [],
+    elementEvents: [],
+    attachmentId: '',
+    ordersStages: [],
+}
+
+export const validationSchema = yup.object({
+    name: yup.string().min(3, 'Nazwa musi zaweirać co najmniej 3 znaki').required('Wprowadź nazwę'),
+    typeOfUnit: yup.string().required('Wybierz rodzaj jednostki'),
+})
