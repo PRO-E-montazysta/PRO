@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -235,20 +234,20 @@ public class DataSeeding {
                 CompanyStatus.DISABLED, "Closed company", new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>()));
 
-        Employment employment1 = addEmploymentFromModel(new Employment(null, LocalDate.now(), null, company1, fitter1));
-        Employment employment2 = addEmploymentFromModel(new Employment(null, LocalDate.now(), null, company1, fitter2));
-        Employment employment3 = addEmploymentFromModel(new Employment(null, LocalDate.now(), null, company1, foreman1));
-        Employment employment4 = addEmploymentFromModel(new Employment(null, LocalDate.now(), null, company1, foreman2));
-        Employment employment5 = addEmploymentFromModel(new Employment(null, LocalDate.now(), null, company1, warehouseman1));
-        Employment employment6 = addEmploymentFromModel(new Employment(null, LocalDate.now(), null, company1, warehouseman2));
-        Employment employment7 = addEmploymentFromModel(new Employment(null, LocalDate.now(), null, company1, warehouseManager1));
-        Employment employment8 = addEmploymentFromModel(new Employment(null, LocalDate.now(), null, company1, warehouseManager2));
-        Employment employment9 = addEmploymentFromModel(new Employment(null, LocalDate.now(), null, company1, specialist1));
-        Employment employment10 = addEmploymentFromModel(new Employment(null, LocalDate.now(), null, company1, specialist2));
-        Employment employment11 = addEmploymentFromModel(new Employment(null, LocalDate.now(), null, company1, salesRepresentative1));
-        Employment employment12 = addEmploymentFromModel(new Employment(null, LocalDate.now(), null, company1, salesRepresentative2));
-        Employment employment13 = addEmploymentFromModel(new Employment(null, LocalDate.now(), null, company1, manager1));
-        Employment employment14 = addEmploymentFromModel(new Employment(null, LocalDate.now(), null, company1, manager2));
+        Employment employment1 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, fitter1));
+        Employment employment2 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, fitter2));
+        Employment employment3 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, foreman1));
+        Employment employment4 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, foreman2));
+        Employment employment5 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, warehouseman1));
+        Employment employment6 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, warehouseman2));
+        Employment employment7 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, warehouseManager1));
+        Employment employment8 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, warehouseManager2));
+        Employment employment9 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, specialist1));
+        Employment employment10 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, specialist2));
+        Employment employment11 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, salesRepresentative1));
+        Employment employment12 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, salesRepresentative2));
+        Employment employment13 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, manager1));
+        Employment employment14 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, manager2));
 
         Unavailability unavailability1 = addUnavailabilityFromModel(new Unavailability(null,
                 TypeOfUnavailability.TYPE1, "Test Unavailability 1", LocalDateTime.parse( "2023-03-06T12:00:00.000"), LocalDateTime.parse("2023-03-06T23:00:00.000"), fitter1, manager1));

@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -18,8 +18,8 @@ public class EmploymentDto {
 
     private Long id;
     @NotNull(message = "Date of employment cannot be empty")
-    private LocalDate dateOfEmployment;
-    private LocalDate dateOfDismiss;
+    private LocalDateTime dateOfEmployment;
+    private LocalDateTime dateOfDismiss;
     @NotNull(message = "Company id cannot be empty")
     private Long companyId;
     @NotNull(message = "Employee id cannot be empty")

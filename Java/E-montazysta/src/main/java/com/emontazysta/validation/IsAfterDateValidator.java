@@ -4,7 +4,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import org.apache.commons.beanutils.PropertyUtils;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class IsAfterDateValidator implements ConstraintValidator<IsAfter, Object> {
 
@@ -20,8 +20,8 @@ public class IsAfterDateValidator implements ConstraintValidator<IsAfter, Object
     @Override
     public boolean isValid(Object object, ConstraintValidatorContext context) {
         try {
-            LocalDate startDate = (LocalDate) PropertyUtils.getProperty(object, startDateFieldName);
-            LocalDate endDate = (LocalDate) PropertyUtils.getProperty(object, endDateFieldName);
+            LocalDateTime startDate = (LocalDateTime) PropertyUtils.getProperty(object, startDateFieldName);
+            LocalDateTime endDate = (LocalDateTime) PropertyUtils.getProperty(object, endDateFieldName);
             return startDate == null || endDate == null || endDate.isAfter(startDate);
         } catch (Exception e) {
             return false;
