@@ -5,7 +5,7 @@ export const getAllClients = () => {
     return makeServiceCall('/clients/all', 'GET', {})
 }
 export const getFilteredClients = (payload: PayloadProps) => {
-    return makeServiceCall('/clients/filter', 'GET', { ...payload })
+    return makeServiceCall('/clients/all', 'GET', { ...payload })
 }
 
 export const getClientDetails = (id: string) => {
