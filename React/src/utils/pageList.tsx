@@ -18,6 +18,8 @@ import Elements from '../pages/elements'
 import ElementDetails from '../pages/elements/ElementDetails'
 import Employees from '../pages/employees/Employees'
 import EmpDetails from '../pages/employees/employeesDetails/EmpDetails'
+import Clients from '../pages/clients'
+import ClientDetails from '../pages/clients/ClientDetails'
 
 export type PageProps = {
     name: string
@@ -164,6 +166,32 @@ export const pageList: Array<PageProps> = [
                     Role['*'],
                 ],
                 component: <OrderDetails />,
+            },
+            {
+                inNav: true,
+                name: 'Klienci',
+                path: '/clients',
+                allowedRoles: [Role.MANAGER, Role.SALES_REPRESENTATIVE],
+                component: <Clients />,
+                children: [
+                    {
+                        inNav: true,
+                        name: 'Lista klientów',
+                        path: '/clients',
+                    },
+                    {
+                        inNav: true,
+                        name: 'Dodaj klienta',
+                        path: '/clients/new',
+                    },
+                ],
+            },
+            {
+                inNav: false,
+                name: '',
+                path: '/clients/:id',
+                allowedRoles: [Role.MANAGER, Role.SALES_REPRESENTATIVE],
+                component: <ClientDetails />,
             },
             {
                 inNav: true,
