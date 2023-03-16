@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,8 +17,10 @@ import java.util.List;
 public class CommentDto {
 
     private Long id;
+    @NotBlank(message = "Content cannot be empty")
     private String content;
     private LocalDateTime createdAt;
+    @NotNull(message = "Message creator id cannot be empty")
     private Long messageCreatorId;
     private Long orderStageId;
     private List<Long> attachments;

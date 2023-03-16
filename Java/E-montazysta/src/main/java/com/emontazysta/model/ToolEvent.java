@@ -30,8 +30,6 @@ public class ToolEvent {
     private LocalDateTime movingDate;
     private LocalDateTime completionDate;
     private String description;
-
-    @NotNull
     private TypeOfStatus status;
 
     @ManyToOne

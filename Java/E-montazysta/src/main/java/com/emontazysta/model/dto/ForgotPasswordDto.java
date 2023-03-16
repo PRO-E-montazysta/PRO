@@ -11,6 +11,6 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class ForgotPasswordDto {
 
-    @NotBlank
+    @NotBlank(message = "Username cannot be empty")
     String username;
 }

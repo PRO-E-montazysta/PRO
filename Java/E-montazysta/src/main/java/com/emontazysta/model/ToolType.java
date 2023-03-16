@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
@@ -26,6 +25,8 @@ public class ToolType {
     private String name;
 
     private int criticalNumber;
+    private int inServiceCount;
+    private int availableCount;
 
     @OneToMany(mappedBy = "toolType")
     private List<Attachment> attachments;

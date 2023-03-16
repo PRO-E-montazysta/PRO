@@ -9,7 +9,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -18,13 +22,30 @@ public class ApplicationExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String,String> handleInvalidArgument(MethodArgumentNotValidException exception) {
-        Map <String,String> errorsMAp = new HashMap<>();
-        exception.getBindingResult().getFieldErrors().forEach(error -> {
-            errorsMAp.put(error.getField(), error.getDefaultMessage());
+    public Map<String, List<String>> handleInvalidArgument(MethodArgumentNotValidException exception) {
+        exception.printStackTrace();
+        Map<String, List<String>> errorsMap = new HashMap<>();
+        exception.getBindingResult().getAllErrors().forEach(error -> {
+            List<String> errors = errorsMap.get(error.getObjectName());
+            if (errors == null) {
+                errors = new ArrayList<>();
+            }
+            errors.add(error.getDefaultMessage());
+            errorsMap.put(error.getObjectName(), errors);
         });
-        return errorsMAp;
+        return errorsMap;
     }
+
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    @ExceptionHandler(MethodArgumentNotValidException.class)
+//    public Map<String, String> handleInvalidArgument(MethodArgumentNotValidException exception) {
+//        exception.printStackTrace();
+//        Map<String, String> errorsMap = new HashMap<>();
+//        exception.getBindingResult().getFieldErrors().forEach(error -> {
+//            errorsMap.put(error.getField(), error.getDefaultMessage());
+//        });
+//        return errorsMap;
+//    }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(EmptyResultDataAccessException.class)
@@ -40,11 +61,11 @@ public class ApplicationExceptionHandler {
         log.debug(entityNotFoundException.getMessage());
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(IllegalArgumentException.class)
-    public String illegalArgumentException(IllegalArgumentException illegalArgumentException) {
-
-       return  illegalArgumentException.getMessage();
-
-    }
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    @ExceptionHandler(IllegalArgumentException.class)
+//    public String illegalArgumentException(IllegalArgumentException illegalArgumentException) {
+//
+//       return  illegalArgumentException.getMessage();
+//
+//    }
 }

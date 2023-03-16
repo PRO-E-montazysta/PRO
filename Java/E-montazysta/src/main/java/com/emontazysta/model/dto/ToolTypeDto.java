@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @Data
@@ -14,12 +16,13 @@ import java.util.List;
 public class ToolTypeDto {
     private Long id;
 
+    @NotBlank(message = "Name cannot be empty")
     private String name;
-
+    @PositiveOrZero(message = "In service count number cannot be negative")
     private int inServiceCount;
-
+    @PositiveOrZero(message = "Critical number cannot be negative")
     private int criticalNumber;
-
+    @PositiveOrZero(message = "Available count number cannot be negative")
     private int availableCount;
     private List<Long> attachments;
     private List<Long> orderStages;

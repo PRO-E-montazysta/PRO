@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
@@ -43,7 +44,7 @@ public class ToolReleaseController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Tool Release.", security = @SecurityRequirement(name = "bearer-key"))
-    public ToolReleaseDto addToolRelease(@RequestBody ToolReleaseDto toolRelease) {
+    public ToolReleaseDto addToolRelease(@Valid @RequestBody ToolReleaseDto toolRelease) {
         return toolReleaseService.add(toolRelease);
     }
 
@@ -55,7 +56,7 @@ public class ToolReleaseController {
 
     @PutMapping("/{id}")
     @Operation(description = "Allows to update Tool Release by given Id.", security = @SecurityRequirement(name = "bearer-key"))
-    public ToolReleaseDto updateToolRelease(@PathVariable Long id, @RequestBody ToolReleaseDto toolRelease) {
+    public ToolReleaseDto updateToolRelease(@PathVariable Long id, @Valid @RequestBody ToolReleaseDto toolRelease) {
         return toolReleaseService.update(id, toolRelease);
     }
 }

@@ -10,9 +10,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -28,23 +25,18 @@ public class Orders {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String name;
 
-    @NotNull
     private TypeOfStatus typeOfStatus;
 
-    @NotNull
     private LocalDateTime plannedStart;
 
-    @NotNull
     private LocalDateTime plannedEnd;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime editedAt;
 
-    @NotNull
     private TypeOfPriority typeOfPriority;
 
     @ManyToOne
