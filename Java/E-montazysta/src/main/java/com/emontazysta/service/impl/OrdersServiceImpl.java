@@ -1,21 +1,25 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.OrdersMapper;
+import com.emontazysta.model.AppUser;
+import com.emontazysta.model.Employment;
 import com.emontazysta.model.Orders;
 import com.emontazysta.model.dto.OrdersCompanyManagerDto;
 import com.emontazysta.model.dto.OrdersDto;
 import com.emontazysta.model.searchcriteria.OrdersSearchCriteria;
 import com.emontazysta.repository.OrderRepository;
 import com.emontazysta.repository.criteria.OrdersCriteriaRepository;
+import com.emontazysta.service.AppUserService;
 import com.emontazysta.service.OrdersService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,6 +29,7 @@ public class OrdersServiceImpl implements OrdersService {
     private final OrderRepository repository;
     private final OrdersMapper ordersMapper;
     private final OrdersCriteriaRepository ordersCriteriaRepository;
+    private final AppUserService userService;
 
     @Override
     public List<OrdersDto> getAll() {
@@ -80,5 +85,24 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public List<OrdersCompanyManagerDto> getFilteredOrders(OrdersSearchCriteria ordersSearchCriteria, Principal principal){
         return ordersCriteriaRepository.findAllWithFilters(ordersSearchCriteria, principal);
+    }
+
+
+    public OrdersDto findPrincipalCompanyId(OrdersDto ordersDto, Principal principal) {
+        AppUser user =  userService.findByUsername(principal.getName());
+        Boolean isCloudAdmin = user.getRoles().contains(Role.CLOUD_ADMIN);
+
+        if(!isCloudAdmin) {
+            Optional<Employment> takingEmployment = user.getEmployments().stream()
+                    .filter(employment -> employment.getDateOfDismiss() == null)
+                    .findFirst();
+
+            if (takingEmployment.isPresent()) {
+                ordersDto.setCompanyId(takingEmployment.get().getCompany().getId());
+            }
+        } else {
+            throw new IllegalArgumentException("The logged user is not a registered employee");
+        }
+        return ordersDto;
     }
 }
