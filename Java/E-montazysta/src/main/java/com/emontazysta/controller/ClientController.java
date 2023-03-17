@@ -1,6 +1,7 @@
 package com.emontazysta.controller;
 
 import com.emontazysta.model.dto.ClientDto;
+import com.emontazysta.model.searchcriteria.ClientSearchCriteria;
 import com.emontazysta.service.ClientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
@@ -51,5 +53,11 @@ public class ClientController {
     @Operation(description = "Allows to update Client by given Id and Client.", security = @SecurityRequirement(name = "bearer-key"))
     public ClientDto update(@PathVariable Long id, @Valid @RequestBody ClientDto clientDto) {
         return clientService.update(id, clientDto);
+    }
+
+    @GetMapping("/filter")
+    @Operation(description = "Return filtered Orders by given parameters.", security = @SecurityRequirement(name = "bearer-key"))
+    public ResponseEntity<List<ClientDto>> filterClients(ClientSearchCriteria clientSearchCriteria, Principal principal){
+        return new ResponseEntity<>(clientService.getFilteredOrders(clientSearchCriteria, principal), HttpStatus.OK);
     }
 }
