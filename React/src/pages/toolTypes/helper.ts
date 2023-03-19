@@ -48,9 +48,9 @@ export const filterInitStructure: Array<FilterInputType> = [
 export const emptyForm = {
     id: null,
     name: '',
-    inServiceCount: null,
-    criticalNumber: null,
-    availableCount: null,
+    inServiceCount: '',
+    criticalNumber: '',
+    availableCount: '',
     attachments: [],
     orderStages: [],
     tools: [],
@@ -58,5 +58,5 @@ export const emptyForm = {
 
 export const validationSchema = yup.object({
     name: yup.string().min(3, 'Nazwa musi zaweirać co najmniej 3 znaki').required('Wprowadź nazwę'),
-    criticalNumber: yup.number().typeError('Wprowadź liczbę krytyczną'),
+    criticalNumber: yup.string().required('Wprowadź liczbę krytyczną'),
 })
