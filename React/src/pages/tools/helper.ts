@@ -10,6 +10,8 @@ import { getAllToolTypes } from '../../api/toolType.api'
 import { formatArrayToOptions } from '../../helpers/format.helper'
 import { useEffect, useState } from 'react'
 
+import * as yup from 'yup'
+
 const filterInitStructure: Array<FilterInputType> = [
     {
         id: 'name',
@@ -158,3 +160,20 @@ export const selectedFilterInitStructure: Array<FilterInputType> = [
         })*/
     },
 ]
+
+export const emptyForm = {
+    id: null,
+    name: '',
+    createdAt: '',
+    code: '',
+    toolReleases: [],
+    warehouseId: null,
+    toolEvents: [],
+    toolTypeId: null,
+}
+
+export const validationSchema = yup.object({
+    name: yup.string().min(2, 'Nazwa musi zawierać co najmniej 2 znaki').required('Wprowadź nazwę'),
+    warehouseId: yup.number().typeError('Wybierz magazyn'),
+    toolTypeId: yup.number().typeError('Wybierz typ narzędzia'),
+})

@@ -110,21 +110,33 @@ export const pageList: Array<PageProps> = [
                 inNav: true,
                 name: 'Narzędzia',
                 path: '/tools',
-                allowedRoles: [Role['*']],
+                allowedRoles: [Role.MANAGER, Role.SPECIALIST, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER],
                 component: <Tools />,
+                children: [
+                    {
+                        inNav: true,
+                        name: 'Lista narzędzi',
+                        path: '/tools',
+                    },
+                    {
+                        inNav: true,
+                        name: 'Dodaj narzędzie',
+                        path: '/tools/new',
+                    },
+                ],
             },
             {
                 inNav: false,
                 name: '',
                 path: '/tools-warehouse/:warehouseId',
-                allowedRoles: [Role['*']],
+                allowedRoles: [Role.MANAGER, Role.SPECIALIST, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER],
                 component: <ToolsFromWarehouse />,
             },
             {
                 inNav: false,
                 name: '',
                 path: '/tools/:id',
-                allowedRoles: [Role['*']],
+                allowedRoles: [Role.MANAGER, Role.SPECIALIST, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER],
                 component: <ToolDetails />,
             },
             {
