@@ -20,7 +20,6 @@ public class ElementDto {
     private Long id;
     @NotBlank(message = "Name cannot be empty")
     private String name;
-    @NotBlank(message = "Code cannot be empty")
     private String code;
     @NotNull(message = "Type of unit cannot be empty")
     private TypeOfUnit typeOfUnit;

@@ -19,7 +19,6 @@ public class ToolDto {
     @NotBlank(message = "Name cannot be empty")
     private String name;
     private LocalDate createdAt;
-    @NotBlank(message = "Code cannot be empty")
     private String code;
     private List<Long> toolReleases;
     private Long warehouseId;
