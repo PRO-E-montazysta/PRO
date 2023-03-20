@@ -239,11 +239,7 @@ const OrderDetails = () => {
                                     <FormLabel label="Lokalizacja" formik={formik} id={'locationId'} />
                                     <FormLabel label="Manager" formik={formik} id={'managerId'} />
                                     <FormLabel label="Specjalista" formik={formik} id={'specialistId'} />
-                                    <FormLabel
-                                        label="Handlowiec"
-                                        formik={formik}
-                                        id={'salesRepresentativeId'}
-                                    />
+                                    <FormLabel label="Handlowiec" formik={formik} id={'salesRepresentativeId'} />
                                     <FormLabel label="Czas utworzenia" formik={formik} id={'createdAt'} />
                                     <FormLabel label="Czas ostatniej edycji" formik={formik} id={'editedAt'} />
                                 </Grid>

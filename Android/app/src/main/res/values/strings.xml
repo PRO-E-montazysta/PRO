@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">e-Montażysta</string>
+    <string name="app_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer id pharetra nulla. Praesent tincidunt ipsum quis mi luctus, in molestie ante ultrices.</string>
+    <string name="app_description_header">Lorem Ipsum</string>
+    <string name="logo_desc">Logo</string>
+    <string name="start_button">Start</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Zaloguj się/Zarejestruj</string>
+    <string name="action_sign_in_short">Zaloguj się</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="action_reset_password">Zresetuj hasło</string>
+    <string name="title_activity_dashboard">DashboardActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>

@@ -8,6 +8,8 @@ import Models.LoginCredentials
 import Models.TokenResponse
 import Models.User
 import Repositories.Interfaces.IAuthRepository
+import com.example.e_montaysta.data.model.LoggedInUser
+import com.example.e_montaysta.data.Result
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -26,17 +28,12 @@ class AuthRepository : IAuthRepository, KoinComponent {
             sharedPreferencesHelper.set("lama", rsp)
             var storedToken = sharedPreferencesHelper.get("lama")
             var roles = JwtTokenHelper.decode(storedToken)
-            if(storedToken != null){
-                var secondResp = HttpRequestHelper.sendHttpGetRequest<LoginCredentials, List<User>>(
-                    "https://dev.emontazysta.pl/api/v1/users/all",
-                    creds,
-                    rsp
-                )
-                rsp = secondResp.toString()
+            val user = LoggedInUser(UUID.randomUUID().toString(), rsp, roles)
+            
+            return Result.Success(user)
+        
+            } catch (e: Throwable) {
+                return Result.Error(IOException("Error logging in", e))
             }
-        } catch (e : Exception) {
-            rsp = e.message.toString()
-        }
-        return rsp!!
     }
 }

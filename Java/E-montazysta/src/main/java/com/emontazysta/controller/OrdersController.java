@@ -42,8 +42,9 @@ public class OrdersController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Order.", security = @SecurityRequirement(name = "bearer-key"))
-    public OrdersDto add(@Valid @RequestBody OrdersDto orders) {
-        return orderService.add(orders);
+    public OrdersDto add(@Valid @RequestBody OrdersDto orders, Principal principal) {
+        OrdersDto ordersDtoWithCompanyId = orderService.findPrincipalCompanyId(orders, principal);
+        return orderService.add(ordersDtoWithCompanyId);
     }
 
     @DeleteMapping("/{id}")
