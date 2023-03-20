@@ -30,7 +30,13 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        dataBinding true
+        viewBinding true
+    }
 }
+
+
 
 dependencies {
 
@@ -49,4 +55,9 @@ dependencies {
     implementation 'com.github.kittinunf.fuel:fuel-android:2.3.1'
     implementation 'com.github.kittinunf.fuel:fuel-coroutines:2.3.1'
     implementation 'com.google.code.gson:gson:2.8.9'
+
+    implementation 'androidx.preference:preference:1.2.0'
+    implementation 'com.auth0.android:jwtdecode:2.0.2'
+
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.21")
 }
