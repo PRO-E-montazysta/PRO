@@ -28,12 +28,10 @@ class AuthRepository : IAuthRepository, KoinComponent {
             sharedPreferencesHelper.set("lama", rsp)
             var storedToken = sharedPreferencesHelper.get("lama")
             var roles = JwtTokenHelper.decode(storedToken)
-
             val user = LoggedInUser(UUID.randomUUID().toString(), rsp, roles)
-
-
+            
             return Result.Success(user)
-
+        
             } catch (e: Throwable) {
                 return Result.Error(IOException("Error logging in", e))
             }
