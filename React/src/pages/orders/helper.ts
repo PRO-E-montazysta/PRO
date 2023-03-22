@@ -118,7 +118,6 @@ export const emptyForm = {
 
 export const validationSchema = yup.object({
     name: yup.string().min(3, 'Nazwa musi zaweirać co najmniej 3 znaki').required('Wprowadź nazwę'),
-    companyId: yup.number().typeError('Wybierz firmę'),
     typeOfStatus: yup.string().required('Wybierz status'),
     typeOfPriority: yup.string().required('Wybierz priorytet'),
     plannedStart: yup.date().required('Wybierz datę'),
