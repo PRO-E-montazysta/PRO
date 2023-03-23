@@ -14,7 +14,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -30,7 +29,6 @@ public class Tool {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String name;
 
     private LocalDate createdAt;

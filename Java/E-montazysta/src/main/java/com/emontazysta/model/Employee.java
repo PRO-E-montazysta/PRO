@@ -41,11 +41,9 @@ public abstract class Employee extends AppUser {
         this.toolEvents = toolEvents;
     }
 
-    @NotBlank
     @Column(unique = true)
     private String phone;
 
-    @NotBlank
     @Column(unique = true)
     private String pesel;
 

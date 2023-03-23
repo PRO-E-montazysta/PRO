@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
 public class ToolDto {
 
     private Long id;
+    @NotBlank(message = "Name cannot be empty")
     private String name;
     private LocalDate createdAt;
     private String code;

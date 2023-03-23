@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -20,9 +21,11 @@ public class ToolEventDto {
     private LocalDateTime movingDate;
     private LocalDateTime completionDate;
     private String description;
+    @NotNull(message = "Type of status cannot be empty")
     private TypeOfStatus status;
     private Long updatedById;
     private Long acceptedById;
+    @NotNull(message = "Tool id cannot be empty")
     private Long toolId;
     private List<Long> attachments;
 }

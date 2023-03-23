@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
@@ -15,9 +17,12 @@ import java.time.LocalDateTime;
 public class AttachmentDto {
 
     private Long id;
+    @NotBlank(message = "Name cannot be empty")
     private String name;
+    @NotBlank(message = "Url cannot be empty")
     private String url;
     private String description;
+    @NotNull(message = "Type of attachment cannot be empty")
     private TypeOfAttachment typeOfAttachment;
     private LocalDateTime createdAt;
     private Long toolTypeId;
