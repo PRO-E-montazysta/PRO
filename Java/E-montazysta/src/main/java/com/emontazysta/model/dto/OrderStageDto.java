@@ -1,6 +1,6 @@
 package com.emontazysta.model.dto;
 
-import com.emontazysta.model.OrderStatus;
+import com.emontazysta.enums.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
