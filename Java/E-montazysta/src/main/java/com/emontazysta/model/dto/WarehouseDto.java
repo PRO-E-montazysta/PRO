@@ -21,7 +21,6 @@ public class WarehouseDto {
     private String description;
     @NotBlank(message = "Opening hours cannot be empty")
     private String openingHours;
-    @NotNull(message = "Company id cannot be empty")
     private Long companyId;
     @NotNull(message = "Location id cannot be empty")
     private Long locationId;

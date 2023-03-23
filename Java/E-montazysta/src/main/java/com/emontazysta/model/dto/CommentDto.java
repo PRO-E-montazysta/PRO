@@ -20,7 +20,6 @@ public class CommentDto {
     @NotBlank(message = "Content cannot be empty")
     private String content;
     private LocalDateTime createdAt;
-    @NotNull(message = "Message creator id cannot be empty")
     private Long messageCreatorId;
     private Long orderStageId;
     private List<Long> attachments;

@@ -33,7 +33,7 @@ public class UnavailabilityController {
         return unavailabilityService.getById(id);
     }
 
-    @PostMapping("/add")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Unavailability.", security = @SecurityRequirement(name = "bearer-key"))
     public UnavailabilityDto add(@Valid @RequestBody UnavailabilityDto unavailability) {

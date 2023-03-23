@@ -53,4 +53,9 @@ public class EmploymentServiceImpl implements EmploymentService {
         employment.setEmployee(updatedEmployment.getEmployee());
         return employmentMapper.toDto(repository.save(employment));
     }
+
+    @Override
+    public EmploymentDto getCurrentEmploymentByEmployeeId(Long employeeId) {
+        return employmentMapper.toDto(repository.findByEmployeeIdAndDateOfDismissIsNull(employeeId));
+    }
 }

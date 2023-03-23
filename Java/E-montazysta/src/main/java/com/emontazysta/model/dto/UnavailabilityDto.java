@@ -27,6 +27,5 @@ public class UnavailabilityDto {
     private LocalDateTime unavailableTo;
     @NotNull(message = "Assigned to id cannot be empty")
     private Long assignedToId;
-    @NotNull(message = "Assigned by id cannot be empty")
     private Long assignedById;
 }
