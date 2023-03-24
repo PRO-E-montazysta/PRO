@@ -1,6 +1,6 @@
 package com.emontazysta.model;
 
-import com.emontazysta.enums.TypeOfStatus;
+import com.emontazysta.enums.EventStatus;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
@@ -29,7 +29,7 @@ public class ToolEvent {
     private LocalDateTime movingDate;
     private LocalDateTime completionDate;
     private String description;
-    private TypeOfStatus status;
+    private EventStatus status;
 
     @ManyToOne
     private AppUser updatedBy;
