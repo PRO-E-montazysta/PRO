@@ -24,6 +24,8 @@ import ClientDetails from '../pages/clients/ClientDetails'
 import Events from '../pages/events'
 import ToolEventDetails from '../pages/events/ToolEventDetails'
 import ElementEventDetails from '../pages/events/ElementEventDetails'
+import Users from '../pages/users'
+import UserDetails from '../pages/users/UserDetails'
 
 
 export type PageProps = {
@@ -86,6 +88,32 @@ export const pageList: Array<PageProps> = [
                 path: '/companies/:id',
                 allowedRoles: [Role.CLOUD_ADMIN],
                 component: <CompanyDetails />,
+            },
+            {
+                inNav: true,
+                name: 'Lista użytkowników',
+                path: '/users',
+                allowedRoles: [Role.ADMIN, Role['*']],
+                component: <Users />,
+                children: [
+                    {
+                        inNav: true,
+                        name: 'Lista użytkowników',
+                        path: '/users',
+                    },
+                    {
+                        inNav: true,
+                        name: 'Dodaj użytkownika',
+                        path: '/users/new',
+                    },
+                ],
+            },
+            {
+                inNav: false,
+                name: '',
+                path: '/users/:id',
+                allowedRoles: [Role.ADMIN, Role['*']],
+                component: <UserDetails />,
             },
             {
                 inNav: true,
