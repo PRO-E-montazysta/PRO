@@ -20,6 +20,5 @@ export default function useBreakpoints() {
     if (breakpoints.isTablet) breakpoints.active = 'tablet'
     if (breakpoints.isNotebook) breakpoints.active = 'notebook'
     if (breakpoints.isDesktop) breakpoints.active = 'desktop'
-    console.log(breakpoints)
     return breakpoints
 }

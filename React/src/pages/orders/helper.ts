@@ -6,6 +6,8 @@ import { priorityName, statusName, statusOptions } from '../../helpers/enum.help
 
 import * as yup from 'yup'
 import { AppSize } from '../../hooks/useBreakpoints'
+
+
 export const headCells: Array<HeadCell<Order>> = [
     {
         type: 'string',
