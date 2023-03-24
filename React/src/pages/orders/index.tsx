@@ -29,7 +29,7 @@ const Orders = () => {
         }),
         inputs: inputs,
     }
-    
+
     return (
         <Container>
             <FatTable

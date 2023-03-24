@@ -1,4 +1,4 @@
-import { FilterFormProps, FilterInputType } from '../../components/table/filter/TableFilter'
+import { Filter, FilterFormProps, FilterInputType } from '../../components/table/filter/TableFilter'
 import FatTable from '../../components/table/FatTable'
 import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
@@ -6,38 +6,33 @@ import { AxiosError } from 'axios'
 import { getFilteredTools } from '../../api/tool.api'
 import { headCells, useFilterStructure } from './helper'
 import { useNavigate } from 'react-router-dom'
-import { getFilterParams, setNewFilterValues } from '../../helpers/filter.helper'
+import { getFilterParams, getInputs, setNewFilterValues } from '../../helpers/filter.helper'
 import { Tool } from '../../types/model/Tool'
+import { useFormik } from 'formik'
 
 const Tools = () => {
-    const { filterStructure, setFilterStructure } = useFilterStructure()
-    const [filterParams, setFilterParams] = useState(getFilterParams(filterStructure))
-
+    const [filterParams, setFilterParams] = useState(getFilterParams([]))
+    const { initialValues, inputs } = getInputs([])
     const navigation = useNavigate()
 
     const queryTools = useQuery<Array<Tool>, AxiosError>(['tools', filterParams], async () =>
         getFilteredTools({ queryParams: filterParams }),
     )
 
-    const handleOnSearch = (filterParams: Object) => {
-        setFilterStructure(setNewFilterValues(filterParams, filterStructure))
-        setFilterParams(getFilterParams(filterStructure))
-    }
-
-    const handleResetFilter = () => {
-        setFilterStructure(filterStructure)
-    }
-
-    const filterForm: FilterFormProps = {
-        filterStructure: filterStructure,
-        onSearch: handleOnSearch,
-        onResetFilter: handleResetFilter,
+    const filter: Filter = {
+        formik: useFormik({
+            initialValues: initialValues,
+            // validationSchema={{}}
+            onSubmit: () => setFilterParams(filter.formik.values),
+            onReset: () => filter.formik.setValues(initialValues),
+        }),
+        inputs: inputs,
     }
 
     return (
         <FatTable
             query={queryTools}
-            filterForm={filterForm}
+            filterProps={filter}
             headCells={headCells}
             initOrderBy={'name'}
             onClickRow={(e, row) => {

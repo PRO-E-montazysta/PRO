@@ -6,13 +6,11 @@ import { priorityName, statusName, statusOptions } from '../../helpers/enum.help
 
 import * as yup from 'yup'
 import { AppSize } from '../../hooks/useBreakpoints'
-
 export const headCells: Array<HeadCell<Order>> = [
     {
         type: 'string',
         id: 'name',
         label: 'Nazwa',
-        disablePadding: false,
         numeric: false,
         visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
     },
@@ -20,7 +18,6 @@ export const headCells: Array<HeadCell<Order>> = [
         type: 'string',
         id: 'createdAt',
         label: 'Czas utworzenia',
-        disablePadding: false,
         numeric: false,
         formatFn: (date: string) => (date ? formatDate(date) : ''),
         visibleInMode: [AppSize.desktop],
@@ -29,7 +26,6 @@ export const headCells: Array<HeadCell<Order>> = [
         type: 'string',
         id: 'typeOfPriority',
         label: 'Priorytet',
-        disablePadding: false,
         numeric: false,
         formatFn: (status: string) => priorityName(status),
 
@@ -39,7 +35,6 @@ export const headCells: Array<HeadCell<Order>> = [
         type: 'string',
         id: 'plannedStart',
         label: 'Planowany czas rozpoczęcia',
-        disablePadding: false,
         numeric: false,
         formatFn: (date: string) => (date ? formatDate(date) : ''),
         visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
@@ -48,7 +43,6 @@ export const headCells: Array<HeadCell<Order>> = [
         type: 'string',
         id: 'plannedEnd',
         label: 'Planowany czas zakończenia',
-        disablePadding: false,
         numeric: false,
         formatFn: (date: string) => formatDate(date),
         visibleInMode: [AppSize.notebook, AppSize.desktop],
@@ -57,7 +51,6 @@ export const headCells: Array<HeadCell<Order>> = [
         type: 'string',
         id: 'typeOfStatus',
         label: 'Status',
-        disablePadding: false,
         numeric: false,
         formatFn: (status: string) => statusName(status),
         visibleInMode: [AppSize.notebook, AppSize.desktop],
@@ -66,7 +59,6 @@ export const headCells: Array<HeadCell<Order>> = [
         type: 'string',
         id: 'orderStages',
         label: 'Liczba etapów',
-        disablePadding: false,
         numeric: false,
         formatFn: (orderStages) => orderStages.length,
         visibleInMode: [AppSize.desktop],
