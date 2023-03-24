@@ -15,6 +15,7 @@ import { Avatar, CircularProgress, Typography } from '@mui/material'
 import { green } from '@mui/material/colors'
 import { UseQueryResult } from 'react-query'
 import { AxiosError } from 'axios'
+import useBreakpoints from '../../../hooks/useBreakpoints'
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T | undefined, order: Order) {
     if (orderBy === undefined) return 0
@@ -54,6 +55,7 @@ export default function SortedTable<T>(props: SortedTableProps<T>) {
     const [orderBy, setOrderBy] = useState<keyof T>()
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(10)
+    const appSize = useBreakpoints()
 
     useEffect(() => {
         setOrderBy(initOrderBy)
@@ -81,7 +83,7 @@ export default function SortedTable<T>(props: SortedTableProps<T>) {
     const emptyRows = page > 0 && query.data ? Math.max(0, (1 + page) * rowsPerPage - query.data.length) : 0
 
     return (
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ width: '100%', minWidth: '280px' }}>
             <Paper sx={{ width: '100%', borderRadius: '10px 10px 5px 5px' }}>
                 {query.isLoading || query.isError ? (
                     <Box
@@ -100,7 +102,7 @@ export default function SortedTable<T>(props: SortedTableProps<T>) {
                             borderRadius: '5px',
                         }}
                     >
-                        <Table sx={{ minWidth: 750 }} style={{ tableLayout: 'fixed' }} aria-labelledby="tableTitle">
+                        <Table style={{ tableLayout: 'fixed' }} aria-labelledby="tableTitle">
                             <SortedTableHeader
                                 order={order}
                                 orderBy={orderBy}
@@ -131,7 +133,11 @@ export default function SortedTable<T>(props: SortedTableProps<T>) {
                                                                 key={uuidv4()}
                                                                 align={headCell.numeric ? 'right' : 'left'}
                                                                 sx={{
-                                                                    padding: headCell.disablePadding ? '0 16px' : '',
+                                                                    width: '100px',
+                                                                    padding:
+                                                                        appSize.isMobile || appSize.isTablet
+                                                                            ? '0 4px'
+                                                                            : '0 16px',
                                                                 }}
                                                             >
                                                                 {headCell.type === 'string' ? (
@@ -168,7 +174,7 @@ export default function SortedTable<T>(props: SortedTableProps<T>) {
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 20, 50]}
                             component="div"
-                            labelRowsPerPage="Na stronie"
+                            labelRowsPerPage={appSize.isMobile ? '' : 'Na stronie'}
                             labelDisplayedRows={({ from, to, count }) => {
                                 return `${from}–${to} z ${count !== -1 ? count : `więcej niż ${to}`}`
                             }}

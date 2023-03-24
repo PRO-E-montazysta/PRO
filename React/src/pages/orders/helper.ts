@@ -5,6 +5,7 @@ import { formatDate } from '../../helpers/format.helper'
 import { priorityName, statusName, statusOptions } from '../../helpers/enum.helper'
 
 import * as yup from 'yup'
+import { AppSize } from '../../hooks/useBreakpoints'
 
 export const headCells: Array<HeadCell<Order>> = [
     {
@@ -13,6 +14,7 @@ export const headCells: Array<HeadCell<Order>> = [
         label: 'Nazwa',
         disablePadding: false,
         numeric: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
     },
     {
         type: 'string',
@@ -21,6 +23,7 @@ export const headCells: Array<HeadCell<Order>> = [
         disablePadding: false,
         numeric: false,
         formatFn: (date: string) => (date ? formatDate(date) : ''),
+        visibleInMode: [AppSize.desktop],
     },
     {
         type: 'string',
@@ -29,6 +32,8 @@ export const headCells: Array<HeadCell<Order>> = [
         disablePadding: false,
         numeric: false,
         formatFn: (status: string) => priorityName(status),
+
+        visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
     },
     {
         type: 'string',
@@ -37,6 +42,7 @@ export const headCells: Array<HeadCell<Order>> = [
         disablePadding: false,
         numeric: false,
         formatFn: (date: string) => (date ? formatDate(date) : ''),
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
     },
     {
         type: 'string',
@@ -45,6 +51,7 @@ export const headCells: Array<HeadCell<Order>> = [
         disablePadding: false,
         numeric: false,
         formatFn: (date: string) => formatDate(date),
+        visibleInMode: [AppSize.notebook, AppSize.desktop],
     },
     {
         type: 'string',
@@ -53,6 +60,7 @@ export const headCells: Array<HeadCell<Order>> = [
         disablePadding: false,
         numeric: false,
         formatFn: (status: string) => statusName(status),
+        visibleInMode: [AppSize.notebook, AppSize.desktop],
     },
     {
         type: 'string',
@@ -61,10 +69,19 @@ export const headCells: Array<HeadCell<Order>> = [
         disablePadding: false,
         numeric: false,
         formatFn: (orderStages) => orderStages.length,
+        visibleInMode: [AppSize.desktop],
     },
 ]
 
 export const filterInitStructure: Array<FilterInputType> = [
+    {
+        id: 'typeOfStatus',
+        value: ['PLANNED', 'IN_PROGRESS'],
+        label: 'Status',
+        inputType: 'multiselect',
+        typeValue: 'Array',
+        options: statusOptions(),
+    },
     {
         id: 'name',
         value: '',
@@ -85,14 +102,6 @@ export const filterInitStructure: Array<FilterInputType> = [
         label: 'Czas utworzenia do',
         inputType: 'datetime-local',
         typeValue: 'date',
-    },
-    {
-        id: 'typeOfStatus',
-        value: ['PLANNED', 'IN_PROGRESS'],
-        label: 'Status',
-        inputType: 'multiselect',
-        typeValue: 'Array',
-        options: statusOptions(),
     },
 ]
 
