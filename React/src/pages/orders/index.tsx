@@ -30,18 +30,16 @@ const Orders = () => {
         inputs: inputs,
     }
     return (
-        <Container>
-            <FatTable
-                query={queryOrders}
-                filterProps={filter}
-                headCells={headCells}
-                initOrderBy={'name'}
-                onClickRow={(e, row) => {
-                    navigation(`/orders/${row.id}`)
-                }}
-                pageHeader="Lista zleceń"
-            />
-        </Container>
+        <FatTable
+            query={queryOrders}
+            filterProps={filter}
+            headCells={headCells}
+            initOrderBy={'name'}
+            onClickRow={(e, row) => {
+                navigation(`/orders/${row.id}`)
+            }}
+            pageHeader="Lista zleceń"
+        />
     )
 }
 

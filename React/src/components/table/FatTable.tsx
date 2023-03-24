@@ -36,7 +36,7 @@ function FatTable<T>(props: FatTableParams<T>) {
     }, [appSize])
 
     return (
-        <Box sx={{ p: appSize.isMobile || appSize.isTablet ? '10px 5px' : '20px', maxWidth: '1200px', m: 'auto' }}>
+        <Box sx={{ p: appSize.isMobile || appSize.isTablet ? '10px' : '20px', maxWidth: '1200px', m: 'auto' }}>
             <Typography
                 variant="h4"
                 fontWeight="bold"
