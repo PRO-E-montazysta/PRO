@@ -136,8 +136,8 @@ export default function SortedTable<T>(props: SortedTableProps<T>) {
                                                                     width: '100px',
                                                                     padding:
                                                                         appSize.isMobile || appSize.isTablet
-                                                                            ? '0 4px'
-                                                                            : '0 16px',
+                                                                            ? '8px'
+                                                                            : '16px',
                                                                 }}
                                                             >
                                                                 {headCell.type === 'string' ? (

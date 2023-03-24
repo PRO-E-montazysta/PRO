@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,5 +52,10 @@ public class EmploymentServiceImpl implements EmploymentService {
         employment.setCompany(updatedEmployment.getCompany());
         employment.setEmployee(updatedEmployment.getEmployee());
         return employmentMapper.toDto(repository.save(employment));
+    }
+
+    @Override
+    public EmploymentDto getCurrentEmploymentByEmployeeId(Long employeeId) {
+        return employmentMapper.toDto(repository.findByEmployeeIdAndDateOfDismissIsNull(employeeId));
     }
 }

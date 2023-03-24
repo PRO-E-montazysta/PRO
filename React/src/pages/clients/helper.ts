@@ -3,26 +3,27 @@ import { HeadCell } from '../../components/table/sort/SortedTableHeader'
 import { Client } from '../../types/model/Client'
 import * as yup from 'yup'
 
+import { AppSize } from '../../hooks/useBreakpoints'
 export const headCells: Array<HeadCell<Client>> = [
     {
         type: 'string',
         id: 'name',
         label: 'Nazwa',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
     {
         type: 'string',
         id: 'contactDetails',
         label: 'Dane kontaktowe',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
     {
         type: 'string',
         id: 'orders',
         label: 'Liczba zleceń',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
         formatFn: (orders) => orders.length,
     },

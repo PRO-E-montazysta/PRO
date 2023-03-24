@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Getter
@@ -16,7 +17,9 @@ import java.util.List;
 public class ClientDto {
 
     private Long id;
+    @NotBlank(message = "Name cannot be empty")
     private String name;
+    @NotBlank(message = "Contact details cannot be empty")
     private String contactDetails;
     private Long companyId;
     private List<Long> orders;

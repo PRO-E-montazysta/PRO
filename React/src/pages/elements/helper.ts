@@ -5,26 +5,27 @@ import { HeadCell } from '../../components/table/sort/SortedTableHeader'
 import * as yup from 'yup'
 import { typeOfUnitName } from '../../helpers/enum.helper'
 
+import { AppSize } from '../../hooks/useBreakpoints'
 export const headCells: Array<HeadCell<Element>> = [
     {
         type: 'string',
         id: 'name',
         label: 'Nazwa',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
     {
         type: 'string',
         id: 'code',
         label: 'Kod',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
     {
         type: 'string',
         id: 'typeOfUnit',
         label: 'Jednostka',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
         formatFn: (typeOfUnit: string) => typeOfUnitName(typeOfUnit),
     },
@@ -32,7 +33,7 @@ export const headCells: Array<HeadCell<Element>> = [
         type: 'string',
         id: 'quantityInUnit',
         label: 'Ilość w jednostce',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
 ]

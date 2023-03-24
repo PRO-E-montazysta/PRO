@@ -1,6 +1,5 @@
 package com.emontazysta.service;
 
-import com.emontazysta.model.Employment;
 import com.emontazysta.model.dto.EmploymentDto;
 
 import java.util.Date;
@@ -13,4 +12,5 @@ public interface EmploymentService {
     EmploymentDto add(EmploymentDto employment);
     void delete(Long id);
     EmploymentDto update(Long id, EmploymentDto employment);
+    EmploymentDto getCurrentEmploymentByEmployeeId(Long employeeId);
 }

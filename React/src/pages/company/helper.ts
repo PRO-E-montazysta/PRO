@@ -6,19 +6,20 @@ import { companyStatusName, companyStatusOptions } from '../../helpers/enum.help
 
 import * as yup from 'yup'
 
+import { AppSize } from '../../hooks/useBreakpoints'
 export const headCells: Array<HeadCell<Company>> = [
     {
         type: 'string',
         id: 'companyName',
         label: 'Nazwa firmy',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
     {
         type: 'string',
         id: 'createdAt',
         label: 'Data utworzenia',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
         formatFn: (date: string) => (date ? formatDate(date) : ''),
     },
@@ -26,7 +27,7 @@ export const headCells: Array<HeadCell<Company>> = [
         type: 'string',
         id: 'status',
         label: 'Status',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
         formatFn: (status: string) => companyStatusName(status),
     },
@@ -34,7 +35,7 @@ export const headCells: Array<HeadCell<Company>> = [
         type: 'string',
         id: 'statusReason',
         label: 'Uzasadnienie statusu',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
 ]

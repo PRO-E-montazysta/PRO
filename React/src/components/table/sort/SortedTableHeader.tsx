@@ -9,13 +9,12 @@ import { Order } from './SortedTable'
 import { v4 as uuidv4 } from 'uuid'
 import styled from '@emotion/styled'
 import { theme } from '../../../themes/baseTheme'
-import { AppSize } from '../../../hooks/useBreakpoints'
+import useBreakpoints, { AppSize } from '../../../hooks/useBreakpoints'
 
 type HeadCellType = 'string' | 'avatar'
 
 export interface HeadCell<T> {
     type: HeadCellType
-    disablePadding: boolean
     id: keyof T
     label: string
     numeric: boolean
@@ -52,6 +51,7 @@ function SortedTableHeader<T>(props: SortedTableHeadProps<T>) {
     const createSortHandler = (property: keyof T | undefined) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property)
     }
+    const appSize = useBreakpoints()
 
     return (
         <TableHead>
@@ -60,7 +60,10 @@ function SortedTableHeader<T>(props: SortedTableHeadProps<T>) {
                     <StyledTableCell
                         key={uuidv4()}
                         align={headCell.numeric ? 'right' : 'left'}
-                        sx={{ padding: headCell.disablePadding ? '0 16px' : '', fontWeight: '600' }}
+                        sx={{
+                            padding: appSize.isMobile || appSize.isTablet ? '8px' : '16px',
+                            fontWeight: '600',
+                        }}
                         sortDirection={orderBy === headCell.id ? order : false}
                         color="white"
                     >

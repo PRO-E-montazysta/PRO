@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Component
@@ -26,18 +25,17 @@ public class ToolTypeMapper {
     private final ToolRepository toolRepository;
 
     public ToolTypeDto toDto(ToolType toolType){
-        AtomicInteger availableCount = new AtomicInteger();
-        toolType.getTools().forEach(tool -> {
-            if(tool.getStatus().equals(ToolStatus.AVAILABLE))
-                availableCount.addAndGet(1);
-        });
+
+        int availableCount = (int) toolType.getTools().stream()
+                .filter(tool -> ToolStatus.AVAILABLE.equals(tool.getStatus()))
+                .count();
 
         return ToolTypeDto.builder()
                 .id(toolType.getId())
                 .name(toolType.getName())
                 .inServiceCount(toolType.getTools().size())
                 .criticalNumber(toolType.getCriticalNumber())
-                .availableCount(availableCount.intValue())
+                .availableCount(availableCount)
                 .attachments(toolType.getAttachments().stream().map(Attachment::getId).collect(Collectors.toList()))
                 .orderStages(toolType.getOrderStages().stream().map(OrderStage::getId).collect(Collectors.toList()))
                 .tools(toolType.getTools().stream().map(Tool::getId).collect(Collectors.toList()))

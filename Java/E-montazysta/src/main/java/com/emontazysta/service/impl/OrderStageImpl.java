@@ -3,13 +3,16 @@ package com.emontazysta.service.impl;
 import com.emontazysta.mapper.OrderStageMapper;
 import com.emontazysta.model.OrderStage;
 import com.emontazysta.model.dto.OrderStageDto;
+import com.emontazysta.model.searchcriteria.OrdersStageSearchCriteria;
 import com.emontazysta.repository.OrderStageRepository;
+import com.emontazysta.repository.criteria.OrdersStageCriteriaRepository;
 import com.emontazysta.service.OrderStageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +22,7 @@ public class OrderStageImpl implements OrderStageService {
 
     private final OrderStageRepository repository;
     private final OrderStageMapper orderStageMapper;
+    private final OrdersStageCriteriaRepository ordersStageCriteriaRepository;
 
     @Override
     public List<OrderStageDto> getAll() {
@@ -73,5 +77,10 @@ public class OrderStageImpl implements OrderStageService {
         orderStageDb.setDemandsAdHoc(updatedOrderStage.getDemandsAdHoc());
 
         return orderStageMapper.toDto(orderStageDb);
+    }
+
+    @Override
+    public List<OrderStageDto> getFilteredOrders(OrdersStageSearchCriteria ordersStageSearchCriteria, Principal principal) {
+        return  ordersStageCriteriaRepository.findAllWithFilters(ordersStageSearchCriteria, principal);
     }
 }

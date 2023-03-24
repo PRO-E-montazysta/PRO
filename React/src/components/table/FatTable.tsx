@@ -10,7 +10,6 @@ import { HeadCell } from './sort/SortedTableHeader'
 type FatTableParams<T> = {
     query: UseQueryResult<T[], AxiosError>
     filterProps?: Filter
-    filterForm?: FilterFormProps
     headCells: Array<HeadCell<T>>
     initOrderBy: keyof T
     onClickRow: (event: React.MouseEvent<unknown>, row: T) => void
@@ -37,23 +36,31 @@ function FatTable<T>(props: FatTableParams<T>) {
     }, [appSize])
 
     return (
-        <div>
-            <Box sx={{ p: '20px 0' }}>
-                <Typography variant="h4" fontWeight="bold" padding="5px" color={'white'}>
-                    {pageHeader}
-                </Typography>
-                <Box sx={{ p: '20px 0' }}>{filterProps && <TableFilter {...filterProps} />}</Box>
+        <Box sx={{ p: appSize.isMobile || appSize.isTablet ? '10px 5px' : '20px', maxWidth: '1200px', m: 'auto' }}>
+            <Typography
+                variant="h4"
+                fontWeight="bold"
+                padding="5px"
+                color={'white'}
+                fontSize={appSize.isMobile || appSize.isTablet ? '22px' : '32px'}
+            >
+                {pageHeader}
+            </Typography>
+            {filterProps && (
+                <Box sx={{ p: appSize.isMobile || appSize.isTablet ? '10px 0' : '20px 0' }}>
+                    {<TableFilter {...filterProps} />}
+                </Box>
+            )}
 
-                {
-                    <SortedTable
-                        query={query}
-                        headCells={headCellsFiltered}
-                        initOrderBy={initOrderBy}
-                        onClickRow={onClickRow}
-                    />
-                }
-            </Box>
-        </div>
+            {
+                <SortedTable
+                    query={query}
+                    headCells={headCellsFiltered}
+                    initOrderBy={initOrderBy}
+                    onClickRow={onClickRow}
+                />
+            }
+        </Box>
     )
 }
 

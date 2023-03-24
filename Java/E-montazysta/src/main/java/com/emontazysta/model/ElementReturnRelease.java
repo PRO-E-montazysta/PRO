@@ -24,12 +24,8 @@ public class ElementReturnRelease {
     private Long id;
 
     private LocalDateTime releaseTime;
-
-    @NotNull
     private int releasedQuantity;
-
     private int returnedQuantity;
-
     private LocalDateTime returnTime;
 
     @ManyToOne
