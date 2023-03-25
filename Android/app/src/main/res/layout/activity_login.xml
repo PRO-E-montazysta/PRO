@@ -1,31 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <data>
-    </data>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/splash_screen"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@color/background"
         tools:context=".ui.login.LoginActivity">
 
         <LinearLayout
+            android:background="@drawable/backdrop"
+            android:id="@+id/backdrop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
-            android:background="@drawable/backdrop"
             android:elevation="4dp"
             android:orientation="vertical"
             android:padding="30dp"
+            android:topRightRadius="45dp"
+            android:topLeftRadius="45dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0"
-            tools:layout_editor_absoluteX="-16dp">
+            tools:layout_editor_absoluteX="-16dp"
+            >
 
             <ImageView
                 android:layout_width="74dp"
@@ -62,30 +61,25 @@
 
                 <Button
                     android:id="@+id/login"
-                    style="@style/button"
-                    android:enabled="false"
+                    android:enabled="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="@string/action_sign_in_short" />
                 <Button
                     android:id="@+id/reset_password"
-                    style="@style/button"
                     android:layout_marginStart="64dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="@string/action_reset_password" />
-
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <ProgressBar
+            <com.google.android.material.progressindicator.LinearProgressIndicator
                 android:id="@+id/loading"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:visibility="invisible"
                 android:layout_gravity="center"
-                android:indeterminate="true"
-                android:indeterminateTintMode="src_atop"
-                android:indeterminateTint="@color/button"
                 />
-
         </LinearLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+</androidx.constraintlayout.widget.ConstraintLayout>

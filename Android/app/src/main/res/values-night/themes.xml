@@ -1,6 +1,5 @@
-
-<resources>
-    <style name="EMontażysta" parent="Theme.Material3.Dark">
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.EMontażysta" parent="Theme.Material3.Dark.NoActionBar">
         <item name="colorPrimary">@color/md_theme_dark_primary</item>
         <item name="colorOnPrimary">@color/md_theme_dark_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_dark_primaryContainer</item>
