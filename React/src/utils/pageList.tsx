@@ -20,8 +20,6 @@ import Employees from '../pages/employees'
 import EmpDetails from '../pages/employees/employeesDetails/EmpDetails'
 import Clients from '../pages/clients'
 import ClientDetails from '../pages/clients/ClientDetails'
-import Users from '../pages/users'
-import UserDetails from '../pages/users/UserDetails'
 
 export type PageProps = {
     name: string
@@ -81,32 +79,6 @@ export const pageList: Array<PageProps> = [
                 path: '/companies/:id',
                 allowedRoles: [Role.CLOUD_ADMIN],
                 component: <CompanyDetails />,
-            },
-            {
-                inNav: true,
-                name: 'Lista użytkowników',
-                path: '/users',
-                allowedRoles: [Role.ADMIN, Role['*']],
-                component: <Users />,
-                children: [
-                    {
-                        inNav: true,
-                        name: 'Lista użytkowników',
-                        path: '/users',
-                    },
-                    {
-                        inNav: true,
-                        name: 'Dodaj użytkownika',
-                        path: '/users/new',
-                    },
-                ],
-            },
-            {
-                inNav: false,
-                name: '',
-                path: '/users/:id',
-                allowedRoles: [Role.ADMIN, Role['*']],
-                component: <UserDetails />,
             },
             {
                 inNav: true,
@@ -248,6 +220,18 @@ export const pageList: Array<PageProps> = [
                     Role['*'],
                 ],
                 component: <Employees />,
+                    children: [
+                    {
+                        inNav: true,
+                        name: 'Pracownicy',
+                        path: '/employees',
+                    },
+                    {
+                        inNav: true,
+                        name: 'Dodaj pracownika',
+                        path: '/employees/new',
+                    },
+                ],
             },
             {
                 inNav: false,

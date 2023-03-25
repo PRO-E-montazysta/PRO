@@ -1,6 +1,7 @@
 import { SelectMenuItemProps } from '../components/base/Multiselect'
 import { CompanyStatus } from '../types/model/Company'
 import { TypeOfUnit } from '../types/model/Element'
+import { EmployeeStatus, RoleStatus } from '../types/model/Employee'
 import { OrderPriority, OrderStatus } from '../types/model/Order'
 
 export const statusName = (key: string) => {
@@ -39,6 +40,24 @@ export const statusOptions = () => {
 
 export const companyStatusOptions = () => {
     return Object.entries(CompanyStatus).map((s): SelectMenuItemProps => {
+        return {
+            key: s[0],
+            value: s[1],
+        }
+    })
+}
+
+export const employeeStatusOptions = () => {
+    return Object.entries(EmployeeStatus).map((s): SelectMenuItemProps => {
+        return {
+            key: s[0],
+            value: s[1],
+        }
+    })
+}
+
+export const roleStatusOptions = () => {
+    return Object.entries(RoleStatus).map((s): SelectMenuItemProps => {
         return {
             key: s[0],
             value: s[1],
