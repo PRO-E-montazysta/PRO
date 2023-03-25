@@ -98,7 +98,7 @@ const EmpDetails = () => {
     const [expandedStatus, setExpandedStatus] = useState(false)
 
     const queryData = useQuery<Employee, AxiosError>(
-        ['employee', { id: params.id }], 
+        ['users', { id: params.id }], 
         async () => getEmployeeById(params.id!&& params.id != 'new' ? params.id : ''), 
         {
             enabled: !!params.id && params.id != 'new',
@@ -135,7 +135,6 @@ const EmpDetails = () => {
             })
         },
         onError(error: Error) {
-            console.error(error)
             displayInfo({
                 dialogText: ['Błąd poczas tworzenia nowego pracownika', error.message],
                 confirmAction: () => {
@@ -174,6 +173,11 @@ const EmpDetails = () => {
     })
 
     const handleSubmit = () => {
+        let tmp: any = formik.values;
+        tmp.roles = [tmp.roles];
+
+        formik.setValues(tmp);
+
         if (params.id == 'new') mutationPost.mutate(JSON.parse(JSON.stringify(formik.values)))
         else mutationUpdate.mutate(JSON.parse(JSON.stringify(formik.values)))
     }
@@ -224,6 +228,8 @@ const EmpDetails = () => {
             <FormLabel label="Imię" formik={formik} id={'firstName'} />
             <FormLabel label="Nazwisko" formik={formik} id={'lastName'} />
             <FormLabel label="E-Mail" formik={formik} id={'email'} />
+            <FormLabel label="Password" formik={formik} id={'password'} />
+            <FormLabel label="Username" formik={formik} id={'username'} />
             <FormLabel label="Status" formik={formik} id={'status'} />
             <FormLabel label="Role" formik={formik} id={'roles'} />
         </Grid>
@@ -238,6 +244,8 @@ const EmpDetails = () => {
             <FormInput id={'firstName'} formik={formik} readonly={false} firstChild />
             <FormInput id={'lastName'} formik={formik} readonly={false} />
             <FormInput id={'email'} formik={formik} readonly={false} />
+            <FormInput id={'password'} formik={formik} readonly={false} />
+            <FormInput id={'username'} formik={formik} readonly={false} />
             <FormSelect
                                         id={'status'}
                                         formik={formik}
@@ -245,7 +253,7 @@ const EmpDetails = () => {
                                         options={employeeStatusOptions()}
                                     />
             <FormSelect
-                                        id={'role'}
+                                        id={'roles'}
                                         formik={formik}
                                         readonly={readonlyMode}
                                         options={roleStatusOptions()}
@@ -254,14 +262,14 @@ const EmpDetails = () => {
     </Grid>
     <Box sx={{ margin: '20px', gap: '20px', display: 'flex', flexDirection: 'row-reverse' }}>
     <Button
-                    color="primary"
-                    startIcon={<SaveIcon />}
-                    variant="contained"
-                    onClick={formik.submitForm}
-                    style={{ width: 120 }}
-                >
-                    Zapisz
-                </Button>
+        color="primary"
+        startIcon={<SaveIcon />}
+        variant="contained"
+        onClick={handleSubmit}
+        style={{ width: 120 }}
+    >
+        Zapisz
+    </Button>
                 <Button
                     color="primary"
                     startIcon={<ReplayIcon style={{ transform: 'rotate(-0.25turn)' }} />}

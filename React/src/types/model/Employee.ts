@@ -5,6 +5,8 @@ export type Employee = {
   firstName: string;
   lastName: string;
   email: string;
+  password: string;
+  username: string;
   status: string;
   roles: string[];
   phone: string;
