@@ -1,40 +1,40 @@
-import { FilterInputType } from "../../components/table/filter/TableFilter";
-import { Warehouse } from "../../types/model/Warehouse";
-import { HeadCell } from "../../components/table/sort/SortedTableHeader";
+import { FilterInputType } from '../../components/table/filter/TableFilter'
+import { WarehouseFilterDto } from '../../types/model/Warehouse'
+import { HeadCell } from '../../components/table/sort/SortedTableHeader'
 
+import * as yup from 'yup'
 
-export const headCells: Array<HeadCell<Warehouse>> = [
+import { AppSize } from '../../hooks/useBreakpoints'
+export const headCells: Array<HeadCell<WarehouseFilterDto>> = [
     {
         type: 'string',
         id: 'name',
         label: 'Nazwa',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
     {
         type: 'string',
         id: 'description',
         label: 'Opis',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
     {
         type: 'string',
         id: 'openingHours',
         label: 'Godziny otwarcia',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
     {
         type: 'string',
         id: 'fullAddress',
         label: 'Adres',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
-    }
+    },
 ]
-
-
 
 export const filterInitStructure: Array<FilterInputType> = [
     {
@@ -42,21 +42,38 @@ export const filterInitStructure: Array<FilterInputType> = [
         value: '',
         label: 'Nazwa',
         inputType: 'text',
-        typeValue: 'string'
+        typeValue: 'string',
     },
     {
         id: 'description',
         value: '',
         label: 'Opis',
         inputType: 'text',
-        typeValue: 'string'
+        typeValue: 'string',
     },
     {
         id: 'zipCode',
         value: '',
         label: 'Kod pocztowy',
         inputType: 'text',
-        typeValue: 'string'
-    }
+        typeValue: 'string',
+    },
 ]
 
+export const emptyForm = {
+    id: null,
+    name: '',
+    description: '',
+    openingHours: '',
+    companyId: null,
+    locationId: null,
+    elementInWarehouses: [],
+    tools: [],
+}
+
+export const validationSchema = yup.object({
+    name: yup.string().min(3, 'Nazwa musi zaweirać co najmniej 3 znaki').required('Wprowadź nazwę'),
+    openingHours: yup.string().required('Wprowadź godziny otwarcia'),
+    companyId: yup.number().typeError('Wybierz firmę'),
+    locationId: yup.number().typeError('Wybierz lokalizację'),
+})

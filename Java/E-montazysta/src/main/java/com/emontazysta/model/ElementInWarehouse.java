@@ -12,8 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Data
 @Entity
@@ -27,16 +25,9 @@ public class ElementInWarehouse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     private int inWarehouseCount;
-
-    @NotNull
     private int inUnitCount;
-
-    @NotBlank
     private String rack;
-
-    @NotBlank
     private String shelf;
 
     @ManyToOne

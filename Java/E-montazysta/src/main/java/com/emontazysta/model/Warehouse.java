@@ -23,12 +23,10 @@ public class Warehouse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String name;
 
     private String description;
 
-    @NotBlank
     private String openingHours;
 
     @ManyToOne

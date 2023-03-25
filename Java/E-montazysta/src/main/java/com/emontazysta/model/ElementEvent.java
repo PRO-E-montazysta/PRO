@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,17 +25,10 @@ public class ElementEvent {
     private Long id;
 
     private LocalDateTime eventDate;
-
     private LocalDateTime movingDate;
-
     private LocalDateTime completionDate;
-
     private String description;
-
-    @NotNull
     private TypeOfStatus status;
-
-    @NotNull
     private int quantity;
 
     @ManyToOne

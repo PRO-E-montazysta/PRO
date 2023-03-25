@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,12 +19,17 @@ import java.util.List;
 public class OrdersDto {
 
     private Long id;
+    @NotBlank(message = "Name cannot be empty")
     private String name;
+    @NotNull(message = "Type of status cannot be empty")
     private TypeOfStatus typeOfStatus;
+    @NotNull(message = "Planned start cannot be empty")
     private LocalDateTime plannedStart;
+    @NotNull(message = "Planned end cannot be empty")
     private LocalDateTime plannedEnd;
     private LocalDateTime createdAt;
     private LocalDateTime editedAt;
+    @NotNull(message = "Type of priority cannot be empty")
     private TypeOfPriority typeOfPriority;
     private Long companyId;
     private Long managerId;

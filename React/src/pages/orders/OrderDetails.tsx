@@ -5,13 +5,11 @@ import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { useMutation, useQuery } from 'react-query'
 import { useNavigate, useParams } from 'react-router-dom'
-import { getAllCompanies } from '../../api/company.api'
 import { deleteOrder, getOrderDetails, postOrder, updateOrder } from '../../api/order.api'
 import { formatArrayToOptions, formatLocation } from '../../helpers/format.helper'
 import { priorityOptions, statusOptions } from '../../helpers/enum.helper'
 import { theme } from '../../themes/baseTheme'
 import { Client } from '../../types/model/Client'
-import { Company } from '../../types/model/Company'
 import { Order } from '../../types/model/Order'
 import { AppUser } from '../../types/model/AppUser'
 import { getAllClients } from '../../api/client.api'
@@ -151,7 +149,6 @@ const OrderDetails = () => {
     )
 
     const queryClient = useQuery<Array<Client>, AxiosError>(['client-list'], getAllClients)
-    const queryCompany = useQuery<Array<Company>, AxiosError>(['company-list'], getAllCompanies)
     const queryForeman = useQuery<Array<AppUser>, AxiosError>(['foreman-list'], getAllForemans)
     const queryLocation = useQuery<Array<Location>, AxiosError>(['location-list'], getAllLocations)
     const queryManager = useQuery<Array<AppUser>, AxiosError>(['manager-list'], getAllManagers)
@@ -229,7 +226,6 @@ const OrderDetails = () => {
                                     }}
                                 >
                                     <FormLabel label="Nazwa zlecenia" formik={formik} id={'name'} />
-                                    <FormLabel label="Firma" formik={formik} id={'companyId'} />
                                     <FormLabel label="Priorytet" formik={formik} id={'typeOfPriority'} />
                                     <FormLabel label="Status" formik={formik} id={'typeOfStatus'} />
                                     <FormLabel label="Planowany czas rozpoczęcia" formik={formik} id={'plannedStart'} />
@@ -239,11 +235,7 @@ const OrderDetails = () => {
                                     <FormLabel label="Lokalizacja" formik={formik} id={'locationId'} />
                                     <FormLabel label="Manager" formik={formik} id={'managerId'} />
                                     <FormLabel label="Specjalista" formik={formik} id={'specialistId'} />
-                                    <FormLabel
-                                        label="Handlowiec"
-                                        formik={formik}
-                                        id={'salesRepresentativeId'}
-                                    />
+                                    <FormLabel label="Handlowiec" formik={formik} id={'salesRepresentativeId'} />
                                     <FormLabel label="Czas utworzenia" formik={formik} id={'createdAt'} />
                                     <FormLabel label="Czas ostatniej edycji" formik={formik} id={'editedAt'} />
                                 </Grid>
@@ -256,16 +248,6 @@ const OrderDetails = () => {
                                 />
                                 <Grid item xs={6}>
                                     <FormInput id={'name'} formik={formik} readonly={readonlyMode} firstChild />
-                                    <FormSelect
-                                        id={'companyId'}
-                                        formik={formik}
-                                        readonly={readonlyMode}
-                                        options={formatArrayToOptions(
-                                            'id',
-                                            (x: Company) => x.companyName,
-                                            queryCompany.data,
-                                        )}
-                                    />
                                     <FormSelect
                                         id={'typeOfPriority'}
                                         formik={formik}

@@ -5,6 +5,7 @@ import com.emontazysta.model.Comment;
 import com.emontazysta.model.dto.CommentDto;
 import com.emontazysta.repository.CommentRepository;
 import com.emontazysta.service.CommentService;
+import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository repository;
     private final CommentMapper commentMapper;
+    private final AuthUtils authUtils;
 
     @Override
     public List<CommentDto> getAll() {
@@ -38,6 +40,7 @@ public class CommentServiceImpl implements CommentService {
     public CommentDto add(CommentDto commentDto) {
         Comment comment = commentMapper.toEntity(commentDto);
         comment.setCreatedAt(LocalDateTime.now());
+        comment.setMessageCreator(authUtils.getLoggedUser());
         return commentMapper.toDto(repository.save(comment));
     }
 

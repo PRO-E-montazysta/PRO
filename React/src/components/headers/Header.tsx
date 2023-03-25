@@ -61,7 +61,7 @@ const Header = () => {
             </ImageListItem>
           ))}
         </ImageList>
-        <CustomizedToolbar>
+        <CustomizedToolbar style={{ overflow: 'auto' }}>
           <Box component="img" sx={{ mr: 5 }} alt="Your logo." src={logo}></Box>
           {
             rootPageChildrens ? rootPageChildrens.map(page => {

@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -30,8 +29,6 @@ public class ToolEvent {
     private LocalDateTime movingDate;
     private LocalDateTime completionDate;
     private String description;
-
-    @NotNull
     private TypeOfStatus status;
 
     @ManyToOne

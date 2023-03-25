@@ -1,13 +1,16 @@
 package com.emontazysta.service.impl;
 
 import com.emontazysta.mapper.WarehouseMapper;
+import com.emontazysta.model.Company;
 import com.emontazysta.model.Warehouse;
 import com.emontazysta.model.dto.WarehouseDto;
 import com.emontazysta.model.dto.WarehouseLocationDto;
 import com.emontazysta.model.searchcriteria.WarehouseSearchCriteria;
+import com.emontazysta.repository.CompanyRepository;
 import com.emontazysta.repository.WarehouseRepository;
 import com.emontazysta.repository.criteria.WarehouseCriteriaRepository;
 import com.emontazysta.service.WarehouseService;
+import com.emontazysta.util.AuthUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +23,10 @@ import java.util.stream.Collectors;
 public class WarehouseServiceImpl implements WarehouseService {
 
     private final WarehouseRepository repository;
+    private final CompanyRepository companyRepository;
     private final WarehouseMapper warehouseMapper;
     private final WarehouseCriteriaRepository warehouseCriteriaRepository;
+    private final AuthUtils authUtils;
 
     @Override
     public List<WarehouseDto> getAll() {
@@ -39,6 +44,8 @@ public class WarehouseServiceImpl implements WarehouseService {
     @Override
     public WarehouseDto add(WarehouseDto warehouseDto) {
         Warehouse warehouse = warehouseMapper.toEntity(warehouseDto);
+        Company company = companyRepository.findById(authUtils.getLoggedUserCompanyId()).orElseThrow(EntityNotFoundException::new);
+        warehouse.setCompany(company);
         return warehouseMapper.toDto(repository.save(warehouse));
     }
 
