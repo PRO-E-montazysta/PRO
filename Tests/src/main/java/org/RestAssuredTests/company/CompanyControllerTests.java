@@ -1,11 +1,11 @@
 package org.RestAssuredTests.company;
 
-        import io.restassured.http.ContentType;
-        import io.restassured.response.Response;
-        import org.RestAssuredTests.util.AbstractTest;
-        import org.junit.jupiter.api.*;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+import org.RestAssuredTests.util.AbstractTest;
+import org.junit.jupiter.api.*;
 
-        import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.given;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 
@@ -138,7 +138,7 @@ public class CompanyControllerTests extends AbstractTest {
                 .header("Content-type", "application/json")
                 .header("Authorization", "Bearer " + AbstractTest.TOKEN)
                 .when()
-                .get(AbstractTest.BASE_PATH + "/companies/filter?status="+status)
+                .get(AbstractTest.BASE_PATH + "/companies/filter?status=" + status)
                 .then()
                 .extract().response();
 
@@ -215,6 +215,7 @@ public class CompanyControllerTests extends AbstractTest {
         Assertions.assertEquals(404, response.statusCode());
 
     }
+
     @Test
     @Order(11)
     void changeContactDetails_noExist() {
