@@ -11,23 +11,30 @@ import { Tool } from '../../types/model/Tool'
 import { useFormik } from 'formik'
 
 const Tools = () => {
-    const [filterParams, setFilterParams] = useState(getFilterParams([]))
-    const { initialValues, inputs } = getInputs([])
+    const { filterStructure, setFilterStructure } = useFilterStructure()
+    const [filterParams, setFilterParams] = useState(getFilterParams(filterStructure))
+
+    const { initialValues, inputs } = getInputs(filterStructure)
     const navigation = useNavigate()
 
     const queryTools = useQuery<Array<Tool>, AxiosError>(['tools', filterParams], async () =>
         getFilteredTools({ queryParams: filterParams }),
     )
 
+
     const filter: Filter = {
         formik: useFormik({
             initialValues: initialValues,
             // validationSchema={{}}
-            onSubmit: () => setFilterParams(filter.formik.values),
+            onSubmit: () => {
+                setFilterStructure(setNewFilterValues(filter.formik.values, filterStructure))
+                setFilterParams(getFilterParams(filterStructure))
+            },
             onReset: () => filter.formik.setValues(initialValues),
         }),
         inputs: inputs,
     }
+
 
     return (
         <FatTable
