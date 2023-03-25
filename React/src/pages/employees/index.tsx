@@ -17,7 +17,7 @@ const Employees = () => {
     const { initialValues, inputs } = getInputs(filterInitStructure)
     const navigation = useNavigate()
 
-    const queryData = useQuery<Array<Employee>, AxiosError>(['employees', filterParams], async () =>
+    const queryData = useQuery<Array<Employee>, AxiosError>(['users', filterParams], async () =>
         getFilteredEmployees({ queryParams: filterParams }),
     )
 
