@@ -12,6 +12,7 @@ import { useFormik } from 'formik'
 import { Container } from '@mui/material'
 
 const Orders = () => {
+    const [filterStructure, setFilterStructure] = useState(filterInitStructure)
     const [filterParams, setFilterParams] = useState(getFilterParams(filterInitStructure))
     const { initialValues, inputs } = getInputs(filterInitStructure)
     const navigation = useNavigate()
@@ -24,24 +25,26 @@ const Orders = () => {
         formik: useFormik({
             initialValues: initialValues,
             // validationSchema={{}}
-            onSubmit: () => setFilterParams(filter.formik.values),
+            onSubmit: () => {
+                setFilterStructure(setNewFilterValues(filter.formik.values, filterStructure))
+                setFilterParams(getFilterParams(filterStructure))
+            },
             onReset: () => filter.formik.setValues(initialValues),
         }),
         inputs: inputs,
     }
+
     return (
-        <Container>
-            <FatTable
-                query={queryOrders}
-                filterProps={filter}
-                headCells={headCells}
-                initOrderBy={'name'}
-                onClickRow={(e, row) => {
-                    navigation(`/orders/${row.id}`)
-                }}
-                pageHeader="Lista zleceń"
-            />
-        </Container>
+        <FatTable
+            query={queryOrders}
+            filterProps={filter}
+            headCells={headCells}
+            initOrderBy={'name'}
+            onClickRow={(e, row) => {
+                navigation(`/orders/${row.id}`)
+            }}
+            pageHeader="Lista zleceń"
+        />
     )
 }
 

@@ -11,6 +11,7 @@ import { WarehouseFilterDto } from '../../types/model/Warehouse'
 import { useFormik } from 'formik'
 
 const Warehouses = () => {
+    const [filterStructure, setFilterStructure] = useState(filterInitStructure)
     const [filterParams, setFilterParams] = useState(getFilterParams(filterInitStructure))
     const { initialValues, inputs } = getInputs(filterInitStructure)
     const navigation = useNavigate()
@@ -19,15 +20,20 @@ const Warehouses = () => {
         getFilteredWarehouses({ queryParams: filterParams }),
     )
 
+
     const filter: Filter = {
         formik: useFormik({
             initialValues: initialValues,
             // validationSchema={{}}
-            onSubmit: () => setFilterParams(filter.formik.values),
+            onSubmit: () => {
+                setFilterStructure(setNewFilterValues(filter.formik.values, filterStructure))
+                setFilterParams(getFilterParams(filterStructure))
+            },
             onReset: () => filter.formik.setValues(initialValues),
         }),
         inputs: inputs,
     }
+
     return (
         <FatTable
             query={queryWarehouses}
