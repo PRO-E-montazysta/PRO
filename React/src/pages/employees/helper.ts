@@ -5,6 +5,8 @@ import { Employee, EmployeeStatus } from '../../types/model/Employee'
 
 import { AppSize } from '../../hooks/useBreakpoints'
 import { SelectMenuItemProps } from '../../components/form/types'
+import * as yup from 'yup'
+
 export const headCells: Array<HeadCell<Employee>> = [
     {
         type: 'string',
@@ -86,3 +88,19 @@ export const filterInitStructure: Array<FilterInputType> = [
         typeValue: 'string',
     },
 ]
+
+export const emptyForm = {
+    id: null,
+    firstName: '',
+    lastName: '',
+    email: '',
+    status: '',
+    roles: [],
+}
+
+export const validationSchema = yup.object({
+    firstName: yup.string().min(2, 'Imię musi zawierać co najmniej 2 znaki').required('Wprowadź imię'),
+    lastName: yup.string().min(2, 'Nazwisko musi zawierać co najmniej 2 znaki').required('Wprowadź nazwisko'),
+    password: yup.string().min(8, 'Hasło musi zawierać co najmniej 8 znaków').required('Wprowadź hasło'),
+    email: yup.string().email('Wymagany jest poprawny email').required('Wprowadź email')
+})

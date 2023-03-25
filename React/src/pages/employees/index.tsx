@@ -9,6 +9,7 @@ import { Filter, FilterFormProps } from '../../components/table/filter/TableFilt
 import { Employee } from '../../types/model/Employee'
 import { getFilteredUsers } from '../../api/user.api'
 import { useFormik } from 'formik'
+import { getFilteredEmployees } from '../../api/employee.api'
 
 const Employees = () => {
     const [filterStructure, setFilterStructure] = useState(filterInitStructure)
@@ -16,8 +17,8 @@ const Employees = () => {
     const { initialValues, inputs } = getInputs(filterInitStructure)
     const navigation = useNavigate()
 
-    const queryData = useQuery<Array<Employee>, AxiosError>(['users', filterParams], async () =>
-        getFilteredUsers({ queryParams: filterParams }),
+    const queryData = useQuery<Array<Employee>, AxiosError>(['employees', filterParams], async () =>
+        getFilteredEmployees({ queryParams: filterParams }),
     )
 
 
