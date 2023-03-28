@@ -41,10 +41,8 @@ public abstract class Employee extends AppUser {
         this.toolEvents = toolEvents;
     }
 
-    @Column(unique = true)
     private String phone;
 
-    @Column(unique = true)
     private String pesel;
 
     @OneToMany(mappedBy = "assignedTo")
