@@ -54,7 +54,7 @@ public class ToolServiceImpl implements ToolService {
     public ToolDto add(ToolDto toolDto) {
         Tool tool = toolMapper.toEntity(toolDto);
         tool.setCreatedAt(LocalDate.now());
-        tool.setCode(UUID.randomUUID().toString());
+        tool.setCode("TOOL|"+UUID.randomUUID());
         return toolMapper.toDto(repository.save(tool));
     }
 
