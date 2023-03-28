@@ -5,6 +5,7 @@ import com.emontazysta.model.ToolEvent;
 import com.emontazysta.model.dto.ToolEventDto;
 import com.emontazysta.repository.ToolEventRepository;
 import com.emontazysta.service.ToolEventService;
+import com.emontazysta.util.AuthUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ public class ToolEventServiceImpl implements ToolEventService {
 
     private final ToolEventRepository repository;
     private final ToolEventMapper toolEventMapper;
+    private final AuthUtils authUtils;
 
     @Override
     public List<ToolEventDto> getAll() {
@@ -35,6 +37,7 @@ public class ToolEventServiceImpl implements ToolEventService {
     @Override
     public ToolEventDto add(ToolEventDto toolEventDto) {
         ToolEvent toolEvent = toolEventMapper.toEntity(toolEventDto);
+        toolEvent.setCreatedBy(authUtils.getLoggedUser());
         return toolEventMapper.toDto(repository.save(toolEvent));
     }
 

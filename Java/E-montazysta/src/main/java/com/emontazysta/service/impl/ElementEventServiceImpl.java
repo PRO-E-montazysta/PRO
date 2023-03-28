@@ -6,6 +6,7 @@ import com.emontazysta.model.ElementEvent;
 import com.emontazysta.model.dto.ElementEventDto;
 import com.emontazysta.repository.ElementEventRepository;
 import com.emontazysta.service.ElementEventService;
+import com.emontazysta.util.AuthUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ public class ElementEventServiceImpl implements ElementEventService {
 
     private final ElementEventRepository repository;
     private final ElementEventMapper elementEventMapper;
+    private final AuthUtils authUtils;
 
     @Override
     public List<ElementEventDto> getAll() {
@@ -35,6 +37,7 @@ public class ElementEventServiceImpl implements ElementEventService {
     @Override
     public ElementEventDto add(ElementEventDto event) {
         ElementEvent elementEvent = elementEventMapper.toEntity(event);
+        elementEvent.setCreatedBy(authUtils.getLoggedUser());
         return elementEventMapper.toDto(repository.save(elementEvent));
     }
 
