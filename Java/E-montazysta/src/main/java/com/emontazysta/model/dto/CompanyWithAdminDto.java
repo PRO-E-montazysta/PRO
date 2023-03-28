@@ -39,7 +39,6 @@ public class CompanyWithAdminDto {
     @NotBlank(message = "Username cannot be empty")
     @Length(min = 3, message = "Username must contain at least 3 characters" )
     private String username;
-    @NotBlank(message = "Phone cannot be empty")
     @Pattern(regexp ="^\\+?[0-9]{10,}$|^\\+?[0-9]{1,3}[-\\s()]*[0-9]{6,}$", message = "Phone number has to be valid")
     private String phone;
     @PESEL(message = "PESEL is not valid")
