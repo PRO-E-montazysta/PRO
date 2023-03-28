@@ -2,7 +2,7 @@ package com.emontazysta.service.impl;
 
 import com.emontazysta.mapper.CompanyAdminMapper;
 import com.emontazysta.model.dto.CompanyAdminDto;
-import com.emontazysta.model.searchcriteria.CompanyAdmin;
+import com.emontazysta.model.CompanyAdmin;
 import com.emontazysta.repository.CompanyAdminRepository;
 import com.emontazysta.service.CompanyAdminService;
 import lombok.RequiredArgsConstructor;

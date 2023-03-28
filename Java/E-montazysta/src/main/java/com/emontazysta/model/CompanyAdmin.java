@@ -1,4 +1,4 @@
-package com.emontazysta.model.searchcriteria;
+package com.emontazysta.model;
 
 import com.emontazysta.enums.Role;
 import com.emontazysta.model.*;
@@ -14,7 +14,6 @@ import java.util.Set;
 @Data
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class CompanyAdmin extends Employee {
 
@@ -22,8 +21,7 @@ public class CompanyAdmin extends Employee {
                                String resetPasswordToken, Set<Role> roles, String phone, String pesel,
                                List<Unavailability> unavailabilities, List<Notification> notifications,
                                List<Comment> employeeComments, List<ElementEvent> elementEvents,
-                               List<Employment> employments, List<Attachment> attachments, List<ToolEvent> toolEvents,
-                               List<Orders> orders) {
+                               List<Employment> employments, List<Attachment> attachments, List<ToolEvent> toolEvents) {
 
         super(id, firstName, lastName, email, password, username, resetPasswordToken, roles, phone, pesel,
                 unavailabilities, notifications, employeeComments, elementEvents, employments, attachments, toolEvents);

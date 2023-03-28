@@ -2,7 +2,7 @@ package com.emontazysta.mapper;
 
 import com.emontazysta.model.*;
 import com.emontazysta.model.dto.CompanyAdminDto;
-import com.emontazysta.model.searchcriteria.CompanyAdmin;
+import com.emontazysta.model.CompanyAdmin;
 import com.emontazysta.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
