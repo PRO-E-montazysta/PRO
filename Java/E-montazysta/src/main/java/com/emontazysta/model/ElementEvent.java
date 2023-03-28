@@ -35,7 +35,7 @@ public class ElementEvent {
     private Manager acceptedBy;
 
     @ManyToOne
-    private AppUser updatedBy;
+    private AppUser createdBy;
 
     @ManyToOne
     private Element element;

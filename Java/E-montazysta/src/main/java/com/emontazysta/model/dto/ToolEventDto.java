@@ -23,7 +23,7 @@ public class ToolEventDto {
     private String description;
     @NotNull(message = "Event status cannot be empty")
     private EventStatus status;
-    private Long updatedById;
+    private Long createdById;
     private Long acceptedById;
     @NotNull(message = "Tool id cannot be empty")
     private Long toolId;

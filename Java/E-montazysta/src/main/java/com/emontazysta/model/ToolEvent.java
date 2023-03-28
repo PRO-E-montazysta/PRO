@@ -32,7 +32,7 @@ public class ToolEvent {
     private EventStatus status;
 
     @ManyToOne
-    private AppUser updatedBy;
+    private AppUser createdBy;
 
     @ManyToOne
     private Manager acceptedBy;

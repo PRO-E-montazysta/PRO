@@ -54,7 +54,7 @@ public class ElementEventServiceImpl implements ElementEventService {
         elementEvent.setStatus(updatedElementEvent.getStatus());
         elementEvent.setQuantity(updatedElementEvent.getQuantity());
         elementEvent.setAcceptedBy(updatedElementEvent.getAcceptedBy());
-        elementEvent.setUpdatedBy(updatedElementEvent.getUpdatedBy());
+        elementEvent.setCreatedBy(updatedElementEvent.getCreatedBy());
         elementEvent.setElement(updatedElementEvent.getElement());
         elementEvent.setAttachments(elementEvent.getAttachments());
         return elementEventMapper.toDto(repository.save(elementEvent));

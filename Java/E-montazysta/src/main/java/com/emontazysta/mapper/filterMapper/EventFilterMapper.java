@@ -18,8 +18,8 @@ public class EventFilterMapper {
                 .completionDate(toolEvent.getCompletionDate())
                 .description(toolEvent.getDescription())
                 .status(toolEvent.getStatus())
-                .updatedById(toolEvent.getUpdatedBy() == null ? null : toolEvent.getUpdatedBy().getId())
-                .acceptedById(toolEvent.getUpdatedBy() == null ? null : toolEvent.getUpdatedBy().getId())
+                .createdById(toolEvent.getCreatedBy() == null ? null : toolEvent.getCreatedBy().getId())
+                .acceptedById(toolEvent.getAcceptedBy() == null ? null : toolEvent.getAcceptedBy().getId())
                 .itemName(toolEvent.getTool().getName())
                 .eventType("TOOL")
                 .build();
@@ -33,8 +33,8 @@ public class EventFilterMapper {
                 .completionDate(elementEvent.getCompletionDate())
                 .description(elementEvent.getDescription())
                 .status(elementEvent.getStatus())
-                .updatedById(elementEvent.getUpdatedBy() == null ? null : elementEvent.getUpdatedBy().getId())
-                .acceptedById(elementEvent.getUpdatedBy() == null ? null : elementEvent.getUpdatedBy().getId())
+                .createdById(elementEvent.getCreatedBy() == null ? null : elementEvent.getCreatedBy().getId())
+                .acceptedById(elementEvent.getAcceptedBy() == null ? null : elementEvent.getAcceptedBy().getId())
                 .itemName(elementEvent.getElement().getName())
                 .eventType("ELEMENT")
                 .build();

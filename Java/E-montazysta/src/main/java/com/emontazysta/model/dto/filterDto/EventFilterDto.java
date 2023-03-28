@@ -19,7 +19,7 @@ public class EventFilterDto {
     private LocalDateTime completionDate;
     private String description;
     private EventStatus status;
-    private Long updatedById;
+    private Long createdById;
     private Long acceptedById;
     private String itemName;
     private String eventType;

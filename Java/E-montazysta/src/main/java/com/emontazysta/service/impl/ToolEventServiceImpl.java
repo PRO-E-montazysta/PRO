@@ -52,7 +52,7 @@ public class ToolEventServiceImpl implements ToolEventService {
         toolEvent.setCompletionDate(updatedToolEvent.getCompletionDate());
         toolEvent.setDescription(updatedToolEvent.getDescription());
         toolEvent.setStatus(updatedToolEvent.getStatus());
-        toolEvent.setUpdatedBy(updatedToolEvent.getUpdatedBy());
+        toolEvent.setCreatedBy(updatedToolEvent.getCreatedBy());
         toolEvent.setAcceptedBy(updatedToolEvent.getAcceptedBy());
         toolEvent.setTool(updatedToolEvent.getTool());
         toolEvent.setAttachments(updatedToolEvent.getAttachments());
