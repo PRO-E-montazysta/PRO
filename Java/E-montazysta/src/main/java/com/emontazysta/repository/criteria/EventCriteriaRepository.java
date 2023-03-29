@@ -1,11 +1,16 @@
 package com.emontazysta.repository.criteria;
 
 import com.emontazysta.enums.EventStatus;
+import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.filterMapper.EventFilterMapper;
+import com.emontazysta.model.AppUser;
 import com.emontazysta.model.ElementEvent;
+import com.emontazysta.model.Employment;
 import com.emontazysta.model.ToolEvent;
 import com.emontazysta.model.dto.filterDto.EventFilterDto;
 import com.emontazysta.model.searchcriteria.EventSearchCriteria;
+import com.emontazysta.service.EmploymentService;
+import com.emontazysta.util.AuthUtils;
 import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -15,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -23,11 +29,13 @@ public class EventCriteriaRepository {
     private final EntityManager entityManager;
     private final CriteriaBuilder criteriaBuilder;
     private final EventFilterMapper eventFilterMapper;
+    private final AuthUtils authUtils;
 
-    public EventCriteriaRepository(EntityManager entityManager, EventFilterMapper eventFilterMapper) {
+    public EventCriteriaRepository(EntityManager entityManager, EventFilterMapper eventFilterMapper, AuthUtils authUtils, EmploymentService employmentService) {
         this.entityManager = entityManager;
         this.criteriaBuilder = entityManager.getCriteriaBuilder();
         this.eventFilterMapper = eventFilterMapper;
+        this.authUtils = authUtils;
     }
 
     public List<EventFilterDto> findAllWithFilters(EventSearchCriteria eventSearchCriteria, Principal principal) {
@@ -74,7 +82,7 @@ public class EventCriteriaRepository {
         if (Objects.nonNull(eventSearchCriteria.getEventType())) {
             List<Predicate> eventTypePredicates = new ArrayList<>();
             for (String type : eventSearchCriteria.getEventType()) {
-                eventTypePredicates.add(criteriaBuilder.equal(criteriaBuilder.substring(toolEventRoot.get("tool").get("code"), 0, 4), type));
+                eventTypePredicates.add(criteriaBuilder.equal(criteriaBuilder.substring(toolEventRoot.get("tool").get("code"), 0, 1), type));
             }
             predicates.add(criteriaBuilder.or(eventTypePredicates.toArray(new Predicate[0])));
         }
@@ -103,6 +111,15 @@ public class EventCriteriaRepository {
                     LocalDateTime.parse(eventSearchCriteria.getEventDateMax())));
         }
 
+        AppUser user =  authUtils.getLoggedUser();
+        Boolean isFitter = user.getRoles().contains(Role.FITTER);
+        if(isFitter) {
+            predicates.add(criteriaBuilder.equal(toolEventRoot.get("createdBy").get("id"), user.getId()));
+        }else{
+            predicates.add(criteriaBuilder.equal(toolEventRoot.get("tool").get("warehouse").get("company").get("id"),
+                    authUtils.getLoggedUserCompanyId()));
+        }
+
         return  criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 
@@ -124,7 +141,7 @@ public class EventCriteriaRepository {
         if (Objects.nonNull(eventSearchCriteria.getEventType())) {
             List<Predicate> eventTypePredicates = new ArrayList<>();
             for (String type : eventSearchCriteria.getEventType()) {
-                eventTypePredicates.add(criteriaBuilder.equal(criteriaBuilder.substring(elementEventRoot.get("element").get("code"), 0, 7), type));
+                eventTypePredicates.add(criteriaBuilder.equal(criteriaBuilder.substring(elementEventRoot.get("element").get("code"), 0, 1), type));
             }
             predicates.add(criteriaBuilder.or(eventTypePredicates.toArray(new Predicate[0])));
         }
@@ -151,6 +168,15 @@ public class EventCriteriaRepository {
         } else if (Objects.nonNull(eventSearchCriteria.getEventDateMax())) {
             predicates.add(criteriaBuilder.lessThanOrEqualTo(elementEventRoot.get("eventDate"),
                     LocalDateTime.parse(eventSearchCriteria.getEventDateMax())));
+        }
+
+        AppUser user =  authUtils.getLoggedUser();
+        Boolean isFitter = user.getRoles().contains(Role.FITTER);
+        if(isFitter) {
+            predicates.add(criteriaBuilder.equal(elementEventRoot.get("createdBy").get("id"), user.getId()));
+        }else{
+            predicates.add(criteriaBuilder.equal(elementEventRoot.join("element").join("elementInWarehouses")
+                            .get("warehouse").get("company").get("id"), authUtils.getLoggedUserCompanyId()));
         }
 
         return  criteriaBuilder.and(predicates.toArray(new Predicate[0]));

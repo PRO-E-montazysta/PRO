@@ -49,7 +49,7 @@ public class ElementServiceImpl implements ElementService {
     @Override
     public ElementDto add(ElementDto elementDto) {
         Element element = elementMapper.toEntity(elementDto);
-        element.setCode("ELEMENT|"+UUID.randomUUID());
+        element.setCode("E|"+UUID.randomUUID());
         return elementMapper.toDto(repository.save(element));
     }
 
