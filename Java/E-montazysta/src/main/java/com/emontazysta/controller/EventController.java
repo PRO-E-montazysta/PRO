@@ -9,19 +9,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.security.Principal;
 import java.util.List;
-
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = API_BASE_CONSTANT + "/events", produces = MediaType.APPLICATION_JSON_VALUE)
+@PreAuthorize("hasAnyAuthority('SCOPE_FITTER', 'SCOPE_FOREMAN', 'SCOPE_WAREHOUSE_MAN', 'SCOPE_WAREHOUSE_MANAGER', 'SCOPE_MANAGER')")
 public class EventController {
 
     private final EventCriteriaRepository eventCriteriaRepository;

@@ -1,14 +1,17 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.ToolEventMapper;
+import com.emontazysta.model.AppUser;
 import com.emontazysta.model.ToolEvent;
 import com.emontazysta.model.dto.ToolEventDto;
 import com.emontazysta.repository.ToolEventRepository;
 import com.emontazysta.service.ToolEventService;
 import com.emontazysta.util.AuthUtils;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,7 +32,18 @@ public class ToolEventServiceImpl implements ToolEventService {
 
     @Override
     public ToolEventDto getById(Long id) {
-        ToolEvent toolEvent = repository.findById(id).orElseThrow(() -> new RuntimeException("Tool event with id " + id + " not found!"));
+        ToolEvent toolEvent = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        AppUser user =  authUtils.getLoggedUser();
+        Boolean isFitter = user.getRoles().contains(Role.FITTER);
+        if(isFitter) {
+            if(!toolEvent.getCreatedBy().getId().equals(user.getId()))
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }else {
+            if(!toolEvent.getTool().getWarehouse().getCompany().getId().equals(authUtils.getLoggedUserCompanyId()))
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
         return toolEventMapper.toDto(toolEvent);
 
     }
@@ -49,7 +63,19 @@ public class ToolEventServiceImpl implements ToolEventService {
     @Override
     public ToolEventDto update(Long id, ToolEventDto toolEventDto) {
         ToolEvent updatedToolEvent = toolEventMapper.toEntity(toolEventDto);
-        ToolEvent toolEvent = repository.findById(id).orElseThrow(() -> new RuntimeException("Tool event with id " + id + " not found!"));
+        ToolEvent toolEvent = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        AppUser user =  authUtils.getLoggedUser();
+        Boolean isFitter = user.getRoles().contains(Role.FITTER);
+        Boolean isWarehouseMan = user.getRoles().contains(Role.WAREHOUSE_MAN);
+        if(isFitter || isWarehouseMan) {
+            if(!toolEvent.getCreatedBy().getId().equals(user.getId()))
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }else {
+            if(!toolEvent.getTool().getWarehouse().getCompany().getId().equals(authUtils.getLoggedUserCompanyId()))
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
         toolEvent.setEventDate(updatedToolEvent.getEventDate());
         toolEvent.setMovingDate(updatedToolEvent.getMovingDate());
         toolEvent.setCompletionDate(updatedToolEvent.getCompletionDate());
