@@ -6,5 +6,6 @@ import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
+@NoArgsConstructor
 public class WarehouseManagerDto extends WarehousemanDto {
 }
