@@ -3,6 +3,7 @@ package com.emontazysta.model.dto;
 import com.emontazysta.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.validator.constraints.Length;
 
@@ -12,6 +13,7 @@ import java.util.Set;
 
 @Data
 @SuperBuilder
+@NoArgsConstructor
 @AllArgsConstructor
 public class AppUserDto {
 

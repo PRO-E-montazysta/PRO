@@ -1,6 +1,7 @@
 package com.emontazysta.model.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.validator.constraints.pl.PESEL;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Data
 @SuperBuilder
+@NoArgsConstructor
 public class EmployeeDto extends AppUserDto {
 
     private Long id;
