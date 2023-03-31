@@ -45,6 +45,14 @@ public class AttachmentServiceImpl implements AttachmentService {
 
         Attachment attachment = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
         attachment.setDeleted(true);
+        attachment.setToolType(null);
+        attachment.setComment(null);
+        attachment.setEmployee(null);
+        attachment.setToolEvent(null);
+        attachment.setOrder(null);
+        attachment.setElement(null);
+        attachment.setOrderStage(null);
+        attachment.setElementEvent(null);
         repository.save(attachment);
     }
 

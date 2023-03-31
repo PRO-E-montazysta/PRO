@@ -49,6 +49,8 @@ public class CommentServiceImpl implements CommentService {
 
         Comment comment = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
         comment.setDeleted(true);
+        comment.setMessageCreator(null);
+        comment.setOrderStage(null);
         comment.getAttachments().forEach(attachment -> attachment.setComment(null));
         repository.save(comment);
     }
