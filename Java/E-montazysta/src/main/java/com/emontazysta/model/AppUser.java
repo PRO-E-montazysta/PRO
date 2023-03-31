@@ -9,12 +9,23 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.*;
 
+@Data
 @Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-@Builder
 public class AppUser implements UserDetails {
+
+    public AppUser(Long id, String firstName, String lastName, String email, String password, String username, String resetPasswordToken, Set<Role> roles) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.username = username;
+        this.resetPasswordToken = resetPasswordToken;
+        this.roles = roles;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +37,7 @@ public class AppUser implements UserDetails {
     private String password;
     @Column(unique = true)
     private String username;
+    private boolean deleted = Boolean.FALSE;
 
     private String resetPasswordToken;
 

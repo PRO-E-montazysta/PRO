@@ -31,6 +31,8 @@ public class SalesRepresentative extends Employee {
         this.orders = orders;
     }
 
+    private boolean deleted = Boolean.FALSE;
+
     @OneToMany(mappedBy = "salesRepresentative")
     private List<Orders> orders;
 }

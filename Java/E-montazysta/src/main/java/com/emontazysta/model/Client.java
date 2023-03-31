@@ -16,11 +16,20 @@ import java.util.List;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Client {
 
+    public Client(Long id, String name, String contactDetails, Company company, List<Orders> orders) {
+        this.id = id;
+        this.name = name;
+        this.contactDetails = contactDetails;
+        this.company = company;
+        this.orders = orders;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String contactDetails;
+    private boolean deleted = Boolean.FALSE;
 
     @ManyToOne
     private Company company;

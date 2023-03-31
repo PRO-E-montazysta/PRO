@@ -17,6 +17,14 @@ import java.time.LocalDateTime;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Employment {
 
+    public Employment(Long id, LocalDateTime dateOfEmployment, LocalDateTime dateOfDismiss, Company company, AppUser employee) {
+        this.id = id;
+        this.dateOfEmployment = dateOfEmployment;
+        this.dateOfDismiss = dateOfDismiss;
+        this.company = company;
+        this.employee = employee;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,6 +32,8 @@ public class Employment {
     private LocalDateTime dateOfEmployment;
 
     private LocalDateTime dateOfDismiss;
+
+    private boolean deleted = Boolean.FALSE;
 
     @ManyToOne
     private Company company;

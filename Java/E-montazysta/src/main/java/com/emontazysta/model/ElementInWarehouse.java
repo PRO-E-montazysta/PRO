@@ -21,6 +21,17 @@ import javax.persistence.ManyToOne;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class ElementInWarehouse {
 
+    public ElementInWarehouse(Long id, int inWarehouseCount, int inUnitCount, String rack, String shelf,
+                              Element element, Warehouse warehouse) {
+        this.id = id;
+        this.inWarehouseCount = inWarehouseCount;
+        this.inUnitCount = inUnitCount;
+        this.rack = rack;
+        this.shelf = shelf;
+        this.element = element;
+        this.warehouse = warehouse;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,6 +40,7 @@ public class ElementInWarehouse {
     private int inUnitCount;
     private String rack;
     private String shelf;
+    private boolean deleted = Boolean.FALSE;
 
     @ManyToOne
     private Element element;

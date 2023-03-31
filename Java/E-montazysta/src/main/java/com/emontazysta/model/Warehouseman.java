@@ -33,6 +33,8 @@ public class Warehouseman extends Employee {
         this.demandAdHocs = demandAdHocs;
     }
 
+    private boolean deleted = Boolean.FALSE;
+
     @OneToMany(mappedBy = "releasedBy")
     private List<ToolRelease> releasedTools;
 

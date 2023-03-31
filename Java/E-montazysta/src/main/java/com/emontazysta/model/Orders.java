@@ -21,6 +21,29 @@ import java.util.List;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Orders {
 
+    public Orders(Long id, String name, TypeOfStatus typeOfStatus, LocalDateTime plannedStart, LocalDateTime plannedEnd,
+                  LocalDateTime createdAt, LocalDateTime editedAt, TypeOfPriority typeOfPriority, Company company,
+                  Manager managedBy, Foreman assignedTo, Specialist specialist, SalesRepresentative salesRepresentative,
+                  Location location, Client client, List<OrderStage> orderStages, List<Attachment> attachments) {
+        this.id = id;
+        this.name = name;
+        this.typeOfStatus = typeOfStatus;
+        this.plannedStart = plannedStart;
+        this.plannedEnd = plannedEnd;
+        this.createdAt = createdAt;
+        this.editedAt = editedAt;
+        this.typeOfPriority = typeOfPriority;
+        this.company = company;
+        this.managedBy = managedBy;
+        this.assignedTo = assignedTo;
+        this.specialist = specialist;
+        this.salesRepresentative = salesRepresentative;
+        this.location = location;
+        this.client = client;
+        this.orderStages = orderStages;
+        this.attachments = attachments;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,6 +61,8 @@ public class Orders {
     private LocalDateTime editedAt;
 
     private TypeOfPriority typeOfPriority;
+
+    private boolean deleted = Boolean.FALSE;
 
     @ManyToOne
     private Company company;

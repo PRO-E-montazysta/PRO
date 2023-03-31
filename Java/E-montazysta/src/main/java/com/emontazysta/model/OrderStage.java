@@ -21,6 +21,36 @@ import java.util.List;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class OrderStage {
 
+    public OrderStage(Long id, String name, OrderStatus status, BigDecimal price, Integer order, LocalDate plannedEndDate,
+                      LocalDateTime startDate, LocalDateTime endDate, long plannedDurationTime, int plannedFittersNumber,
+                      int minimumImagesNumber, List<Fitter> assignedTo, Foreman managedBy, List<Comment> comments,
+                      List<ToolRelease> toolReleases, List<ElementReturnRelease> elementReturnReleases, Orders orders,
+                      List<Attachment> attachments, List<Notification> notifications, List<ToolType> tools,
+                      List<Element> elements, List<DemandAdHoc> demandsAdHoc) {
+        this.id = id;
+        this.name = name;
+        this.status = status;
+        this.price = price;
+        this.order = order;
+        this.plannedEndDate = plannedEndDate;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.plannedDurationTime = plannedDurationTime;
+        this.plannedFittersNumber = plannedFittersNumber;
+        this.minimumImagesNumber = minimumImagesNumber;
+        this.assignedTo = assignedTo;
+        this.managedBy = managedBy;
+        this.comments = comments;
+        this.toolReleases = toolReleases;
+        this.elementReturnReleases = elementReturnReleases;
+        this.orders = orders;
+        this.attachments = attachments;
+        this.notifications = notifications;
+        this.tools = tools;
+        this.elements = elements;
+        this.demandsAdHoc = demandsAdHoc;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -44,6 +74,8 @@ public class OrderStage {
     private int plannedFittersNumber;
 
     private int minimumImagesNumber;
+
+    private boolean deleted = Boolean.FALSE;
 
     @ManyToMany(mappedBy = "workingOn")
     private List<Fitter> assignedTo;

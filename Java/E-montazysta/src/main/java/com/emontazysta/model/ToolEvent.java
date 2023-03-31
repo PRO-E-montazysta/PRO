@@ -20,6 +20,20 @@ import java.util.List;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class ToolEvent {
 
+    public ToolEvent(Long id, LocalDateTime eventDate, LocalDateTime movingDate, LocalDateTime completionDate,
+                     String description, TypeOfStatus status, AppUser updatedBy, Manager acceptedBy, Tool tool,
+                     List<Attachment> attachments) {
+        this.id = id;
+        this.eventDate = eventDate;
+        this.movingDate = movingDate;
+        this.completionDate = completionDate;
+        this.description = description;
+        this.status = status;
+        this.updatedBy = updatedBy;
+        this.acceptedBy = acceptedBy;
+        this.tool = tool;
+        this.attachments = attachments;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +44,7 @@ public class ToolEvent {
     private LocalDateTime completionDate;
     private String description;
     private TypeOfStatus status;
+    private boolean deleted = Boolean.FALSE;
 
     @ManyToOne
     private AppUser updatedBy;

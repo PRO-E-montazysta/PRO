@@ -19,6 +19,29 @@ import java.util.List;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class DemandAdHoc {
 
+    public DemandAdHoc(Long id, String description, String comments, LocalDateTime creationTime,
+                       LocalDateTime readByWarehousemanTime, LocalDateTime realisationTime, String warehousemanComment,
+                       String specialistComment, List<ToolRelease> toolReleases, List<ElementReturnRelease> elementReturnReleases,
+                       WarehouseManager warehouseManager, Warehouseman warehouseman, Specialist specialist, Manager manager,
+                       Foreman foreman, List<OrderStage> ordersStages) {
+        this.id = id;
+        this.description = description;
+        this.comments = comments;
+        this.creationTime = creationTime;
+        this.readByWarehousemanTime = readByWarehousemanTime;
+        this.realisationTime = realisationTime;
+        this.warehousemanComment = warehousemanComment;
+        this.specialistComment = specialistComment;
+        this.toolReleases = toolReleases;
+        this.elementReturnReleases = elementReturnReleases;
+        this.warehouseManager = warehouseManager;
+        this.warehouseman = warehouseman;
+        this.specialist = specialist;
+        this.manager = manager;
+        this.foreman = foreman;
+        this.ordersStages = ordersStages;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,6 +53,7 @@ public class DemandAdHoc {
     private String warehousemanComment; // TODO: should be in other model if we want to have info about warehouseman + timestamp
     private String specialistComment; // TODO: should be in other model if we want to have info about specialist + timestamp
     // TODO: status values not defined
+    private boolean deleted = Boolean.FALSE;
 
     @OneToMany(mappedBy = "demandAdHoc")
     private List<ToolRelease> toolReleases;

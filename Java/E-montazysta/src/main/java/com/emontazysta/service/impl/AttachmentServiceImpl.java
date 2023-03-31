@@ -22,14 +22,14 @@ public class AttachmentServiceImpl implements AttachmentService {
 
     @Override
     public List<AttachmentDto> getAll() {
-        return repository.findAll().stream()
+        return repository.findAllByDeletedIsFalse().stream()
                 .map(attachmentMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public AttachmentDto getById(Long id) {
-        Attachment attachment = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Attachment attachment = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
         return attachmentMapper.toDto(attachment);
     }
 
@@ -42,13 +42,16 @@ public class AttachmentServiceImpl implements AttachmentService {
 
     @Override
     public void delete(Long id) {
-        repository.deleteById(id);
+
+        Attachment attachment = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        attachment.setDeleted(true);
+        repository.save(attachment);
     }
 
     @Override
     public AttachmentDto update(Long id, AttachmentDto attachmentDto) {
         Attachment updatedAttachment = attachmentMapper.toEntity(attachmentDto);
-        Attachment attachment = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Attachment attachment = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
         attachment.setName(updatedAttachment.getName());
         attachment.setUrl(updatedAttachment.getUrl());
         attachment.setDescription(updatedAttachment.getDescription());

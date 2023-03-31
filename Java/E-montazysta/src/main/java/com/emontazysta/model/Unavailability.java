@@ -19,6 +19,17 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Unavailability {
 
+    public Unavailability(Long id, TypeOfUnavailability typeOfUnavailability, String description,
+                          LocalDateTime unavailableFrom, LocalDateTime unavailableTo, AppUser assignedTo, Manager assignedBy) {
+        this.id = id;
+        this.typeOfUnavailability = typeOfUnavailability;
+        this.description = description;
+        this.unavailableFrom = unavailableFrom;
+        this.unavailableTo = unavailableTo;
+        this.assignedTo = assignedTo;
+        this.assignedBy = assignedBy;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,6 +39,7 @@ public class Unavailability {
     private LocalDateTime unavailableFrom;
     @JsonFormat(pattern="dd-MM-yyyy")
     private LocalDateTime unavailableTo;
+    private boolean deleted = Boolean.FALSE;
 
     @ManyToOne
     private AppUser assignedTo;

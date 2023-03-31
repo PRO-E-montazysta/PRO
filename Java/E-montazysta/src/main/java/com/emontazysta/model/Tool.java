@@ -19,11 +19,23 @@ import java.util.List;
 
 @Data
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Tool {
+
+    public Tool(Long id, String name, LocalDate createdAt, String code, List<ToolRelease> toolReleases,
+                Warehouse warehouse, List<ToolEvent> toolEvents, ToolType toolType) {
+        this.id = id;
+        this.name = name;
+        this.createdAt = createdAt;
+        this.code = code;
+        this.toolReleases = toolReleases;
+        this.warehouse = warehouse;
+        this.toolEvents = toolEvents;
+        this.toolType = toolType;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +46,8 @@ public class Tool {
     private LocalDate createdAt;
 
     private String code;
+
+    private boolean deleted = Boolean.FALSE;
 
     @OneToMany(mappedBy = "tool")
     private List<ToolRelease> toolReleases;

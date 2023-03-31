@@ -20,6 +20,22 @@ import java.util.List;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class ElementEvent {
 
+    public ElementEvent(Long id, LocalDateTime eventDate, LocalDateTime movingDate, LocalDateTime completionDate,
+                        String description, TypeOfStatus status, int quantity, Manager acceptedBy, AppUser updatedBy,
+                        Element element, List<Attachment> attachments) {
+        this.id = id;
+        this.eventDate = eventDate;
+        this.movingDate = movingDate;
+        this.completionDate = completionDate;
+        this.description = description;
+        this.status = status;
+        this.quantity = quantity;
+        this.acceptedBy = acceptedBy;
+        this.updatedBy = updatedBy;
+        this.element = element;
+        this.attachments = attachments;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,6 +46,7 @@ public class ElementEvent {
     private String description;
     private TypeOfStatus status;
     private int quantity;
+    private boolean deleted = Boolean.FALSE;
 
     @ManyToOne
     private Manager acceptedBy;

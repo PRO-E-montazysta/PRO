@@ -19,6 +19,21 @@ import java.time.LocalDateTime;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class ElementReturnRelease {
 
+    public ElementReturnRelease(Long id, LocalDateTime releaseTime, int releasedQuantity, int returnedQuantity,
+                                LocalDateTime returnTime, Warehouseman servedBy, Element element, DemandAdHoc demandAdHoc,
+                                Foreman foreman, OrderStage orderStage) {
+        this.id = id;
+        this.releaseTime = releaseTime;
+        this.releasedQuantity = releasedQuantity;
+        this.returnedQuantity = returnedQuantity;
+        this.returnTime = returnTime;
+        this.servedBy = servedBy;
+        this.element = element;
+        this.demandAdHoc = demandAdHoc;
+        this.foreman = foreman;
+        this.orderStage = orderStage;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,6 +42,7 @@ public class ElementReturnRelease {
     private int releasedQuantity;
     private int returnedQuantity;
     private LocalDateTime returnTime;
+    private boolean deleted = Boolean.FALSE;
 
     @ManyToOne
     private Warehouseman servedBy;

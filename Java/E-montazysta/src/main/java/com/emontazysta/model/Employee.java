@@ -47,6 +47,8 @@ public abstract class Employee extends AppUser {
     @Column(unique = true)
     private String pesel;
 
+    private boolean deleted = Boolean.FALSE;
+
     @OneToMany(mappedBy = "assignedTo")
     private List<Unavailability> unavailabilities;
 

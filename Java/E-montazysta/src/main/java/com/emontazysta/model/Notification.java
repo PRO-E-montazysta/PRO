@@ -19,6 +19,17 @@ import java.util.List;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Notification {
 
+    public Notification(Long id, String content, LocalDateTime createdAt, LocalDateTime readAt, AppUser createdBy,
+                        List<AppUser> notifiedEmployees, OrderStage orderStage) {
+        this.id = id;
+        this.content = content;
+        this.createdAt = createdAt;
+        this.readAt = readAt;
+        this.createdBy = createdBy;
+        this.notifiedEmployees = notifiedEmployees;
+        this.orderStage = orderStage;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,6 +39,8 @@ public class Notification {
     private LocalDateTime createdAt;
 
     private LocalDateTime readAt;
+
+    private boolean deleted = Boolean.FALSE;
 
     @ManyToOne
     private AppUser createdBy;

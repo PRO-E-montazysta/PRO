@@ -18,6 +18,16 @@ import java.util.List;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class ToolType {
 
+    public ToolType(Long id, String name, int criticalNumber, List<Attachment> attachments,
+                    List<OrderStage> orderStages, List<Tool> tools) {
+        this.id = id;
+        this.name = name;
+        this.criticalNumber = criticalNumber;
+        this.attachments = attachments;
+        this.orderStages = orderStages;
+        this.tools = tools;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,6 +35,8 @@ public class ToolType {
     private String name;
 
     private int criticalNumber;
+
+    private boolean deleted = Boolean.FALSE;
 
     @OneToMany(mappedBy = "toolType")
     private List<Attachment> attachments;
