@@ -46,7 +46,7 @@ public class ToolEventController {
         return service.add(event);
     }
 
-    //TO_DELETE
+    @PreAuthorize("hasAnyAuthority('SCOPE_WAREHOUSE_MANAGER', 'SCOPE_MANAGER')")
     @DeleteMapping("/{id}")
     @Operation(description = "Allows to delete tool event by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public void deleteToolEventById(@PathVariable Long id) {

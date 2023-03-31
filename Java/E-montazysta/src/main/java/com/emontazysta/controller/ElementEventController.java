@@ -45,7 +45,7 @@ public class ElementEventController {
         return service.add(event);
     }
 
-    //TO_DELETE
+    @PreAuthorize("hasAnyAuthority('SCOPE_WAREHOUSE_MANAGER', 'SCOPE_MANAGER')")
     @DeleteMapping("/{id}")
     @Operation(description = "Allows to delete element event by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public void deleteElementEventById(@PathVariable Long id) {

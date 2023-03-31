@@ -60,6 +60,12 @@ public class ElementEventServiceImpl implements ElementEventService {
 
     @Override
     public void delete(Long id) {
+        ElementEvent elementEvent = repository.findById(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        if(!elementEvent.getElement().getElementInWarehouses().stream().findFirst().get().getWarehouse()
+                .getCompany().getId().equals(authUtils.getLoggedUserCompanyId()))
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+
         repository.deleteById(id);
     }
 
@@ -80,16 +86,15 @@ public class ElementEventServiceImpl implements ElementEventService {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
-        elementEvent.setEventDate(updatedElementEvent.getEventDate());
         elementEvent.setMovingDate(updatedElementEvent.getMovingDate());
         elementEvent.setCompletionDate(updatedElementEvent.getCompletionDate());
         elementEvent.setDescription(updatedElementEvent.getDescription());
         elementEvent.setStatus(updatedElementEvent.getStatus());
         elementEvent.setQuantity(updatedElementEvent.getQuantity());
         elementEvent.setAcceptedBy(updatedElementEvent.getAcceptedBy());
-        elementEvent.setCreatedBy(updatedElementEvent.getCreatedBy());
         elementEvent.setElement(updatedElementEvent.getElement());
         elementEvent.setAttachments(elementEvent.getAttachments());
+
         return elementEventMapper.toDto(repository.save(elementEvent));
     }
 }

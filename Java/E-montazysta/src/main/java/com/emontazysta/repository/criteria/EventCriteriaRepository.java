@@ -5,7 +5,6 @@ import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.filterMapper.EventFilterMapper;
 import com.emontazysta.model.AppUser;
 import com.emontazysta.model.ElementEvent;
-import com.emontazysta.model.Employment;
 import com.emontazysta.model.ToolEvent;
 import com.emontazysta.model.dto.filterDto.EventFilterDto;
 import com.emontazysta.model.searchcriteria.EventSearchCriteria;
@@ -20,7 +19,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -126,10 +124,12 @@ public class EventCriteriaRepository {
     private Predicate getElementEventPredicate(EventSearchCriteria eventSearchCriteria, Root<ElementEvent> elementEventRoot, Principal principal) {
         List<Predicate> predicates = new ArrayList<>();
 
+        //Get events by name
         if (Objects.nonNull(eventSearchCriteria.getItemName())) {
             predicates.add(criteriaBuilder.like(elementEventRoot.get("element").get("name"), "%" + eventSearchCriteria.getItemName() + "%"));
         }
 
+        //Get events by typeOfStatus
         if (Objects.nonNull(eventSearchCriteria.getTypeOfStatus())) {
             List<Predicate> typeOfStatusPredicates = new ArrayList<>();
             for (String type : eventSearchCriteria.getTypeOfStatus()) {
@@ -138,6 +138,7 @@ public class EventCriteriaRepository {
             predicates.add(criteriaBuilder.or(typeOfStatusPredicates.toArray(new Predicate[0])));
         }
 
+        //Get events by eventType
         if (Objects.nonNull(eventSearchCriteria.getEventType())) {
             List<Predicate> eventTypePredicates = new ArrayList<>();
             for (String type : eventSearchCriteria.getEventType()) {
@@ -146,6 +147,7 @@ public class EventCriteriaRepository {
             predicates.add(criteriaBuilder.or(eventTypePredicates.toArray(new Predicate[0])));
         }
 
+        //Get events by eventDate between start and end date
         if (Objects.nonNull(eventSearchCriteria.getEventDateMin())
                 && Objects.nonNull(eventSearchCriteria.getEventDateMax())) {
 
@@ -170,6 +172,7 @@ public class EventCriteriaRepository {
                     LocalDateTime.parse(eventSearchCriteria.getEventDateMax())));
         }
 
+        //Get events by createdBy or from user company
         AppUser user =  authUtils.getLoggedUser();
         Boolean isFitter = user.getRoles().contains(Role.FITTER);
         if(isFitter) {

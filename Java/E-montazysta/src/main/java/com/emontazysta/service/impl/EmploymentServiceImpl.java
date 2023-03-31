@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,7 +56,11 @@ public class EmploymentServiceImpl implements EmploymentService {
     }
 
     @Override
-    public EmploymentDto getCurrentEmploymentByEmployeeId(Long employeeId) {
-        return employmentMapper.toDto(repository.findByEmployeeIdAndDateOfDismissIsNull(employeeId));
+    public Optional<EmploymentDto> getCurrentEmploymentByEmployeeId(Long employeeId) {
+        Optional<Employment> employment = Optional.ofNullable(repository.findByEmployeeIdAndDateOfDismissIsNull(employeeId));
+        if (employment.isPresent())
+            return Optional.ofNullable(employmentMapper.toDto(employment.get()));
+        else
+            return Optional.ofNullable(null);
     }
 }

@@ -60,6 +60,11 @@ public class ToolEventServiceImpl implements ToolEventService {
 
     @Override
     public void delete(Long id) {
+        ToolEvent toolEvent = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        
+        if(!toolEvent.getTool().getWarehouse().getCompany().getId().equals(authUtils.getLoggedUserCompanyId()))
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+
         repository.deleteById(id);
     }
 
@@ -79,15 +84,14 @@ public class ToolEventServiceImpl implements ToolEventService {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
-        toolEvent.setEventDate(updatedToolEvent.getEventDate());
         toolEvent.setMovingDate(updatedToolEvent.getMovingDate());
         toolEvent.setCompletionDate(updatedToolEvent.getCompletionDate());
         toolEvent.setDescription(updatedToolEvent.getDescription());
         toolEvent.setStatus(updatedToolEvent.getStatus());
-        toolEvent.setCreatedBy(updatedToolEvent.getCreatedBy());
         toolEvent.setAcceptedBy(updatedToolEvent.getAcceptedBy());
         toolEvent.setTool(updatedToolEvent.getTool());
         toolEvent.setAttachments(updatedToolEvent.getAttachments());
+
         return toolEventMapper.toDto(repository.save(toolEvent));
     }
 }
