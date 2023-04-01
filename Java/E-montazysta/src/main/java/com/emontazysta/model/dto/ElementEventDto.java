@@ -28,7 +28,7 @@ public class ElementEventDto {
     @PositiveOrZero(message = "Quantity cannot be negative")
     private int quantity;
     private Long acceptedById;
-    private Long updatedById;
+    private Long createdById;
     @NotNull(message = "Element id cannot be empty")
     private Long elementId;
     private List<Long> attachments;
