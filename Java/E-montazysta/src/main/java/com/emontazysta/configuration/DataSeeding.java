@@ -446,9 +446,9 @@ public class DataSeeding {
         ElementInWarehouse elementInWarehouse2 = addElementInWarehouseFromModel(new ElementInWarehouse(null,
                 1, 1, "2", "1", element2, warehouse1));
         ElementInWarehouse elementInWarehouse3 = addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                1, 1, "1", "2", element1, warehouse2));
+                1, 1, "1", "2", element3, warehouse2));
         ElementInWarehouse elementInWarehouse4 = addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                1, 1, "2", "2", element2, warehouse2));
+                1, 1, "2", "2", element4, warehouse2));
 
         ElementReturnRelease elementReturnRelease1 = addElementReturnReleaseFromModel(new ElementReturnRelease(null,
                 LocalDateTime.now(), 1, 1, LocalDateTime.now(), warehouseman1, element1,

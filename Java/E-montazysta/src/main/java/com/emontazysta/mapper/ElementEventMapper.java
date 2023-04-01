@@ -33,7 +33,7 @@ public class ElementEventMapper {
                 .status(event.getStatus())
                 .quantity(event.getQuantity())
                 .acceptedById(event.getAcceptedBy() == null ? null : event.getAcceptedBy().getId())
-                .updatedById(event.getUpdatedBy() == null ? null : event.getUpdatedBy().getId())
+                .createdById(event.getCreatedBy() == null ? null : event.getCreatedBy().getId())
                 .elementId(event.getElement() == null ? null : event.getElement().getId())
                 .attachments(event.getAttachments().stream().map(Attachment::getId).collect(Collectors.toList()))
                 .build();
@@ -53,7 +53,7 @@ public class ElementEventMapper {
                 .status(elementEventDto.getStatus())
                 .quantity(elementEventDto.getQuantity())
                 .acceptedBy(elementEventDto.getAcceptedById() == null ? null : managerRepository.getReferenceById(elementEventDto.getAcceptedById()))
-                .updatedBy(elementEventDto.getUpdatedById() == null ? null : appUserRepository.getReferenceById(elementEventDto.getUpdatedById()))
+                .createdBy(elementEventDto.getCreatedById() == null ? null : appUserRepository.getReferenceById(elementEventDto.getCreatedById()))
                 .element(elementEventDto.getElementId() == null ? null : elementRepository.getReferenceById(elementEventDto.getElementId()))
                 .attachments(attachmentList)
                 .build();

@@ -16,7 +16,6 @@ import java.util.List;
 public class EmployeeDto extends AppUserDto {
 
     private Long id;
-    @NotBlank(message = "Phone cannot be empty")
     @Pattern(regexp ="^\\+?[0-9]{10,}$|^\\+?[0-9]{1,3}[-\\s()]*[0-9]{6,}$", message = "Phone number has to be valid")
     private String phone;
     @PESEL(message = "PESEL is not valid")
