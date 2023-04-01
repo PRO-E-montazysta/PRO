@@ -1,12 +1,20 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.mapper.ElementInWarehouseMapper;
 import com.emontazysta.mapper.ElementMapper;
 import com.emontazysta.model.Element;
+import com.emontazysta.model.ElementInWarehouse;
 import com.emontazysta.model.dto.ElementDto;
+import com.emontazysta.model.dto.ElementInWarehouseDto;
+import com.emontazysta.model.dto.WarehouseDto;
+import com.emontazysta.model.dto.WarehouseLocationDto;
 import com.emontazysta.model.searchcriteria.ElementSearchCriteria;
+import com.emontazysta.model.searchcriteria.WarehouseSearchCriteria;
 import com.emontazysta.repository.ElementRepository;
 import com.emontazysta.repository.criteria.ElementCriteriaRepository;
+import com.emontazysta.service.ElementInWarehouseService;
 import com.emontazysta.service.ElementService;
+import com.emontazysta.service.WarehouseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +30,9 @@ public class ElementServiceImpl implements ElementService {
     private final ElementRepository repository;
     private final ElementMapper elementMapper;
     private final ElementCriteriaRepository elementCriteriaRepository;
+    private final WarehouseService warehouseService;
+    private final ElementInWarehouseService elementInWarehouseService;
+    private final ElementInWarehouseMapper elementInWarehouseMapper;
 
 
     @Override
@@ -77,5 +88,28 @@ public class ElementServiceImpl implements ElementService {
     @Override
     public List<ElementDto> getFilteredElements(ElementSearchCriteria elementSearchCriteria) {
         return elementCriteriaRepository.findAllWithFilters(elementSearchCriteria);
+    }
+
+    @Override
+    public ElementDto addWithWarehouseCount(ElementDto elementDto) {
+        elementDto.setCode(UUID.randomUUID().toString());
+        Element element = repository.save(elementMapper.toEntity(elementDto));
+
+        List<WarehouseLocationDto> warehousesToAdd = warehouseService.findAllWithFilters(new WarehouseSearchCriteria());
+
+        warehousesToAdd.forEach(warehouseLocationDto -> {
+            ElementInWarehouseDto elementInWarehouseDto = ElementInWarehouseDto.builder()
+                    .inWarehouseCount(0)
+                    .inUnitCount(0)
+                    .rack("")
+                    .shelf("")
+                    .elementId(element.getId())
+                    .warehouseId(warehouseLocationDto.getId())
+                    .build();
+
+            elementInWarehouseService.add(elementInWarehouseDto);
+        });
+
+        return elementMapper.toDto(element);
     }
 }
