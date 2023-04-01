@@ -3,10 +3,8 @@ package com.emontazysta.service.impl;
 import com.emontazysta.mapper.ElementInWarehouseMapper;
 import com.emontazysta.mapper.ElementMapper;
 import com.emontazysta.model.Element;
-import com.emontazysta.model.ElementInWarehouse;
 import com.emontazysta.model.dto.ElementDto;
 import com.emontazysta.model.dto.ElementInWarehouseDto;
-import com.emontazysta.model.dto.WarehouseDto;
 import com.emontazysta.model.dto.WarehouseLocationDto;
 import com.emontazysta.model.searchcriteria.ElementSearchCriteria;
 import com.emontazysta.model.searchcriteria.WarehouseSearchCriteria;
@@ -92,7 +90,7 @@ public class ElementServiceImpl implements ElementService {
 
     @Override
     public ElementDto addWithWarehouseCount(ElementDto elementDto) {
-        elementDto.setCode(UUID.randomUUID().toString());
+        elementDto.setCode("E|"+UUID.randomUUID());
         Element element = repository.save(elementMapper.toEntity(elementDto));
 
         List<WarehouseLocationDto> warehousesToAdd = warehouseService.findAllWithFilters(new WarehouseSearchCriteria());
