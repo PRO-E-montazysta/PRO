@@ -10,6 +10,7 @@ import com.emontazysta.model.searchcriteria.ElementSearchCriteria;
 import com.emontazysta.model.searchcriteria.WarehouseSearchCriteria;
 import com.emontazysta.repository.ElementRepository;
 import com.emontazysta.repository.criteria.ElementCriteriaRepository;
+import com.emontazysta.repository.criteria.WarehouseCriteriaRepository;
 import com.emontazysta.service.ElementInWarehouseService;
 import com.emontazysta.service.ElementService;
 import com.emontazysta.service.WarehouseService;
@@ -28,7 +29,7 @@ public class ElementServiceImpl implements ElementService {
     private final ElementRepository repository;
     private final ElementMapper elementMapper;
     private final ElementCriteriaRepository elementCriteriaRepository;
-    private final WarehouseService warehouseService;
+    private final WarehouseCriteriaRepository warehouseCriteriaRepository;
     private final ElementInWarehouseService elementInWarehouseService;
 
 
@@ -92,7 +93,7 @@ public class ElementServiceImpl implements ElementService {
         elementDto.setCode("E|"+UUID.randomUUID());
         Element element = repository.save(elementMapper.toEntity(elementDto));
 
-        List<WarehouseLocationDto> warehousesToAdd = warehouseService.findAllWithFilters(new WarehouseSearchCriteria());
+        List<WarehouseLocationDto> warehousesToAdd = warehouseCriteriaRepository.findAllWithFilters(new WarehouseSearchCriteria());
 
         warehousesToAdd.forEach(warehouseLocationDto -> {
             ElementInWarehouseDto elementInWarehouseDto = ElementInWarehouseDto.builder()

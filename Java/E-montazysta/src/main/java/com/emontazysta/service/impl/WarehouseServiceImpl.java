@@ -11,6 +11,7 @@ import com.emontazysta.model.searchcriteria.ElementSearchCriteria;
 import com.emontazysta.model.searchcriteria.WarehouseSearchCriteria;
 import com.emontazysta.repository.CompanyRepository;
 import com.emontazysta.repository.WarehouseRepository;
+import com.emontazysta.repository.criteria.ElementCriteriaRepository;
 import com.emontazysta.repository.criteria.WarehouseCriteriaRepository;
 import com.emontazysta.service.ElementInWarehouseService;
 import com.emontazysta.service.ElementService;
@@ -32,7 +33,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     private final WarehouseMapper warehouseMapper;
     private final WarehouseCriteriaRepository warehouseCriteriaRepository;
     private final AuthUtils authUtils;
-    private final ElementService elementService;
+    private final ElementCriteriaRepository elementCriteriaRepository;
     private final ElementInWarehouseService elementInWarehouseService;
 
     @Override
@@ -87,7 +88,7 @@ public class WarehouseServiceImpl implements WarehouseService {
         warehouseDto.setCompanyId(company.getId());
         Warehouse warehouse = repository.save(warehouseMapper.toEntity(warehouseDto));
 
-        List<ElementDto> elementsToAdd = elementService.getFilteredElements(new ElementSearchCriteria());
+        List<ElementDto> elementsToAdd = elementCriteriaRepository.findAllWithFilters(new ElementSearchCriteria());
 
         elementsToAdd.forEach(elementDto -> {
             ElementInWarehouseDto elementInWarehouseDto = ElementInWarehouseDto.builder()
