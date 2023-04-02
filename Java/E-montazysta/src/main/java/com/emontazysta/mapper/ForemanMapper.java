@@ -56,6 +56,7 @@ public class ForemanMapper {
                 .firstName(foreman.getFirstName())
                 .lastName(foreman.getLastName())
                 .username(foreman.getUsername())
+                .roles(foreman.getRoles())
                 .email(foreman.getEmail())
                 .phone(foreman.getPhone())
                 .pesel(foreman.getPesel())
@@ -121,6 +122,7 @@ public class ForemanMapper {
         foreman.setFirstName(foremanDto.getFirstName());
         foreman.setLastName(foremanDto.getLastName());
         foreman.setUsername(foremanDto.getUsername());
+        foreman.setRoles(foremanDto.getRoles());
         foreman.setPassword(foremanDto.getPassword());
         foreman.setEmail(foremanDto.getEmail());
         foreman.setPhone(foremanDto.getPhone());

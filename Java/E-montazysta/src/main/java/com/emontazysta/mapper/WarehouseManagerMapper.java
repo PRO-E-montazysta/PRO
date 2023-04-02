@@ -51,6 +51,7 @@ public class WarehouseManagerMapper {
                 .firstName(warehouseManager.getFirstName())
                 .lastName(warehouseManager.getLastName())
                 .username(warehouseManager.getUsername())
+                .roles(warehouseManager.getRoles())
                 .email(warehouseManager.getEmail())
                 .phone(warehouseManager.getPhone())
                 .pesel(warehouseManager.getPesel())
@@ -108,6 +109,7 @@ public class WarehouseManagerMapper {
         warehouseManager.setFirstName(warehouseManagerDto.getFirstName());
         warehouseManager.setLastName(warehouseManagerDto.getLastName());
         warehouseManager.setUsername(warehouseManagerDto.getUsername());
+        warehouseManager.setRoles(warehouseManagerDto.getRoles());
         warehouseManager.setPassword(warehouseManagerDto.getPassword());
         warehouseManager.setEmail(warehouseManagerDto.getEmail());
         warehouseManager.setPhone(warehouseManagerDto.getPhone());

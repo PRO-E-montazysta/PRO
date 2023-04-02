@@ -37,6 +37,7 @@ public class FitterMapper {
                 .firstName(fitter.getFirstName())
                 .lastName(fitter.getLastName())
                 .username(fitter.getUsername())
+                .roles(fitter.getRoles())
                 .email(fitter.getEmail())
                 .phone(fitter.getPhone())
                 .pesel(fitter.getPesel())
@@ -82,6 +83,7 @@ public class FitterMapper {
         fitter.setFirstName(fitterDto.getFirstName());
         fitter.setLastName(fitterDto.getLastName());
         fitter.setUsername(fitterDto.getUsername());
+        fitter.setRoles(fitterDto.getRoles());
         fitter.setPassword(fitterDto.getPassword());
         fitter.setEmail(fitterDto.getEmail());
         fitter.setPhone(fitterDto.getPhone());
