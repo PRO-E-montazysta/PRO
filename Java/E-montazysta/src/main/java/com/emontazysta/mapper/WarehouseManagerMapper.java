@@ -64,6 +64,7 @@ public class WarehouseManagerMapper {
                 .releaseTools(warehouseManager.getReleasedTools().stream().map(ToolRelease::getId).collect(Collectors.toList()))
                 .elementReturnReleases(warehouseManager.getElementReturnReleases().stream().map(ElementReturnRelease::getId).collect(Collectors.toList()))
                 .demandAdHocs(warehouseManager.getDemandAdHocs().stream().map(DemandAdHoc::getId).collect(Collectors.toList()))
+                .acceptedDemandAdHocs(warehouseManager.getAcceptedDemandAdHocs().stream().map(DemandAdHoc::getId).collect(Collectors.toList()))
                 .build();
     }
 
@@ -99,6 +100,9 @@ public class WarehouseManagerMapper {
         List<DemandAdHoc> demandAdHocList = new ArrayList<>();
         warehouseManagerDto.getDemandAdHocs().forEach(demandAdHocId -> demandAdHocList.add(demandAdHocRepository.getReferenceById(demandAdHocId)));
 
+        List<DemandAdHoc> acceptedDemandAdHocList = new ArrayList<>();
+        warehouseManagerDto.getAcceptedDemandAdHocs().forEach(acceptedDemandAdHocId -> acceptedDemandAdHocList.add(demandAdHocRepository.getReferenceById(acceptedDemandAdHocId)));
+
         WarehouseManager warehouseManager = new WarehouseManager();
         warehouseManager.setId(warehouseManagerDto.getId());
         warehouseManager.setFirstName(warehouseManagerDto.getFirstName());
@@ -118,6 +122,7 @@ public class WarehouseManagerMapper {
         warehouseManager.setReleasedTools(toolReleaseList);
         warehouseManager.setElementReturnReleases(elementReturnReleaseList);
         warehouseManager.setDemandAdHocs(demandAdHocList);
+        warehouseManager.setAcceptedDemandAdHocs(acceptedDemandAdHocList);
 
         return warehouseManager;
     }
