@@ -7,15 +7,10 @@ import com.emontazysta.model.Employment;
 import com.emontazysta.model.Fitter;
 import com.emontazysta.model.Notification;
 import com.emontazysta.model.ToolEvent;
+import com.emontazysta.model.OrderStage;
 import com.emontazysta.model.Unavailability;
 import com.emontazysta.model.dto.FitterDto;
-import com.emontazysta.repository.AttachmentRepository;
-import com.emontazysta.repository.CommentRepository;
-import com.emontazysta.repository.ElementEventRepository;
-import com.emontazysta.repository.EmploymentRepository;
-import com.emontazysta.repository.NotificationRepository;
-import com.emontazysta.repository.ToolEventRepository;
-import com.emontazysta.repository.UnavailabilityRepository;
+import com.emontazysta.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -34,6 +29,7 @@ public class FitterMapper {
     private final EmploymentRepository employmentRepository;
     private final AttachmentRepository attachmentRepository;
     private final ToolEventRepository toolEventRepository;
+    private final OrderStageRepository orderStageRepository;
 
     public FitterDto toDto(Fitter fitter) {
         return FitterDto.builder()
@@ -51,6 +47,7 @@ public class FitterMapper {
                 .employments(fitter.getEmployments().stream().map(Employment::getId).collect(Collectors.toList()))
                 .attachments(fitter.getAttachments().stream().map(Attachment::getId).collect(Collectors.toList()))
                 .toolEvents(fitter.getToolEvents().stream().map(ToolEvent::getId).collect(Collectors.toList()))
+                .workingOn(fitter.getWorkingOn().stream().map(OrderStage::getId).collect(Collectors.toList()))
                 .build();
     }
 
@@ -77,6 +74,9 @@ public class FitterMapper {
         List<ToolEvent> toolEventList = new ArrayList<>();
         fitterDto.getToolEvents().forEach(toolEventId -> toolEventList.add(toolEventRepository.getReferenceById(toolEventId)));
 
+        List<OrderStage> workingOnList = new ArrayList<>();
+        fitterDto.getWorkingOn().forEach(workingOnId -> workingOnList.add(orderStageRepository.getReferenceById(workingOnId)));
+
         Fitter fitter = new Fitter();
         fitter.setId(fitterDto.getId());
         fitter.setFirstName(fitterDto.getFirstName());
@@ -93,6 +93,7 @@ public class FitterMapper {
         fitter.setEmployments(employmentList);
         fitter.setAttachments(attachmentList);
         fitter.setToolEvents(toolEventList);
+        fitter.setWorkingOn(workingOnList);
 
         return fitter;
     }
