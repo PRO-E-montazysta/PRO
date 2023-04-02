@@ -93,6 +93,7 @@ public class ForemanServiceImpl implements ForemanService {
         foreman.setEmployments(updatedForeman.getEmployments());
         foreman.setAttachments(updatedForeman.getAttachments());
         foreman.setToolEvents(updatedForeman.getToolEvents());
+        foreman.setWorkingOn(updatedForeman.getWorkingOn());
         foreman.setOrdersStagesList(updatedForeman.getOrdersStagesList());
         foreman.setReceivedTools(updatedForeman.getReceivedTools());
         foreman.setAssignedOrders(updatedForeman.getAssignedOrders());

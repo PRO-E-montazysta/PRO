@@ -89,6 +89,7 @@ public class FitterServiceImpl implements FitterService {
         fitter.setEmployments(updatedFitter.getEmployments());
         fitter.setAttachments(updatedFitter.getAttachments());
         fitter.setToolEvents(updatedFitter.getToolEvents());
+        fitter.setWorkingOn(updatedFitter.getWorkingOn());
         return fitterMapper.toDto(repository.save(fitter));
     }
 }

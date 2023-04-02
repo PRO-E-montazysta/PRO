@@ -94,6 +94,7 @@ public class WarehouseManagerServiceImpl implements WarehouseManagerService {
         warehouseManager.setReleasedTools(updatedWarehouseManager.getReleasedTools());
         warehouseManager.setElementReturnReleases(updatedWarehouseManager.getElementReturnReleases());
         warehouseManager.setDemandAdHocs(updatedWarehouseManager.getDemandAdHocs());
+        warehouseManager.setAcceptedDemandAdHocs(updatedWarehouseManager.getAcceptedDemandAdHocs());
         return warehouseManagerMapper.toDto(repository.save(warehouseManager));
     }
 }
