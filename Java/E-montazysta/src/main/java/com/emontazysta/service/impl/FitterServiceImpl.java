@@ -46,6 +46,7 @@ public class FitterServiceImpl implements FitterService {
         fitterDto.setEmployments(new ArrayList<>());
         fitterDto.setAttachments(new ArrayList<>());
         fitterDto.setToolEvents(new ArrayList<>());
+        fitterDto.setWorkingOn(new ArrayList<>());
 
         Fitter fitter = fitterMapper.toEntity(fitterDto);
         return fitterMapper.toDto(repository.save(fitter));

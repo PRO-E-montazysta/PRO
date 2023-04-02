@@ -48,6 +48,7 @@ public class WarehouseManagerServiceImpl implements WarehouseManagerService {
         warehouseManagerDto.setReleaseTools(new ArrayList<>());
         warehouseManagerDto.setElementReturnReleases(new ArrayList<>());
         warehouseManagerDto.setDemandAdHocs(new ArrayList<>());
+        warehouseManagerDto.setAcceptedDemandAdHocs(new ArrayList<>());
 
         WarehouseManager warehouseManager = warehouseManagerMapper.toEntity(warehouseManagerDto);
         return warehouseManagerMapper.toDto(repository.save(warehouseManager));
