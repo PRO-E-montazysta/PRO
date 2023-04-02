@@ -1,5 +1,6 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.ForemanMapper;
 import com.emontazysta.model.Foreman;
 import com.emontazysta.model.dto.ForemanDto;
@@ -9,7 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,6 +37,20 @@ public class ForemanServiceImpl implements ForemanService {
 
     @Override
     public ForemanDto add(ForemanDto foremanDto) {
+        foremanDto.setRoles(Set.of(Role.FOREMAN));
+        foremanDto.setUnavailabilities(new ArrayList<>());
+        foremanDto.setNotifications(new ArrayList<>());
+        foremanDto.setEmployeeComments(new ArrayList<>());
+        foremanDto.setElementEvents(new ArrayList<>());
+        foremanDto.setEmployments(new ArrayList<>());
+        foremanDto.setAttachments(new ArrayList<>());
+        foremanDto.setToolEvents(new ArrayList<>());
+        foremanDto.setOrdersStagesList(new ArrayList<>());
+        foremanDto.setReceivedTools(new ArrayList<>());
+        foremanDto.setAssignedOrders(new ArrayList<>());
+        foremanDto.setElementReturnReleases(new ArrayList<>());
+        foremanDto.setDemandsAdHocs(new ArrayList<>());
+
         Foreman foreman = foremanMapper.toEntity(foremanDto);
         return foremanMapper.toDto(repository.save(foreman));
     }

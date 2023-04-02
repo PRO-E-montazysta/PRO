@@ -1,5 +1,6 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.WarehousemanMapper;
 import com.emontazysta.model.Warehouseman;
 import com.emontazysta.model.dto.WarehousemanDto;
@@ -9,7 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,6 +37,18 @@ public class WarehousemanServiceImpl implements WarehousemanService {
 
     @Override
     public WarehousemanDto add(WarehousemanDto warehousemanDto) {
+        warehousemanDto.setRoles(Set.of(Role.WAREHOUSE_MAN));
+        warehousemanDto.setUnavailabilities(new ArrayList<>());
+        warehousemanDto.setNotifications(new ArrayList<>());
+        warehousemanDto.setEmployeeComments(new ArrayList<>());
+        warehousemanDto.setElementEvents(new ArrayList<>());
+        warehousemanDto.setEmployments(new ArrayList<>());
+        warehousemanDto.setAttachments(new ArrayList<>());
+        warehousemanDto.setToolEvents(new ArrayList<>());
+        warehousemanDto.setReleaseTools(new ArrayList<>());
+        warehousemanDto.setElementReturnReleases(new ArrayList<>());
+        warehousemanDto.setDemandAdHocs(new ArrayList<>());
+
         Warehouseman warehouseman = warehousemanMapper.toEntity(warehousemanDto);
         return warehousemanMapper.toDto(repository.save(warehouseman));
     }

@@ -1,5 +1,6 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.SpecialistMapper;
 import com.emontazysta.model.Specialist;
 import com.emontazysta.model.dto.SpecialistDto;
@@ -9,7 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,6 +37,17 @@ public class SpecialistServiceImpl implements SpecialistService {
 
     @Override
     public SpecialistDto add(SpecialistDto specialistDto) {
+        specialistDto.setRoles(Set.of(Role.SPECIALIST));
+        specialistDto.setUnavailabilities(new ArrayList<>());
+        specialistDto.setNotifications(new ArrayList<>());
+        specialistDto.setEmployeeComments(new ArrayList<>());
+        specialistDto.setElementEvents(new ArrayList<>());
+        specialistDto.setEmployments(new ArrayList<>());
+        specialistDto.setAttachments(new ArrayList<>());
+        specialistDto.setToolEvents(new ArrayList<>());
+        specialistDto.setOrders(new ArrayList<>());
+        specialistDto.setDemandAdHocs(new ArrayList<>());
+
         Specialist specialist = specialistMapper.toEntity(specialistDto);
         return specialistMapper.toDto(repository.save(specialist));
     }

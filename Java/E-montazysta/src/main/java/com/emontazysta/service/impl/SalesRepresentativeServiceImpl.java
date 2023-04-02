@@ -1,5 +1,6 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.SalesRepresentativeMapper;
 import com.emontazysta.model.SalesRepresentative;
 import com.emontazysta.model.dto.SalesRepresentativeDto;
@@ -9,7 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,6 +37,16 @@ public class SalesRepresentativeServiceImpl implements SalesRepresentativeServic
 
     @Override
     public SalesRepresentativeDto add(SalesRepresentativeDto salesRepresentativeDto) {
+        salesRepresentativeDto.setRoles(Set.of(Role.SALES_REPRESENTATIVE));
+        salesRepresentativeDto.setUnavailabilities(new ArrayList<>());
+        salesRepresentativeDto.setNotifications(new ArrayList<>());
+        salesRepresentativeDto.setEmployeeComments(new ArrayList<>());
+        salesRepresentativeDto.setElementEvents(new ArrayList<>());
+        salesRepresentativeDto.setEmployments(new ArrayList<>());
+        salesRepresentativeDto.setAttachments(new ArrayList<>());
+        salesRepresentativeDto.setToolEvents(new ArrayList<>());
+        salesRepresentativeDto.setOrders(new ArrayList<>());
+
         SalesRepresentative salesRepresentative = salesRepresentativeMapper.toEntity(salesRepresentativeDto);
         return salesRepresentativeMapper.toDto(repository.save(salesRepresentative));
     }
