@@ -30,7 +30,6 @@ public class ElementServiceImpl implements ElementService {
     private final ElementCriteriaRepository elementCriteriaRepository;
     private final WarehouseService warehouseService;
     private final ElementInWarehouseService elementInWarehouseService;
-    private final ElementInWarehouseMapper elementInWarehouseMapper;
 
 
     @Override
