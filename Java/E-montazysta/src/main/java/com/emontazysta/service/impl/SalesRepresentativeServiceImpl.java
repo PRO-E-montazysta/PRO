@@ -3,13 +3,17 @@ package com.emontazysta.service.impl;
 import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.SalesRepresentativeMapper;
 import com.emontazysta.model.SalesRepresentative;
+import com.emontazysta.model.dto.EmploymentDto;
 import com.emontazysta.model.dto.SalesRepresentativeDto;
 import com.emontazysta.repository.SalesRepresentativeRepository;
+import com.emontazysta.service.EmploymentService;
 import com.emontazysta.service.SalesRepresentativeService;
+import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -21,6 +25,8 @@ public class SalesRepresentativeServiceImpl implements SalesRepresentativeServic
 
     private final SalesRepresentativeRepository repository;
     private final SalesRepresentativeMapper salesRepresentativeMapper;
+    private final EmploymentService employmentService;
+    private final AuthUtils authUtils;
 
     @Override
     public List<SalesRepresentativeDto> getAll() {
@@ -47,8 +53,17 @@ public class SalesRepresentativeServiceImpl implements SalesRepresentativeServic
         salesRepresentativeDto.setToolEvents(new ArrayList<>());
         salesRepresentativeDto.setOrders(new ArrayList<>());
 
-        SalesRepresentative salesRepresentative = salesRepresentativeMapper.toEntity(salesRepresentativeDto);
-        return salesRepresentativeMapper.toDto(repository.save(salesRepresentative));
+        SalesRepresentative salesRepresentative = repository.save(salesRepresentativeMapper.toEntity(salesRepresentativeDto));
+
+        EmploymentDto employmentDto = EmploymentDto.builder()
+                .dateOfEmployment(LocalDateTime.now())
+                .dateOfDismiss(null)
+                .companyId(authUtils.getLoggedUserCompanyId())
+                .employeeId(salesRepresentative.getId())
+                .build();
+        employmentService.add(employmentDto);
+
+        return salesRepresentativeMapper.toDto(salesRepresentative);
     }
 
     @Override

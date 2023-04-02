@@ -3,13 +3,17 @@ package com.emontazysta.service.impl;
 import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.FitterMapper;
 import com.emontazysta.model.Fitter;
+import com.emontazysta.model.dto.EmploymentDto;
 import com.emontazysta.model.dto.FitterDto;
 import com.emontazysta.repository.FitterRepository;
+import com.emontazysta.service.EmploymentService;
 import com.emontazysta.service.FitterService;
+import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -21,6 +25,8 @@ public class FitterServiceImpl implements FitterService {
 
     private final FitterRepository repository;
     private final FitterMapper fitterMapper;
+    private final EmploymentService employmentService;
+    private final AuthUtils authUtils;
 
     @Override
     public List<FitterDto> getAll() {
@@ -48,8 +54,17 @@ public class FitterServiceImpl implements FitterService {
         fitterDto.setToolEvents(new ArrayList<>());
         fitterDto.setWorkingOn(new ArrayList<>());
 
-        Fitter fitter = fitterMapper.toEntity(fitterDto);
-        return fitterMapper.toDto(repository.save(fitter));
+        Fitter fitter = repository.save(fitterMapper.toEntity(fitterDto));
+
+        EmploymentDto employmentDto = EmploymentDto.builder()
+                .dateOfEmployment(LocalDateTime.now())
+                .dateOfDismiss(null)
+                .companyId(authUtils.getLoggedUserCompanyId())
+                .employeeId(fitter.getId())
+                .build();
+        employmentService.add(employmentDto);
+
+        return fitterMapper.toDto(fitter);
     }
 
     @Override
