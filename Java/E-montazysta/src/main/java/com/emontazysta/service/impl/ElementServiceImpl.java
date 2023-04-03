@@ -15,7 +15,9 @@ import com.emontazysta.service.ElementInWarehouseService;
 import com.emontazysta.service.ElementService;
 import com.emontazysta.service.WarehouseService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -90,10 +92,12 @@ public class ElementServiceImpl implements ElementService {
 
     @Override
     public ElementDto addWithWarehouseCount(ElementDto elementDto) {
+        List<WarehouseLocationDto> warehousesToAdd = warehouseCriteriaRepository.findAllWithFilters(new WarehouseSearchCriteria());
+        if(warehousesToAdd.size() == 0)
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+
         elementDto.setCode("E|"+UUID.randomUUID());
         Element element = repository.save(elementMapper.toEntity(elementDto));
-
-        List<WarehouseLocationDto> warehousesToAdd = warehouseCriteriaRepository.findAllWithFilters(new WarehouseSearchCriteria());
 
         warehousesToAdd.forEach(warehouseLocationDto -> {
             ElementInWarehouseDto elementInWarehouseDto = ElementInWarehouseDto.builder()
