@@ -21,6 +21,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -86,6 +87,8 @@ public class WarehouseServiceImpl implements WarehouseService {
     public WarehouseDto addWithWarehouseCount(WarehouseDto warehouseDto) {
         Company company = companyRepository.findById(authUtils.getLoggedUserCompanyId()).orElseThrow(EntityNotFoundException::new);
         warehouseDto.setCompanyId(company.getId());
+        warehouseDto.setElementInWarehouses(new ArrayList<>());
+        warehouseDto.setTools(new ArrayList<>());
         Warehouse warehouse = repository.save(warehouseMapper.toEntity(warehouseDto));
 
         List<ElementDto> elementsToAdd = elementCriteriaRepository.findAllWithFilters(new ElementSearchCriteria());

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -97,6 +98,10 @@ public class ElementServiceImpl implements ElementService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 
         elementDto.setCode("E|"+UUID.randomUUID());
+        elementDto.setElementReturnReleases(new ArrayList<>());
+        elementDto.setElementInWarehouses(new ArrayList<>());
+        elementDto.setElementEvents(new ArrayList<>());
+        elementDto.setOrdersStages(new ArrayList<>());
         Element element = repository.save(elementMapper.toEntity(elementDto));
 
         warehousesToAdd.forEach(warehouseLocationDto -> {
