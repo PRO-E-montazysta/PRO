@@ -56,6 +56,7 @@ public class ForemanMapper {
                 .firstName(foreman.getFirstName())
                 .lastName(foreman.getLastName())
                 .username(foreman.getUsername())
+                .roles(foreman.getRoles())
                 .email(foreman.getEmail())
                 .phone(foreman.getPhone())
                 .pesel(foreman.getPesel())
@@ -66,6 +67,7 @@ public class ForemanMapper {
                 .employments(foreman.getEmployments().stream().map(Employment::getId).collect(Collectors.toList()))
                 .attachments(foreman.getAttachments().stream().map(Attachment::getId).collect(Collectors.toList()))
                 .toolEvents(foreman.getToolEvents().stream().map(ToolEvent::getId).collect(Collectors.toList()))
+                .workingOn(foreman.getWorkingOn().stream().map(OrderStage::getId).collect(Collectors.toList()))
                 .ordersStagesList(foreman.getOrdersStagesList().stream().map(OrderStage::getId).collect(Collectors.toList()))
                 .receivedTools(foreman.getReceivedTools().stream().map(ToolRelease::getId).collect(Collectors.toList()))
                 .assignedOrders(foreman.getAssignedOrders().stream().map(Orders::getId).collect(Collectors.toList()))
@@ -97,6 +99,9 @@ public class ForemanMapper {
         List<ToolEvent> toolEventList = new ArrayList<>();
         foremanDto.getToolEvents().forEach(toolEventId -> toolEventList.add(toolEventRepository.getReferenceById(toolEventId)));
 
+        List<OrderStage> workingOnList = new ArrayList<>();
+        foremanDto.getWorkingOn().forEach(workingOnId -> workingOnList.add(orderStageRepository.getReferenceById(workingOnId)));
+
         List<OrderStage> orderStageList = new ArrayList<>();
         foremanDto.getOrdersStagesList().forEach(orderStageId -> orderStageList.add(orderStageRepository.getReferenceById(orderStageId)));
 
@@ -117,6 +122,7 @@ public class ForemanMapper {
         foreman.setFirstName(foremanDto.getFirstName());
         foreman.setLastName(foremanDto.getLastName());
         foreman.setUsername(foremanDto.getUsername());
+        foreman.setRoles(foremanDto.getRoles());
         foreman.setPassword(foremanDto.getPassword());
         foreman.setEmail(foremanDto.getEmail());
         foreman.setPhone(foremanDto.getPhone());
@@ -128,6 +134,7 @@ public class ForemanMapper {
         foreman.setEmployments(employmentList);
         foreman.setAttachments(attachmentList);
         foreman.setToolEvents(toolEventList);
+        foreman.setWorkingOn(workingOnList);
         foreman.setOrdersStagesList(orderStageList);
         foreman.setReceivedTools(toolReleaseList);
         foreman.setAssignedOrders(ordersList);

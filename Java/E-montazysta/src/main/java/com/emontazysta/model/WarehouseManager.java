@@ -25,14 +25,14 @@ public class WarehouseManager extends Warehouseman {
                             List<Comment> employeeComments, List<ElementEvent> elementEvents, List<Employment> employments,
                             List<Attachment> attachments, List<ToolEvent> toolEvents, List<ToolRelease> releasedTools,
                             List<ElementReturnRelease> elementReturnReleases, List<DemandAdHoc> demandAdHocs,
-                            List<DemandAdHoc> mngDemandAdHocs) {
+                            List<DemandAdHoc> acceptedDemandAdHocs) {
 
         super(id, firstName, lastName, email, password, username, resetPasswordToken, roles, phone, pesel,
                 unavailabilities, notifications, employeeComments, elementEvents, employments, attachments, toolEvents,
                 releasedTools, elementReturnReleases, demandAdHocs);
-        this.demandAdHocs = mngDemandAdHocs;
+        this.acceptedDemandAdHocs = acceptedDemandAdHocs;
     }
 
     @OneToMany(mappedBy = "warehouseManager")
-    private List<DemandAdHoc> demandAdHocs;
+    private List<DemandAdHoc> acceptedDemandAdHocs;
 }
