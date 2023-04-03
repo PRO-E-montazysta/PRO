@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -26,24 +27,21 @@ public class ElementServiceImpl implements ElementService {
 
     @Override
     public List<ElementDto> getAll() {
-        return repository.findAll().stream()
+        return repository.findAllByDeletedIsFalse().stream()
                 .map(elementMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public ElementDto getById(Long id) {
-        Element element = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Element element = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
         return elementMapper.toDto(element);
     }
 
     @Override
     public ElementDto getByCode(String code) {
-        Element response = repository.findByCode(code);
-        if(response == null)
-            throw new EntityNotFoundException();
-        else
-            return elementMapper.toDto(response);
+        Element response = repository.findByCodeAndDeletedIsFalse(code).orElseThrow(EntityNotFoundException::new);
+        return elementMapper.toDto(response);
     }
 
     @Override
@@ -55,14 +53,21 @@ public class ElementServiceImpl implements ElementService {
 
     @Override
     public void delete(Long id) {
-        repository.deleteById(id);
+        Element element = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        element.setDeleted(true);
+        element.getElementReturnReleases().forEach(elementReturnRelease -> elementReturnRelease.setElement(null));
+        element.getElementInWarehouses().forEach(elementInWarehouse -> elementInWarehouse.setElement(null));
+        element.getElementEvents().forEach(elementEvent -> elementEvent.setElement(null));
+        element.getAttachment().setElement(null);
+        //TODO: missing part for ordersStages that should be changed to associated table
+        repository.save(element);
     }
 
     @Override
     public ElementDto update(Long id, ElementDto elementDto) {
 
         Element updatedElement = elementMapper.toEntity(elementDto);
-        Element element = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Element element = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
         element.setName(updatedElement.getName());
         element.setTypeOfUnit(updatedElement.getTypeOfUnit());
         element.setQuantityInUnit(updatedElement.getQuantityInUnit());
