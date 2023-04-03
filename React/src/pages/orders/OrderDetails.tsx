@@ -16,7 +16,7 @@ import { getAllClients } from '../../api/client.api'
 import { getAllForemans } from '../../api/foreman.api'
 import { getAllLocations } from '../../api/location.api'
 import { getAllManagers } from '../../api/manager.api'
-import { getAllSalesReprezentatives } from '../../api/salesReprezentatives.api'
+import { getAllSalesRepresentatives } from '../../api/salesRepresentatives.api'
 import { getAllSpecialists } from '../../api/specialist.api'
 
 import SaveIcon from '@mui/icons-material/Save'
@@ -154,7 +154,7 @@ const OrderDetails = () => {
     const queryManager = useQuery<Array<AppUser>, AxiosError>(['manager-list'], getAllManagers)
     const querySalesReprezentative = useQuery<Array<AppUser>, AxiosError>(
         ['sales-reprezentative-list'],
-        getAllSalesReprezentatives,
+        getAllSalesRepresentatives,
     )
     const querySpecialist = useQuery<Array<AppUser>, AxiosError>(['specialist-list'], getAllSpecialists)
 
