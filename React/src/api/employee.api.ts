@@ -5,27 +5,26 @@ export const getAllEmployees = () => {
   return makeServiceCall('/employees/all', 'GET', {})
 }
 
-export const getFilteredEmployees  = (payload: PayloadProps) => {
+export const getFilteredEmployees = (payload: PayloadProps) => {
   return makeServiceCall('/users/filter', 'GET', { ...payload });
 };
 
-export const getEmployeeById  = (id:string) =>{
-  return makeServiceCall(`/users/${id}`, 'GET',{})
+export const getEmployeeById = (id: string) => {
+  return makeServiceCall(`/users/${id}`, 'GET', {})
 }
 
 export const getEmployeeDetails = (id: string) => {
   return makeServiceCall(`/users/${id}`, 'GET', {})
 }
-  
-  export const updateEmployee = (data: Employee) => {
+
+export const updateEmployee = (data: Employee) => {
   return makeServiceCall(`/users/${data.id}`, 'PUT', { body: data })
-  }
-  
-  export const postEmployee = (data: Employee) => {
+}
+
+export const postEmployee = (data: Employee) => {
   return makeServiceCall(`/users`, 'POST', { body: data })
-  }
-  
-  export const deleteEmployee = (id: string | number) => {
+}
+
+export const deleteEmployee = (id: string | number) => {
   return makeServiceCall(`/users/${id}`, 'DELETE', {})
-  }
-  
+}

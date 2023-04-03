@@ -2,9 +2,21 @@ import { Paper, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import { useFormik } from 'formik'
 import { useContext, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-
-import { getInitValues, getValidatinSchema } from '../../helpers/form.helper'
+import { useMutation, useQuery } from 'react-query'
+import { useNavigate, useParams } from 'react-router-dom'
+import { deleteOrder, getOrderDetails, postOrder, updateOrder } from '../../api/order.api'
+import { formatArrayToOptions, formatLocation } from '../../helpers/format.helper'
+import { priorityOptions, statusOptions } from '../../helpers/enum.helper'
+import { theme } from '../../themes/baseTheme'
+import { Client } from '../../types/model/Client'
+import { Order } from '../../types/model/Order'
+import { AppUser } from '../../types/model/AppUser'
+import { getAllClients } from '../../api/client.api'
+import { getAllForemans } from '../../api/foreman.api'
+import { getAllLocations } from '../../api/location.api'
+import { getAllManagers } from '../../api/manager.api'
+import { getAllSalesRepresentatives } from '../../api/salesRepresentatives.api'
+import { getAllSpecialists } from '../../api/specialist.api'
 
 import * as yup from 'yup'
 import { useFormStructure } from './helper'
@@ -15,8 +27,9 @@ import { FormStructure } from '../../components/form/FormStructure'
 import { useQueriesStatus } from '../../hooks/useQueriesStatus'
 import QueryBoxStatus from '../../components/base/QueryStatusBox'
 import useBreakpoints from '../../hooks/useBreakpoints'
-
-import { theme } from '../../themes/baseTheme'
+import { AxiosError } from 'axios'
+import { getInitValues, getValidatinSchema } from '../../helpers/form.helper'
+import { validationSchema } from '../toolTypes/helper'
 
 const OrderDetails = () => {
     //parameters from url
@@ -40,13 +53,6 @@ const OrderDetails = () => {
     //status for all mutations and queries
     const queriesStatus = useQueriesStatus([orderData], [addOrderMutation, editOrderMutation, deleteOrderMutation])
 
-    //form with initial values and validation
-    const formik = useFormik({
-        initialValues: initData,
-        validationSchema: yup.object(getValidatinSchema(formStructure)),
-        onSubmit: () => handleSubmit(),
-    })
-
     const appSize = useBreakpoints()
     const handleSubmit = () => {
         if (params.id == 'new') addOrderMutation.mutate(JSON.parse(JSON.stringify(formik.values)))
@@ -66,12 +72,29 @@ const OrderDetails = () => {
         })
     }
 
-    const handleOnEditSuccess = (data: any) => {
-        orderData.refetch({
-            queryKey: ['order', { id: data.id }],
-        })
-        setReadonlyMode(true)
-    }
+    const queryData = useQuery<Order, AxiosError>(
+        ['order', { id: params.id }],
+        async () => getOrderDetails(params.id && params.id != 'new' ? params.id : ''),
+        {
+            enabled: !!params.id && params.id != 'new',
+        },
+    )
+
+    const queryClient = useQuery<Array<Client>, AxiosError>(['client-list'], getAllClients)
+    const queryForeman = useQuery<Array<AppUser>, AxiosError>(['foreman-list'], getAllForemans)
+    const queryLocation = useQuery<Array<Location>, AxiosError>(['location-list'], getAllLocations)
+    const queryManager = useQuery<Array<AppUser>, AxiosError>(['manager-list'], getAllManagers)
+    const querySalesReprezentative = useQuery<Array<AppUser>, AxiosError>(
+        ['sales-reprezentative-list'],
+        getAllSalesRepresentatives,
+    )
+    const querySpecialist = useQuery<Array<AppUser>, AxiosError>(['specialist-list'], getAllSpecialists)
+
+    const formik = useFormik({
+        initialValues: initData,
+        validationSchema: validationSchema,
+        onSubmit: handleSubmit,
+    })
 
     const handleReset = () => {
         formik.resetForm()
@@ -150,3 +173,7 @@ const OrderDetails = () => {
 }
 
 export default OrderDetails
+function handleOnEditSuccess(data: any): void {
+    throw new Error('Function not implemented.')
+}
+

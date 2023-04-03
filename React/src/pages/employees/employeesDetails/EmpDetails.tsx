@@ -31,6 +31,16 @@ import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import FormSelect from '../../../components/form/FormSelect'
 import { employeeStatusOptions, roleStatusOptions } from '../../../helpers/enum.helper'
+import { Role } from '../../../types/roleEnum'
+import { postForeman } from '../../../api/foreman.api'
+import { postAdmin } from '../../../api/admin.api'
+import { postFitter } from '../../../api/fitter.api'
+import { postWarehouse } from '../../../api/warehouse.api'
+import { postManager } from '../../../api/manager.api'
+import { postSalesRepresentative } from '../../../api/salesRepresentatives.api'
+import { postSpecialist } from '../../../api/specialist.api'
+import { postWarehouseman } from '../../../api/warehouseman.api'
+import { postWarehouseManager } from '../../../api/warehousemanager.api'
 
 
 const EmpDetails = () => {
@@ -121,8 +131,24 @@ const EmpDetails = () => {
         }
     }
 
+    const sendRoleBasedPost = (data: Employee) => {
+        const role = data.roles[0];
+
+        switch (role) {
+            case Role.ADMIN: return postAdmin(data);
+            case Role.FITTER: return postFitter(data);
+            case Role.FOREMAN: return postForeman(data);
+            case Role.MANAGER: return postManager(data);
+            case Role.SALES_REPRESENTATIVE: return postSalesRepresentative(data);
+            case Role.SPECIALIST: return postSpecialist(data);
+            case Role.WAREHOUSE_MAN: return postWarehouseman(data);
+            case Role.WAREHOUSE_MANAGER: return postWarehouseManager(data); 
+            default: return postEmployee(data); // TODO: NS: Domyślnie powinno rzucać błedem o nieznanej roli
+        }
+    }
+
     const mutationPost = useMutation({
-        mutationFn: postEmployee,
+        mutationFn: sendRoleBasedPost,
         onSuccess(data) {
             displayInfo({
                 dialogText: ['Nowy pracownik utworzony pomyślnie'],
