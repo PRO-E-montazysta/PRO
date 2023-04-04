@@ -5,18 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3b1190e7-f617-4c2e-8004-559cd260d2d3" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Android/.gradle/7.4/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Android/.gradle/7.4/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Android/.gradle/7.4/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/Android/.gradle/7.4/checksums/md5-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Android/.gradle/7.4/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/Android/.gradle/7.4/checksums/sha1-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Android/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Android/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Android/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Android/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Android/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/Android/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Android/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/Android/.gradle/file-system.probe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Android/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Android/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Android/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Android/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/drawable/button.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Android/app/src/main/res/drawable/button.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Android/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Android/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Android/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Android/local.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,18 +23,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/krzys/Desktop/e-montazownia INZYNIERKA/PRO/Tests/src/main/java/seleniumTests",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\krzys\Desktop\e-montazownia INZYNIERKA\PRO\Tests\src\main\java\seleniumTests" />
+      <recent name="C:\Users\krzys\Desktop\e-montazownia INZYNIERKA\PRO\Tests\src\main\java\seleniumTests\util" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\krzys\Desktop\e-montazownia INZYNIERKA\PRO\Tests\src\main\java\seleniumTests" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -59,6 +58,7 @@
       <workItem from="1680370175025" duration="202000" />
       <workItem from="1680370424673" duration="644000" />
       <workItem from="1680627873394" duration="97000" />
+      <workItem from="1680628010231" duration="740000" />
     </task>
     <servers />
   </component>
