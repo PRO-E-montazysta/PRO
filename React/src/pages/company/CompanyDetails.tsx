@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react'
 import { useMutation, useQuery } from 'react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 import { deleteCompany, getCompanyDetails, postCompany, updateCompany } from '../../api/company.api'
-import { companyStatusOptions } from '../../helpers/enum.helper'
 import { theme } from '../../themes/baseTheme'
 import { Company } from '../../types/model/Company'
 
@@ -15,14 +14,14 @@ import ReplayIcon from '@mui/icons-material/Replay'
 import CloseIcon from '@mui/icons-material/Close'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { emptyForm, validationSchema } from './helper'
+import { addNewCompanyForm, emptyForm, validationSchema } from './helper'
 import FormInput from '../../components/form/FormInput'
 import FormLabel from '../../components/form/FormLabel'
-import FormSelect from '../../components/form/FormSelect'
 import DialogInfo, { DialogInfoParams } from '../../components/dialogInfo/DialogInfo'
 
 import Card from '@mui/material/Card'
 import ExpandMore from '../../components/expandMore/ExpandMore'
+import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar'
 
 const CompanyDetails = () => {
     const params = useParams()
@@ -37,25 +36,28 @@ const CompanyDetails = () => {
         confirmLabel: '',
     })
 
-    const handleSubmit = () => {
-        if (params.id === 'new') mutationPost.mutate(JSON.parse(JSON.stringify(formik.values)))
-        else mutationUpdate.mutate(JSON.parse(JSON.stringify(formik.values)))
-    }
+    const queryData = useQuery<Company, AxiosError>(
+        ['company', { id: params.id }],
+        async () => getCompanyDetails(params.id && params.id != 'new' ? params.id : ''),
+        {
+            enabled: !!params.id && params.id != 'new',
+        },
+    )
 
-    const handleDelete = () => {
-        displayInfo({
-            dialogText: ['Czy na pewno chcesz usunąć firmę?'],
-            confirmAction: () => {
-                setDialog({ ...dialog, open: false })
-                if (formik.values.id) mutationDelete.mutate(formik.values.id)
-            },
-            confirmLabel: 'Usuń',
-            cancelAction: () => {
-                setDialog({ ...dialog, open: false })
-            },
-            cancelLabel: 'Anuluj',
-        })
-    }
+    useEffect(() => {
+        if (queryData.data) {
+            formik.setValues(JSON.parse(JSON.stringify(queryData.data)))
+            setInitData(JSON.parse(JSON.stringify(queryData.data)))
+        }
+    }, [queryData.data])
+
+    useEffect(() => {
+        if (params.id === 'new') {
+            setReadonlyMode(false)
+            formik.setValues(JSON.parse(JSON.stringify(addNewCompanyForm)))
+            setInitData(JSON.parse(JSON.stringify(addNewCompanyForm)))
+        } else setReadonlyMode(true)
+    }, [params.id])
 
     const mutationPost = useMutation({
         mutationFn: postCompany,
@@ -70,7 +72,7 @@ const CompanyDetails = () => {
                 confirmLabel: 'Ok',
             })
         },
-        onError(error: Error) {
+        onError(error: any) {
             displayInfo({
                 dialogText: ['Błąd poczas tworzenia nowej firmy', error.message],
                 confirmAction: () => {
@@ -131,19 +133,25 @@ const CompanyDetails = () => {
         },
     })
 
-    const queryData = useQuery<Company, AxiosError>(
-        ['company', { id: params.id }],
-        async () => getCompanyDetails(params.id && params.id != 'new' ? params.id : ''),
-        {
-            enabled: !!params.id && params.id != 'new',
-        },
-    )
+    const handleSubmit = () => {
+        if (params.id === 'new') mutationPost.mutate(JSON.parse(JSON.stringify(formik.values)))
+        else mutationUpdate.mutate(JSON.parse(JSON.stringify(formik.values)))
+    }
 
-    const formik = useFormik({
-        initialValues: initData,
-        validationSchema: validationSchema,
-        onSubmit: handleSubmit,
-    })
+    const handleDelete = () => {
+        displayInfo({
+            dialogText: ['Czy na pewno chcesz usunąć firmę?'],
+            confirmAction: () => {
+                setDialog({ ...dialog, open: false })
+                if (formik.values.id) mutationDelete.mutate(formik.values.id)
+            },
+            confirmLabel: 'Usuń',
+            cancelAction: () => {
+                setDialog({ ...dialog, open: false })
+            },
+            cancelLabel: 'Anuluj',
+        })
+    }
 
     const handleReset = () => {
         formik.resetForm()
@@ -155,21 +163,6 @@ const CompanyDetails = () => {
         setReadonlyMode(true)
     }
 
-    useEffect(() => {
-        if (queryData.data) {
-            formik.setValues(JSON.parse(JSON.stringify(queryData.data)))
-            setInitData(JSON.parse(JSON.stringify(queryData.data)))
-        }
-    }, [queryData.data])
-
-    useEffect(() => {
-        if (params.id === 'new') {
-            setReadonlyMode(false)
-            formik.setValues(JSON.parse(JSON.stringify(emptyForm)))
-            setInitData(JSON.parse(JSON.stringify(emptyForm)))
-        } else setReadonlyMode(true)
-    }, [params.id])
-
     const displayInfo = (params: DialogInfoParams) => {
         setDialog({
             ...params,
@@ -177,36 +170,92 @@ const CompanyDetails = () => {
         })
     }
 
+    const formik = useFormik({
+        initialValues: initData,
+        validationSchema: validationSchema,
+        onSubmit: handleSubmit,
+    })
+
     const addAdminCardContent = () => {
-        //           "firstName": "string",  |not null |3-32 znaki
-        //   "lastName": "string",  |not null |2-32 znaki
-        //   "email": "string",  |not null |sprawdza format emaila
-        //   "password": "string",  |not null  |5+ znaki |sprawdza format telefonu
-        //   "username": "string",  |not null  |3+ znaki
-        //   "phone": "string",
-        //   "pesel": "string"  |not null |sprawdza format peselu
         return (
             <Grid container spacing={2}>
-                <Grid item xs={12} sm={6} >
-                    <TextField sx={{width:"100%"}} required id="outlined-required" label="Imię" />
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        sx={{ width: '100%' }}
+                        required
+                        label="Imię"
+                        id="firstName"
+                        onChange={formik.handleChange}
+                        error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+                        helperText={formik.touched.firstName && formik.errors.firstName}
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <TextField sx={{width:"100%"}} required id="outlined-required" label="Nazwisko" />
+                    <TextField
+                        sx={{ width: '100%' }}
+                        required
+                        label="Nazwisko"
+                        id="lastName"
+                        onChange={formik.handleChange}
+                        error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+                        helperText={formik.touched.lastName && formik.errors.lastName}
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <TextField sx={{width:"100%"}} required id="outlined-required" label="Email" />
+                    <TextField
+                        sx={{ width: '100%' }}
+                        required
+                        label="Email"
+                        id="email"
+                        onChange={formik.handleChange}
+                        error={formik.touched.email && Boolean(formik.errors.email)}
+                        helperText={formik.touched.email && formik.errors.email}
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <TextField sx={{width:"100%"}} required id="outlined-required" label="Hasło" type="password" />
+                    <TextField
+                        sx={{ width: '100%' }}
+                        required
+                        label="Hasło"
+                        type="password"
+                        id="password"
+                        onChange={formik.handleChange}
+                        error={formik.touched.password && Boolean(formik.errors.password)}
+                        helperText={formik.touched.password && formik.errors.password}
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <TextField sx={{width:"100%"}} required id="outlined-required" label="Nazwa użytkownika" />
+                    <TextField
+                        sx={{ width: '100%' }}
+                        required
+                        label="Nazwa użytkownika"
+                        id="username"
+                        onChange={formik.handleChange}
+                        error={formik.touched.username && Boolean(formik.errors.username)}
+                        helperText={formik.touched.username && formik.errors.username}
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <TextField sx={{width:"100%"}}  required id="outlined-required" label="Telefon"  />
+                    <TextField
+                        sx={{ width: '100%' }}
+                        required
+                        label="Telefon"
+                        id="phone"
+                        onChange={formik.handleChange}
+                        error={formik.touched.phone && Boolean(formik.errors.phone)}
+                        helperText={formik.touched.phone && formik.errors.phone}
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <TextField sx={{width:"100%"}} required id="outlined-required" label="Pesel" />
+                    <TextField
+                        sx={{ width: '100%' }}
+                        required
+                        label="Pesel"
+                        id="pesel"
+                        onChange={formik.handleChange}
+                        error={formik.touched.pesel && Boolean(formik.errors.pesel)}
+                        helperText={formik.touched.pesel && formik.errors.pesel}
+                    />
                 </Grid>
             </Grid>
         )
@@ -238,8 +287,6 @@ const CompanyDetails = () => {
                                     }}
                                 >
                                     <FormLabel label="Nazwa firmy" formik={formik} id={'companyName'} />
-                                    <FormLabel label="Data utworzenia" formik={formik} id={'createdAt'} />
-                                    <FormLabel label="Status" formik={formik} id={'status'} />
                                     <FormLabel label="Uzasadnienie statusu" formik={formik} id={'statusReason'} />
                                 </Grid>
                                 <Divider
@@ -251,25 +298,13 @@ const CompanyDetails = () => {
                                 />
                                 <Grid item xs={6}>
                                     <FormInput id={'companyName'} formik={formik} readonly={readonlyMode} />
-                                    <FormInput
-                                        id={'createdAt'}
-                                        formik={formik}
-                                        readonly
-                                        style={{ marginTop: !readonlyMode ? '12px' : '' }}
-                                        type="datetime-local"
-                                    />
-                                    <FormSelect
-                                        id={'status'}
-                                        formik={formik}
-                                        readonly={readonlyMode}
-                                        options={companyStatusOptions()}
-                                    />
                                     <FormInput id={'statusReason'} formik={formik} readonly={readonlyMode} />
                                 </Grid>
                                 {params.id === 'new' ? (
                                     <Grid container alignItems="center" justifyContent="center" marginTop={2}>
                                         <Card sx={{ width: '100%', left: '50%' }}>
                                             <ExpandMore
+                                                titleIcon={<PermContactCalendarIcon />}
                                                 title="Dodaj administratora firmy"
                                                 cardContent={addAdminCardContent()}
                                             />
