@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -54,6 +55,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @Transactional
     public CompanyDto addCompanyWithAdmin(CompanyWithAdminDto companyWithAdminDto) {
         Company company = companyRepository.save(CompanyWithAdminMapper.companyFromDto(companyWithAdminDto));
         CompanyAdmin companyAdmin = companyAdminRepository.save(CompanyWithAdminMapper.companyAdminFromDto(companyWithAdminDto));
