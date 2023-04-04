@@ -7,7 +7,6 @@ import { filterInitStructure, headCells } from './helper'
 import { getFilterParams, getInputs, setNewFilterValues } from '../../helpers/filter.helper'
 import { Filter, FilterFormProps } from '../../components/table/filter/TableFilter'
 import { Employee } from '../../types/model/Employee'
-import { getFilteredUsers } from '../../api/user.api'
 import { useFormik } from 'formik'
 import { getFilteredEmployees } from '../../api/employee.api'
 

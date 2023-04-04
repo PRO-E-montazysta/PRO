@@ -32,14 +32,12 @@ export const headCells: Array<HeadCell<Employee>> = [
         type: 'string',
         id: 'password',
         label: 'Password',
-        disablePadding: false,
         numeric: false,
     },
     {
         type: 'string',
         id: 'username',
         label: 'Username',
-        disablePadding: false,
         numeric: false,
     },
     {
