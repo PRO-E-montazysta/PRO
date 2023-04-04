@@ -40,7 +40,7 @@ public class WarehouseController {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Warehouse.", security = @SecurityRequirement(name = "bearer-key"))
     public WarehouseDto add(@Valid @RequestBody WarehouseDto warehouse) {
-        return warehouseService.add(warehouse);
+        return warehouseService.addWithWarehouseCount(warehouse);
     }
 
     @DeleteMapping("/{id}")

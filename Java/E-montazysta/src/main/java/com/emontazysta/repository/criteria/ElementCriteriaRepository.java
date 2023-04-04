@@ -38,7 +38,7 @@ public class ElementCriteriaRepository {
         CriteriaQuery<Element> criteriaQuery = criteriaBuilder.createQuery(Element.class);
         Root<Element> elementRoot = criteriaQuery.from(Element.class);
         Predicate predicate = getPredicate(elementSearchCriteria, elementRoot);
-        criteriaQuery.where(predicate);
+        criteriaQuery.where(predicate).distinct(true);
 
         TypedQuery<Element> typedQuery = entityManager.createQuery(criteriaQuery);
         List<Element> elements = typedQuery.getResultList();
