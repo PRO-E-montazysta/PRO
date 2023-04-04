@@ -32,9 +32,9 @@ public class OrderStage {
 
     private BigDecimal price;
 
-    private Integer order;
+    private LocalDateTime plannedStartDate;
 
-    private LocalDate plannedEndDate;
+    private LocalDateTime plannedEndDate;
 
     private LocalDateTime startDate;
 
