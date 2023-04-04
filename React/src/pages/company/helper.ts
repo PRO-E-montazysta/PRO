@@ -70,6 +70,16 @@ export const emptyForm = {
     employments: [],
 }
 
+export const addCompanyForm = {
+        "firstName": "string",  |not null |3-32 znaki
+          "lastName": "string",  |not null |2-32 znaki
+          "email": "string",  |not null |sprawdza format emaila
+          "password": "string",  |not null  |5+ znaki |sprawdza format telefonu
+          "username": "string",  |not null  |3+ znaki
+          "phone": "string",
+          "pesel": "string"  |not null |sprawdza format peselu
+}
+
 export const validationSchema = yup.object({
     companyName: yup.string().min(2, 'Nazwa musi zawierać co najmniej 2 znaki').required('Wprowadź nazwę'),
     status: yup.string().required('Wybierz status'),

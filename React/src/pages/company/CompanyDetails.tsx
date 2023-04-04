@@ -21,6 +21,9 @@ import FormLabel from '../../components/form/FormLabel'
 import FormSelect from '../../components/form/FormSelect'
 import DialogInfo, { DialogInfoParams } from '../../components/dialogInfo/DialogInfo'
 
+import Card from '@mui/material/Card'
+import ExpandMore from '../../components/expandMore/ExpandMore'
+
 const CompanyDetails = () => {
     const params = useParams()
     const [readonlyMode, setReadonlyMode] = useState(true)
@@ -35,7 +38,7 @@ const CompanyDetails = () => {
     })
 
     const handleSubmit = () => {
-        if (params.id == 'new') mutationPost.mutate(JSON.parse(JSON.stringify(formik.values)))
+        if (params.id === 'new') mutationPost.mutate(JSON.parse(JSON.stringify(formik.values)))
         else mutationUpdate.mutate(JSON.parse(JSON.stringify(formik.values)))
     }
 
@@ -160,7 +163,7 @@ const CompanyDetails = () => {
     }, [queryData.data])
 
     useEffect(() => {
-        if (params.id == 'new') {
+        if (params.id === 'new') {
             setReadonlyMode(false)
             formik.setValues(JSON.parse(JSON.stringify(emptyForm)))
             setInitData(JSON.parse(JSON.stringify(emptyForm)))
@@ -172,6 +175,41 @@ const CompanyDetails = () => {
             ...params,
             open: true,
         })
+    }
+
+    const addAdminCardContent = () => {
+        //           "firstName": "string",  |not null |3-32 znaki
+        //   "lastName": "string",  |not null |2-32 znaki
+        //   "email": "string",  |not null |sprawdza format emaila
+        //   "password": "string",  |not null  |5+ znaki |sprawdza format telefonu
+        //   "username": "string",  |not null  |3+ znaki
+        //   "phone": "string",
+        //   "pesel": "string"  |not null |sprawdza format peselu
+        return (
+            <Grid container spacing={2}>
+                <Grid item xs={12} sm={6} >
+                    <TextField sx={{width:"100%"}} required id="outlined-required" label="Imię" />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField sx={{width:"100%"}} required id="outlined-required" label="Nazwisko" />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField sx={{width:"100%"}} required id="outlined-required" label="Email" />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField sx={{width:"100%"}} required id="outlined-required" label="Hasło" type="password" />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField sx={{width:"100%"}} required id="outlined-required" label="Nazwa użytkownika" />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField sx={{width:"100%"}}  required id="outlined-required" label="Telefon"  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField sx={{width:"100%"}} required id="outlined-required" label="Pesel" />
+                </Grid>
+            </Grid>
+        )
     }
 
     return (
@@ -228,9 +266,19 @@ const CompanyDetails = () => {
                                     />
                                     <FormInput id={'statusReason'} formik={formik} readonly={readonlyMode} />
                                 </Grid>
+                                {params.id === 'new' ? (
+                                    <Grid container alignItems="center" justifyContent="center" marginTop={2}>
+                                        <Card sx={{ width: '100%', left: '50%' }}>
+                                            <ExpandMore
+                                                title="Dodaj administratora firmy"
+                                                cardContent={addAdminCardContent()}
+                                            />
+                                        </Card>
+                                    </Grid>
+                                ) : null}
                             </Grid>
                             <Box sx={{ margin: '20px', gap: '20px', display: 'flex', flexDirection: 'row-reverse' }}>
-                                {readonlyMode && params.id != 'new' ? (
+                                {readonlyMode && params.id !== 'new' ? (
                                     <>
                                         <Button
                                             color="primary"
