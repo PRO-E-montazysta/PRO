@@ -23,6 +23,6 @@ public class ToolTypeDto {
     private int criticalNumber;
     private int availableCount;
     private List<Long> attachments;
-    private List<Long> orderStages;
+    private List<Long> ListOfToolsPlannedNumber;
     private List<Long> tools;
 }

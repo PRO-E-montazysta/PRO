@@ -6,8 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @Entity
@@ -15,23 +15,16 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class ToolType {
-
+public class ElementsPlannedNumber {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private int numberOfElements;
 
-    private int criticalNumber;
+    @ManyToOne
+    private Element element;
 
-    @OneToMany(mappedBy = "toolType")
-    private List<Attachment> attachments;
-
-    @OneToMany
-    private List<ToolsPlannedNumber> listOfToolsPlannedNumber;
-
-    @OneToMany(mappedBy = "toolType")
-    private List<Tool> tools;
-
+    @ManyToOne
+    private OrderStage orderStage;
 }

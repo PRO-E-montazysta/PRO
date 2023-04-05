@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
@@ -44,7 +43,7 @@ public class OrderStageDto {
     private Long orderId;
     private List<Long> attachments;
     private List<Long> notifications;
-    private List<Long> tools;
-    private List<Long> elements;
+    private List<Long> ListOfToolsPlannedNumber;
+    private List<Long> ListOfElemntsPlannedNumber;
     private List<Long> demandAdHocs;
 }

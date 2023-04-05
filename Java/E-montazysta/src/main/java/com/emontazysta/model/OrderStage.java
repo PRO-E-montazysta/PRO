@@ -7,10 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -70,17 +68,13 @@ public class OrderStage {
     @OneToMany(mappedBy = "orderStage")
     private List<Notification> notifications;
 
-    @ManyToMany
-    private List<ToolType> tools;
+    @OneToMany
+    private List<ToolsPlannedNumber> ListOfToolsPlannedNumber;
 
-    @ManyToMany
-    private List<Element> elements;
+    @OneToMany
+    private List<ElementsPlannedNumber> ListOfElemntsPlannedNumber;
 
     @ManyToMany
     private List<DemandAdHoc> demandsAdHoc;
-
-
-
-    //TODO: relationship to Element, ToolType, Fitter, DemandAdHoc  needed (many to many) should be replaced with association table in diagram
 }
 

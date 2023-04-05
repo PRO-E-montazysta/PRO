@@ -2,13 +2,13 @@ package com.emontazysta.mapper;
 
 import com.emontazysta.enums.ToolStatus;
 import com.emontazysta.model.Attachment;
-import com.emontazysta.model.OrderStage;
 import com.emontazysta.model.Tool;
 import com.emontazysta.model.ToolType;
+import com.emontazysta.model.ToolsPlannedNumber;
 import com.emontazysta.model.dto.ToolTypeDto;
 import com.emontazysta.repository.AttachmentRepository;
-import com.emontazysta.repository.OrderStageRepository;
 import com.emontazysta.repository.ToolRepository;
+import com.emontazysta.repository.ToolsPlannedNumberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class ToolTypeMapper {
 
     private final AttachmentRepository attachmentRepository;
-    private final OrderStageRepository orderStageRepository;
+    private final ToolsPlannedNumberRepository toolsPlannedNumberRepository;
     private final ToolRepository toolRepository;
 
     public ToolTypeDto toDto(ToolType toolType){
@@ -37,7 +37,7 @@ public class ToolTypeMapper {
                 .criticalNumber(toolType.getCriticalNumber())
                 .availableCount(availableCount)
                 .attachments(toolType.getAttachments().stream().map(Attachment::getId).collect(Collectors.toList()))
-                .orderStages(toolType.getOrderStages().stream().map(OrderStage::getId).collect(Collectors.toList()))
+                .ListOfToolsPlannedNumber(toolType.getListOfToolsPlannedNumber().stream().map(ToolsPlannedNumber::getId).collect(Collectors.toList()))
                 .tools(toolType.getTools().stream().map(Tool::getId).collect(Collectors.toList()))
                 .build();
     }
@@ -47,8 +47,8 @@ public class ToolTypeMapper {
         List<Attachment> attachmentList = new ArrayList<>();
         toolTypeDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.getReferenceById(attachmentId)));
 
-        List<OrderStage> orderStageList = new ArrayList<>();
-        toolTypeDto.getOrderStages().forEach(orderStageId -> orderStageList.add(orderStageRepository.getReferenceById(orderStageId)));
+        List<ToolsPlannedNumber> toolsPlannedNumberList = new ArrayList<>();
+        toolTypeDto.getListOfToolsPlannedNumber().forEach(toolsPlanedNumberId -> toolsPlannedNumberList.add(toolsPlannedNumberRepository.getReferenceById(toolsPlanedNumberId)));
 
         List<Tool> toolList = new ArrayList<>();
         toolTypeDto.getTools().forEach(toolId -> toolList.add(toolRepository.getReferenceById(toolId)));
@@ -58,7 +58,7 @@ public class ToolTypeMapper {
                 .name(toolTypeDto.getName())
                 .criticalNumber(toolTypeDto.getCriticalNumber())
                 .attachments(attachmentList)
-                .orderStages(orderStageList)
+                .listOfToolsPlannedNumber(toolsPlannedNumberList)
                 .tools(toolList)
                 .build();
     }
