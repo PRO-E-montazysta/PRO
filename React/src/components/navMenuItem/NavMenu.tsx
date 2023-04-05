@@ -22,24 +22,30 @@ const NavMenu = (params: NavMenuParams) => {
 
     return (
         <>
-            {open == true ? (
-                <Box
-                    sx={{
-                        position: 'absolute',
-                        backgroundColor: theme.palette.primary.main,
-                        borderRadius: '5px',
-                        boxShadow: '0px 0px 2px 2px ' + theme.palette.primary.dark,
-                    }}
-                >
-                    {allowedChilds.map((child, index) => {
-                        return (
-                            <MenuItem sx={{ p: '10px 20px' }} onClick={() => handleMenuItemClick(child)} key={index}>
-                                {child.name}
-                            </MenuItem>
-                        )
-                    })}
-                </Box>
-            ) : null}
+            <Box
+                sx={{
+                    transitionDuration: '.5s',
+                    // display: open ? 'block' : 'none',
+                    height: open ? allowedChilds.length * 50 + 'px' : 0,
+                    position: 'absolute',
+                    backgroundColor: theme.palette.primary.main,
+                    borderRadius: '5px',
+                    boxShadow: '0px 0px 2px 2px ' + theme.palette.primary.dark,
+                    overflow: 'hidden',
+                }}
+            >
+                {allowedChilds.map((child, index) => {
+                    return (
+                        <MenuItem
+                            sx={{ p: '0 20px', position: 'relative', height: '50px' }}
+                            onClick={() => handleMenuItemClick(child)}
+                            key={index}
+                        >
+                            {child.name}
+                        </MenuItem>
+                    )
+                })}
+            </Box>
         </>
     )
 }

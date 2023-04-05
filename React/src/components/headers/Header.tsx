@@ -32,13 +32,13 @@ const Header = () => {
         <AppBar position="static">
             <Box sx={{ backgroundColor: '#1A1C26' }}>
                 <CustomizedToolbar>
-                    <Box component="img" alt="Your logo." src={logo} sx={{cursor: 'pointer'}} onClick={() => navigate('/')}></Box>
+                    <Box component="img" alt="Logo" title='Strona główna' src={logo} sx={{cursor: 'pointer'}} onClick={() => navigate('/')}></Box>
                     {rootPageChildrens
                         ? rootPageChildrens.map((page, index) => {
                               return <NavMenuButton {...page} key={index} />
                           })
                         : null}
-                    <IconButton sx={{ marginLeft: 'auto' }} color="inherit" onClick={handleLogout}>
+                    <IconButton sx={{ marginLeft: 'auto' }} color="inherit" onClick={handleLogout} title='Wyloguj'>
                         <LogoutIcon />
                     </IconButton>
                 </CustomizedToolbar>
