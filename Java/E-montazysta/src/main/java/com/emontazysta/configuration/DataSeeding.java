@@ -405,7 +405,7 @@ public class DataSeeding {
                 null, null, null, null, null));
         Attachment attachment3 = addAttachmentFromModel(new Attachment(null, "Test Attachment 3", "URL",
                 "Description", TypeOfAttachment.PROFILE_PICTURE, null, null, null,
-                null, toolEvent1, null, null, null, null));
+                manager1, null, null, null, null, null));
         Attachment attachment4 = addAttachmentFromModel(new Attachment(null, "Test Attachment 4", "URL",
                 "Description", TypeOfAttachment.FAULT_PHOTO, null, null, null,
                 null, toolEvent1, null, null, null, null));
