@@ -52,6 +52,5 @@ const checkTokenExpiration = (token: string) => {
 
 const logout = () => {
     console.warn('Token wygasł')
-    // removeToken()
-    // window.location.href = '/login'
+    removeToken()
 }

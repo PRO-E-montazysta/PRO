@@ -25,7 +25,6 @@ const NavMenu = (params: NavMenuParams) => {
             <Box
                 sx={{
                     transitionDuration: '.5s',
-                    // display: open ? 'block' : 'none',
                     height: open ? allowedChilds.length * 50 + 'px' : 0,
                     position: 'absolute',
                     backgroundColor: theme.palette.primary.main,
