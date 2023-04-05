@@ -7,6 +7,9 @@ import TableFilter, { Filter, FilterFormProps } from './filter/TableFilter'
 import SortedTable from './sort/SortedTable'
 import { HeadCell } from './sort/SortedTableHeader'
 
+
+import { theme } from '../../themes/baseTheme'
+
 type FatTableParams<T> = {
     query: UseQueryResult<T[], AxiosError>
     filterProps?: Filter
@@ -41,7 +44,7 @@ function FatTable<T>(props: FatTableParams<T>) {
                 variant="h4"
                 fontWeight="bold"
                 padding="5px"
-                color={'white'}
+                color={theme.palette.primary.contrastText}
                 fontSize={appSize.isMobile || appSize.isTablet ? '22px' : '32px'}
             >
                 {pageHeader}

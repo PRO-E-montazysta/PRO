@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { PageProps } from '../../utils/pageList'
 
 import { theme } from '../../themes/baseTheme'
+import NavMenuItem from './NavMenuItem'
 
 type NavMenuParams = {
     open: boolean
@@ -34,15 +35,7 @@ const NavMenu = (params: NavMenuParams) => {
                 }}
             >
                 {allowedChilds.map((child, index) => {
-                    return (
-                        <MenuItem
-                            sx={{ p: '0 20px', position: 'relative', height: '50px' }}
-                            onClick={() => handleMenuItemClick(child)}
-                            key={index}
-                        >
-                            {child.name}
-                        </MenuItem>
-                    )
+                    return <NavMenuItem onItemClick={() => handleMenuItemClick(child)} text={child.name} key={index} />
                 })}
             </Box>
         </>

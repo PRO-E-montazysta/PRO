@@ -39,7 +39,7 @@ const NavMenuButton = (props: PageProps) => {
 
     return (
         <>
-            <div onMouseOver={handleMouseEnter} onMouseLeave={handleMouseLeave} style={{zIndex: open ? 1000 : 5}}>
+            <div onMouseOver={handleMouseEnter} onMouseLeave={handleMouseLeave} style={{ zIndex: open ? 1000 : 5 }}>
                 <Button sx={{ m: '0 10px', cursor: 'pointer', fontSize: '15px' }} onClick={handleClick}>
                     {name}
                 </Button>

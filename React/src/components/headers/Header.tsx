@@ -6,14 +6,14 @@ import secondPicture from '../../assets/img/secondPicture.png'
 import logo from '../../assets/img/logo.png'
 import { useNavigate } from 'react-router-dom'
 import { pageList } from '../../utils/pageList'
-import NavMenuButton from '../navMenuItem/NavButton'
-import { removeToken } from '../../utils/token'
+import NavMenuButton from '../navbar/NavButton'
+import { logout, removeToken } from '../../utils/token'
 import { v4 as uuidv4 } from 'uuid'
 
 import LogoutIcon from '@mui/icons-material/Logout'
-import NotificationsIcon from '@mui/icons-material/Notifications'
 
 import { theme } from '../../themes/baseTheme'
+import NotiButton from '../navbar/NotiButton'
 
 const CustomizedToolbar = styled(Toolbar)(({ theme }) => ({
     '@media (min-width: 600px)': {
@@ -21,18 +21,32 @@ const CustomizedToolbar = styled(Toolbar)(({ theme }) => ({
     },
 }))
 
+export type UserInfo = {
+    name: string
+    company: string
+    photoSrc: string
+    notifications: Array<Notification>
+}
+
+export type Notification = {
+    url: string
+    dateTime: Date
+    text: string
+}
+
 const Header = () => {
     const navigate = useNavigate()
     const handleLogout = () => {
-        removeToken()
-        navigate('/login')
+        // removeToken()
+        // navigate('/login')
+        logout()
     }
 
-    const [userInfo, setUserInfo] = useState({
+    const [userInfo, setUserInfo] = useState<UserInfo>({
         name: 'Imię Nazwisko',
         company: 'Firma',
         photoSrc: '',
-        notificationCount: 4,
+        notifications: [],
     })
 
     const rootPage = pageList.find((p) => p.path === '/')
@@ -61,16 +75,7 @@ const Header = () => {
                         <Box>{userInfo.company}</Box>
                     </Box>
                     <Avatar sx={{ width: 40, height: 40 }} alt={userInfo.name} src={userInfo.photoSrc} />
-                    <IconButton
-                        color="inherit"
-                        onClick={handleLogout}
-                        title="Wyloguj"
-                        sx={{ ml: '10px', width: 40, height: 40, border: '1px solid white' }}
-                    >
-                        <Badge badgeContent={userInfo.notificationCount} color="error" sx={{ p: '3px' }}>
-                            <NotificationsIcon />
-                        </Badge>
-                    </IconButton>
+                    <NotiButton userInfo={userInfo} />
                     <IconButton
                         color="inherit"
                         onClick={handleLogout}

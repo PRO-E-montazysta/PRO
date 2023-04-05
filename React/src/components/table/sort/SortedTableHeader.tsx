@@ -32,7 +32,7 @@ export interface SortedTableHeadProps<T> {
 
 const StyledTableCell = styled(TableCell)(() => ({
     [`&.${tableCellClasses.head}`]: {
-        backgroundColor: theme.palette.primary.light,
+        backgroundColor: theme.palette.primary.dark,
         color: theme.palette.primary.contrastText,
     },
 }))
