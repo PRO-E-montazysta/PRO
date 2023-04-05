@@ -16,6 +16,7 @@ import com.emontazysta.repository.SpecialistRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,25 +45,31 @@ public class OrdersMapper {
                 .createdAt(orders.getCreatedAt())
                 .editedAt(orders.getEditedAt())
                 .typeOfPriority(orders.getTypeOfPriority())
-                .companyId(orders.getCompany() == null ? null : orders.getCompany().getId())
-                .managerId(orders.getManagedBy() == null ? null : orders.getManagedBy().getId())
-                .foremanId(orders.getAssignedTo() == null ? null : orders.getAssignedTo().getId())
-                .specialistId(orders.getSpecialist() == null ? null : orders.getSpecialist().getId())
-                .salesRepresentativeId(orders.getSalesRepresentative() == null ? null : orders.getSalesRepresentative().getId())
-                .locationId(orders.getLocation() == null ? null : orders.getLocation().getId())
-                .clientId(orders.getClient() == null ? null : orders.getClient().getId())
-                .orderStages(orders.getOrderStages().stream().map(OrderStage::getId).collect(Collectors.toList()))
-                .attachments(orders.getAttachments().stream().map(Attachment::getId).collect(Collectors.toList()))
+                .companyId(orders.getCompany() == null ? null : orders.getCompany().isDeleted() ? null : orders.getCompany().getId())
+                .managerId(orders.getManagedBy() == null ? null : orders.getManagedBy().isDeleted() ? null : orders.getManagedBy().getId())
+                .foremanId(orders.getAssignedTo() == null ? null : orders.getAssignedTo().isDeleted() ? null : orders.getAssignedTo().getId())
+                .specialistId(orders.getSpecialist() == null ? null : orders.getSpecialist().isDeleted() ? null : orders.getSpecialist().getId())
+                .salesRepresentativeId(orders.getSalesRepresentative() == null ? null : orders.getSalesRepresentative().isDeleted() ? null : orders.getSalesRepresentative().getId())
+                .locationId(orders.getLocation() == null ? null : orders.getLocation().isDeleted() ? null : orders.getLocation().getId())
+                .clientId(orders.getClient() == null ? null : orders.getClient().isDeleted() ? null : orders.getClient().getId())
+                .orderStages(orders.getOrderStages().stream()
+                        .filter(orderStage -> !orderStage.isDeleted())
+                        .map(OrderStage::getId)
+                        .collect(Collectors.toList()))
+                .attachments(orders.getAttachments().stream()
+                        .filter(attachment -> !attachment.isDeleted())
+                        .map(Attachment::getId)
+                        .collect(Collectors.toList()))
                 .build();
     }
 
     public Orders toEntity(OrdersDto ordersDto) {
 
         List<OrderStage> orderStageList = new ArrayList<>();
-        ordersDto.getOrderStages().forEach(orderStageId -> orderStageList.add(orderStageRepository.getReferenceById(orderStageId)));
+        ordersDto.getOrderStages().forEach(orderStageId -> orderStageList.add(orderStageRepository.findById(orderStageId).orElseThrow(EntityNotFoundException::new)));
 
         List<Attachment> attachmentList = new ArrayList<>();
-        ordersDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.getReferenceById(attachmentId)));
+        ordersDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.findById(attachmentId).orElseThrow(EntityNotFoundException::new)));
 
         return Orders.builder()
                 .id(ordersDto.getId())
@@ -73,13 +80,13 @@ public class OrdersMapper {
                 .createdAt(ordersDto.getCreatedAt())
                 .editedAt(ordersDto.getEditedAt())
                 .typeOfPriority(ordersDto.getTypeOfPriority())
-                .company(ordersDto.getCompanyId() == null ? null : companyRepository.getReferenceById(ordersDto.getCompanyId()))
-                .managedBy(ordersDto.getManagerId() == null ? null : managerRepository.getReferenceById(ordersDto.getManagerId()))
-                .assignedTo(ordersDto.getForemanId() == null ? null : foremanRepository.getReferenceById(ordersDto.getForemanId()))
-                .specialist(ordersDto.getSpecialistId() == null ? null : specialistRepository.getReferenceById(ordersDto.getSpecialistId()))
-                .salesRepresentative(ordersDto.getSalesRepresentativeId() == null ? null : salesRepresentativeRepository.getReferenceById(ordersDto.getSalesRepresentativeId()))
-                .location(ordersDto.getLocationId() == null ? null : locationRepository.getReferenceById(ordersDto.getLocationId()))
-                .client(ordersDto.getClientId() == null ? null : clientRepository.getReferenceById(ordersDto.getClientId()))
+                .company(ordersDto.getCompanyId() == null ? null : companyRepository.findById(ordersDto.getCompanyId()).orElseThrow(EntityNotFoundException::new))
+                .managedBy(ordersDto.getManagerId() == null ? null : managerRepository.findById(ordersDto.getManagerId()).orElseThrow(EntityNotFoundException::new))
+                .assignedTo(ordersDto.getForemanId() == null ? null : foremanRepository.findById(ordersDto.getForemanId()).orElseThrow(EntityNotFoundException::new))
+                .specialist(ordersDto.getSpecialistId() == null ? null : specialistRepository.findById(ordersDto.getSpecialistId()).orElseThrow(EntityNotFoundException::new))
+                .salesRepresentative(ordersDto.getSalesRepresentativeId() == null ? null : salesRepresentativeRepository.findById(ordersDto.getSalesRepresentativeId()).orElseThrow(EntityNotFoundException::new))
+                .location(ordersDto.getLocationId() == null ? null : locationRepository.findById(ordersDto.getLocationId()).orElseThrow(EntityNotFoundException::new))
+                .client(ordersDto.getClientId() == null ? null : clientRepository.findById(ordersDto.getClientId()).orElseThrow(EntityNotFoundException::new))
                 .orderStages(orderStageList)
                 .attachments(attachmentList)
                 .build();

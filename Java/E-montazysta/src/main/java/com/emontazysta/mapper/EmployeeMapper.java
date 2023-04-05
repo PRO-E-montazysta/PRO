@@ -1,6 +1,7 @@
 package com.emontazysta.mapper;
 
 import com.emontazysta.model.AppUser;
+import com.emontazysta.model.Attachment;
 import com.emontazysta.model.Unavailability;
 import com.emontazysta.model.dto.EmployeeDto;
 import com.emontazysta.repository.UnavailabilityRepository;
@@ -25,8 +26,9 @@ public class EmployeeMapper {
                 .email(employee.getEmail())
                 .roles(employee.getRoles())
                 .phone(employee.getPhone())
-                .attachments( employee.getAttachments() == null ? null :employee.getAttachments().stream()
-                        .map(attachment -> attachment.getId())
+                .attachments( employee.getAttachments() == null ? null : employee.getAttachments().stream()
+                        .filter(attachment -> !attachment.isDeleted())
+                        .map(Attachment::getId)
                         .collect(Collectors.toList()))
                 .status(checkStatus(employee, LocalDateTime.now()) == null ? "AVAIBLE" : String.valueOf(checkStatus(employee, LocalDateTime.now()).getTypeOfUnavailability()))
                 .unavailableFrom(checkStatus(employee, LocalDateTime.now()) == null ? null : checkStatus(employee, LocalDateTime.now()).getUnavailableFrom())

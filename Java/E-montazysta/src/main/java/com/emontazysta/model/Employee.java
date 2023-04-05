@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -20,6 +22,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @MappedSuperclass
+@Where(clause = "deleted=false")
+@SQLDelete(sql = "UPDATE app_user SET deleted = true WHERE id=?")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public abstract class Employee extends AppUser {
 

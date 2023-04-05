@@ -16,6 +16,7 @@ import com.emontazysta.repository.WarehousemanRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,27 +44,36 @@ public class DemandAdHocMapper {
                 .realisationTime(demandAdHoc.getRealisationTime())
                 .warehousemanComment(demandAdHoc.getWarehousemanComment())
                 .specialistComment(demandAdHoc.getSpecialistComment())
-                .toolReleases(demandAdHoc.getToolReleases().stream().map(ToolRelease::getId).collect(Collectors.toList()))
-                .elementReturnReleases(demandAdHoc.getElementReturnReleases().stream().map(ElementReturnRelease::getId).collect(Collectors.toList()))
-                .warehouseManagerId(demandAdHoc.getWarehouseManager() == null ? null : demandAdHoc.getWarehouseManager().getId())
-                .warehousemanId(demandAdHoc.getWarehouseman() == null ? null : demandAdHoc.getWarehouseman().getId())
-                .specialistId(demandAdHoc.getSpecialist() == null ? null : demandAdHoc.getSpecialist().getId())
-                .managerId(demandAdHoc.getManager() == null ? null : demandAdHoc.getManager().getId())
-                .foremanId(demandAdHoc.getForeman() == null ? null : demandAdHoc.getForeman().getId())
-                .ordersStages(demandAdHoc.getOrdersStages().stream().map(OrderStage::getId).collect(Collectors.toList()))
+                .toolReleases(demandAdHoc.getToolReleases().stream()
+                        .filter(toolRelease -> !toolRelease.isDeleted())
+                        .map(ToolRelease::getId)
+                        .collect(Collectors.toList()))
+                .elementReturnReleases(demandAdHoc.getElementReturnReleases().stream()
+                        .filter(elementReturnRelease -> !elementReturnRelease.isDeleted())
+                        .map(ElementReturnRelease::getId)
+                        .collect(Collectors.toList()))
+                .warehouseManagerId(demandAdHoc.getWarehouseManager() == null ? null : demandAdHoc.getWarehouseManager().isDeleted() ? null : demandAdHoc.getWarehouseManager().getId())
+                .warehousemanId(demandAdHoc.getWarehouseman() == null ? null : demandAdHoc.getWarehouseman().isDeleted() ? null : demandAdHoc.getWarehouseman().getId())
+                .specialistId(demandAdHoc.getSpecialist() == null ? null : demandAdHoc.getSpecialist().isDeleted() ? null : demandAdHoc.getSpecialist().getId())
+                .managerId(demandAdHoc.getManager() == null ? null : demandAdHoc.getManager().isDeleted() ? null : demandAdHoc.getManager().getId())
+                .foremanId(demandAdHoc.getForeman() == null ? null : demandAdHoc.getForeman().isDeleted() ? null : demandAdHoc.getForeman().getId())
+                .ordersStages(demandAdHoc.getOrdersStages().stream()
+                        .filter(orderStage -> !orderStage.isDeleted())
+                        .map(OrderStage::getId)
+                        .collect(Collectors.toList()))
                 .build();
     }
 
     public DemandAdHoc toEntity(DemandAdHocDto demandAdHocDto) {
 
         List<ToolRelease> toolReleaseList = new ArrayList<>();
-        demandAdHocDto.getToolReleases().forEach(toolReleaseId -> toolReleaseList.add(toolReleaseRepository.getReferenceById(toolReleaseId)));
+        demandAdHocDto.getToolReleases().forEach(toolReleaseId -> toolReleaseList.add(toolReleaseRepository.findById(toolReleaseId).orElseThrow(EntityNotFoundException::new)));
 
         List<ElementReturnRelease> elementReturnReleaseList = new ArrayList<>();
-        demandAdHocDto.getElementReturnReleases().forEach(elementReturnReleaseId -> elementReturnReleaseList.add(elementReturnReleaseRepository.getReferenceById(elementReturnReleaseId)));
+        demandAdHocDto.getElementReturnReleases().forEach(elementReturnReleaseId -> elementReturnReleaseList.add(elementReturnReleaseRepository.findById(elementReturnReleaseId).orElseThrow(EntityNotFoundException::new)));
 
         List<OrderStage> orderStageList = new ArrayList<>();
-        demandAdHocDto.getOrdersStages().forEach(orderStageId -> orderStageList.add(orderStageRepository.getReferenceById(orderStageId)));
+        demandAdHocDto.getOrdersStages().forEach(orderStageId -> orderStageList.add(orderStageRepository.findById(orderStageId).orElseThrow(EntityNotFoundException::new)));
 
         return DemandAdHoc.builder()
                 .id(demandAdHocDto.getId())
@@ -76,11 +86,11 @@ public class DemandAdHocMapper {
                 .specialistComment(demandAdHocDto.getSpecialistComment())
                 .toolReleases(toolReleaseList)
                 .elementReturnReleases(elementReturnReleaseList)
-                .warehouseManager(demandAdHocDto.getWarehouseManagerId() == null ? null : warehouseManagerRepository.getReferenceById(demandAdHocDto.getWarehouseManagerId()))
-                .warehouseman(demandAdHocDto.getWarehousemanId() == null ? null : warehousemanRepository.getReferenceById(demandAdHocDto.getWarehousemanId()))
-                .specialist(demandAdHocDto.getSpecialistId() == null ? null : specialistRepository.getReferenceById(demandAdHocDto.getSpecialistId()))
-                .manager(demandAdHocDto.getManagerId() == null ? null : managerRepository.getReferenceById(demandAdHocDto.getManagerId()))
-                .foreman(demandAdHocDto.getForemanId() == null ? null : foremanRepository.getReferenceById(demandAdHocDto.getForemanId()))
+                .warehouseManager(demandAdHocDto.getWarehouseManagerId() == null ? null : warehouseManagerRepository.findById(demandAdHocDto.getWarehouseManagerId()).orElseThrow(EntityNotFoundException::new))
+                .warehouseman(demandAdHocDto.getWarehousemanId() == null ? null : warehousemanRepository.findById(demandAdHocDto.getWarehousemanId()).orElseThrow(EntityNotFoundException::new))
+                .specialist(demandAdHocDto.getSpecialistId() == null ? null : specialistRepository.findById(demandAdHocDto.getSpecialistId()).orElseThrow(EntityNotFoundException::new))
+                .manager(demandAdHocDto.getManagerId() == null ? null : managerRepository.findById(demandAdHocDto.getManagerId()).orElseThrow(EntityNotFoundException::new))
+                .foreman(demandAdHocDto.getForemanId() == null ? null : foremanRepository.findById(demandAdHocDto.getForemanId()).orElseThrow(EntityNotFoundException::new))
                 .ordersStages(orderStageList)
                 .build();
     }

@@ -23,7 +23,7 @@ public class DemandAdHocServiceImpl implements DemandAdHocService {
 
     @Override
     public List<DemandAdHocDto> getAll() {
-        return repository.findAllByDeletedIsFalse().stream()
+        return repository.findAll().stream()
                 .map(demandAdHocMapper::toDto)
                 .collect(Collectors.toList());
     }
@@ -31,7 +31,7 @@ public class DemandAdHocServiceImpl implements DemandAdHocService {
     @Override
     public DemandAdHocDto getById(Long id) {
 
-        DemandAdHoc demandAdHoc = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        DemandAdHoc demandAdHoc = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         return demandAdHocMapper.toDto(demandAdHoc);
     }
 
@@ -46,16 +46,17 @@ public class DemandAdHocServiceImpl implements DemandAdHocService {
     @Override
     public void delete(Long id) {
 
-        DemandAdHoc demandAdHoc = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
-        demandAdHoc.setDeleted(true);
-        demandAdHoc.getToolReleases().forEach(toolRelease -> toolRelease.setDemandAdHoc(null));
-        demandAdHoc.getElementReturnReleases().forEach(elementReturnRelease -> elementReturnRelease.setDemandAdHoc(null));
-        demandAdHoc.setWarehouseManager(null);
-        demandAdHoc.setSpecialist(null);
-        demandAdHoc.setManager(null);
-        demandAdHoc.setForeman(null);
-        demandAdHoc.getOrdersStages().forEach(orderStage -> orderStage.setDemandsAdHoc(null));
-        repository.save(demandAdHoc);
+//        DemandAdHoc demandAdHoc = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+//        demandAdHoc.setDeleted(true);
+//        demandAdHoc.getToolReleases().forEach(toolRelease -> toolRelease.setDemandAdHoc(null));
+//        demandAdHoc.getElementReturnReleases().forEach(elementReturnRelease -> elementReturnRelease.setDemandAdHoc(null));
+//        demandAdHoc.setWarehouseManager(null);
+//        demandAdHoc.setSpecialist(null);
+//        demandAdHoc.setManager(null);
+//        demandAdHoc.setForeman(null);
+//        demandAdHoc.getOrdersStages().forEach(orderStage -> orderStage.setDemandsAdHoc(null));
+//        repository.save(demandAdHoc);
+        repository.deleteById(id);
     }
 
     @Override
@@ -63,7 +64,7 @@ public class DemandAdHocServiceImpl implements DemandAdHocService {
     public DemandAdHocDto update(Long id, DemandAdHocDto demandAdHocDto) {
 
         DemandAdHoc updatedDemandAdHoc = demandAdHocMapper.toEntity(demandAdHocDto);
-        DemandAdHoc demandAdHocDb = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        DemandAdHoc demandAdHocDb = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         demandAdHocDb.setDescription(updatedDemandAdHoc.getDescription());
         demandAdHocDb.setComments(updatedDemandAdHoc.getComments());
         demandAdHocDb.setReadByWarehousemanTime(updatedDemandAdHoc.getReadByWarehousemanTime());

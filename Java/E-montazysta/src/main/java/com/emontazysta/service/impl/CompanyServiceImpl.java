@@ -25,14 +25,14 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<CompanyDto> getAll() {
-        return repository.findAllByDeletedIsFalse().stream()
+        return repository.findAll().stream()
                 .map(companyMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public CompanyDto getById(Long id) {
-        Company company = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        Company company = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         return companyMapper.toDto(company);
     }
 
@@ -47,20 +47,21 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public void delete(Long id) {
 
-        Company company = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
-        company.setDeleted(true);
-        company.getWarehouses().forEach(warehouse -> warehouse.setCompany(null));
-        company.getOrders().forEach(order -> order.setCompany(null));
-        company.getClients().forEach(client -> client.setCompany(null));
-        company.getEmployments().forEach(employment -> employment.setCompany(null));
-        repository.save(company);
+//        Company company = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+//        company.setDeleted(true);
+//        company.getWarehouses().forEach(warehouse -> warehouse.setCompany(null));
+//        company.getOrders().forEach(order -> order.setCompany(null));
+//        company.getClients().forEach(client -> client.setCompany(null));
+//        company.getEmployments().forEach(employment -> employment.setCompany(null));
+//        repository.save(company);
+        repository.deleteById(id);
     }
 
     @Override
     public CompanyDto update(Long id, CompanyDto companyDto) {
 
         Company updatedCompany = companyMapper.toEntity(companyDto);
-        Company companyToUpdate = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        Company companyToUpdate = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         companyToUpdate.setCompanyName(updatedCompany.getCompanyName());
         companyToUpdate.setStatus(updatedCompany.getStatus());
         companyToUpdate.setStatusReason(updatedCompany.getStatusReason());

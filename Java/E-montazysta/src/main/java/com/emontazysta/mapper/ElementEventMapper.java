@@ -10,6 +10,7 @@ import com.emontazysta.repository.ManagerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,17 +33,20 @@ public class ElementEventMapper {
                 .description(event.getDescription())
                 .status(event.getStatus())
                 .quantity(event.getQuantity())
-                .acceptedById(event.getAcceptedBy() == null ? null : event.getAcceptedBy().getId())
-                .updatedById(event.getUpdatedBy() == null ? null : event.getUpdatedBy().getId())
-                .elementId(event.getElement() == null ? null : event.getElement().getId())
-                .attachments(event.getAttachments().stream().map(Attachment::getId).collect(Collectors.toList()))
+                .acceptedById(event.getAcceptedBy() == null ? null : event.getAcceptedBy().isDeleted() ? null : event.getAcceptedBy().getId())
+                .updatedById(event.getUpdatedBy() == null ? null : event.getUpdatedBy().isDeleted() ? null : event.getUpdatedBy().getId())
+                .elementId(event.getElement() == null ? null : event.getElement().isDeleted() ? null : event.getElement().getId())
+                .attachments(event.getAttachments().stream()
+                        .filter(attachment -> !attachment.isDeleted())
+                        .map(Attachment::getId)
+                        .collect(Collectors.toList()))
                 .build();
     }
 
     public ElementEvent toEntity(ElementEventDto elementEventDto) {
 
         List<Attachment> attachmentList = new ArrayList<>();
-        elementEventDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.getReferenceById(attachmentId)));
+        elementEventDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.findById(attachmentId).orElseThrow(EntityNotFoundException::new)));
 
         return ElementEvent.builder()
                 .id(elementEventDto.getId())
@@ -52,9 +56,9 @@ public class ElementEventMapper {
                 .description(elementEventDto.getDescription())
                 .status(elementEventDto.getStatus())
                 .quantity(elementEventDto.getQuantity())
-                .acceptedBy(elementEventDto.getAcceptedById() == null ? null : managerRepository.getReferenceById(elementEventDto.getAcceptedById()))
-                .updatedBy(elementEventDto.getUpdatedById() == null ? null : appUserRepository.getReferenceById(elementEventDto.getUpdatedById()))
-                .element(elementEventDto.getElementId() == null ? null : elementRepository.getReferenceById(elementEventDto.getElementId()))
+                .acceptedBy(elementEventDto.getAcceptedById() == null ? null : managerRepository.findById(elementEventDto.getAcceptedById()).orElseThrow(EntityNotFoundException::new))
+                .updatedBy(elementEventDto.getUpdatedById() == null ? null : appUserRepository.findById(elementEventDto.getUpdatedById()).orElseThrow(EntityNotFoundException::new))
+                .element(elementEventDto.getElementId() == null ? null : elementRepository.findById(elementEventDto.getElementId()).orElseThrow(EntityNotFoundException::new))
                 .attachments(attachmentList)
                 .build();
     }

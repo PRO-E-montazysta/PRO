@@ -27,14 +27,14 @@ public class ElementServiceImpl implements ElementService {
 
     @Override
     public List<ElementDto> getAll() {
-        return repository.findAllByDeletedIsFalse().stream()
+        return repository.findAll().stream()
                 .map(elementMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public ElementDto getById(Long id) {
-        Element element = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        Element element = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         return elementMapper.toDto(element);
     }
 
@@ -53,21 +53,14 @@ public class ElementServiceImpl implements ElementService {
 
     @Override
     public void delete(Long id) {
-        Element element = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
-        element.setDeleted(true);
-        element.getElementReturnReleases().forEach(elementReturnRelease -> elementReturnRelease.setElement(null));
-        element.getElementInWarehouses().forEach(elementInWarehouse -> elementInWarehouse.setElement(null));
-        element.getElementEvents().forEach(elementEvent -> elementEvent.setElement(null));
-        element.getAttachment().setElement(null);
-        //TODO: missing part for ordersStages that should be changed to associated table
-        repository.save(element);
+        repository.deleteById(id);
     }
 
     @Override
     public ElementDto update(Long id, ElementDto elementDto) {
 
         Element updatedElement = elementMapper.toEntity(elementDto);
-        Element element = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        Element element = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         element.setName(updatedElement.getName());
         element.setTypeOfUnit(updatedElement.getTypeOfUnit());
         element.setQuantityInUnit(updatedElement.getQuantityInUnit());

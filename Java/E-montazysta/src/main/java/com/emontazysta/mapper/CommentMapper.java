@@ -10,6 +10,7 @@ import com.emontazysta.repository.OrderStageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,23 +28,26 @@ public class CommentMapper {
                 .id(comment.getId())
                 .content(comment.getContent())
                 .createdAt(comment.getCreatedAt())
-                .messageCreatorId(comment.getMessageCreator() == null ? null : comment.getMessageCreator().getId())
-                .orderStageId(comment.getOrderStage() == null ? null : comment.getOrderStage().getId())
-                .attachments(comment.getAttachments().stream().map(Attachment::getId).collect(Collectors.toList()))
+                .messageCreatorId(comment.getMessageCreator() == null ? null : comment.getMessageCreator().isDeleted() ? null : comment.getMessageCreator().getId())
+                .orderStageId(comment.getOrderStage() == null ? null : comment.getOrderStage().isDeleted() ? null : comment.getOrderStage().getId())
+                .attachments(comment.getAttachments().stream()
+                        .filter(attachment -> !attachment.isDeleted())
+                        .map(Attachment::getId)
+                        .collect(Collectors.toList()))
                 .build();
     }
 
     public Comment toEntity(CommentDto commentDto) {
 
         List<Attachment> attachmentList = new ArrayList<>();
-        commentDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.getReferenceById(attachmentId)));
+        commentDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.findById(attachmentId).orElseThrow(EntityNotFoundException::new)));
 
         return Comment.builder()
                 .id(commentDto.getId())
                 .content(commentDto.getContent())
                 .createdAt(commentDto.getCreatedAt())
-                .messageCreator(commentDto.getMessageCreatorId() == null ? null : appUserRepository.getReferenceById(commentDto.getMessageCreatorId()))
-                .orderStage(commentDto.getOrderStageId() == null ? null : orderStageRepository.getReferenceById(commentDto.getOrderStageId()))
+                .messageCreator(commentDto.getMessageCreatorId() == null ? null : appUserRepository.findById(commentDto.getMessageCreatorId()).orElseThrow(EntityNotFoundException::new))
+                .orderStage(commentDto.getOrderStageId() == null ? null : orderStageRepository.findById(commentDto.getOrderStageId()).orElseThrow(EntityNotFoundException::new))
                 .attachments(attachmentList)
                 .build();
     }

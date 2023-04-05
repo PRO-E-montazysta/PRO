@@ -22,14 +22,14 @@ public class ElementEventServiceImpl implements ElementEventService {
 
     @Override
     public List<ElementEventDto> getAll() {
-        return repository.findAllByDeletedIsFalse().stream()
+        return repository.findAll().stream()
                 .map(elementEventMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public ElementEventDto getById(Long id){
-        ElementEvent elementEvent = repository.findByIdAndDeletedIsFalse(id).orElseThrow( () -> new RuntimeException("Element Event with id " + id +" not found"));
+        ElementEvent elementEvent = repository.findById(id).orElseThrow( () -> new RuntimeException("Element Event with id " + id +" not found"));
         return elementEventMapper.toDto(elementEvent);
     }
 
@@ -41,19 +41,14 @@ public class ElementEventServiceImpl implements ElementEventService {
 
     @Override
     public void delete(Long id) {
-        ElementEvent elementEvent = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
-        elementEvent.setDeleted(true);
-        elementEvent.setAcceptedBy(null);
-        elementEvent.setUpdatedBy(null);
-        elementEvent.setElement(null);
-        elementEvent.getAttachments().forEach(attachment -> attachment.setElementEvent(null));
-        repository.save(elementEvent);
+
+        repository.deleteById(id);
     }
 
     @Override
     public ElementEventDto update(Long id, ElementEventDto event) {
         ElementEvent updatedElementEvent = elementEventMapper.toEntity(event);
-        ElementEvent elementEvent = repository.findByIdAndDeletedIsFalse(id).orElseThrow( () -> new RuntimeException("Element Event with id " + id +" not found"));
+        ElementEvent elementEvent = repository.findById(id).orElseThrow( () -> new RuntimeException("Element Event with id " + id +" not found"));
         elementEvent.setEventDate(updatedElementEvent.getEventDate());
         elementEvent.setMovingDate(updatedElementEvent.getMovingDate());
         elementEvent.setCompletionDate(updatedElementEvent.getCompletionDate());

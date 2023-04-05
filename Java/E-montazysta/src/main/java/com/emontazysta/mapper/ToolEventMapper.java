@@ -10,6 +10,7 @@ import com.emontazysta.repository.ToolRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,17 +32,20 @@ public class ToolEventMapper {
                 .completionDate(event.getCompletionDate())
                 .description(event.getDescription())
                 .status(event.getStatus())
-                .updatedById(event.getUpdatedBy() == null ? null : event.getUpdatedBy().getId())
-                .acceptedById(event.getUpdatedBy() == null ? null : event.getUpdatedBy().getId())
-                .toolId(event.getTool() == null ? null : event.getTool().getId())
-                .attachments(event.getAttachments().stream().map(Attachment::getId).collect(Collectors.toList()))
+                .updatedById(event.getUpdatedBy() == null ? null : event.getUpdatedBy().isDeleted() ? null : event.getUpdatedBy().getId())
+                .acceptedById(event.getUpdatedBy() == null ? null : event.getUpdatedBy().isDeleted() ? null : event.getUpdatedBy().getId())
+                .toolId(event.getTool() == null ? null : event.getTool().isDeleted() ? null : event.getTool().getId())
+                .attachments(event.getAttachments().stream()
+                        .filter(attachment -> !attachment.isDeleted())
+                        .map(Attachment::getId)
+                        .collect(Collectors.toList()))
                 .build();
     }
 
     public ToolEvent toEntity(ToolEventDto toolEventDto) {
 
         List<Attachment> attachmentList = new ArrayList<>();
-        toolEventDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.getReferenceById(attachmentId)));
+        toolEventDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.findById(attachmentId).orElseThrow(EntityNotFoundException::new)));
 
         return ToolEvent.builder()
                 .id(toolEventDto.getId())
@@ -50,9 +54,9 @@ public class ToolEventMapper {
                 .completionDate(toolEventDto.getCompletionDate())
                 .description(toolEventDto.getDescription())
                 .status(toolEventDto.getStatus())
-                .updatedBy(toolEventDto.getUpdatedById() == null ? null : appUserRepository.getReferenceById(toolEventDto.getUpdatedById()))
-                .acceptedBy(toolEventDto.getAcceptedById() == null ? null : managerRepository.getReferenceById(toolEventDto.getAcceptedById()))
-                .tool(toolEventDto.getToolId() == null ? null : toolRepository.getReferenceById(toolEventDto.getToolId()))
+                .updatedBy(toolEventDto.getUpdatedById() == null ? null : appUserRepository.findById(toolEventDto.getUpdatedById()).orElseThrow(EntityNotFoundException::new))
+                .acceptedBy(toolEventDto.getAcceptedById() == null ? null : managerRepository.findById(toolEventDto.getAcceptedById()).orElseThrow(EntityNotFoundException::new))
+                .tool(toolEventDto.getToolId() == null ? null : toolRepository.findById(toolEventDto.getToolId()).orElseThrow(EntityNotFoundException::new))
                 .attachments(attachmentList)
                 .build();
     }

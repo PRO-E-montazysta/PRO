@@ -11,6 +11,7 @@ import com.emontazysta.repository.WarehouseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,20 +31,26 @@ public class ToolMapper {
                 .name(tool.getName())
                 .createdAt(tool.getCreatedAt())
                 .code(tool.getCode())
-                .toolReleases(tool.getToolReleases().stream().map(ToolRelease::getId).collect(Collectors.toList()))
-                .warehouseId(tool.getWarehouse() == null ? null : tool.getWarehouse().getId())
-                .toolEvents(tool.getToolEvents().stream().map(ToolEvent::getId).collect(Collectors.toList()))
-                .toolTypeId(tool.getToolType() == null ? null : tool.getToolType().getId())
+                .toolReleases(tool.getToolReleases().stream()
+                        .filter(toolRelease -> !toolRelease.isDeleted())
+                        .map(ToolRelease::getId)
+                        .collect(Collectors.toList()))
+                .warehouseId(tool.getWarehouse() == null ? null : tool.getWarehouse().isDeleted() ? null : tool.getWarehouse().getId())
+                .toolEvents(tool.getToolEvents().stream()
+                        .filter(toolEvent -> !toolEvent.isDeleted())
+                        .map(ToolEvent::getId)
+                        .collect(Collectors.toList()))
+                .toolTypeId(tool.getToolType() == null ? null : tool.getToolType().isDeleted() ? null : tool.getToolType().getId())
                 .build();
     }
 
     public Tool toEntity(ToolDto toolDto) {
 
         List<ToolRelease> toolReleaseList = new ArrayList<>();
-        toolDto.getToolReleases().forEach(toolReleaseId -> toolReleaseList.add(toolReleaseRepository.getReferenceById(toolReleaseId)));
+        toolDto.getToolReleases().forEach(toolReleaseId -> toolReleaseList.add(toolReleaseRepository.findById(toolReleaseId).orElseThrow(EntityNotFoundException::new)));
 
         List<ToolEvent> toolEventList = new ArrayList<>();
-        toolDto.getToolEvents().forEach(toolEventId -> toolEventList.add(toolEventRepository.getReferenceById(toolEventId)));
+        toolDto.getToolEvents().forEach(toolEventId -> toolEventList.add(toolEventRepository.findById(toolEventId).orElseThrow(EntityNotFoundException::new)));
 
         return Tool.builder()
                 .id(toolDto.getId())
@@ -51,9 +58,9 @@ public class ToolMapper {
                 .createdAt(toolDto.getCreatedAt())
                 .code(toolDto.getCode())
                 .toolReleases(toolReleaseList)
-                .warehouse(toolDto.getWarehouseId() == null ? null : warehouseRepository.getReferenceById(toolDto.getWarehouseId()))
+                .warehouse(toolDto.getWarehouseId() == null ? null : warehouseRepository.findById(toolDto.getWarehouseId()).orElseThrow(EntityNotFoundException::new))
                 .toolEvents(toolEventList)
-                .toolType(toolDto.getToolTypeId() == null ? null : toolTypeRepository.getReferenceById(toolDto.getToolTypeId()))
+                .toolType(toolDto.getToolTypeId() == null ? null : toolTypeRepository.findById(toolDto.getToolTypeId()).orElseThrow(EntityNotFoundException::new))
                 .build();
     }
 }

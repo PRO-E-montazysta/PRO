@@ -25,6 +25,7 @@ import com.emontazysta.repository.ToolTypeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,48 +59,75 @@ public class OrderStageMapper {
                 .plannedDurationTime(orderStage.getPlannedDurationTime())
                 .plannedFittersNumber(orderStage.getPlannedFittersNumber())
                 .minimumImagesNumber(orderStage.getMinimumImagesNumber())
-                .fitters(orderStage.getAssignedTo().stream().map(Fitter::getId).collect(Collectors.toList()))
-                .foremanId(orderStage.getManagedBy() == null ? null : orderStage.getManagedBy().getId())
-                .comments(orderStage.getComments().stream().map(Comment::getId).collect(Collectors.toList()))
-                .toolReleases(orderStage.getToolReleases().stream().map(ToolRelease::getId).collect(Collectors.toList()))
-                .elementReturnReleases(orderStage.getElementReturnReleases().stream().map(ElementReturnRelease::getId).collect(Collectors.toList()))
-                .orderId(orderStage.getOrders() == null ? null : orderStage.getOrders().getId())
-                .attachments(orderStage.getAttachments().stream().map(Attachment::getId).collect(Collectors.toList()))
-                .notifications(orderStage.getNotifications().stream().map(Notification::getId).collect(Collectors.toList()))
-                .tools(orderStage.getTools().stream().map(ToolType::getId).collect(Collectors.toList()))
-                .elements(orderStage.getElements().stream().map(Element::getId).collect(Collectors.toList()))
-                .demandAdHocs(orderStage.getDemandsAdHoc().stream().map(DemandAdHoc::getId).collect(Collectors.toList()))
+                .fitters(orderStage.getAssignedTo().stream()
+                        .filter(fitter -> !fitter.isDeleted())
+                        .map(Fitter::getId)
+                        .collect(Collectors.toList()))
+                .foremanId(orderStage.getManagedBy() == null ? null : orderStage.getManagedBy().isDeleted() ? null : orderStage.getManagedBy().getId())
+                .comments(orderStage.getComments().stream()
+                        .filter(comment -> !comment.isDeleted())
+                        .map(Comment::getId)
+                        .collect(Collectors.toList()))
+                .toolReleases(orderStage.getToolReleases().stream()
+                        .filter(toolRelease -> !toolRelease.isDeleted())
+                        .map(ToolRelease::getId)
+                        .collect(Collectors.toList()))
+                .elementReturnReleases(orderStage.getElementReturnReleases().stream()
+                        .filter(elementReturnRelease -> !elementReturnRelease.isDeleted())
+                        .map(ElementReturnRelease::getId)
+                        .collect(Collectors.toList()))
+                .orderId(orderStage.getOrders() == null ? null : orderStage.getOrders().isDeleted() ? null : orderStage.getOrders().getId())
+                .attachments(orderStage.getAttachments().stream()
+                        .filter(attachment -> !attachment.isDeleted())
+                        .map(Attachment::getId)
+                        .collect(Collectors.toList()))
+                .notifications(orderStage.getNotifications().stream()
+                        .filter(notification -> !notification.isDeleted())
+                        .map(Notification::getId)
+                        .collect(Collectors.toList()))
+                .tools(orderStage.getTools().stream()
+                        .filter(tool -> !tool.isDeleted())
+                        .map(ToolType::getId)
+                        .collect(Collectors.toList()))
+                .elements(orderStage.getElements().stream()
+                        .filter(element -> !element.isDeleted())
+                        .map(Element::getId)
+                        .collect(Collectors.toList()))
+                .demandAdHocs(orderStage.getDemandsAdHoc().stream()
+                        .filter(demandAdHoc -> !demandAdHoc.isDeleted())
+                        .map(DemandAdHoc::getId)
+                        .collect(Collectors.toList()))
                 .build();
     }
 
     public OrderStage toEntity(OrderStageDto orderStageDto) {
 
         List<Fitter> fitterList = new ArrayList<>();
-        orderStageDto.getFitters().forEach(fitterId -> fitterList.add(fitterRepository.getReferenceById(fitterId)));
+        orderStageDto.getFitters().forEach(fitterId -> fitterList.add(fitterRepository.findById(fitterId).orElseThrow(EntityNotFoundException::new)));
 
         List<Comment> commentList = new ArrayList<>();
-        orderStageDto.getComments().forEach(commentId -> commentList.add(commentRepository.getReferenceById(commentId)));
+        orderStageDto.getComments().forEach(commentId -> commentList.add(commentRepository.findById(commentId).orElseThrow(EntityNotFoundException::new)));
 
         List<ToolRelease> toolReleaseList = new ArrayList<>();
-        orderStageDto.getToolReleases().forEach(toolReleaseId -> toolReleaseList.add(toolReleaseRepository.getReferenceById(toolReleaseId)));
+        orderStageDto.getToolReleases().forEach(toolReleaseId -> toolReleaseList.add(toolReleaseRepository.findById(toolReleaseId).orElseThrow(EntityNotFoundException::new)));
 
         List<ElementReturnRelease> elementReturnReleaseList = new ArrayList<>();
-        orderStageDto.getElementReturnReleases().forEach(elementReturnReleaseId -> elementReturnReleaseList.add(elementReturnReleaseRepository.getReferenceById(elementReturnReleaseId)));
+        orderStageDto.getElementReturnReleases().forEach(elementReturnReleaseId -> elementReturnReleaseList.add(elementReturnReleaseRepository.findById(elementReturnReleaseId).orElseThrow(EntityNotFoundException::new)));
 
         List<Attachment> attachmentList = new ArrayList<>();
-        orderStageDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.getReferenceById(attachmentId)));
+        orderStageDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.findById(attachmentId).orElseThrow(EntityNotFoundException::new)));
 
         List<Notification> notificationList = new ArrayList<>();
-        orderStageDto.getNotifications().forEach(notificationId -> notificationList.add(notificationRepository.getReferenceById(notificationId)));
+        orderStageDto.getNotifications().forEach(notificationId -> notificationList.add(notificationRepository.findById(notificationId).orElseThrow(EntityNotFoundException::new)));
 
         List<ToolType> toolTypeList = new ArrayList<>();
-        orderStageDto.getTools().forEach(toolTypeId -> toolTypeList.add(toolTypeRepository.getReferenceById(toolTypeId)));
+        orderStageDto.getTools().forEach(toolTypeId -> toolTypeList.add(toolTypeRepository.findById(toolTypeId).orElseThrow(EntityNotFoundException::new)));
 
         List<Element> elementList = new ArrayList<>();
-        orderStageDto.getElements().forEach(elementId -> elementList.add(elementRepository.getReferenceById(elementId)));
+        orderStageDto.getElements().forEach(elementId -> elementList.add(elementRepository.findById(elementId).orElseThrow(EntityNotFoundException::new)));
 
         List<DemandAdHoc> demandAdHocList = new ArrayList<>();
-        orderStageDto.getDemandAdHocs().forEach(demandAdHocId -> demandAdHocList.add(demandAdHocRepository.getReferenceById(demandAdHocId)));
+        orderStageDto.getDemandAdHocs().forEach(demandAdHocId -> demandAdHocList.add(demandAdHocRepository.findById(demandAdHocId).orElseThrow(EntityNotFoundException::new)));
 
         return OrderStage.builder()
                 .id(orderStageDto.getId())
@@ -114,11 +142,11 @@ public class OrderStageMapper {
                 .plannedFittersNumber(orderStageDto.getPlannedFittersNumber())
                 .minimumImagesNumber(orderStageDto.getMinimumImagesNumber())
                 .assignedTo(fitterList)
-                .managedBy(orderStageDto.getForemanId() == null ? null : foremanRepository.getReferenceById(orderStageDto.getForemanId()))
+                .managedBy(orderStageDto.getForemanId() == null ? null : foremanRepository.findById(orderStageDto.getForemanId()).orElseThrow(EntityNotFoundException::new))
                 .comments(commentList)
                 .toolReleases(toolReleaseList)
                 .elementReturnReleases(elementReturnReleaseList)
-                .orders(orderStageDto.getOrderId() == null ? null : orderRepository.getReferenceById(orderStageDto.getOrderId()))
+                .orders(orderStageDto.getOrderId() == null ? null : orderRepository.findById(orderStageDto.getOrderId()).orElseThrow(EntityNotFoundException::new))
                 .attachments(attachmentList)
                 .notifications(notificationList)
                 .tools(toolTypeList)

@@ -12,6 +12,7 @@ import com.emontazysta.repository.ToolRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +28,7 @@ public class ToolTypeMapper {
     public ToolTypeDto toDto(ToolType toolType){
 
         int availableCount = (int) toolType.getTools().stream()
+                .filter(tool -> !tool.isDeleted())
                 .filter(tool -> ToolStatus.AVAILABLE.equals(tool.getStatus()))
                 .count();
 
@@ -36,22 +38,31 @@ public class ToolTypeMapper {
                 .inServiceCount(toolType.getTools().size())
                 .criticalNumber(toolType.getCriticalNumber())
                 .availableCount(availableCount)
-                .attachments(toolType.getAttachments().stream().map(Attachment::getId).collect(Collectors.toList()))
-                .orderStages(toolType.getOrderStages().stream().map(OrderStage::getId).collect(Collectors.toList()))
-                .tools(toolType.getTools().stream().map(Tool::getId).collect(Collectors.toList()))
+                .attachments(toolType.getAttachments().stream()
+                        .filter(attachment -> !attachment.isDeleted())
+                        .map(Attachment::getId)
+                        .collect(Collectors.toList()))
+                .orderStages(toolType.getOrderStages().stream()
+                        .filter(orderStage -> !orderStage.isDeleted())
+                        .map(OrderStage::getId)
+                        .collect(Collectors.toList()))
+                .tools(toolType.getTools().stream()
+                        .filter(tool -> !tool.isDeleted())
+                        .map(Tool::getId)
+                        .collect(Collectors.toList()))
                 .build();
     }
 
     public ToolType toEntity(ToolTypeDto toolTypeDto) {
 
         List<Attachment> attachmentList = new ArrayList<>();
-        toolTypeDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.getReferenceById(attachmentId)));
+        toolTypeDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.findById(attachmentId).orElseThrow(EntityNotFoundException::new)));
 
         List<OrderStage> orderStageList = new ArrayList<>();
-        toolTypeDto.getOrderStages().forEach(orderStageId -> orderStageList.add(orderStageRepository.getReferenceById(orderStageId)));
+        toolTypeDto.getOrderStages().forEach(orderStageId -> orderStageList.add(orderStageRepository.findById(orderStageId).orElseThrow(EntityNotFoundException::new)));
 
         List<Tool> toolList = new ArrayList<>();
-        toolTypeDto.getTools().forEach(toolId -> toolList.add(toolRepository.getReferenceById(toolId)));
+        toolTypeDto.getTools().forEach(toolId -> toolList.add(toolRepository.findById(toolId).orElseThrow(EntityNotFoundException::new)));
 
         return ToolType.builder()
                 .id(toolTypeDto.getId())

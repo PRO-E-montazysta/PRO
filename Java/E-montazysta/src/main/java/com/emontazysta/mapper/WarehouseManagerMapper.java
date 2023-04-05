@@ -25,6 +25,7 @@ import com.emontazysta.repository.UnavailabilityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,50 +55,80 @@ public class WarehouseManagerMapper {
                 .email(warehouseManager.getEmail())
                 .phone(warehouseManager.getPhone())
                 .pesel(warehouseManager.getPesel())
-                .unavailabilities(warehouseManager.getUnavailabilities().stream().map(Unavailability::getId).collect(Collectors.toList()))
-                .notifications(warehouseManager.getNotifications().stream().map(Notification::getId).collect(Collectors.toList()))
-                .employeeComments(warehouseManager.getEmployeeComments().stream().map(Comment::getId).collect(Collectors.toList()))
-                .elementEvents(warehouseManager.getElementEvents().stream().map(ElementEvent::getId).collect(Collectors.toList()))
-                .employments(warehouseManager.getEmployments().stream().map(Employment::getId).collect(Collectors.toList()))
-                .attachments(warehouseManager.getAttachments().stream().map(Attachment::getId).collect(Collectors.toList()))
-                .toolEvents(warehouseManager.getToolEvents().stream().map(ToolEvent::getId).collect(Collectors.toList()))
-                .releaseTools(warehouseManager.getReleasedTools().stream().map(ToolRelease::getId).collect(Collectors.toList()))
-                .elementReturnReleases(warehouseManager.getElementReturnReleases().stream().map(ElementReturnRelease::getId).collect(Collectors.toList()))
-                .demandAdHocs(warehouseManager.getDemandAdHocs().stream().map(DemandAdHoc::getId).collect(Collectors.toList()))
+                .unavailabilities(warehouseManager.getUnavailabilities().stream()
+                        .filter(unavailability -> !unavailability.isDeleted())
+                        .map(Unavailability::getId)
+                        .collect(Collectors.toList()))
+                .notifications(warehouseManager.getNotifications().stream()
+                        .filter(notification -> !notification.isDeleted())
+                        .map(Notification::getId)
+                        .collect(Collectors.toList()))
+                .employeeComments(warehouseManager.getEmployeeComments().stream()
+                        .filter(comment -> !comment.isDeleted())
+                        .map(Comment::getId)
+                        .collect(Collectors.toList()))
+                .elementEvents(warehouseManager.getElementEvents().stream()
+                        .filter(elementEvent -> !elementEvent.isDeleted())
+                        .map(ElementEvent::getId)
+                        .collect(Collectors.toList()))
+                .employments(warehouseManager.getEmployments().stream()
+                        .filter(employment -> !employment.isDeleted())
+                        .map(Employment::getId)
+                        .collect(Collectors.toList()))
+                .attachments(warehouseManager.getAttachments().stream()
+                        .filter(attachment -> !attachment.isDeleted())
+                        .map(Attachment::getId)
+                        .collect(Collectors.toList()))
+                .toolEvents(warehouseManager.getToolEvents().stream()
+                        .filter(toolEvent -> !toolEvent.isDeleted())
+                        .map(ToolEvent::getId)
+                        .collect(Collectors.toList()))
+                .releaseTools(warehouseManager.getReleasedTools().stream()
+                        .filter(toolRelease -> !toolRelease.isDeleted())
+                        .map(ToolRelease::getId)
+                        .collect(Collectors.toList()))
+                .elementReturnReleases(warehouseManager.getElementReturnReleases().stream()
+                        .filter(elementReturnRelease -> !elementReturnRelease.isDeleted())
+                        .map(ElementReturnRelease::getId)
+                        .collect(Collectors.toList()))
+                .demandAdHocs(warehouseManager.getDemandAdHocs().stream()
+                        .filter(demandAdHoc -> !demandAdHoc.isDeleted())
+                        .map(DemandAdHoc::getId)
+                        .collect(Collectors.toList()))
                 .build();
     }
 
     public WarehouseManager toEntity(WarehouseManagerDto warehouseManagerDto) {
 
         List<Unavailability> unavailabilityList = new ArrayList<>();
-        warehouseManagerDto.getUnavailabilities().forEach(unavailabilityId -> unavailabilityList.add(unavailabilityRepository.getReferenceById(unavailabilityId)));
+        warehouseManagerDto.getUnavailabilities().forEach(unavailabilityId -> unavailabilityList.add(unavailabilityRepository.findById(unavailabilityId).orElseThrow(EntityNotFoundException::new)));
 
         List<Notification> notificationList = new ArrayList<>();
-        warehouseManagerDto.getNotifications().forEach(notificationId -> notificationList.add(notificationRepository.getReferenceById(notificationId)));
+        warehouseManagerDto.getNotifications().forEach(notificationId -> notificationList.add(notificationRepository.findById(notificationId).orElseThrow(EntityNotFoundException::new)));
 
         List<Comment> employeeCommentsList = new ArrayList<>();
-        warehouseManagerDto.getEmployeeComments().forEach(commentId -> employeeCommentsList.add(commentRepository.getReferenceById(commentId)));
+        warehouseManagerDto.getEmployeeComments().forEach(commentId -> employeeCommentsList.add(commentRepository.findById(commentId).orElseThrow(EntityNotFoundException::new)));
 
         List<ElementEvent> elementEventList = new ArrayList<>();
-        warehouseManagerDto.getElementEvents().forEach(elementEventId -> elementEventList.add(elementEventRepository.getReferenceById(elementEventId)));
+        warehouseManagerDto.getElementEvents().forEach(elementEventId -> elementEventList.add(elementEventRepository.findById(elementEventId).orElseThrow(EntityNotFoundException::new)));
 
         List<Employment> employmentList = new ArrayList<>();
-        warehouseManagerDto.getEmployments().forEach(employmentId -> employmentList.add(employmentRepository.getReferenceById(employmentId)));
+        warehouseManagerDto.getEmployments().forEach(employmentId -> employmentList.add(employmentRepository.findById(employmentId).orElseThrow(EntityNotFoundException::new)));
 
         List<Attachment> attachmentList = new ArrayList<>();
-        warehouseManagerDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.getReferenceById(attachmentId)));
+        warehouseManagerDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.findById(attachmentId).orElseThrow(EntityNotFoundException::new)));
 
         List<ToolEvent> toolEventList = new ArrayList<>();
-        warehouseManagerDto.getToolEvents().forEach(toolEventId -> toolEventList.add(toolEventRepository.getReferenceById(toolEventId)));
+        warehouseManagerDto.getToolEvents().forEach(toolEventId -> toolEventList.add(toolEventRepository.findById(toolEventId).orElseThrow(EntityNotFoundException::new)));
 
         List<ToolRelease> toolReleaseList = new ArrayList<>();
-        warehouseManagerDto.getReleaseTools().forEach(toolReleaseId -> toolReleaseList.add(toolReleaseRepository.getReferenceById(toolReleaseId)));
+        warehouseManagerDto.getReleaseTools().forEach(toolReleaseId -> toolReleaseList.add(toolReleaseRepository.findById(toolReleaseId).orElseThrow(EntityNotFoundException::new)));
 
         List<ElementReturnRelease> elementReturnReleaseList = new ArrayList<>();
-        warehouseManagerDto.getElementReturnReleases().forEach(elementReturnReleaseId -> elementReturnReleaseList.add(elementReturnReleaseRepository.getReferenceById(elementReturnReleaseId)));
+        warehouseManagerDto.getElementReturnReleases().forEach(elementReturnReleaseId -> elementReturnReleaseList.add(elementReturnReleaseRepository.findById(elementReturnReleaseId).orElseThrow(EntityNotFoundException::new)));
 
         List<DemandAdHoc> demandAdHocList = new ArrayList<>();
-        warehouseManagerDto.getDemandAdHocs().forEach(demandAdHocId -> demandAdHocList.add(demandAdHocRepository.getReferenceById(demandAdHocId)));
+        warehouseManagerDto.getDemandAdHocs().forEach(demandAdHocId -> demandAdHocList.add(demandAdHocRepository.findById(demandAdHocId).orElseThrow(EntityNotFoundException::new)));
 
         WarehouseManager warehouseManager = new WarehouseManager();
         warehouseManager.setId(warehouseManagerDto.getId());

@@ -3,6 +3,8 @@ package com.emontazysta.model;
 import com.emontazysta.enums.TypeOfUnavailability;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -17,6 +19,8 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Where(clause = "deleted=false")
+@SQLDelete(sql = "UPDATE unavailability SET deleted = true WHERE id=?")
 public class Unavailability {
 
     public Unavailability(Long id, TypeOfUnavailability typeOfUnavailability, String description,

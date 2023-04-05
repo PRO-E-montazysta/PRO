@@ -23,6 +23,7 @@ import com.emontazysta.repository.UnavailabilityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,58 +52,90 @@ public class ManagerMapper {
                 .email(manager.getEmail())
                 .phone(manager.getPhone())
                 .pesel(manager.getPesel())
-                .unavailabilities(manager.getUnavailabilities().stream().map(Unavailability::getId).collect(Collectors.toList()))
-                .notifications(manager.getNotifications().stream().map(Notification::getId).collect(Collectors.toList()))
-                .employeeComments(manager.getEmployeeComments().stream().map(Comment::getId).collect(Collectors.toList()))
-                .elementEvents(manager.getElementEvents().stream().map(ElementEvent::getId).collect(Collectors.toList()))
-                .employments(manager.getEmployments().stream().map(Employment::getId).collect(Collectors.toList()))
-                .attachments(manager.getAttachments().stream().map(Attachment::getId).collect(Collectors.toList()))
-                .toolEvents(manager.getToolEvents().stream().map(ToolEvent::getId).collect(Collectors.toList()))
-                .createdUnavailabilities(manager.getCreatedUnavailabilities().stream().map(Unavailability::getId).collect(Collectors.toList()))
-                .acceptedEvents(manager.getAcceptedEvents().stream().map(ToolEvent::getId).collect(Collectors.toList()))
-                .managedOrders(manager.getManagedOrders().stream().map(Orders::getId).collect(Collectors.toList()))
-                .demandsAdHocs(manager.getDemandsAdHocs().stream().map(DemandAdHoc::getId).collect(Collectors.toList()))
-                .elementEvents(manager.getElementEvents().stream().map(ElementEvent::getId).collect(Collectors.toList()))
+                .unavailabilities(manager.getUnavailabilities().stream()
+                        .filter(unavailability -> !unavailability.isDeleted())
+                        .map(Unavailability::getId)
+                        .collect(Collectors.toList()))
+                .notifications(manager.getNotifications().stream()
+                        .filter(notification -> !notification.isDeleted())
+                        .map(Notification::getId)
+                        .collect(Collectors.toList()))
+                .employeeComments(manager.getEmployeeComments().stream()
+                        .filter(comment -> !comment.isDeleted())
+                        .map(Comment::getId)
+                        .collect(Collectors.toList()))
+                .elementEvents(manager.getElementEvents().stream()
+                        .filter(elementEvent -> !elementEvent.isDeleted())
+                        .map(ElementEvent::getId)
+                        .collect(Collectors.toList()))
+                .employments(manager.getEmployments().stream()
+                        .filter(employment -> !employment.isDeleted())
+                        .map(Employment::getId)
+                        .collect(Collectors.toList()))
+                .attachments(manager.getAttachments().stream()
+                        .filter(attachment -> !attachment.isDeleted())
+                        .map(Attachment::getId)
+                        .collect(Collectors.toList()))
+                .toolEvents(manager.getToolEvents().stream()
+                        .filter(toolEvent -> !toolEvent.isDeleted())
+                        .map(ToolEvent::getId)
+                        .collect(Collectors.toList()))
+                .createdUnavailabilities(manager.getCreatedUnavailabilities().stream()
+                        .filter(unavailability -> !unavailability.isDeleted())
+                        .map(Unavailability::getId)
+                        .collect(Collectors.toList()))
+                .acceptedEvents(manager.getAcceptedEvents().stream()
+                        .filter(event -> !event.isDeleted())
+                        .map(ToolEvent::getId)
+                        .collect(Collectors.toList()))
+                .managedOrders(manager.getManagedOrders().stream()
+                        .filter(order -> !order.isDeleted())
+                        .map(Orders::getId)
+                        .collect(Collectors.toList()))
+                .demandsAdHocs(manager.getDemandsAdHocs().stream()
+                        .filter(demandAdHoc -> !demandAdHoc.isDeleted())
+                        .map(DemandAdHoc::getId)
+                        .collect(Collectors.toList()))
                 .build();
     }
 
     public Manager toEntity(ManagerDto managerDto) {
 
         List<Unavailability> unavailabilityList = new ArrayList<>();
-        managerDto.getUnavailabilities().forEach(unavailabilityId -> unavailabilityList.add(unavailabilityRepository.getReferenceById(unavailabilityId)));
+        managerDto.getUnavailabilities().forEach(unavailabilityId -> unavailabilityList.add(unavailabilityRepository.findById(unavailabilityId).orElseThrow(EntityNotFoundException::new)));
 
         List<Notification> notificationList = new ArrayList<>();
-        managerDto.getNotifications().forEach(notificationId -> notificationList.add(notificationRepository.getReferenceById(notificationId)));
+        managerDto.getNotifications().forEach(notificationId -> notificationList.add(notificationRepository.findById(notificationId).orElseThrow(EntityNotFoundException::new)));
 
         List<Comment> employeeComments = new ArrayList<>();
-        managerDto.getEmployeeComments().forEach(employeeCommentId -> employeeComments.add(commentRepository.getReferenceById(employeeCommentId)));
+        managerDto.getEmployeeComments().forEach(employeeCommentId -> employeeComments.add(commentRepository.findById(employeeCommentId).orElseThrow(EntityNotFoundException::new)));
 
         List<ElementEvent> elementEventList = new ArrayList<>();
-        managerDto.getElementEvents().forEach(elementEventId -> elementEventList.add(elementEventRepository.getReferenceById(elementEventId)));
+        managerDto.getElementEvents().forEach(elementEventId -> elementEventList.add(elementEventRepository.findById(elementEventId).orElseThrow(EntityNotFoundException::new)));
 
         List<Employment> employmentList = new ArrayList<>();
-        managerDto.getEmployments().forEach(employmentId -> employmentList.add(employmentRepository.getReferenceById(employmentId)));
+        managerDto.getEmployments().forEach(employmentId -> employmentList.add(employmentRepository.findById(employmentId).orElseThrow(EntityNotFoundException::new)));
 
         List<Attachment> attachmentList = new ArrayList<>();
-        managerDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.getReferenceById(attachmentId)));
+        managerDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.findById(attachmentId).orElseThrow(EntityNotFoundException::new)));
 
         List<ToolEvent> toolEventList = new ArrayList<>();
-        managerDto.getToolEvents().forEach(toolEventId -> toolEventList.add(toolEventRepository.getReferenceById(toolEventId)));
+        managerDto.getToolEvents().forEach(toolEventId -> toolEventList.add(toolEventRepository.findById(toolEventId).orElseThrow(EntityNotFoundException::new)));
 
         List<Unavailability> createdUnavailabilities = new ArrayList<>();
-        managerDto.getCreatedUnavailabilities().forEach(unavailabilityId -> createdUnavailabilities.add(unavailabilityRepository.getReferenceById(unavailabilityId)));
+        managerDto.getCreatedUnavailabilities().forEach(unavailabilityId -> createdUnavailabilities.add(unavailabilityRepository.findById(unavailabilityId).orElseThrow(EntityNotFoundException::new)));
 
         List<ToolEvent> acceptedEvents = new ArrayList<>();
-        managerDto.getAcceptedEvents().forEach(acceptedEventId -> acceptedEvents.add(toolEventRepository.getReferenceById(acceptedEventId)));
+        managerDto.getAcceptedEvents().forEach(acceptedEventId -> acceptedEvents.add(toolEventRepository.findById(acceptedEventId).orElseThrow(EntityNotFoundException::new)));
 
         List<Orders> ordersList = new ArrayList<>();
-        managerDto.getManagedOrders().forEach(orderId -> ordersList.add(orderRepository.getReferenceById(orderId)));
+        managerDto.getManagedOrders().forEach(orderId -> ordersList.add(orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new)));
 
         List<DemandAdHoc> demandAdHocList = new ArrayList<>();
-        managerDto.getDemandsAdHocs().forEach(demandAdHocId -> demandAdHocList.add(demandAdHocRepository.getReferenceById(demandAdHocId)));
+        managerDto.getDemandsAdHocs().forEach(demandAdHocId -> demandAdHocList.add(demandAdHocRepository.findById(demandAdHocId).orElseThrow(EntityNotFoundException::new)));
 
         List<ElementEvent> elementEvents = new ArrayList<>();
-        managerDto.getElementEvents().forEach(elementEventId -> elementEvents.add(elementEventRepository.getReferenceById(elementEventId)));
+        managerDto.getElementEvents().forEach(elementEventId -> elementEvents.add(elementEventRepository.findById(elementEventId).orElseThrow(EntityNotFoundException::new)));
 
         Manager manager = new Manager();
         manager.setId(managerDto.getId());

@@ -9,6 +9,7 @@ import com.emontazysta.repository.WarehouseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,18 +32,24 @@ public class LocationMapper {
                 .propertyNumber(location.getPropertyNumber())
                 .apartmentNumber(location.getApartmentNumber())
                 .zipCode(location.getZipCode())
-                .orders(location.getOrders().stream().map(Orders::getId).collect(Collectors.toList()))
-                .warehouses(location.getWarehouses().stream().map(Warehouse::getId).collect(Collectors.toList()))
+                .orders(location.getOrders().stream()
+                        .filter(order -> !order.isDeleted())
+                        .map(Orders::getId)
+                        .collect(Collectors.toList()))
+                .warehouses(location.getWarehouses().stream()
+                        .filter(warehouse -> !warehouse.isDeleted())
+                        .map(Warehouse::getId)
+                        .collect(Collectors.toList()))
                 .build();
     }
 
     public Location toEntity(LocationDto locationDto) {
 
         List<Orders> ordersList = new ArrayList<>();
-        locationDto.getOrders().forEach(locationId -> ordersList.add(orderRepository.getReferenceById(locationId)));
+        locationDto.getOrders().forEach(locationId -> ordersList.add(orderRepository.findById(locationId).orElseThrow(EntityNotFoundException::new)));
 
         List<Warehouse> warehouseList = new ArrayList<>();
-        locationDto.getWarehouses().forEach(warehouseId -> warehouseList.add(warehouseRepository.getReferenceById(warehouseId)));
+        locationDto.getWarehouses().forEach(warehouseId -> warehouseList.add(warehouseRepository.findById(warehouseId).orElseThrow(EntityNotFoundException::new)));
 
         return Location.builder()
                 .id(locationDto.getId())

@@ -24,7 +24,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentDto> getAll() {
-        return repository.findAllByDeletedIsFalse().stream()
+        return repository.findAll().stream()
                 .map(commentMapper::toDto)
                 .collect(Collectors.toList());
     }
@@ -32,7 +32,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentDto getById(Long id) {
 
-        Comment comment = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        Comment comment = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         return commentMapper.toDto(comment);
     }
 
@@ -47,18 +47,13 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void delete(Long id) {
 
-        Comment comment = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
-        comment.setDeleted(true);
-        comment.setMessageCreator(null);
-        comment.setOrderStage(null);
-        comment.getAttachments().forEach(attachment -> attachment.setComment(null));
-        repository.save(comment);
+        repository.deleteById(id);
     }
 
     @Override
     public CommentDto update(Long id, CommentDto commentDto) {
         Comment updatedComment = commentMapper.toEntity(commentDto);
-        Comment comment = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        Comment comment = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         comment.setContent(updatedComment.getContent());
         comment.setMessageCreator(updatedComment.getMessageCreator());
         comment.setOrderStage(updatedComment.getOrderStage());

@@ -23,6 +23,7 @@ import com.emontazysta.repository.UnavailabilityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,46 +52,73 @@ public class SpecialistMapper {
                 .email(specialist.getEmail())
                 .phone(specialist.getPhone())
                 .pesel(specialist.getPesel())
-                .unavailabilities(specialist.getUnavailabilities().stream().map(Unavailability::getId).collect(Collectors.toList()))
-                .notifications(specialist.getNotifications().stream().map(Notification::getId).collect(Collectors.toList()))
-                .employeeComments(specialist.getEmployeeComments().stream().map(Comment::getId).collect(Collectors.toList()))
-                .elementEvents(specialist.getElementEvents().stream().map(ElementEvent::getId).collect(Collectors.toList()))
-                .employments(specialist.getEmployments().stream().map(Employment::getId).collect(Collectors.toList()))
-                .attachments(specialist.getAttachments().stream().map(Attachment::getId).collect(Collectors.toList()))
-                .toolEvents(specialist.getToolEvents().stream().map(ToolEvent::getId).collect(Collectors.toList()))
-                .orders(specialist.getOrders().stream().map(Orders::getId).collect(Collectors.toList()))
-                .demandAdHocs(specialist.getDemandAdHocs().stream().map(DemandAdHoc::getId).collect(Collectors.toList()))
+                .unavailabilities(specialist.getUnavailabilities().stream()
+                        .filter(unavailability -> !unavailability.isDeleted())
+                        .map(Unavailability::getId)
+                        .collect(Collectors.toList()))
+                .notifications(specialist.getNotifications().stream()
+                        .filter(notification -> !notification.isDeleted())
+                        .map(Notification::getId)
+                        .collect(Collectors.toList()))
+                .employeeComments(specialist.getEmployeeComments().stream()
+                        .filter(comment -> !comment.isDeleted())
+                        .map(Comment::getId)
+                        .collect(Collectors.toList()))
+                .elementEvents(specialist.getElementEvents().stream()
+                        .filter(elementEvent -> !elementEvent.isDeleted())
+                        .map(ElementEvent::getId)
+                        .collect(Collectors.toList()))
+                .employments(specialist.getEmployments().stream()
+                        .filter(employment -> !employment.isDeleted())
+                        .map(Employment::getId)
+                        .collect(Collectors.toList()))
+                .attachments(specialist.getAttachments().stream()
+                        .filter(attachment -> !attachment.isDeleted())
+                        .map(Attachment::getId)
+                        .collect(Collectors.toList()))
+                .toolEvents(specialist.getToolEvents().stream()
+                        .filter(toolEvent -> !toolEvent.isDeleted())
+                        .map(ToolEvent::getId)
+                        .collect(Collectors.toList()))
+                .orders(specialist.getOrders().stream()
+                        .filter(order -> !order.isDeleted())
+                        .map(Orders::getId)
+                        .collect(Collectors.toList()))
+                .demandAdHocs(specialist.getDemandAdHocs().stream()
+                        .filter(demandAdHoc -> !demandAdHoc.isDeleted())
+                        .map(DemandAdHoc::getId)
+                        .collect(Collectors.toList()))
                 .build();
     }
 
     public Specialist toEntity(SpecialistDto specialistDto) {
 
         List<Unavailability> unavailabilityList = new ArrayList<>();
-        specialistDto.getUnavailabilities().forEach(unavailabilityId -> unavailabilityList.add(unavailabilityRepository.getReferenceById(unavailabilityId)));
+        specialistDto.getUnavailabilities().forEach(unavailabilityId -> unavailabilityList.add(unavailabilityRepository.findById(unavailabilityId).orElseThrow(EntityNotFoundException::new)));
 
         List<Notification> notificationList = new ArrayList<>();
-        specialistDto.getNotifications().forEach(notificationId -> notificationList.add(notificationRepository.getReferenceById(notificationId)));
+        specialistDto.getNotifications().forEach(notificationId -> notificationList.add(notificationRepository.findById(notificationId).orElseThrow(EntityNotFoundException::new)));
 
         List<Comment> employeeCommentsList = new ArrayList<>();
-        specialistDto.getEmployeeComments().forEach(commentId -> employeeCommentsList.add(commentRepository.getReferenceById(commentId)));
+        specialistDto.getEmployeeComments().forEach(commentId -> employeeCommentsList.add(commentRepository.findById(commentId).orElseThrow(EntityNotFoundException::new)));
 
         List<ElementEvent> elementEventList = new ArrayList<>();
-        specialistDto.getElementEvents().forEach(elementEventId -> elementEventList.add(elementEventRepository.getReferenceById(elementEventId)));
+        specialistDto.getElementEvents().forEach(elementEventId -> elementEventList.add(elementEventRepository.findById(elementEventId).orElseThrow(EntityNotFoundException::new)));
 
         List<Employment> employmentList = new ArrayList<>();
-        specialistDto.getEmployments().forEach(employmentId -> employmentList.add(employmentRepository.getReferenceById(employmentId)));
+        specialistDto.getEmployments().forEach(employmentId -> employmentList.add(employmentRepository.findById(employmentId).orElseThrow(EntityNotFoundException::new)));
 
         List<Attachment> attachmentList = new ArrayList<>();
-        specialistDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.getReferenceById(attachmentId)));
+        specialistDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.findById(attachmentId).orElseThrow(EntityNotFoundException::new)));
 
         List<ToolEvent> toolEventList = new ArrayList<>();
-        specialistDto.getToolEvents().forEach(toolEventId -> toolEventList.add(toolEventRepository.getReferenceById(toolEventId)));
+        specialistDto.getToolEvents().forEach(toolEventId -> toolEventList.add(toolEventRepository.findById(toolEventId).orElseThrow(EntityNotFoundException::new)));
 
         List<Orders> ordersList = new ArrayList<>();
-        specialistDto.getOrders().forEach(orderId -> ordersList.add(orderRepository.getReferenceById(orderId)));
+        specialistDto.getOrders().forEach(orderId -> ordersList.add(orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new)));
 
         List<DemandAdHoc> demandAdHocList = new ArrayList<>();
-        specialistDto.getDemandAdHocs().forEach(demandAdHocId -> demandAdHocList.add(demandAdHocRepository.getReferenceById(demandAdHocId)));
+        specialistDto.getDemandAdHocs().forEach(demandAdHocId -> demandAdHocList.add(demandAdHocRepository.findById(demandAdHocId).orElseThrow(EntityNotFoundException::new)));
 
         Specialist specialist = new Specialist();
         specialist.setId(specialistDto.getId());

@@ -19,6 +19,7 @@ import com.emontazysta.repository.UnavailabilityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,38 +45,59 @@ public class FitterMapper {
                 .email(fitter.getEmail())
                 .phone(fitter.getPhone())
                 .pesel(fitter.getPesel())
-                .unavailabilities(fitter.getUnavailabilities().stream().map(Unavailability::getId).collect(Collectors.toList()))
-                .notifications(fitter.getNotifications().stream().map(Notification::getId).collect(Collectors.toList()))
-                .employeeComments(fitter.getEmployeeComments().stream().map(Comment::getId).collect(Collectors.toList()))
-                .elementEvents(fitter.getElementEvents().stream().map(ElementEvent::getId).collect(Collectors.toList()))
-                .employments(fitter.getEmployments().stream().map(Employment::getId).collect(Collectors.toList()))
-                .attachments(fitter.getAttachments().stream().map(Attachment::getId).collect(Collectors.toList()))
-                .toolEvents(fitter.getToolEvents().stream().map(ToolEvent::getId).collect(Collectors.toList()))
+                .unavailabilities(fitter.getUnavailabilities().stream()
+                        .filter(unavailability -> !unavailability.isDeleted())
+                        .map(Unavailability::getId)
+                        .collect(Collectors.toList()))
+                .notifications(fitter.getNotifications().stream()
+                        .filter(notification -> !notification.isDeleted())
+                        .map(Notification::getId)
+                        .collect(Collectors.toList()))
+                .employeeComments(fitter.getEmployeeComments().stream()
+                        .filter(comment -> !comment.isDeleted())
+                        .map(Comment::getId)
+                        .collect(Collectors.toList()))
+                .elementEvents(fitter.getElementEvents().stream()
+                        .filter(elementEvent -> !elementEvent.isDeleted())
+                        .map(ElementEvent::getId)
+                        .collect(Collectors.toList()))
+                .employments(fitter.getEmployments().stream()
+                        .filter(employment -> !employment.isDeleted())
+                        .map(Employment::getId)
+                        .collect(Collectors.toList()))
+                .attachments(fitter.getAttachments().stream()
+                        .filter(attachment -> !attachment.isDeleted())
+                        .map(Attachment::getId)
+                        .collect(Collectors.toList()))
+                .toolEvents(fitter.getToolEvents().stream()
+                        .filter(toolEvent -> !toolEvent.isDeleted())
+                        .map(ToolEvent::getId)
+                        .collect(Collectors.toList()))
                 .build();
     }
 
     public Fitter toEntity(FitterDto fitterDto) {
 
         List<Unavailability> unavailabilityList = new ArrayList<>();
-        fitterDto.getUnavailabilities().forEach(unavailabilityId -> unavailabilityList.add(unavailabilityRepository.getReferenceById(unavailabilityId)));
+        fitterDto.getUnavailabilities().forEach(unavailabilityId -> unavailabilityList.add(unavailabilityRepository.findById(unavailabilityId).orElseThrow(EntityNotFoundException::new)));
 
         List<Notification> notificationList = new ArrayList<>();
-        fitterDto.getNotifications().forEach(notificationId -> notificationList.add(notificationRepository.getReferenceById(notificationId)));
+        fitterDto.getNotifications().forEach(notificationId -> notificationList.add(notificationRepository.findById(notificationId).orElseThrow(EntityNotFoundException::new)));
 
         List<Comment> employeeCommentsList = new ArrayList<>();
-        fitterDto.getEmployeeComments().forEach(commentId -> employeeCommentsList.add(commentRepository.getReferenceById(commentId)));
+        fitterDto.getEmployeeComments().forEach(commentId -> employeeCommentsList.add(commentRepository.findById(commentId).orElseThrow(EntityNotFoundException::new)));
 
         List<ElementEvent> elementEventList = new ArrayList<>();
-        fitterDto.getElementEvents().forEach(elementEventId -> elementEventList.add(elementEventRepository.getReferenceById(elementEventId)));
+        fitterDto.getElementEvents().forEach(elementEventId -> elementEventList.add(elementEventRepository.findById(elementEventId).orElseThrow(EntityNotFoundException::new)));
 
         List<Employment> employmentList = new ArrayList<>();
-        fitterDto.getEmployments().forEach(employmentId -> employmentList.add(employmentRepository.getReferenceById(employmentId)));
+        fitterDto.getEmployments().forEach(employmentId -> employmentList.add(employmentRepository.findById(employmentId).orElseThrow(EntityNotFoundException::new)));
 
         List<Attachment> attachmentList = new ArrayList<>();
-        fitterDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.getReferenceById(attachmentId)));
+        fitterDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.findById(attachmentId).orElseThrow(EntityNotFoundException::new)));
 
         List<ToolEvent> toolEventList = new ArrayList<>();
-        fitterDto.getToolEvents().forEach(toolEventId -> toolEventList.add(toolEventRepository.getReferenceById(toolEventId)));
+        fitterDto.getToolEvents().forEach(toolEventId -> toolEventList.add(toolEventRepository.findById(toolEventId).orElseThrow(EntityNotFoundException::new)));
 
         Fitter fitter = new Fitter();
         fitter.setId(fitterDto.getId());

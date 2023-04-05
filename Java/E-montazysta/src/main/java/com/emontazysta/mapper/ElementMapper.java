@@ -14,6 +14,7 @@ import com.emontazysta.repository.OrderStageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,27 +36,39 @@ public class ElementMapper {
                 .code(element.getCode())
                 .typeOfUnit(element.getTypeOfUnit())
                 .quantityInUnit(element.getQuantityInUnit())
-                .elementReturnReleases(element.getElementReturnReleases().stream().map(ElementReturnRelease::getId).collect(Collectors.toList()))
-                .elementInWarehouses(element.getElementInWarehouses().stream().map(ElementInWarehouse::getId).collect(Collectors.toList()))
-                .elementEvents(element.getElementEvents().stream().map(ElementEvent::getId).collect(Collectors.toList()))
-                .attachmentId(element.getAttachment() == null ? null : element.getAttachment().getId())
-                .ordersStages(element.getOrdersStages().stream().map(OrderStage::getId).collect(Collectors.toList()))
+                .elementReturnReleases(element.getElementReturnReleases().stream()
+                        .filter(elementReturnRelease -> !elementReturnRelease.isDeleted())
+                        .map(ElementReturnRelease::getId)
+                        .collect(Collectors.toList()))
+                .elementInWarehouses(element.getElementInWarehouses().stream()
+                        .filter(elementInWarehouse -> !elementInWarehouse.isDeleted())
+                        .map(ElementInWarehouse::getId)
+                        .collect(Collectors.toList()))
+                .elementEvents(element.getElementEvents().stream()
+                        .filter(elementEvent -> !elementEvent.isDeleted())
+                        .map(ElementEvent::getId)
+                        .collect(Collectors.toList()))
+                .attachmentId(element.getAttachment() == null ? null : element.getAttachment().isDeleted() ? null : element.getAttachment().getId())
+                .ordersStages(element.getOrdersStages().stream()
+                        .filter(orderStage -> !orderStage.isDeleted())
+                        .map(OrderStage::getId)
+                        .collect(Collectors.toList()))
                 .build();
     }
 
     public Element toEntity(ElementDto elementDto) {
 
         List<ElementReturnRelease> elementReturnReleaseList = new ArrayList<>();
-        elementDto.getElementReturnReleases().forEach(elementReturnReleaseId -> elementReturnReleaseList.add(elementReturnReleaseRepository.getReferenceById(elementReturnReleaseId)));
+        elementDto.getElementReturnReleases().forEach(elementReturnReleaseId -> elementReturnReleaseList.add(elementReturnReleaseRepository.findById(elementReturnReleaseId).orElseThrow(EntityNotFoundException::new)));
 
         List<ElementInWarehouse> elementInWarehouseList = new ArrayList<>();
-        elementDto.getElementInWarehouses().forEach(elementInWarehouseId -> elementInWarehouseList.add(elementInWarehouseRepository.getReferenceById(elementInWarehouseId)));
+        elementDto.getElementInWarehouses().forEach(elementInWarehouseId -> elementInWarehouseList.add(elementInWarehouseRepository.findById(elementInWarehouseId).orElseThrow(EntityNotFoundException::new)));
 
         List<ElementEvent> elementEventList = new ArrayList<>();
-        elementDto.getElementEvents().forEach(elementEventId -> elementEventList.add(elementEventRepository.getReferenceById(elementEventId)));
+        elementDto.getElementEvents().forEach(elementEventId -> elementEventList.add(elementEventRepository.findById(elementEventId).orElseThrow(EntityNotFoundException::new)));
 
         List<OrderStage> orderStageList = new ArrayList<>();
-        elementDto.getOrdersStages().forEach(orderStageId -> orderStageList.add(orderStageRepository.getReferenceById(orderStageId)));
+        elementDto.getOrdersStages().forEach(orderStageId -> orderStageList.add(orderStageRepository.findById(orderStageId).orElseThrow(EntityNotFoundException::new)));
 
         return Element.builder()
                 .id(elementDto.getId())
@@ -66,7 +79,7 @@ public class ElementMapper {
                 .elementReturnReleases(elementReturnReleaseList)
                 .elementInWarehouses(elementInWarehouseList)
                 .elementEvents(elementEventList)
-                .attachment(elementDto.getAttachmentId() == null ? null : attachmentRepository.getReferenceById(elementDto.getAttachmentId()))
+                .attachment(elementDto.getAttachmentId() == null ? null : attachmentRepository.findById(elementDto.getAttachmentId()).orElseThrow(EntityNotFoundException::new))
                 .ordersStages(orderStageList)
                 .build();
     }

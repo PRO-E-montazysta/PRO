@@ -2,6 +2,8 @@ package com.emontazysta.model;
 
 import com.emontazysta.enums.Role;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +16,8 @@ import java.util.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Where(clause = "deleted=false")
+@SQLDelete(sql = "UPDATE app_user SET deleted = true WHERE id=?")
 public class AppUser implements UserDetails {
 
     public AppUser(Long id, String firstName, String lastName, String email, String password, String username, String resetPasswordToken, Set<Role> roles) {
