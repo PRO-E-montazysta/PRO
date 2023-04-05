@@ -24,7 +24,6 @@ import com.emontazysta.repository.ToolReleaseRepository;
 import com.emontazysta.repository.ToolTypeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,7 +50,7 @@ public class OrderStageMapper {
                 .name(orderStage.getName())
                 .status(orderStage.getStatus())
                 .price(orderStage.getPrice())
-                .order(orderStage.getOrder())
+                .plannedStartDate(orderStage.getPlannedStartDate())
                 .plannedEndDate(orderStage.getPlannedEndDate())
                 .startDate(orderStage.getStartDate())
                 .endDate(orderStage.getEndDate())
@@ -106,10 +105,10 @@ public class OrderStageMapper {
                 .name(orderStageDto.getName())
                 .status(orderStageDto.getStatus())
                 .price(orderStageDto.getPrice())
-                .order(orderStageDto.getOrder())
                 .plannedEndDate(orderStageDto.getPlannedEndDate())
                 .startDate(orderStageDto.getStartDate())
                 .endDate(orderStageDto.getEndDate())
+                .plannedStartDate(orderStageDto.getPlannedStartDate())
                 .plannedDurationTime(orderStageDto.getPlannedDurationTime())
                 .plannedFittersNumber(orderStageDto.getPlannedFittersNumber())
                 .minimumImagesNumber(orderStageDto.getMinimumImagesNumber())
