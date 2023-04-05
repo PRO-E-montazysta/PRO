@@ -108,6 +108,7 @@ public class OrderStageMapper {
                 .plannedEndDate(orderStageDto.getPlannedEndDate())
                 .startDate(orderStageDto.getStartDate())
                 .endDate(orderStageDto.getEndDate())
+                .plannedStartDate(orderStageDto.getPlannedStartDate())
                 .plannedDurationTime(orderStageDto.getPlannedDurationTime())
                 .plannedFittersNumber(orderStageDto.getPlannedFittersNumber())
                 .minimumImagesNumber(orderStageDto.getMinimumImagesNumber())
