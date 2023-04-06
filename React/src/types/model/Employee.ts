@@ -10,7 +10,8 @@ export type Employee = {
   status: string;
   roles: string[];
   phone: string;
-  unavailbilityDescription:string;
+  unavailbilityDescription: string;
+  pesel: string;
 };
 
 export const EmployeeStatus = {
