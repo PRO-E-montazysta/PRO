@@ -82,8 +82,8 @@ public class OrderStageImpl implements OrderStageService {
         orderStageDb.setElementReturnReleases(updatedOrderStage.getElementReturnReleases());
         orderStageDb.setAttachments(updatedOrderStage.getAttachments());
         orderStageDb.setNotifications(updatedOrderStage.getNotifications());
-        orderStageDb.setTools(updatedOrderStage.getTools());
-        orderStageDb.setElements(updatedOrderStage.getElements());
+        orderStageDb.setListOfToolsPlannedNumber(updatedOrderStage.getListOfToolsPlannedNumber());
+        orderStageDb.setListOfElementsPlannedNumber(updatedOrderStage.getListOfElementsPlannedNumber());
         orderStageDb.setDemandsAdHoc(updatedOrderStage.getDemandsAdHoc());
 
         return orderStageMapper.toDto(orderStageDb);

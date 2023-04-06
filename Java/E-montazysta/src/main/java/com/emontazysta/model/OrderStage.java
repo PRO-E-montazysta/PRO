@@ -69,10 +69,10 @@ public class OrderStage {
     private List<Notification> notifications;
 
     @OneToMany
-    private List<ToolsPlannedNumber> ListOfToolsPlannedNumber;
+    private List<ToolsPlannedNumber> listOfToolsPlannedNumber;
 
     @OneToMany
-    private List<ElementsPlannedNumber> ListOfElemntsPlannedNumber;
+    private List<ElementsPlannedNumber> listOfElementsPlannedNumber;
 
     @ManyToMany
     private List<DemandAdHoc> demandsAdHoc;

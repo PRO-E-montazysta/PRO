@@ -43,7 +43,7 @@ public class OrderStageDto {
     private Long orderId;
     private List<Long> attachments;
     private List<Long> notifications;
-    private List<Long> ListOfToolsPlannedNumber;
-    private List<Long> ListOfElemntsPlannedNumber;
+    private List<Long> listOfToolsPlannedNumber;
+    private List<Long> listOfElementsPlannedNumber;
     private List<Long> demandAdHocs;
 }

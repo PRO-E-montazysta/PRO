@@ -3,6 +3,8 @@ package com.emontazysta.configuration;
 import com.emontazysta.enums.*;
 import com.emontazysta.mapper.*;
 import com.emontazysta.model.*;
+import com.emontazysta.repository.ElementsPlannedNumberRepository;
+import com.emontazysta.repository.ToolsPlannedNumberRepository;
 import com.emontazysta.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -48,6 +50,8 @@ public class DataSeeding {
     private final AppUserService appUserService;
     private final EmploymentService employmentService;
     private final UnavailabilityService unavailabilityService;
+    private final ToolsPlannedNumberRepository toolsPlannedNumberRepository;
+    private final ElementsPlannedNumberRepository elementsPlannedNumberRepository;
 
     private final CompanyMapper companyMapper;
     private final ClientMapper clientMapper;
@@ -462,6 +466,16 @@ public class DataSeeding {
         ElementReturnRelease elementReturnRelease4 = addElementReturnReleaseFromModel(new ElementReturnRelease(null,
                 LocalDateTime.now(), 1, 0, null, warehouseman2, element4,
                 demandAdHoc4, foreman2, orderStage1));
+
+        toolsPlannedNumberRepository.save(new ToolsPlannedNumber(null, 1, toolType1, orderStage1));
+        toolsPlannedNumberRepository.save(new ToolsPlannedNumber(null, 2, toolType2, orderStage1));
+        toolsPlannedNumberRepository.save(new ToolsPlannedNumber(null, 3, toolType1, orderStage2));
+        toolsPlannedNumberRepository.save(new ToolsPlannedNumber(null, 4, toolType3, orderStage2));
+
+        elementsPlannedNumberRepository.save(new ElementsPlannedNumber(null, 1, element1, orderStage1));
+        elementsPlannedNumberRepository.save(new ElementsPlannedNumber(null, 2, element1, orderStage2));
+        elementsPlannedNumberRepository.save(new ElementsPlannedNumber(null, 3, element2, orderStage2));
+        elementsPlannedNumberRepository.save(new ElementsPlannedNumber(null, 4, element3, orderStage2));
 
         context.setAuthentication(null);
     }
