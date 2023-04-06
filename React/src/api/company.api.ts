@@ -18,6 +18,7 @@ export const updateCompany = (data: Company) => {
 }
 
 export const postCompany = (data: Company) => {
+    console.log({ data })
     return makeServiceCall(`/companies`, 'POST', { body: data })
 }
 

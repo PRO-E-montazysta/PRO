@@ -85,7 +85,7 @@ export const addNewCompanyForm = {
     pesel: '',
 }
 
-export const validationSchema = yup.object({
+export const validationSchemaPost = yup.object({
     companyName: yup.string().min(2, 'Nazwa musi zawierać co najmniej 2 znaki').required('Wprowadź nazwę'),
     firstName: yup.string().min(3, 'Imie musi zawierać co najmniej 3 znaki').required('Wprowadź imię'),
     lastName: yup.string().min(2, 'Nazwisko musi zawierać co najmniej 2 znaki').required('Wprowadź nazwisko'),
@@ -97,4 +97,8 @@ export const validationSchema = yup.object({
         .required('Wprowadź nazwę użytkownika'),
     phone: yup.string().required('Wprowadź numer telefonu'),
     pesel: yup.string().required('Wprowadź poprawny pesel'),
+})
+
+export const validationSchemaUpdate = yup.object({
+    companyName: yup.string().min(2, 'Nazwa musi zawierać co najmniej 2 znaki').required('Wprowadź nazwę'),
 })

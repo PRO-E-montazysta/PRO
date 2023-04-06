@@ -14,7 +14,7 @@ import ReplayIcon from '@mui/icons-material/Replay'
 import CloseIcon from '@mui/icons-material/Close'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { addNewCompanyForm, emptyForm, validationSchema } from './helper'
+import { addNewCompanyForm, emptyForm, validationSchemaPost, validationSchemaUpdate } from './helper'
 import FormInput from '../../components/form/FormInput'
 import FormLabel from '../../components/form/FormLabel'
 import DialogInfo, { DialogInfoParams } from '../../components/dialogInfo/DialogInfo'
@@ -28,6 +28,7 @@ const CompanyDetails = () => {
     const [readonlyMode, setReadonlyMode] = useState(true)
     const [initData, setInitData] = useState(emptyForm)
     const navigation = useNavigate()
+    const [validationSchemaPrepared, setValidationSchemaPrepared] = useState<any>(validationSchemaPost)
 
     const [dialog, setDialog] = useState({
         open: false,
@@ -48,6 +49,7 @@ const CompanyDetails = () => {
         if (queryData.data) {
             formik.setValues(JSON.parse(JSON.stringify(queryData.data)))
             setInitData(JSON.parse(JSON.stringify(queryData.data)))
+            setValidationSchemaPrepared(validationSchemaUpdate)
         }
     }, [queryData.data])
 
@@ -135,7 +137,9 @@ const CompanyDetails = () => {
 
     const handleSubmit = () => {
         if (params.id === 'new') mutationPost.mutate(JSON.parse(JSON.stringify(formik.values)))
-        else mutationUpdate.mutate(JSON.parse(JSON.stringify(formik.values)))
+        else {
+            mutationUpdate.mutate(JSON.parse(JSON.stringify(formik.values)))
+        }
     }
 
     const handleDelete = () => {
@@ -143,7 +147,9 @@ const CompanyDetails = () => {
             dialogText: ['Czy na pewno chcesz usunąć firmę?'],
             confirmAction: () => {
                 setDialog({ ...dialog, open: false })
-                if (formik.values.id) mutationDelete.mutate(formik.values.id)
+                if (formik.values.id) {
+                    mutationDelete.mutate(formik.values.id)
+                }
             },
             confirmLabel: 'Usuń',
             cancelAction: () => {
@@ -172,7 +178,7 @@ const CompanyDetails = () => {
 
     const formik = useFormik({
         initialValues: initData,
-        validationSchema: validationSchema,
+        validationSchema: validationSchemaPrepared,
         onSubmit: handleSubmit,
     })
 
@@ -356,7 +362,7 @@ const CompanyDetails = () => {
                                         >
                                             Reset
                                         </Button>
-                                        {params.id != 'new' && (
+                                        {params.id !== 'new' && (
                                             <Button
                                                 color="primary"
                                                 startIcon={<CloseIcon style={{ transform: 'rotate(-0.25turn)' }} />}
