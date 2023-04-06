@@ -200,7 +200,10 @@ const EmpDetails = () => {
 
     const handleSubmit = () => {
         let tmp: any = formik.values;
-        tmp.roles = [tmp.roles];
+
+        if (!Array.isArray(tmp.roles)) {
+            tmp.roles = [tmp.roles];
+        }
 
         formik.setValues(tmp);
 
@@ -258,6 +261,8 @@ const EmpDetails = () => {
             <FormLabel label="Username" formik={formik} id={'username'} />
             <FormLabel label="Status" formik={formik} id={'status'} />
             <FormLabel label="Role" formik={formik} id={'roles'} />
+            <FormLabel label="Phone" formik={formik} id={'phone'} />
+            <FormLabel label="Pesel" formik={formik} id={'pesel'} />
         </Grid>
         <Divider
             orientation="vertical"
@@ -284,6 +289,8 @@ const EmpDetails = () => {
                                         readonly={readonlyMode}
                                         options={roleStatusOptions()}
                                     />
+            <FormInput id={'phone'} formik={formik} readonly={false} />
+            <FormInput id={'pesel'} formik={formik} readonly={false} />
         </Grid>
     </Grid>
     <Box sx={{ margin: '20px', gap: '20px', display: 'flex', flexDirection: 'row-reverse' }}>
