@@ -12,7 +12,6 @@ import MoreVertIcon from '@mui/icons-material/MoreVert'
 import WorkHistoryIcon from '@mui/icons-material/WorkHistory'
 import { Box, Button, Divider, Grid, Paper } from '@mui/material'
 import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar'
-import { getUserById } from '../../../api/user.api'
 import ExpandMore from '../../../components/expandMore/ExpandMore'
 import { getEmployeeById } from '../../../api/employee.api'
 import FormInput from '../../../components/form/FormInput'
@@ -125,7 +124,7 @@ const EmpDetails = () => {
 
     const getStatusDescription = () => {
         if (queryData.data?.status === 'AVAILABLE') {
-            return 'Pracownik jest dostępny'
+            return <p>'Pracownik jest dostępny'</p>
         } else {
             return <p>{queryData.data?.unavailbilityDescription}</p>
         }
