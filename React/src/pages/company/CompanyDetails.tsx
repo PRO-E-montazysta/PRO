@@ -22,6 +22,8 @@ import DialogInfo, { DialogInfoParams } from '../../components/dialogInfo/Dialog
 import Card from '@mui/material/Card'
 import ExpandMore from '../../components/expandMore/ExpandMore'
 import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar'
+import FormSelect from '../../components/form/FormSelect'
+import { companyStatusOptions } from '../../helpers/enum.helper'
 
 const CompanyDetails = () => {
     const params = useParams()
@@ -293,6 +295,10 @@ const CompanyDetails = () => {
                                     }}
                                 >
                                     <FormLabel label="Nazwa firmy" formik={formik} id={'companyName'} />
+                                    {params.id !== 'new' ? (
+                                        <FormLabel label="Data utworzenia" formik={formik} id={'createdAt'} />
+                                    ) : null}
+                                    <FormLabel label="Status" formik={formik} id={'status'} />
                                     <FormLabel label="Uzasadnienie statusu" formik={formik} id={'statusReason'} />
                                 </Grid>
                                 <Divider
@@ -304,6 +310,21 @@ const CompanyDetails = () => {
                                 />
                                 <Grid item xs={6}>
                                     <FormInput id={'companyName'} formik={formik} readonly={readonlyMode} />
+                                    {params.id !== 'new' ? (
+                                        <FormInput
+                                            id={'createdAt'}
+                                            formik={formik}
+                                            readonly
+                                            style={{ marginTop: !readonlyMode ? '12px' : '' }}
+                                            type="datetime-local"
+                                        />
+                                    ) : null}
+                                    <FormSelect
+                                        id={'status'}
+                                        formik={formik}
+                                        readonly={readonlyMode}
+                                        options={companyStatusOptions()}
+                                    />
                                     <FormInput id={'statusReason'} formik={formik} readonly={readonlyMode} />
                                 </Grid>
                                 {params.id === 'new' ? (
