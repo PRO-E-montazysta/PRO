@@ -54,6 +54,20 @@ export const headCells: Array<HeadCell<Employee>> = [
         visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
+    {
+        type: 'string',
+        id: 'phone',
+        label: 'Phone',
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
+        numeric: false,
+    },
+    {
+        type: 'string',
+        id: 'pesel',
+        label: 'Pesel',
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
+        numeric: false,
+    },
 ]
 
 export const filterInitStructure: Array<FilterInputType> = [
@@ -98,6 +112,20 @@ export const filterInitStructure: Array<FilterInputType> = [
         inputType: 'text',
         typeValue: 'string',
     },
+    {
+        id: 'phone',
+        value: '',
+        label: 'Phone',
+        inputType: 'text',
+        typeValue: 'string',
+    },
+    {
+        id: 'pesel',
+        value: '',
+        label: 'Pesel',
+        inputType: 'text',
+        typeValue: 'string',
+    },
 ]
 
 export const emptyForm = {
@@ -109,6 +137,8 @@ export const emptyForm = {
     username: '',
     status: '',
     roles: [],
+    phone: '',
+    pesel: ''
 }
 
 export const validationSchema = yup.object({
@@ -116,5 +146,7 @@ export const validationSchema = yup.object({
     lastName: yup.string().min(2, 'Nazwisko musi zawierać co najmniej 2 znaki').required('Wprowadź nazwisko'),
     password: yup.string().min(8, 'Hasło musi zawierać co najmniej 8 znaków').required('Wprowadź hasło'),
     username: yup.string().min(3, 'Nazwa musi zawierać co najmniej 3 znaki').required('Wprowadź nazwe'),
-    email: yup.string().email('Wymagany jest poprawny email').required('Wprowadź email')
+    email: yup.string().email('Wymagany jest poprawny email').required('Wprowadź email'),
+    phone: yup.string().matches(/^[6-9]\d{9}$/,'Wymagany jest poprawny numer telefonu').required('Wprowadź numer telefonu'),
+    pesel: yup.string().length(11,'Wymagany jest poprawny pesel').required('Wprowadź email')
 })

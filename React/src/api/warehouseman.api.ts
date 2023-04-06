@@ -5,9 +5,9 @@ import { makeServiceCall } from "./utils.api";
 
 
 export const getAllWarehouseman = () => {
-    return makeServiceCall('/warehouseman/all', 'GET', {});
+    return makeServiceCall('/warehousemen/all', 'GET', {});
 }
 
 export const postWarehouseman = (data: Employee) => {
-    return makeServiceCall(`/warehouseman`, 'POST', { body: data })
+    return makeServiceCall(`/warehousemen`, 'POST', { body: data })
 }

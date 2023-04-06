@@ -5,9 +5,9 @@ import { makeServiceCall } from "./utils.api";
 
 
 export const getAllManagers = () => {
-    return makeServiceCall('/manager/all', 'GET', {});
+    return makeServiceCall('/managers/all', 'GET', {});
 }
 
 export const postManager = (data: Employee) => {
-    return makeServiceCall(`/manager`, 'POST', { body: data })
+    return makeServiceCall(`/managers`, 'POST', { body: data })
 } 
