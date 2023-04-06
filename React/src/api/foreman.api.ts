@@ -9,5 +9,5 @@ export const getAllForemans = () => {
 }
 
 export const postForeman = (data: Employee) => {
-    return makeServiceCall(`/foreman`, 'POST', { body: data })
+    return makeServiceCall(`/foremen`, 'POST', { body: data })
 }
