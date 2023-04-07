@@ -68,10 +68,10 @@ public class OrderStage {
     @OneToMany(mappedBy = "orderStage")
     private List<Notification> notifications;
 
-    @OneToMany
+    @OneToMany(mappedBy = "orderStage")
     private List<ToolsPlannedNumber> listOfToolsPlannedNumber;
 
-    @OneToMany
+    @OneToMany(mappedBy = "orderStage")
     private List<ElementsPlannedNumber> listOfElementsPlannedNumber;
 
     @ManyToMany

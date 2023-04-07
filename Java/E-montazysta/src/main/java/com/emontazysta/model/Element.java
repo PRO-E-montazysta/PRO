@@ -40,6 +40,6 @@ public class Element {
     @OneToOne
     private Attachment attachment;
 
-    @OneToMany
+    @OneToMany(mappedBy = "element")
     private List<ElementsPlannedNumber> listOfElementsPlannedNumber;
 }
