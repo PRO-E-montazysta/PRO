@@ -315,22 +315,22 @@ public class DataSeeding {
                 new ArrayList<>(), new ArrayList<>()));
 
         OrderStage orderStage1 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 1",
-                OrderStatus.TODO, new BigDecimal(1), 1, null, null, null,
+                OrderStatus.TODO, new BigDecimal(1), LocalDateTime.now(), LocalDateTime.now(), null, null,
                 1, 1, 1, new ArrayList<>(), foreman1,
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         OrderStage orderStage2 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 2",
-                OrderStatus.TODO, new BigDecimal(2), 2, null, null, null,
+                OrderStatus.TODO, new BigDecimal(2), LocalDateTime.now(), LocalDateTime.now(), null, null,
                 1, 1, 1, new ArrayList<>(), foreman1,
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         OrderStage orderStage3 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 3",
-                OrderStatus.TODO, new BigDecimal(3), 3, null, null, null,
+                OrderStatus.TODO, new BigDecimal(3), LocalDateTime.now(), LocalDateTime.now(), null, null,
                 1, 1, 1, new ArrayList<>(), foreman1,
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         OrderStage orderStage4 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 4",
-                OrderStatus.TODO, new BigDecimal(4), 1, null, null, null,
+                OrderStatus.TODO, new BigDecimal(4), LocalDateTime.now(), LocalDateTime.now(), null, null,
                 1, 1, 1, new ArrayList<>(), foreman2,
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), order2, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
@@ -405,7 +405,7 @@ public class DataSeeding {
                 null, null, null, null, null));
         Attachment attachment3 = addAttachmentFromModel(new Attachment(null, "Test Attachment 3", "URL",
                 "Description", TypeOfAttachment.PROFILE_PICTURE, null, null, null,
-                null, toolEvent1, null, null, null, null));
+                manager1, null, null, null, null, null));
         Attachment attachment4 = addAttachmentFromModel(new Attachment(null, "Test Attachment 4", "URL",
                 "Description", TypeOfAttachment.FAULT_PHOTO, null, null, null,
                 null, toolEvent1, null, null, null, null));
@@ -446,9 +446,9 @@ public class DataSeeding {
         ElementInWarehouse elementInWarehouse2 = addElementInWarehouseFromModel(new ElementInWarehouse(null,
                 1, 1, "2", "1", element2, warehouse1));
         ElementInWarehouse elementInWarehouse3 = addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                1, 1, "1", "2", element1, warehouse2));
+                1, 1, "1", "2", element3, warehouse2));
         ElementInWarehouse elementInWarehouse4 = addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                1, 1, "2", "2", element2, warehouse2));
+                1, 1, "2", "2", element4, warehouse2));
 
         ElementReturnRelease elementReturnRelease1 = addElementReturnReleaseFromModel(new ElementReturnRelease(null,
                 LocalDateTime.now(), 1, 1, LocalDateTime.now(), warehouseman1, element1,

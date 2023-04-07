@@ -10,7 +10,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,9 +26,8 @@ public class OrderStageDto {
     private OrderStatus status;
     @NotNull(message = "Price cannot be empty")
     private BigDecimal price;
-    @NotNull(message = "Order cannot be empty")
-    private Integer order;
-    private LocalDate plannedEndDate;
+    private LocalDateTime plannedStartDate;
+    private LocalDateTime plannedEndDate;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     @PositiveOrZero(message = "Planned duration time cannot be negative")

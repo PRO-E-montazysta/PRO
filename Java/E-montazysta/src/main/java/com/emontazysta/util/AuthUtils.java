@@ -10,6 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -32,10 +34,13 @@ public class AuthUtils {
 
     public Long getLoggedUserCompanyId() {
         AppUser appUser = getLoggedUser();
-        EmploymentDto employment = employmentService.getCurrentEmploymentByEmployeeId(appUser.getId());
-        log.debug("Employment found for logged user: {}", employment);
-        Long companyId = employment.getCompanyId();
-        log.debug("CompanyId found for logged used: {}", companyId);
-        return employment.getCompanyId();
+        Optional<EmploymentDto> employment = employmentService.getCurrentEmploymentByEmployeeId(appUser.getId());
+        if(employment.isPresent()) {
+            log.debug("Employment found for logged user: {}", employment.get());
+            Long companyId = employment.get().getCompanyId();
+            log.debug("CompanyId found for logged used: {}", companyId);
+            return employment.get().getCompanyId();
+        }
+        return null;
     }
 }

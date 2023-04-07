@@ -1,6 +1,7 @@
 package com.emontazysta.model.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.validator.constraints.pl.PESEL;
 
@@ -11,10 +12,10 @@ import java.util.List;
 
 @Data
 @SuperBuilder
+@NoArgsConstructor
 public class EmployeeDto extends AppUserDto {
 
     private Long id;
-    @NotBlank(message = "Phone cannot be empty")
     @Pattern(regexp ="^\\+?[0-9]{10,}$|^\\+?[0-9]{1,3}[-\\s()]*[0-9]{6,}$", message = "Phone number has to be valid")
     private String phone;
     @PESEL(message = "PESEL is not valid")

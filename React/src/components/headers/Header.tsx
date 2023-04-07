@@ -1,83 +1,93 @@
-import React from 'react';
-import { AppBar, Box, Button, IconButton, ImageList, ImageListItem, Toolbar } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import firstPicture from '../../assets/img/firstPicture.png';
-import secondPicture from '../../assets/img/secondPicture.png';
-import logo from '../../assets/img/logo.png';
-import { useNavigate } from 'react-router-dom';
-import { pageList } from '../../utils/pageList';
-import NavMenuButton from '../navMenuItem/NavMenuButton';
-import { removeToken } from '../../utils/token';
-import { v4 as uuidv4 } from 'uuid';
+import React, { useState } from 'react'
+import { AppBar, Avatar, Badge, Box, Button, IconButton, ImageList, ImageListItem, Toolbar } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import firstPicture from '../../assets/img/firstPicture.png'
+import secondPicture from '../../assets/img/secondPicture.png'
+import logo from '../../assets/img/logo.png'
+import { useNavigate } from 'react-router-dom'
+import { pageList } from '../../utils/pageList'
+import NavMenuButton from '../navbar/NavButton'
+import { logout, removeToken } from '../../utils/token'
+import { v4 as uuidv4 } from 'uuid'
 
+import LogoutIcon from '@mui/icons-material/Logout'
 
-import LogoutIcon from '@mui/icons-material/Logout';
-
+import { theme } from '../../themes/baseTheme'
+import NotiButton from '../navbar/NotiButton'
 
 const CustomizedToolbar = styled(Toolbar)(({ theme }) => ({
-  '@media (min-width: 600px)': {
-    minHeight: 32,
-  },
-}));
+    '@media (min-width: 600px)': {
+        minHeight: '60px',
+    },
+}))
 
-const itemData = [
-  {
-    img: firstPicture,
-    title: 'pic1',
-  },
-  {
-    img: secondPicture,
-    title: 'pic2',
-  },
-];
+export type UserInfo = {
+    name: string
+    company: string
+    photoSrc: string
+    notifications: Array<Notification>
+}
+
+export type Notification = {
+    url: string
+    dateTime: Date
+    text: string
+}
 
 const Header = () => {
-  const navigation = useNavigate();
-  const handleLogout = () => {
-    removeToken();
-    navigation('/login');
-  };
+    const navigate = useNavigate()
+    const handleLogout = () => {
+        // removeToken()
+        // navigate('/login')
+        logout()
+    }
 
-  const rootPage = pageList.find(p => p.path === '/');
-  const rootPageChildrens = rootPage?.children;
-  return (
-    <AppBar position="static">
-      <Box sx={{ flexGrow: 1, backgroundColor: '#1A1C26' }}>
-        <ImageList
-          gap={0}
-          cols={2}
-          sx={{
-            margin: 0,
-            '@media (min-width: 600px)': {
-              padding: 0,
-              marginTop: 1,
-              color: 'red',
-            },
-          }}
-        >
-          {itemData.map((item) => (
-            <ImageListItem key={uuidv4()}>
-              <img src={`${item.img}`} srcSet={`${item.img}`} alt={item.title} loading="lazy" />
-            </ImageListItem>
-          ))}
-        </ImageList>
-        <CustomizedToolbar style={{ overflow: 'auto' }}>
-          <Box component="img" sx={{ mr: 5 }} alt="Your logo." src={logo}></Box>
-          {
-            rootPageChildrens ? rootPageChildrens.map(page => {
-              return <NavMenuButton {...page} key={uuidv4()} />
-            })
-              :
-              null
-          }
-          <IconButton sx={{ marginLeft: 'auto' }} color="inherit" onClick={handleLogout}>
-            <LogoutIcon />
-          </IconButton>
-          <Box></Box>
-        </CustomizedToolbar>
-      </Box>
-    </AppBar>
-  );
-};
+    const [userInfo, setUserInfo] = useState<UserInfo>({
+        name: 'Imię Nazwisko',
+        company: 'Firma',
+        photoSrc: '',
+        notifications: [],
+    })
 
-export default Header;
+    const rootPage = pageList.find((p) => p.path === '/')
+    const rootPageChildrens = rootPage?.children
+
+    return (
+        <AppBar position="static">
+            <Box sx={{ backgroundColor: '#1A1C26' }}>
+                <CustomizedToolbar>
+                    <Box
+                        component="img"
+                        alt="Logo"
+                        title="Strona główna"
+                        src={logo}
+                        sx={{ cursor: 'pointer', width: 40, height: 40 }}
+                        onClick={() => navigate('/')}
+                    ></Box>
+                    {rootPageChildrens
+                        ? rootPageChildrens.map((page, index) => {
+                              return <NavMenuButton {...page} key={index} />
+                          })
+                        : null}
+
+                    <Box sx={{ ml: 'auto', mr: '10px', textAlign: 'right' }}>
+                        <Box sx={{ color: theme.palette.primary.light, fontSize: '12px' }}>{userInfo.name}</Box>
+                        <Box>{userInfo.company}</Box>
+                    </Box>
+                    <Avatar sx={{ width: 40, height: 40 }} alt={userInfo.name} src={userInfo.photoSrc} />
+                    <NotiButton userInfo={userInfo} />
+                    <IconButton
+                        color="inherit"
+                        onClick={handleLogout}
+                        title="Wyloguj"
+                        sx={{ ml: '10px', width: 40, height: 40, border: '1px solid white' }}
+                    >
+                        <LogoutIcon />
+                    </IconButton>
+                </CustomizedToolbar>
+            </Box>
+        </AppBar>
+    )
+}
+
+export default Header
