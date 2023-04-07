@@ -208,7 +208,13 @@ const ElementEventDetails = () => {
                                     }}
                                 >
                                     <FormLabel label="Zgłaszany element" formik={formik} id={'elementId'} />
-                                    <FormLabel label="Data zgłoszenia" formik={formik} id={'eventDate'} />
+                                    {params.id !== 'new' ? (
+                                        <>
+                                            <FormLabel label="Data zgłoszenia" formik={formik} id={'eventDate'} />
+                                            <FormLabel label="Data przyjęcia" formik={formik} id={'movingDate'} />
+                                            <FormLabel label="Data zakończenia" formik={formik} id={'completionDate'} />
+                                        </>
+                                    ) : null}
                                     <FormLabel label="Status" formik={formik} id={'status'} />
                                     <FormLabel label="Opis" formik={formik} id={'description'} />
                                     <FormLabel label="Ilość" formik={formik} id={'quantity'} />
@@ -231,14 +237,33 @@ const ElementEventDetails = () => {
                                             queryElements.data,
                                         )}
                                     />
-                                    <FormInput
-                                        id={'eventDate'}
-                                        formik={formik}
-                                        readonly
-                                        style={{ marginTop: !readonlyMode ? '12px' : '' }}
-                                        type="datetime-local"
-                                    />
-                                    <FormSelect
+                                    {params.id !== 'new' ? (
+                                        /*TODO: Ukrywanie jeśli wartość jest null dla movingDate i completionDate*/
+                                        <>
+                                            <FormInput
+                                                id={'eventDate'}
+                                                formik={formik}
+                                                readonly
+                                                style={{ marginTop: !readonlyMode ? '12px' : '' }}
+                                                type="datetime-local"
+                                            />
+                                            <FormInput
+                                                id={'movingDate'}
+                                                formik={formik}
+                                                readonly
+                                                style={{ marginTop: !readonlyMode ? '12px' : '' }}
+                                                type="datetime-local"
+                                            />
+                                            <FormInput
+                                                id={'completionDate'}
+                                                formik={formik}
+                                                readonly
+                                                style={{ marginTop: !readonlyMode ? '12px' : '' }}
+                                                type="datetime-local"
+                                            />
+                                        </>
+                                    ) : null}
+                                    <FormSelect /*TODO: Edycja dostępna dla roli: MANAGER i WAREHOUSE_MANAGER*/
                                         id={'status'}
                                         formik={formik}
                                         readonly={readonlyMode}
@@ -261,7 +286,7 @@ const ElementEventDetails = () => {
                                         >
                                             Edytuj
                                         </Button>
-                                        <Button
+                                        <Button /*TODO: Dostępne dla roli: MANAGER i WAREHOUSE_MANAGER*/
                                             color="error"
                                             startIcon={<DeleteIcon />}
                                             variant="contained"

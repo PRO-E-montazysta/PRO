@@ -82,38 +82,24 @@ export const filterInitStructure: Array<FilterInputType> = [
 
 export const toolEventEmptyForm = {
     id: null,
-    eventDate: '',
-    movingDate: '',
-    completionDate: '',
     description: '',
     status: 'CREATED',
-    createdById: null,
-    acceptedById: null,
     toolId: '',
-    attachments: [],
 }
 
 export const toolEventValidationSchema = yup.object({
-    status: yup.string().required('Wybierz status zgłoszenia!'),
     toolId: yup.string().required('Wybierz narzędzie!'),
 })
 
 export const elementEventEmptyForm = {
     id: null,
-    eventDate: '',
-    movingDate: '',
-    completionDate: '',
     description: '',
     status: 'CREATED',
     quantity: '',
-    createdById: null,
-    acceptedById: null,
     elementId: '',
-    attachments: [],
 }
 
 export const elementEventValidationSchema = yup.object({
-    status: yup.string().required('Wybierz status zgłoszenia!'),
-    elementId: yup.string().required('Wybierz narzędzie!'),
-    quantity: yup.number().typeError('Wprowadź ilość!'),
+    elementId: yup.string().required('Wybierz element!'),
+    quantity: yup.number().required('Wprowadź ilość!'),
 })
