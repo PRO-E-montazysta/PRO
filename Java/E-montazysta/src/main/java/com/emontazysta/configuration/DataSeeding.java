@@ -382,9 +382,9 @@ public class DataSeeding {
         ToolEvent toolEvent1 = addToolEventFromModel(new ToolEvent(null, LocalDateTime.now(), null, null,
                 "Test ToolEvent 1", EventStatus.CREATED, null, null, tool1, new ArrayList<>()));
         ToolEvent toolEvent2 = addToolEventFromModel(new ToolEvent(null, LocalDateTime.now(), null, null,
-                "Test ToolEvent 2", EventStatus.IN_PROGRESS, null, null, tool1, new ArrayList<>()));
+                "Test ToolEvent 2", EventStatus.CREATED, null, null, tool1, new ArrayList<>()));
         ToolEvent toolEvent3 = addToolEventFromModel(new ToolEvent(null, LocalDateTime.now(), null, null,
-                "Test ToolEvent 3", EventStatus.REPAIRED, null, null, tool2, new ArrayList<>()));
+                "Test ToolEvent 3", EventStatus.CREATED, null, null, tool2, new ArrayList<>()));
         ToolEvent toolEvent4 = addToolEventFromModel(new ToolEvent(null, LocalDateTime.now(), null, null,
                 "Test ToolEvent 4", EventStatus.CREATED, null, null, tool3, new ArrayList<>()));
 
@@ -429,16 +429,16 @@ public class DataSeeding {
                 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>()));
 
         ElementEvent elementEvent1 = addElementEventFromModel(new ElementEvent(null, LocalDateTime.now(),
-                null, LocalDateTime.now(), "Test ElementEvent 1", EventStatus.CREATED, 1,
+                null, null, "Test ElementEvent 1", EventStatus.CREATED, 1,
                 null, null, element1, new ArrayList<>()));
         ElementEvent elementEvent2 = addElementEventFromModel(new ElementEvent(null, LocalDateTime.now(),
-                null, LocalDateTime.now(), "Test ElementEvent 2", EventStatus.IN_PROGRESS, 1,
+                null, null, "Test ElementEvent 2", EventStatus.CREATED, 1,
                 null, null, element1, new ArrayList<>()));
         ElementEvent elementEvent3 = addElementEventFromModel(new ElementEvent(null, LocalDateTime.now(),
-                null, LocalDateTime.now(), "Test ElementEvent 3", EventStatus.REPAIRED, 1,
+                null, null, "Test ElementEvent 3", EventStatus.CREATED, 1,
                 null, null, element2, new ArrayList<>()));
         ElementEvent elementEvent4 = addElementEventFromModel(new ElementEvent(null, LocalDateTime.now(),
-                null, LocalDateTime.now(), "Test ElementEvent 4", EventStatus.CREATED, 1,
+                null, null, "Test ElementEvent 4", EventStatus.CREATED, 1,
                 null, null, element3, new ArrayList<>()));
 
         ElementInWarehouse elementInWarehouse1 = addElementInWarehouseFromModel(new ElementInWarehouse(null,

@@ -1,5 +1,6 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.enums.EventStatus;
 import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.ToolEventMapper;
 import com.emontazysta.model.AppUser;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,9 +54,13 @@ public class ToolEventServiceImpl implements ToolEventService {
 
     @Override
     public ToolEventDto add(ToolEventDto toolEventDto) {
+        toolEventDto.setAttachments(new ArrayList<>());
+
         ToolEvent toolEvent = toolEventMapper.toEntity(toolEventDto);
         toolEvent.setCreatedBy(authUtils.getLoggedUser());
         toolEvent.setEventDate(LocalDateTime.now());
+        toolEvent.setStatus(EventStatus.CREATED);
+
         return toolEventMapper.toDto(repository.save(toolEvent));
     }
 
@@ -82,13 +88,22 @@ public class ToolEventServiceImpl implements ToolEventService {
         }else {
             if(!toolEvent.getTool().getWarehouse().getCompany().getId().equals(authUtils.getLoggedUserCompanyId()))
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+
+            if(updatedToolEvent.getStatus() == EventStatus.IN_PROGRESS && toolEvent.getStatus() != EventStatus.IN_PROGRESS){
+                toolEvent.setMovingDate(LocalDateTime.now());
+            }
+
+            if((updatedToolEvent.getStatus() != EventStatus.CREATED && updatedToolEvent.getStatus() != EventStatus.IN_PROGRESS)
+                    && (toolEvent.getStatus() == EventStatus.CREATED || toolEvent.getStatus() == EventStatus.IN_PROGRESS)){
+                toolEvent.setCompletionDate(LocalDateTime.now());
+            }
+
+            toolEvent.setStatus(updatedToolEvent.getStatus());
         }
 
-        toolEvent.setMovingDate(updatedToolEvent.getMovingDate());
-        toolEvent.setCompletionDate(updatedToolEvent.getCompletionDate());
+
+
         toolEvent.setDescription(updatedToolEvent.getDescription());
-        toolEvent.setStatus(updatedToolEvent.getStatus());
-        toolEvent.setAcceptedBy(updatedToolEvent.getAcceptedBy());
         toolEvent.setTool(updatedToolEvent.getTool());
         toolEvent.setAttachments(updatedToolEvent.getAttachments());
 
