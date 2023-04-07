@@ -20,6 +20,9 @@ import Employees from '../pages/employees'
 import EmpDetails from '../pages/employees/employeesDetails/EmpDetails'
 import Clients from '../pages/clients'
 import ClientDetails from '../pages/clients/ClientDetails'
+import Events from '../pages/events'
+import ToolEventDetails from '../pages/events/ToolEventDetails'
+import ElementEventDetails from '../pages/events/ElementEventDetails'
 
 export type PageProps = {
     name: string
@@ -297,6 +300,46 @@ export const pageList: Array<PageProps> = [
                 path: '/elements/:id',
                 allowedRoles: [Role.MANAGER, Role.SPECIALIST, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER],
                 component: <ElementDetails />,
+            },
+            {
+                inNav: true,
+                name: 'Usterki',
+                path: '/events',
+                component: <Events />,
+                allowedRoles: [Role.MANAGER, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER, Role.FITTER, Role.FOREMAN],
+                children: [
+                    {
+                        inNav: true,
+                        name: 'Lista usterek',
+                        path: '/events',
+                    },
+                    {
+                        inNav: true,
+                        name: 'Zgłoś usterkę narzędzia',
+                        path: '/toolevent/new',
+                        allowedRoles: [Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER, Role.FITTER, Role.FOREMAN],
+                    },
+                    {
+                        inNav: true,
+                        name: 'Zgłoś usterkę elementu',
+                        path: '/elementevent/new',
+                        allowedRoles: [Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER, Role.FITTER, Role.FOREMAN],
+                    },
+                ],
+            },
+            {
+                inNav: false,
+                name: '',
+                path: '/toolevent/:id',
+                allowedRoles: [Role.MANAGER, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER, Role.FITTER, Role.FOREMAN],
+                component: <ToolEventDetails />,
+            },
+            {
+                inNav: false,
+                name: '',
+                path: '/elementEvent/:id',
+                allowedRoles: [Role.MANAGER, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER, Role.FITTER, Role.FOREMAN],
+                component: <ElementEventDetails />,
             },
         ],
     },
