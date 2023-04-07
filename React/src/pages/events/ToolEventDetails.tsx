@@ -213,9 +213,9 @@ const ToolEventDetails = () => {
                                             <FormLabel label="Data zgłoszenia" formik={formik} id={'eventDate'} />
                                             <FormLabel label="Data przyjęcia" formik={formik} id={'movingDate'} />
                                             <FormLabel label="Data zakończenia" formik={formik} id={'movingDate'} />
+                                            <FormLabel label="Status" formik={formik} id={'status'} />
                                         </>
                                     ) : null}
-                                    <FormLabel label="Status" formik={formik} id={'status'} />
                                     <FormLabel label="Opis" formik={formik} id={'description'} />
                                 </Grid>
                                 <Divider
@@ -260,14 +260,14 @@ const ToolEventDetails = () => {
                                                 style={{ marginTop: !readonlyMode ? '12px' : '' }}
                                                 type="datetime-local"
                                             />
+                                            <FormSelect /*TODO: Edycja dostępna dla roli: MANAGER i WAREHOUSE_MANAGER*/
+                                                id={'status'}
+                                                formik={formik}
+                                                readonly={readonlyMode}
+                                                options={eventStatusOptions()}
+                                            />
                                         </>
                                     ) : null}
-                                    <FormSelect /*TODO: Edycja dostępna dla roli: MANAGER i WAREHOUSE_MANAGER*/
-                                        id={'status'}
-                                        formik={formik}
-                                        readonly={readonlyMode}
-                                        options={eventStatusOptions()}
-                                    />
                                     <FormInput id={'description'} formik={formik} readonly={readonlyMode} />
                                 </Grid>
                             </Grid>
