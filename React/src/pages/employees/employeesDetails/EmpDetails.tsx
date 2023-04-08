@@ -297,7 +297,8 @@ const EmpDetails = () => {
         color="primary"
         startIcon={<SaveIcon />}
         variant="contained"
-        onClick={handleSubmit}
+        type="submit"
+        onClick={formik.submitForm}
         style={{ width: 120 }}
     >
         Zapisz
@@ -307,6 +308,7 @@ const EmpDetails = () => {
                     startIcon={<ReplayIcon style={{ transform: 'rotate(-0.25turn)' }} />}
                     style={{ color: theme.palette.primary.main, width: 120 }}
                     variant="outlined"
+                    type="submit"
                     onClick={handleReset}
                 >
                     Reset
@@ -314,6 +316,7 @@ const EmpDetails = () => {
     </Box>
         </Paper>
     </Box>
+    {dialog.open && <DialogInfo {...dialog} />}
     </>) : (
         <Grid container alignItems="center" justifyContent="center" marginTop={2}>
             <Card sx={{ minWidth: 500, left: '50%' }}>
