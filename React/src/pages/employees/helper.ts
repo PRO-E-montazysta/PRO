@@ -148,6 +148,6 @@ export const validationSchema = yup.object({
     password: yup.string().min(8, 'Hasło musi zawierać co najmniej 8 znaków').required('Wprowadź hasło'),
     username: yup.string().min(3, 'Nazwa musi zawierać co najmniej 3 znaki').required('Wprowadź nazwe'),
     email: yup.string().email('Wymagany jest poprawny email').required('Wprowadź email'),
-    phone: yup.string().matches(/^[6-9]\d{9}$/,'Wymagany jest poprawny numer telefonu').required('Wprowadź numer telefonu'),
+    phone: yup.string().min(9,'Wymagany jest poprawny numer telefonu').required('Wprowadź numer telefonu'),
     pesel: yup.string().length(11,'Wymagany jest poprawny pesel').required('Wprowadź email')
 })
