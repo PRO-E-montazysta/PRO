@@ -2,10 +2,9 @@ package com.example.e_montaysta.data.datasource
 
 import com.example.e_montaysta.data.model.Tool
 
-class ToolsDataSource (Gson){
+class ToolsDataSource (){
 
     val tools = listOf <Tools>(
-
             )
 
     init{

@@ -1,0 +1,26 @@
+package com.example.e_montaysta.di
+
+import com.example.e_montaysta.data.controllers.AuthController
+import com.example.e_montaysta.data.repository.AuthRepository
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.example.e_montaysta.ui.viewmodels.LoginViewModel
+
+/**
+ * ViewModel provider factory to instantiate LoginViewModel.
+ * Required given LoginViewModel has a non-empty constructor
+ */
+class LoginViewModelFactory : ViewModelProvider.Factory {
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
+            return LoginViewModel(
+                loginRepository = AuthController(
+                    repository = AuthRepository()
+                )
+            ) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}

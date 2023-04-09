@@ -1,8 +1,8 @@
 package com.example.e_montaysta
 
-import DI.appModule
-import Helpers.Interfaces.ISharedPreferencesHelper
-import Helpers.SharedPreferencesHelper
+import com.example.e_montaysta.di.appModule
+import com.example.e_montaysta.helpers.Interfaces.ISharedPreferencesHelper
+import com.example.e_montaysta.helpers.SharedPreferencesHelper
 import android.app.Application
 import androidx.preference.PreferenceManager
 import org.koin.android.ext.koin.androidContext
@@ -23,7 +23,7 @@ class App : Application() {
         startKoin{
             androidLogger()
             androidContext(this@App)
-            modules(DI.appModule, preferencesModule)
+            modules(appModule, preferencesModule)
         }
         // Required initialization logic here!
     }

@@ -19,10 +19,12 @@
     <string name="title_qrscan">QR Scan</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_settings">Settings</string>
+    <string name="title_tool">Narzędzie</string>
     <string name="content_description_media">content_description_media</string>
     <string name="title">title</string>
     <string name="title_warehouses">Magazyny</string>
     <string name="title_tools">Narzędzia</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tool_warehouse_button">Przejdź do magazynu</string>
 </resources>
