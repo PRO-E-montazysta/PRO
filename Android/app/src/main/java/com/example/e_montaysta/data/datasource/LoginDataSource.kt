@@ -1,8 +1,8 @@
 package com.example.e_montaysta.data.datasource
 
-import com.example.e_montaysta.data.model.Result
 import com.example.e_montaysta.data.model.LoggedInUser
 import java.io.IOException
+import com.example.e_montaysta.data.model.Result
 
 /**
  * Class that handles authentication w/ login credentials and retrieves user information.

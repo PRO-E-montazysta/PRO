@@ -5,12 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Patterns
-import com.example.e_montaysta.data.model.Result
 
 import com.example.e_montaysta.R
 import com.example.e_montaysta.data.model.LoggedInUserView
 import com.example.e_montaysta.data.model.LoginFormState
 import com.example.e_montaysta.data.model.LoginResult
+import com.example.e_montaysta.data.model.Result
 
 class LoginViewModel(private val loginRepository: IAuthController) : ViewModel() {
 

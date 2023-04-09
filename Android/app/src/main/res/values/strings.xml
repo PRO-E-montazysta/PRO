@@ -27,4 +27,5 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tool_warehouse_button">Przejdź do magazynu</string>
+    <string name="no_tools_found">Nie znaleziono żadnych narzędzi.</string>
 </resources>

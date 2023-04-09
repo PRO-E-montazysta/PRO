@@ -25,7 +25,7 @@ class App : Application() {
             androidContext(this@App)
             modules(appModule, preferencesModule)
         }
-        // Required initialization logic here!
+     // Required initialization logic here!
     }
 
     // Called by the system when the device configuration changes while your component is running.

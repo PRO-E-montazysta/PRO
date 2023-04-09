@@ -6,35 +6,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import com.example.e_montaysta.ui.adapters.ToolAdapter
-import com.example.e_montaysta.data.datasource.ToolsDataSource
+import com.example.e_montaysta.ui.adapters.ToolsAdapter
 import com.example.e_montaysta.databinding.FragmentToolsBinding
 import com.example.e_montaysta.ui.viewmodels.ToolsViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ToolsFragment : Fragment() {
-    private var _binding: FragmentToolsBinding? = null
+    private val viewModel: ToolsViewModel by viewModel()
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val toolsViewModel =
-            ViewModelProvider(this)[ToolsViewModel::class.java]
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        // Inflate the layout for this fragment
+        val binding = FragmentToolsBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
 
-        _binding = FragmentToolsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-        val adapter = ToolAdapter(ToolsDataSource.toolList)
-        binding?.toolRv?.adapter = adapter
+        // Set up the RecyclerView
+        val adapter = ToolsAdapter()
+        binding.toolsRecyclerView.adapter = adapter
 
-        return root
-    }
+        // Observe the list of tools from the ViewModel
+        viewModel.tools.observe(viewLifecycleOwner) { tools ->
+            adapter.submitList(tools)
+        }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
+        return binding.root
     }
 }

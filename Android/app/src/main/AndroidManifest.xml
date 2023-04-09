@@ -18,7 +18,7 @@
             android:exported="false"
             android:label="@string/title_activity_dashboard" />
         <activity
-            android:name=".ui.activities.login.LoginActivity"
+            android:name=".ui.activities.LoginActivity"
             android:exported="false"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
@@ -32,11 +32,6 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-        </activity>
-        <activity
-            android:name=".ToolsActivity"
-            android:exported="false"
-            android:label="@string/title_activity_tools" >
         </activity>
     </application>
 

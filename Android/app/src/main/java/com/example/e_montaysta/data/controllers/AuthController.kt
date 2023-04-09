@@ -2,8 +2,8 @@ package com.example.e_montaysta.data.controllers
 
 import com.example.e_montaysta.data.controllers.Interfaces.IAuthController
 import com.example.e_montaysta.data.repository.Interfaces.IAuthRepository
-import com.example.e_montaysta.data.model.Result
 import com.example.e_montaysta.data.model.LoggedInUser
+import com.example.e_montaysta.data.model.Result
 
 class AuthController(private val repository: IAuthRepository) : IAuthController {
 
