@@ -227,7 +227,7 @@ const ElementEventDetails = () => {
                                     flexItem
                                 />
                                 <Grid item xs={6}>
-                                    <FormSelect
+                                    <FormSelect //TODO: Autocomplete
                                         id={'elementId'}
                                         formik={formik}
                                         readonly={readonlyMode}

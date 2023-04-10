@@ -226,7 +226,7 @@ const ToolEventDetails = () => {
                                     flexItem
                                 />
                                 <Grid item xs={6}>
-                                    <FormSelect
+                                    <FormSelect //TODO: Autocomplete
                                         id={'toolId'}
                                         formik={formik}
                                         readonly={readonlyMode}
