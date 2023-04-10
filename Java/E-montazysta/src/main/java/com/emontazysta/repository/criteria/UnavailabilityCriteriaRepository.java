@@ -58,6 +58,8 @@ public class UnavailabilityCriteriaRepository {
             }
             predicates.add(criteriaBuilder.or(typeOfUnavailabilityPredicates.toArray(new Predicate[0])));
         }
+        //Remove TypeOfUnavailability.BUSY from filtering - this unavailability is added by system while worker is on job
+        predicates.add(criteriaBuilder.notEqual(unavailabilityRoot.get("typeOfUnavailability"), TypeOfUnavailability.valueOf("BUSY")));
 
         //Get unavailabilities between unavailableFrom and unavailableTo
         //Check if unavailableFrom isn't after unavailableTo
