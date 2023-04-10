@@ -20,6 +20,8 @@ import Employees from '../pages/employees'
 import EmpDetails from '../pages/employees/employeesDetails/EmpDetails'
 import Clients from '../pages/clients'
 import ClientDetails from '../pages/clients/ClientDetails'
+import UnavailabilityDetails from '../pages/unavailabilities/UnavailabilityDetails'
+import Unavailabilities from '../pages/unavailabilities'
 
 export type PageProps = {
     name: string
@@ -297,6 +299,32 @@ export const pageList: Array<PageProps> = [
                 path: '/elements/:id',
                 allowedRoles: [Role.MANAGER, Role.SPECIALIST, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER],
                 component: <ElementDetails />,
+            },
+            {
+                inNav: true,
+                name: 'Nieobecności',
+                path: '/unavailabilities',
+                allowedRoles: [Role.MANAGER],
+                component: <Unavailabilities />,
+                children: [
+                    {
+                        inNav: true,
+                        name: 'Lista nieobecności',
+                        path: '/unavailabilities',
+                    },
+                    {
+                        inNav: true,
+                        name: 'Dodaj nieobecność',
+                        path: '/unavailabilities/new',
+                    },
+                ],
+            },
+            {
+                inNav: false,
+                name: '',
+                path: '/unavailabilities/:id',
+                allowedRoles: [Role.MANAGER],
+                component: <UnavailabilityDetails />,
             },
         ],
     },

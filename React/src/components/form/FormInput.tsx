@@ -1,10 +1,15 @@
 import { TextField, Typography } from '@mui/material'
-import { formatDate } from '../../helpers/format.helper'
+import { formatDate, formatShortDate } from '../../helpers/format.helper'
 import { FormInputParams } from './types'
 
 const FormInput = (params: FormInputParams) => {
     const { id, readonly, firstChild, style, type, formik } = params
-    const value = type == 'datetime-local' ? formatDate(formik.values[id]) : String(formik.values[id])
+    const value =
+        type == 'datetime-local'
+            ? formatDate(formik.values[id])
+            : type == 'date'
+            ? formatShortDate(formik.values[id])
+            : String(formik.values[id])
 
     if (readonly) {
         if (value)
