@@ -2,6 +2,7 @@ import { SelectMenuItemProps } from '../components/base/Multiselect'
 import { CompanyStatus } from '../types/model/Company'
 import { TypeOfUnit } from '../types/model/Element'
 import { OrderPriority, OrderStatus } from '../types/model/Order'
+import { TypeOfUnavailability } from '../types/model/Unavailability'
 
 export const statusName = (key: string) => {
     return Object.values(OrderStatus)[Object.keys(OrderStatus).indexOf(key)]
@@ -17,6 +18,10 @@ export const companyStatusName = (key: string) => {
 
 export const typeOfUnitName = (key: string) => {
     return Object.values(TypeOfUnit)[Object.keys(TypeOfUnit).indexOf(key)]
+}
+
+export const typeOfUnavailabilityName = (key: string) => {
+    return Object.values(TypeOfUnavailability)[Object.keys(TypeOfUnavailability).indexOf(key)]
 }
 
 export const priorityOptions = () => {
@@ -48,6 +53,15 @@ export const companyStatusOptions = () => {
 
 export const typeOfUnitOptions = () => {
     return Object.entries(TypeOfUnit).map((s): SelectMenuItemProps => {
+        return {
+            key: s[0],
+            value: s[1],
+        }
+    })
+}
+
+export const typeOfUnavailabilityOptions = () => {
+    return Object.entries(TypeOfUnavailability).map((s): SelectMenuItemProps => {
         return {
             key: s[0],
             value: s[1],
