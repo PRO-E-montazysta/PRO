@@ -149,5 +149,5 @@ export const validationSchema = yup.object({
     username: yup.string().min(3, 'Nazwa musi zawierać co najmniej 3 znaki').required('Wprowadź nazwe'),
     email: yup.string().email('Wymagany jest poprawny email').required('Wprowadź email'),
     phone: yup.string().min(9,'Wymagany jest poprawny numer telefonu').required('Wprowadź numer telefonu'),
-    pesel: yup.string().length(11,'Wymagany jest poprawny pesel').required('Wprowadź email')
+    pesel: yup.string().length(11,'Wymagany jest poprawny pesel').required('Wprowadź pesel')
 })
