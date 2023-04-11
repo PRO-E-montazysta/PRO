@@ -30,4 +30,5 @@ public class CompanyDto {
     private List<Long> orders;
     private List<Long> clients;
     private List<Long> employments;
+    private List<Long> toolTypes;
 }

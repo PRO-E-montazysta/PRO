@@ -7,6 +7,7 @@ import com.emontazysta.model.Tool;
 import com.emontazysta.model.ToolType;
 import com.emontazysta.model.dto.ToolTypeDto;
 import com.emontazysta.repository.AttachmentRepository;
+import com.emontazysta.repository.CompanyRepository;
 import com.emontazysta.repository.OrderStageRepository;
 import com.emontazysta.repository.ToolRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class ToolTypeMapper {
     private final AttachmentRepository attachmentRepository;
     private final OrderStageRepository orderStageRepository;
     private final ToolRepository toolRepository;
+    private final CompanyRepository companyRepository;
 
     public ToolTypeDto toDto(ToolType toolType){
 
@@ -39,6 +41,7 @@ public class ToolTypeMapper {
                 .attachments(toolType.getAttachments().stream().map(Attachment::getId).collect(Collectors.toList()))
                 .orderStages(toolType.getOrderStages().stream().map(OrderStage::getId).collect(Collectors.toList()))
                 .tools(toolType.getTools().stream().map(Tool::getId).collect(Collectors.toList()))
+                .companyId(toolType.getCompany().getId())
                 .build();
     }
 
@@ -60,6 +63,7 @@ public class ToolTypeMapper {
                 .attachments(attachmentList)
                 .orderStages(orderStageList)
                 .tools(toolList)
+                .company(toolTypeDto.getCompanyId() == null ? null : companyRepository.getReferenceById(toolTypeDto.getCompanyId()))
                 .build();
     }
 }
