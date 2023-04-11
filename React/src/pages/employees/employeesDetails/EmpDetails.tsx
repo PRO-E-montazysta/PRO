@@ -29,7 +29,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import FormSelect from '../../../components/form/FormSelect'
-import { employeeStatusOptions, roleStatusOptions } from '../../../helpers/enum.helper'
+import { employeeStatusOptions, userRoleOptions } from '../../../helpers/enum.helper'
 import { Role } from '../../../types/roleEnum'
 import { postForeman } from '../../../api/foreman.api'
 import { postAdmin } from '../../../api/admin.api'
@@ -286,7 +286,7 @@ const EmpDetails = () => {
                                         id={'roles'}
                                         formik={formik}
                                         readonly={readonlyMode}
-                                        options={roleStatusOptions()}
+                                        options={userRoleOptions()}
                                     />
             <FormInput id={'phone'} formik={formik} readonly={false} />
             <FormInput id={'pesel'} formik={formik} readonly={false} />

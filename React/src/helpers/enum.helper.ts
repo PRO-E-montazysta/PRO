@@ -3,7 +3,7 @@ import { SelectMenuItemProps } from '../components/form/types'
 import { CompanyStatus } from '../types/model/Company'
 import { TypeOfUnit } from '../types/model/Element'
 import { EventStatus, EventType } from '../types/model/Event'
-import { EmployeeStatus, RoleStatus } from '../types/model/Employee'
+import { EmployeeStatus, UserRole } from '../types/model/Employee'
 import { OrderPriority, OrderStatus } from '../types/model/Order'
 
 export const statusName = (key: string) => {
@@ -84,8 +84,8 @@ export const eventStatusOptions = () => {
     })
 }
 
-export const roleStatusOptions = () => {
-    return Object.entries(RoleStatus).map((s): SelectMenuItemProps => {
+export const userRoleOptions = () => {
+    return Object.entries(UserRole).map((s): SelectMenuItemProps => {
         return {
             key: s[0],
             value: s[1],

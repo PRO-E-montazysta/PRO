@@ -19,7 +19,7 @@ export const EmployeeStatus = {
   NIEAKTYWNY: "NIEAKTYWNY",
 }
 
-export const RoleStatus = {
+export const UserRole = {
   MANAGER: "MANAGER",
   SALES_REPRESENTATIVE: "SALES_REPRESENTATIVE",
   SPECIALIST: " SPECIALIST",
