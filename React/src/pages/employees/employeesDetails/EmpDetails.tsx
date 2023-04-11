@@ -255,12 +255,12 @@ const EmpDetails = () => {
         >
             <FormLabel label="Imię" formik={formik} id={'firstName'} />
             <FormLabel label="Nazwisko" formik={formik} id={'lastName'} />
-            <FormLabel label="E-Mail" formik={formik} id={'email'} />
-            <FormLabel label="Password" formik={formik} id={'password'} />
-            <FormLabel label="Username" formik={formik} id={'username'} />
+            <FormLabel label="E-mail" formik={formik} id={'email'} />
+            <FormLabel label="Hasło" formik={formik} id={'password'} />
+            <FormLabel label="Nazwa użytkownika" formik={formik} id={'username'} />
             <FormLabel label="Status" formik={formik} id={'status'} />
-            <FormLabel label="Role" formik={formik} id={'roles'} />
-            <FormLabel label="Phone" formik={formik} id={'phone'} />
+            <FormLabel label="Stanowisko" formik={formik} id={'roles'} />
+            <FormLabel label="Telefon" formik={formik} id={'phone'} />
             <FormLabel label="Pesel" formik={formik} id={'pesel'} />
         </Grid>
         <Divider
