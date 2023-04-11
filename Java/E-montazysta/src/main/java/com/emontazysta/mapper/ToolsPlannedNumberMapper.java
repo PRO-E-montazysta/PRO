@@ -29,7 +29,7 @@ public class ToolsPlannedNumberMapper {
                 .id(toolsPlannedNumberDto.getId())
                 .numberOfTools(toolsPlannedNumberDto.getNumberOfTools())
                 .toolType(toolsPlannedNumberDto.getToolTypeId() == null ? null : toolTypeRepository.getReferenceById(toolsPlannedNumberDto.getToolTypeId()))
-                .orderStage(toolsPlannedNumberDto.getOrderStageId() == null ? null : orderStageRepository.getReferenceById(toolsPlannedNumberDto.getToolTypeId()))
+                .orderStage(toolsPlannedNumberDto.getOrderStageId() == null ? null : orderStageRepository.getReferenceById(toolsPlannedNumberDto.getOrderStageId()))
                 .build();
     }
 }

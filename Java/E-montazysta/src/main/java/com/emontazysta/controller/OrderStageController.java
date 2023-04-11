@@ -1,6 +1,7 @@
 package com.emontazysta.controller;
 
 import com.emontazysta.model.dto.OrderStageDto;
+import com.emontazysta.model.dto.OrderStageWithToolsAndElementsDto;
 import com.emontazysta.model.searchcriteria.OrdersStageSearchCriteria;
 import com.emontazysta.service.OrderStageService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,8 +48,8 @@ public class OrderStageController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Order Stage.", security = @SecurityRequirement(name = "bearer-key"))
-    public OrderStageDto addOrderStage(@Valid @RequestBody OrderStageDto orderStage) {
-        return orderStageService.add(orderStage);
+    public OrderStageDto addOrderStage(@Valid @RequestBody OrderStageWithToolsAndElementsDto orderStage) {
+        return orderStageService.addWithToolsAndElements(orderStage);
     }
 
     @DeleteMapping("/{id}")

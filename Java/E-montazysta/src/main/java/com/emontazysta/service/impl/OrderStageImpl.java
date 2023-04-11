@@ -1,10 +1,19 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.mapper.ElementsPlannedNumberMapper;
 import com.emontazysta.mapper.OrderStageMapper;
+import com.emontazysta.mapper.ToolsPlannedNumberMapper;
+import com.emontazysta.model.ElementsPlannedNumber;
 import com.emontazysta.model.OrderStage;
+import com.emontazysta.model.ToolsPlannedNumber;
+import com.emontazysta.model.dto.ElementsPlannedNumberDto;
 import com.emontazysta.model.dto.OrderStageDto;
+import com.emontazysta.model.dto.OrderStageWithToolsAndElementsDto;
+import com.emontazysta.model.dto.ToolsPlannedNumberDto;
 import com.emontazysta.model.searchcriteria.OrdersStageSearchCriteria;
+import com.emontazysta.repository.ElementsPlannedNumberRepository;
 import com.emontazysta.repository.OrderStageRepository;
+import com.emontazysta.repository.ToolsPlannedNumberRepository;
 import com.emontazysta.repository.criteria.OrdersStageCriteriaRepository;
 import com.emontazysta.service.OrderStageService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +34,10 @@ public class OrderStageImpl implements OrderStageService {
     private final OrderStageRepository repository;
     private final OrderStageMapper orderStageMapper;
     private final OrdersStageCriteriaRepository ordersStageCriteriaRepository;
+    private final ToolsPlannedNumberRepository toolsPlannedNumberRepository;
+    private final ToolsPlannedNumberMapper toolsPlannedNumberMapper;
+    private final ElementsPlannedNumberRepository elementsPlannedNumberRepository;
+    private final ElementsPlannedNumberMapper elementsPlannedNumberMapper;
 
     @Override
     public List<OrderStageDto> getAll() {
@@ -41,17 +54,64 @@ public class OrderStageImpl implements OrderStageService {
 
     @Override
     public OrderStageDto add(OrderStageDto orderStageDto) {
-        orderStageDto.setFitters(new ArrayList<>());
-        orderStageDto.setComments(new ArrayList<>());
-        orderStageDto.setToolReleases(new ArrayList<>());
-        orderStageDto.setElementReturnReleases(new ArrayList<>());
-        orderStageDto.setAttachments(new ArrayList<>());
-        orderStageDto.setNotifications(new ArrayList<>());
-        orderStageDto.setDemandAdHocs(new ArrayList<>());
-        orderStageDto.setPlannedDurationTime(ChronoUnit.HOURS.between(orderStageDto.getPlannedStartDate(),orderStageDto.getPlannedEndDate()));
+            orderStageDto.setFitters(new ArrayList<>());
+            orderStageDto.setComments(new ArrayList<>());
+            orderStageDto.setToolReleases(new ArrayList<>());
+            orderStageDto.setElementReturnReleases(new ArrayList<>());
+            orderStageDto.setAttachments(new ArrayList<>());
+            orderStageDto.setNotifications(new ArrayList<>());
+            orderStageDto.setDemandAdHocs(new ArrayList<>());
+            orderStageDto.setListOfToolsPlannedNumber(new ArrayList<>());
+            orderStageDto.setListOfElementsPlannedNumber(new ArrayList<>());
+            orderStageDto.setPlannedDurationTime(ChronoUnit.HOURS.between(orderStageDto.getPlannedStartDate(),orderStageDto.getPlannedEndDate()));
 
-        OrderStage orderStage = orderStageMapper.toEntity(orderStageDto);
-        return orderStageMapper.toDto(repository.save(orderStage));
+            OrderStage orderStage = orderStageMapper.toEntity(orderStageDto);
+            return orderStageMapper.toDto(repository.save(orderStage));
+    }
+
+
+    @Override
+    @Transactional
+    public OrderStageDto addWithToolsAndElements(OrderStageWithToolsAndElementsDto orderStageDto) {
+
+        OrderStageWithToolsAndElementsDto modiffiedOrderStageDto = completeEmptyAttributes(orderStageDto);
+
+        OrderStage orderStage = orderStageMapper.toEntity(modiffiedOrderStageDto);
+        OrderStageDto savedOrderStageDto = orderStageMapper.toDto(repository.save(orderStage));
+
+
+        if(!modiffiedOrderStageDto.getListOfToolsPlannedNumber().isEmpty()) {
+            for (ToolsPlannedNumberDto toolsPlannedNumberDto : modiffiedOrderStageDto.getListOfToolsPlannedNumber()) {
+                toolsPlannedNumberDto.setOrderStageId(savedOrderStageDto.getId());
+                ToolsPlannedNumber toolsPlannedNumber = toolsPlannedNumberMapper.toEntity(toolsPlannedNumberDto);
+                toolsPlannedNumberRepository.save(toolsPlannedNumber);
+            }
+        }
+
+        if(!modiffiedOrderStageDto.getListOfElementsPlannedNumber().isEmpty()) {
+            for (ElementsPlannedNumberDto elementsPlannedNumberDto : modiffiedOrderStageDto.getListOfElementsPlannedNumber()) {
+                elementsPlannedNumberDto.setOrderStageId(savedOrderStageDto.getId());
+                ElementsPlannedNumber elementsPlannedNumber = elementsPlannedNumberMapper.toEntity(elementsPlannedNumberDto);
+                elementsPlannedNumberRepository.save(elementsPlannedNumber);
+            }
+        }
+
+        return getById(savedOrderStageDto.getId());
+    }
+
+    private OrderStageWithToolsAndElementsDto completeEmptyAttributes(OrderStageWithToolsAndElementsDto orderStageDto) {
+        orderStageDto.setFitters(orderStageDto.getFitters() == null ? new ArrayList<>() : orderStageDto.getFitters());
+        orderStageDto.setComments(orderStageDto.getComments() == null ? new ArrayList<>() : orderStageDto.getComments());
+        orderStageDto.setToolReleases(orderStageDto.getToolReleases() == null ? new ArrayList<>() : orderStageDto.getToolReleases());
+        orderStageDto.setElementReturnReleases(orderStageDto.getElementReturnReleases() == null ? new ArrayList<>() : orderStageDto.getElementReturnReleases());
+        orderStageDto.setAttachments(orderStageDto.getAttachments() == null ? new ArrayList<>() : orderStageDto.getAttachments());
+        orderStageDto.setNotifications(orderStageDto.getNotifications() == null ? new ArrayList<>() : orderStageDto.getNotifications());
+        orderStageDto.setDemandAdHocs(orderStageDto.getDemandAdHocs() == null ? new ArrayList<>() : orderStageDto.getDemandAdHocs());
+        orderStageDto.setListOfToolsPlannedNumber(orderStageDto.getListOfToolsPlannedNumber() == null ? new ArrayList<>() : orderStageDto.getListOfToolsPlannedNumber());
+        orderStageDto.setListOfElementsPlannedNumber(orderStageDto.getListOfElementsPlannedNumber() == null ? new ArrayList<>() : orderStageDto.getListOfElementsPlannedNumber());
+        orderStageDto.setPlannedDurationTime(ChronoUnit.HOURS.between(orderStageDto.getPlannedStartDate(), orderStageDto.getPlannedEndDate()));
+
+        return orderStageDto;
     }
 
     @Override
@@ -82,8 +142,8 @@ public class OrderStageImpl implements OrderStageService {
         orderStageDb.setElementReturnReleases(updatedOrderStage.getElementReturnReleases());
         orderStageDb.setAttachments(updatedOrderStage.getAttachments());
         orderStageDb.setNotifications(updatedOrderStage.getNotifications());
-        orderStageDb.setTools(updatedOrderStage.getTools());
-        orderStageDb.setElements(updatedOrderStage.getElements());
+        orderStageDb.setListOfToolsPlannedNumber(updatedOrderStage.getListOfToolsPlannedNumber());
+        orderStageDb.setListOfElementsPlannedNumber(updatedOrderStage.getListOfElementsPlannedNumber());
         orderStageDb.setDemandsAdHoc(updatedOrderStage.getDemandsAdHoc());
 
         return orderStageMapper.toDto(orderStageDb);
