@@ -1,5 +1,6 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.enums.EventStatus;
 import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.ElementEventMapper;
 import com.emontazysta.model.AppUser;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,10 +53,14 @@ public class ElementEventServiceImpl implements ElementEventService {
     }
 
     @Override
-    public ElementEventDto add(ElementEventDto event) {
-        ElementEvent elementEvent = elementEventMapper.toEntity(event);
+    public ElementEventDto add(ElementEventDto elementEventDto) {
+        elementEventDto.setAttachments(new ArrayList<>());
+
+        ElementEvent elementEvent = elementEventMapper.toEntity(elementEventDto);
         elementEvent.setCreatedBy(authUtils.getLoggedUser());
         elementEvent.setEventDate(LocalDateTime.now());
+        elementEvent.setStatus(EventStatus.CREATED);
+
         return elementEventMapper.toDto(repository.save(elementEvent));
     }
 
@@ -84,16 +90,23 @@ public class ElementEventServiceImpl implements ElementEventService {
             if(!elementEvent.getElement().getElementInWarehouses().stream().findFirst().get().getWarehouse()
                     .getCompany().getId().equals(authUtils.getLoggedUserCompanyId()))
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+
+            if(updatedElementEvent.getStatus() == EventStatus.IN_PROGRESS && elementEvent.getStatus() != EventStatus.IN_PROGRESS){
+                    elementEvent.setMovingDate(LocalDateTime.now());
+            }
+
+            if((updatedElementEvent.getStatus() != EventStatus.CREATED && updatedElementEvent.getStatus() != EventStatus.IN_PROGRESS)
+                    && (elementEvent.getStatus() == EventStatus.CREATED || elementEvent.getStatus() == EventStatus.IN_PROGRESS)){
+                elementEvent.setCompletionDate(LocalDateTime.now());
+            }
+
+            elementEvent.setStatus(updatedElementEvent.getStatus());
         }
 
-        elementEvent.setMovingDate(updatedElementEvent.getMovingDate());
-        elementEvent.setCompletionDate(updatedElementEvent.getCompletionDate());
         elementEvent.setDescription(updatedElementEvent.getDescription());
-        elementEvent.setStatus(updatedElementEvent.getStatus());
         elementEvent.setQuantity(updatedElementEvent.getQuantity());
-        elementEvent.setAcceptedBy(updatedElementEvent.getAcceptedBy());
         elementEvent.setElement(updatedElementEvent.getElement());
-        elementEvent.setAttachments(elementEvent.getAttachments());
+        elementEvent.setAttachments(updatedElementEvent.getAttachments());
 
         return elementEventMapper.toDto(repository.save(elementEvent));
     }
