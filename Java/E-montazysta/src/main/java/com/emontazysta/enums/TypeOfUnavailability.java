@@ -1,6 +1,9 @@
 package com.emontazysta.enums;
 
 public enum TypeOfUnavailability {
-    TYPE1,
-    TYPE2
+    HOLIDAY,
+    SICK_LEAVE,
+    BEREAVEMENT_LEAVE,
+    BUSY,
+    OTHER
 }

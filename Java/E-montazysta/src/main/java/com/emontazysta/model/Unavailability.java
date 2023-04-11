@@ -26,7 +26,6 @@ public class Unavailability {
 
     private String description;
     private LocalDateTime unavailableFrom;
-    @JsonFormat(pattern="dd-MM-yyyy")
     private LocalDateTime unavailableTo;
 
     @ManyToOne
