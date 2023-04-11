@@ -239,16 +239,16 @@ public class DataSeeding {
 
         Company company1 = addCompanyFromModel(new Company(null, "Test Comapny 1", null,
                 CompanyStatus.ACTIVE, "They pay", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>()));
+                new ArrayList<>(), new ArrayList<>()));
         Company company2 = addCompanyFromModel(new Company(null, "Test Comapny 2", null,
                 CompanyStatus.ACTIVE, "They pay", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>()));
+                new ArrayList<>(), new ArrayList<>()));
         Company company3 = addCompanyFromModel(new Company(null, "Test Comapny 3", null,
                 CompanyStatus.SUSPENDED, "They don't pay", new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>(), new ArrayList<>()));
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         Company company4 = addCompanyFromModel(new Company(null, "Test Comapny 4", null,
                 CompanyStatus.DISABLED, "Closed company", new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>(), new ArrayList<>()));
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
         Employment employment1 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, fitter1));
         Employment employment2 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, fitter2));
@@ -362,13 +362,13 @@ public class DataSeeding {
                 "8:00 - 15:00", company2, location4, new ArrayList<>(), new ArrayList<>()));
 
         ToolType toolType1 = addToolTypeFromModel(new ToolType(null, "Test ToolType 1",
-                5, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+                5, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), company1));
         ToolType toolType2 = addToolTypeFromModel(new ToolType(null, "Test ToolType 2",
-                5, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+                5, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), company1));
         ToolType toolType3 = addToolTypeFromModel(new ToolType(null, "Test ToolType 3",
-                5, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+                5, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), company1));
         ToolType toolType4 = addToolTypeFromModel(new ToolType(null, "Test ToolType 4",
-                5, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+                5, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), company1));
 
         Tool tool1 = addToolFromModel(new Tool(null, "Test Tool 1", null, null, new ArrayList<>(),
                 warehouse1, new ArrayList<>(), toolType1));

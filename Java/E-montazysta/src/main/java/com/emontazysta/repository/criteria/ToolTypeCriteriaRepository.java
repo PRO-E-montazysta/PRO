@@ -4,6 +4,7 @@ import com.emontazysta.mapper.ToolTypeMapper;
 import com.emontazysta.model.ToolType;
 import com.emontazysta.model.dto.ToolTypeDto;
 import com.emontazysta.model.searchcriteria.ToolTypeSearchCriteria;
+import com.emontazysta.util.AuthUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -24,10 +25,13 @@ public class ToolTypeCriteriaRepository {
     private final CriteriaBuilder criteriaBuilder;
     private final ToolTypeMapper toolTypeMapper;
 
-    public ToolTypeCriteriaRepository(EntityManager entityManager, ToolTypeMapper toolTypeMapper) {
+    private final AuthUtils authUtils;
+
+    public ToolTypeCriteriaRepository(EntityManager entityManager, ToolTypeMapper toolTypeMapper, AuthUtils authUtils) {
         this.entityManager = entityManager;
         this.criteriaBuilder = entityManager.getCriteriaBuilder();
         this.toolTypeMapper = toolTypeMapper;
+        this.authUtils = authUtils;
 
     }
 
@@ -45,9 +49,15 @@ public class ToolTypeCriteriaRepository {
     }
     private Predicate getPredicate(ToolTypeSearchCriteria toolTypeSearchCriteria, Root<ToolType> toolTypeRoot) {
         List<Predicate> predicates = new ArrayList<>();
+
+        //Get tooltypes by name
         if(Objects.nonNull(toolTypeSearchCriteria.getName())){
             predicates.add(criteriaBuilder.like(toolTypeRoot.get("name"), "%" + toolTypeSearchCriteria.getName() + "%"));
         }
+
+        //Get tooltypes from company
+        predicates.add(criteriaBuilder.equal(toolTypeRoot.get("company").get("id"),
+                authUtils.getLoggedUserCompanyId()));
 
         return  criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
