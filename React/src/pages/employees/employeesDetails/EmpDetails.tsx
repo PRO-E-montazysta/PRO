@@ -145,8 +145,7 @@ const EmpDetails = () => {
                 dialogText: ['Nowy pracownik utworzony pomyślnie'],
                 confirmAction: () => {
                     setDialog({ ...dialog, open: false })
-                    if (data.id) navigation(`/employees/${data.id}`)
-                    else navigation(`/employees`)
+                    if (data && data.id) navigation(`/employees/${data.id}`)
                 },
                 confirmLabel: 'Ok',
             })
@@ -194,6 +193,11 @@ const EmpDetails = () => {
 
         if (!Array.isArray(tmp.roles)) {
             tmp.roles = [tmp.roles];
+        }
+
+        // NS: Wsparcie dla - PlPhoneNumberValidator
+        if (tmp.phone && !tmp.phone.startsWith("+48")) {
+            tmp.phone = "+48" + tmp.phone;
         }
 
         formik.setValues(tmp);
