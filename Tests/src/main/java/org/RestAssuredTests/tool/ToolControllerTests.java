@@ -12,21 +12,27 @@ import static org.hamcrest.Matchers.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ToolControllerTests extends AbstractTest {
 
-    private static String names[] = new String[]{"screwdriver", "drill", "knife", "lopata", "dluto"};
-    private static int[] indexRangeForDeletion;
-
+    private static int toolId;
     private String bearerToken = TOKEN;
 
     private String toolCode = "";
+
+    String requestBody =
+            "{\n" +
+                    "  \"name\": \"string\",\n" +
+                    "  \"toolReleases\": [\n" +
+                    "    1\n" +
+                    "  ],\n" +
+                    "  \"warehouseId\": 1,\n" +
+                    "  \"toolEvents\": [\n" +
+                    "    1\n" +
+                    "  ],\n" +
+                    "  \"toolTypeId\": 1\n" +
+                    "}";
     @Test
     @Order(1)
     public void postToolTest(){
 
-        for (String s : names) {
-            String requestBody ="" +
-                    "{\n" +
-                    "  \"name\": \""+s+"\"\n" +
-                    "}";
             Response response =
                     given()
                             .headers(
@@ -39,36 +45,37 @@ public class ToolControllerTests extends AbstractTest {
                             .when()
                             .post(BASE_PATH + "/tools");
 
+        toolId = response.getBody().jsonPath().getInt("id");
+        toolCode = response.getBody().jsonPath().getString("code");
 
             Assertions.assertEquals(HttpStatus.SC_CREATED, response.statusCode());
-            System.out.println("wstawiono "+ s);
-        }
+
 
 
     }
+
+
+
 
     @Test
     @Order(2)
     public void getAllToolsTest() {
-        int i = 0;
-        for (String toolName : names) {
-            given()
-                    .headers(
-                            "Authorization","Bearer " + TOKEN,
-                            "Content-Type",ContentType.JSON,
-                            "Accept", ContentType.JSON)
+        Response response =
+                     given()
+                        .headers(
+                                "Authorization","Bearer " + TOKEN,
+                                "Content-Type",ContentType.JSON,
+                                "Accept", ContentType.JSON)
 
-                    .get(BASE_PATH + "/tools/all").
-                    prettyPeek().
-                    then().
-                    statusCode(HttpStatus.SC_OK).
-                    rootPath("["+i+"]")
-                    .body("name", equalTo(toolName))
-                    .body("code", matchesPattern("^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$"));
+                        .get(BASE_PATH + "/tools/all").
+                        prettyPeek();
 
-                    i++;
-        }
+        Assertions.assertTrue(response.getBody().jsonPath().getList("$").stream()
+                .anyMatch(toolId -> toolId.toString().contains("id="  + toolId)));
+
+
     }
+
     @Test
     @Order(3)
     public void getToolByCodeTests(){
@@ -84,14 +91,15 @@ public class ToolControllerTests extends AbstractTest {
                 statusCode(HttpStatus.SC_OK)
                 .extract().response();
 
-        //Assertions.assertEquals(1, response.getBody().jsonPath().getList("$").size());
+        Assertions.assertTrue(response.getBody().jsonPath().getList("$").stream()
+                .anyMatch(toolCode -> toolCode.toString().contains("code="  + toolCode)));
+
 
     }
     @Test
     @Order(4)
     public void deleteToolTest(){
 
-        for (int i = indexRangeForDeletion[0]; i < indexRangeForDeletion[1]; i++) {
 
             Response response = given()
                     .headers(
@@ -100,14 +108,13 @@ public class ToolControllerTests extends AbstractTest {
                             "Accept", ContentType.JSON
                     )
                     .and()
-                    .delete(BASE_PATH+ "/tools/"+i)
+                    .delete(BASE_PATH+ "/tools/")
                     .then()
                     .extract().response();
 
             response.prettyPrint();
-            System.out.println("usunieto narzedzie o indeksie: "+i);
             Assertions.assertEquals(HttpStatus.SC_OK, response.statusCode());
         }
 
     }
-}
+
