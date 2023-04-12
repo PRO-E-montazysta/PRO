@@ -252,13 +252,13 @@ const UnavailabilityDetails = () => {
                                         id={'unavailableFrom'}
                                         formik={formik}
                                         readonly={readonlyMode}
-                                        type="datetime-local" //TODO: wyświetlanie jako 'date' wysyłanie danych z T00:00
+                                        type="date"
                                     />
                                     <FormInput
                                         id={'unavailableTo'}
                                         formik={formik}
                                         readonly={readonlyMode}
-                                        type="datetime-local" //TODO: wyświetlanie jako 'date' wysyłanie danych z T00:00
+                                        type="date"
                                     />
                                     <FormSelect
                                         id={'assignedById'}
