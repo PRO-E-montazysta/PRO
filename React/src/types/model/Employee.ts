@@ -15,7 +15,7 @@ export type Employee = {
 };
 
 export const EmployeeStatus = {
-  AKTYWNY: "AKTYWNY",
+  AVAIBLE: "AKTYWNY", // TODO: NS: Do poprawy angielskiego po stronie backendu - drut
   NIEAKTYWNY: "NIEAKTYWNY",
 }
 
