@@ -29,6 +29,9 @@ import ToolsFromWarehouse from '../pages/tools/ToolsFromWarehouse'
 import ToolDetails from '../pages/tools/ToolDetails'
 import Elements from '../pages/elements'
 import ElementDetails from '../pages/elements/ElementDetails'
+import DialogGlobal from '../components/dialogGlobal/DialogGlobal'
+import { createContext } from 'react'
+import { DialogGlobalProvider } from '../providers/DialogGlobalProvider'
 
 export type PageProps = {
     name: string
@@ -42,8 +45,10 @@ export type PageProps = {
 const Root = () => {
     return (
         <>
-            <Header />
-            <Outlet />
+            <DialogGlobalProvider>
+                <Header />
+                <Outlet />
+            </DialogGlobalProvider>
         </>
     )
 }
