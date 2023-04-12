@@ -10,6 +10,7 @@ import { Badge } from '@mui/material'
 import { UserInfo } from '../headers/Header'
 import NotiMenu from './NotiMenu'
 import ClickAwayListener from '@mui/base/ClickAwayListener'
+import { off } from 'process'
 
 type NotiButtonProps = {
     userInfo: UserInfo
@@ -22,8 +23,8 @@ const NotiButton = (props: NotiButtonProps) => {
     const [open, setOpen] = useState(false)
 
     const handleClick = () => {
-        console.log('click')
-        setOpen(true)
+        if (!open) setOpen(true)
+        else setOpen(false)
     }
 
     const handleClose = () => {

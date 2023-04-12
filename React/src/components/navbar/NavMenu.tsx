@@ -4,6 +4,7 @@ import { PageProps } from '../../utils/pageList'
 
 import { theme } from '../../themes/baseTheme'
 import NavMenuItem from './NavMenuItem'
+import { useEffect, useRef, useState } from 'react'
 
 type NavMenuParams = {
     open: boolean
@@ -14,8 +15,17 @@ type NavMenuParams = {
 const NavMenu = (params: NavMenuParams) => {
     const { open, allowedChilds, onClose } = params
 
-    const navigate = useNavigate()
+    const [shadow, setShadow] = useState<boolean>()
 
+    useEffect(() => {
+        if (open) setShadow(open)
+        else
+            setTimeout(() => {
+                setShadow(open)
+            }, 500)
+    }, [open])
+
+    const navigate = useNavigate()
     const handleMenuItemClick = (page: PageProps) => {
         navigate(page.path)
         onClose()
@@ -30,7 +40,7 @@ const NavMenu = (params: NavMenuParams) => {
                     position: 'absolute',
                     backgroundColor: theme.palette.primary.main,
                     borderRadius: '5px',
-                    boxShadow: '0px 0px 2px 2px ' + theme.palette.primary.dark,
+                    boxShadow: shadow ? '0px 0px 2px 2px ' + theme.palette.primary.dark : '',
                     overflow: 'hidden',
                 }}
             >

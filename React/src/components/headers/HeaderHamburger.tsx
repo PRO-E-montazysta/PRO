@@ -1,10 +1,22 @@
 import React, { useState } from 'react'
-import { AppBar, Avatar, Badge, Box, Button, IconButton, ImageList, ImageListItem, Toolbar } from '@mui/material'
+import {
+    AppBar,
+    Avatar,
+    Badge,
+    Box,
+    Button,
+    Drawer,
+    IconButton,
+    ImageList,
+    ImageListItem,
+    List,
+    Toolbar,
+} from '@mui/material'
 import { styled } from '@mui/material/styles'
 import firstPicture from '../../assets/img/firstPicture.png'
 import secondPicture from '../../assets/img/secondPicture.png'
 import logo from '../../assets/img/logo.png'
-import { useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { pageList } from '../../utils/pageList'
 import NavMenuButton from '../navbar/NavButton'
 import { logout, removeToken } from '../../utils/token'
@@ -14,6 +26,7 @@ import LogoutIcon from '@mui/icons-material/Logout'
 
 import { theme } from '../../themes/baseTheme'
 import NotiButton from '../navbar/NotiButton'
+import MenuIcon from '@mui/icons-material/Menu'
 
 const CustomizedToolbar = styled(Toolbar)(({ theme }) => ({
     '@media (min-width: 600px)': {
@@ -34,13 +47,12 @@ export type Notification = {
     text: string
 }
 
-const Header = () => {
+const HeaderHamburger = () => {
     const navigate = useNavigate()
     const handleLogout = () => {
-        // removeToken()
-        // navigate('/login')
         logout()
     }
+    const [navbarOpen, setNavbarOpen] = useState(false)
 
     const [userInfo, setUserInfo] = useState<UserInfo>({
         name: 'Imię Nazwisko',
@@ -52,10 +64,39 @@ const Header = () => {
     const rootPage = pageList.find((p) => p.path === '/')
     const rootPageChildrens = rootPage?.children
 
+    const list = () => (
+        <Box
+            sx={{ backgroundColor: theme.palette.primary.dark}}
+            width={'250px'}
+            height={'100vh'}
+            // role="presentation"
+            onClick={() => setNavbarOpen(false)}
+            onKeyDown={() => setNavbarOpen(false)}
+        >
+            <List>
+                {rootPageChildrens
+                    ? rootPageChildrens.map((page, index) => {
+                          return <NavMenuButton {...page} key={index} />
+                      })
+                    : null}
+            </List>
+        </Box>
+    )
+
     return (
         <AppBar position="static">
             <Box sx={{ backgroundColor: '#1A1C26' }}>
                 <CustomizedToolbar>
+                    <IconButton
+                        size="large"
+                        edge="start"
+                        color="inherit"
+                        aria-label="menu"
+                        sx={{ mr: 2 }}
+                        onClick={() => setNavbarOpen(true)}
+                    >
+                        <MenuIcon />
+                    </IconButton>
                     <Box
                         component="img"
                         alt="Logo"
@@ -74,7 +115,11 @@ const Header = () => {
                         <Box sx={{ color: theme.palette.primary.light, fontSize: '12px' }}>{userInfo.name}</Box>
                         <Box>{userInfo.company}</Box>
                     </Box>
-                    <Avatar sx={{ width: 40, height: 40, bgcolor: theme.palette.primary.light }} alt={userInfo.name} src={userInfo.photoSrc} />
+                    <Avatar
+                        sx={{ width: 40, height: 40, bgcolor: theme.palette.primary.light }}
+                        alt={userInfo.name}
+                        src={userInfo.photoSrc}
+                    />
                     <NotiButton userInfo={userInfo} />
                     <IconButton
                         color="inherit"
@@ -84,10 +129,13 @@ const Header = () => {
                     >
                         <LogoutIcon />
                     </IconButton>
+                    <Drawer anchor={'left'} open={navbarOpen} onClose={() => setNavbarOpen(false)}>
+                        {list()}
+                    </Drawer>
                 </CustomizedToolbar>
             </Box>
         </AppBar>
     )
 }
 
-export default Header
+export default HeaderHamburger
