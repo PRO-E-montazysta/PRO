@@ -2,7 +2,7 @@ import { Employee } from '../types/model/Employee'
 import { makeServiceCall, PayloadProps } from './utils.api';
 
 export const getAllEmployees = () => {
-  return makeServiceCall('/employees/all', 'GET', {})
+  return makeServiceCall('/users/all', 'GET', {})
 }
 
 export const getFilteredEmployees = (payload: PayloadProps) => {

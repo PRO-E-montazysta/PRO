@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import WorkHistoryIcon from '@mui/icons-material/WorkHistory'
-import { Box, Button, Divider, Grid, Paper } from '@mui/material'
+import { Box, Button, CircularProgress, Divider, Grid, Paper } from '@mui/material'
 import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar'
 import ExpandMore from '../../../components/expandMore/ExpandMore'
 import { getEmployeeById } from '../../../api/employee.api'
@@ -51,16 +51,9 @@ const EmpDetails = () => {
     const [dialog, setDialog] = useState({
         open: false,
         dialogText: [''],
-        confirmAction: () => {},
+        confirmAction: () => { },
         confirmLabel: '',
     })
-
-    const displayInfo = (params: DialogInfoParams) => {
-        setDialog({
-            ...params,
-            open: true,
-        })
-    }
 
     const mutationDelete = useMutation({
         mutationFn: deleteEmployee,
@@ -76,7 +69,6 @@ const EmpDetails = () => {
             })
         },
         onError(error: Error) {
-            console.error(error)
             displayInfo({
                 dialogText: ['Błąd poczas usuwania pracownika', error.message],
                 confirmAction: () => {
@@ -107,8 +99,8 @@ const EmpDetails = () => {
     const [expandedStatus, setExpandedStatus] = useState(false)
 
     const queryData = useQuery<Employee, AxiosError>(
-        ['users', { id: params.id }], 
-        async () => getEmployeeById(params.id!&& params.id != 'new' ? params.id : ''), 
+        ['users', { id: params.id }],
+        async () => getEmployeeById(params.id! && params.id != 'new' ? params.id : ''),
         {
             enabled: !!params.id && params.id != 'new',
         },
@@ -141,7 +133,7 @@ const EmpDetails = () => {
             case Role.SALES_REPRESENTATIVE: return postSalesRepresentative(data);
             case Role.SPECIALIST: return postSpecialist(data);
             case Role.WAREHOUSE_MAN: return postWarehouseman(data);
-            case Role.WAREHOUSE_MANAGER: return postWarehouseManager(data); 
+            case Role.WAREHOUSE_MANAGER: return postWarehouseManager(data);
             default: return postEmployee(data); // TODO: NS: Domyślnie powinno rzucać błedem o nieznanej roli
         }
     }
@@ -241,124 +233,144 @@ const EmpDetails = () => {
         } else setReadonlyMode(true)
     }, [params.id])
 
-    return params.id == 'new' ? 
-    (<>
-    <Box maxWidth={800} style={{ margin: 'auto', marginTop: '20px' }}>
-        <Paper sx={{ p: '10px' }}>
-        <Grid container>
-        <Grid
-            item
-            xs={6}
-            style={{
-                textAlign: 'end',
-            }}
-        >
-            <FormLabel label="Imię" formik={formik} id={'firstName'} />
-            <FormLabel label="Nazwisko" formik={formik} id={'lastName'} />
-            <FormLabel label="E-mail" formik={formik} id={'email'} />
-            <FormLabel label="Hasło" formik={formik} id={'password'} />
-            <FormLabel label="Nazwa użytkownika" formik={formik} id={'username'} />
-            <FormLabel label="Status" formik={formik} id={'status'} />
-            <FormLabel label="Stanowisko" formik={formik} id={'roles'} />
-            <FormLabel label="Telefon" formik={formik} id={'phone'} />
-            <FormLabel label="Pesel" formik={formik} id={'pesel'} />
-        </Grid>
-        <Divider
-            orientation="vertical"
-            variant="middle"
-            style={{ borderColor: theme.palette.primary.main }}
-            sx={{ mr: '-1px' }}
-            flexItem
-        />
-        <Grid item xs={6}>
-            <FormInput id={'firstName'} formik={formik} readonly={false} firstChild />
-            <FormInput id={'lastName'} formik={formik} readonly={false} />
-            <FormInput id={'email'} formik={formik} readonly={false} />
-            <FormInput id={'password'} formik={formik} readonly={false} />
-            <FormInput id={'username'} formik={formik} readonly={false} />
-            <FormSelect
-                                        id={'status'}
-                                        formik={formik}
-                                        readonly={readonlyMode}
-                                        options={employeeStatusOptions()}
-                                    />
-            <FormSelect
-                                        id={'roles'}
-                                        formik={formik}
-                                        readonly={readonlyMode}
-                                        options={userRoleOptions()}
-                                    />
-            <FormInput id={'phone'} formik={formik} readonly={false} />
-            <FormInput id={'pesel'} formik={formik} readonly={false} />
-        </Grid>
-    </Grid>
-    <Box sx={{ margin: '20px', gap: '20px', display: 'flex', flexDirection: 'row-reverse' }}>
-    <Button
-        color="primary"
-        startIcon={<SaveIcon />}
-        variant="contained"
-        type="submit"
-        onClick={formik.submitForm}
-        style={{ width: 120 }}
-    >
-        Zapisz
-    </Button>
-                <Button
-                    color="primary"
-                    startIcon={<ReplayIcon style={{ transform: 'rotate(-0.25turn)' }} />}
-                    style={{ color: theme.palette.primary.main, width: 120 }}
-                    variant="outlined"
-                    type="submit"
-                    onClick={handleReset}
-                >
-                    Reset
-                </Button>
-    </Box>
-        </Paper>
-    </Box>
-    {dialog.open && <DialogInfo {...dialog} />}
-    </>) : (
-        <Grid container alignItems="center" justifyContent="center" marginTop={2}>
-            <Card sx={{ minWidth: 500, left: '50%' }}>
-                <CardHeader
-                    avatar={
-                        <Avatar sx={{ bgcolor: 'red' }} aria-label="recipe">
-                            R
-                        </Avatar>
-                    }
-                    action={
-                        <IconButton aria-label="settings">
-                            <MoreVertIcon />
-                        </IconButton>
-                    }
-                    title={`${queryData.data?.firstName} ${queryData.data?.lastName}`}
-                    subheader={getEmployeeRoles()}
-                />
+    const displayInfo = (params: DialogInfoParams) => {
+        setDialog({
+            ...params,
+            open: true,
+        })
+    }
 
-                <ExpandMore
-                    titleIcon={<PermContactCalendarIcon />}
-                    title="Informacje kontaktowe"
-                    cardContent={
-                        <Typography variant="body2" color="text.secondary">
-                            Numer telefonu: {queryData.data?.phone}, E-mail: {queryData.data?.email}
-                        </Typography>
-                    }
-                />
-
-                <ExpandMore
-                    titleIcon={<WorkHistoryIcon />}
-                    title={`Status: ${queryData.data?.status}`}
-                    cardContent={getStatusDescription() || <p>historia</p>}
-                />
-
-                <ExpandMore
-                    titleIcon={<WorkHistoryIcon />}
-                    title="Historia pracy w tabeli"
-                    cardContent={<p>Możemy tu wyświetlać historię pracy. Zlecenie, etap, data.</p>}
-                />
-            </Card>
-        </Grid>
-    );
+    return (<>
+            <Box maxWidth={800} style={{ margin: 'auto', marginTop: '20px' }}>
+                <Paper sx={{ p: '10px' }}>
+                {queryData.isLoading || queryData.isError ? (
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                minHeight: '200px',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
+                            {queryData.isLoading ? (
+                                <CircularProgress />
+                            ) : (
+                                <Typography>Nie znaleziono pracownika</Typography>
+                            )}
+                        </Box>
+                    ) : (
+                        <>
+                    <Grid container>
+                        <Grid
+                            item
+                            xs={6}
+                            style={{
+                                textAlign: 'end',
+                            }}
+                        >
+                            <FormLabel label="Imię" formik={formik} id={'firstName'} />
+                            <FormLabel label="Nazwisko" formik={formik} id={'lastName'} />
+                            <FormLabel label="E-mail" formik={formik} id={'email'} />
+                            <FormLabel label="Hasło" formik={formik} id={'password'} />
+                            <FormLabel label="Nazwa użytkownika" formik={formik} id={'username'} />
+                            <FormLabel label="Status" formik={formik} id={'status'} />
+                            <FormLabel label="Stanowisko" formik={formik} id={'roles'} />
+                            <FormLabel label="Telefon" formik={formik} id={'phone'} />
+                            <FormLabel label="Pesel" formik={formik} id={'pesel'} />
+                        </Grid>
+                        <Divider
+                            orientation="vertical"
+                            variant="middle"
+                            style={{ borderColor: theme.palette.primary.main }}
+                            sx={{ mr: '-1px' }}
+                            flexItem
+                        />
+                        <Grid item xs={6}>
+                            <FormInput id={'firstName'} formik={formik} readonly={readonlyMode} firstChild />
+                            <FormInput id={'lastName'} formik={formik} readonly={readonlyMode} />
+                            <FormInput id={'email'} formik={formik} readonly={readonlyMode} />
+                            <FormInput id={'password'} formik={formik} readonly={readonlyMode} />
+                            <FormInput id={'username'} formik={formik} readonly={readonlyMode} />
+                            <FormSelect
+                                id={'status'}
+                                formik={formik}
+                                readonly={readonlyMode}
+                                options={employeeStatusOptions()}
+                            />
+                            <FormSelect
+                                id={'roles'}
+                                formik={formik}
+                                readonly={readonlyMode}
+                                options={userRoleOptions()}
+                            />
+                            <FormInput id={'phone'} formik={formik} readonly={readonlyMode} />
+                            <FormInput id={'pesel'} formik={formik} readonly={readonlyMode} />
+                        </Grid>
+                    </Grid>
+                    <Box sx={{ margin: '20px', gap: '20px', display: 'flex', flexDirection: 'row-reverse' }}>
+                        {readonlyMode && params.id != 'new' ? (
+                            <>
+                                <Button
+                                    color="primary"
+                                    startIcon={<EditIcon />}
+                                    variant="contained"
+                                    type="submit"
+                                    style={{ width: 120 }}
+                                    onClick={() => setReadonlyMode(false)}
+                                >
+                                    Edytuj
+                                </Button>
+                                <Button
+                                    color="error"
+                                    startIcon={<DeleteIcon />}
+                                    variant="contained"
+                                    type="submit"
+                                    style={{ width: 120 }}
+                                    onClick={handleDelete}
+                                >
+                                    Usuń
+                                </Button>
+                            </>
+                        ) : (
+                            <>
+                                <Button
+                                    color="primary"
+                                    startIcon={<SaveIcon />}
+                                    variant="contained"
+                                    onClick={formik.submitForm}
+                                    style={{ width: 120 }}
+                                >
+                                    Zapisz
+                                </Button>
+                                <Button
+                                    color="primary"
+                                    startIcon={<ReplayIcon style={{ transform: 'rotate(-0.25turn)' }} />}
+                                    style={{ color: theme.palette.primary.main, width: 120 }}
+                                    variant="outlined"
+                                    onClick={handleReset}
+                                >
+                                    Reset
+                                </Button>
+                                {params.id != 'new' && (
+                                    <Button
+                                        color="primary"
+                                        startIcon={<CloseIcon style={{ transform: 'rotate(-0.25turn)' }} />}
+                                        style={{ color: theme.palette.primary.main, width: 120 }}
+                                        variant="outlined"
+                                        onClick={handleCancel}
+                                    >
+                                        Anuluj
+                                    </Button>
+                                )}
+                            </>
+                        )}
+                    </Box>
+                    </>
+                    )}
+                </Paper>
+            </Box>
+            {dialog.open && <DialogInfo {...dialog} />}
+        </>)
 }
 
 export default EmpDetails
