@@ -1,167 +1,73 @@
-import { Button, CircularProgress, Divider, Grid, Paper, TextField, Typography } from '@mui/material'
+import { CircularProgress, Paper, Typography } from '@mui/material'
 import { Box } from '@mui/system'
-import { AxiosError } from 'axios'
 import { useFormik } from 'formik'
-import { useEffect, useState } from 'react'
-import { useMutation, useQuery } from 'react-query'
-import { useNavigate, useParams } from 'react-router-dom'
-import { getAllCompanies } from '../../api/company.api'
-import { deleteOrder, getOrderDetails, postOrder, updateOrder } from '../../api/order.api'
-import { formatArrayToOptions, formatLocation } from '../../helpers/format.helper'
-import { priorityOptions, statusOptions } from '../../helpers/enum.helper'
-import { theme } from '../../themes/baseTheme'
-import { Client } from '../../types/model/Client'
-import { Company } from '../../types/model/Company'
-import { Order } from '../../types/model/Order'
-import { AppUser } from '../../types/model/AppUser'
-import { getAllClients } from '../../api/client.api'
-import { getAllForemans } from '../../api/foreman.api'
-import { getAllLocations } from '../../api/location.api'
-import { getAllManagers } from '../../api/manager.api'
-import { getAllSalesReprezentatives } from '../../api/salesReprezentatives.api'
-import { getAllSpecialists } from '../../api/specialist.api'
+import { useContext, useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 
-import SaveIcon from '@mui/icons-material/Save'
-import ReplayIcon from '@mui/icons-material/Replay'
-import CloseIcon from '@mui/icons-material/Close'
-import EditIcon from '@mui/icons-material/Edit'
-import DeleteIcon from '@mui/icons-material/Delete'
-// import { formStructure } from './helper'
-import FormInput from '../../components/form/FormInput'
-import FormLabel from '../../components/form/FormLabel'
-import FormSelect from '../../components/form/FormSelect'
-import DialogInfo, { DialogInfoParams } from '../../components/dialogInfo/DialogInfo'
-import { getEmptyForm, getValidatinSchema } from '../../helpers/form.helper'
+import { getInitValues, getValidatinSchema } from '../../helpers/form.helper'
 
 import * as yup from 'yup'
 import { useFormStructure } from './helper'
+import { useAddOrder, useDeleteOrder, useEditOrder, useOrderData } from './hooks'
+import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
+import { FormButtons } from '../../components/form/FormButtons'
+import { FormStructure } from '../../components/form/FormStructure'
+import { useQueriesStatus } from '../../hooks/useQueriesStatus'
+import QueryBoxStatus from '../../components/base/QueryStatusBox'
 
 const OrderDetails = () => {
-    const formStructure = useFormStructure()
-    console.log(formStructure)
+    //parameters from url
     const params = useParams()
+    
+    //mode of this page 
     const [readonlyMode, setReadonlyMode] = useState(true)
-    const [initData, setInitData] = useState(getEmptyForm(formStructure))
-    const navigation = useNavigate()
+    //global dialog box 
+    const { showDialog } = useContext(DialogGlobalContext)
+    //custom form structure 
+    const formStructure = useFormStructure()
 
-    const [dialog, setDialog] = useState({
-        open: false,
-        dialogText: [''],
-        confirmAction: () => {},
-        confirmLabel: '',
-    })
+    //initial values from custom form structure
+    const [initData, setInitData] = useState(getInitValues(formStructure))
 
-    const handleSubmit = () => {
-        if (params.id == 'new') mutationPost.mutate(JSON.parse(JSON.stringify(formik.values)))
-        else mutationUpdate.mutate(JSON.parse(JSON.stringify(formik.values)))
-    }
+    //mutations and queries
+    const addOrderMutation = useAddOrder()
+    const editOrderMutation = useEditOrder((data) => handleOnEditSuccess(data))
+    const deleteOrderMutation = useDeleteOrder(() => orderData.remove())
+    const orderData = useOrderData(params.id)
+    //status for all mutations and queries
+    const queriesStatus = useQueriesStatus([addOrderMutation, editOrderMutation, deleteOrderMutation, orderData])
 
-    const handleDelete = () => {
-        displayInfo({
-            dialogText: ['Czy na pewno chcesz usunąć zlecenie?'],
-            confirmAction: () => {
-                setDialog({ ...dialog, open: false })
-                if (params.id && params.id != 'new') mutationDelete.mutate(params.id)
-            },
-            confirmLabel: 'Usuń',
-            cancelAction: () => {
-                setDialog({ ...dialog, open: false })
-            },
-            cancelLabel: 'Anuluj',
-        })
-    }
-
-    const mutationPost = useMutation({
-        mutationFn: postOrder,
-        onSuccess(data) {
-            displayInfo({
-                dialogText: ['Nowe zlecenie utworzono pomyślnie'],
-                confirmAction: () => {
-                    setDialog({ ...dialog, open: false })
-                    if (data.id) navigation(`/orders/${data.id}`)
-                    else navigation(`/orders`)
-                },
-                confirmLabel: 'Ok',
-            })
-        },
-        onError(error: Error) {
-            console.error(error)
-            displayInfo({
-                dialogText: ['Błąd poczas tworzenia nowego zlecenia', error.message],
-                confirmAction: () => {
-                    setDialog({ ...dialog, open: false })
-                },
-                confirmLabel: 'Ok',
-            })
-        },
-    })
-
-    const mutationUpdate = useMutation({
-        mutationFn: updateOrder,
-        onSuccess(data) {
-            queryData.refetch({
-                queryKey: ['order', { id: data.id }],
-            })
-            setReadonlyMode(true)
-            displayInfo({
-                dialogText: ['Zmiany w zleceniu zostały zapisane'],
-                confirmAction: () => {
-                    setDialog({ ...dialog, open: false })
-                },
-                confirmLabel: 'Ok',
-            })
-        },
-        onError(error: Error) {
-            console.error(error)
-            displayInfo({
-                dialogText: ['Błąd poczas zapisywania zlecenia', error.message],
-                confirmAction: () => {
-                    setDialog({ ...dialog, open: false })
-                },
-                confirmLabel: 'Ok',
-            })
-        },
-    })
-
-    const mutationDelete = useMutation({
-        mutationFn: deleteOrder,
-        onSuccess(data) {
-            displayInfo({
-                dialogText: ['Zlecenie zostało usunięte'],
-                confirmAction: () => {
-                    setDialog({ ...dialog, open: false })
-                    queryData.remove()
-                    navigation('/orders')
-                },
-                confirmLabel: 'Ok',
-            })
-        },
-        onError(error: Error) {
-            console.error(error)
-            displayInfo({
-                dialogText: ['Błąd poczas usuwania zlecenia', error.message],
-                confirmAction: () => {
-                    setDialog({ ...dialog, open: false })
-                },
-                confirmLabel: 'Ok',
-            })
-        },
-    })
-
-    const queryData = useQuery<Order, AxiosError>(
-        ['order', { id: params.id }],
-        async () => getOrderDetails(params.id && params.id != 'new' ? params.id : ''),
-        {
-            enabled: !!params.id && params.id != 'new',
-        },
-    )
-
-
+    //form with initial values and validation
     const formik = useFormik({
         initialValues: initData,
         validationSchema: yup.object(getValidatinSchema(formStructure)),
-        onSubmit: handleSubmit,
+        onSubmit: () => handleSubmit(),
     })
+
+    const handleSubmit = () => {
+        if (params.id == 'new') addOrderMutation.mutate(JSON.parse(JSON.stringify(formik.values)))
+        else editOrderMutation.mutate(JSON.parse(JSON.stringify(formik.values)))
+    }
+
+    const handleDelete = () => {
+        showDialog({
+            title: 'Czy na pewno chcesz usunąć zlecenie?',
+            btnOptions: [
+                { text: 'Usuń', value: 1, variant: 'contained' },
+                { text: 'Anuluj', value: 0, variant: 'outlined' },
+            ],
+            callback: (result: number) => {
+                if (result == 1 && params.id && params.id != 'new') deleteOrderMutation.mutate(params.id)
+            },
+        })
+    }
+
+    const handleOnEditSuccess = (data: any) => {
+        orderData.refetch({
+            queryKey: ['order', { id: data.id }],
+        })
+        setReadonlyMode(true)
+    }
 
     const handleReset = () => {
         formik.resetForm()
@@ -173,149 +79,50 @@ const OrderDetails = () => {
         setReadonlyMode(true)
     }
 
+    //edit mode
+    //populate formik and init values with data from db
     useEffect(() => {
-        if (queryData.data) {
-            formik.setValues(JSON.parse(JSON.stringify(queryData.data)))
-            setInitData(JSON.parse(JSON.stringify(queryData.data)))
+        if (orderData.data) {
+            formik.setValues(JSON.parse(JSON.stringify(orderData.data)))
+            setInitData(JSON.parse(JSON.stringify(orderData.data)))
         }
-    }, [queryData.data])
+    }, [orderData.data])
 
+    //new mode
+    //set readonly mode, populate formik and init data with init values from helper
     useEffect(() => {
         if (params.id == 'new') {
             setReadonlyMode(false)
-            formik.setValues(JSON.parse(JSON.stringify(getEmptyForm(formStructure))))
-            setInitData(JSON.parse(JSON.stringify(getEmptyForm(formStructure))))
+            formik.setValues(JSON.parse(JSON.stringify(getInitValues(formStructure))))
+            setInitData(JSON.parse(JSON.stringify(getInitValues(formStructure))))
         } else setReadonlyMode(true)
     }, [params.id])
 
-    const displayInfo = (params: DialogInfoParams) => {
-        setDialog({
-            ...params,
-            open: true,
-        })
-    }
-
     return (
         <>
-            <Box maxWidth={800} style={{ margin: 'auto', marginTop: '20px' }}>
-                <Paper sx={{ p: '10px' }}>
-                    {queryData.isLoading || queryData.isError ? (
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                minHeight: '200px',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            }}
-                        >
-                            {queryData.isLoading ? (
-                                <CircularProgress />
-                            ) : (
-                                <Typography>Nie znaleziono zlecenia</Typography>
-                            )}
-                        </Box>
+            <Box maxWidth={1200} style={{ margin: 'auto', marginTop: '20px' }}>
+                <Typography variant="h4" sx={{ color: 'white', fontWeight: 700 }}>
+                    Zamówienia
+                </Typography>
+                <Paper sx={{ p: '10px', mt: '20px' }}>
+                    {queriesStatus.result != 'isSuccess' ? (
+                        <QueryBoxStatus queriesStatus={queriesStatus} />
                     ) : (
                         <>
-                            <Box>
-                                {formStructure.map((e) => {
-                                    switch (e.type) {
-                                        case 'input':
-                                            return (
-                                                <FormInput
-                                                    formik={formik}
-                                                    id={e.id}
-                                                    readonly={readonlyMode || !!e.readonly}
-                                                    key={e.id}
-                                                />
-                                            )
-                                        case 'date':
-                                            return (
-                                                <FormInput
-                                                    formik={formik}
-                                                    id={e.id}
-                                                    readonly={readonlyMode || !!e.readonly}
-                                                    key={e.id}
-                                                    type={'datetime-local'}
-                                                />
-                                            )
-                                        case 'select':
-                                            return (
-                                                <FormSelect
-                                                    formik={formik}
-                                                    id={e.id}
-                                                    readonly={readonlyMode || !!e.readonly}
-                                                    key={e.id}
-                                                    options={e.options}
-                                                />
-                                            )
-                                    }
-                                })}
-                            </Box>
-                            
-
-                            <Box sx={{ margin: '20px', gap: '20px', display: 'flex', flexDirection: 'row-reverse' }}>
-                                {readonlyMode && params.id != 'new' ? (
-                                    <>
-                                        <Button
-                                            color="primary"
-                                            startIcon={<EditIcon />}
-                                            variant="contained"
-                                            type="submit"
-                                            style={{ width: 120 }}
-                                            onClick={() => setReadonlyMode(false)}
-                                        >
-                                            Edytuj
-                                        </Button>
-                                        <Button
-                                            color="error"
-                                            startIcon={<DeleteIcon />}
-                                            variant="contained"
-                                            type="submit"
-                                            style={{ width: 120 }}
-                                            onClick={handleDelete}
-                                        >
-                                            Usuń
-                                        </Button>
-                                    </>
-                                ) : (
-                                    <>
-                                        <Button
-                                            color="primary"
-                                            startIcon={<SaveIcon />}
-                                            variant="contained"
-                                            onClick={formik.submitForm}
-                                            style={{ width: 120 }}
-                                        >
-                                            Zapisz
-                                        </Button>
-                                        <Button
-                                            color="primary"
-                                            startIcon={<ReplayIcon style={{ transform: 'rotate(-0.25turn)' }} />}
-                                            style={{ color: theme.palette.primary.main, width: 120 }}
-                                            variant="outlined"
-                                            onClick={handleReset}
-                                        >
-                                            Reset
-                                        </Button>
-                                        {params.id != 'new' && (
-                                            <Button
-                                                color="primary"
-                                                startIcon={<CloseIcon style={{ transform: 'rotate(-0.25turn)' }} />}
-                                                style={{ color: theme.palette.primary.main, width: 120 }}
-                                                variant="outlined"
-                                                onClick={handleCancel}
-                                            >
-                                                Anuluj
-                                            </Button>
-                                        )}
-                                    </>
-                                )}
-                            </Box>
+                            <FormStructure formStructure={formStructure} formik={formik} readonlyMode={readonlyMode} />
+                            <FormButtons
+                                id={params.id}
+                                onCancel={handleCancel}
+                                onDelete={handleDelete}
+                                onEdit={() => setReadonlyMode(false)}
+                                onReset={handleReset}
+                                onSubmit={formik.submitForm}
+                                readonlyMode={readonlyMode}
+                            />
                         </>
                     )}
                 </Paper>
             </Box>
-            {dialog.open && <DialogInfo {...dialog} />}
         </>
     )
 }

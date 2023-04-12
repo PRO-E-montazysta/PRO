@@ -25,6 +25,20 @@ export const theme = createTheme({
             },
         },
     },
-});
-
-
+    // palette: {
+    //     primary: {
+    //       main: '#1976d2',
+    //     },
+    //     secondary: {
+    //       main: '#dc004e',
+    //     },
+    //     background:{
+    //         default: '#282A3A',
+    //         paper: '#1A1C26'
+    //     },
+    //     text: {
+    //         primary: '#FFFFFF',
+    //         secondary: '#FFFFFF',
+    //     }
+    //   },
+})

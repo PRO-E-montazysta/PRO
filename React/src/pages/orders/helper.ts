@@ -121,16 +121,38 @@ export type FormInputProps = {
 }
 
 export const useFormStructure = (): Array<FormInputProps> => {
-    const queryClient = useQuery<Array<Client>, AxiosError>(['client-list'], getAllClients)
-    const queryCompany = useQuery<Array<Company>, AxiosError>(['company-list'], getAllCompanies)
-    const queryForeman = useQuery<Array<AppUser>, AxiosError>(['foreman-list'], getAllForemans)
-    const queryLocation = useQuery<Array<Location>, AxiosError>(['location-list'], getAllLocations)
-    const queryManager = useQuery<Array<AppUser>, AxiosError>(['manager-list'], getAllManagers)
+    const queryClient = useQuery<Array<Client>, AxiosError>(['client-list'], getAllClients, {
+        cacheTime: 15 * 60 * 1000,
+        staleTime: 10 * 60 * 1000,
+    })
+    const queryCompany = useQuery<Array<Company>, AxiosError>(['company-list'], getAllCompanies, {
+        cacheTime: 15 * 60 * 1000,
+        staleTime: 10 * 60 * 1000,
+    })
+    const queryForeman = useQuery<Array<AppUser>, AxiosError>(['foreman-list'], getAllForemans, {
+        cacheTime: 15 * 60 * 1000,
+        staleTime: 10 * 60 * 1000,
+    })
+    const queryLocation = useQuery<Array<Location>, AxiosError>(['location-list'], getAllLocations, {
+        cacheTime: 15 * 60 * 1000,
+        staleTime: 10 * 60 * 1000,
+    })
+    const queryManager = useQuery<Array<AppUser>, AxiosError>(['manager-list'], getAllManagers, {
+        cacheTime: 15 * 60 * 1000,
+        staleTime: 10 * 60 * 1000,
+    })
     const querySalesReprezentative = useQuery<Array<AppUser>, AxiosError>(
         ['sales-reprezentative-list'],
         getAllSalesReprezentatives,
+        {
+            cacheTime: 15 * 60 * 1000,
+            staleTime: 10 * 60 * 1000,
+        },
     )
-    const querySpecialist = useQuery<Array<AppUser>, AxiosError>(['specialist-list'], getAllSpecialists)
+    const querySpecialist = useQuery<Array<AppUser>, AxiosError>(['specialist-list'], getAllSpecialists, {
+        cacheTime: 15 * 60 * 1000,
+        staleTime: 10 * 60 * 1000,
+    })
 
     return [
         {

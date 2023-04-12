@@ -3,6 +3,7 @@ import { SelectMenuItemProps } from "../base/Multiselect"
 
 export type FormInputParams = {
     readonly: boolean
+    label?: string
     id: string
     formik: any
     firstChild?: boolean
