@@ -195,11 +195,6 @@ const EmpDetails = () => {
             tmp.roles = [tmp.roles];
         }
 
-        // NS: Wsparcie dla - PlPhoneNumberValidator
-        if (tmp.phone && !tmp.phone.startsWith("+48")) {
-            tmp.phone = "+48" + tmp.phone;
-        }
-
         formik.setValues(tmp);
 
         if (params.id == 'new') mutationPost.mutate(JSON.parse(JSON.stringify(formik.values)))
