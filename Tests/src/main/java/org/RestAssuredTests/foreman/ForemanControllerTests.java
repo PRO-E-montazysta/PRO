@@ -35,7 +35,7 @@ public class ForemanControllerTests extends AbstractTest {
                 .header("Authorization", "Bearer "+ TOKEN)
                 .contentType(ContentType.JSON)
                 .when()
-                .get(BASE_PATH + "/foremen")
+                .get(BASE_PATH + "/foremen/all")
                 .then()
                 .extract().response();
 
