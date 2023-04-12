@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@IsAfter(message = "Date of dismiss must be after date of employment", startDateFieldName = "dateOfEmployment", endDateFieldName = "dateOfDismiss")
+@IsAfter(startDateFieldName = "dateOfEmployment", endDateFieldName = "dateOfDismiss")
 public class EmploymentDto {
 
     private Long id;

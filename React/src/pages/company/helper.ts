@@ -59,18 +59,46 @@ export const filterInitStructure: Array<FilterInputType> = [
 ]
 
 export const emptyForm = {
-    id: null,
+    id: '',
     companyName: '',
-    createdAt: '',
-    status: '',
+    status: 'ACTIVE',
     statusReason: '',
-    warehouses: [],
-    orders: [],
-    clients: [],
-    employments: [],
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    username: '',
+    phone: '',
+    pesel: '',
 }
 
-export const validationSchema = yup.object({
+export const addNewCompanyForm = {
+    companyName: '',
+    status: 'ACTIVE',
+    statusReason: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    username: '',
+    phone: '',
+    pesel: '',
+}
+
+export const validationSchemaPost = yup.object({
     companyName: yup.string().min(2, 'Nazwa musi zawierać co najmniej 2 znaki').required('Wprowadź nazwę'),
-    status: yup.string().required('Wybierz status'),
+    firstName: yup.string().min(3, 'Imie musi zawierać co najmniej 3 znaki').required('Wprowadź imię'),
+    lastName: yup.string().min(2, 'Nazwisko musi zawierać co najmniej 2 znaki').required('Wprowadź nazwisko'),
+    email: yup.string().email().required('Wprowadź email'),
+    password: yup.string().min(2, 'Hasło musi zawierać co najmniej 5 znaków').required('Wprowadź hasło'),
+    username: yup
+        .string()
+        .min(2, 'Nazwa użytkownika musi zawierać co najmniej 3 znaki')
+        .required('Wprowadź nazwę użytkownika'),
+    phone: yup.string().required('Wprowadź numer telefonu'),
+    pesel: yup.string().required('Wprowadź poprawny pesel'),
+})
+
+export const validationSchemaUpdate = yup.object({
+    companyName: yup.string().min(2, 'Nazwa musi zawierać co najmniej 2 znaki').required('Wprowadź nazwę'),
 })
