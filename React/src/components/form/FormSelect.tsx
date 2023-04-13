@@ -1,4 +1,5 @@
 import { MenuItem, FormControl, InputLabel, Select, SelectChangeEvent, OutlinedInput } from '@mui/material'
+import useBreakpoints from '../../hooks/useBreakpoints'
 import { FormInputParams } from './types'
 
 const FormSelect = (params: FormInputParams) => {
@@ -9,22 +10,19 @@ const FormSelect = (params: FormInputParams) => {
         const newValue = event.target.value
         formik.setFieldValue(id, newValue)
     }
-
+    const appSize = useBreakpoints()
     return (
-        <FormControl variant="outlined" error={formik.touched[id] && Boolean(formik.errors[id])}>
+        <FormControl variant="outlined" error={formik.touched[id] && Boolean(formik.errors[id])} style={{ ...style }}>
             <InputLabel id={`label-${id}`} shrink>
                 {label}
             </InputLabel>
             <Select
+                size={appSize.isMobile ? 'small' : 'medium'}
                 fullWidth
                 readOnly={readonly}
                 name={id}
                 labelId={`label-${id}`}
                 input={<OutlinedInput notched label={label} />}
-                style={{
-                    minWidth: '300px',
-                    maxWidth: '500px',
-                }}
                 value={value ? value : -1}
                 onChange={handleOnChange}
             >

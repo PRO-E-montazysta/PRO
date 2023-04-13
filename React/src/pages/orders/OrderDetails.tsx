@@ -14,6 +14,9 @@ import { FormButtons } from '../../components/form/FormButtons'
 import { FormStructure } from '../../components/form/FormStructure'
 import { useQueriesStatus } from '../../hooks/useQueriesStatus'
 import QueryBoxStatus from '../../components/base/QueryStatusBox'
+import useBreakpoints from '../../hooks/useBreakpoints'
+
+import { theme } from '../../themes/baseTheme'
 
 const OrderDetails = () => {
     //parameters from url
@@ -44,6 +47,7 @@ const OrderDetails = () => {
         onSubmit: () => handleSubmit(),
     })
 
+    const appSize = useBreakpoints()
     const handleSubmit = () => {
         if (params.id == 'new') addOrderMutation.mutate(JSON.parse(JSON.stringify(formik.values)))
         else editOrderMutation.mutate(JSON.parse(JSON.stringify(formik.values)))
@@ -100,11 +104,29 @@ const OrderDetails = () => {
 
     return (
         <>
-            <Box maxWidth={1200} style={{ margin: 'auto', marginTop: '20px' }}>
-                <Typography variant="h4" sx={{ color: 'white', fontWeight: 700 }}>
+            <Box
+                sx={{
+                    p: appSize.isMobile || appSize.isTablet ? '10px' : '20px',
+                    maxWidth: '1200px',
+                    m: 'auto',
+                    minWidth: '280px',
+                }}
+            >
+                <Typography
+                    variant="h4"
+                    fontWeight="bold"
+                    padding="5px"
+                    color={theme.palette.primary.contrastText}
+                    fontSize={appSize.isMobile || appSize.isTablet ? '22px' : '32px'}
+                >
                     Zamówienia
                 </Typography>
-                <Paper sx={{ p: '10px', mt: '20px' }}>
+                <Paper
+                    sx={{
+                        mt: appSize.isMobile || appSize.isTablet ? '10px' : '20px',
+                        p: appSize.isMobile ? '10px' : '20px',
+                    }}
+                >
                     {queriesStatus.result != 'isSuccess' ? (
                         <QueryBoxStatus queriesStatus={queriesStatus} />
                     ) : (

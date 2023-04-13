@@ -1,5 +1,6 @@
 import { Box, TextField, Typography } from '@mui/material'
 import { formatDate } from '../../helpers/format.helper'
+import useBreakpoints from '../../hooks/useBreakpoints'
 import FormLabel from './FormLabel'
 import { FormInputParams } from './types'
 
@@ -7,15 +8,18 @@ const FormInput = (params: FormInputParams) => {
     const { id, readonly, style, type, formik, label } = params
     const value = type == 'datetime-local' ? formatDate(formik.values[id]) : String(formik.values[id])
 
+    const appSize = useBreakpoints()
     return (
         <TextField
+            size={appSize.isMobile ? 'small' : 'medium'}
             InputLabelProps={{
                 shrink: true,
             }}
             InputProps={{
                 readOnly: readonly,
             }}
-            sx={{ minWidth: '300px' }}
+            // sx={{ minWidth: '300px' }}
+            style={style}
             label={label}
             variant="outlined"
             type={type ? type : 'text'}

@@ -23,7 +23,7 @@ const QueryBoxStatus = (props: QueryBoxStatusProps) => {
             {queriesStatus.result == 'isLoading' ? (
                 <CircularProgress />
             ) : queriesStatus.result == 'isError' ? (
-                <Box sx={{textAlign: 'center'}}>
+                <Box sx={{ textAlign: 'center' }}>
                     <Typography>
                         {process.env.NODE_ENV === 'development'
                             ? queriesStatus.errorMessage
@@ -34,7 +34,7 @@ const QueryBoxStatus = (props: QueryBoxStatusProps) => {
                     </Button>
                 </Box>
             ) : (
-                <Box sx={{textAlign: 'center'}}>
+                <Box sx={{ textAlign: 'center' }}>
                     <Typography>Brak danych do wyświetlenia</Typography>
                     <Button onClick={queriesStatus.handleResetStatus} variant="contained">
                         OK

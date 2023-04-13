@@ -7,6 +7,7 @@ import ReplayIcon from '@mui/icons-material/Replay'
 import CloseIcon from '@mui/icons-material/Close'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
+import useBreakpoints from '../../hooks/useBreakpoints'
 
 type FormButtonsParams = {
     readonlyMode: boolean
@@ -20,8 +21,17 @@ type FormButtonsParams = {
 
 export const FormButtons = (params: FormButtonsParams) => {
     const { readonlyMode, id, onCancel, onDelete, onEdit, onReset, onSubmit } = params
+
+    const appSize = useBreakpoints()
     return (
-        <Box sx={{ margin: '20px', gap: '20px', display: 'flex', flexDirection: 'row-reverse' }}>
+        <Box
+            sx={{
+                mt: '15px',
+                gap: '15px',
+                display: appSize.isMobile ? 'grid' : 'flex',
+                flexDirection: 'row-reverse',
+            }}
+        >
             {readonlyMode && id != 'new' ? (
                 <>
                     <Button
@@ -29,7 +39,7 @@ export const FormButtons = (params: FormButtonsParams) => {
                         startIcon={<EditIcon />}
                         variant="contained"
                         type="submit"
-                        style={{ width: 120 }}
+                        style={{ width: appSize.isMobile ? 'auto' : 120 }}
                         onClick={onEdit}
                     >
                         Edytuj
@@ -39,7 +49,7 @@ export const FormButtons = (params: FormButtonsParams) => {
                         startIcon={<DeleteIcon />}
                         variant="contained"
                         type="submit"
-                        style={{ width: 120 }}
+                        style={{ width: appSize.isMobile ? 'auto' : 120 }}
                         onClick={onDelete}
                     >
                         Usuń
@@ -52,14 +62,14 @@ export const FormButtons = (params: FormButtonsParams) => {
                         startIcon={<SaveIcon />}
                         variant="contained"
                         onClick={onSubmit}
-                        style={{ width: 120 }}
+                        style={{ width: appSize.isMobile ? 'auto' : 120 }}
                     >
                         Zapisz
                     </Button>
                     <Button
                         color="primary"
                         startIcon={<ReplayIcon style={{ transform: 'rotate(-0.25turn)' }} />}
-                        style={{ color: theme.palette.primary.main, width: 120 }}
+                        style={{ color: theme.palette.primary.main, width: appSize.isMobile ? 'auto' : 120 }}
                         variant="outlined"
                         onClick={onReset}
                     >
@@ -69,7 +79,7 @@ export const FormButtons = (params: FormButtonsParams) => {
                         <Button
                             color="primary"
                             startIcon={<CloseIcon style={{ transform: 'rotate(-0.25turn)' }} />}
-                            style={{ color: theme.palette.primary.main, width: 120 }}
+                            style={{ color: theme.palette.primary.main, width: appSize.isMobile ? 'auto' : 120 }}
                             variant="outlined"
                             onClick={onCancel}
                         >
