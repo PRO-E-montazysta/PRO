@@ -14,4 +14,5 @@ public interface WarehouseService {
     void delete(Long id);
     WarehouseDto update(Long id, WarehouseDto warehouse);
     List <WarehouseLocationDto> findAllWithFilters(WarehouseSearchCriteria warehouseSearchCriteria);
+    WarehouseDto addWithWarehouseCount(WarehouseDto warehouse);
 }

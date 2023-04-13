@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -24,14 +22,9 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String companyName;
-
     private LocalDate createdAt;
-
-    @NotNull
     private CompanyStatus status;
-
     private String statusReason;
 
 
@@ -46,4 +39,7 @@ public class Company {
 
     @OneToMany(mappedBy = "company")
     private List<Employment> employments;
+
+    @OneToMany(mappedBy = "company")
+    private List<ToolType> toolTypes;
 }

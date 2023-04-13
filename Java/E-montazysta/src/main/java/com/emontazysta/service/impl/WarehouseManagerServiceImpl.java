@@ -1,15 +1,22 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.WarehouseManagerMapper;
 import com.emontazysta.model.WarehouseManager;
+import com.emontazysta.model.dto.EmploymentDto;
 import com.emontazysta.model.dto.WarehouseManagerDto;
 import com.emontazysta.repository.WarehouseManagerRepository;
+import com.emontazysta.service.EmploymentService;
 import com.emontazysta.service.WarehouseManagerService;
+import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,6 +25,8 @@ public class WarehouseManagerServiceImpl implements WarehouseManagerService {
 
     private final WarehouseManagerRepository repository;
     private final WarehouseManagerMapper warehouseManagerMapper;
+    private final EmploymentService employmentService;
+    private final AuthUtils authUtils;
 
     @Override
     public List<WarehouseManagerDto> getAll() {
@@ -34,8 +43,30 @@ public class WarehouseManagerServiceImpl implements WarehouseManagerService {
 
     @Override
     public WarehouseManagerDto add(WarehouseManagerDto warehouseManagerDto) {
-        WarehouseManager warehouseManager = warehouseManagerMapper.toEntity(warehouseManagerDto);
-        return warehouseManagerMapper.toDto(repository.save(warehouseManager));
+        warehouseManagerDto.setRoles(Set.of(Role.WAREHOUSE_MANAGER));
+        warehouseManagerDto.setUnavailabilities(new ArrayList<>());
+        warehouseManagerDto.setNotifications(new ArrayList<>());
+        warehouseManagerDto.setEmployeeComments(new ArrayList<>());
+        warehouseManagerDto.setElementEvents(new ArrayList<>());
+        warehouseManagerDto.setEmployments(new ArrayList<>());
+        warehouseManagerDto.setAttachments(new ArrayList<>());
+        warehouseManagerDto.setToolEvents(new ArrayList<>());
+        warehouseManagerDto.setReleaseTools(new ArrayList<>());
+        warehouseManagerDto.setElementReturnReleases(new ArrayList<>());
+        warehouseManagerDto.setDemandAdHocs(new ArrayList<>());
+        warehouseManagerDto.setAcceptedDemandAdHocs(new ArrayList<>());
+
+        WarehouseManager warehouseManager = repository.save(warehouseManagerMapper.toEntity(warehouseManagerDto));
+
+        EmploymentDto employmentDto = EmploymentDto.builder()
+                .dateOfEmployment(LocalDateTime.now())
+                .dateOfDismiss(null)
+                .companyId(authUtils.getLoggedUserCompanyId())
+                .employeeId(warehouseManager.getId())
+                .build();
+        employmentService.add(employmentDto);
+
+        return warehouseManagerMapper.toDto(warehouseManager);
     }
 
     @Override
@@ -63,6 +94,7 @@ public class WarehouseManagerServiceImpl implements WarehouseManagerService {
         warehouseManager.setReleasedTools(updatedWarehouseManager.getReleasedTools());
         warehouseManager.setElementReturnReleases(updatedWarehouseManager.getElementReturnReleases());
         warehouseManager.setDemandAdHocs(updatedWarehouseManager.getDemandAdHocs());
+        warehouseManager.setAcceptedDemandAdHocs(updatedWarehouseManager.getAcceptedDemandAdHocs());
         return warehouseManagerMapper.toDto(repository.save(warehouseManager));
     }
 }

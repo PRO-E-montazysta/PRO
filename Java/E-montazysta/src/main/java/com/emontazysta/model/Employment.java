@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -21,9 +21,9 @@ public class Employment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate dateOfEmployment;
+    private LocalDateTime dateOfEmployment;
 
-    private LocalDate dateOfDismiss;
+    private LocalDateTime dateOfDismiss;
 
     @ManyToOne
     private Company company;

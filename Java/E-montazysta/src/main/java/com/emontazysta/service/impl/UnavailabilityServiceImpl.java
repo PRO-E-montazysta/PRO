@@ -1,10 +1,15 @@
 package com.emontazysta.service.impl;
 
 import com.emontazysta.mapper.UnavailabilityMapper;
+import com.emontazysta.model.Manager;
 import com.emontazysta.model.Unavailability;
 import com.emontazysta.model.dto.UnavailabilityDto;
+import com.emontazysta.model.dto.filterDto.UnavailabilityFilterDto;
+import com.emontazysta.model.searchcriteria.UnavailabilitySearchCriteria;
 import com.emontazysta.repository.UnavailabilityRepository;
+import com.emontazysta.repository.criteria.UnavailabilityCriteriaRepository;
 import com.emontazysta.service.UnavailabilityService;
+import com.emontazysta.util.AuthUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +23,8 @@ public class UnavailabilityServiceImpl implements UnavailabilityService {
 
     private final UnavailabilityRepository repository;
     private final UnavailabilityMapper unavailabilityMapper;
+    private final AuthUtils authUtils;
+    private final UnavailabilityCriteriaRepository unavailabilityCriteriaRepository;
 
     @Override
     public List<UnavailabilityDto> getAll() {
@@ -35,6 +42,7 @@ public class UnavailabilityServiceImpl implements UnavailabilityService {
     @Override
     public UnavailabilityDto add(UnavailabilityDto unavailabilityDto) {
         Unavailability unavailability = unavailabilityMapper.toEntity(unavailabilityDto);
+        unavailability.setAssignedBy((Manager) authUtils.getLoggedUser());
         return unavailabilityMapper.toDto(repository.save(unavailability));
     }
 
@@ -56,7 +64,9 @@ public class UnavailabilityServiceImpl implements UnavailabilityService {
 
         return unavailabilityMapper.toDto(repository.save(updatedUnavailability));
     }
+
+    @Override
+    public List<UnavailabilityFilterDto> findAllWithFilters(UnavailabilitySearchCriteria unavailabilitySearchCriteria) {
+        return unavailabilityCriteriaRepository.findAllWithFilters(unavailabilitySearchCriteria);
+    }
 }
-
-
-

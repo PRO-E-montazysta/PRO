@@ -1,6 +1,6 @@
 package com.emontazysta.model;
 
-import com.emontazysta.enums.TypeOfStatus;
+import com.emontazysta.enums.EventStatus;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -30,12 +29,10 @@ public class ToolEvent {
     private LocalDateTime movingDate;
     private LocalDateTime completionDate;
     private String description;
-
-    @NotNull
-    private TypeOfStatus status;
+    private EventStatus status;
 
     @ManyToOne
-    private AppUser updatedBy;
+    private AppUser createdBy;
 
     @ManyToOne
     private Manager acceptedBy;

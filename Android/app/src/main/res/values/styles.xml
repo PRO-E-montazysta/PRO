@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="PrimaryText" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">@dimen/text_size_primary</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily">Arial</item>
+    </style>
+    <style name="SecondaryText" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">@dimen/text_size_secondary</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily">Arial</item>
+    </style>
+    <style name="button" parent="@style/Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+    </style>
+    <style name="text_field">
+        <item name="android:minHeight">48dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxWidth">488dp</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:background">"@drawable/text_input"</item>
+        <item name="android:textColorHint">"@color/white"</item>
+    </style>
+    <style name="card" parent="@style/Widget.Material3.CardView.Outlined">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_rowWeight">1</item>
+        <item name="android:layout_columnWeight">1</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="cardCornerRadius">12dp</item>
+    </style>
+    <style name="backdrop" >
+        <item name="android:background">@color/md_theme_dark_primaryContainer</item>
+    </style>
+</resources>

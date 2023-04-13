@@ -2,7 +2,7 @@ import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
 import Error from "../components/error/Error";
 import { Role } from "../types/roleEnum";
 import { pageList, PageProps } from "./pageList";
-import { getRolesFromToken, getToken } from "./token";
+import { getRolesFromToken, getToken, isExpire } from "./token";
 
 
 
@@ -27,7 +27,7 @@ export const AutorizedRoute = (page: PageProps) => {
 
     if (location.pathname === '/login') return <Outlet />;
 
-    if (!isAuthenticate) return <Navigate to='/login' />
+    if (!isAuthenticate || isExpire(token)) return <Navigate to='/login' />
 
     return isAuthorized(page)
         ? <Outlet />

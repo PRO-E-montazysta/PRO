@@ -8,6 +8,7 @@ import java.util.List;
 
 @Data
 @SuperBuilder
+@NoArgsConstructor
 public class ManagerDto extends EmployeeDto {
 
     private List<Long> createdUnavailabilities;

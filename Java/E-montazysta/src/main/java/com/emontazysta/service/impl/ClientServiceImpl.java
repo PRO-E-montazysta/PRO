@@ -3,12 +3,15 @@ package com.emontazysta.service.impl;
 import com.emontazysta.mapper.ClientMapper;
 import com.emontazysta.model.Client;
 import com.emontazysta.model.dto.ClientDto;
+import com.emontazysta.model.searchcriteria.ClientSearchCriteria;
 import com.emontazysta.repository.ClientRepository;
+import com.emontazysta.repository.criteria.ClientCriteriaRepository;
 import com.emontazysta.service.ClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,6 +21,8 @@ public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository repository;
     private final ClientMapper clientMapper;
+
+    private final ClientCriteriaRepository clientCriteriaRepository;
 
     @Override
     public List<ClientDto> getAll() {
@@ -53,5 +58,10 @@ public class ClientServiceImpl implements ClientService {
         clientToUpdate.setCompany(updatedClient.getCompany());
         clientToUpdate.setOrders(updatedClient.getOrders());
         return clientMapper.toDto(repository.save(clientToUpdate));
+    }
+
+    @Override
+    public List<ClientDto> getFilteredOrders(ClientSearchCriteria clientSearchCriteria, Principal principal) {
+        return clientCriteriaRepository.findAllWithFilters(clientSearchCriteria, principal);
     }
 }

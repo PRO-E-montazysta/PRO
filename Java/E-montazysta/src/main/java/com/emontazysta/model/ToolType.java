@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
@@ -36,4 +35,6 @@ public class ToolType {
     @OneToMany(mappedBy = "toolType")
     private List<Tool> tools;
 
+    @ManyToOne
+    private Company company;
 }

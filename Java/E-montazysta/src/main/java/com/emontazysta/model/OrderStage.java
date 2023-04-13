@@ -1,5 +1,6 @@
 package com.emontazysta.model;
 
+import com.emontazysta.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
@@ -8,8 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,31 +26,24 @@ public class OrderStage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String name;
 
-    @NotNull
     private OrderStatus status;
 
-    @NotNull
     private BigDecimal price;
 
-    @NotNull
-    private Integer order;
+    private LocalDateTime plannedStartDate;
 
-    private LocalDate plannedEndDate;
+    private LocalDateTime plannedEndDate;
 
     private LocalDateTime startDate;
 
     private LocalDateTime endDate;
 
-    @NotNull
     private long plannedDurationTime;
 
-    @NotNull
     private int plannedFittersNumber;
 
-    @NotNull
     private int minimumImagesNumber;
 
     @ManyToMany(mappedBy = "workingOn")

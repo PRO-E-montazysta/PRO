@@ -1,11 +1,12 @@
 package com.emontazysta.model.dto;
 
-import com.emontazysta.enums.TypeOfStatus;
+import com.emontazysta.enums.EventStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -20,9 +21,11 @@ public class ToolEventDto {
     private LocalDateTime movingDate;
     private LocalDateTime completionDate;
     private String description;
-    private TypeOfStatus status;
-    private Long updatedById;
+    @NotNull(message = "Event status cannot be empty")
+    private EventStatus status;
+    private Long createdById;
     private Long acceptedById;
+    @NotNull(message = "Tool id cannot be empty")
     private Long toolId;
     private List<Long> attachments;
 }

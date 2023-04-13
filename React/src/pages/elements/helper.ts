@@ -2,34 +2,38 @@ import { FilterInputType } from '../../components/table/filter/TableFilter'
 import { Element, TypeOfUnit } from '../../types/model/Element'
 import { HeadCell } from '../../components/table/sort/SortedTableHeader'
 
+import * as yup from 'yup'
+import { typeOfUnitName } from '../../helpers/enum.helper'
+
+import { AppSize } from '../../hooks/useBreakpoints'
 export const headCells: Array<HeadCell<Element>> = [
     {
         type: 'string',
         id: 'name',
         label: 'Nazwa',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
     {
         type: 'string',
         id: 'code',
         label: 'Kod',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
     {
         type: 'string',
         id: 'typeOfUnit',
         label: 'Jednostka',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
-        formatFn: (status: string) => Object.values(TypeOfUnit)[Object.keys(TypeOfUnit).indexOf(status)],
+        formatFn: (typeOfUnit: string) => typeOfUnitName(typeOfUnit),
     },
     {
         type: 'string',
         id: 'quantityInUnit',
         label: 'Ilość w jednostce',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
 ]
@@ -50,3 +54,21 @@ export const filterInitStructure: Array<FilterInputType> = [
         typeValue: 'string',
     },
 ]
+
+export const emptyForm = {
+    id: null,
+    name: '',
+    code: '',
+    typeOfUnit: '',
+    quantityInUnit: '',
+    elementReturnReleases: [],
+    elementInWarehouses: [],
+    elementEvents: [],
+    attachmentId: '',
+    ordersStages: [],
+}
+
+export const validationSchema = yup.object({
+    name: yup.string().min(3, 'Nazwa musi zaweirać co najmniej 3 znaki').required('Wprowadź nazwę'),
+    typeOfUnit: yup.string().required('Wybierz rodzaj jednostki'),
+})

@@ -14,4 +14,5 @@ public interface ElementService {
     void delete(Long id);
     ElementDto update(Long id, ElementDto element);
     List<ElementDto> getFilteredElements(ElementSearchCriteria elementSearchCriteria);
+    ElementDto addWithWarehouseCount(ElementDto element);
 }

@@ -10,6 +10,9 @@ import { getAllToolTypes } from '../../api/toolType.api'
 import { formatArrayToOptions } from '../../helpers/format.helper'
 import { useEffect, useState } from 'react'
 
+import * as yup from 'yup'
+import { AppSize } from '../../hooks/useBreakpoints'
+
 const filterInitStructure: Array<FilterInputType> = [
     {
         id: 'name',
@@ -79,28 +82,28 @@ export const headCells: Array<HeadCell<Tool>> = [
         type: 'string',
         id: 'name',
         label: 'Nazwa',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
     {
         type: 'string',
         id: 'code',
         label: 'Kod',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
     {
         type: 'string',
         id: 'warehouse',
         label: 'Magazyn',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
     {
         type: 'string',
         id: 'toolType',
         label: 'Typ narzędzia',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
 ]
@@ -110,21 +113,21 @@ export const selectedHeadCells: Array<HeadCell<Tool>> = [
         type: 'string',
         id: 'name',
         label: 'Nazwa',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
     {
         type: 'string',
         id: 'code',
         label: 'Kod',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
     {
         type: 'string',
         id: 'toolType',
         label: 'Typ narzędzia',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
 ]
@@ -158,3 +161,20 @@ export const selectedFilterInitStructure: Array<FilterInputType> = [
         })*/
     },
 ]
+
+export const emptyForm = {
+    id: null,
+    name: '',
+    createdAt: '',
+    code: '',
+    toolReleases: [],
+    warehouseId: null,
+    toolEvents: [],
+    toolTypeId: null,
+}
+
+export const validationSchema = yup.object({
+    name: yup.string().min(2, 'Nazwa musi zawierać co najmniej 2 znaki').required('Wprowadź nazwę'),
+    warehouseId: yup.number().typeError('Wybierz magazyn'),
+    toolTypeId: yup.number().typeError('Wybierz typ narzędzia'),
+})

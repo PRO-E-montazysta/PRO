@@ -9,8 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
@@ -25,14 +23,9 @@ public class Element {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String name;
-
     private String code;
-
-    @NotNull
     private TypeOfUnit typeOfUnit;
-
     private float quantityInUnit;
 
     @OneToMany(mappedBy = "element")
