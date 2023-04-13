@@ -82,13 +82,13 @@ public class AppUserController {
             if (userService.getById(id) != null) {
                 return ResponseEntity.status(HttpStatus.OK).body(userMapper.toDto(userService.update(id, UserMapper.toEntity(user))));
             }
-        } else if(!roles.contains(Role.CLOUD_ADMIN) && roles.contains(Role.ADMIN)) {
-             if (!userService.getById(user.getId()).getRoles().contains(Role.CLOUD_ADMIN)){
-                 return ResponseEntity.status(HttpStatus.OK).body(userMapper.toDto(userService.update(id, UserMapper.toEntity(user))));
-             } else {
-                 log.info("User {} does not have the required permissions", principal.getName());
-                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-             }
+        } else if (!roles.contains(Role.CLOUD_ADMIN) && roles.contains(Role.ADMIN)) {
+            if (!userService.getById(user.getId()).getRoles().contains(Role.CLOUD_ADMIN)) {
+                return ResponseEntity.status(HttpStatus.OK).body(userMapper.toDto(userService.update(id, UserMapper.toEntity(user))));
+            } else {
+                log.info("User {} does not have the required permissions", principal.getName());
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
@@ -98,7 +98,7 @@ public class AppUserController {
     public AppUserDto getUserById(@PathVariable Long id) {
         if (userService.getById(id).getRoles().contains(Role.CLOUD_ADMIN)) {
             return userMapper.toDto(userService.getById(id));
-        }else{
+        } else {
             return employeeMapper.toDto(userService.getById(id));
         }
     }
@@ -109,7 +109,7 @@ public class AppUserController {
     public ResponseEntity<String> addRoleToUser(@PathVariable Long id, @RequestBody Set<Role> roles) {
         ResponseEntity<String> response = ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); //TODO: move logic to separate service
         boolean correctRoles = roles.stream()
-                                    .allMatch(role -> roleService.getAllRoles().contains(role.name()));
+                .allMatch(role -> roleService.getAllRoles().contains(role.name()));
         if (correctRoles && userService.getById(id) != null) {
             userService.setRolesToUser(id, roles);
             response = ResponseEntity.status(HttpStatus.OK).build();
@@ -124,7 +124,7 @@ public class AppUserController {
     @PreAuthorize("hasAuthority('SCOPE_MANAGER')")
     @GetMapping("/filter")
     @Operation(description = "Return filtered Users by given parameters.", security = @SecurityRequirement(name = "bearer-key"))
-    public ResponseEntity<List<EmployeeDto>> filterUsers(AppUserSearchCriteria appUserSearchCriteria){
+    public ResponseEntity<List<EmployeeDto>> filterUsers(AppUserSearchCriteria appUserSearchCriteria) {
         return new ResponseEntity<>(userService.getFilteredUsers(appUserSearchCriteria), HttpStatus.OK);
     }
 
