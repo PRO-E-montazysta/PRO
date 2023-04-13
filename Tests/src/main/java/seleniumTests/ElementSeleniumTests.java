@@ -14,7 +14,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class ToolSeleniumTests {
+public class ElementSeleniumTests {
     private WebDriver driver;
     private WebDriverWait wait;
 
@@ -40,28 +40,30 @@ public class ToolSeleniumTests {
     public void tearDown(){
         driver.quit();
     }
+
     @Test
-    public void addToolTestSelenium() throws InterruptedException {
+    public void addElementTestSelenium() throws InterruptedException {
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/header/div/div/div[2]/button")));
-        driver.findElement(By.xpath("/html/body/div/header/div/div/div[2]/button")).click();
 
-        driver.findElement(By.xpath("/html/body/div/header/div/div/div[2]/div/li[2]")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/header/div/div/div[6]/button")));
+        driver.findElement(By.xpath("/html/body/div/header/div/div/div[6]/button")).click();
+
+        driver.findElement(By.xpath("/html/body/div/header/div/div/div[6]/div/li[2]")).click();
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div")));
         driver.findElement(By.xpath("//*[@id=\"name\"]")).click();
-        driver.findElement(By.xpath("//*[@id=\"name\"]")).sendKeys("hammer");
+        driver.findElement(By.xpath("//*[@id=\"name\"]")).sendKeys("brama garażowa");
 
 
 
         driver.findElement(By.xpath("//*[@id=\":r3:\"]")).click();
         Thread.sleep(1000);
-        Actions keyDown = new Actions(driver); keyDown.sendKeys(Keys.chord(Keys.ENTER)).perform();
+        Actions keyDown = new Actions(driver); keyDown.sendKeys(Keys.chord(Keys.DOWN, Keys.DOWN, Keys.DOWN, Keys.ENTER)).perform();
         Thread.sleep(1000);
 
-        driver.findElement(By.xpath("//*[@id=\":r4:\"]")).click();
+        driver.findElement(By.xpath("//*[@id=\"quantityInUnit\"]")).click();
         Thread.sleep(1000);
-        keyDown.sendKeys(Keys.chord(Keys.DOWN,Keys.ENTER)).perform();
+        driver.findElement(By.xpath("//*[@id=\"quantityInUnit\"]")).sendKeys("1");
         Thread.sleep(1000);
 
         driver.findElement(By.xpath("/html/body/div/div/div/div[2]/button[1]")).click();
@@ -69,6 +71,28 @@ public class ToolSeleniumTests {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[2]/div")));
         driver.findElement(By.xpath("/html/body/div/div[2]/div/form/div/button")).click();
 
+        Thread.sleep(5000);
+
+        driver.findElement(By.xpath("/html/body/div/header/div/div/button")).click();
+
+    }
+
+    @Test
+    public void filterElementToolTestSelenium() throws InterruptedException {
+
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/header/div/div/div[6]/button")));
+        driver.findElement(By.xpath("/html/body/div/header/div/div/div[6]/button")).click();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/header/div/div/div[6]/div/li[1]")));
+        driver.findElement(By.xpath("/html/body/div/header/div/div/div[6]/div/li[1]")).click();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[1]")));
+        driver.findElement(By.xpath("//*[@id=\"code\"]")).click();
+        driver.findElement(By.xpath("//*[@id=\"code\"]")).sendKeys("E|5b6c6263-9f4a-49d3-b859-741e1a201910");
+
+//
+        driver.findElement(By.xpath("/html/body/div/div/div[1]/div/div/form/div[3]/button[1]")).click();
 
         Thread.sleep(5000);
 
@@ -77,50 +101,23 @@ public class ToolSeleniumTests {
     }
 
     @Test
-    public void filterListToolTestSelenium() throws InterruptedException {
+    public void zDeleteElementTypeTestSelenium() throws InterruptedException {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/header/div/div/div[6]/button")));
+        driver.findElement(By.xpath("/html/body/div/header/div/div/div[6]/button")).click();
+        Thread.sleep(2000);
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/header/div/div/div[2]/button")));
-        driver.findElement(By.xpath("/html/body/div/header/div/div/div[2]/button")).click();
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/header/div/div/div[2]/div/li[1]")));
-        driver.findElement(By.xpath("/html/body/div/header/div/div/div[2]/div/li[1]")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/header/div/div/div[6]/div/li[1]")));
+        driver.findElement(By.xpath("/html/body/div/header/div/div/div[6]/div/li[1]")).click();
+        Thread.sleep(2000);
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[1]")));
-        driver.findElement(By.xpath("/html/body/div/div/div[1]/div/div/form/div[3]")).click();
-        Actions keyDown = new Actions(driver);
-        keyDown.sendKeys(Keys.chord(Keys.DOWN, Keys.DOWN, Keys.ENTER)).perform();
-        Thread.sleep(1000);
-        keyDown.sendKeys(Keys.chord(Keys.DOWN, Keys.ENTER)).perform();
+        driver.findElement(By.xpath("//*[@id=\"name\"]")).click();
+        driver.findElement(By.xpath("//*[@id=\"name\"]")).sendKeys("brama garażowa");
         Thread.sleep(2000);
+
 //
-        driver.findElement(By.xpath("/html/body/div/div/div[1]/div")).click();
-        driver.findElement(By.xpath("/html/body/div/div/div[1]/div/div/form/div[5]/button[1]")).click();
-
-        Thread.sleep(5000);
-
-        driver.findElement(By.xpath("/html/body/div/header/div/div/button")).click();
-
-    }
-
-    @Test
-    public void zDeleteToolTypeTestSelenium() throws InterruptedException {
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/header/div/div/div[2]/button")));
-        driver.findElement(By.xpath("/html/body/div/header/div/div/div[2]/button")).click();
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/header/div/div/div[2]/div/li[1]")));
-        driver.findElement(By.xpath("/html/body/div/header/div/div/div[2]/div/li[1]")).click();
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[1]")));
-        driver.findElement(By.xpath("/html/body/div/div/div[1]/div/div/form/div[1]")).click();
-        driver.findElement(By.xpath("//*[@id=\"name\"]")).sendKeys("hammer");
+        driver.findElement(By.xpath("/html/body/div/div/div[1]/div/div/form/div[3]/button[1]")).click();
         Thread.sleep(2000);
-//
-        driver.findElement(By.xpath("/html/body/div/div/div[1]/div")).click();
-        driver.findElement(By.xpath("/html/body/div/div/div[1]/div/div/form/div[5]/button[1]")).click();
-        Thread.sleep(2000);
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[2]")));
         driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div/table/tbody/tr[1]/td[1]")).click();
         Thread.sleep(2000);
 
@@ -135,9 +132,10 @@ public class ToolSeleniumTests {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[2]/div")));
         driver.findElement(By.xpath("/html/body/div/div[2]/div/form/div/button")).click();
 
-        Thread.sleep(2000);
+        Thread.sleep(5000);
 
         driver.findElement(By.xpath("/html/body/div/header/div/div/button")).click();
 
     }
+
 }
