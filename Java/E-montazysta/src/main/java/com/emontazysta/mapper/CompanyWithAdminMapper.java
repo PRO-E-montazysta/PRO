@@ -1,10 +1,11 @@
 package com.emontazysta.mapper;
 
-import com.emontazysta.enums.Role;
+import  com.emontazysta.enums.Role;
 import com.emontazysta.model.Company;
 import com.emontazysta.model.dto.CompanyWithAdminDto;
 import com.emontazysta.model.CompanyAdmin;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -26,11 +27,12 @@ public class CompanyWithAdminMapper {
                 .orders(new ArrayList<>())
                 .clients(new ArrayList<>())
                 .employments(new ArrayList<>())
+                .toolTypes(new ArrayList<>())
                 .build();
     }
 
     public static CompanyAdmin companyAdminFromDto(CompanyWithAdminDto dto) {
-        return new CompanyAdmin(null, dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getPassword(),
+        return new CompanyAdmin(null, dto.getFirstName(), dto.getLastName(), dto.getEmail(), new BCryptPasswordEncoder().encode(dto.getPassword()),
                 dto.getUsername(), null, Set.of(Role.ADMIN), dto.getPhone(), dto.getPesel(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
