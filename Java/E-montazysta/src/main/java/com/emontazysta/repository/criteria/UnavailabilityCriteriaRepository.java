@@ -66,7 +66,7 @@ public class UnavailabilityCriteriaRepository {
         if (Objects.nonNull(unavailabilitySearchCriteria.getUnavailableFrom())
                 && Objects.nonNull(unavailabilitySearchCriteria.getUnavailableTo())) {
             if (LocalDateTime.parse(unavailabilitySearchCriteria.getUnavailableFrom()+"T00:00")
-                    .isAfter(LocalDateTime.parse(unavailabilitySearchCriteria.getUnavailableTo()+"T00:00"))) {
+                    .isAfter(LocalDateTime.parse(unavailabilitySearchCriteria.getUnavailableTo()+"T23:59"))) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
             }
         }
@@ -78,7 +78,7 @@ public class UnavailabilityCriteriaRepository {
         //Check unavailableTo
         if (Objects.nonNull(unavailabilitySearchCriteria.getUnavailableTo())) {
             predicates.add(criteriaBuilder.lessThanOrEqualTo(unavailabilityRoot.get("unavailableTo"),
-                    LocalDateTime.parse(unavailabilitySearchCriteria.getUnavailableTo()+"T00:00")));
+                    LocalDateTime.parse(unavailabilitySearchCriteria.getUnavailableTo()+"T23:59")));
         }
 
         //Get unavailabilities by employee names (exp1-"firstName lastName" | exp2-"lastName firstName")
