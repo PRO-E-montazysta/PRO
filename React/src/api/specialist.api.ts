@@ -15,3 +15,7 @@ export const postSpecialist = (data: Employee) => {
 export const updateSpecialist = (data: Employee) => {
     return makeServiceCall(`/specialists/${data.id}`, 'PUT', { body: data })
 }
+
+export const getSpecialistById = (id: string) => {
+    return makeServiceCall(`/specialists/${id}`, 'GET', {})
+}

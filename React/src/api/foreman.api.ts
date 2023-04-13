@@ -15,3 +15,7 @@ export const postForeman = (data: Employee) => {
 export const updateForeman = (data: Employee) => {
     return makeServiceCall(`/foremen/${data.id}`, 'PUT', { body: data })
 }
+
+export const getForemanById = (id: string) => {
+    return makeServiceCall(`/foremen/${id}`, 'GET', {})
+}

@@ -15,3 +15,7 @@ export const postAdmin = (data: Employee) => {
 export const updateAdmin = (data: Employee) => {
     return makeServiceCall(`/admin/${data.id}`, 'PUT', { body: data })
 }
+
+export const getAdminById = (id: string) => {
+    return makeServiceCall(`/admin/${id}`, 'GET', {})
+}

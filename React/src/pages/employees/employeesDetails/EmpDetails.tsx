@@ -23,14 +23,14 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import FormSelect from '../../../components/form/FormSelect'
 import { employeeStatusOptions, userRoleOptions } from '../../../helpers/enum.helper'
 import { Role } from '../../../types/roleEnum'
-import { postForeman, updateForeman } from '../../../api/foreman.api'
-import { postAdmin, updateAdmin } from '../../../api/admin.api'
-import { postFitter, updateFitter } from '../../../api/fitter.api'
-import { postManager, updateManager } from '../../../api/manager.api'
-import { postSalesRepresentative, updateSalesRepresentative } from '../../../api/salesRepresentatives.api'
-import { postSpecialist, updateSpecialist } from '../../../api/specialist.api'
-import { postWarehouseman, updateWarehouseman } from '../../../api/warehouseman.api'
-import { postWarehouseManager, updateWarehouseManager } from '../../../api/warehousemanager.api'
+import { getForemanById, postForeman, updateForeman } from '../../../api/foreman.api'
+import { getAdminById, postAdmin, updateAdmin } from '../../../api/admin.api'
+import { getFitterById, postFitter, updateFitter } from '../../../api/fitter.api'
+import { getManagerById, postManager, updateManager } from '../../../api/manager.api'
+import { getSalesRepresentativeById, postSalesRepresentative, updateSalesRepresentative } from '../../../api/salesRepresentatives.api'
+import { getSpecialistById, postSpecialist, updateSpecialist } from '../../../api/specialist.api'
+import { getWarehousemanById, postWarehouseman, updateWarehouseman } from '../../../api/warehouseman.api'
+import { getWarehouseManagerById, postWarehouseManager, updateWarehouseManager } from '../../../api/warehousemanager.api'
 
 
 const EmpDetails = () => {
@@ -89,9 +89,26 @@ const EmpDetails = () => {
     const [expandedInformation, setExpandedInformation] = useState(false)
     const [expandedStatus, setExpandedStatus] = useState(false)
 
+    async function sendRoleBasedGetById(id: string) {
+        const user: Employee = await getEmployeeById(id);
+        const role = user.roles[0];
+
+        switch (role) {
+            case Role.ADMIN: return getAdminById(id);
+            case Role.FITTER: return getFitterById(id);
+            case Role.FOREMAN: return getForemanById(id);
+            case Role.MANAGER: return getManagerById(id);
+            case Role.SALES_REPRESENTATIVE: return getSalesRepresentativeById(id);
+            case Role.SPECIALIST: return getSpecialistById(id);
+            case Role.WAREHOUSE_MAN: return getWarehousemanById(id);
+            case Role.WAREHOUSE_MANAGER: return getWarehouseManagerById(id);
+            default: return getEmployeeById(id); // TODO: NS: Domyślnie powinno rzucać błedem o nieznanej roli
+        }
+    }
+
     const queryData = useQuery<Employee, AxiosError>(
         ['users', { id: params.id }],
-        async () => getEmployeeById(params.id! && params.id != 'new' ? params.id : ''),
+        async () => sendRoleBasedGetById(params.id! && params.id != 'new' ? params.id : ''),
         {
             enabled: !!params.id && params.id != 'new',
         },
