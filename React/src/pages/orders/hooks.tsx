@@ -38,7 +38,13 @@ export const useAddOrder = () => {
                     },
                 ],
                 title: 'Błąd!',
-                content: <Box>{error.response && error.response.data}</Box>,
+                content: (
+                    <Box>
+                        {error.response && process.env.NODE_ENV === 'development'
+                            ? error.response.data
+                            : 'Wewnętrzny błąd serwera. Skontaktuj się z administratorem'}
+                    </Box>
+                ),
             })
         },
     })
@@ -71,7 +77,13 @@ export const useEditOrder = (onSuccess: (data: any) => void) => {
                     },
                 ],
                 title: 'Błąd!',
-                content: <Box>{error.response && error.response.data}</Box>,
+                content: (
+                    <Box>
+                        {error.response && process.env.NODE_ENV === 'development'
+                            ? error.response.data
+                            : 'Wewnętrzny błąd serwera. Skontaktuj się z administratorem'}
+                    </Box>
+                ),
             })
         },
     })
@@ -107,7 +119,13 @@ export const useDeleteOrder = (onSuccess: () => void) => {
                     },
                 ],
                 title: 'Błąd!',
-                content: <Box>{error.response && error.response.data}</Box>,
+                content: (
+                    <Box>
+                        {error.response && process.env.NODE_ENV === 'development'
+                            ? error.response.data
+                            : 'Wewnętrzny błąd serwera. Skontaktuj się z administratorem'}
+                    </Box>
+                ),
             })
         },
     })

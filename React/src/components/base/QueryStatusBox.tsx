@@ -1,3 +1,4 @@
+import { Button } from '@mui/material'
 import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress/CircularProgress'
 import Typography from '@mui/material/Typography'
@@ -22,9 +23,23 @@ const QueryBoxStatus = (props: QueryBoxStatusProps) => {
             {queriesStatus.result == 'isLoading' ? (
                 <CircularProgress />
             ) : queriesStatus.result == 'isError' ? (
-                <Typography>{queriesStatus.errorMessage}</Typography>
+                <Box sx={{textAlign: 'center'}}>
+                    <Typography>
+                        {process.env.NODE_ENV === 'development'
+                            ? queriesStatus.errorMessage
+                            : 'Wewnętrzny błąd serwera. Skontaktuj się z administratorem'}
+                    </Typography>
+                    <Button onClick={queriesStatus.handleResetStatus} variant="contained">
+                        OK
+                    </Button>
+                </Box>
             ) : (
-                <Typography>Brak danych do wyświetlenia</Typography>
+                <Box sx={{textAlign: 'center'}}>
+                    <Typography>Brak danych do wyświetlenia</Typography>
+                    <Button onClick={queriesStatus.handleResetStatus} variant="contained">
+                        OK
+                    </Button>
+                </Box>
             )}
         </Box>
     )

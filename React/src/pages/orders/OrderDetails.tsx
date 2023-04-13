@@ -4,7 +4,6 @@ import { useFormik } from 'formik'
 import { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
-
 import { getInitValues, getValidatinSchema } from '../../helpers/form.helper'
 
 import * as yup from 'yup'
@@ -19,12 +18,12 @@ import QueryBoxStatus from '../../components/base/QueryStatusBox'
 const OrderDetails = () => {
     //parameters from url
     const params = useParams()
-    
-    //mode of this page 
+
+    //mode of this page
     const [readonlyMode, setReadonlyMode] = useState(true)
-    //global dialog box 
+    //global dialog box
     const { showDialog } = useContext(DialogGlobalContext)
-    //custom form structure 
+    //custom form structure
     const formStructure = useFormStructure()
 
     //initial values from custom form structure
@@ -36,7 +35,7 @@ const OrderDetails = () => {
     const deleteOrderMutation = useDeleteOrder(() => orderData.remove())
     const orderData = useOrderData(params.id)
     //status for all mutations and queries
-    const queriesStatus = useQueriesStatus([addOrderMutation, editOrderMutation, deleteOrderMutation, orderData])
+    const queriesStatus = useQueriesStatus([orderData], [addOrderMutation, editOrderMutation, deleteOrderMutation])
 
     //form with initial values and validation
     const formik = useFormik({
