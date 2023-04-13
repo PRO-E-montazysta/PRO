@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.e_montaysta.ui.fragments.dashboard.DashboardFragment"
+        android:name="com.example.e_montazysta.ui.fragments.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" >
         <action
@@ -21,19 +21,19 @@
 
     <fragment
         android:id="@+id/navigation_qrscan"
-        android:name="com.example.e_montaysta.ui.fragments.qrscan.QRScanFragment"
+        android:name="com.example.e_montazysta.ui.fragments.qrscan.QRScanFragment"
         android:label="@string/title_qrscan"
         tools:layout="@layout/fragment_qrscan" />
 
 
     <fragment
         android:id="@+id/navigation_settings"
-        android:name="com.example.e_montaysta.ui.fragments.settings.SettingsFragment"
+        android:name="com.example.e_montazysta.ui.fragments.settings.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/toolsFragment"
-        android:name="com.example.e_montaysta.ui.fragments.tools.ToolsFragment"
+        android:name="com.example.e_montazysta.ui.toollist.ToolsListFragment"
         android:label="fragment_tools"
         tools:layout="@layout/fragment_tools" >
         <action
@@ -42,7 +42,7 @@
     </fragment>
     <fragment
         android:id="@+id/toolFragment"
-        android:name="com.example.e_montaysta.ui.fragments.tool.ToolFragment"
+        android:name="com.example.e_montazysta.ui.fragments.tool.ToolFragment"
         android:label="fragment_tool"
         tools:layout="@layout/fragment_tool" />
 </navigation>
