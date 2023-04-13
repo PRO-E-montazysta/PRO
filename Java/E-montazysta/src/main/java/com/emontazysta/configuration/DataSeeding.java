@@ -3,6 +3,7 @@ package com.emontazysta.configuration;
 import com.emontazysta.enums.*;
 import com.emontazysta.mapper.*;
 import com.emontazysta.model.*;
+import com.emontazysta.model.dto.UnavailabilityWithLocalDateDto;
 import com.emontazysta.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -15,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +81,10 @@ public class DataSeeding {
 
     private Unavailability addUnavailabilityFromModel(Unavailability unavailability) {
         return unavailabilityMapper.toEntity(unavailabilityService.add(unavailabilityMapper.toDto(unavailability)));
+    }
+
+    private Unavailability addUnavailabilityWithLocalDateDtoFromModel(UnavailabilityWithLocalDateDto unavailability) {
+        return unavailabilityMapper.toEntity(unavailabilityService.addWithLocalDate(unavailability));
     }
 
     private Client addClientFromModel(Client client) {
@@ -271,9 +277,11 @@ public class DataSeeding {
         context.setAuthentication(authenticationMng);
 
         Unavailability unavailability1 = addUnavailabilityFromModel(new Unavailability(null,
-                TypeOfUnavailability.HOLIDAY, "Test Unavailability 1", LocalDateTime.parse( "2023-03-06T12:00:00.000"), LocalDateTime.parse("2023-03-06T23:00:00.000"), fitter1, manager1));
-        Unavailability unavailability2 = addUnavailabilityFromModel(new Unavailability(null,
-                TypeOfUnavailability.BEREAVEMENT_LEAVE,"Test Unavailability 2",LocalDateTime.parse( "2023-03-05T12:00:00.000"),LocalDateTime.parse("2023-03-05T16:00:00.000"), fitter2, manager1));
+                TypeOfUnavailability.BUSY, "Test Unavailability 1", LocalDateTime.parse( "2023-03-06T12:00:00.000"),
+                LocalDateTime.parse("2023-03-06T23:00:00.000"), fitter1, manager1));
+        Unavailability unavailability2 = addUnavailabilityWithLocalDateDtoFromModel(new UnavailabilityWithLocalDateDto(
+                null, TypeOfUnavailability.BEREAVEMENT_LEAVE,"Test Unavailability 2", LocalDate.now(),
+                LocalDate.now(), fitter2.getId(), manager1.getId()));
 
         Client client1 = addClientFromModel(new Client(null, "Test Client 1 - from Company 1",
                 "em@i.l", company1, new ArrayList<>()));
