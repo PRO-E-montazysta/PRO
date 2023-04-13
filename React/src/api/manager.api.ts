@@ -10,4 +10,8 @@ export const getAllManagers = () => {
 
 export const postManager = (data: Employee) => {
     return makeServiceCall(`/managers`, 'POST', { body: data })
-} 
+}
+
+export const updateManager = (data: Employee) => {
+    return makeServiceCall(`/managers/${data.id}`, 'PUT', { body: data })
+}
