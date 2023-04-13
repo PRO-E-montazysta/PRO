@@ -72,14 +72,14 @@ public class AppUserCriteriaRepository {
         }
 
         if(Objects.nonNull(appUserSearchCriteria.getAvailableFrom()) && Objects.nonNull(appUserSearchCriteria.getAvailableTo())){
-            predicates.add(appUserRoot.get("id").in(findAvaibleUsers(appUserSearchCriteria)));
+            predicates.add(appUserRoot.get("id").in(findAvailableUsers(appUserSearchCriteria)));
         }
 
         return  criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 
-    private List<Long> findAvaibleUsers(AppUserSearchCriteria appUserSearchCriteria) {
-        List <Long> avaibleEmployees = usersRepository.findAllByRolesNotContaining(Role.CLOUD_ADMIN)
+    private List<Long> findAvailableUsers(AppUserSearchCriteria appUserSearchCriteria) {
+        List <Long> availableEmployees = usersRepository.findAllByRolesNotContaining(Role.CLOUD_ADMIN)
                 .stream()
                 .map(appUser -> appUser.getId())
                 .collect(Collectors.toList());
@@ -95,10 +95,10 @@ public class AppUserCriteriaRepository {
                          unavailability.getUnavailableFrom().isBefore(LocalDateTime.parse(appUserSearchCriteria.getAvailableTo()))) ||
                         (unavailability.getUnavailableTo().isAfter(LocalDateTime.parse(appUserSearchCriteria.getAvailableFrom())) &&
                         unavailability.getUnavailableTo().isBefore(LocalDateTime.parse(appUserSearchCriteria.getAvailableTo())))){
-                    avaibleEmployees.remove(unavailability.getAssignedTo().getId());
+                    availableEmployees.remove(unavailability.getAssignedTo().getId());
                 }
             }
         }
-        return avaibleEmployees;
+        return availableEmployees;
     }
 }
