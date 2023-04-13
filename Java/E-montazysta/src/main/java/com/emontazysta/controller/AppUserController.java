@@ -31,7 +31,7 @@ import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 @RestController
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@PreAuthorize("hasAnyAuthority('SCOPE_CLOUD_ADMIN', 'SCOPE_ADMIN')")
+@PreAuthorize("hasAuthority('SCOPE_ADMIN')")
 @RequestMapping(value = API_BASE_CONSTANT + "/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AppUserController {
 
@@ -121,6 +121,7 @@ public class AppUserController {
         return response;
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_MANAGER')")
     @GetMapping("/filter")
     @Operation(description = "Return filtered Users by given parameters.", security = @SecurityRequirement(name = "bearer-key"))
     public ResponseEntity<List<EmployeeDto>> filterUsers(AppUserSearchCriteria appUserSearchCriteria){
