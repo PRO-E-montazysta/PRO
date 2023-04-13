@@ -25,10 +25,10 @@ public class EmployeeMapper {
                 .attachments(employee.getAttachments() == null ? null : employee.getAttachments().stream()
                         .map(attachment -> attachment.getId())
                         .collect(Collectors.toList()))
-                .status(checkStatus(employee, LocalDateTime.now()) == null ? "AVAILABLE" : String.valueOf(checkStatus(employee, LocalDateTime.now()).getTypeOfUnavailability()))
-                .unavailableFrom(checkStatus(employee, LocalDateTime.now()) == null ? null : checkStatus(employee, LocalDateTime.now()).getUnavailableFrom())
-                .unavailableTo(checkStatus(employee, LocalDateTime.now()) == null ? null : checkStatus(employee, LocalDateTime.now()).getUnavailableTo())
-                .unavailbilityDescription(checkStatus(employee, LocalDateTime.now()) == null ? null : checkStatus(employee, LocalDateTime.now()).getDescription())
+                .status(statusService.checkUnavailability(employee) == null ? "AVAILABLE" : String.valueOf(statusService.checkUnavailability(employee).getTypeOfUnavailability()))
+                .unavailableFrom(statusService.checkUnavailability(employee) == null ? null : statusService.checkUnavailability(employee).getUnavailableFrom())
+                .unavailableTo(statusService.checkUnavailability(employee) == null ? null : statusService.checkUnavailability(employee).getUnavailableTo())
+                .unavailbilityDescription(statusService.checkUnavailability(employee) == null ? null : statusService.checkUnavailability(employee).getDescription())
                 .build();
     }
 }
