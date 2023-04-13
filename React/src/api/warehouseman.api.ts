@@ -11,3 +11,7 @@ export const getAllWarehouseman = () => {
 export const postWarehouseman = (data: Employee) => {
     return makeServiceCall(`/warehousemen`, 'POST', { body: data })
 }
+
+export const updateWarehouseman = (data: Employee) => {
+    return makeServiceCall(`/warehousemen/${data.id}`, 'PUT', { body: data })
+}

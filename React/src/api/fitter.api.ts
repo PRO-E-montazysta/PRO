@@ -11,3 +11,7 @@ export const getAllFitter = () => {
 export const postFitter = (data: Employee) => {
     return makeServiceCall(`/fitters`, 'POST', { body: data })
 }
+
+export const updateFitter = (data: Employee) => {
+    return makeServiceCall(`/fitters/${data.id}`, 'PUT', { body: data })
+}

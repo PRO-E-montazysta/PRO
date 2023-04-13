@@ -11,3 +11,7 @@ export const getAllSalesRepresentatives = () => {
 export const postSalesRepresentative = (data: Employee) => {
     return makeServiceCall(`/sales-representatives`, 'POST', { body: data })
 }
+
+export const updateSalesRepresentative = (data: Employee) => {
+    return makeServiceCall(`/sales-representatives/${data.id}`, 'PUT', { body: data })
+}

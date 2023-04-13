@@ -11,3 +11,7 @@ export const getAllWarehouseManager = () => {
 export const postWarehouseManager = (data: Employee) => {
     return makeServiceCall(`/warehouse-managers`, 'POST', { body: data })
 }
+
+export const updateWarehouseManager = (data: Employee) => {
+    return makeServiceCall(`/warehouse-managers/${data.id}`, 'PUT', { body: data })
+}
