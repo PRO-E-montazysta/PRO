@@ -26,7 +26,6 @@ import com.emontazysta.repository.OrderStageRepository;
 import com.emontazysta.repository.ToolEventRepository;
 import com.emontazysta.repository.ToolReleaseRepository;
 import com.emontazysta.repository.UnavailabilityRepository;
-import com.emontazysta.service.StatusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -50,7 +49,6 @@ public class ForemanMapper {
     private final OrderRepository orderRepository;
     private final ElementReturnReleaseRepository elementReturnReleaseRepository;
     private final DemandAdHocRepository demandAdHocRepository;
-    private final StatusService statusService;
 
     public ForemanDto toDto(Foreman foreman) {
         return ForemanDto.builder()
@@ -75,10 +73,6 @@ public class ForemanMapper {
                 .assignedOrders(foreman.getAssignedOrders().stream().map(Orders::getId).collect(Collectors.toList()))
                 .elementReturnReleases(foreman.getElementReturnReleases().stream().map(ElementReturnRelease::getId).collect(Collectors.toList()))
                 .demandsAdHocs(foreman.getDemandsAdHocs().stream().map(DemandAdHoc::getId).collect(Collectors.toList()))
-                .status(statusService.checkUnavailability(foreman) == null ? "AVAILABLE" : String.valueOf(statusService.checkUnavailability(foreman).getTypeOfUnavailability()))
-                .unavailableFrom(statusService.checkUnavailability(foreman) == null ? null : statusService.checkUnavailability(foreman).getUnavailableFrom())
-                .unavailableTo(statusService.checkUnavailability(foreman) == null ? null : statusService.checkUnavailability(foreman).getUnavailableTo())
-                .unavailbilityDescription(statusService.checkUnavailability(foreman) == null ? null : statusService.checkUnavailability(foreman).getDescription())
                 .build();
     }
 

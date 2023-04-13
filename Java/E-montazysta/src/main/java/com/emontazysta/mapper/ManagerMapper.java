@@ -20,7 +20,6 @@ import com.emontazysta.repository.NotificationRepository;
 import com.emontazysta.repository.OrderRepository;
 import com.emontazysta.repository.ToolEventRepository;
 import com.emontazysta.repository.UnavailabilityRepository;
-import com.emontazysta.service.StatusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -41,7 +40,6 @@ public class ManagerMapper {
     private final ToolEventRepository toolEventRepository;
     private final OrderRepository orderRepository;
     private final DemandAdHocRepository demandAdHocRepository;
-    private final StatusService statusService;
 
     public ManagerDto toDto(Manager manager) {
 
@@ -66,10 +64,6 @@ public class ManagerMapper {
                 .managedOrders(manager.getManagedOrders().stream().map(Orders::getId).collect(Collectors.toList()))
                 .demandsAdHocs(manager.getDemandsAdHocs().stream().map(DemandAdHoc::getId).collect(Collectors.toList()))
                 .elementEvents(manager.getElementEvents().stream().map(ElementEvent::getId).collect(Collectors.toList()))
-                .status(statusService.checkUnavailability(manager) == null ? "AVAILABLE" : String.valueOf(statusService.checkUnavailability(manager).getTypeOfUnavailability()))
-                .unavailableFrom(statusService.checkUnavailability(manager) == null ? null : statusService.checkUnavailability(manager).getUnavailableFrom())
-                .unavailableTo(statusService.checkUnavailability(manager) == null ? null : statusService.checkUnavailability(manager).getUnavailableTo())
-                .unavailbilityDescription(statusService.checkUnavailability(manager) == null ? null : statusService.checkUnavailability(manager).getDescription())
                 .build();
     }
 

@@ -11,7 +11,6 @@ import com.emontazysta.model.OrderStage;
 import com.emontazysta.model.Unavailability;
 import com.emontazysta.model.dto.FitterDto;
 import com.emontazysta.repository.*;
-import com.emontazysta.service.StatusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +30,6 @@ public class FitterMapper {
     private final AttachmentRepository attachmentRepository;
     private final ToolEventRepository toolEventRepository;
     private final OrderStageRepository orderStageRepository;
-    private final StatusService statusService;
 
     public FitterDto toDto(Fitter fitter) {
         return FitterDto.builder()
@@ -51,10 +49,6 @@ public class FitterMapper {
                 .attachments(fitter.getAttachments().stream().map(Attachment::getId).collect(Collectors.toList()))
                 .toolEvents(fitter.getToolEvents().stream().map(ToolEvent::getId).collect(Collectors.toList()))
                 .workingOn(fitter.getWorkingOn().stream().map(OrderStage::getId).collect(Collectors.toList()))
-                .status(statusService.checkUnavailability(fitter) == null ? "AVAILABLE" : String.valueOf(statusService.checkUnavailability(fitter).getTypeOfUnavailability()))
-                .unavailableFrom(statusService.checkUnavailability(fitter) == null ? null : statusService.checkUnavailability(fitter).getUnavailableFrom())
-                .unavailableTo(statusService.checkUnavailability(fitter) == null ? null : statusService.checkUnavailability(fitter).getUnavailableTo())
-                .unavailbilityDescription(statusService.checkUnavailability(fitter) == null ? null : statusService.checkUnavailability(fitter).getDescription())
                 .build();
     }
 

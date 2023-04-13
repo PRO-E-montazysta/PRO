@@ -22,7 +22,6 @@ import com.emontazysta.repository.NotificationRepository;
 import com.emontazysta.repository.ToolEventRepository;
 import com.emontazysta.repository.ToolReleaseRepository;
 import com.emontazysta.repository.UnavailabilityRepository;
-import com.emontazysta.service.StatusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -44,7 +43,6 @@ public class WarehousemanMapper {
     private final ToolReleaseRepository toolReleaseRepository;
     private final ElementReturnReleaseRepository elementReturnReleaseRepository;
     private final DemandAdHocRepository demandAdHocRepository;
-    private final StatusService statusService;
 
     public WarehousemanDto toDto(Warehouseman warehouseman) {
 
@@ -67,10 +65,6 @@ public class WarehousemanMapper {
                 .releaseTools(warehouseman.getReleasedTools().stream().map(ToolRelease::getId).collect(Collectors.toList()))
                 .elementReturnReleases(warehouseman.getElementReturnReleases().stream().map(ElementReturnRelease::getId).collect(Collectors.toList()))
                 .demandAdHocs(warehouseman.getDemandAdHocs().stream().map(DemandAdHoc::getId).collect(Collectors.toList()))
-                .status(statusService.checkUnavailability(warehouseman) == null ? "AVAILABLE" : String.valueOf(statusService.checkUnavailability(warehouseman).getTypeOfUnavailability()))
-                .unavailableFrom(statusService.checkUnavailability(warehouseman) == null ? null : statusService.checkUnavailability(warehouseman).getUnavailableFrom())
-                .unavailableTo(statusService.checkUnavailability(warehouseman) == null ? null : statusService.checkUnavailability(warehouseman).getUnavailableTo())
-                .unavailbilityDescription(statusService.checkUnavailability(warehouseman) == null ? null : statusService.checkUnavailability(warehouseman).getDescription())
                 .build();
     }
 
