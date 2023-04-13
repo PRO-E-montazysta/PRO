@@ -16,16 +16,11 @@ import ToolsFromWarehouse from '../pages/tools/ToolsFromWarehouse'
 import ToolDetails from '../pages/tools/ToolDetails'
 import Elements from '../pages/elements'
 import ElementDetails from '../pages/elements/ElementDetails'
-<<<<<<< HEAD
-import DialogGlobal from '../components/dialogGlobal/DialogGlobal'
-import { createContext } from 'react'
 import { DialogGlobalProvider } from '../providers/DialogGlobalProvider'
-=======
 import Employees from '../pages/employees'
 import EmpDetails from '../pages/employees/employeesDetails/EmpDetails'
 import Clients from '../pages/clients'
 import ClientDetails from '../pages/clients/ClientDetails'
->>>>>>> b0c32a396fbae5a67659d71a248f20d6bf2a014a
 
 export type PageProps = {
     name: string

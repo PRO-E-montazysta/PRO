@@ -5,7 +5,6 @@ import { formatArrayToOptions, formatDate, formatLocation } from '../../helpers/
 import { priorityName, priorityOptions, statusName, statusOptions } from '../../helpers/enum.helper'
 
 import * as yup from 'yup'
-<<<<<<< HEAD
 import { useQuery } from 'react-query'
 import { Client } from '../../types/model/Client'
 import { Company } from '../../types/model/Company'
@@ -20,10 +19,8 @@ import { getAllManagers } from '../../api/manager.api'
 import { getAllSalesReprezentatives } from '../../api/salesReprezentatives.api'
 import { getAllSpecialists } from '../../api/specialist.api'
 import { SelectMenuItemProps } from '../../components/base/Multiselect'
-=======
 import { AppSize } from '../../hooks/useBreakpoints'
 
->>>>>>> b0c32a396fbae5a67659d71a248f20d6bf2a014a
 
 export const headCells: Array<HeadCell<Order>> = [
     {
@@ -126,7 +123,6 @@ export type FormInputProps = {
     readonly?: boolean
 }
 
-<<<<<<< HEAD
 export const useFormStructure = (): Array<FormInputProps> => {
     const queryClient = useQuery<Array<Client>, AxiosError>(['client-list'], getAllClients, {
         cacheTime: 15 * 60 * 1000,
@@ -269,12 +265,3 @@ export const useFormStructure = (): Array<FormInputProps> => {
         },
     ]
 }
-=======
-export const validationSchema = yup.object({
-    name: yup.string().min(3, 'Nazwa musi zaweirać co najmniej 3 znaki').required('Wprowadź nazwę'),
-    typeOfStatus: yup.string().required('Wybierz status'),
-    typeOfPriority: yup.string().required('Wybierz priorytet'),
-    plannedStart: yup.date().required('Wybierz datę'),
-    plannedEnd: yup.date().required('Wybierz datę'),
-})
->>>>>>> b0c32a396fbae5a67659d71a248f20d6bf2a014a
