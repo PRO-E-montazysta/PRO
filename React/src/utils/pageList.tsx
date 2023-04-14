@@ -227,6 +227,18 @@ export const pageList: Array<PageProps> = [
                     Role['*'],
                 ],
                 component: <Employees />,
+                    children: [
+                    {
+                        inNav: true,
+                        name: 'Pracownicy',
+                        path: '/employees',
+                    },
+                    {
+                        inNav: true,
+                        name: 'Dodaj pracownika',
+                        path: '/employees/new',
+                    },
+                ],
             },
             {
                 inNav: false,

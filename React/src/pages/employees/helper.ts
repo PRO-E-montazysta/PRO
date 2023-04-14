@@ -5,6 +5,8 @@ import { Employee, EmployeeStatus } from '../../types/model/Employee'
 
 import { AppSize } from '../../hooks/useBreakpoints'
 import { SelectMenuItemProps } from '../../components/form/types'
+import * as yup from 'yup'
+
 export const headCells: Array<HeadCell<Employee>> = [
     {
         type: 'string',
@@ -29,6 +31,18 @@ export const headCells: Array<HeadCell<Employee>> = [
     },
     {
         type: 'string',
+        id: 'password',
+        label: 'Password',
+        numeric: false,
+    },
+    {
+        type: 'string',
+        id: 'username',
+        label: 'Username',
+        numeric: false,
+    },
+    {
+        type: 'string',
         id: 'status',
         label: 'Status',
         visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
@@ -38,6 +52,20 @@ export const headCells: Array<HeadCell<Employee>> = [
         type: 'string',
         id: 'roles',
         label: 'Role',
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
+        numeric: false,
+    },
+    {
+        type: 'string',
+        id: 'phone',
+        label: 'Phone',
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
+        numeric: false,
+    },
+    {
+        type: 'string',
+        id: 'pesel',
+        label: 'Pesel',
         visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
@@ -85,4 +113,41 @@ export const filterInitStructure: Array<FilterInputType> = [
         inputType: 'text',
         typeValue: 'string',
     },
+    {
+        id: 'phone',
+        value: '',
+        label: 'Phone',
+        inputType: 'text',
+        typeValue: 'string',
+    },
+    {
+        id: 'pesel',
+        value: '',
+        label: 'Pesel',
+        inputType: 'text',
+        typeValue: 'string',
+    },
 ]
+
+export const emptyForm = {
+    id: null,
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    username: '',
+    status: '',
+    roles: [],
+    phone: '',
+    pesel: ''
+}
+
+export const validationSchema = yup.object({
+    firstName: yup.string().min(2, 'Imię musi zawierać co najmniej 2 znaki').required('Wprowadź imię'),
+    lastName: yup.string().min(2, 'Nazwisko musi zawierać co najmniej 2 znaki').required('Wprowadź nazwisko'),
+    password: yup.string().min(8, 'Hasło musi zawierać co najmniej 8 znaków').required('Wprowadź hasło'),
+    username: yup.string().min(3, 'Nazwa musi zawierać co najmniej 3 znaki').required('Wprowadź nazwe'),
+    email: yup.string().email('Wymagany jest poprawny email').required('Wprowadź email'),
+    phone: yup.string().matches(new RegExp("^\\+48\\d{9}$"), 'Wymagany jest poprawny numer telefonu (format: +48 i 9 cyfr)').required('Wprowadź numer telefonu'),
+    pesel: yup.string().length(11,'Wymagany jest poprawny pesel').required('Wprowadź pesel')
+})
