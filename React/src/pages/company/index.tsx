@@ -42,7 +42,6 @@ const Companies = () => {
             initOrderBy={'companyName'}
             onClickRow={(e, row) => {
                 navigation(`/companies/${row.id}`)
-                console.log(row)
             }}
             pageHeader="Lista firm"
         />

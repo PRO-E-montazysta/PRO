@@ -2,14 +2,14 @@ import { Box, MenuItem, Typography } from '@mui/material'
 
 import { theme } from '../../themes/baseTheme'
 
-type NavMenuItemProps = {
+type NotiMenuItemProps = {
     onItemClick: () => void
     text: string
     subtext?: string
     link?: string
 }
 
-const NavMenuItem = (props: NavMenuItemProps) => {
+const NotiMenuItem = (props: NotiMenuItemProps) => {
     const { onItemClick, text, subtext, link } = props
     return (
         <MenuItem
@@ -35,4 +35,4 @@ const NavMenuItem = (props: NavMenuItemProps) => {
     )
 }
 
-export default NavMenuItem
+export default NotiMenuItem
