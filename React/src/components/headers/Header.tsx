@@ -1,25 +1,14 @@
 import React, { useState } from 'react'
-import { AppBar, Avatar, Badge, Box, Button, IconButton, ImageList, ImageListItem, Toolbar } from '@mui/material'
+import { AppBar, Avatar, Box, IconButton, Toolbar } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import firstPicture from '../../assets/img/firstPicture.png'
-import secondPicture from '../../assets/img/secondPicture.png'
 import logo from '../../assets/img/logo.png'
 import { useNavigate } from 'react-router-dom'
-import { pageList } from '../../utils/pageList'
-import NavMenuButton from '../navbar/NavButton'
-import { logout, removeToken } from '../../utils/token'
-import { v4 as uuidv4 } from 'uuid'
-
+import { logout } from '../../utils/token'
 import LogoutIcon from '@mui/icons-material/Logout'
 
 import { theme } from '../../themes/baseTheme'
 import NotiButton from '../navbar/NotiButton'
-
-const CustomizedToolbar = styled(Toolbar)(({ theme }) => ({
-    '@media (min-width: 600px)': {
-        minHeight: '60px',
-    },
-}))
+import NavBox from '../navbar/NavBox'
 
 export type UserInfo = {
     name: string
@@ -37,8 +26,6 @@ export type Notification = {
 const Header = () => {
     const navigate = useNavigate()
     const handleLogout = () => {
-        // removeToken()
-        // navigate('/login')
         logout()
     }
 
@@ -49,43 +36,39 @@ const Header = () => {
         notifications: [],
     })
 
-    const rootPage = pageList.find((p) => p.path === '/')
-    const rootPageChildrens = rootPage?.children
-
     return (
-        <AppBar position="static">
-            <Box sx={{ backgroundColor: '#1A1C26' }}>
-                <CustomizedToolbar>
-                    <Box
-                        component="img"
-                        alt="Logo"
-                        title="Strona główna"
-                        src={logo}
-                        sx={{ cursor: 'pointer', width: 40, height: 40 }}
-                        onClick={() => navigate('/')}
-                    ></Box>
-                    {rootPageChildrens
-                        ? rootPageChildrens.map((page, index) => {
-                              return <NavMenuButton {...page} key={index} />
-                          })
-                        : null}
-
-                    <Box sx={{ ml: 'auto', mr: '10px', textAlign: 'right' }}>
-                        <Box sx={{ color: theme.palette.primary.light, fontSize: '12px' }}>{userInfo.name}</Box>
-                        <Box>{userInfo.company}</Box>
+        <AppBar position="static" sx={{ backgroundColor: '#1A1C26' }}>
+            <Toolbar sx={{ minHeight: '60px' }}>
+                <Box
+                    component="img"
+                    alt="Logo"
+                    title="Strona główna"
+                    src={logo}
+                    sx={{ cursor: 'pointer', width: 40, height: 40 }}
+                    onClick={() => navigate('/')}
+                ></Box>
+                <NavBox />
+                <Box sx={{ mr: '10px', textAlign: 'right', pl: '10px' }}>
+                    <Box sx={{ color: theme.palette.primary.light, fontSize: '12px', whiteSpace: 'nowrap' }}>
+                        {userInfo.name}
                     </Box>
-                    <Avatar sx={{ width: 40, height: 40, bgcolor: theme.palette.primary.light }} alt={userInfo.name} src={userInfo.photoSrc} />
-                    <NotiButton userInfo={userInfo} />
-                    <IconButton
-                        color="inherit"
-                        onClick={handleLogout}
-                        title="Wyloguj"
-                        sx={{ ml: '10px', width: 40, height: 40, border: '1px solid white' }}
-                    >
-                        <LogoutIcon />
-                    </IconButton>
-                </CustomizedToolbar>
-            </Box>
+                    <Box>{userInfo.company}</Box>
+                </Box>
+                <Avatar
+                    sx={{ width: 40, height: 40, bgcolor: theme.palette.primary.light }}
+                    alt={userInfo.name}
+                    src={userInfo.photoSrc}
+                />
+                <NotiButton userInfo={userInfo} />
+                <IconButton
+                    color="inherit"
+                    onClick={handleLogout}
+                    title="Wyloguj"
+                    sx={{ ml: '10px', width: 40, height: 40, border: '1px solid white' }}
+                >
+                    <LogoutIcon />
+                </IconButton>
+            </Toolbar>
         </AppBar>
     )
 }
