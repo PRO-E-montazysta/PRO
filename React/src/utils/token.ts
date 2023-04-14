@@ -4,11 +4,10 @@ import jwt_decode from 'jwt-decode'
 export const getToken = (): string | undefined => {
     const tokenString = localStorage.getItem('token')
     if (!!tokenString) {
-        if (isExpire(tokenString)) logout()
         return tokenString
+    } else {
+        return undefined
     }
-    logout()
-    return undefined
 }
 
 export const setToken = (userToken: any) => {
@@ -37,13 +36,12 @@ export const getRolesFromToken = () => {
 }
 
 export const isExpire = (token?: string) => {
-    
     if (!token) {
         return true
     }
     const decodedToken: DecodedTokenType = jwt_decode(token)
     const { exp } = decodedToken
-    
+
     if (Date.now() >= exp * 1000) {
         return true
     }
@@ -55,7 +53,7 @@ export const checkToken = () => {
 }
 
 export const logout = () => {
-    console.warn('Token wygasł')
+    console.warn('logout')
     removeToken()
     if (window.location.pathname != '/login') window.location.href = '/login'
 }

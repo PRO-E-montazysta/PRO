@@ -42,7 +42,6 @@ const Warehouses = () => {
             initOrderBy={'name'}
             onClickRow={(e, row) => {
                 navigation(`/warehouses/${row.id}`)
-                console.log(row)
             }}
             pageHeader="Lista magazynów"
         />

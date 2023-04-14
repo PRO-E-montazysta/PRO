@@ -1,4 +1,4 @@
-import { SelectMenuItemProps } from '../components/base/Multiselect'
+import { SelectMenuItemProps } from '../components/form/types'
 import { Location } from '../types/model/Location'
 
 export const formatDate = (date: string) => {

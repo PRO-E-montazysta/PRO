@@ -35,4 +35,6 @@ public class ToolType {
     @OneToMany(mappedBy = "toolType")
     private List<Tool> tools;
 
+    @ManyToOne
+    private Company company;
 }

@@ -25,4 +25,5 @@ public class ToolTypeDto {
     private List<Long> attachments;
     private List<Long> orderStages;
     private List<Long> tools;
+    private Long companyId;
 }

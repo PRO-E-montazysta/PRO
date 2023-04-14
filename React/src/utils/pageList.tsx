@@ -16,12 +16,15 @@ import ToolsFromWarehouse from '../pages/tools/ToolsFromWarehouse'
 import ToolDetails from '../pages/tools/ToolDetails'
 import Elements from '../pages/elements'
 import ElementDetails from '../pages/elements/ElementDetails'
+import { DialogGlobalProvider } from '../providers/DialogGlobalProvider'
 import Employees from '../pages/employees'
 import EmpDetails from '../pages/employees/employeesDetails/EmpDetails'
 import Clients from '../pages/clients'
 import ClientDetails from '../pages/clients/ClientDetails'
-import UnavailabilityDetails from '../pages/unavailabilities/UnavailabilityDetails'
-import Unavailabilities from '../pages/unavailabilities'
+import Events from '../pages/events'
+import ToolEventDetails from '../pages/events/ToolEventDetails'
+import ElementEventDetails from '../pages/events/ElementEventDetails'
+
 
 export type PageProps = {
     name: string
@@ -35,8 +38,10 @@ export type PageProps = {
 const Root = () => {
     return (
         <>
-            <Header />
-            <Outlet />
+            <DialogGlobalProvider>
+                <Header />
+                <Outlet />
+            </DialogGlobalProvider>
         </>
     )
 }
@@ -184,14 +189,14 @@ export const pageList: Array<PageProps> = [
             {
                 inNav: true,
                 name: 'Klienci',
-                path: '/clients',
+                path: 'clients/',
                 allowedRoles: [Role.MANAGER, Role.SALES_REPRESENTATIVE],
                 component: <Clients />,
                 children: [
                     {
                         inNav: true,
                         name: 'Lista klientów',
-                        path: '/clients',
+                        path: 'clients',
                     },
                     {
                         inNav: true,
@@ -222,6 +227,18 @@ export const pageList: Array<PageProps> = [
                     Role['*'],
                 ],
                 component: <Employees />,
+                    children: [
+                    {
+                        inNav: true,
+                        name: 'Pracownicy',
+                        path: '/employees',
+                    },
+                    {
+                        inNav: true,
+                        name: 'Dodaj pracownika',
+                        path: '/employees/new',
+                    },
+                ],
             },
             {
                 inNav: false,
@@ -302,29 +319,43 @@ export const pageList: Array<PageProps> = [
             },
             {
                 inNav: true,
-                name: 'Nieobecności',
-                path: '/unavailabilities',
-                allowedRoles: [Role.MANAGER],
-                component: <Unavailabilities />,
+                name: 'Usterki',
+                path: '/events',
+                component: <Events />,
+                allowedRoles: [Role.MANAGER, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER, Role.FITTER, Role.FOREMAN],
                 children: [
                     {
                         inNav: true,
-                        name: 'Lista nieobecności',
-                        path: '/unavailabilities',
+                        name: 'Lista usterek',
+                        path: '/events',
                     },
                     {
                         inNav: true,
-                        name: 'Dodaj nieobecność',
-                        path: '/unavailabilities/new',
+                        name: 'Zgłoś usterkę narzędzia',
+                        path: '/toolevent/new',
+                        allowedRoles: [Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER, Role.FITTER, Role.FOREMAN],
+                    },
+                    {
+                        inNav: true,
+                        name: 'Zgłoś usterkę elementu',
+                        path: '/elementevent/new',
+                        allowedRoles: [Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER, Role.FITTER, Role.FOREMAN],
                     },
                 ],
             },
             {
                 inNav: false,
                 name: '',
-                path: '/unavailabilities/:id',
-                allowedRoles: [Role.MANAGER],
-                component: <UnavailabilityDetails />,
+                path: '/toolevent/:id',
+                allowedRoles: [Role.MANAGER, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER, Role.FITTER, Role.FOREMAN],
+                component: <ToolEventDetails />,
+            },
+            {
+                inNav: false,
+                name: '',
+                path: '/elementEvent/:id',
+                allowedRoles: [Role.MANAGER, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER, Role.FITTER, Role.FOREMAN],
+                component: <ElementEventDetails />,
             },
         ],
     },

@@ -44,7 +44,6 @@ const Tools = () => {
             initOrderBy={'name'}
             onClickRow={(e, row) => {
                 navigation(`/tools/${row.id}`)
-                console.log(row)
             }}
             pageHeader="Lista narzędzi"
         />
