@@ -27,6 +27,7 @@ import LogoutIcon from '@mui/icons-material/Logout'
 import { theme } from '../../themes/baseTheme'
 import NotiButton from '../navbar/NotiButton'
 import MenuIcon from '@mui/icons-material/Menu'
+import NavBox from '../navbar/NavBox'
 
 const CustomizedToolbar = styled(Toolbar)(({ theme }) => ({
     '@media (min-width: 600px)': {
@@ -61,79 +62,50 @@ const HeaderHamburger = () => {
         notifications: [],
     })
 
-    const rootPage = pageList.find((p) => p.path === '/')
-    const rootPageChildrens = rootPage?.children
-
-    const list = () => (
-        <Box
-            sx={{ backgroundColor: theme.palette.primary.dark}}
-            width={'250px'}
-            height={'100vh'}
-            // role="presentation"
-            onClick={() => setNavbarOpen(false)}
-            onKeyDown={() => setNavbarOpen(false)}
-        >
-            <List>
-                {rootPageChildrens
-                    ? rootPageChildrens.map((page, index) => {
-                          return <NavMenuButton {...page} key={index} />
-                      })
-                    : null}
-            </List>
-        </Box>
-    )
 
     return (
-        <AppBar position="static">
-            <Box sx={{ backgroundColor: '#1A1C26' }}>
-                <CustomizedToolbar>
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="menu"
-                        sx={{ mr: 2 }}
-                        onClick={() => setNavbarOpen(true)}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Box
-                        component="img"
-                        alt="Logo"
-                        title="Strona główna"
-                        src={logo}
-                        sx={{ cursor: 'pointer', width: 40, height: 40 }}
-                        onClick={() => navigate('/')}
-                    ></Box>
-                    {rootPageChildrens
-                        ? rootPageChildrens.map((page, index) => {
-                              return <NavMenuButton {...page} key={index} />
-                          })
-                        : null}
-
-                    <Box sx={{ ml: 'auto', mr: '10px', textAlign: 'right' }}>
-                        <Box sx={{ color: theme.palette.primary.light, fontSize: '12px' }}>{userInfo.name}</Box>
-                        <Box>{userInfo.company}</Box>
+        <AppBar position="static" sx={{ backgroundColor: '#1A1C26' }}>
+            <Toolbar sx={{ minHeight: '60px' }}>
+                <IconButton
+                    size="large"
+                    edge="start"
+                    color="inherit"
+                    aria-label="menu"
+                    sx={{ mr: 2 }}
+                    onClick={() => setNavbarOpen(true)}
+                >
+                    <MenuIcon />
+                </IconButton>
+                <Box
+                    component="img"
+                    alt="Logo"
+                    title="Strona główna"
+                    src={logo}
+                    sx={{ cursor: 'pointer', width: 40, height: 40 }}
+                    onClick={() => navigate('/')}
+                ></Box>
+                <NavBox />
+                <Box sx={{ mr: '10px', textAlign: 'right', pl: '10px' }}>
+                    <Box sx={{ color: theme.palette.primary.light, fontSize: '12px', whiteSpace: 'nowrap' }}>
+                        {userInfo.name}
                     </Box>
-                    <Avatar
-                        sx={{ width: 40, height: 40, bgcolor: theme.palette.primary.light }}
-                        alt={userInfo.name}
-                        src={userInfo.photoSrc}
-                    />
-                    <NotiButton userInfo={userInfo} />
-                    <IconButton
-                        color="inherit"
-                        onClick={handleLogout}
-                        title="Wyloguj"
-                        sx={{ ml: '10px', width: 40, height: 40, border: '1px solid white' }}
-                    >
-                        <LogoutIcon />
-                    </IconButton>
-                    <Drawer anchor={'left'} open={navbarOpen} onClose={() => setNavbarOpen(false)}>
-                        {list()}
-                    </Drawer>
-                </CustomizedToolbar>
-            </Box>
+                    <Box>{userInfo.company}</Box>
+                </Box>
+                <Avatar
+                    sx={{ width: 40, height: 40, bgcolor: theme.palette.primary.light }}
+                    alt={userInfo.name}
+                    src={userInfo.photoSrc}
+                />
+                <NotiButton userInfo={userInfo} />
+                <IconButton
+                    color="inherit"
+                    onClick={handleLogout}
+                    title="Wyloguj"
+                    sx={{ ml: '10px', width: 40, height: 40, border: '1px solid white' }}
+                >
+                    <LogoutIcon />
+                </IconButton>
+            </Toolbar>
         </AppBar>
     )
 }

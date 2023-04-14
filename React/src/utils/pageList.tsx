@@ -34,8 +34,8 @@ export type PageProps = {
 const Root = () => {
     return (
         <>
-            {/* <HeaderHamburger /> */}
-            <Header />
+            <HeaderHamburger />
+            {/* <Header /> */}
             <Outlet />
         </>
     )

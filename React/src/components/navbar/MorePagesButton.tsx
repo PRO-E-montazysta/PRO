@@ -36,7 +36,7 @@ const MorePagesButton = (props: MorePagesButtonProps) => {
                 <Button sx={{ cursor: 'pointer', whiteSpace: 'nowrap', width: '30px' , minWidth: 'auto' }} >
                     <MoreVertIcon />
                 </Button>
-                {/* <NavMenu allowedChilds={allowedChilds} onClose={handleClose} open={open} /> */}
+                <NavMenu allowedChilds={pages} onClose={handleClose} open={open} />
             </div>
         </>
     )
