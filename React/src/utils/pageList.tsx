@@ -24,7 +24,8 @@ import ClientDetails from '../pages/clients/ClientDetails'
 import Events from '../pages/events'
 import ToolEventDetails from '../pages/events/ToolEventDetails'
 import ElementEventDetails from '../pages/events/ElementEventDetails'
-
+import Unavailabilities from '../pages/unavailabilities'
+import UnavailabilityDetails from '../pages/unavailabilities/UnavailabilityDetails'
 
 export type PageProps = {
     name: string
@@ -227,7 +228,7 @@ export const pageList: Array<PageProps> = [
                     Role['*'],
                 ],
                 component: <Employees />,
-                    children: [
+                children: [
                     {
                         inNav: true,
                         name: 'Pracownicy',
@@ -356,6 +357,32 @@ export const pageList: Array<PageProps> = [
                 path: '/elementEvent/:id',
                 allowedRoles: [Role.MANAGER, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER, Role.FITTER, Role.FOREMAN],
                 component: <ElementEventDetails />,
+            },
+            {
+                inNav: true,
+                name: 'Nieobecności',
+                path: '/unavailabilities',
+                allowedRoles: [Role.MANAGER],
+                component: <Unavailabilities />,
+                children: [
+                    {
+                        inNav: true,
+                        name: 'Lista nieobecności',
+                        path: '/unavailabilities',
+                    },
+                    {
+                        inNav: true,
+                        name: 'Dodaj nieobecność',
+                        path: '/unavailabilities/new',
+                    },
+                ],
+            },
+            {
+                inNav: false,
+                name: '',
+                path: '/unavailabilities/:id',
+                allowedRoles: [Role.MANAGER],
+                component: <UnavailabilityDetails />,
             },
         ],
     },

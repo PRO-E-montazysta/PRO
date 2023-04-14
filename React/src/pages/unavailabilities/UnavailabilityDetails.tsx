@@ -27,7 +27,7 @@ import DialogInfo, { DialogInfoParams } from '../../components/dialogInfo/Dialog
 import { Unavailability } from '../../types/model/Unavailability'
 import { typeOfUnavailabilityOptions } from '../../helpers/enum.helper'
 import { Employee } from '../../types/model/Employee'
-import { getAllUsers } from '../../api/user.api'
+import { getAllEmployees } from '../../api/employee.api'
 
 const UnavailabilityDetails = () => {
     const params = useParams()
@@ -146,7 +146,7 @@ const UnavailabilityDetails = () => {
         },
     )
 
-    const queryEmployees = useQuery<Array<Employee>, AxiosError>(['employee-list'], getAllUsers)
+    const queryEmployees = useQuery<Array<Employee>, AxiosError>(['employee-list'], getAllEmployees)
 
     const formik = useFormik({
         initialValues: initData,
