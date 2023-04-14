@@ -1,4 +1,5 @@
-import { SelectMenuItemProps } from '../components/base/Multiselect'
+
+import { SelectMenuItemProps } from '../components/form/types'
 import { CompanyStatus } from '../types/model/Company'
 import { TypeOfUnit } from '../types/model/Element'
 import { OrderPriority, OrderStatus } from '../types/model/Order'

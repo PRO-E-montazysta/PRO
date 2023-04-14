@@ -16,6 +16,7 @@ import ToolsFromWarehouse from '../pages/tools/ToolsFromWarehouse'
 import ToolDetails from '../pages/tools/ToolDetails'
 import Elements from '../pages/elements'
 import ElementDetails from '../pages/elements/ElementDetails'
+import { DialogGlobalProvider } from '../providers/DialogGlobalProvider'
 import Employees from '../pages/employees'
 import EmpDetails from '../pages/employees/employeesDetails/EmpDetails'
 import Clients from '../pages/clients'
@@ -33,8 +34,10 @@ export type PageProps = {
 const Root = () => {
     return (
         <>
-            <Header />
-            <Outlet />
+            <DialogGlobalProvider>
+                <Header />
+                <Outlet />
+            </DialogGlobalProvider>
         </>
     )
 }

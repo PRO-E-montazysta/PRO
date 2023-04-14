@@ -1,0 +1,38 @@
+.blur-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(5px);
+  z-index: 200;
+}
+
+.global-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #15171F;
+  border-radius: 5px;
+  padding: 20px;
+  color: #FFFFFF;
+  font-weight: 500;
+  font-size: 14px;
+  width: auto;
+}
+
+
+.global-dialog .action-buttons {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 20px
+}
+
+.global-dialog .action-buttons button {
+  width: 120px;
+  transition: .5s;
+  text-transform: unset;
+  color: #96c0fb
+}
