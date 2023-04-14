@@ -16,7 +16,7 @@ import { getAllCompanies } from '../../api/company.api'
 import { getAllForemans } from '../../api/foreman.api'
 import { getAllLocations } from '../../api/location.api'
 import { getAllManagers } from '../../api/manager.api'
-import { getAllSalesReprezentatives } from '../../api/salesReprezentatives.api'
+import { getAllSalesRepresentatives } from '../../api/salesRepresentatives.api'
 import { getAllSpecialists } from '../../api/specialist.api'
 import { AppSize } from '../../hooks/useBreakpoints'
 import { SelectMenuItemProps } from '../../components/form/types'
@@ -144,9 +144,9 @@ export const useFormStructure = (): Array<FormInputProps> => {
         cacheTime: 15 * 60 * 1000,
         staleTime: 10 * 60 * 1000,
     })
-    const querySalesReprezentative = useQuery<Array<AppUser>, AxiosError>(
+    const querySalesRepresentative = useQuery<Array<AppUser>, AxiosError>(
         ['sales-reprezentative-list'],
-        getAllSalesReprezentatives,
+        getAllSalesRepresentatives,
         {
             cacheTime: 15 * 60 * 1000,
             staleTime: 10 * 60 * 1000,
@@ -246,7 +246,7 @@ export const useFormStructure = (): Array<FormInputProps> => {
             options: formatArrayToOptions(
                 'id',
                 (x: AppUser) => x.firstName + ' ' + x.lastName,
-                querySalesReprezentative.data,
+                querySalesRepresentative.data,
             ),
         },
         {

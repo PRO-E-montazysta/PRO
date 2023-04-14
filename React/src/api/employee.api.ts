@@ -28,3 +28,7 @@ export const postEmployee = (data: Employee) => {
 export const deleteEmployee = (id: string | number) => {
   return makeServiceCall(`/users/${id}`, 'DELETE', {})
 }
+
+export const getAboutMeInfo = () => {
+  return makeServiceCall(`/aboutme`, 'GET', {})
+}
