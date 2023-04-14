@@ -21,7 +21,6 @@ public class ApplicationExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, List<String>> handleInvalidArgument(MethodArgumentNotValidException exception) {
-        exception.printStackTrace();
         Map<String, List<String>> errorsMap = new HashMap<>();
         exception.getBindingResult().getAllErrors().forEach(error -> {
             List<String> errors = errorsMap.get(error.getObjectName());
@@ -59,11 +58,11 @@ public class ApplicationExceptionHandler {
         log.debug(entityNotFoundException.getMessage());
     }
 
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    @ExceptionHandler(IllegalArgumentException.class)
-//    public String illegalArgumentException(IllegalArgumentException illegalArgumentException) {
-//
-//       return  illegalArgumentException.getMessage();
-//
-//    }
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public String illegalArgumentException(IllegalArgumentException illegalArgumentException) {
+
+       return  illegalArgumentException.getMessage();
+
+    }
 }

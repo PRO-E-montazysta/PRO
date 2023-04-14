@@ -3,6 +3,7 @@ package com.emontazysta.configuration;
 import com.emontazysta.enums.*;
 import com.emontazysta.mapper.*;
 import com.emontazysta.model.*;
+import com.emontazysta.model.dto.UnavailabilityWithLocalDateDto;
 import com.emontazysta.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -15,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +81,10 @@ public class DataSeeding {
 
     private Unavailability addUnavailabilityFromModel(Unavailability unavailability) {
         return unavailabilityMapper.toEntity(unavailabilityService.add(unavailabilityMapper.toDto(unavailability)));
+    }
+
+    private Unavailability addUnavailabilityWithLocalDateDtoFromModel(UnavailabilityWithLocalDateDto unavailability) {
+        return unavailabilityMapper.toEntity(unavailabilityService.addWithLocalDate(unavailability));
     }
 
     private Client addClientFromModel(Client client) {
@@ -239,16 +245,16 @@ public class DataSeeding {
 
         Company company1 = addCompanyFromModel(new Company(null, "Test Comapny 1", null,
                 CompanyStatus.ACTIVE, "They pay", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>()));
+                new ArrayList<>(), new ArrayList<>()));
         Company company2 = addCompanyFromModel(new Company(null, "Test Comapny 2", null,
                 CompanyStatus.ACTIVE, "They pay", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>()));
+                new ArrayList<>(), new ArrayList<>()));
         Company company3 = addCompanyFromModel(new Company(null, "Test Comapny 3", null,
                 CompanyStatus.SUSPENDED, "They don't pay", new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>(), new ArrayList<>()));
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         Company company4 = addCompanyFromModel(new Company(null, "Test Comapny 4", null,
                 CompanyStatus.DISABLED, "Closed company", new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>(), new ArrayList<>()));
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
         Employment employment1 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, fitter1));
         Employment employment2 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, fitter2));
@@ -271,9 +277,11 @@ public class DataSeeding {
         context.setAuthentication(authenticationMng);
 
         Unavailability unavailability1 = addUnavailabilityFromModel(new Unavailability(null,
-                TypeOfUnavailability.TYPE1, "Test Unavailability 1", LocalDateTime.parse( "2023-03-06T12:00:00.000"), LocalDateTime.parse("2023-03-06T23:00:00.000"), fitter1, manager1));
-        Unavailability unavailability2 = addUnavailabilityFromModel(new Unavailability(null,
-                TypeOfUnavailability.TYPE1,"Test Unavailability 2",LocalDateTime.parse( "2023-03-05T12:00:00.000"),LocalDateTime.parse("2023-03-05T16:00:00.000"), fitter2, manager1));
+                TypeOfUnavailability.BUSY, "Test Unavailability 1", LocalDateTime.parse( "2023-03-06T12:00:00.000"),
+                LocalDateTime.parse("2023-03-06T23:00:00.000"), fitter1, manager1));
+        Unavailability unavailability2 = addUnavailabilityWithLocalDateDtoFromModel(new UnavailabilityWithLocalDateDto(
+                null, TypeOfUnavailability.BEREAVEMENT_LEAVE,"Test Unavailability 2", LocalDate.now(),
+                LocalDate.now(), fitter2.getId(), manager1.getId()));
 
         Client client1 = addClientFromModel(new Client(null, "Test Client 1 - from Company 1",
                 "em@i.l", company1, new ArrayList<>()));
@@ -362,13 +370,13 @@ public class DataSeeding {
                 "8:00 - 15:00", company2, location4, new ArrayList<>(), new ArrayList<>()));
 
         ToolType toolType1 = addToolTypeFromModel(new ToolType(null, "Test ToolType 1",
-                5, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+                5, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), company1));
         ToolType toolType2 = addToolTypeFromModel(new ToolType(null, "Test ToolType 2",
-                5, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+                5, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), company1));
         ToolType toolType3 = addToolTypeFromModel(new ToolType(null, "Test ToolType 3",
-                5, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+                5, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), company1));
         ToolType toolType4 = addToolTypeFromModel(new ToolType(null, "Test ToolType 4",
-                5, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+                5, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), company1));
 
         Tool tool1 = addToolFromModel(new Tool(null, "Test Tool 1", null, null, new ArrayList<>(),
                 warehouse1, new ArrayList<>(), toolType1));
@@ -382,9 +390,9 @@ public class DataSeeding {
         ToolEvent toolEvent1 = addToolEventFromModel(new ToolEvent(null, LocalDateTime.now(), null, null,
                 "Test ToolEvent 1", EventStatus.CREATED, null, null, tool1, new ArrayList<>()));
         ToolEvent toolEvent2 = addToolEventFromModel(new ToolEvent(null, LocalDateTime.now(), null, null,
-                "Test ToolEvent 2", EventStatus.IN_PROGRESS, null, null, tool1, new ArrayList<>()));
+                "Test ToolEvent 2", EventStatus.CREATED, null, null, tool1, new ArrayList<>()));
         ToolEvent toolEvent3 = addToolEventFromModel(new ToolEvent(null, LocalDateTime.now(), null, null,
-                "Test ToolEvent 3", EventStatus.REPAIRED, null, null, tool2, new ArrayList<>()));
+                "Test ToolEvent 3", EventStatus.CREATED, null, null, tool2, new ArrayList<>()));
         ToolEvent toolEvent4 = addToolEventFromModel(new ToolEvent(null, LocalDateTime.now(), null, null,
                 "Test ToolEvent 4", EventStatus.CREATED, null, null, tool3, new ArrayList<>()));
 
@@ -429,16 +437,16 @@ public class DataSeeding {
                 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>()));
 
         ElementEvent elementEvent1 = addElementEventFromModel(new ElementEvent(null, LocalDateTime.now(),
-                null, LocalDateTime.now(), "Test ElementEvent 1", EventStatus.CREATED, 1,
+                null, null, "Test ElementEvent 1", EventStatus.CREATED, 1,
                 null, null, element1, new ArrayList<>()));
         ElementEvent elementEvent2 = addElementEventFromModel(new ElementEvent(null, LocalDateTime.now(),
-                null, LocalDateTime.now(), "Test ElementEvent 2", EventStatus.IN_PROGRESS, 1,
+                null, null, "Test ElementEvent 2", EventStatus.CREATED, 1,
                 null, null, element1, new ArrayList<>()));
         ElementEvent elementEvent3 = addElementEventFromModel(new ElementEvent(null, LocalDateTime.now(),
-                null, LocalDateTime.now(), "Test ElementEvent 3", EventStatus.REPAIRED, 1,
+                null, null, "Test ElementEvent 3", EventStatus.CREATED, 1,
                 null, null, element2, new ArrayList<>()));
         ElementEvent elementEvent4 = addElementEventFromModel(new ElementEvent(null, LocalDateTime.now(),
-                null, LocalDateTime.now(), "Test ElementEvent 4", EventStatus.CREATED, 1,
+                null, null, "Test ElementEvent 4", EventStatus.CREATED, 1,
                 null, null, element3, new ArrayList<>()));
 
         ElementInWarehouse elementInWarehouse1 = addElementInWarehouseFromModel(new ElementInWarehouse(null,

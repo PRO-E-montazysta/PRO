@@ -1,9 +1,10 @@
-import { SelectMenuItemProps } from '../../components/base/Multiselect'
+
 import { FilterInputType } from '../../components/table/filter/TableFilter'
 import { HeadCell } from '../../components/table/sort/SortedTableHeader'
 import { Employee, EmployeeStatus } from '../../types/model/Employee'
 
 import { AppSize } from '../../hooks/useBreakpoints'
+import { SelectMenuItemProps } from '../../components/form/types'
 export const headCells: Array<HeadCell<Employee>> = [
     {
         type: 'string',

@@ -20,6 +20,7 @@ import com.emontazysta.repository.NotificationRepository;
 import com.emontazysta.repository.OrderRepository;
 import com.emontazysta.repository.ToolEventRepository;
 import com.emontazysta.repository.UnavailabilityRepository;
+import com.emontazysta.service.StatusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -40,6 +41,7 @@ public class SpecialistMapper {
     private final ToolEventRepository toolEventRepository;
     private final OrderRepository orderRepository;
     private final DemandAdHocRepository demandAdHocRepository;
+    private final StatusService statusService;
 
     public SpecialistDto toDto(Specialist specialist) {
 
@@ -61,6 +63,10 @@ public class SpecialistMapper {
                 .toolEvents(specialist.getToolEvents().stream().map(ToolEvent::getId).collect(Collectors.toList()))
                 .orders(specialist.getOrders().stream().map(Orders::getId).collect(Collectors.toList()))
                 .demandAdHocs(specialist.getDemandAdHocs().stream().map(DemandAdHoc::getId).collect(Collectors.toList()))
+                .status(statusService.checkUnavailability(specialist) == null ? "AVAILABLE" : String.valueOf(statusService.checkUnavailability(specialist).getTypeOfUnavailability()))
+                .unavailableFrom(statusService.checkUnavailability(specialist) == null ? null : statusService.checkUnavailability(specialist).getUnavailableFrom())
+                .unavailableTo(statusService.checkUnavailability(specialist) == null ? null : statusService.checkUnavailability(specialist).getUnavailableTo())
+                .unavailbilityDescription(statusService.checkUnavailability(specialist) == null ? null : statusService.checkUnavailability(specialist).getDescription())
                 .build();
     }
 

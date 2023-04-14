@@ -7,14 +7,12 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox'
 import styled from '@emotion/styled'
 
 import './style.less'
+import { SelectMenuItemProps } from '../form/types'
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
 const checkedIcon = <CheckBoxIcon fontSize="small" />
 
-export type SelectMenuItemProps = {
-    key: number | string
-    value: string
-}
+
 
 type MultipleSelectProps = {
     label?: string
@@ -37,15 +35,6 @@ export default function MultipleSelect(props: MultipleSelectProps) {
         const values = newValues.map((e: SelectMenuItemProps) => e.key)
         formikSetFieldValue(id, values)
     }
-
-    const StyledAutocomplete = styled(Autocomplete)(() => ({
-        [`& .MuiInputBase-input`]: {
-            minWidth: '0 !important',
-        },
-        [`& .MuiInputBase-input:focus`]: {
-            minWidth: '30px !important',
-        },
-    }))
 
     return (
         <FormControl variant="outlined" style={{ width: '100%', ...boxStyle }}>

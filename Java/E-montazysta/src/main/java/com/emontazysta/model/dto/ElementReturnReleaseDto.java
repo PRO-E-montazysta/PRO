@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@IsAfter(message = "Return time must be after release time", startDateFieldName = "releaseTime", endDateFieldName = "returnTime")
+@IsAfter(startDateFieldName = "releaseTime", endDateFieldName = "returnTime")
 public class ElementReturnReleaseDto {
 
     private Long id;
