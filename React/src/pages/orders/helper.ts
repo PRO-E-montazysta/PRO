@@ -18,8 +18,8 @@ import { getAllLocations } from '../../api/location.api'
 import { getAllManagers } from '../../api/manager.api'
 import { getAllSalesReprezentatives } from '../../api/salesReprezentatives.api'
 import { getAllSpecialists } from '../../api/specialist.api'
-import { SelectMenuItemProps } from '../../components/base/Multiselect'
 import { AppSize } from '../../hooks/useBreakpoints'
+import { SelectMenuItemProps } from '../../components/form/types'
 
 
 export const headCells: Array<HeadCell<Order>> = [

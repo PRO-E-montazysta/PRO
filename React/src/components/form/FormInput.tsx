@@ -1,7 +1,6 @@
-import { Box, TextField, Typography } from '@mui/material'
+import { TextField } from '@mui/material'
 import { formatDate } from '../../helpers/format.helper'
 import useBreakpoints from '../../hooks/useBreakpoints'
-import FormLabel from './FormLabel'
 import { FormInputParams } from './types'
 
 const FormInput = (params: FormInputParams) => {

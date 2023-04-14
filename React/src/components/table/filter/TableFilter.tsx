@@ -1,13 +1,14 @@
 import { Box, Button, Paper, TextField } from '@mui/material'
 import { CSSProperties, HTMLInputTypeAttribute, useMemo } from 'react'
 import { theme } from '../../../themes/baseTheme'
-import MultipleSelectChip, { SelectMenuItemProps } from '../../base/Multiselect'
+import MultipleSelectChip from '../../base/Multiselect'
 import SearchIcon from '@mui/icons-material/Search'
 import ReplayIcon from '@mui/icons-material/Replay'
 
 import './style.less'
 import useBreakpoints from '../../../hooks/useBreakpoints'
 import { useInputWidth } from '../../../hooks/useInputWidth'
+import { SelectMenuItemProps } from '../../form/types'
 
 export type Filter = {
     formik: any
