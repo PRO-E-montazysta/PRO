@@ -1,16 +1,11 @@
 import { Box, Button, IconButton } from '@mui/material'
-import { MouseEvent, useLayoutEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { isAuthorized } from '../../utils/authorize'
-import { PageProps } from '../../utils/pageList'
-
-import NavMenu from './NavMenu'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import { Badge } from '@mui/material'
-import { UserInfo } from '../headers/Header'
 import NotiMenu from './NotiMenu'
 import ClickAwayListener from '@mui/base/ClickAwayListener'
-import { off } from 'process'
+import { UserInfo } from './NavActions'
 
 type NotiButtonProps = {
     userInfo: UserInfo

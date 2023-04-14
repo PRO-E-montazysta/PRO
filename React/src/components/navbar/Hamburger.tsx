@@ -1,15 +1,14 @@
 import React, { useState } from 'react'
 import { Box, Drawer, IconButton, List } from '@mui/material'
 import { pageList } from '../../utils/pageList'
-import NavMenuButton from '../navbar/NavButton'
-
 import { theme } from '../../themes/baseTheme'
 import MenuIcon from '@mui/icons-material/Menu'
 import { isAuthorized } from '../../utils/authorize'
 import HamburgerButton from './HamburgerButton'
 import CloseIcon from '@mui/icons-material/Close'
+
 const Hamburger = () => {
-    const [navbarOpen, setNavbarOpen] = useState(true)
+    const [navbarOpen, setNavbarOpen] = useState(false)
 
     const rootPage = pageList.find((p) => p.path === '/')
     const availablePages = rootPage?.children?.filter((c) => c.inNav && isAuthorized(c))
@@ -17,7 +16,6 @@ const Hamburger = () => {
     return (
         <Box>
             <IconButton
-                size="large"
                 edge="start"
                 color="inherit"
                 aria-label="menu"
@@ -25,16 +23,13 @@ const Hamburger = () => {
                 sx={{ mr: 2 }}
                 onClick={() => setNavbarOpen(true)}
             >
-                <MenuIcon />
+                <MenuIcon sx={{ width: 35, height: 40 }} />
             </IconButton>
             <Drawer anchor={'left'} open={navbarOpen} onClose={() => setNavbarOpen(false)}>
                 <Box
                     sx={{ backgroundColor: theme.palette.primary.dark, color: 'white' }}
                     width={'250px'}
                     height={'100vh'}
-                    // role="presentation"
-                    // onClick={() => setNavbarOpen(false)}
-                    // onKeyDown={() => setNavbarOpen(false)}
                 >
                     <List>
                         <IconButton
@@ -51,9 +46,7 @@ const Hamburger = () => {
 
                         {availablePages
                             ? availablePages.map((page, index) => {
-                                  return (
-                                      <HamburgerButton page={page} close={() => setNavbarOpen(false)} key={index} />
-                                  )
+                                  return <HamburgerButton page={page} close={() => setNavbarOpen(false)} key={index} />
                               })
                             : null}
                     </List>

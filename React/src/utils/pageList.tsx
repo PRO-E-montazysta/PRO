@@ -20,7 +20,7 @@ import Employees from '../pages/employees'
 import EmpDetails from '../pages/employees/employeesDetails/EmpDetails'
 import Clients from '../pages/clients'
 import ClientDetails from '../pages/clients/ClientDetails'
-import HeaderHamburger from '../components/headers/HeaderHamburger'
+
 
 export type PageProps = {
     name: string
@@ -34,8 +34,7 @@ export type PageProps = {
 const Root = () => {
     return (
         <>
-            <HeaderHamburger />
-            {/* <Header /> */}
+            <Header />
             <Outlet />
         </>
     )

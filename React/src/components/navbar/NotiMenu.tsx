@@ -11,7 +11,7 @@ type NotiMenuParams = {
     onClose: () => void
 }
 
-const NavMenu = (params: NotiMenuParams) => {
+const NotiMenu = (params: NotiMenuParams) => {
     const { open, notifications, onClose } = params
 
     const navigate = useNavigate()
@@ -52,4 +52,4 @@ const NavMenu = (params: NotiMenuParams) => {
     )
 }
 
-export default NavMenu
+export default NotiMenu
