@@ -44,12 +44,12 @@ const NavActions = (props: NavActionsProps) => {
     })
 
     useEffect(() => {
-        if(aboutMeQuery.data){
+        if (aboutMeQuery.data) {
             setUserInfo({
-                name: aboutMeQuery.data.firstName + " " +  aboutMeQuery.data.lastName,
-                company:  aboutMeQuery.data.companyName,
+                name: aboutMeQuery.data.firstName + ' ' + aboutMeQuery.data.lastName,
+                company: aboutMeQuery.data.companyName,
                 notifications: [],
-                photoSrc: aboutMeQuery.data.profilePhotoUrl
+                photoSrc: aboutMeQuery.data.profilePhotoUrl,
             })
         }
     }, [aboutMeQuery.status])
@@ -63,16 +63,14 @@ const NavActions = (props: NavActionsProps) => {
     )
 
     const userInfoComponent = (
-        <Box sx={{ mr: '10px', textAlign: 'right', pl: '10px' }}>
-            <Box sx={{ color: theme.palette.primary.light, fontSize: '12px', whiteSpace: 'nowrap' }}>
-                {userInfo.name}
-            </Box>
+        <Box sx={{ mr: '10px', textAlign: 'right', pl: '10px', whiteSpace: 'nowrap' }}>
+            <Box sx={{ color: theme.palette.primary.light, fontSize: '12px' }}>{userInfo.name}</Box>
             <Box>{userInfo.company}</Box>
         </Box>
     )
 
     return (
-        <Box sx={{ justifySelf: 'end' }}>
+        <Box sx={{ justifySelf: 'end', ml: 'auto' }}>
             {appSize.isDesktop || appSize.isNotebook ? (
                 <Box display={'flex'}>
                     {userInfoComponent}

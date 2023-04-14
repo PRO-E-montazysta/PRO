@@ -35,7 +35,6 @@ const NavBox = () => {
         scrollMenu: [],
     })
 
-
     const handleNavbarResize = (thisMenuElements: MenuElements) => {
         if (!menuRef.current) return
         const decision = changeMenuDecision(menuRef.current.clientWidth, thisMenuElements)
@@ -58,7 +57,6 @@ const NavBox = () => {
         handleNavbarResize(menuElements)
     }, [width])
 
-
     useLayoutEffect(() => {
         if (menuRef.current && availablePages) {
             const newMenuElements: PageElement[] = []
@@ -71,7 +69,9 @@ const NavBox = () => {
                 newMenuElements.push(newPageElement)
             })
             setMenuElements({ navbar: newMenuElements, scrollMenu: [] })
-            handleNavbarResize({ navbar: newMenuElements, scrollMenu: [] })
+            setTimeout(() => {
+                handleNavbarResize({ navbar: newMenuElements, scrollMenu: [] })
+            }, 100)
         }
     }, [])
 
@@ -82,8 +82,6 @@ const NavBox = () => {
         window.addEventListener('resize', handleResize)
         return () => window.removeEventListener('resize', handleResize)
     }, [])
-
-
 
     return (
         <Box
