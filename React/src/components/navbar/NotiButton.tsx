@@ -34,7 +34,7 @@ const NotiButton = (props: NotiButtonProps) => {
                         color="inherit"
                         onClick={() => handleClick()}
                         title="Powiadomienia"
-                        sx={{ ml: '10px', width: 40, height: 40, border: '1px solid white' }}
+                        sx={{ ml: '10px', width: 40, height: 40, border: '2px solid white' }}
                     >
                         <Badge badgeContent={userInfo.notifications.length} color="error" sx={{ p: '3px' }}>
                             <NotificationsIcon />

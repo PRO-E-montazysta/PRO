@@ -27,7 +27,10 @@ export type Notification = {
 }
 
 type NavActionsProps = {}
-
+//TODO
+//ERROR
+//CHANGE THIS LATER
+const MOCK_CAT_URL = 'https://i.pinimg.com/originals/59/54/b4/5954b408c66525ad932faa693a647e3f.jpg'
 const NavActions = (props: NavActionsProps) => {
     const [drawerOpen, setDrawerOpen] = useState(false)
     const appSize = useBreakpoints()
@@ -39,7 +42,7 @@ const NavActions = (props: NavActionsProps) => {
     const [userInfo, setUserInfo] = useState<UserInfo>({
         name: 'Imię Nazwisko',
         company: 'Firma',
-        photoSrc: '',
+        photoSrc: MOCK_CAT_URL,
         notifications: [],
     })
 
@@ -49,7 +52,8 @@ const NavActions = (props: NavActionsProps) => {
                 name: aboutMeQuery.data.firstName + ' ' + aboutMeQuery.data.lastName,
                 company: aboutMeQuery.data.companyName,
                 notifications: [],
-                photoSrc: aboutMeQuery.data.profilePhotoUrl,
+                photoSrc:
+                    aboutMeQuery.data.profilePhotoUrl != 'null' ? aboutMeQuery.data.profilePhotoUrl : MOCK_CAT_URL,
             })
         }
     }, [aboutMeQuery.status])
@@ -80,7 +84,7 @@ const NavActions = (props: NavActionsProps) => {
                         color="inherit"
                         onClick={handleLogout}
                         title="Wyloguj"
-                        sx={{ ml: '10px', width: 40, height: 40, border: '1px solid white' }}
+                        sx={{ ml: '10px', width: 40, height: 40, border: '2px solid white' }}
                     >
                         <LogoutIcon />
                     </IconButton>
