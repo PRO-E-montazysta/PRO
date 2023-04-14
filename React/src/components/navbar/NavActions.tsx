@@ -45,7 +45,6 @@ const NavActions = (props: NavActionsProps) => {
 
     useEffect(() => {
         if(aboutMeQuery.data){
-            console.log(aboutMeQuery.data)
             setUserInfo({
                 name: aboutMeQuery.data.firstName + " " +  aboutMeQuery.data.lastName,
                 company:  aboutMeQuery.data.companyName,

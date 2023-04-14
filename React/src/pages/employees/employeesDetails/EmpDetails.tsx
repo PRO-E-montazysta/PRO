@@ -43,7 +43,6 @@ const EmpDetails = () => {
     const queryData = useQuery<Employee, AxiosError>(['users', { id: params.id }], async () => getUserById(params.id!), {
         enabled: !!params.id,
     })
-    console.log(queryData)
 
     const handleExpandHistoryClick = () => {
         setExpandedHistory(!expandedHistory)
