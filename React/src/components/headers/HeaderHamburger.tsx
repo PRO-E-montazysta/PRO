@@ -28,12 +28,7 @@ import { theme } from '../../themes/baseTheme'
 import NotiButton from '../navbar/NotiButton'
 import MenuIcon from '@mui/icons-material/Menu'
 import NavBox from '../navbar/NavBox'
-
-const CustomizedToolbar = styled(Toolbar)(({ theme }) => ({
-    '@media (min-width: 600px)': {
-        minHeight: '60px',
-    },
-}))
+import Hamburger from '../navbar/Hamburger'
 
 export type UserInfo = {
     name: string
@@ -53,7 +48,6 @@ const HeaderHamburger = () => {
     const handleLogout = () => {
         logout()
     }
-    const [navbarOpen, setNavbarOpen] = useState(false)
 
     const [userInfo, setUserInfo] = useState<UserInfo>({
         name: 'Imię Nazwisko',
@@ -62,20 +56,10 @@ const HeaderHamburger = () => {
         notifications: [],
     })
 
-
     return (
         <AppBar position="static" sx={{ backgroundColor: '#1A1C26' }}>
             <Toolbar sx={{ minHeight: '60px' }}>
-                <IconButton
-                    size="large"
-                    edge="start"
-                    color="inherit"
-                    aria-label="menu"
-                    sx={{ mr: 2 }}
-                    onClick={() => setNavbarOpen(true)}
-                >
-                    <MenuIcon />
-                </IconButton>
+                <Hamburger />
                 <Box
                     component="img"
                     alt="Logo"
