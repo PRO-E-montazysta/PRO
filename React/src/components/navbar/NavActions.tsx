@@ -10,7 +10,7 @@ import useBreakpoints from '../../hooks/useBreakpoints'
 import CloseIcon from '@mui/icons-material/Close'
 import NavMenuItem from './NavMenuItem'
 import { useQuery } from 'react-query'
-import { getAboutMeInfo } from '../../api/user.api'
+import { getAboutMeInfo } from '../../api/employee.api'
 import { AxiosError } from 'axios'
 
 export type UserInfo = {
