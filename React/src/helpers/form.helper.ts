@@ -1,4 +1,6 @@
-import { FormInputProps } from '../pages/orders/helper'
+
+import * as yup from 'yup'
+import { FormInputProps } from '../types/form'
 
 export const getInitValues = (formStructure: Array<FormInputProps>) => {
     if (formStructure.length == 0) return {}
@@ -12,5 +14,5 @@ export const getValidatinSchema = (formStructure: Array<FormInputProps>) => {
     formStructure.forEach((f) => {
         if (f.validation) resultObj[f.id] = f.validation
     })
-    return resultObj
+    return yup.object(resultObj)
 }

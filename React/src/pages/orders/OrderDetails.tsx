@@ -2,23 +2,10 @@ import { Paper, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import { useFormik } from 'formik'
 import { useContext, useEffect, useState } from 'react'
-import { useMutation, useQuery } from 'react-query'
-import { useNavigate, useParams } from 'react-router-dom'
-import { deleteOrder, getOrderDetails, postOrder, updateOrder } from '../../api/order.api'
-import { formatArrayToOptions, formatLocation } from '../../helpers/format.helper'
-import { priorityOptions, statusOptions } from '../../helpers/enum.helper'
-import { theme } from '../../themes/baseTheme'
-import { Client } from '../../types/model/Client'
-import { Order } from '../../types/model/Order'
-import { AppUser } from '../../types/model/AppUser'
-import { getAllClients } from '../../api/client.api'
-import { getAllForemans } from '../../api/foreman.api'
-import { getAllLocations } from '../../api/location.api'
-import { getAllManagers } from '../../api/manager.api'
-import { getAllSalesRepresentatives } from '../../api/salesRepresentatives.api'
-import { getAllSpecialists } from '../../api/specialist.api'
+import { useParams } from 'react-router-dom'
 
-import * as yup from 'yup'
+import { theme } from '../../themes/baseTheme'
+
 import { useFormStructure } from './helper'
 import { useAddOrder, useDeleteOrder, useEditOrder, useOrderData } from './hooks'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
@@ -27,9 +14,10 @@ import { FormStructure } from '../../components/form/FormStructure'
 import { useQueriesStatus } from '../../hooks/useQueriesStatus'
 import QueryBoxStatus from '../../components/base/QueryStatusBox'
 import useBreakpoints from '../../hooks/useBreakpoints'
-import { AxiosError } from 'axios'
 import { getInitValues, getValidatinSchema } from '../../helpers/form.helper'
-import { validationSchema } from '../toolTypes/helper'
+import FormPaper from '../../components/form/FormPaper'
+import FormTitle from '../../components/form/FormTitle'
+import FormBox from '../../components/form/FormBox'
 
 const OrderDetails = () => {
     //parameters from url
@@ -54,9 +42,9 @@ const OrderDetails = () => {
     const queriesStatus = useQueriesStatus([orderData], [addOrderMutation, editOrderMutation, deleteOrderMutation])
 
     const appSize = useBreakpoints()
-    const handleSubmit = () => {
-        if (params.id == 'new') addOrderMutation.mutate(JSON.parse(JSON.stringify(formik.values)))
-        else editOrderMutation.mutate(JSON.parse(JSON.stringify(formik.values)))
+    const handleSubmit = (values: any) => {
+        if (params.id == 'new') addOrderMutation.mutate(values)
+        else editOrderMutation.mutate(values)
     }
 
     const handleDelete = () => {
@@ -72,27 +60,9 @@ const OrderDetails = () => {
         })
     }
 
-    const queryData = useQuery<Order, AxiosError>(
-        ['order', { id: params.id }],
-        async () => getOrderDetails(params.id && params.id != 'new' ? params.id : ''),
-        {
-            enabled: !!params.id && params.id != 'new',
-        },
-    )
-
-    const queryClient = useQuery<Array<Client>, AxiosError>(['client-list'], getAllClients)
-    const queryForeman = useQuery<Array<AppUser>, AxiosError>(['foreman-list'], getAllForemans)
-    const queryLocation = useQuery<Array<Location>, AxiosError>(['location-list'], getAllLocations)
-    const queryManager = useQuery<Array<AppUser>, AxiosError>(['manager-list'], getAllManagers)
-    const querySalesReprezentative = useQuery<Array<AppUser>, AxiosError>(
-        ['sales-reprezentative-list'],
-        getAllSalesRepresentatives,
-    )
-    const querySpecialist = useQuery<Array<AppUser>, AxiosError>(['specialist-list'], getAllSpecialists)
-
     const formik = useFormik({
         initialValues: initData,
-        validationSchema: validationSchema,
+        validationSchema: getValidatinSchema(formStructure),
         onSubmit: handleSubmit,
     })
 
@@ -103,6 +73,13 @@ const OrderDetails = () => {
 
     const handleCancel = () => {
         handleReset()
+        setReadonlyMode(true)
+    }
+
+    const handleOnEditSuccess = (data: any) => {
+        orderData.refetch({
+            queryKey: ['order', { id: data.id }],
+        })
         setReadonlyMode(true)
     }
 
@@ -127,29 +104,9 @@ const OrderDetails = () => {
 
     return (
         <>
-            <Box
-                sx={{
-                    p: appSize.isMobile || appSize.isTablet ? '10px' : '20px',
-                    maxWidth: '1200px',
-                    m: 'auto',
-                    minWidth: '280px',
-                }}
-            >
-                <Typography
-                    variant="h4"
-                    fontWeight="bold"
-                    padding="5px"
-                    color={theme.palette.primary.contrastText}
-                    fontSize={appSize.isMobile || appSize.isTablet ? '22px' : '32px'}
-                >
-                    Zamówienia
-                </Typography>
-                <Paper
-                    sx={{
-                        mt: appSize.isMobile || appSize.isTablet ? '10px' : '20px',
-                        p: appSize.isMobile ? '10px' : '20px',
-                    }}
-                >
+            <FormBox>
+                <FormTitle text="Zamówienia" />
+                <FormPaper>
                     {queriesStatus.result != 'isSuccess' ? (
                         <QueryBoxStatus queriesStatus={queriesStatus} />
                     ) : (
@@ -166,14 +123,10 @@ const OrderDetails = () => {
                             />
                         </>
                     )}
-                </Paper>
-            </Box>
+                </FormPaper>
+            </FormBox>
         </>
     )
 }
 
 export default OrderDetails
-function handleOnEditSuccess(data: any): void {
-    throw new Error('Function not implemented.')
-}
-

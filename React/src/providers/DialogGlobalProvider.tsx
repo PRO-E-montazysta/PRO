@@ -2,9 +2,7 @@ import { createContext, ReactNode, useState } from 'react'
 import DialogGlobal, { DialogGlobalParams } from '../components/dialogGlobal/DialogGlobal'
 
 const DialogGlobalContext = createContext({
-    showDialog: (params: DialogGlobalParams) => {
-        console.log('lel')
-    },
+    showDialog: (params: DialogGlobalParams) => {},
 })
 
 const DialogGlobalProvider = ({ children }: any) => {

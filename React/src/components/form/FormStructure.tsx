@@ -3,8 +3,7 @@ import { Box } from '@mui/system'
 import FormInput from '../../components/form/FormInput'
 import FormSelect from '../../components/form/FormSelect'
 import { useInputWidth } from '../../hooks/useInputWidth'
-import { FormInputProps } from '../../pages/orders/helper'
-import FormAutocomplete from './FormAutocomplete'
+import { FormInputProps } from '../../types/form'
 
 type FormStructureParams = {
     formStructure: Array<FormInputProps>

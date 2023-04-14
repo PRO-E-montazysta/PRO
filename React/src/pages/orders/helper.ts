@@ -19,8 +19,7 @@ import { getAllManagers } from '../../api/manager.api'
 import { getAllSalesRepresentatives } from '../../api/salesRepresentatives.api'
 import { getAllSpecialists } from '../../api/specialist.api'
 import { AppSize } from '../../hooks/useBreakpoints'
-import { SelectMenuItemProps } from '../../components/form/types'
-
+import { FormInputProps } from '../../types/form'
 
 export const headCells: Array<HeadCell<Order>> = [
     {
@@ -112,16 +111,6 @@ export const filterInitStructure: Array<FilterInputType> = [
         typeValue: 'date',
     },
 ]
-
-export type FormInputProps = {
-    label: string
-    id: string
-    initValue: any
-    type: 'input' | 'select' | 'date'
-    options?: Array<SelectMenuItemProps>
-    validation?: any
-    readonly?: boolean
-}
 
 export const useFormStructure = (): Array<FormInputProps> => {
     const queryClient = useQuery<Array<Client>, AxiosError>(['client-list'], getAllClients, {
