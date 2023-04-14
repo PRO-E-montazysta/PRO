@@ -1,12 +1,14 @@
 import { Box, Button, Paper, TextField } from '@mui/material'
 import { CSSProperties, HTMLInputTypeAttribute, useMemo } from 'react'
 import { theme } from '../../../themes/baseTheme'
-import MultipleSelectChip, { SelectMenuItemProps } from '../../base/Multiselect'
+import MultipleSelectChip from '../../base/Multiselect'
 import SearchIcon from '@mui/icons-material/Search'
 import ReplayIcon from '@mui/icons-material/Replay'
 
 import './style.less'
 import useBreakpoints from '../../../hooks/useBreakpoints'
+import { useInputWidth } from '../../../hooks/useInputWidth'
+import { SelectMenuItemProps } from '../../form/types'
 
 export type Filter = {
     formik: any
@@ -42,20 +44,10 @@ const TableFilter = (props: Filter) => {
     const { formik, inputs, structureStyle, resetBtnStyle, submitBtnStyle } = props
     const appSize = useBreakpoints()
 
-    const inputWidth = useMemo(() => {
-        switch (appSize.active) {
-            case 'mobile':
-                return '100%'
-            case 'tablet':
-                return 'calc(50% - 7.5px)'
-            default:
-                return 'calc(25% - calc(45px/4))'
-        }
-    }, [appSize])
-
+    const inputWidth = useInputWidth()
     return (
         <Box sx={{ width: '100%', minWidth: '280px' }}>
-            <Paper sx={{ width: '100%', borderRadius: '5px', padding: '20px' }}>
+            <Paper sx={{ width: '100%', borderRadius: '5px', p: appSize.isMobile ? '10px' : '20px' }}>
                 <form
                     noValidate
                     onSubmit={formik.handleSubmit}
@@ -108,27 +100,29 @@ const TableFilter = (props: Filter) => {
 
                     <Box
                         sx={{
-                            display: 'flex',
+                            display: appSize.isMobile ? 'grid' : 'flex',
                             gap: '15px',
                             margin: 'auto 0 0 auto',
                             width: appSize.isMobile ? '100%' : 'auto',
                         }}
                     >
                         <Button
-                            fullWidth
                             color="primary"
                             startIcon={<SearchIcon />}
-                            style={submitBtnStyle}
+                            style={{ ...submitBtnStyle, width: appSize.isMobile ? 'auto' : 120 }}
                             variant="contained"
                             type="submit"
                         >
                             Szukaj
                         </Button>
                         <Button
-                            fullWidth
                             color="primary"
                             startIcon={<ReplayIcon style={{ transform: 'rotate(-0.25turn)' }} />}
-                            style={{ color: theme.palette.primary.main, ...resetBtnStyle }}
+                            style={{
+                                width: appSize.isMobile ? 'auto' : 120,
+                                color: theme.palette.primary.main,
+                                ...resetBtnStyle,
+                            }}
                             variant="outlined"
                             type="reset"
                         >
