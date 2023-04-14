@@ -220,7 +220,9 @@ const UnavailabilityDetails = () => {
                                     <FormLabel label="Opis" formik={formik} id={'description'} />
                                     <FormLabel label="Od" formik={formik} id={'unavailableFrom'} />
                                     <FormLabel label="Do" formik={formik} id={'unavailableTo'} />
-                                    <FormLabel label="Przypisane przez" formik={formik} id={'assignedById'} />
+                                    {params.id !== 'new' ? (
+                                        <FormLabel label="Przypisane przez" formik={formik} id={'assignedById'} />
+                                    ) : null}
                                 </Grid>
                                 <Divider
                                     orientation="vertical"
@@ -260,16 +262,18 @@ const UnavailabilityDetails = () => {
                                         readonly={readonlyMode}
                                         type="date"
                                     />
-                                    <FormSelect
-                                        id={'assignedById'}
-                                        formik={formik}
-                                        readonly
-                                        options={formatArrayToOptions(
-                                            'id',
-                                            (x: Employee) => x.firstName + ' ' + x.lastName,
-                                            queryEmployees.data,
-                                        )}
-                                    />
+                                    {params.id !== 'new' ? (
+                                        <FormSelect
+                                            id={'assignedById'}
+                                            formik={formik}
+                                            readonly
+                                            options={formatArrayToOptions(
+                                                'id',
+                                                (x: Employee) => x.firstName + ' ' + x.lastName,
+                                                queryEmployees.data,
+                                            )}
+                                        />
+                                    ) : null}
                                 </Grid>
                             </Grid>
                             <Box sx={{ margin: '20px', gap: '20px', display: 'flex', flexDirection: 'row-reverse' }}>
