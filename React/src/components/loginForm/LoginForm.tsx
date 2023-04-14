@@ -56,10 +56,7 @@ const validationSchema = yup.object({
 const LoginForm = () => {
     const theme = useTheme()
     const navigation = useNavigate()
-    const { isLoading, isError, error, mutate } = useMutation({
-        // pokazanie jak przekazwyane są zmienne
-        // można odkomentować i sprawdzić
-        // mutationFn: (variables: any) => logIn(variables),
+    const { data, isLoading, isError, error, mutate } = useMutation({
         mutationFn: logIn,
         onSuccess(data) {
             setToken(data)
@@ -92,7 +89,6 @@ const LoginForm = () => {
 
     return (
         <>
-
             <Box
                 bgcolor="secondary.main"
                 color="secondary.contrastText"
@@ -184,7 +180,7 @@ const LoginForm = () => {
                     </Grid>
                 </Box>
             </Box>
-            <Box sx={{ m: '10px', mt: '1000px' }}>{JSON.stringify(error)}</Box>
+            <Box sx={{ m: '10px', mt: '1000px' }}>{isError ? JSON.stringify(error) : JSON.stringify(data)}</Box>
         </>
     )
 }

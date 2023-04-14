@@ -25,6 +25,7 @@ import Events from '../pages/events'
 import ToolEventDetails from '../pages/events/ToolEventDetails'
 import ElementEventDetails from '../pages/events/ElementEventDetails'
 
+
 export type PageProps = {
     name: string
     path: string
@@ -188,14 +189,14 @@ export const pageList: Array<PageProps> = [
             {
                 inNav: true,
                 name: 'Klienci',
-                path: '/clients',
+                path: 'clients/',
                 allowedRoles: [Role.MANAGER, Role.SALES_REPRESENTATIVE],
                 component: <Clients />,
                 children: [
                     {
                         inNav: true,
                         name: 'Lista klientów',
-                        path: '/clients',
+                        path: 'clients',
                     },
                     {
                         inNav: true,
