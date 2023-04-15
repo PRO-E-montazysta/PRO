@@ -43,6 +43,7 @@ public class SalesRepresentativeServiceImpl implements SalesRepresentativeServic
 
     @Override
     public SalesRepresentativeDto add(SalesRepresentativeDto salesRepresentativeDto) {
+        salesRepresentativeDto.setUsername(salesRepresentativeDto.getUsername().toLowerCase());
         salesRepresentativeDto.setRoles(Set.of(Role.SALES_REPRESENTATIVE));
         salesRepresentativeDto.setUnavailabilities(new ArrayList<>());
         salesRepresentativeDto.setNotifications(new ArrayList<>());
@@ -78,7 +79,6 @@ public class SalesRepresentativeServiceImpl implements SalesRepresentativeServic
         salesRepresentative.setFirstName(updatedSalesRepresentative.getFirstName());
         salesRepresentative.setLastName(updatedSalesRepresentative.getLastName());
         salesRepresentative.setEmail(updatedSalesRepresentative.getEmail());
-        salesRepresentative.setUsername(updatedSalesRepresentative.getUsername());
         salesRepresentative.setPhone(updatedSalesRepresentative.getPhone());
         salesRepresentative.setPesel(updatedSalesRepresentative.getPesel());
         salesRepresentative.setUnavailabilities(updatedSalesRepresentative.getUnavailabilities());

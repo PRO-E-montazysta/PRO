@@ -43,6 +43,7 @@ public class ForemanServiceImpl implements ForemanService {
 
     @Override
     public ForemanDto add(ForemanDto foremanDto) {
+        foremanDto.setUsername(foremanDto.getUsername().toLowerCase());
         foremanDto.setRoles(Set.of(Role.FOREMAN));
         foremanDto.setUnavailabilities(new ArrayList<>());
         foremanDto.setNotifications(new ArrayList<>());
@@ -82,7 +83,6 @@ public class ForemanServiceImpl implements ForemanService {
         Foreman foreman = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         foreman.setFirstName(updatedForeman.getFirstName());
         foreman.setLastName(updatedForeman.getLastName());
-        foreman.setUsername(updatedForeman.getUsername());
         foreman.setEmail(updatedForeman.getEmail());
         foreman.setPhone(updatedForeman.getPhone());
         foreman.setPesel(updatedForeman.getPesel());
