@@ -32,7 +32,7 @@ val dataModule = module {
 
     factory { HttpLoggingInterceptor.Level.BODY }
 
-    factory { Environment("https://dev.emontazysta.pl/api/v1/") }
+    factory { Environment("https://dev.emontazysta.pl") }
 
 
     single {

@@ -25,7 +25,7 @@ class AuthRepository : IAuthRepository, KoinComponent {
             )
             rsp = token.getToken()
             sharedPreferencesHelper.set("lama", rsp)
-            var storedToken = sharedPreferencesHelper.get("lama")
+            var storedToken =  sharedPreferencesHelper.get("lama")
             var roles = JwtTokenHelper.getRole(storedToken)
             val user = LoggedInUser("Tu będzie ID", storedToken.toString(), roles)
 
