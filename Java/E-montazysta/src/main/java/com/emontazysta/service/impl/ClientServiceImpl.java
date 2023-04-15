@@ -7,11 +7,13 @@ import com.emontazysta.model.searchcriteria.ClientSearchCriteria;
 import com.emontazysta.repository.ClientRepository;
 import com.emontazysta.repository.criteria.ClientCriteriaRepository;
 import com.emontazysta.service.ClientService;
+import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +23,7 @@ public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository repository;
     private final ClientMapper clientMapper;
-
+    private final AuthUtils authUtils;
     private final ClientCriteriaRepository clientCriteriaRepository;
 
     @Override
@@ -39,7 +41,10 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ClientDto add(ClientDto clientDto) {
+        clientDto.setOrders(new ArrayList<>());
+        clientDto.setCompanyId(authUtils.getLoggedUserCompanyId());
         Client client = clientMapper.toEntity(clientDto);
+
         return clientMapper.toDto(repository.save(client));
     }
 
