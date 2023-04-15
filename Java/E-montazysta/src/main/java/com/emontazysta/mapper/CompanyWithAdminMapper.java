@@ -1,6 +1,6 @@
 package com.emontazysta.mapper;
 
-import  com.emontazysta.enums.Role;
+import com.emontazysta.enums.Role;
 import com.emontazysta.model.Company;
 import com.emontazysta.model.dto.CompanyWithAdminDto;
 import com.emontazysta.model.CompanyAdmin;
