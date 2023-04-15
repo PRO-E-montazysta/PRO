@@ -63,8 +63,7 @@ public class SecurityConfig {
                         securityProperties.getCloudManagerPassword(),
                         securityProperties.getCloudManagerUsername(),
                         null,
-                        Set.of(Role.CLOUD_ADMIN,Role.ADMIN,Role.SALES_REPRESENTATIVE,Role.FITTER, Role.FOREMAN,
-                                Role.MANAGER, Role.SPECIALIST, Role.WAREHOUSE_MANAGER, Role.WAREHOUSE_MAN)));
+                        Set.of(Role.CLOUD_ADMIN)));
     }
 
     @Bean

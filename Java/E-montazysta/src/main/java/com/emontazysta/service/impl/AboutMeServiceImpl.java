@@ -32,7 +32,7 @@ public class AboutMeServiceImpl implements AboutMeService {
             companyName = "E-Montażysta Team";
         }
 
-        String profilePhotoUrl= "null";
+        String profilePhotoUrl= null;
         if(!loggedUser.getRoles().contains(Role.CLOUD_ADMIN)) {
             Optional<Attachment> profilePhotoAttachment = loggedUser.getAttachments().stream()
                     .filter(attachment -> attachment.getTypeOfAttachment().equals(TypeOfAttachment.PROFILE_PICTURE))
