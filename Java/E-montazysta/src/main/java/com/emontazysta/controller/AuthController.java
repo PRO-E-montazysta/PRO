@@ -35,7 +35,7 @@ public class AuthController {
     @PostMapping("/gettoken")
     @Operation(description = "Allows authenticate user")
     public TokenDto token(@RequestBody LoginRequest userLogin) throws AuthenticationException {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLogin.username(), userLogin.password()));
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLogin.username().toLowerCase(), userLogin.password()));
         TokenDto tokenDto = new TokenDto();
         tokenDto.setToken(tokenService.generateToken(authentication));
         return tokenDto;

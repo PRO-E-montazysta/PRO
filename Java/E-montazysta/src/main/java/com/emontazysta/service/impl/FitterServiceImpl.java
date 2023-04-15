@@ -44,6 +44,7 @@ public class FitterServiceImpl implements FitterService {
 
     @Override
     public FitterDto add(FitterDto fitterDto) {
+        fitterDto.setUsername(fitterDto.getUsername().toLowerCase());
         fitterDto.setRoles(Set.of(Role.FITTER));
         fitterDto.setUnavailabilities(new ArrayList<>());
         fitterDto.setNotifications(new ArrayList<>());
@@ -76,9 +77,9 @@ public class FitterServiceImpl implements FitterService {
     public FitterDto update(Long id, FitterDto fitterDto) {
         Fitter updatedFitter = fitterMapper.toEntity(fitterDto);
         Fitter fitter = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+
         fitter.setFirstName(updatedFitter.getFirstName());
         fitter.setLastName(updatedFitter.getLastName());
-        fitter.setUsername(updatedFitter.getUsername());
         fitter.setEmail(updatedFitter.getEmail());
         fitter.setPhone(updatedFitter.getPhone());
         fitter.setPesel(updatedFitter.getPesel());
@@ -90,6 +91,7 @@ public class FitterServiceImpl implements FitterService {
         fitter.setAttachments(updatedFitter.getAttachments());
         fitter.setToolEvents(updatedFitter.getToolEvents());
         fitter.setWorkingOn(updatedFitter.getWorkingOn());
+
         return fitterMapper.toDto(repository.save(fitter));
     }
 }

@@ -43,6 +43,7 @@ public class SpecialistServiceImpl implements SpecialistService {
 
     @Override
     public SpecialistDto add(SpecialistDto specialistDto) {
+        specialistDto.setUsername(specialistDto.getUsername().toLowerCase());
         specialistDto.setRoles(Set.of(Role.SPECIALIST));
         specialistDto.setUnavailabilities(new ArrayList<>());
         specialistDto.setNotifications(new ArrayList<>());
@@ -79,7 +80,6 @@ public class SpecialistServiceImpl implements SpecialistService {
         specialist.setFirstName(updatedSpecialist.getFirstName());
         specialist.setLastName(updatedSpecialist.getLastName());
         specialist.setEmail(updatedSpecialist.getEmail());
-        specialist.setUsername(updatedSpecialist.getUsername());
         specialist.setPhone(updatedSpecialist.getPhone());
         specialist.setPesel(updatedSpecialist.getPesel());
         specialist.setUnavailabilities(updatedSpecialist.getUnavailabilities());
