@@ -16,6 +16,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
+        <item name="backgroundTint">#334155</item>
     </style>
     <style name="text_field">
         <item name="android:minHeight">48dp</item>

@@ -16,10 +16,21 @@
     <string name="action_reset_password">Zresetuj hasło</string>
     <string name="title_activity_dashboard">DashboardActivity</string>
     <string name="title_qrscan">QR Scan</string>
+    <string name="title_element"><b>Element</b></string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_settings">Settings</string>
     <string name="content_description_media">content_description_media</string>
     <string name="title">title</string>
     <string name="title_warehouses">Magazyny</string>
     <string name="title_tools">Narzędzia</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="element_warehouse_button">Przejdź do magazynu</string>
+    <string name="element_manage_button">Wydaj/zwróć element</string>
+    <string name="element_order_button">Dodaj do etapu zlecenia</string>
+    <string name="element_event_button">Utwórz zdarzenie elementu</string>
+    <string name="element_name_text"><i>Nazwa</i></string>
+    <string name="element_code_text"><i>Kod</i></string>
+    <string name="element_unit_text"><i>Jednostka</i></string>
+    <string name="element_qty_of_unit_text"><i>Ilość w jednostce</i></string>
 </resources>
