@@ -43,6 +43,7 @@ public class WarehouseManagerServiceImpl implements WarehouseManagerService {
 
     @Override
     public WarehouseManagerDto add(WarehouseManagerDto warehouseManagerDto) {
+        warehouseManagerDto.setUsername(warehouseManagerDto.getUsername().toLowerCase());
         warehouseManagerDto.setRoles(Set.of(Role.WAREHOUSE_MANAGER));
         warehouseManagerDto.setUnavailabilities(new ArrayList<>());
         warehouseManagerDto.setNotifications(new ArrayList<>());
@@ -81,7 +82,6 @@ public class WarehouseManagerServiceImpl implements WarehouseManagerService {
         warehouseManager.setFirstName(updatedWarehouseManager.getFirstName());
         warehouseManager.setLastName(updatedWarehouseManager.getLastName());
         warehouseManager.setEmail(updatedWarehouseManager.getEmail());
-        warehouseManager.setUsername(updatedWarehouseManager.getUsername());
         warehouseManager.setPhone(updatedWarehouseManager.getPhone());
         warehouseManager.setPesel(updatedWarehouseManager.getPesel());
         warehouseManager.setUnavailabilities(updatedWarehouseManager.getUnavailabilities());
