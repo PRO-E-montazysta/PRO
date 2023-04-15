@@ -110,8 +110,8 @@ public class EventCriteriaRepository {
         }
 
         AppUser user =  authUtils.getLoggedUser();
-        Boolean isFitter = user.getRoles().contains(Role.FITTER);
-        if(isFitter) {
+        Boolean displayOwn = user.getRoles().contains(Role.FITTER) || user.getRoles().contains(Role.FOREMAN);
+        if(displayOwn) {
             predicates.add(criteriaBuilder.equal(toolEventRoot.get("createdBy").get("id"), user.getId()));
         }else{
             predicates.add(criteriaBuilder.equal(toolEventRoot.get("tool").get("warehouse").get("company").get("id"),
