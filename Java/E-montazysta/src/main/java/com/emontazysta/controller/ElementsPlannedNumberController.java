@@ -17,7 +17,7 @@ import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = API_BASE_CONSTANT + "/elemnts-planned", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = API_BASE_CONSTANT + "/elements-planned", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ElementsPlannedNumberController {
 
     private final ElementsPlannedNumberService elementsPlannedNumberService;

@@ -21,12 +21,12 @@ public class ElementsPlannedNumber {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Min(value = 1, message = "Number of elements should not be less than 1")
+
     private int numberOfElements;
-    @NotNull(message = "Element cannot be empty")
+
     @ManyToOne
     private Element element;
-    @NotNull(message = "Order Stage cannot be empty")
+
     @ManyToOne
     private OrderStage orderStage;
 }
