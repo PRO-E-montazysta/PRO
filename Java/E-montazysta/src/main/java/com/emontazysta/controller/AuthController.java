@@ -7,8 +7,10 @@ import com.emontazysta.model.dto.ResetPasswordDto;
 import com.emontazysta.model.dto.TokenDto;
 import com.emontazysta.service.AppUserService;
 import com.emontazysta.service.TokenService;
+import com.emontazysta.util.AuthUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 
@@ -31,14 +34,18 @@ public class AuthController {
     private final TokenService tokenService;
     private final AppUserService userService;
     private final AuthenticationManager authenticationManager;
+    private final AuthUtils authUtils;
 
     @PostMapping("/gettoken")
     @Operation(description = "Allows authenticate user")
     public TokenDto token(@RequestBody LoginRequest userLogin) throws AuthenticationException {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLogin.username().toLowerCase(), userLogin.password()));
-        TokenDto tokenDto = new TokenDto();
-        tokenDto.setToken(tokenService.generateToken(authentication));
-        return tokenDto;
+        if(authUtils.userCanLogin(userLogin.username().toLowerCase())){
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLogin.username().toLowerCase(), userLogin.password()));
+            TokenDto tokenDto = new TokenDto();
+            tokenDto.setToken(tokenService.generateToken(authentication));
+            return tokenDto;
+        }
+        throw new ResponseStatusException(HttpStatus.FORBIDDEN);
     }
 
     @PostMapping("/password/forgot")

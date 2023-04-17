@@ -257,7 +257,7 @@ public class DataSeeding {
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
         Employment employment1 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, fitter1));
-        Employment employment2 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, fitter2));
+        Employment employment2 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), LocalDateTime.now(), company1, fitter2));
         Employment employment3 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, foreman1));
         Employment employment4 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, foreman2));
         Employment employment5 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, warehouseman1));
@@ -269,7 +269,7 @@ public class DataSeeding {
         Employment employment11 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, salesRepresentative1));
         Employment employment12 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, salesRepresentative2));
         Employment employment13 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, manager1));
-        Employment employment14 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, manager2));
+        Employment employment14 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company3, manager2));
 
         context.setAuthentication(null);
         Authentication authenticationMng = new UsernamePasswordAuthenticationToken(
