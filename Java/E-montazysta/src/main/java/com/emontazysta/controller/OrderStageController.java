@@ -60,7 +60,7 @@ public class OrderStageController {
 
     @PutMapping("/{id}")
     @Operation(description = "Allows to update Order Stage by given Id.", security = @SecurityRequirement(name = "bearer-key"))
-    public OrderStageDto updateOrderStage(@PathVariable Long id, @Valid @RequestBody OrderStageDto orderStage) {
+    public OrderStageDto updateOrderStage(@PathVariable Long id, @Valid @RequestBody OrderStageWithToolsAndElementsDto orderStage) {
         return orderStageService.update(id, orderStage);
     }
 

@@ -21,7 +21,7 @@ public interface OrderStageService {
 
     void delete(Long id);
 
-    OrderStageDto update(Long id, OrderStageDto orderStage);
+    OrderStageDto update(Long id, OrderStageWithToolsAndElementsDto orderStage);
 
     List<OrderStageDto> getFilteredOrders(OrdersStageSearchCriteria ordersStageSearchCriteria, Principal principal);
 }

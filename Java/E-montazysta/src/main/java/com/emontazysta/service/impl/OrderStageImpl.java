@@ -121,10 +121,42 @@ public class OrderStageImpl implements OrderStageService {
 
     @Override
     @Transactional
-    public OrderStageDto update(Long id, OrderStageDto orderStageDto) {
+    public OrderStageDto update(Long id, OrderStageWithToolsAndElementsDto orderStageDto) {
 
-        OrderStage updatedOrderStage = orderStageMapper.toEntity(orderStageDto);
+        OrderStageWithToolsAndElementsDto modiffiedOrderStageDto = completeEmptyAttributes(orderStageDto);
+
+        OrderStage updatedOrderStage = orderStageMapper.toEntity(modiffiedOrderStageDto);
+
         OrderStage orderStageDb = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+
+        List<ToolsPlannedNumber> updatedToolsList = new ArrayList<>();
+        List<ElementsPlannedNumber> updatedElementsList = new ArrayList<>();
+
+        if(!updatedOrderStage.getListOfToolsPlannedNumber().isEmpty()) {
+            orderStageDb.getListOfToolsPlannedNumber().stream()
+                    .forEach(toolsPlannedNumber -> toolsPlannedNumberRepository.delete(toolsPlannedNumber));
+
+            for (ToolsPlannedNumberDto toolsPlannedNumberDto : modiffiedOrderStageDto.getListOfToolsPlannedNumber()) {
+                toolsPlannedNumberDto.setOrderStageId(orderStageDb.getId());
+                ToolsPlannedNumber toolsPlannedNumber = toolsPlannedNumberMapper.toEntity(toolsPlannedNumberDto);
+                toolsPlannedNumberRepository.save(toolsPlannedNumber);
+                updatedToolsList.add(toolsPlannedNumber);
+            }
+        }
+
+        if(!updatedOrderStage.getListOfElementsPlannedNumber().isEmpty()) {
+            orderStageDb.getListOfElementsPlannedNumber().stream()
+                    .forEach(elementsPlannedNumber -> elementsPlannedNumberRepository.delete(elementsPlannedNumber));
+
+            for (ElementsPlannedNumberDto elementsPlannedNumberDto : modiffiedOrderStageDto.getListOfElementsPlannedNumber()) {
+                elementsPlannedNumberDto.setOrderStageId(orderStageDto.getId());
+                ElementsPlannedNumber elementsPlannedNumber = elementsPlannedNumberMapper.toEntity(elementsPlannedNumberDto);
+                elementsPlannedNumberRepository.save(elementsPlannedNumber);
+                updatedElementsList.add(elementsPlannedNumber);
+
+            }
+        }
+
         orderStageDb.setName(updatedOrderStage.getName());
         orderStageDb.setStatus(updatedOrderStage.getStatus());
         orderStageDb.setPrice(updatedOrderStage.getPrice());
@@ -142,9 +174,9 @@ public class OrderStageImpl implements OrderStageService {
         orderStageDb.setElementReturnReleases(updatedOrderStage.getElementReturnReleases());
         orderStageDb.setAttachments(updatedOrderStage.getAttachments());
         orderStageDb.setNotifications(updatedOrderStage.getNotifications());
-        orderStageDb.setListOfToolsPlannedNumber(updatedOrderStage.getListOfToolsPlannedNumber());
-        orderStageDb.setListOfElementsPlannedNumber(updatedOrderStage.getListOfElementsPlannedNumber());
         orderStageDb.setDemandsAdHoc(updatedOrderStage.getDemandsAdHoc());
+       orderStageDb.setListOfToolsPlannedNumber(updatedToolsList);
+       orderStageDb.setListOfElementsPlannedNumber(updatedElementsList);
 
         return orderStageMapper.toDto(orderStageDb);
     }
