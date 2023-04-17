@@ -44,7 +44,7 @@ export const makeServiceCall = async (url: string, httpMethod: Method, payload: 
         return response.data
     } catch (error: any) {
         console.warn(error)
-        if(error.response && error.response.status == 401) logout()
-        else throw error
+        if (error.response && error.response.status == 401) logout()
+        throw error
     }
 }

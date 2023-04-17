@@ -49,8 +49,8 @@ const CustomCheckbox = styled(Checkbox)(({ theme }) => ({
 }))
 
 const validationSchema = yup.object({
-    // email: yup.string().email('Wprowadź poprawny email').required('Email jest wymagany'),
-    password: yup.string().min(4, 'Hasło powinno składać się z minium 4 znaków ').required('Hasło jest wymagane'),
+    username: yup.string().required('Wpisz nazwę użytkownika'),
+    password: yup.string().min(4, 'Hasło powinno składać się z minium 4 znaków ').required('Wpisz hasło'),
 })
 
 const LoginForm = () => {
@@ -62,8 +62,7 @@ const LoginForm = () => {
             setToken(data)
             navigation('/', { replace: true })
         },
-        onError(error: Error) {
-            alert(error.message)
+        onError(error: any) {
             console.error(error)
         },
     })
@@ -85,6 +84,20 @@ const LoginForm = () => {
 
     const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault()
+    }
+
+    const dispalyError = (error: any) => {
+        if (error == 'AxiosError: Network Error') {
+            return 'Skontaktuj się z administratorem systemu!'
+        } else if (error.response.status === 401) {
+            return 'Błędne dane logowania!'
+        } else if (error.response.status === 402) {
+            return 'Firma zawieszona, skontaktuj się z administratorem systemu!'
+        } else if (error.response.status === 403) {
+            return 'Skontaktuj się z administratorem firmy!'
+        } else {
+            return 'Skontaktuj się z administratorem systemu!'
+        }
     }
 
     return (
@@ -159,14 +172,16 @@ const LoginForm = () => {
                             ),
                         }}
                     />
+                    <Typography component="span" color="#d32f2f" align="center" marginTop={'5px'}>
+                        {error && dispalyError(error)}
+                    </Typography>
                     <FormControlLabel
-                        sx={{ marginTop: '37px' }}
+                        sx={{ marginTop: '25px', marginBottom: '25px' }}
                         control={<CustomCheckbox value="remember" />}
                         label="Zapamiętaj moje dane logowania"
                         name="check"
                     />
-
-                    <Grid spacing={2} container justifyContent="flex-end" sx={{ marginTop: '62px' }}>
+                    <Grid spacing={2} container justifyContent="flex-end" marginBottom={'5px'}>
                         <Grid item>
                             <Button type="submit" color="primary" variant="contained" disabled={isLoading}>
                                 Zaloguj się
