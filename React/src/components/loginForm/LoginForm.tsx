@@ -124,7 +124,7 @@ const LoginForm = () => {
                     component="form"
                     onSubmit={formik.handleSubmit}
                     noValidate
-                    sx={{ autoComplete: 'off', maxWidth: 666, marginTop: '17px' }}
+                    sx={{ autoComplete: 'off', maxWidth: 666, marginTop: '17px', width: '100%' }}
                 >
                     <CustomTextField
                         className={'login-form-input'}
@@ -172,7 +172,7 @@ const LoginForm = () => {
                             ),
                         }}
                     />
-                    <Typography component="span" color="#d32f2f" align="center" marginTop={'5px'}>
+                    <Typography color="#d32f2f" align="center" marginTop={'5px'}>
                         {error && dispalyError(error)}
                     </Typography>
                     <FormControlLabel
