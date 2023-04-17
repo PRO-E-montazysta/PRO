@@ -176,7 +176,7 @@ const LoginForm = () => {
                         {error && dispalyError(error)}
                     </Typography>
                     <FormControlLabel
-                        sx={{ marginTop: '25px', marginBottom: '25px' }}
+                        sx={{ marginTop: '15px', marginBottom: '25px' }}
                         control={<CustomCheckbox value="remember" />}
                         label="Zapamiętaj moje dane logowania"
                         name="check"
