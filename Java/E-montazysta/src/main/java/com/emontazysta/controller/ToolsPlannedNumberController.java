@@ -23,13 +23,13 @@ public class ToolsPlannedNumberController {
     private final ToolsPlannedNumberService toolsPlannedNumberService;
 
     @GetMapping("/all")
-    @Operation(description = "Allows to get all Planed number of tools.", security = @SecurityRequirement(name = "bearer-key"))
+    @Operation(description = "Allows to get all planed number of tools.", security = @SecurityRequirement(name = "bearer-key"))
     public List<ToolsPlannedNumberDto> getAllToolsPlannedNumber() {
         return toolsPlannedNumberService.getAll();
     }
 
     @GetMapping("{id}")
-    @Operation(description = "Allows to get Planed number of tools by id.", security = @SecurityRequirement(name = "bearer-key"))
+    @Operation(description = "Allows to get planed number of tools by id.", security = @SecurityRequirement(name = "bearer-key"))
     public ToolsPlannedNumberDto getToolsPlannedNumberDtoById(@PathVariable Long id) {
         return toolsPlannedNumberService.getById(id);
     }
