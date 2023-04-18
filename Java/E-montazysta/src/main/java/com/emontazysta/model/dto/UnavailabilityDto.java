@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@IsAfter(message = "Unavailable to must be after unavailable from", startDateFieldName = "unavailableFrom", endDateFieldName = "unavailableTo")
+@IsAfter(startDateFieldName = "unavailableFrom", endDateFieldName = "unavailableTo")
 public class UnavailabilityDto {
 
     private Long id;

@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from 'react-query/devtools'
 
 import { theme } from './themes/baseTheme';
+import './app.less';
 
 const browserRouterMapper = (pages: Array<PageProps>) => {
   const result: Array<RouteObject> =

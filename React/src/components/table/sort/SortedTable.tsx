@@ -65,7 +65,6 @@ export default function SortedTable<T>(props: SortedTableProps<T>) {
         const isAsc = orderBy === property && order === 'asc'
         setOrder(isAsc ? 'desc' : 'asc')
         setOrderBy(property)
-        console.log(isAsc ? 'desc' : 'asc')
     }
 
     const handleChangePage = (event: unknown, newPage: number) => {

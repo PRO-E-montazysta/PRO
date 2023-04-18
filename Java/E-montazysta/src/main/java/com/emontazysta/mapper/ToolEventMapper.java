@@ -27,7 +27,7 @@ public class ToolEventMapper {
         return ToolEventDto.builder()
                 .id(event.getId())
                 .eventDate(event.getEventDate())
-                .movingDate(event.getEventDate())
+                .movingDate(event.getMovingDate())
                 .completionDate(event.getCompletionDate())
                 .description(event.getDescription())
                 .status(event.getStatus())

@@ -7,6 +7,8 @@ import com.emontazysta.model.ToolType;
 import com.emontazysta.model.ToolsPlannedNumber;
 import com.emontazysta.model.dto.ToolTypeDto;
 import com.emontazysta.repository.AttachmentRepository;
+import com.emontazysta.repository.CompanyRepository;
+import com.emontazysta.repository.OrderStageRepository;
 import com.emontazysta.repository.ToolRepository;
 import com.emontazysta.repository.ToolsPlannedNumberRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ public class ToolTypeMapper {
     private final AttachmentRepository attachmentRepository;
     private final ToolsPlannedNumberRepository toolsPlannedNumberRepository;
     private final ToolRepository toolRepository;
+    private final CompanyRepository companyRepository;
 
     public ToolTypeDto toDto(ToolType toolType){
 
@@ -39,6 +42,7 @@ public class ToolTypeMapper {
                 .attachments(toolType.getAttachments().stream().map(Attachment::getId).collect(Collectors.toList()))
                 .ListOfToolsPlannedNumber(toolType.getListOfToolsPlannedNumber().stream().map(ToolsPlannedNumber::getId).collect(Collectors.toList()))
                 .tools(toolType.getTools().stream().map(Tool::getId).collect(Collectors.toList()))
+                .companyId(toolType.getCompany().getId())
                 .build();
     }
 
@@ -60,6 +64,7 @@ public class ToolTypeMapper {
                 .attachments(attachmentList)
                 .listOfToolsPlannedNumber(toolsPlannedNumberList)
                 .tools(toolList)
+                .company(toolTypeDto.getCompanyId() == null ? null : companyRepository.getReferenceById(toolTypeDto.getCompanyId()))
                 .build();
     }
 }

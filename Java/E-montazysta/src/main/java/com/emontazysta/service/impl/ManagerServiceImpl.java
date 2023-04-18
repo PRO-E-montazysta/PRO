@@ -43,6 +43,7 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Override
     public ManagerDto add(ManagerDto managerDto) {
+        managerDto.setUsername(managerDto.getUsername().toLowerCase());
         managerDto.setRoles(Set.of(Role.MANAGER));
         managerDto.setUnavailabilities(new ArrayList<>());
         managerDto.setNotifications(new ArrayList<>());
@@ -82,7 +83,6 @@ public class ManagerServiceImpl implements ManagerService {
         manager.setFirstName(updatedManager.getFirstName());
         manager.setLastName(updatedManager.getLastName());
         manager.setEmail(updatedManager.getEmail());
-        manager.setUsername(updatedManager.getUsername());
         manager.setPhone(updatedManager.getPhone());
         manager.setPesel(updatedManager.getPesel());
         manager.setUnavailabilities(updatedManager.getUnavailabilities());
