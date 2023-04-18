@@ -152,7 +152,7 @@ export const useFormStructure = (): Array<FormInputProps> => {
             id: 'name',
             initValue: '',
             type: 'input',
-            validation: yup.string().min(3, 'Nazwa musi zaweirać co najmniej 3 znaki').required('Wprowadź nazwę'),
+            validation: yup.string().min(3, 'Nazwa musi zawierać co najmniej 3 znaki').required('Wprowadź nazwę'),
         },
         {
             label: 'Firma',

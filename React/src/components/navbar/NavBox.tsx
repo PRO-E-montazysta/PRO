@@ -2,7 +2,7 @@ import React, { Ref, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Box } from '@mui/material'
 import { pageList, PageProps } from '../../utils/pageList'
 import NavMenuButton from '../navbar/NavButton'
-import { isAuthorized } from '../../utils/authorize'
+import { isAuthorizedToPage } from '../../utils/authorize'
 import { width } from '@mui/system'
 import MorePagesButton from './MorePagesButton'
 import { changeMenuDecision, findChildWidthById, navToScroll, scrollToNav } from './helper'
@@ -20,7 +20,7 @@ type PageElement = {
 
 const NavBox = () => {
     const rootPage = pageList.find((p) => p.path === '/')
-    const availablePages = rootPage?.children?.filter((c) => c.inNav && isAuthorized(c))
+    const availablePages = rootPage?.children?.filter((c) => c.inNav && isAuthorizedToPage(c))
     const [width, setWidth] = useState(0)
     const initNavbar = availablePages?.map((p) => {
         return {

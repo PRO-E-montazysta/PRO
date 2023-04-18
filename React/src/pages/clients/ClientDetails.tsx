@@ -14,10 +14,11 @@ import FormPaper from '../../components/form/FormPaper'
 import QueryBoxStatus from '../../components/base/QueryStatusBox'
 import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
+import { PageMode } from '../../types/form'
 
 const ClientDetails = () => {
     const params = useParams()
-    const [readonlyMode, setReadonlyMode] = useState(true)
+    const [pageMode, setPageMode] = useState<PageMode>('read')
     const { showDialog } = useContext(DialogGlobalContext)
     const formStructure = useFormStructure()
     const [initData, setInitData] = useState(getInitValues(formStructure))
@@ -30,10 +31,10 @@ const ClientDetails = () => {
     //status for all mutations and queries
     const queriesStatus = useQueriesStatus([clientData], [addClientMutation, editClientMutation, deleteClientMutation])
 
-    const appSize = useBreakpoints()
     const handleSubmit = (values: any) => {
-        if (params.id == 'new') addClientMutation.mutate(values)
-        else editClientMutation.mutate(values)
+        if (pageMode == 'new') addClientMutation.mutate(values)
+        else if (pageMode == 'edit') editClientMutation.mutate(values)
+        else console.warn('Try to submit while read mode')
     }
 
     const handleDelete = () => {
@@ -44,14 +45,14 @@ const ClientDetails = () => {
                 { text: 'Anuluj', value: 0, variant: 'outlined' },
             ],
             callback: (result: number) => {
-                if (result == 1 && params.id && params.id != 'new') deleteClientMutation.mutate(params.id)
+                if (result == 1 && params.id && Number.isInteger(params.id)) deleteClientMutation.mutate(params.id)
             },
         })
     }
 
     const formik = useFormik({
         initialValues: initData,
-        validationSchema: getValidatinSchema(formStructure),
+        validationSchema: getValidatinSchema(formStructure, pageMode),
         onSubmit: handleSubmit,
     })
 
@@ -62,14 +63,14 @@ const ClientDetails = () => {
 
     const handleCancel = () => {
         handleReset()
-        setReadonlyMode(true)
+        setPageMode('read')
     }
 
     const handleOnEditSuccess = (data: any) => {
         clientData.refetch({
             queryKey: ['client', { id: data.id }],
         })
-        setReadonlyMode(true)
+        setPageMode('read')
     }
 
     useEffect(() => {
@@ -81,29 +82,31 @@ const ClientDetails = () => {
 
     useEffect(() => {
         if (params.id == 'new') {
-            setReadonlyMode(false)
+            setPageMode('new')
             formik.setValues(JSON.parse(JSON.stringify(getInitValues(formStructure))))
             setInitData(JSON.parse(JSON.stringify(getInitValues(formStructure))))
-        } else setReadonlyMode(true)
+        } else {
+            setPageMode('read')
+        }
     }, [params.id])
 
     return (
         <FormBox>
-            <FormTitle text="Klienci" />
+            <FormTitle text="Klient" />
             <FormPaper>
                 {queriesStatus.result != 'isSuccess' ? (
                     <QueryBoxStatus queriesStatus={queriesStatus} />
                 ) : (
                     <>
-                        <FormStructure formStructure={formStructure} formik={formik} readonlyMode={readonlyMode} />
+                        <FormStructure formStructure={formStructure} formik={formik} readonlyMode={pageMode =='read'} />
                         <FormButtons
                             id={params.id}
                             onCancel={handleCancel}
                             onDelete={handleDelete}
-                            onEdit={() => setReadonlyMode(false)}
+                            onEdit={() => setPageMode('edit')}
                             onReset={handleReset}
                             onSubmit={formik.submitForm}
-                            readonlyMode={readonlyMode}
+                            readonlyMode={pageMode == 'read'}
                         />
                     </>
                 )}

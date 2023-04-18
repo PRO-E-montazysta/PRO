@@ -12,7 +12,7 @@ const FormPaper = ({ children }: FormPaperProps) => {
         <Paper
             sx={{
                 mt: appSize.isMobile || appSize.isTablet ? '10px' : '20px',
-                p: appSize.isMobile ? '10px' : '20px',
+                p: appSize.isMobile ? '20px 10px' : '20px',
             }}
         >
             {children}

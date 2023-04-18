@@ -18,13 +18,14 @@ import { getInitValues, getValidatinSchema } from '../../helpers/form.helper'
 import FormPaper from '../../components/form/FormPaper'
 import FormTitle from '../../components/form/FormTitle'
 import FormBox from '../../components/form/FormBox'
+import { PageMode } from '../../types/form'
 
 const OrderDetails = () => {
     //parameters from url
     const params = useParams()
 
     //mode of this page
-    const [readonlyMode, setReadonlyMode] = useState(true)
+    const [pageMode, setPageMode] = useState<PageMode>('read')
     //global dialog box
     const { showDialog } = useContext(DialogGlobalContext)
     //custom form structure
@@ -43,8 +44,9 @@ const OrderDetails = () => {
 
     const appSize = useBreakpoints()
     const handleSubmit = (values: any) => {
-        if (params.id == 'new') addOrderMutation.mutate(values)
-        else editOrderMutation.mutate(values)
+        if (pageMode == 'new') addOrderMutation.mutate(values)
+        else if (pageMode == 'edit') editOrderMutation.mutate(values)
+        else console.warn('Try to submit while read mode')
     }
 
     const handleDelete = () => {
@@ -55,14 +57,14 @@ const OrderDetails = () => {
                 { text: 'Anuluj', value: 0, variant: 'outlined' },
             ],
             callback: (result: number) => {
-                if (result == 1 && params.id && params.id != 'new') deleteOrderMutation.mutate(params.id)
+                if (result == 1 && params.id && Number.isInteger(params.id)) deleteOrderMutation.mutate(params.id)
             },
         })
     }
 
     const formik = useFormik({
         initialValues: initData,
-        validationSchema: getValidatinSchema(formStructure),
+        validationSchema: getValidatinSchema(formStructure, pageMode),
         onSubmit: handleSubmit,
     })
 
@@ -73,14 +75,14 @@ const OrderDetails = () => {
 
     const handleCancel = () => {
         handleReset()
-        setReadonlyMode(true)
+        setPageMode('read')
     }
 
     const handleOnEditSuccess = (data: any) => {
         orderData.refetch({
             queryKey: ['order', { id: data.id }],
         })
-        setReadonlyMode(true)
+        setPageMode('read')
     }
 
     //edit mode
@@ -96,10 +98,10 @@ const OrderDetails = () => {
     //set readonly mode, populate formik and init data with init values from helper
     useEffect(() => {
         if (params.id == 'new') {
-            setReadonlyMode(false)
+            setPageMode('new')
             formik.setValues(JSON.parse(JSON.stringify(getInitValues(formStructure))))
             setInitData(JSON.parse(JSON.stringify(getInitValues(formStructure))))
-        } else setReadonlyMode(true)
+        } else setPageMode('read')
     }, [params.id])
 
     return (
@@ -111,15 +113,19 @@ const OrderDetails = () => {
                         <QueryBoxStatus queriesStatus={queriesStatus} />
                     ) : (
                         <>
-                            <FormStructure formStructure={formStructure} formik={formik} readonlyMode={readonlyMode} />
+                            <FormStructure
+                                formStructure={formStructure}
+                                formik={formik}
+                                readonlyMode={pageMode == 'read'}
+                            />
                             <FormButtons
                                 id={params.id}
                                 onCancel={handleCancel}
                                 onDelete={handleDelete}
-                                onEdit={() => setReadonlyMode(false)}
+                                onEdit={() => setPageMode('edit')}
                                 onReset={handleReset}
                                 onSubmit={formik.submitForm}
-                                readonlyMode={readonlyMode}
+                                readonlyMode={pageMode == 'read'}
                             />
                         </>
                     )}
