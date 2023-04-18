@@ -6,7 +6,7 @@ export type FormInputProps = {
     label: string
     id: string
     initValue: any
-    type: 'input' | 'select' | 'date' | 'password' | 'date-time'
+    type: 'input' | 'select' | 'date' | 'password' | 'date-time' | 'number'
     options?: Array<SelectMenuItemProps>
     validation?: yup.AnySchema
 

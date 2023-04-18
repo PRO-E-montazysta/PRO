@@ -154,7 +154,6 @@ const CompanyDetails = () => {
                             <FormStructure
                                 formStructure={formStructure}
                                 formik={formik}
-                                readonlyMode={pageMode == 'read'}
                                 pageMode={pageMode}
                             />
                             {pageMode == 'new' ? (

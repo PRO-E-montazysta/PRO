@@ -9,7 +9,7 @@ import { isAuthorized } from '../../utils/authorize'
 type FormStructureParams = {
     formStructure: Array<FormInputProps>
     formik: any
-    readonlyMode: boolean //deprecated
+    readonlyMode?: boolean //deprecated
     pageMode?: PageMode
 }
 
@@ -101,6 +101,18 @@ export const FormStructure = (params: FormStructureParams) => {
                                     readonly={setDisplayMode(e) == 'readonly'}
                                     key={e.id}
                                     options={e.options}
+                                />
+                            )
+                        default:
+                            return (
+                                <FormInput
+                                    style={{ width: inputWidth }}
+                                    label={e.label}
+                                    formik={formik}
+                                    id={e.id}
+                                    readonly={setDisplayMode(e) == 'readonly'}
+                                    key={e.id}
+                                    type={e.type}
                                 />
                             )
                     }
