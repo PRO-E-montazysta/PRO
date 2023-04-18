@@ -70,7 +70,7 @@ const OrderDetails = () => {
 
     const handleReset = () => {
         formik.resetForm()
-        formik.setValues(JSON.parse(JSON.stringify(initData)))
+        formik.setValues(initData)
     }
 
     const handleCancel = () => {
@@ -89,8 +89,8 @@ const OrderDetails = () => {
     //populate formik and init values with data from db
     useEffect(() => {
         if (orderData.data) {
-            formik.setValues(JSON.parse(JSON.stringify(orderData.data)))
-            setInitData(JSON.parse(JSON.stringify(orderData.data)))
+            formik.setValues(orderData.data)
+            setInitData(orderData.data)
         }
     }, [orderData.data])
 
@@ -99,8 +99,8 @@ const OrderDetails = () => {
     useEffect(() => {
         if (params.id == 'new') {
             setPageMode('new')
-            formik.setValues(JSON.parse(JSON.stringify(getInitValues(formStructure))))
-            setInitData(JSON.parse(JSON.stringify(getInitValues(formStructure))))
+            formik.setValues(getInitValues(formStructure))
+            setInitData(getInitValues(formStructure))
         } else setPageMode('read')
     }, [params.id])
 
@@ -113,11 +113,7 @@ const OrderDetails = () => {
                         <QueryBoxStatus queriesStatus={queriesStatus} />
                     ) : (
                         <>
-                            <FormStructure
-                                formStructure={formStructure}
-                                formik={formik}
-                                readonlyMode={pageMode == 'read'}
-                            />
+                            <FormStructure formStructure={formStructure} formik={formik} pageMode={pageMode} />
                             <FormButtons
                                 id={params.id}
                                 onCancel={handleCancel}

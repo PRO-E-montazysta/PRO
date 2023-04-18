@@ -20,6 +20,7 @@ import { getAllSalesRepresentatives } from '../../api/salesRepresentatives.api'
 import { getAllSpecialists } from '../../api/specialist.api'
 import { AppSize } from '../../hooks/useBreakpoints'
 import { FormInputProps } from '../../types/form'
+import { Role } from '../../types/roleEnum'
 
 export const headCells: Array<HeadCell<Order>> = [
     {
@@ -117,10 +118,6 @@ export const useFormStructure = (): Array<FormInputProps> => {
         cacheTime: 15 * 60 * 1000,
         staleTime: 10 * 60 * 1000,
     })
-    const queryCompany = useQuery<Array<Company>, AxiosError>(['company-list'], getAllCompanies, {
-        cacheTime: 15 * 60 * 1000,
-        staleTime: 10 * 60 * 1000,
-    })
     const queryForeman = useQuery<Array<AppUser>, AxiosError>(['foreman-list'], getAllForemans, {
         cacheTime: 15 * 60 * 1000,
         staleTime: 10 * 60 * 1000,
@@ -155,14 +152,6 @@ export const useFormStructure = (): Array<FormInputProps> => {
             validation: yup.string().min(3, 'Nazwa musi zawierać co najmniej 3 znaki').required('Wprowadź nazwę'),
         },
         {
-            label: 'Firma',
-            id: 'companyId',
-            initValue: null,
-            type: 'select',
-            validation: yup.number().typeError('Wybierz firmę'),
-            options: formatArrayToOptions('id', (x: Company) => x.companyName, queryCompany.data),
-        },
-        {
             label: 'Priorytet',
             id: 'typeOfPriority',
             initValue: '',
@@ -182,14 +171,14 @@ export const useFormStructure = (): Array<FormInputProps> => {
             label: 'Planowany czas rozpoczęcia',
             id: 'plannedStart',
             initValue: '',
-            type: 'date',
+            type: 'date-time',
             validation: yup.date().required('Wybierz datę'),
         },
         {
             label: 'Planowany czas zakończenia',
             id: 'plannedEnd',
             initValue: '',
-            type: 'date',
+            type: 'date-time',
             validation: yup.date().required('Wybierz datę'),
         },
         {
@@ -242,15 +231,21 @@ export const useFormStructure = (): Array<FormInputProps> => {
             label: 'Czas utworzenia',
             id: 'createdAt',
             initValue: '',
-            type: 'date',
+            type: 'date-time',
             readonly: true,
+            addNewPermission: [Role.NOBODY],
+            editPermission: [Role.NOBODY],
+            viewPermission: [Role['*']],
         },
         {
             label: 'Czas ostatniej edycji',
             id: 'editedAt',
             initValue: '',
-            type: 'date',
+            type: 'date-time',
             readonly: true,
+            addNewPermission: [Role.NOBODY],
+            editPermission: [Role.NOBODY],
+            viewPermission: [Role['*']],
         },
     ]
 }
