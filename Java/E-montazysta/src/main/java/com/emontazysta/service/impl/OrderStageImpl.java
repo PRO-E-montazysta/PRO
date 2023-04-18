@@ -1,5 +1,6 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.ElementsPlannedNumberMapper;
 import com.emontazysta.mapper.OrderStageMapper;
 import com.emontazysta.mapper.ToolsPlannedNumberMapper;
@@ -16,6 +17,7 @@ import com.emontazysta.repository.OrderStageRepository;
 import com.emontazysta.repository.ToolsPlannedNumberRepository;
 import com.emontazysta.repository.criteria.OrdersStageCriteriaRepository;
 import com.emontazysta.service.OrderStageService;
+import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +40,7 @@ public class OrderStageImpl implements OrderStageService {
     private final ToolsPlannedNumberMapper toolsPlannedNumberMapper;
     private final ElementsPlannedNumberRepository elementsPlannedNumberRepository;
     private final ElementsPlannedNumberMapper elementsPlannedNumberMapper;
+    private final AuthUtils authUtils;
 
     @Override
     public List<OrderStageDto> getAll() {
@@ -131,30 +134,35 @@ public class OrderStageImpl implements OrderStageService {
 
         List<ToolsPlannedNumber> updatedToolsList = new ArrayList<>();
         List<ElementsPlannedNumber> updatedElementsList = new ArrayList<>();
+        if (authUtils.getLoggedUser().getRoles().contains(Role.SPECIALIST)) {
+            if(!updatedOrderStage.getListOfToolsPlannedNumber().isEmpty()) {
+                orderStageDb.getListOfToolsPlannedNumber().stream()
+                        .forEach(toolsPlannedNumber -> toolsPlannedNumberRepository.delete(toolsPlannedNumber));
 
-        if(!updatedOrderStage.getListOfToolsPlannedNumber().isEmpty()) {
-            orderStageDb.getListOfToolsPlannedNumber().stream()
-                    .forEach(toolsPlannedNumber -> toolsPlannedNumberRepository.delete(toolsPlannedNumber));
-
-            for (ToolsPlannedNumberDto toolsPlannedNumberDto : modiffiedOrderStageDto.getListOfToolsPlannedNumber()) {
-                toolsPlannedNumberDto.setOrderStageId(orderStageDb.getId());
-                ToolsPlannedNumber toolsPlannedNumber = toolsPlannedNumberMapper.toEntity(toolsPlannedNumberDto);
-                toolsPlannedNumberRepository.save(toolsPlannedNumber);
-                updatedToolsList.add(toolsPlannedNumber);
+                for (ToolsPlannedNumberDto toolsPlannedNumberDto : modiffiedOrderStageDto.getListOfToolsPlannedNumber()) {
+                    toolsPlannedNumberDto.setOrderStageId(orderStageDb.getId());
+                    ToolsPlannedNumber toolsPlannedNumber = toolsPlannedNumberMapper.toEntity(toolsPlannedNumberDto);
+                    toolsPlannedNumberRepository.save(toolsPlannedNumber);
+                    updatedToolsList.add(toolsPlannedNumber);
+                }
             }
-        }
 
-        if(!updatedOrderStage.getListOfElementsPlannedNumber().isEmpty()) {
-            orderStageDb.getListOfElementsPlannedNumber().stream()
-                    .forEach(elementsPlannedNumber -> elementsPlannedNumberRepository.delete(elementsPlannedNumber));
+            if(!updatedOrderStage.getListOfElementsPlannedNumber().isEmpty()) {
+                orderStageDb.getListOfElementsPlannedNumber().stream()
+                        .forEach(elementsPlannedNumber -> elementsPlannedNumberRepository.delete(elementsPlannedNumber));
 
-            for (ElementsPlannedNumberDto elementsPlannedNumberDto : modiffiedOrderStageDto.getListOfElementsPlannedNumber()) {
-                elementsPlannedNumberDto.setOrderStageId(orderStageDto.getId());
-                ElementsPlannedNumber elementsPlannedNumber = elementsPlannedNumberMapper.toEntity(elementsPlannedNumberDto);
-                elementsPlannedNumberRepository.save(elementsPlannedNumber);
-                updatedElementsList.add(elementsPlannedNumber);
+                for (ElementsPlannedNumberDto elementsPlannedNumberDto : modiffiedOrderStageDto.getListOfElementsPlannedNumber()) {
+                    elementsPlannedNumberDto.setOrderStageId(orderStageDto.getId());
+                    ElementsPlannedNumber elementsPlannedNumber = elementsPlannedNumberMapper.toEntity(elementsPlannedNumberDto);
+                    elementsPlannedNumberRepository.save(elementsPlannedNumber);
+                    updatedElementsList.add(elementsPlannedNumber);
 
+                }
             }
+
+        } else{
+            updatedToolsList = updatedOrderStage.getListOfToolsPlannedNumber();
+            updatedElementsList = updatedOrderStage.getListOfElementsPlannedNumber();
         }
 
         orderStageDb.setName(updatedOrderStage.getName());
