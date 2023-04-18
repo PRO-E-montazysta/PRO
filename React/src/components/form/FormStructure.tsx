@@ -13,13 +13,19 @@ type FormStructureParams = {
     pageMode?: PageMode
 }
 
+export type InputDisplayMode = 'readonly' | 'available' | 'hidden'
+
 export const FormStructure = (params: FormStructureParams) => {
     const { formStructure, formik, pageMode } = params
 
     const inputWidth = useInputWidth()
 
     //if permission unset then full access
-    const setDisplayMode = (element: FormInputProps): 'readonly' | 'available' | 'hidden' => {
+    const setDisplayMode = (element: FormInputProps): InputDisplayMode => {
+        if (element.customPermission) {
+            const customPermission = element.customPermission(formik.values[element.id])
+            if (customPermission) return customPermission
+        }
         if (!pageMode) console.warn('Page mode not provided')
         if (element.dontIncludeInFormStructure) return 'hidden'
         if (pageMode == 'new') {

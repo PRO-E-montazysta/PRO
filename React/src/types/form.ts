@@ -1,3 +1,4 @@
+import { InputDisplayMode } from '../components/form/FormStructure'
 import { SelectMenuItemProps } from '../components/form/types'
 import { Role } from './roleEnum'
 import * as yup from 'yup'
@@ -20,6 +21,9 @@ export type FormInputProps = {
     editPermission?: Array<Role>
     viewPermission?: Array<Role>
     addNewPermission?: Array<Role>
+
+    
+    customPermission?: (e: any) => InputDisplayMode | null
 
     //if not provided then validation on update is take from validation property
     validationOnUpdate?: yup.AnySchema | 'NO_VALIDATION_ON_UPDATE'

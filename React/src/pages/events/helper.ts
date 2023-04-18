@@ -3,8 +3,14 @@ import { Event } from '../../types/model/Event'
 import { HeadCell } from '../../components/table/sort/SortedTableHeader'
 import * as yup from 'yup'
 import { AppSize } from '../../hooks/useBreakpoints'
-import { formatDate } from '../../helpers/format.helper'
+import { formatArrayToOptions, formatDate } from '../../helpers/format.helper'
 import { eventStatusName, eventStatusOptions, eventTypeName, eventTypeOptions } from '../../helpers/enum.helper'
+import { FormInputProps } from '../../types/form'
+import { useQuery } from 'react-query'
+import { AxiosError } from 'axios'
+import { getAllElements } from '../../api/element.api'
+import { Element } from '../../types/model/Element'
+import { Role } from '../../types/roleEnum'
 
 export const headCells: Array<HeadCell<Event>> = [
     {
@@ -103,3 +109,77 @@ export const elementEventValidationSchema = yup.object({
     elementId: yup.string().required('Wybierz element!'),
     quantity: yup.number().required('Wprowadź ilość!'),
 })
+
+export const useFormStructure = (): Array<FormInputProps> => {
+    const queryElements = useQuery<Array<Element>, AxiosError>(['element-list'], getAllElements, {
+        cacheTime: 15 * 60 * 1000,
+        staleTime: 10 * 60 * 1000,
+    })
+
+    return [
+        //TODO autocomplete
+        {
+            label: 'Zgłaszany element',
+            id: 'elementId',
+            initValue: '',
+            type: 'select',
+            options: formatArrayToOptions('id', (x: Element) => x.name + ' - ' + x.code, queryElements.data),
+            validation: yup.string().required('Wybierz element!'),
+        },
+        {
+            label: 'Data zgłoszenia',
+            id: 'eventDate',
+            initValue: '',
+            type: 'date-time',
+            addNewPermission: [Role.NOBODY],
+            editPermission: [Role.NOBODY],
+            viewPermission: [Role['*']],
+        },
+        {
+            label: 'Data przyjęcia',
+            id: 'movingDate',
+            initValue: '',
+            type: 'date-time',
+            addNewPermission: [Role.NOBODY],
+            editPermission: [Role['*']],
+            customPermission: (e) => {
+                if (e == null) return 'hidden'
+                else return null
+            },
+        },
+        {
+            label: 'Data zakończenia',
+            id: 'completionDate',
+            initValue: '',
+            type: 'date-time',
+            addNewPermission: [Role.NOBODY],
+            editPermission: [Role['*']],
+            customPermission: (e) => {
+                if (e == null) return 'hidden'
+                else return null
+            },
+        },
+        {
+            label: 'Status',
+            id: 'status',
+            initValue: '',
+            type: 'select',
+            addNewPermission: [Role.MANAGER, Role.WAREHOUSE_MANAGER],
+            editPermission: [Role.MANAGER, Role.WAREHOUSE_MANAGER],
+            options: eventStatusOptions(),
+        },
+        {
+            label: 'Opis',
+            id: 'description',
+            initValue: '',
+            type: 'input',
+        },
+        {
+            label: 'Ilość',
+            id: 'quantity',
+            initValue: '',
+            type: 'number',
+            validation: yup.number().required('Wprowadź ilość!'),
+        },
+    ]
+}

@@ -69,10 +69,6 @@ export const emptyForm = {
     ordersStages: [],
 }
 
-export const validationSchema = yup.object({
-    name: yup.string().min(3, 'Nazwa musi zaweirać co najmniej 3 znaki').required('Wprowadź nazwę'),
-    typeOfUnit: yup.string().required('Wybierz rodzaj jednostki'),
-})
 
 export const useFormStructure = (): Array<FormInputProps> => {
     return [
