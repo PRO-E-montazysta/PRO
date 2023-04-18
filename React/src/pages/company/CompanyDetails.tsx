@@ -1,29 +1,12 @@
-import { Button, CircularProgress, Divider, Grid, Paper, TextField, Typography } from '@mui/material'
-import { Box } from '@mui/system'
-import { AxiosError } from 'axios'
+import { Grid } from '@mui/material'
 import { useFormik } from 'formik'
 import { useContext, useEffect, useState } from 'react'
-import { useMutation, useQuery } from 'react-query'
-import { useNavigate, useParams } from 'react-router-dom'
-import { deleteCompany, getCompanyDetails, postCompany, updateCompany } from '../../api/company.api'
-import { theme } from '../../themes/baseTheme'
-import { Company } from '../../types/model/Company'
-
-import SaveIcon from '@mui/icons-material/Save'
-import ReplayIcon from '@mui/icons-material/Replay'
-import CloseIcon from '@mui/icons-material/Close'
-import EditIcon from '@mui/icons-material/Edit'
-import DeleteIcon from '@mui/icons-material/Delete'
-import { addNewCompanyForm, emptyForm, useFormStructure, validationSchemaPost, validationSchemaUpdate } from './helper'
+import { useParams } from 'react-router-dom'
+import { useFormStructure } from './helper'
 import FormInput from '../../components/form/FormInput'
-import FormLabel from '../../components/form/FormLabel'
-import DialogInfo, { DialogInfoParams } from '../../components/dialogInfo/DialogInfo'
-
 import Card from '@mui/material/Card'
 import ExpandMore from '../../components/expandMore/ExpandMore'
 import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar'
-import FormSelect from '../../components/form/FormSelect'
-import { companyStatusOptions } from '../../helpers/enum.helper'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { getInitValues, getValidatinSchema } from '../../helpers/form.helper'
 import { useAddCompany, useCompanyData, useDeleteCompany, useEditCompany } from './hooks'
@@ -198,138 +181,6 @@ const CompanyDetails = () => {
                     )}
                 </FormPaper>
             </FormBox>
-            {/* 
-            <Box maxWidth={800} style={{ margin: 'auto', marginTop: '20px' }}>
-                <Paper sx={{ p: '10px' }}>
-                    {queryData.isLoading || queryData.isError ? (
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                minHeight: '200px',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            }}
-                        >
-                            {queryData.isLoading ? <CircularProgress /> : <Typography>Nie znaleziono firmy</Typography>}
-                        </Box>
-                    ) : (
-                        <>
-                            <Grid container>
-                                <Grid
-                                    item
-                                    xs={6}
-                                    style={{
-                                        textAlign: 'end',
-                                    }}
-                                >
-                                    <FormLabel label="Nazwa firmy" formik={formik} id={'companyName'} />
-                                    {params.id !== 'new' ? (
-                                        <FormLabel label="Data utworzenia" formik={formik} id={'createdAt'} />
-                                    ) : null}
-                                    <FormLabel label="Status" formik={formik} id={'status'} />
-                                    <FormLabel label="Uzasadnienie statusu" formik={formik} id={'statusReason'} />
-                                </Grid>
-                                <Divider
-                                    orientation="vertical"
-                                    variant="middle"
-                                    style={{ borderColor: theme.palette.primary.main }}
-                                    sx={{ mr: '-1px' }}
-                                    flexItem
-                                />
-                                <Grid item xs={6}>
-                                    <FormInput id={'companyName'} formik={formik} readonly={readonlyMode} />
-                                    {params.id !== 'new' ? (
-                                        <FormInput
-                                            id={'createdAt'}
-                                            formik={formik}
-                                            readonly
-                                            style={{ marginTop: !readonlyMode ? '12px' : '' }}
-                                            type="datetime-local"
-                                        />
-                                    ) : null}
-                                    <FormSelect
-                                        id={'status'}
-                                        formik={formik}
-                                        readonly={readonlyMode}
-                                        options={companyStatusOptions()}
-                                    />
-                                    <FormInput id={'statusReason'} formik={formik} readonly={readonlyMode} />
-                                </Grid>
-                                {params.id === 'new' ? (
-                                    <Grid container alignItems="center" justifyContent="center" marginTop={2}>
-                                        <Card sx={{ width: '100%', left: '50%' }}>
-                                            <ExpandMore
-                                                titleIcon={<PermContactCalendarIcon />}
-                                                title="Dodaj administratora firmy"
-                                                cardContent={addAdminCardContent()}
-                                            />
-                                        </Card>
-                                    </Grid>
-                                ) : null}
-                            </Grid>
-                            <Box sx={{ margin: '20px', gap: '20px', display: 'flex', flexDirection: 'row-reverse' }}>
-                                {readonlyMode && params.id !== 'new' ? (
-                                    <>
-                                        <Button
-                                            color="primary"
-                                            startIcon={<EditIcon />}
-                                            variant="contained"
-                                            type="submit"
-                                            style={{ width: 120 }}
-                                            onClick={() => setPageMode('edit')}
-                                        >
-                                            Edytuj
-                                        </Button>
-                                        <Button
-                                            color="error"
-                                            startIcon={<DeleteIcon />}
-                                            variant="contained"
-                                            type="submit"
-                                            style={{ width: 120 }}
-                                            onClick={handleDelete}
-                                        >
-                                            Usuń
-                                        </Button>
-                                    </>
-                                ) : (
-                                    <>
-                                        <Button
-                                            color="primary"
-                                            startIcon={<SaveIcon />}
-                                            variant="contained"
-                                            onClick={formik.submitForm}
-                                            style={{ width: 120 }}
-                                        >
-                                            Zapisz
-                                        </Button>
-                                        <Button
-                                            color="primary"
-                                            startIcon={<ReplayIcon style={{ transform: 'rotate(-0.25turn)' }} />}
-                                            style={{ color: theme.palette.primary.main, width: 120 }}
-                                            variant="outlined"
-                                            onClick={handleReset}
-                                        >
-                                            Reset
-                                        </Button>
-                                        {params.id !== 'new' && (
-                                            <Button
-                                                color="primary"
-                                                startIcon={<CloseIcon style={{ transform: 'rotate(-0.25turn)' }} />}
-                                                style={{ color: theme.palette.primary.main, width: 120 }}
-                                                variant="outlined"
-                                                onClick={handleCancel}
-                                            >
-                                                Anuluj
-                                            </Button>
-                                        )}
-                                    </>
-                                )}
-                            </Box>
-                        </>
-                    )}
-                </Paper>
-            </Box>
-            {dialog.open && <DialogInfo {...dialog} />} */}
         </>
     )
 }
