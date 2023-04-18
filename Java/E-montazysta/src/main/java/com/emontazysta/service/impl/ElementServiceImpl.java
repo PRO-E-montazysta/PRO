@@ -1,6 +1,5 @@
 package com.emontazysta.service.impl;
 
-import com.emontazysta.mapper.ElementInWarehouseMapper;
 import com.emontazysta.mapper.ElementMapper;
 import com.emontazysta.model.Element;
 import com.emontazysta.model.dto.ElementDto;
@@ -13,7 +12,6 @@ import com.emontazysta.repository.criteria.ElementCriteriaRepository;
 import com.emontazysta.repository.criteria.WarehouseCriteriaRepository;
 import com.emontazysta.service.ElementInWarehouseService;
 import com.emontazysta.service.ElementService;
-import com.emontazysta.service.WarehouseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -82,7 +80,7 @@ public class ElementServiceImpl implements ElementService {
         element.setElementInWarehouses(updatedElement.getElementInWarehouses());
         element.setElementEvents(updatedElement.getElementEvents());
         element.setAttachment(updatedElement.getAttachment());
-        element.setOrdersStages(updatedElement.getOrdersStages());
+        element.setListOfElementsPlannedNumber(updatedElement.getListOfElementsPlannedNumber());
         return elementMapper.toDto(repository.save(element));
     }
 
@@ -101,7 +99,7 @@ public class ElementServiceImpl implements ElementService {
         elementDto.setElementReturnReleases(new ArrayList<>());
         elementDto.setElementInWarehouses(new ArrayList<>());
         elementDto.setElementEvents(new ArrayList<>());
-        elementDto.setOrdersStages(new ArrayList<>());
+        elementDto.setListOfElementsPlannedNumber(new ArrayList<>());
         Element element = repository.save(elementMapper.toEntity(elementDto));
 
         warehousesToAdd.forEach(warehouseLocationDto -> {
