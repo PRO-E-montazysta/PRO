@@ -131,17 +131,17 @@ export const useFormStructure = (): Array<FormInputProps> => {
             id: 'eventDate',
             initValue: '',
             type: 'date-time',
-            addNewPermission: [Role.NOBODY],
-            editPermission: [Role.NOBODY],
-            viewPermission: [Role['*']],
+            addNewPermissionRoles: [Role.NOBODY],
+            editPermissionRoles: [Role.NOBODY],
+            viewPermissionRoles: [Role['*']],
         },
         {
             label: 'Data przyjęcia',
             id: 'movingDate',
             initValue: '',
             type: 'date-time',
-            addNewPermission: [Role.NOBODY],
-            editPermission: [Role['*']],
+            addNewPermissionRoles: [Role.NOBODY],
+            editPermissionRoles: [Role['*']],
             customPermission: (e) => {
                 if (e == null) return 'hidden'
                 else return null
@@ -152,8 +152,8 @@ export const useFormStructure = (): Array<FormInputProps> => {
             id: 'completionDate',
             initValue: '',
             type: 'date-time',
-            addNewPermission: [Role.NOBODY],
-            editPermission: [Role['*']],
+            addNewPermissionRoles: [Role.NOBODY],
+            editPermissionRoles: [Role['*']],
             customPermission: (e) => {
                 if (e == null) return 'hidden'
                 else return null
@@ -164,8 +164,8 @@ export const useFormStructure = (): Array<FormInputProps> => {
             id: 'status',
             initValue: '',
             type: 'select',
-            addNewPermission: [Role.MANAGER, Role.WAREHOUSE_MANAGER],
-            editPermission: [Role.MANAGER, Role.WAREHOUSE_MANAGER],
+            addNewPermissionRoles: [Role.MANAGER, Role.WAREHOUSE_MANAGER],
+            editPermissionRoles: [Role.MANAGER, Role.WAREHOUSE_MANAGER],
             options: eventStatusOptions(),
         },
         {

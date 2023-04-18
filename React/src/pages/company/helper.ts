@@ -74,9 +74,9 @@ export const useFormStructure = (): Array<FormInputProps> => {
             id: 'createdAt',
             initValue: '',
             type: 'date',
-            addNewPermission: [Role.NOBODY],
-            editPermission: [Role.NOBODY],
-            viewPermission: [Role['*']],
+            addNewPermissionRoles: [Role.NOBODY],
+            editPermissionRoles: [Role.NOBODY],
+            viewPermissionRoles: [Role['*']],
         },
         {
             label: 'Status',

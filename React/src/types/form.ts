@@ -18,12 +18,12 @@ export type FormInputProps = {
     dontIncludeInFormStructure?: boolean
 
     //if not provided then permitted
-    editPermission?: Array<Role>
-    viewPermission?: Array<Role>
-    addNewPermission?: Array<Role>
+    editPermissionRoles?: Array<Role>
+    viewPermissionRoles?: Array<Role>
+    addNewPermissionRoles?: Array<Role>
 
     
-    customPermission?: (e: any) => InputDisplayMode | null
+    customPermission?: (inputValue: any) => InputDisplayMode | null
 
     //if not provided then validation on update is take from validation property
     validationOnUpdate?: yup.AnySchema | 'NO_VALIDATION_ON_UPDATE'

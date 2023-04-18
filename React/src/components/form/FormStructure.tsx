@@ -29,26 +29,26 @@ export const FormStructure = (params: FormStructureParams) => {
         if (!pageMode) console.warn('Page mode not provided')
         if (element.dontIncludeInFormStructure) return 'hidden'
         if (pageMode == 'new') {
-            if (!element.addNewPermission) return 'available'
-            else if (element.addNewPermission && isAuthorized(element.addNewPermission)) return 'available'
+            if (!element.addNewPermissionRoles) return 'available'
+            else if (element.addNewPermissionRoles && isAuthorized(element.addNewPermissionRoles)) return 'available'
             else return 'hidden'
         }
         if (pageMode == 'edit') {
-            if (!element.editPermission) return 'available'
-            else if (element.editPermission && isAuthorized(element.editPermission)) return 'available'
+            if (!element.editPermissionRoles) return 'available'
+            else if (element.editPermissionRoles && isAuthorized(element.editPermissionRoles)) return 'available'
             else if (
-                element.editPermission &&
-                !isAuthorized(element.editPermission) &&
-                element.viewPermission &&
-                isAuthorized(element.viewPermission)
+                element.editPermissionRoles &&
+                !isAuthorized(element.editPermissionRoles) &&
+                element.viewPermissionRoles &&
+                isAuthorized(element.viewPermissionRoles)
             )
                 return 'readonly'
             else return 'hidden'
         }
 
         if (pageMode == 'read') {
-            if (!element.viewPermission) return 'readonly'
-            else if (element.viewPermission && isAuthorized(element.viewPermission)) return 'readonly'
+            if (!element.viewPermissionRoles) return 'readonly'
+            else if (element.viewPermissionRoles && isAuthorized(element.viewPermissionRoles)) return 'readonly'
             else return 'hidden'
         }
 

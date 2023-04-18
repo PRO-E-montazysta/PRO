@@ -233,9 +233,9 @@ export const useFormStructure = (): Array<FormInputProps> => {
             initValue: '',
             type: 'date-time',
             readonly: true,
-            addNewPermission: [Role.NOBODY],
-            editPermission: [Role.NOBODY],
-            viewPermission: [Role['*']],
+            addNewPermissionRoles: [Role.NOBODY],
+            editPermissionRoles: [Role.NOBODY],
+            viewPermissionRoles: [Role['*']],
         },
         {
             label: 'Czas ostatniej edycji',
@@ -243,9 +243,9 @@ export const useFormStructure = (): Array<FormInputProps> => {
             initValue: '',
             type: 'date-time',
             readonly: true,
-            addNewPermission: [Role.NOBODY],
-            editPermission: [Role.NOBODY],
-            viewPermission: [Role['*']],
+            addNewPermissionRoles: [Role.NOBODY],
+            editPermissionRoles: [Role.NOBODY],
+            viewPermissionRoles: [Role['*']],
         },
     ]
 }
