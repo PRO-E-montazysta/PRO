@@ -223,7 +223,7 @@ export const pageList: Array<PageProps> = [
                     {
                         inNav: true,
                         name: 'Dodaj pracownika',
-                        path: '/employees/new',
+                        path: '/employees/new/new',
                         allowedRoles: [Role.ADMIN],
                     },
                 ],
@@ -231,7 +231,7 @@ export const pageList: Array<PageProps> = [
             {
                 inNav: false,
                 name: '',
-                path: '/employees/:id',
+                path: '/employees/:id/:role',
                 allowedRoles: [
                     Role.SPECIALIST,
                     Role.SALES_REPRESENTATIVE,

@@ -85,16 +85,10 @@ const EmpDetails = () => {
         })
     }
 
-    const [expandedHistory, setExpandedHistory] = useState(false)
-    const [expandedInformation, setExpandedInformation] = useState(false)
-    const [expandedStatus, setExpandedStatus] = useState(false)
-
     async function sendRoleBasedGetById(id: string) {
-        const user: Employee = await getEmployeeById(id);
-        const role = user.roles[0];
-
-        switch (role) {
+        switch (params.role) {
             case Role.ADMIN: return getAdminById(id);
+            case Role.CLOUD_ADMIN: return getAdminById(id);
             case Role.FITTER: return getFitterById(id);
             case Role.FOREMAN: return getForemanById(id);
             case Role.MANAGER: return getManagerById(id);
@@ -102,7 +96,7 @@ const EmpDetails = () => {
             case Role.SPECIALIST: return getSpecialistById(id);
             case Role.WAREHOUSE_MAN: return getWarehousemanById(id);
             case Role.WAREHOUSE_MANAGER: return getWarehouseManagerById(id);
-            default: return getEmployeeById(id); // TODO: NS: Domyślnie powinno rzucać błedem o nieznanej roli
+            default: return getEmployeeById(id);
         }
     }
 
@@ -113,22 +107,6 @@ const EmpDetails = () => {
             enabled: !!params.id && params.id != 'new',
         },
     )
-
-    const handleExpandHistoryClick = () => {
-        setExpandedHistory(!expandedHistory)
-    }
-
-    const getEmployeeRoles = () => {
-        return queryData.data?.roles.map((role) => role)
-    }
-
-    const getStatusDescription = () => {
-        if (queryData.data?.status === 'AVAILABLE') {
-            return <p>'Pracownik jest dostępny'</p>
-        } else {
-            return <p>{queryData.data?.unavailbilityDescription}</p>
-        }
-    }
 
     const sendRoleBasedPost = (data: Employee) => {
         const role = data.roles[0];
@@ -142,7 +120,7 @@ const EmpDetails = () => {
             case Role.SPECIALIST: return postSpecialist(data);
             case Role.WAREHOUSE_MAN: return postWarehouseman(data);
             case Role.WAREHOUSE_MANAGER: return postWarehouseManager(data);
-            default: return postEmployee(data); // TODO: NS: Domyślnie powinno rzucać błedem o nieznanej roli
+            default: return postEmployee(data);
         }
     }
 
@@ -153,7 +131,7 @@ const EmpDetails = () => {
                 dialogText: ['Nowy pracownik utworzony pomyślnie'],
                 confirmAction: () => {
                     setDialog({ ...dialog, open: false })
-                    if (data && data.id) navigation(`/employees/${data.id}`)
+                    if (data && data.id) navigation(`/employees/${data.id}/${data.roles[0]}`)
                 },
                 confirmLabel: 'Ok',
             })
@@ -181,7 +159,7 @@ const EmpDetails = () => {
             case Role.SPECIALIST: return updateSpecialist(data);
             case Role.WAREHOUSE_MAN: return updateWarehouseman(data);
             case Role.WAREHOUSE_MANAGER: return updateWarehouseManager(data);
-            default: return updateEmployee(data); // TODO: NS: Domyślnie powinno rzucać błedem o nieznanej roli
+            default: return updateEmployee(data);
         }
     }
 

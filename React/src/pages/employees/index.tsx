@@ -1,11 +1,11 @@
 import { useQuery } from 'react-query'
 import { AxiosError } from 'axios'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import FatTable from '../../components/table/FatTable'
 import { filterInitStructure, headCells } from './helper'
 import { getFilterParams, getInputs, setNewFilterValues } from '../../helpers/filter.helper'
-import { Filter, FilterFormProps } from '../../components/table/filter/TableFilter'
+import { Filter } from '../../components/table/filter/TableFilter'
 import { Employee } from '../../types/model/Employee'
 import { useFormik } from 'formik'
 import { getFilteredEmployees } from '../../api/employee.api'
@@ -20,11 +20,9 @@ const Employees = () => {
         getFilteredEmployees({ queryParams: filterParams }),
     )
 
-
     const filter: Filter = {
         formik: useFormik({
             initialValues: initialValues,
-            // validationSchema={{}}
             onSubmit: () => {
                 setFilterStructure(setNewFilterValues(filter.formik.values, filterStructure))
                 setFilterParams(getFilterParams(filterStructure))
@@ -41,7 +39,7 @@ const Employees = () => {
             headCells={headCells}
             initOrderBy={'firstName'}
             onClickRow={(e, row) => {
-                navigation(`/employees/${row.id}`)
+                navigation(`/employees/${row.id}/${row.roles[0]}`)
             }}
             pageHeader="Lista pracowników"
         />
