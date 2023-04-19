@@ -32,7 +32,7 @@ public class LocationMapper {
                 .apartmentNumber(location.getApartmentNumber())
                 .zipCode(location.getZipCode())
                 .orders(location.getOrders().stream().map(Orders::getId).collect(Collectors.toList()))
-                .warehouses(location.getWarehouses().stream().map(Warehouse::getId).collect(Collectors.toList()))
+                .warehouseId(location.getWarehouse() == null ? null : location.getWarehouse().getId())
                 .build();
     }
 
@@ -40,9 +40,6 @@ public class LocationMapper {
 
         List<Orders> ordersList = new ArrayList<>();
         locationDto.getOrders().forEach(locationId -> ordersList.add(orderRepository.getReferenceById(locationId)));
-
-        List<Warehouse> warehouseList = new ArrayList<>();
-        locationDto.getWarehouses().forEach(warehouseId -> warehouseList.add(warehouseRepository.getReferenceById(warehouseId)));
 
         return Location.builder()
                 .id(locationDto.getId())
@@ -55,7 +52,7 @@ public class LocationMapper {
                 .apartmentNumber(locationDto.getApartmentNumber())
                 .zipCode(locationDto.getZipCode())
                 .orders(ordersList)
-                .warehouses(warehouseList)
+                .warehouse(locationDto.getWarehouseId() == null ? null : warehouseRepository.getReferenceById(locationDto.getWarehouseId()))
                 .build();
     }
 }

@@ -301,16 +301,16 @@ public class DataSeeding {
 
         Location location1 = addLocationFromModel(new Location(null, "Test Location 1", 1.1,
                 1.1, "Miasto1", "Miła", "1",
-                "1A", "01-123", new ArrayList<>(), new ArrayList<>()));
+                "1A", "01-123", new ArrayList<>(), null));
         Location location2 = addLocationFromModel(new Location(null, "Test Location 2", 1.1,
                 1.1, "Miasto1", "Miła", "1",
-                "1B", "01-123", new ArrayList<>(), new ArrayList<>()));
+                "1B", "01-123", new ArrayList<>(), null));
         Location location3 = addLocationFromModel(new Location(null, "Test Location 3", 1.1,
                 1.1, "Miasto2", "Ładna", "1",
-                null, "01-124", new ArrayList<>(), new ArrayList<>()));
+                null, "01-124", new ArrayList<>(), null));
         Location location4 = addLocationFromModel(new Location(null, "Test Location 4", 1.1,
                 1.1, "Miasto3", "Pogodna", "1",
-                null, null, new ArrayList<>(), new ArrayList<>()));
+                null, null, new ArrayList<>(), null));
 
         Orders order1 = addOrdersFromModel(new Orders(null, "Test Order 1 - from Client 1",
                 TypeOfStatus.PLANNED, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.IMPORTANT,

@@ -33,5 +33,5 @@ public class LocationDto {
     @NotBlank(message = "Zip code cannot be empty")
     private String zipCode;
     private List<Long> orders;
-    private List<Long> warehouses;
+    private Long warehouseId;
 }
