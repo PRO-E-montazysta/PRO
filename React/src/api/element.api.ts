@@ -2,7 +2,7 @@ import { Element } from '../types/model/Element'
 import { makeServiceCall, PayloadProps } from './utils.api'
 
 export const getAllElements = () => {
-    return makeServiceCall('/elements/all', 'GET', {})
+    return makeServiceCall('/elements/filter', 'GET', {})
 }
 
 export const getFilteredElements = (payload: PayloadProps) => {

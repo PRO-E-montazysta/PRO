@@ -2,7 +2,7 @@ import { Warehouse } from '../types/model/Warehouse'
 import { makeServiceCall, PayloadProps } from './utils.api'
 
 export const getAllWarehouses = () => {
-    return makeServiceCall('/warehouses/all', 'GET', {});
+    return makeServiceCall('/warehouses/filter', 'GET', {})
 }
 
 export const getFilteredWarehouses = (payload: PayloadProps) => {
