@@ -283,14 +283,14 @@ public class DataSeeding {
                 null, TypeOfUnavailability.BEREAVEMENT_LEAVE,"Test Unavailability 2", LocalDate.now(),
                 LocalDate.now(), fitter2.getId(), manager1.getId()));
 
-        Client client1 = addClientFromModel(new Client(null, "Test Client 1 - from Company 1",
+        Client client1 = addClientFromModel(new Client(null, "Test Client 1",
                 "em@i.l", company1, new ArrayList<>()));
-        Client client2 = addClientFromModel(new Client(null, "Test Client 2 - from Company 1",
+        Client client2 = addClientFromModel(new Client(null, "Test Client 2",
                 "em@i.l", company1, new ArrayList<>()));
-        Client client3 = addClientFromModel(new Client(null, "Test Client 3 - from Company 3",
-                "em@i.l", company3, new ArrayList<>()));
-        Client client4 = addClientFromModel(new Client(null, "Test Client 4 - from Company 4",
-                "em@i.l", company4, new ArrayList<>()));
+        Client client3 = addClientFromModel(new Client(null, "Test Client 3",
+                "em@i.l", company1, new ArrayList<>()));
+        Client client4 = addClientFromModel(new Client(null, "Test Client 4",
+                "em@i.l", company1, new ArrayList<>()));
 
         Location location1 = addLocationFromModel(new Location(null, "Test Location 1", 1.1,
                 1.1, "Miasto1", "Miła", "1",
