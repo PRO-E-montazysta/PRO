@@ -185,6 +185,8 @@ export const useFormStructure = (): Array<FormInputProps> => {
             type: 'select',
             validation: yup.string().required('Wybierz stanowisko'),
             options: userRoleOptions(),
+            editPermissionRoles: [Role.NOBODY],
+            viewPermissionRoles: [Role['*']],
         },
         {
             label: 'Telefon',

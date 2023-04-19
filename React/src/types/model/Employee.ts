@@ -18,7 +18,7 @@ export const EmployeeStatus = {
 }
 
 export const UserRole = {
-    ADMIAN: 'Administrator',
+    ADMIN: 'Administrator',
     MANAGER: 'Manager',
     SALES_REPRESENTATIVE: 'Handlowiec',
     SPECIALIST: ' Specjalista',
