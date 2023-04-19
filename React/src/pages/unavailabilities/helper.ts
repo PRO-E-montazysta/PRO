@@ -89,7 +89,7 @@ export const useFormStructure = (): Array<FormInputProps> => {
             label: 'Pracownik',
             id: 'assignedToId',
             initValue: '',
-            type: 'select',
+            type: 'select', //TODO: autocomplete
             validation: yup.string().required('Wybierz pracownika!'),
             options: formatArrayToOptions('id', (x: Employee) => x.firstName + ' ' + x.lastName, queryEmployees.data),
         },
