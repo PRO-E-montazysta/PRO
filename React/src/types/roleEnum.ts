@@ -1,5 +1,6 @@
 export enum Role {
     '*' ='*',
+    'NOBODY' = 'NOBODY',
     ADMIN = 'ADMIN',
     CLOUD_ADMIN = 'CLOUD_ADMIN',
     MANAGER = 'MANAGER', 

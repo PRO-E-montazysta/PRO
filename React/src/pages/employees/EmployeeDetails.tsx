@@ -1,13 +1,11 @@
 import { useFormik } from 'formik'
 import { useContext, useEffect, useState } from 'react'
-
 import { useParams } from 'react-router-dom'
 import { useFormStructure } from './helper'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { getInitValues, getValidatinSchema } from '../../helpers/form.helper'
-import { useAddClient, useClientData, useDeleteClient, useEditClient } from './hooks'
+import { useAddEmployee, useEmployeeData, useDeleteEmployee, useEditEmployee } from './hooks'
 import { useQueriesStatus } from '../../hooks/useQueriesStatus'
-import useBreakpoints from '../../hooks/useBreakpoints'
 import FormBox from '../../components/form/FormBox'
 import FormTitle from '../../components/form/FormTitle'
 import FormPaper from '../../components/form/FormPaper'
@@ -16,7 +14,7 @@ import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
 
-const ClientDetails = () => {
+const EmployeeDetails = () => {
     const params = useParams()
     const [pageMode, setPageMode] = useState<PageMode>('read')
     const { showDialog } = useContext(DialogGlobalContext)
@@ -24,28 +22,31 @@ const ClientDetails = () => {
     const [initData, setInitData] = useState(getInitValues(formStructure))
 
     //mutations and queries
-    const addClientMutation = useAddClient()
-    const editClientMutation = useEditClient((data) => handleOnEditSuccess(data))
-    const deleteClientMutation = useDeleteClient(() => clientData.remove())
-    const clientData = useClientData(params.id)
+    const addEmployeeMutation = useAddEmployee()
+    const editEmployeeMutation = useEditEmployee((data) => handleOnEditSuccess(data))
+    const deleteEmployeeMutation = useDeleteEmployee(() => employeeData.remove())
+    const employeeData = useEmployeeData(params.id)
     //status for all mutations and queries
-    const queriesStatus = useQueriesStatus([clientData], [addClientMutation, editClientMutation, deleteClientMutation])
+    const queriesStatus = useQueriesStatus(
+        [employeeData],
+        [addEmployeeMutation, editEmployeeMutation, deleteEmployeeMutation],
+    )
 
     const handleSubmit = (values: any) => {
-        if (pageMode == 'new') addClientMutation.mutate(values)
-        else if (pageMode == 'edit') editClientMutation.mutate(values)
+        if (pageMode == 'new') addEmployeeMutation.mutate(values)
+        else if (pageMode == 'edit') editEmployeeMutation.mutate(values)
         else console.warn('Try to submit while read mode')
     }
 
     const handleDelete = () => {
         showDialog({
-            title: 'Czy na pewno chcesz usunąć klienta?',
+            title: 'Czy na pewno chcesz usunąć pracownika?',
             btnOptions: [
                 { text: 'Usuń', value: 1, variant: 'contained' },
                 { text: 'Anuluj', value: 0, variant: 'outlined' },
             ],
             callback: (result: number) => {
-                if (result == 1 && params.id && Number.isInteger(params.id)) deleteClientMutation.mutate(params.id)
+                if (result == 1 && params.id && Number.isInteger(params.id)) deleteEmployeeMutation.mutate(params.id)
             },
         })
     }
@@ -67,18 +68,18 @@ const ClientDetails = () => {
     }
 
     const handleOnEditSuccess = (data: any) => {
-        clientData.refetch({
-            queryKey: ['client', { id: data.id }],
+        employeeData.refetch({
+            queryKey: ['employee', { id: data.id }],
         })
         setPageMode('read')
     }
 
     useEffect(() => {
-        if (clientData.data) {
-            formik.setValues(clientData.data)
-            setInitData(clientData.data)
+        if (employeeData.data) {
+            formik.setValues(employeeData.data)
+            setInitData(employeeData.data)
         }
-    }, [clientData.data])
+    }, [employeeData.data])
 
     useEffect(() => {
         if (params.id == 'new') {
@@ -92,7 +93,7 @@ const ClientDetails = () => {
 
     return (
         <FormBox>
-            <FormTitle text={pageMode == 'new' ? 'Nowy klient' : formik.values['name']} />
+            <FormTitle text={pageMode == 'new' ? 'Nowy pracownik' : formik.values['firstName']} />
             <FormPaper>
                 {queriesStatus.result != 'isSuccess' ? (
                     <QueryBoxStatus queriesStatus={queriesStatus} />
@@ -115,4 +116,4 @@ const ClientDetails = () => {
     )
 }
 
-export default ClientDetails
+export default EmployeeDetails

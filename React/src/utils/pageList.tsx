@@ -18,7 +18,7 @@ import Elements from '../pages/elements'
 import ElementDetails from '../pages/elements/ElementDetails'
 import { DialogGlobalProvider } from '../providers/DialogGlobalProvider'
 import Employees from '../pages/employees'
-import EmpDetails from '../pages/employees/employeesDetails/EmpDetails'
+import EmployeeDetails from '../pages/employees/EmployeeDetails'
 import Clients from '../pages/clients'
 import ClientDetails from '../pages/clients/ClientDetails'
 import Events from '../pages/events'
@@ -64,7 +64,7 @@ export const pageList: Array<PageProps> = [
         children: [
             {
                 inNav: true,
-                name: 'Lista Firm',
+                name: 'Firmy',
                 path: '/companies',
                 allowedRoles: [Role.CLOUD_ADMIN],
                 component: <Companies />,
@@ -219,7 +219,7 @@ export const pageList: Array<PageProps> = [
                 children: [
                     {
                         inNav: true,
-                        name: 'Pracownicy',
+                        name: 'Lista pracowników',
                         path: '/employees',
                     },
                     {
@@ -244,7 +244,7 @@ export const pageList: Array<PageProps> = [
                     Role.MANAGER,
                     Role.ADMIN,
                 ],
-                component: <EmpDetails />,
+                component: <EmployeeDetails />,
             },
             {
                 inNav: true,
