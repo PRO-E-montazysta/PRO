@@ -70,12 +70,12 @@ const LoginForm = () => {
 
     const formik = useFormik({
         initialValues: {
-            email: '',
-            password: '',
+            username: '',
+            password: 'password',
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            return mutate({ username: values.email, password: values.password })
+            return mutate({ username: values.username, password: values.password })
         },
     })
 
@@ -117,21 +117,21 @@ const LoginForm = () => {
                         className={'login-form-input'}
                         fullWidth
                         margin="normal"
-                        label="Email"
-                        name="email"
+                        label="Nazwa użytkownika"
+                        name="username"
                         InputLabelProps={{
                             shrink: true,
                         }}
-                        value={formik.values.email}
+                        value={formik.values.username}
                         onChange={formik.handleChange}
-                        error={formik.touched.email && Boolean(formik.errors.email)}
-                        helperText={formik.touched.email && formik.errors.email}
+                        error={formik.touched.username && Boolean(formik.errors.username)}
+                        helperText={formik.touched.username && formik.errors.username}
                     />
                     <CustomTextField
                         className={'login-form-input'}
                         fullWidth
                         margin="normal"
-                        label="Password"
+                        label="Hasło"
                         name="password"
                         type={showPassword ? 'text' : 'password'}
                         InputLabelProps={{

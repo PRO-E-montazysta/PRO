@@ -61,7 +61,7 @@ public class ToolTypeServiceImpl implements ToolTypeService {
         toolType.setName(updatedToolType.getName());
         toolType.setCriticalNumber(updatedToolType.getCriticalNumber());
         toolType.setAttachments(updatedToolType.getAttachments());
-        toolType.setOrderStages(updatedToolType.getOrderStages());
+        toolType.setListOfToolsPlannedNumber(updatedToolType.getListOfToolsPlannedNumber());
         toolType.setTools(updatedToolType.getTools());
         return toolTypeMapper.toDto(repository.save(toolType));
 

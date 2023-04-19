@@ -43,6 +43,7 @@ public class WarehousemanServiceImpl implements WarehousemanService {
 
     @Override
     public WarehousemanDto add(WarehousemanDto warehousemanDto) {
+        warehousemanDto.setUsername(warehousemanDto.getUsername().toLowerCase());
         warehousemanDto.setRoles(Set.of(Role.WAREHOUSE_MAN));
         warehousemanDto.setUnavailabilities(new ArrayList<>());
         warehousemanDto.setNotifications(new ArrayList<>());
@@ -80,7 +81,6 @@ public class WarehousemanServiceImpl implements WarehousemanService {
         warehouseman.setFirstName(updatedWarehouseman.getFirstName());
         warehouseman.setLastName(updatedWarehouseman.getLastName());
         warehouseman.setEmail(updatedWarehouseman.getEmail());
-        warehouseman.setUsername(updatedWarehouseman.getUsername());
         warehouseman.setPhone(updatedWarehouseman.getPhone());
         warehouseman.setPesel(updatedWarehouseman.getPesel());
         warehouseman.setUnavailabilities(updatedWarehouseman.getUnavailabilities());
