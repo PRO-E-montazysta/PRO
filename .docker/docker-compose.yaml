@@ -9,7 +9,9 @@ services:
     ports:
       - 8080:8080
     environment:
-      POSTGRES_DB: example
+      DB_URL: jdbc:postgresql://db:5432/emontazystadb
+      DB_USER: postgres
+      DB_PASSWORD: password
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
@@ -32,10 +34,10 @@ services:
       - spring-postgres
       - pgadmin-postgres
     environment:
-      - POSTGRES_DB=example
+      - POSTGRES_DB=emontazystadb
       - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "example"]
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "emontazysta-db"]
       interval: 3s
       timeout: 5s
       retries: 10
