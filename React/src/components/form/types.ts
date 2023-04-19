@@ -5,7 +5,7 @@ export type FormInputParams = {
     label?: string
     id: string
     formik: any
-    firstChild?: boolean
+    firstChild?: boolean//deprecated
     options?: Array<SelectMenuItemProps>
     style?: CSSProperties
     type?: HTMLInputTypeAttribute

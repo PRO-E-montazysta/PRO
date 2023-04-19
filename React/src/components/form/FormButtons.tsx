@@ -8,6 +8,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import useBreakpoints from '../../hooks/useBreakpoints'
+import PrintQRCodeLabel from '../label/PrintQRCodeLabel'
 
 type FormButtonsParams = {
     readonlyMode: boolean
@@ -17,10 +18,11 @@ type FormButtonsParams = {
     onSubmit: () => void
     onReset: () => void
     onCancel: () => void
+    printLabel?: [string, string]
 }
 
 export const FormButtons = (params: FormButtonsParams) => {
-    const { readonlyMode, id, onCancel, onDelete, onEdit, onReset, onSubmit } = params
+    const { readonlyMode, id, onCancel, onDelete, onEdit, onReset, onSubmit, printLabel } = params
 
     const appSize = useBreakpoints()
     return (
@@ -34,6 +36,7 @@ export const FormButtons = (params: FormButtonsParams) => {
         >
             {readonlyMode && id != 'new' ? (
                 <>
+                    {printLabel ? <PrintQRCodeLabel label={printLabel[0]} code={printLabel[1]} /> : null}
                     <Button
                         color="primary"
                         startIcon={<EditIcon />}

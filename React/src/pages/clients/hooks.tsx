@@ -3,17 +3,18 @@ import { AxiosError } from 'axios'
 import { useContext } from 'react'
 import { useMutation, useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
-import { deleteOrder, getOrderDetails, postOrder, updateOrder } from '../../api/order.api'
+
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
-import { Order } from '../../types/model/Order'
+import { Client } from '../../types/model/Client'
+import { deleteClient, getClientDetails, postClient, updateClient } from '../../api/client.api'
 import useError from '../../hooks/useError'
 
-export const useAddOrder = () => {
+export const useAddClient = () => {
     const navigate = useNavigate()
     const { showDialog } = useContext(DialogGlobalContext)
     const showError = useError()
     return useMutation({
-        mutationFn: postOrder,
+        mutationFn: postClient,
         onSuccess(data) {
             showDialog({
                 btnOptions: [
@@ -23,10 +24,10 @@ export const useAddOrder = () => {
                     },
                 ],
                 title: 'Sukces',
-                content: <Box>Nowe zlecenie utworzono pomyślnie</Box>,
+                content: <Box>Nowy klient utworzony pomyślnie</Box>,
                 callback: () => {
-                    if (data.id) navigate(`/orders/${data.id}`)
-                    else navigate(`/orders`)
+                    if (data.id) navigate(`/clients/${data.id}`)
+                    else navigate(`/clients`)
                 },
             })
         },
@@ -34,11 +35,11 @@ export const useAddOrder = () => {
     })
 }
 
-export const useEditOrder = (onSuccess: (data: any) => void) => {
+export const useEditClient = (onSuccess: (data: any) => void) => {
     const { showDialog } = useContext(DialogGlobalContext)
     const showError = useError()
     return useMutation({
-        mutationFn: updateOrder,
+        mutationFn: updateClient,
         onSuccess(data) {
             showDialog({
                 btnOptions: [
@@ -48,19 +49,19 @@ export const useEditOrder = (onSuccess: (data: any) => void) => {
                     },
                 ],
                 title: 'Sukces!',
-                content: <Box>Zmiany w zleceniu zostały zapisane</Box>,
+                content: <Box>Zmiany w kliencie zostały zapisane</Box>,
                 callback: () => onSuccess(data),
             })
         },
         onError: showError,
     })
 }
-export const useDeleteOrder = (onSuccess: () => void) => {
+export const useDeleteClient = (onSuccess: () => void) => {
     const navigate = useNavigate()
     const { showDialog } = useContext(DialogGlobalContext)
     const showError = useError()
     return useMutation({
-        mutationFn: deleteOrder,
+        mutationFn: deleteClient,
         onSuccess(data) {
             showDialog({
                 btnOptions: [
@@ -70,10 +71,10 @@ export const useDeleteOrder = (onSuccess: () => void) => {
                     },
                 ],
                 title: 'Sukces!',
-                content: <Box>Zlecenie zostało usunięte</Box>,
+                content: <Box>Klient został usunięty</Box>,
                 callback: () => () => {
                     onSuccess()
-                    navigate('/orders')
+                    navigate('/clients')
                 },
             })
         },
@@ -81,10 +82,10 @@ export const useDeleteOrder = (onSuccess: () => void) => {
     })
 }
 
-export const useOrderData = (id: string | undefined) => {
-    return useQuery<Order, AxiosError>(
-        ['order', { id: id }],
-        async () => getOrderDetails(id && id != 'new' ? id : ''),
+export const useClientData = (id: string | undefined) => {
+    return useQuery<Client, AxiosError>(
+        ['client', { id: id }],
+        async () => getClientDetails(id && id != 'new' ? id : ''),
         {
             enabled: !!id && id != 'new',
         },

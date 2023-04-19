@@ -19,8 +19,8 @@ import { getAllManagers } from '../../api/manager.api'
 import { getAllSalesRepresentatives } from '../../api/salesRepresentatives.api'
 import { getAllSpecialists } from '../../api/specialist.api'
 import { AppSize } from '../../hooks/useBreakpoints'
-import { SelectMenuItemProps } from '../../components/form/types'
-
+import { FormInputProps } from '../../types/form'
+import { Role } from '../../types/roleEnum'
 
 export const headCells: Array<HeadCell<Order>> = [
     {
@@ -113,22 +113,8 @@ export const filterInitStructure: Array<FilterInputType> = [
     },
 ]
 
-export type FormInputProps = {
-    label: string
-    id: string
-    initValue: any
-    type: 'input' | 'select' | 'date'
-    options?: Array<SelectMenuItemProps>
-    validation?: any
-    readonly?: boolean
-}
-
 export const useFormStructure = (): Array<FormInputProps> => {
     const queryClient = useQuery<Array<Client>, AxiosError>(['client-list'], getAllClients, {
-        cacheTime: 15 * 60 * 1000,
-        staleTime: 10 * 60 * 1000,
-    })
-    const queryCompany = useQuery<Array<Company>, AxiosError>(['company-list'], getAllCompanies, {
         cacheTime: 15 * 60 * 1000,
         staleTime: 10 * 60 * 1000,
     })
@@ -163,15 +149,7 @@ export const useFormStructure = (): Array<FormInputProps> => {
             id: 'name',
             initValue: '',
             type: 'input',
-            validation: yup.string().min(3, 'Nazwa musi zaweirać co najmniej 3 znaki').required('Wprowadź nazwę'),
-        },
-        {
-            label: 'Firma',
-            id: 'companyId',
-            initValue: null,
-            type: 'select',
-            validation: yup.number().typeError('Wybierz firmę'),
-            options: formatArrayToOptions('id', (x: Company) => x.companyName, queryCompany.data),
+            validation: yup.string().min(3, 'Nazwa musi zawierać co najmniej 3 znaki').required('Wprowadź nazwę'),
         },
         {
             label: 'Priorytet',
@@ -193,14 +171,14 @@ export const useFormStructure = (): Array<FormInputProps> => {
             label: 'Planowany czas rozpoczęcia',
             id: 'plannedStart',
             initValue: '',
-            type: 'date',
+            type: 'date-time',
             validation: yup.date().required('Wybierz datę'),
         },
         {
             label: 'Planowany czas zakończenia',
             id: 'plannedEnd',
             initValue: '',
-            type: 'date',
+            type: 'date-time',
             validation: yup.date().required('Wybierz datę'),
         },
         {
@@ -253,15 +231,21 @@ export const useFormStructure = (): Array<FormInputProps> => {
             label: 'Czas utworzenia',
             id: 'createdAt',
             initValue: '',
-            type: 'date',
+            type: 'date-time',
             readonly: true,
+            addNewPermissionRoles: [Role.NOBODY],
+            editPermissionRoles: [Role.NOBODY],
+            viewPermissionRoles: [Role['*']],
         },
         {
             label: 'Czas ostatniej edycji',
             id: 'editedAt',
             initValue: '',
-            type: 'date',
+            type: 'date-time',
             readonly: true,
+            addNewPermissionRoles: [Role.NOBODY],
+            editPermissionRoles: [Role.NOBODY],
+            viewPermissionRoles: [Role['*']],
         },
     ]
 }

@@ -5,6 +5,7 @@ import { HeadCell } from '../../components/table/sort/SortedTableHeader'
 import * as yup from 'yup'
 
 import { AppSize } from '../../hooks/useBreakpoints'
+import { FormInputProps } from '../../types/form'
 export const headCells: Array<HeadCell<WarehouseFilterDto>> = [
     {
         type: 'string',
@@ -60,20 +61,33 @@ export const filterInitStructure: Array<FilterInputType> = [
     },
 ]
 
-export const emptyForm = {
-    id: null,
-    name: '',
-    description: '',
-    openingHours: '',
-    companyId: null,
-    locationId: null,
-    elementInWarehouses: [],
-    tools: [],
+export const useFormStructure = (): Array<FormInputProps> => {
+    return [
+        {
+            label: 'Nazwa magazynu',
+            id: 'name',
+            initValue: '',
+            type: 'input',
+            validation: yup.string().min(3, 'Nazwa musi zaweirać co najmniej 3 znaki').required('Wprowadź nazwę'),
+        },
+        {
+            label: 'Opis',
+            id: 'description',
+            initValue: '',
+            type: 'input',
+        },
+        {
+            label: 'Godziny otwarcia',
+            id: 'openingHours',
+            initValue: '',
+            type: 'input',
+            validation: yup.string().required('Wprowadź godziny otwarcia'),
+        },
+        {
+            label: 'Lokalizacja',
+            id: 'locationId',
+            initValue: '',
+            type: 'input',
+        },
+    ]
 }
-
-export const validationSchema = yup.object({
-    name: yup.string().min(3, 'Nazwa musi zaweirać co najmniej 3 znaki').required('Wprowadź nazwę'),
-    openingHours: yup.string().required('Wprowadź godziny otwarcia'),
-    companyId: yup.number().typeError('Wybierz firmę'),
-    locationId: yup.number().typeError('Wybierz lokalizację'),
-})

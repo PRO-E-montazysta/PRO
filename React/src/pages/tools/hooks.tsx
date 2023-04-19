@@ -3,17 +3,17 @@ import { AxiosError } from 'axios'
 import { useContext } from 'react'
 import { useMutation, useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
-import { deleteOrder, getOrderDetails, postOrder, updateOrder } from '../../api/order.api'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
-import { Order } from '../../types/model/Order'
+import { Tool } from '../../types/model/Tool'
+import { deleteTool, getToolDetails, postTool, updateTool } from '../../api/tool.api'
 import useError from '../../hooks/useError'
 
-export const useAddOrder = () => {
+export const useAddTool = () => {
     const navigate = useNavigate()
     const { showDialog } = useContext(DialogGlobalContext)
     const showError = useError()
     return useMutation({
-        mutationFn: postOrder,
+        mutationFn: postTool,
         onSuccess(data) {
             showDialog({
                 btnOptions: [
@@ -23,10 +23,10 @@ export const useAddOrder = () => {
                     },
                 ],
                 title: 'Sukces',
-                content: <Box>Nowe zlecenie utworzono pomyślnie</Box>,
+                content: <Box>Nowe narzędzie utworzone pomyślnie</Box>,
                 callback: () => {
-                    if (data.id) navigate(`/orders/${data.id}`)
-                    else navigate(`/orders`)
+                    if (data.id) navigate(`/tools/${data.id}`)
+                    else navigate(`/tools`)
                 },
             })
         },
@@ -34,11 +34,11 @@ export const useAddOrder = () => {
     })
 }
 
-export const useEditOrder = (onSuccess: (data: any) => void) => {
+export const useEditTool = (onSuccess: (data: any) => void) => {
     const { showDialog } = useContext(DialogGlobalContext)
     const showError = useError()
     return useMutation({
-        mutationFn: updateOrder,
+        mutationFn: updateTool,
         onSuccess(data) {
             showDialog({
                 btnOptions: [
@@ -48,19 +48,19 @@ export const useEditOrder = (onSuccess: (data: any) => void) => {
                     },
                 ],
                 title: 'Sukces!',
-                content: <Box>Zmiany w zleceniu zostały zapisane</Box>,
+                content: <Box>Zmiany w narzędziu zostały zapisane</Box>,
                 callback: () => onSuccess(data),
             })
         },
         onError: showError,
     })
 }
-export const useDeleteOrder = (onSuccess: () => void) => {
+export const useDeleteTool = (onSuccess: () => void) => {
     const navigate = useNavigate()
     const { showDialog } = useContext(DialogGlobalContext)
     const showError = useError()
     return useMutation({
-        mutationFn: deleteOrder,
+        mutationFn: deleteTool,
         onSuccess(data) {
             showDialog({
                 btnOptions: [
@@ -70,10 +70,10 @@ export const useDeleteOrder = (onSuccess: () => void) => {
                     },
                 ],
                 title: 'Sukces!',
-                content: <Box>Zlecenie zostało usunięte</Box>,
+                content: <Box>Narzędzie zostało usunięte</Box>,
                 callback: () => () => {
                     onSuccess()
-                    navigate('/orders')
+                    navigate('/tools')
                 },
             })
         },
@@ -81,12 +81,8 @@ export const useDeleteOrder = (onSuccess: () => void) => {
     })
 }
 
-export const useOrderData = (id: string | undefined) => {
-    return useQuery<Order, AxiosError>(
-        ['order', { id: id }],
-        async () => getOrderDetails(id && id != 'new' ? id : ''),
-        {
-            enabled: !!id && id != 'new',
-        },
-    )
+export const useToolData = (id: string | undefined) => {
+    return useQuery<Tool, AxiosError>(['tool', { id: id }], async () => getToolDetails(id && id != 'new' ? id : ''), {
+        enabled: !!id && id != 'new',
+    })
 }

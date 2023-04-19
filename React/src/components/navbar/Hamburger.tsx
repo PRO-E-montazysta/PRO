@@ -3,7 +3,7 @@ import { Box, Drawer, IconButton, List } from '@mui/material'
 import { pageList } from '../../utils/pageList'
 import { theme } from '../../themes/baseTheme'
 import MenuIcon from '@mui/icons-material/Menu'
-import { isAuthorized } from '../../utils/authorize'
+import { isAuthorizedToPage } from '../../utils/authorize'
 import HamburgerButton from './HamburgerButton'
 import CloseIcon from '@mui/icons-material/Close'
 
@@ -11,7 +11,7 @@ const Hamburger = () => {
     const [navbarOpen, setNavbarOpen] = useState(false)
 
     const rootPage = pageList.find((p) => p.path === '/')
-    const availablePages = rootPage?.children?.filter((c) => c.inNav && isAuthorized(c))
+    const availablePages = rootPage?.children?.filter((c) => c.inNav && isAuthorizedToPage(c))
 
     return (
         <Box>

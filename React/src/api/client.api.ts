@@ -2,7 +2,7 @@ import { Client } from '../types/model/Client'
 import { makeServiceCall, PayloadProps } from './utils.api'
 
 export const getAllClients = () => {
-    return makeServiceCall('/clients/all', 'GET', {})
+    return makeServiceCall('/clients/filter', 'GET', {})
 }
 export const getFilteredClients = (payload: PayloadProps) => {
     return makeServiceCall('/clients/filter', 'GET', { ...payload })
