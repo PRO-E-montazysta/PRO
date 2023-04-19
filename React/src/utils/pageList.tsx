@@ -25,7 +25,6 @@ import Events from '../pages/events'
 import ToolEventDetails from '../pages/events/ToolEventDetails'
 import ElementEventDetails from '../pages/events/ElementEventDetails'
 
-
 export type PageProps = {
     name: string
     path: string
@@ -63,7 +62,7 @@ export const pageList: Array<PageProps> = [
         children: [
             {
                 inNav: true,
-                name: 'Lista Firm',
+                name: 'Firmy',
                 path: '/companies',
                 allowedRoles: [Role.CLOUD_ADMIN],
                 component: <Companies />,
@@ -227,7 +226,7 @@ export const pageList: Array<PageProps> = [
                     Role['*'],
                 ],
                 component: <Employees />,
-                    children: [
+                children: [
                     {
                         inNav: true,
                         name: 'Pracownicy',
