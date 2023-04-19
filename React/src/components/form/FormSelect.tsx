@@ -14,6 +14,9 @@ const CustomSelect = styled(Select)((props: CustomSelectProps) => ({
     '& svg': {
         display: props.readOnly ? 'none' : '',
     },
+    '& div': {
+        cursor: props.readOnly ? 'unset' : 'pointer',
+    },
 }))
 
 const FormSelect = (params: FormInputParams) => {
