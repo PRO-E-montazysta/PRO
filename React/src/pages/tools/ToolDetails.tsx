@@ -37,7 +37,7 @@ const ToolDetails = () => {
 
     const handleDelete = () => {
         showDialog({
-            title: 'Czy na pewno chcesz usunąć nardzędzie?',
+            title: 'Czy na pewno chcesz usunąć narzędzie?',
             btnOptions: [
                 { text: 'Usuń', value: 1, variant: 'contained' },
                 { text: 'Anuluj', value: 0, variant: 'outlined' },
