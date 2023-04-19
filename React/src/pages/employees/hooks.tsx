@@ -20,7 +20,7 @@ import { Role } from '../../types/roleEnum'
 
 const sendRoleBasedPost = (data: Employee) => {
     const role = data.roles[0]
-    console.log(data)
+
     switch (role) {
         case Role.ADMIN:
             return postAdmin(data)
