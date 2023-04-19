@@ -20,6 +20,22 @@ spec:
         ports:
           - name: http
             containerPort: 8080
+        environment:
+          - name: DB_URL
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: DB_URL
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: DB_USER
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: DB_PASSWORD
         livenessProbe:
           httpGet:
             path: /actuator/health/liveness
