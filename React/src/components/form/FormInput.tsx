@@ -1,7 +1,18 @@
-import { TextField } from '@mui/material'
+import { TextField, styled } from '@mui/material'
 import { formatDate } from '../../helpers/format.helper'
 import useBreakpoints from '../../hooks/useBreakpoints'
 import { FormInputParams } from './types'
+import { PageMode } from '../../types/form'
+
+type CustomTextFieldProps = {
+    readonly: boolean
+}
+
+const CustomTextField = styled(TextField)((props: CustomTextFieldProps) => ({
+    '& fieldset': {
+        border: props.readonly ? 'none' : '',
+    },
+}))
 
 const FormInput = (params: FormInputParams) => {
     const { id, readonly, style, type, formik, label } = params
@@ -9,7 +20,8 @@ const FormInput = (params: FormInputParams) => {
 
     const appSize = useBreakpoints()
     return (
-        <TextField
+        <CustomTextField
+            readonly={readonly}
             size={appSize.isMobile ? 'small' : 'medium'}
             InputLabelProps={{
                 shrink: true,
