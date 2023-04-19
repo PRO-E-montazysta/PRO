@@ -110,6 +110,7 @@ const ElementDetails = () => {
                                 onReset={handleReset}
                                 onSubmit={formik.submitForm}
                                 readonlyMode={pageMode == 'read'}
+                                printLabel={[elementData.data?.name as string, elementData.data?.code as string]}
                             />
                         </>
                     )}
