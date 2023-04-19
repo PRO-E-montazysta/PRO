@@ -24,11 +24,11 @@ const ElementEventDetails = () => {
     //mutations and queries
     const addElementEventMutation = useAddElementEvent()
     const editElementEventMutation = useEditElementEvent((data) => handleOnEditSuccess(data))
-    const deleteElementEventMutation = useDeleteElementEvent(() => ElementEventData.remove())
-    const ElementEventData = useElementEventData(params.id)
+    const deleteElementEventMutation = useDeleteElementEvent(() => elementEventData.remove())
+    const elementEventData = useElementEventData(params.id)
     //status for all mutations and queries
     const queriesStatus = useQueriesStatus(
-        [ElementEventData],
+        [elementEventData],
         [addElementEventMutation, editElementEventMutation, deleteElementEventMutation],
     )
 
@@ -69,18 +69,18 @@ const ElementEventDetails = () => {
     }
 
     const handleOnEditSuccess = (data: any) => {
-        ElementEventData.refetch({
+        elementEventData.refetch({
             queryKey: ['ElementEvent', { id: data.id }],
         })
         setPageMode('read')
     }
 
     useEffect(() => {
-        if (ElementEventData.data) {
-            formik.setValues(ElementEventData.data)
-            setInitData(ElementEventData.data)
+        if (elementEventData.data) {
+            formik.setValues(elementEventData.data)
+            setInitData(elementEventData.data)
         }
-    }, [ElementEventData.data])
+    }, [elementEventData.data])
 
     useEffect(() => {
         if (params.id == 'new') {

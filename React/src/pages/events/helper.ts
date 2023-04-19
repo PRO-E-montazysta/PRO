@@ -11,6 +11,8 @@ import { AxiosError } from 'axios'
 import { getAllElements } from '../../api/element.api'
 import { Element } from '../../types/model/Element'
 import { Role } from '../../types/roleEnum'
+import { getAllTools } from '../../api/tool.api'
+import { Tool } from '../../types/model/Tool'
 
 export const headCells: Array<HeadCell<Event>> = [
     {
@@ -86,17 +88,6 @@ export const filterInitStructure: Array<FilterInputType> = [
     },
 ]
 
-export const toolEventEmptyForm = {
-    id: null,
-    description: '',
-    status: 'CREATED',
-    toolId: '',
-}
-
-export const toolEventValidationSchema = yup.object({
-    toolId: yup.string().required('Wybierz narzędzie!'),
-})
-
 export const useElementEventFormStructure = (): Array<FormInputProps> => {
     const queryElements = useQuery<Array<Element>, AxiosError>(['element-list'], getAllElements, {
         cacheTime: 15 * 60 * 1000,
@@ -112,6 +103,29 @@ export const useElementEventFormStructure = (): Array<FormInputProps> => {
             type: 'select',
             options: formatArrayToOptions('id', (x: Element) => x.name + ' - ' + x.code, queryElements.data),
             validation: yup.string().required('Wybierz element!'),
+        },
+        {
+            label: 'Opis',
+            id: 'description',
+            initValue: '',
+            type: 'input',
+        },
+        {
+            label: 'Ilość',
+            id: 'quantity',
+            initValue: '',
+            type: 'number',
+            validation: yup.number().required('Wprowadź ilość!'),
+        },
+        {
+            label: 'Status',
+            id: 'status',
+            initValue: 'CREATED',
+            type: 'select',
+            addNewPermissionRoles: [Role.MANAGER, Role.WAREHOUSE_MANAGER],
+            editPermissionRoles: [Role.MANAGER, Role.WAREHOUSE_MANAGER],
+            viewPermissionRoles: [Role['*']],
+            options: eventStatusOptions(),
         },
         {
             label: 'Data zgłoszenia',
@@ -148,14 +162,24 @@ export const useElementEventFormStructure = (): Array<FormInputProps> => {
                 else return null
             },
         },
+    ]
+}
+
+export const useToolEventFormStructure = (): Array<FormInputProps> => {
+    const queryTools = useQuery<Array<Tool>, AxiosError>(['tool-list'], getAllTools, {
+        cacheTime: 15 * 60 * 1000,
+        staleTime: 10 * 60 * 1000,
+    })
+
+    return [
+        //TODO autocomplete
         {
-            label: 'Status',
-            id: 'status',
+            label: 'Zgłaszane narzędzie',
+            id: 'toolId',
             initValue: '',
             type: 'select',
-            addNewPermissionRoles: [Role.MANAGER, Role.WAREHOUSE_MANAGER],
-            editPermissionRoles: [Role.MANAGER, Role.WAREHOUSE_MANAGER],
-            options: eventStatusOptions(),
+            options: formatArrayToOptions('id', (x: Tool) => x.name + ' - ' + x.code, queryTools.data),
+            validation: yup.string().required('Wybierz narzędzie!'),
         },
         {
             label: 'Opis',
@@ -164,11 +188,47 @@ export const useElementEventFormStructure = (): Array<FormInputProps> => {
             type: 'input',
         },
         {
-            label: 'Ilość',
-            id: 'quantity',
+            label: 'Status',
+            id: 'status',
+            initValue: 'CREATED',
+            type: 'select',
+            addNewPermissionRoles: [Role.MANAGER, Role.WAREHOUSE_MANAGER],
+            editPermissionRoles: [Role.MANAGER, Role.WAREHOUSE_MANAGER],
+            viewPermissionRoles: [Role['*']],
+            options: eventStatusOptions(),
+        },
+        {
+            label: 'Data zgłoszenia',
+            id: 'eventDate',
             initValue: '',
-            type: 'number',
-            validation: yup.number().required('Wprowadź ilość!'),
+            type: 'date-time',
+            addNewPermissionRoles: [Role.NOBODY],
+            editPermissionRoles: [Role.NOBODY],
+            viewPermissionRoles: [Role['*']],
+        },
+        {
+            label: 'Data przyjęcia',
+            id: 'movingDate',
+            initValue: '',
+            type: 'date-time',
+            addNewPermissionRoles: [Role.NOBODY],
+            editPermissionRoles: [Role['*']],
+            customPermission: (e) => {
+                if (e == null) return 'hidden'
+                else return null
+            },
+        },
+        {
+            label: 'Data zakończenia',
+            id: 'completionDate',
+            initValue: '',
+            type: 'date-time',
+            addNewPermissionRoles: [Role.NOBODY],
+            editPermissionRoles: [Role['*']],
+            customPermission: (e) => {
+                if (e == null) return 'hidden'
+                else return null
+            },
         },
     ]
 }
