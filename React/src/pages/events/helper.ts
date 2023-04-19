@@ -97,20 +97,7 @@ export const toolEventValidationSchema = yup.object({
     toolId: yup.string().required('Wybierz narzędzie!'),
 })
 
-export const elementEventEmptyForm = {
-    id: null,
-    description: '',
-    status: 'CREATED',
-    quantity: '',
-    elementId: '',
-}
-
-export const elementEventValidationSchema = yup.object({
-    elementId: yup.string().required('Wybierz element!'),
-    quantity: yup.number().required('Wprowadź ilość!'),
-})
-
-export const useFormStructure = (): Array<FormInputProps> => {
+export const useElementEventFormStructure = (): Array<FormInputProps> => {
     const queryElements = useQuery<Array<Element>, AxiosError>(['element-list'], getAllElements, {
         cacheTime: 15 * 60 * 1000,
         staleTime: 10 * 60 * 1000,

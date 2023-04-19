@@ -1,27 +1,7 @@
-import { Button, CircularProgress, Divider, Grid, Paper, TextField, Typography } from '@mui/material'
-import { Box } from '@mui/system'
-import { AxiosError } from 'axios'
 import { useFormik } from 'formik'
 import { useContext, useEffect, useState } from 'react'
-import { useMutation, useQuery } from 'react-query'
-import { useNavigate, useParams } from 'react-router-dom'
-import { deleteElementEvent, getElementEventDetails, postElementEvent, updateElementEvent } from '../../api/event.api'
-import { theme } from '../../themes/baseTheme'
-import SaveIcon from '@mui/icons-material/Save'
-import ReplayIcon from '@mui/icons-material/Replay'
-import CloseIcon from '@mui/icons-material/Close'
-import EditIcon from '@mui/icons-material/Edit'
-import DeleteIcon from '@mui/icons-material/Delete'
-import { elementEventEmptyForm, elementEventValidationSchema, useFormStructure } from './helper'
-import FormInput from '../../components/form/FormInput'
-import FormLabel from '../../components/form/FormLabel'
-import FormSelect from '../../components/form/FormSelect'
-import DialogInfo, { DialogInfoParams } from '../../components/dialogInfo/DialogInfo'
-import { eventStatusOptions } from '../../helpers/enum.helper'
-import { ElementEvent } from '../../types/model/ElementEvent'
-import { Element } from '../../types/model/Element'
-import { getAllElements } from '../../api/element.api'
-import { formatArrayToOptions } from '../../helpers/format.helper'
+import { useParams } from 'react-router-dom'
+import { useElementEventFormStructure } from './helper'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { getInitValues, getValidatinSchema } from '../../helpers/form.helper'
 import { useAddElementEvent, useDeleteElementEvent, useEditElementEvent, useElementEventData } from './hooks'
@@ -38,8 +18,8 @@ const ElementEventDetails = () => {
     const params = useParams()
     const [pageMode, setPageMode] = useState<PageMode>('read')
     const { showDialog } = useContext(DialogGlobalContext)
-    const formStructure = useFormStructure()
-    const [initData, setInitData] = useState(getInitValues(formStructure))
+    const elementEventFormStructure = useElementEventFormStructure()
+    const [initData, setInitData] = useState(getInitValues(elementEventFormStructure))
 
     //mutations and queries
     const addElementEventMutation = useAddElementEvent()
@@ -74,7 +54,7 @@ const ElementEventDetails = () => {
 
     const formik = useFormik({
         initialValues: initData,
-        validationSchema: getValidatinSchema(formStructure, pageMode),
+        validationSchema: getValidatinSchema(elementEventFormStructure, pageMode),
         onSubmit: handleSubmit,
     })
 
@@ -105,8 +85,8 @@ const ElementEventDetails = () => {
     useEffect(() => {
         if (params.id == 'new') {
             setPageMode('new')
-            formik.setValues(getInitValues(formStructure))
-            setInitData(getInitValues(formStructure))
+            formik.setValues(getInitValues(elementEventFormStructure))
+            setInitData(getInitValues(elementEventFormStructure))
         } else {
             setPageMode('read')
         }
@@ -121,7 +101,11 @@ const ElementEventDetails = () => {
                         <QueryBoxStatus queriesStatus={queriesStatus} />
                     ) : (
                         <>
-                            <FormStructure formStructure={formStructure} formik={formik} pageMode={pageMode} />
+                            <FormStructure
+                                formStructure={elementEventFormStructure}
+                                formik={formik}
+                                pageMode={pageMode}
+                            />
                             <FormButtons
                                 id={params.id}
                                 onCancel={handleCancel}
