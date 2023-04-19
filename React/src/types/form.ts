@@ -14,7 +14,6 @@ export type FormInputProps = {
     //always readonly
     readonly?: boolean //deprecated
 
-    //to implement
     dontIncludeInFormStructure?: boolean
 
     //if not provided then permitted
@@ -28,4 +27,5 @@ export type FormInputProps = {
     //if not provided then validation on update is take from validation property
     validationOnUpdate?: yup.AnySchema | 'NO_VALIDATION_ON_UPDATE'
 }
+
 export type PageMode = 'new' | 'edit' | 'read'
