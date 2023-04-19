@@ -1,12 +1,7 @@
 package com.emontazysta.controller;
 
 import com.emontazysta.enums.Role;
-import com.emontazysta.mapper.EmployeeMapper;
-import com.emontazysta.mapper.SpecialistMapper;
 import com.emontazysta.mapper.UserMapper;
-import com.emontazysta.model.AppUser;
-import com.emontazysta.model.Employment;
-import com.emontazysta.model.Warehouseman;
 import com.emontazysta.model.dto.AppUserDto;
 import com.emontazysta.model.dto.EmployeeDto;
 import com.emontazysta.model.dto.EmploymentDto;
@@ -20,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -52,6 +46,7 @@ public class AppUserController {
     private final ForemanService foremanService;
     private final WarehousemanService warehousemanService;
     private final WarehouseManagerService warehouseManagerService;
+    private final CompanyAdminService companyAdminService;
     private final AuthUtils authUtils;
     private final EmploymentService employmentService;
 
@@ -131,6 +126,8 @@ public class AppUserController {
                     return warehousemanService.getById(id);
                 case WAREHOUSE_MANAGER:
                     return warehouseManagerService.getById(id);
+                case ADMIN:
+                    return companyAdminService.getById(id);
                 default:
                     return userMapper.toDto(userService.getById(id));
             }

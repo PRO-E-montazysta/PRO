@@ -25,7 +25,6 @@ public class ClientServiceImpl implements ClientService {
     private final ClientMapper clientMapper;
     private final AuthUtils authUtils;
     private final ClientCriteriaRepository clientCriteriaRepository;
-    private final AuthUtils authUtils;
 
     @Override
     public List<ClientDto> getAll() {

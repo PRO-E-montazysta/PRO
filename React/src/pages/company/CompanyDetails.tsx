@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material'
+import { Box, Grid } from '@mui/material'
 import { useFormik } from 'formik'
 import { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
@@ -18,6 +18,7 @@ import FormPaper from '../../components/form/FormPaper'
 import QueryBoxStatus from '../../components/base/QueryStatusBox'
 import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
+import { useInputWidth } from '../../hooks/useInputWidth'
 
 const CompanyDetails = () => {
     const params = useParams()
@@ -96,49 +97,68 @@ const CompanyDetails = () => {
         }
     }, [params.id])
 
+    const inputWidth = useInputWidth()
+
     const addAdminCardContent = () => {
         return (
-            <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                    <FormInput formik={formik} id="firstName" readonly={pageMode == 'read'} label="Imię" type="text" />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <FormInput
-                        formik={formik}
-                        id="lastName"
-                        readonly={pageMode == 'read'}
-                        label="Nazwisko"
-                        type="text"
-                    />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <FormInput formik={formik} id="email" readonly={pageMode == 'read'} label="Email" type="text" />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <FormInput
-                        formik={formik}
-                        id="password"
-                        readonly={pageMode == 'read'}
-                        label="Hasło"
-                        type="password"
-                    />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <FormInput
-                        formik={formik}
-                        id="username"
-                        readonly={pageMode == 'read'}
-                        label="Nazwa użytkownika"
-                        type="text"
-                    />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <FormInput formik={formik} id="phone" readonly={pageMode == 'read'} label="Telefon" type="text" />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <FormInput formik={formik} id="pesel" readonly={pageMode == 'read'} label="Pesel" type="text" />
-                </Grid>
-            </Grid>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '15px' }}>
+                <FormInput
+                    style={{ width: inputWidth }}
+                    formik={formik}
+                    id="firstName"
+                    readonly={pageMode == 'read'}
+                    label="Imię"
+                    type="text"
+                />
+                <FormInput
+                    style={{ width: inputWidth }}
+                    formik={formik}
+                    id="lastName"
+                    readonly={pageMode == 'read'}
+                    label="Nazwisko"
+                    type="text"
+                />
+                <FormInput
+                    style={{ width: inputWidth }}
+                    formik={formik}
+                    id="email"
+                    readonly={pageMode == 'read'}
+                    label="Email"
+                    type="text"
+                />
+                <FormInput
+                    style={{ width: inputWidth }}
+                    formik={formik}
+                    id="password"
+                    readonly={pageMode == 'read'}
+                    label="Hasło"
+                    type="password"
+                />
+                <FormInput
+                    style={{ width: inputWidth }}
+                    formik={formik}
+                    id="username"
+                    readonly={pageMode == 'read'}
+                    label="Nazwa użytkownika"
+                    type="text"
+                />
+                <FormInput
+                    style={{ width: inputWidth }}
+                    formik={formik}
+                    id="phone"
+                    readonly={pageMode == 'read'}
+                    label="Telefon"
+                    type="text"
+                />
+                <FormInput
+                    style={{ width: inputWidth }}
+                    formik={formik}
+                    id="pesel"
+                    readonly={pageMode == 'read'}
+                    label="Pesel"
+                    type="text"
+                />
+            </Box>
         )
     }
 
@@ -151,17 +171,13 @@ const CompanyDetails = () => {
                         <QueryBoxStatus queriesStatus={queriesStatus} />
                     ) : (
                         <>
-                            <FormStructure
-                                formStructure={formStructure}
-                                formik={formik}
-                                pageMode={pageMode}
-                            />
+                            <FormStructure formStructure={formStructure} formik={formik} pageMode={pageMode} />
                             {pageMode == 'new' ? (
                                 <Grid container alignItems="center" justifyContent="center" marginTop={2}>
                                     <Card sx={{ width: '100%', left: '50%' }}>
                                         <ExpandMore
                                             titleIcon={<PermContactCalendarIcon />}
-                                            title="Dodaj administratora firmy"
+                                            title="Dane dministratora firmy"
                                             cardContent={addAdminCardContent()}
                                         />
                                     </Card>

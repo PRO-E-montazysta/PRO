@@ -81,8 +81,9 @@ export const useFormStructure = (): Array<FormInputProps> => {
         {
             label: 'Status',
             id: 'status',
-            initValue: '',
+            initValue: 'ACTIVE',
             type: 'select',
+            validation: yup.string().required('Wybierz status firmy!'),
             options: companyStatusOptions(),
         },
         {

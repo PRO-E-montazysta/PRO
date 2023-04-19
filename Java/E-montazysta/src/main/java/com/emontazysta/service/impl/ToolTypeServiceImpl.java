@@ -42,7 +42,7 @@ public class ToolTypeServiceImpl implements ToolTypeService {
     public ToolTypeDto add(ToolTypeDto toolTypeDto) {
         toolTypeDto.setCompanyId(authUtils.getLoggedUserCompanyId());
         toolTypeDto.setAttachments(new ArrayList<>());
-        toolTypeDto.setOrderStages(new ArrayList<>());
+        toolTypeDto.setListOfToolsPlannedNumber(new ArrayList<>());
         toolTypeDto.setTools(new ArrayList<>());
         ToolType toolType = toolTypeMapper.toEntity(toolTypeDto);
         return toolTypeMapper.toDto(repository.save(toolType));
