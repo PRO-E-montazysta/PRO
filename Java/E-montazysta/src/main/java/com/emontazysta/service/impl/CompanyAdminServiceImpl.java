@@ -33,6 +33,7 @@ public class CompanyAdminServiceImpl implements CompanyAdminService {
 
     @Override
     public CompanyAdminDto add(CompanyAdminDto companyAdminDto) {
+        companyAdminDto.setUsername(companyAdminDto.getUsername().toLowerCase());
         CompanyAdmin companyAdmin = mapper.toEntity(companyAdminDto);
         return mapper.toDto(repository.save(companyAdmin));
     }
@@ -46,10 +47,10 @@ public class CompanyAdminServiceImpl implements CompanyAdminService {
     public CompanyAdminDto update(Long id, CompanyAdminDto companyAdminDto) {
         CompanyAdmin updatedCompanyAdmin = mapper.toEntity(companyAdminDto);
         CompanyAdmin companyAdmin = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+
         companyAdmin.setFirstName(updatedCompanyAdmin.getFirstName());
         companyAdmin.setLastName(updatedCompanyAdmin.getLastName());
         companyAdmin.setEmail(updatedCompanyAdmin.getEmail());
-        companyAdmin.setUsername(updatedCompanyAdmin.getUsername());
         companyAdmin.setPhone(updatedCompanyAdmin.getPhone());
         companyAdmin.setPesel(updatedCompanyAdmin.getPesel());
         companyAdmin.setUnavailabilities(updatedCompanyAdmin.getUnavailabilities());
@@ -59,6 +60,7 @@ public class CompanyAdminServiceImpl implements CompanyAdminService {
         companyAdmin.setEmployments(updatedCompanyAdmin.getEmployments());
         companyAdmin.setAttachments(updatedCompanyAdmin.getAttachments());
         companyAdmin.setToolEvents(updatedCompanyAdmin.getToolEvents());
+
         return mapper.toDto(repository.save(companyAdmin));
     }
 }

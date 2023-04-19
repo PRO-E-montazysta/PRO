@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
@@ -16,7 +17,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderStageDto {
+public class OrderStageWithToolsAndElementsDto {
 
     private Long id;
     @NotBlank(message = "Name cannot be empty")
@@ -43,7 +44,7 @@ public class OrderStageDto {
     private Long orderId;
     private List<Long> attachments;
     private List<Long> notifications;
-    private List<Long> listOfToolsPlannedNumber;
-    private List<Long> listOfElementsPlannedNumber;
+    private List<ToolsPlannedNumberDto> listOfToolsPlannedNumber;
+    private List<ElementsPlannedNumberDto> listOfElementsPlannedNumber;
     private List<Long> demandAdHocs;
 }

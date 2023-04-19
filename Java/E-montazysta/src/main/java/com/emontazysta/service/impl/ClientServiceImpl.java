@@ -23,6 +23,7 @@ public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository repository;
     private final ClientMapper clientMapper;
+    private final AuthUtils authUtils;
     private final ClientCriteriaRepository clientCriteriaRepository;
     private final AuthUtils authUtils;
 
@@ -43,8 +44,8 @@ public class ClientServiceImpl implements ClientService {
     public ClientDto add(ClientDto clientDto) {
         clientDto.setOrders(new ArrayList<>());
         clientDto.setCompanyId(authUtils.getLoggedUserCompanyId());
-
         Client client = clientMapper.toEntity(clientDto);
+
         return clientMapper.toDto(repository.save(client));
     }
 
