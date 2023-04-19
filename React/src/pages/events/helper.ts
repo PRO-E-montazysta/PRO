@@ -128,7 +128,8 @@ export const useElementEventFormStructure = (): Array<FormInputProps> => {
             initValue: '',
             type: 'date-time',
             addNewPermissionRoles: [Role.NOBODY],
-            editPermissionRoles: [Role['*']],
+            editPermissionRoles: [Role.NOBODY],
+            viewPermissionRoles: [Role['*']],
             customPermission: (e) => {
                 if (e == null) return 'hidden'
                 else return null
@@ -140,7 +141,8 @@ export const useElementEventFormStructure = (): Array<FormInputProps> => {
             initValue: '',
             type: 'date-time',
             addNewPermissionRoles: [Role.NOBODY],
-            editPermissionRoles: [Role['*']],
+            editPermissionRoles: [Role.NOBODY],
+            viewPermissionRoles: [Role['*']],
             customPermission: (e) => {
                 if (e == null) return 'hidden'
                 else return null

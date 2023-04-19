@@ -7,6 +7,7 @@ import { typeOfUnitName, typeOfUnitOptions } from '../../helpers/enum.helper'
 
 import { AppSize } from '../../hooks/useBreakpoints'
 import { FormInputProps } from '../../types/form'
+import { Role } from '../../types/roleEnum'
 export const headCells: Array<HeadCell<Element>> = [
     {
         type: 'string',
@@ -69,7 +70,6 @@ export const emptyForm = {
     ordersStages: [],
 }
 
-
 export const useFormStructure = (): Array<FormInputProps> => {
     return [
         {
@@ -84,6 +84,9 @@ export const useFormStructure = (): Array<FormInputProps> => {
             id: 'code',
             initValue: '',
             type: 'input',
+            addNewPermissionRoles: [Role.NOBODY],
+            editPermissionRoles: [Role.NOBODY],
+            viewPermissionRoles: [Role['*']],
         },
         {
             label: 'Typ jednostki',
