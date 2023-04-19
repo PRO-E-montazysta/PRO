@@ -38,8 +38,8 @@ public class Location {
 
     private String zipCode;
 
-    @OneToMany(mappedBy = "location")
-    private List<Orders> orders;
+    @OneToOne(mappedBy = "location")
+    private Orders order;
 
     @OneToOne(mappedBy = "location")
     private Warehouse warehouse;
