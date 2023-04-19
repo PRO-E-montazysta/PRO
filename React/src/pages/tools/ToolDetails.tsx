@@ -105,6 +105,7 @@ const ToolDetails = () => {
                             onReset={handleReset}
                             onSubmit={formik.submitForm}
                             readonlyMode={pageMode == 'read'}
+                            printLabel={[toolData.data?.name as string, toolData.data?.code as string]}
                         />
                     </>
                 )}
