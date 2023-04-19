@@ -13,6 +13,13 @@ import QueryBoxStatus from '../../components/base/QueryStatusBox'
 import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
+import { useQuery } from 'react-query'
+import { AxiosError } from 'axios'
+import { getFilteredEvents } from '../../api/event.api'
+import { Tool } from '../../types/model/Tool'
+import { getAllTools } from '../../api/tool.api'
+import { getAllElements } from '../../api/element.api'
+import { Element } from '../../types/model/Element'
 
 const ElementEventDetails = () => {
     const params = useParams()
@@ -92,10 +99,24 @@ const ElementEventDetails = () => {
         }
     }, [params.id])
 
+    const queryElements = useQuery<Array<Element>, AxiosError>(['element-list'], getAllElements, {
+        cacheTime: 15 * 60 * 1000,
+        staleTime: 10 * 60 * 1000,
+    })
     return (
         <>
             <FormBox>
-                <FormTitle text="Usterka elementu" />
+                {/* TODO check if this return nice result  */}
+                <FormTitle
+                    text={
+                        pageMode == 'new'
+                            ? 'Nowa usterka elementu'
+                            : 'Usterka ' +
+                              queryElements.data
+                                  ?.filter((f) => f.id == formik.values['elementId'])
+                                  .map((x) => x.name + ' - ' + x.code)
+                    }
+                />
                 <FormPaper>
                     {queriesStatus.result != 'isSuccess' ? (
                         <QueryBoxStatus queriesStatus={queriesStatus} />

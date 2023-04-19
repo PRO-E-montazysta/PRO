@@ -16,7 +16,7 @@ const Events = () => {
     const { initialValues, inputs } = getInputs(filterInitStructure)
     const navigation = useNavigate()
 
-    const queryOrders = useQuery<Array<Event>, AxiosError>(['events', filterParams], async () =>
+    const queryEvents = useQuery<Array<Event>, AxiosError>(['events', filterParams], async () =>
         getFilteredEvents({ queryParams: filterParams }),
     )
 
@@ -35,7 +35,7 @@ const Events = () => {
 
     return (
         <FatTable
-            query={queryOrders}
+            query={queryEvents}
             filterProps={filter}
             headCells={headCells}
             initOrderBy={'eventDate'}

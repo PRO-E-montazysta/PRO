@@ -13,6 +13,10 @@ import QueryBoxStatus from '../../components/base/QueryStatusBox'
 import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
+import { useQuery } from 'react-query'
+import { Tool } from '../../types/model/Tool'
+import { AxiosError } from 'axios'
+import { getAllTools } from '../../api/tool.api'
 
 const ToolEventDetails = () => {
     const params = useParams()
@@ -91,10 +95,26 @@ const ToolEventDetails = () => {
         }
     }, [params.id])
 
+    const queryTools = useQuery<Array<Tool>, AxiosError>(['tool-list'], getAllTools, {
+        cacheTime: 15 * 60 * 1000,
+        staleTime: 10 * 60 * 1000,
+    })
+
+
     return (
         <>
             <FormBox>
-                <FormTitle text="Usterka narzędzia" />
+                {/* TODO check if this return nice result  */}
+                <FormTitle
+                    text={
+                        pageMode == 'new'
+                            ? 'Nowa usterka narzędzia'
+                            : 'Usterka ' +
+                              queryTools.data
+                                  ?.filter((f) => f.id == formik.values['elementId'])
+                                  .map((x) => x.name + ' - ' + x.code)
+                    }
+                />
                 <FormPaper>
                     {queriesStatus.result != 'isSuccess' ? (
                         <QueryBoxStatus queriesStatus={queriesStatus} />

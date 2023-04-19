@@ -107,7 +107,7 @@ const OrderDetails = () => {
     return (
         <>
             <FormBox>
-                <FormTitle text="Zamówienia" />
+                <FormTitle text={pageMode == 'new' ? 'Nowe zlecenie' : formik.values['name']} />
                 <FormPaper>
                     {queriesStatus.result != 'isSuccess' ? (
                         <QueryBoxStatus queriesStatus={queriesStatus} />

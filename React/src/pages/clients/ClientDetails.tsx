@@ -92,17 +92,13 @@ const ClientDetails = () => {
 
     return (
         <FormBox>
-            <FormTitle text="Klient" />
+            <FormTitle text={pageMode == 'new' ? 'Nowy klient' : formik.values['name']} />
             <FormPaper>
                 {queriesStatus.result != 'isSuccess' ? (
                     <QueryBoxStatus queriesStatus={queriesStatus} />
                 ) : (
                     <>
-                        <FormStructure
-                            formStructure={formStructure}
-                            formik={formik}
-                            pageMode={pageMode}
-                        />
+                        <FormStructure formStructure={formStructure} formik={formik} pageMode={pageMode} />
                         <FormButtons
                             id={params.id}
                             onCancel={handleCancel}

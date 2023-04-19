@@ -4,15 +4,15 @@ import { FormInputParams } from './types'
 import styled from '@emotion/styled'
 
 type CustomSelectProps = {
-    readonly: boolean
+    readOnly: boolean
 }
 
 const CustomSelect = styled(Select)((props: CustomSelectProps) => ({
     '& fieldset': {
-        border: props.readonly ? 'none' : '',
+        border: props.readOnly ? 'none' : '',
     },
     '& svg': {
-        display: props.readonly ? 'none' : '',
+        display: props.readOnly ? 'none' : '',
     },
 }))
 
@@ -32,7 +32,6 @@ const FormSelect = (params: FormInputParams) => {
                 {label}
             </InputLabel>
             <CustomSelect
-                readonly={readonly}
                 size={appSize.isMobile ? 'small' : 'medium'}
                 fullWidth
                 readOnly={readonly}
