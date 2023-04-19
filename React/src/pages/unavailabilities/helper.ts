@@ -4,7 +4,13 @@ import * as yup from 'yup'
 import { AppSize } from '../../hooks/useBreakpoints'
 import { UnavailabilityFilter } from '../../types/model/Unavailability'
 import { typeOfUnavailabilityName, typeOfUnavailabilityOptions } from '../../helpers/enum.helper'
-import { formatShortDate } from '../../helpers/format.helper'
+import { formatArrayToOptions, formatShortDate } from '../../helpers/format.helper'
+import { FormInputProps } from '../../types/form'
+import { AxiosError } from 'axios'
+import { useQuery } from 'react-query'
+import { getAllEmployees } from '../../api/employee.api'
+import { Employee } from '../../types/model/Employee'
+import { Role } from '../../types/roleEnum'
 
 export const headCells: Array<HeadCell<UnavailabilityFilter>> = [
     {
@@ -72,21 +78,61 @@ export const filterInitStructure: Array<FilterInputType> = [
     },
 ]
 
-export const emptyForm = {
-    id: null,
-    typeOfUnavailability: '',
-    description: '',
-    unavailableFrom: '',
-    unavailableTo: '',
-    assignedToId: '',
-}
+export const useFormStructure = (): Array<FormInputProps> => {
+    const queryEmployees = useQuery<Array<Employee>, AxiosError>(['employee-list'], getAllEmployees, {
+        cacheTime: 15 * 60 * 1000,
+        staleTime: 10 * 60 * 1000,
+    })
 
-export const validationSchema = yup.object({
-    assignedToId: yup.string().required('Wybierz pracownika!'),
-    typeOfUnavailability: yup.string().required('Wybierz rodzaj niedostępności'),
-    unavailableFrom: yup.date().required('Wybierz datę'),
-    unavailableTo: yup
-        .date()
-        .required('Wybierz datę')
-        .min(yup.ref('unavailableFrom'), 'Błędna data zakończenia nieobecności'),
-})
+    return [
+        {
+            label: 'Pracownik',
+            id: 'assignedToId',
+            initValue: '',
+            type: 'select',
+            validation: yup.string().required('Wybierz pracownika!'),
+            options: formatArrayToOptions('id', (x: Employee) => x.firstName + ' ' + x.lastName, queryEmployees.data),
+        },
+        {
+            label: 'Typ nieobecności',
+            id: 'typeOfUnavailability',
+            initValue: '',
+            type: 'select',
+            validation: yup.string().required('Wybierz rodzaj niedostępności'),
+            options: typeOfUnavailabilityOptions(),
+        },
+        {
+            label: 'Opis',
+            id: 'description',
+            initValue: '',
+            type: 'input',
+        },
+        {
+            label: 'Od',
+            id: 'unavailableFrom',
+            initValue: '',
+            type: 'date',
+            validation: yup.date().required('Wybierz datę'),
+        },
+        {
+            label: 'Do',
+            id: 'unavailableTo',
+            initValue: '',
+            type: 'date',
+            validation: yup
+                .date()
+                .required('Wybierz datę')
+                .min(yup.ref('unavailableFrom'), 'Błędna data zakończenia nieobecności'),
+        },
+        {
+            label: 'Przypisane przez',
+            id: 'assignedById',
+            initValue: '',
+            type: 'select',
+            options: formatArrayToOptions('id', (x: Employee) => x.firstName + ' ' + x.lastName, queryEmployees.data),
+            addNewPermissionRoles: [Role.NOBODY],
+            editPermissionRoles: [Role.NOBODY],
+            viewPermissionRoles: [Role['*']],
+        },
+    ]
+}
