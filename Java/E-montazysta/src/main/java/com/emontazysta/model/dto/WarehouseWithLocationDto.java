@@ -7,15 +7,20 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LocationDto {
-
-    private Long id;
+public class WarehouseWithLocationDto {
+    private Long warehouseId;
+    @NotBlank(message = "Name cannot be empty")
+    private String name;
+    private String description;
+    @NotBlank(message = "Opening hours cannot be empty")
+    private String openingHours;
+    private Long companyId;
+    private Long locationId;
     @NotNull(message = "X coordinate cannot be empty")
     private Double xCoordinate;
     @NotNull(message = "Y coordinate cannot be empty")
@@ -30,6 +35,4 @@ public class LocationDto {
     private String apartmentNumber;
     @NotBlank(message = "Zip code cannot be empty")
     private String zipCode;
-    private Long orderId;
-    private Long warehouseId;
 }

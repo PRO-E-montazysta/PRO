@@ -48,7 +48,6 @@ public class LocationServiceImpl implements LocationService {
         Location updatedLocation = locationMapper.toEntity(locationDto);
         Location location = repository.findById(id).orElseThrow(EntityNotFoundException::new);
 
-        location.setName(updatedLocation.getName());
         location.setXCoordinate(updatedLocation.getXCoordinate());
         location.setYCoordinate(updatedLocation.getYCoordinate());
         location.setCity(updatedLocation.getCity());

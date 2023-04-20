@@ -23,7 +23,6 @@ public class LocationMapper {
     public LocationDto toDto (Location location) {
         return LocationDto.builder()
                 .id(location.getId())
-                .name(location.getName())
                 .xCoordinate(location.getXCoordinate())
                 .yCoordinate(location.getYCoordinate())
                 .city(location.getCity())
@@ -39,7 +38,6 @@ public class LocationMapper {
     public Location toEntity(LocationDto locationDto) {
         return Location.builder()
                 .id(locationDto.getId())
-                .name(locationDto.getName())
                 .xCoordinate(locationDto.getXCoordinate())
                 .yCoordinate(locationDto.getYCoordinate())
                 .city(locationDto.getCity())

@@ -299,16 +299,16 @@ public class DataSeeding {
         Client client4 = addClientFromModel(new Client(null, "Test Client 4",
                 "em@i.l", company1, new ArrayList<>()));
 
-        Location location1 = addLocationFromModel(new Location(null, "Test Location 1", 1.1,
+        Location location1 = addLocationFromModel(new Location(null, 1.1,
                 1.1, "Miasto1", "Miła", "1",
                 "1A", "01-123", null, null));
-        Location location2 = addLocationFromModel(new Location(null, "Test Location 2", 1.1,
+        Location location2 = addLocationFromModel(new Location(null, 1.1,
                 1.1, "Miasto1", "Miła", "1",
                 "1B", "01-123", null, null));
-        Location location3 = addLocationFromModel(new Location(null, "Test Location 3", 1.1,
+        Location location3 = addLocationFromModel(new Location(null, 1.1,
                 1.1, "Miasto2", "Ładna", "1",
                 null, "01-124", null, null));
-        Location location4 = addLocationFromModel(new Location(null, "Test Location 4", 1.1,
+        Location location4 = addLocationFromModel(new Location(null, 1.1,
                 1.1, "Miasto3", "Pogodna", "1",
                 null, null, null, null));
 

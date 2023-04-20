@@ -2,6 +2,7 @@ package com.emontazysta.controller;
 
 import com.emontazysta.model.dto.WarehouseDto;
 import com.emontazysta.model.dto.WarehouseLocationDto;
+import com.emontazysta.model.dto.WarehouseWithLocationDto;
 import com.emontazysta.model.searchcriteria.WarehouseSearchCriteria;
 import com.emontazysta.service.WarehouseService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,8 +40,8 @@ public class WarehouseController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Warehouse.", security = @SecurityRequirement(name = "bearer-key"))
-    public WarehouseDto add(@Valid @RequestBody WarehouseDto warehouse) {
-        return warehouseService.addWithWarehouseCount(warehouse);
+    public WarehouseDto add(@Valid @RequestBody WarehouseWithLocationDto warehouseWithLocationDto) {
+        return warehouseService.addWarehouseWithLocation(warehouseWithLocationDto);
     }
 
     @DeleteMapping("/{id}")

@@ -2,14 +2,13 @@ package com.emontazysta.service.impl;
 
 import com.emontazysta.mapper.WarehouseMapper;
 import com.emontazysta.model.Company;
+import com.emontazysta.model.Location;
 import com.emontazysta.model.Warehouse;
-import com.emontazysta.model.dto.ElementDto;
-import com.emontazysta.model.dto.ElementInWarehouseDto;
-import com.emontazysta.model.dto.WarehouseDto;
-import com.emontazysta.model.dto.WarehouseLocationDto;
+import com.emontazysta.model.dto.*;
 import com.emontazysta.model.searchcriteria.ElementSearchCriteria;
 import com.emontazysta.model.searchcriteria.WarehouseSearchCriteria;
 import com.emontazysta.repository.CompanyRepository;
+import com.emontazysta.repository.LocationRepository;
 import com.emontazysta.repository.WarehouseRepository;
 import com.emontazysta.repository.criteria.ElementCriteriaRepository;
 import com.emontazysta.repository.criteria.WarehouseCriteriaRepository;
@@ -36,6 +35,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     private final AuthUtils authUtils;
     private final ElementCriteriaRepository elementCriteriaRepository;
     private final ElementInWarehouseService elementInWarehouseService;
+    private final LocationRepository locationRepository;
 
     @Override
     public List<WarehouseDto> getAll() {
@@ -107,5 +107,30 @@ public class WarehouseServiceImpl implements WarehouseService {
         });
 
         return warehouseMapper.toDto(warehouse);
+    }
+
+    @Override
+    public WarehouseDto addWarehouseWithLocation(WarehouseWithLocationDto warehouseWithLocationDto) {
+        warehouseWithLocationDto.setCompanyId(authUtils.getLoggedUserCompanyId());
+
+        Location location = locationRepository.save(
+                Location.builder()
+                        .xCoordinate(warehouseWithLocationDto.getXCoordinate())
+                        .yCoordinate(warehouseWithLocationDto.getYCoordinate())
+                        .city(warehouseWithLocationDto.getCity())
+                        .street(warehouseWithLocationDto.getStreet())
+                        .propertyNumber(warehouseWithLocationDto.getPropertyNumber())
+                        .apartmentNumber(warehouseWithLocationDto.getApartmentNumber())
+                        .zipCode(warehouseWithLocationDto.getZipCode())
+                        .build()
+        );
+
+        return addWithWarehouseCount(
+                WarehouseDto.builder()
+                        .name(warehouseWithLocationDto.getName())
+                        .description(warehouseWithLocationDto.getDescription())
+                        .openingHours(warehouseWithLocationDto.getOpeningHours())
+                        .locationId(location.getId())
+                        .build());
     }
 }
