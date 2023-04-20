@@ -21,9 +21,7 @@ public class WarehouseWithLocationDto {
     private String openingHours;
     private Long companyId;
     private Long locationId;
-    @NotNull(message = "X coordinate cannot be empty")
     private Double xCoordinate;
-    @NotNull(message = "Y coordinate cannot be empty")
     private Double yCoordinate;
     @NotBlank(message = "City cannot be empty")
     private String city;
