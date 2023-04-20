@@ -17,11 +17,14 @@ import com.emontazysta.service.ElementService;
 import com.emontazysta.service.WarehouseService;
 import com.emontazysta.util.AuthUtils;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -64,17 +67,27 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     @Override
-    public WarehouseDto update(Long id, WarehouseDto warehouseDto) {
-
-        Warehouse updatedWarehouse = warehouseMapper.toEntity(warehouseDto);
+    public WarehouseDto update(Long id, WarehouseWithLocationDto warehouseWithLocationDto) {
+        //Warehouse updatedWarehouse = warehouseMapper.toEntity(warehouseDto);
         Warehouse warehouse = repository.findById(id).orElseThrow(EntityNotFoundException::new);
-        warehouse.setName(updatedWarehouse.getName());
-        warehouse.setDescription(updatedWarehouse.getDescription());
-        warehouse.setOpeningHours(updatedWarehouse.getOpeningHours());
-        warehouse.setCompany(updatedWarehouse.getCompany());
-        warehouse.setLocation(updatedWarehouse.getLocation());
-        warehouse.setElementInWarehouses(updatedWarehouse.getElementInWarehouses());
-        warehouse.setTools(updatedWarehouse.getTools());
+
+        if(!Objects.equals(warehouse.getCompany().getId(), authUtils.getLoggedUserCompanyId())){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        warehouse.setName(warehouseWithLocationDto.getName());
+        warehouse.setDescription(warehouseWithLocationDto.getDescription());
+        warehouse.setOpeningHours(warehouseWithLocationDto.getOpeningHours());
+
+        Location location = warehouse.getLocation();
+        location.setXCoordinate(warehouseWithLocationDto.getXCoordinate());
+        location.setYCoordinate(warehouseWithLocationDto.getYCoordinate());
+        location.setCity(warehouseWithLocationDto.getCity());
+        location.setStreet(warehouseWithLocationDto.getStreet());
+        location.setPropertyNumber(warehouseWithLocationDto.getPropertyNumber());
+        location.setApartmentNumber(warehouseWithLocationDto.getApartmentNumber());
+        location.setZipCode(warehouseWithLocationDto.getZipCode());
+        locationRepository.save(location);
 
         return warehouseMapper.toDto(repository.save(warehouse));
     }

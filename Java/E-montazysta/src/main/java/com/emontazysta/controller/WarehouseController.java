@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,18 +26,22 @@ public class WarehouseController {
 
     private final WarehouseService warehouseService;
 
+    //TODO: DELTE IT
     @GetMapping("/all")
     @Operation(description = "Allows to get all Warehouses.", security = @SecurityRequirement(name = "bearer-key"))
     public List<WarehouseDto> getAll() {
         return warehouseService.getAll();
     }
 
+    //DOTO: CHECK IF IS FROM COMPANY
     @GetMapping("/{id}")
     @Operation(description = "Allows to get Warehouse by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public WarehouseDto getById(@PathVariable("id")Long id) {
         return warehouseService.getById(id);
     }
 
+
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Warehouse.", security = @SecurityRequirement(name = "bearer-key"))
@@ -44,17 +49,20 @@ public class WarehouseController {
         return warehouseService.addWarehouseWithLocation(warehouseWithLocationDto);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     @DeleteMapping("/{id}")
     @Operation(description = "Allows to delete Warehouse by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public void delete(@PathVariable("id") Long id) {
         warehouseService.delete(id);
     }
 
+
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     @PutMapping("/{id}")
     @Operation(description = "Allows to update Warehouse by given Id, and Warehouse.", security = @SecurityRequirement(name = "bearer-key"))
     public WarehouseDto update(@PathVariable("id") Long id,
-                                @Valid @RequestBody WarehouseDto warehouse) {
-        return warehouseService.update(id, warehouse);
+                                @Valid @RequestBody WarehouseWithLocationDto warehouseWithLocationDto) {
+        return warehouseService.update(id, warehouseWithLocationDto);
     }
     @GetMapping("/filter")
     @Operation(description = "Allows to get filtered warehouses.", security = @SecurityRequirement(name = "bearer-key"))

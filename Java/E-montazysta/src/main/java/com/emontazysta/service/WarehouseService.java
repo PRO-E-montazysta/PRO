@@ -13,7 +13,7 @@ public interface WarehouseService {
     WarehouseDto getById(Long id);
     WarehouseDto add(WarehouseDto warehouse);
     void delete(Long id);
-    WarehouseDto update(Long id, WarehouseDto warehouse);
+    WarehouseDto update(Long id, WarehouseWithLocationDto warehouseWithLocationDto);
     List <WarehouseLocationDto> findAllWithFilters(WarehouseSearchCriteria warehouseSearchCriteria);
     WarehouseDto addWithWarehouseCount(WarehouseDto warehouse);
     WarehouseDto addWarehouseWithLocation(WarehouseWithLocationDto warehouseWithLocationDto);
