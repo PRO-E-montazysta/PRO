@@ -50,6 +50,12 @@ public class WarehouseServiceImpl implements WarehouseService {
     @Override
     public WarehouseDto getById(Long id) {
         Warehouse warehouse = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+
+        //Check if Warehouse is from user company
+        if(!Objects.equals(warehouse.getCompany().getId(), authUtils.getLoggedUserCompanyId())){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
         return warehouseMapper.toDto(warehouse);
     }
 
@@ -63,14 +69,21 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     @Override
     public void delete(Long id) {
+        Warehouse warehouse = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+
+        //Check if Warehouse is from user company
+        if(!Objects.equals(warehouse.getCompany().getId(), authUtils.getLoggedUserCompanyId())){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
         repository.deleteById(id);
     }
 
     @Override
     public WarehouseDto update(Long id, WarehouseWithLocationDto warehouseWithLocationDto) {
-        //Warehouse updatedWarehouse = warehouseMapper.toEntity(warehouseDto);
         Warehouse warehouse = repository.findById(id).orElseThrow(EntityNotFoundException::new);
 
+        //Check if Warehouse is from user company
         if(!Objects.equals(warehouse.getCompany().getId(), authUtils.getLoggedUserCompanyId())){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }

@@ -33,7 +33,6 @@ public class WarehouseController {
         return warehouseService.getAll();
     }
 
-    //DOTO: CHECK IF IS FROM COMPANY
     @GetMapping("/{id}")
     @Operation(description = "Allows to get Warehouse by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public WarehouseDto getById(@PathVariable("id")Long id) {
