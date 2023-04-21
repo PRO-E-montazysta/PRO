@@ -1,6 +1,6 @@
 import { Box, IconButton, MenuItem } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { isAuthorized } from '../../utils/authorize'
+import { isAuthorizedToPage } from '../../utils/authorize'
 import { PageProps } from '../../utils/pageList'
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
@@ -19,7 +19,7 @@ const HamburgerButton = (props: HamburgerButtonProps) => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (page.children) setAvailableChilds(page.children.filter((c) => c.inNav && isAuthorized(c)))
+        if (page.children) setAvailableChilds(page.children.filter((c) => c.inNav && isAuthorizedToPage(c)))
     }, [page.children])
 
     const onItemClick = () => {

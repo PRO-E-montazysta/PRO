@@ -3,6 +3,8 @@ package com.emontazysta.configuration;
 import com.emontazysta.enums.*;
 import com.emontazysta.mapper.*;
 import com.emontazysta.model.*;
+import com.emontazysta.model.dto.OrderStageWithToolsAndElementsDto;
+import com.emontazysta.model.dto.ToolsPlannedNumberDto;
 import com.emontazysta.model.dto.UnavailabilityWithLocalDateDto;
 import com.emontazysta.service.*;
 import lombok.RequiredArgsConstructor;
@@ -238,9 +240,13 @@ public class DataSeeding {
                 "manager2Phone", "manager2Pesel", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        CompanyAdmin companyAdmin1 = new CompanyAdmin(null, "Test Company", "Admin Test", "admin@ema.il",
+                "password", "companyAdmin1", null, Set.of(Role.ADMIN),
+                "+48123123123", "02292464175", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         List<AppUser> appUserList = List.of(appUser, fitter1, fitter2, fitter3, foreman1, foreman2, warehouseman1, warehouseman2,
                 warehouseManager1, warehouseManager2, specialist1, specialist2, salesRepresentative1, salesRepresentative2,
-                manager1, manager2);
+                manager1, manager2, companyAdmin1);
         appUserList.forEach(appUserService::add);
 
         Company company1 = addCompanyFromModel(new Company(null, "Test Comapny 1", null,
@@ -257,7 +263,7 @@ public class DataSeeding {
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
         Employment employment1 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, fitter1));
-        Employment employment2 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, fitter2));
+        Employment employment2 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), LocalDateTime.now(), company1, fitter2));
         Employment employment3 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, foreman1));
         Employment employment4 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, foreman2));
         Employment employment5 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, warehouseman1));
@@ -269,7 +275,8 @@ public class DataSeeding {
         Employment employment11 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, salesRepresentative1));
         Employment employment12 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, salesRepresentative2));
         Employment employment13 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, manager1));
-        Employment employment14 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, manager2));
+        Employment employment14 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company3, manager2));
+        Employment employment15 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, companyAdmin1));
 
         context.setAuthentication(null);
         Authentication authenticationMng = new UsernamePasswordAuthenticationToken(

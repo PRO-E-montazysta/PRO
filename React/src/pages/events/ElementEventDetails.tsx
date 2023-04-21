@@ -1,341 +1,145 @@
-import { Button, CircularProgress, Divider, Grid, Paper, TextField, Typography } from '@mui/material'
-import { Box } from '@mui/system'
-import { AxiosError } from 'axios'
 import { useFormik } from 'formik'
-import { useEffect, useState } from 'react'
-import { useMutation, useQuery } from 'react-query'
-import { useNavigate, useParams } from 'react-router-dom'
-import { deleteElementEvent, getElementEventDetails, postElementEvent, updateElementEvent } from '../../api/event.api'
-import { theme } from '../../themes/baseTheme'
-import SaveIcon from '@mui/icons-material/Save'
-import ReplayIcon from '@mui/icons-material/Replay'
-import CloseIcon from '@mui/icons-material/Close'
-import EditIcon from '@mui/icons-material/Edit'
-import DeleteIcon from '@mui/icons-material/Delete'
-import { elementEventEmptyForm, elementEventValidationSchema } from './helper'
-import FormInput from '../../components/form/FormInput'
-import FormLabel from '../../components/form/FormLabel'
-import FormSelect from '../../components/form/FormSelect'
-import DialogInfo, { DialogInfoParams } from '../../components/dialogInfo/DialogInfo'
-import { eventStatusOptions } from '../../helpers/enum.helper'
-import { ElementEvent } from '../../types/model/ElementEvent'
-import { Element } from '../../types/model/Element'
+import { useContext, useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { useElementEventFormStructure } from './helper'
+import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
+import { getInitValues, getValidatinSchema } from '../../helpers/form.helper'
+import { useAddElementEvent, useDeleteElementEvent, useEditElementEvent, useElementEventData } from './hooks'
+import { useQueriesStatus } from '../../hooks/useQueriesStatus'
+import FormTitle from '../../components/form/FormTitle'
+import FormBox from '../../components/form/FormBox'
+import FormPaper from '../../components/form/FormPaper'
+import QueryBoxStatus from '../../components/base/QueryStatusBox'
+import { FormStructure } from '../../components/form/FormStructure'
+import { FormButtons } from '../../components/form/FormButtons'
+import { PageMode } from '../../types/form'
+import { useQuery } from 'react-query'
+import { AxiosError } from 'axios'
+import { getFilteredEvents } from '../../api/event.api'
+import { Tool } from '../../types/model/Tool'
+import { getAllTools } from '../../api/tool.api'
 import { getAllElements } from '../../api/element.api'
-import { formatArrayToOptions } from '../../helpers/format.helper'
+import { Element } from '../../types/model/Element'
 
 const ElementEventDetails = () => {
     const params = useParams()
-    const [readonlyMode, setReadonlyMode] = useState(true)
-    const [initData, setInitData] = useState(elementEventEmptyForm)
-    const navigation = useNavigate()
+    const [pageMode, setPageMode] = useState<PageMode>('read')
+    const { showDialog } = useContext(DialogGlobalContext)
+    const elementEventFormStructure = useElementEventFormStructure()
+    const [initData, setInitData] = useState(getInitValues(elementEventFormStructure))
 
-    const [dialog, setDialog] = useState({
-        open: false,
-        dialogText: [''],
-        confirmAction: () => {},
-        confirmLabel: '',
-    })
+    //mutations and queries
+    const addElementEventMutation = useAddElementEvent()
+    const editElementEventMutation = useEditElementEvent((data) => handleOnEditSuccess(data))
+    const deleteElementEventMutation = useDeleteElementEvent(() => elementEventData.remove())
+    const elementEventData = useElementEventData(params.id)
+    //status for all mutations and queries
+    const queriesStatus = useQueriesStatus(
+        [elementEventData],
+        [addElementEventMutation, editElementEventMutation, deleteElementEventMutation],
+    )
 
-    const handleSubmit = () => {
-        if (params.id == 'new') mutationPost.mutate(JSON.parse(JSON.stringify(formik.values)))
-        else mutationUpdate.mutate(JSON.parse(JSON.stringify(formik.values)))
+    const handleSubmit = (values: any) => {
+        if (pageMode == 'new') addElementEventMutation.mutate(values)
+        else if (pageMode == 'edit') editElementEventMutation.mutate(values)
+        else console.warn('Try to submit while read mode')
     }
 
     const handleDelete = () => {
-        displayInfo({
-            dialogText: ['Czy na pewno chcesz usunąć zgłoszenie?'],
-            confirmAction: () => {
-                setDialog({ ...dialog, open: false })
-                if (formik.values.id) mutationDelete.mutate(formik.values.id)
+        showDialog({
+            title: 'Czy na pewno chcesz usunąć zgłoszenie?',
+            btnOptions: [
+                { text: 'Usuń', value: 1, variant: 'contained' },
+                { text: 'Anuluj', value: 0, variant: 'outlined' },
+            ],
+            callback: (result: number) => {
+                if (result == 1 && params.id && Number.isInteger(params.id))
+                    deleteElementEventMutation.mutate(params.id)
             },
-            confirmLabel: 'Usuń',
-            cancelAction: () => {
-                setDialog({ ...dialog, open: false })
-            },
-            cancelLabel: 'Anuluj',
         })
     }
 
-    const mutationPost = useMutation({
-        mutationFn: postElementEvent,
-        onSuccess(data) {
-            displayInfo({
-                dialogText: ['Nowe zgłoszenie utworzone pomyślnie'],
-                confirmAction: () => {
-                    setDialog({ ...dialog, open: false })
-                    if (data.id) navigation(`/elementevent/${data.id}`)
-                    else navigation(`/events`)
-                },
-                confirmLabel: 'Ok',
-            })
-        },
-        onError(error: Error) {
-            displayInfo({
-                dialogText: ['Błąd poczas tworzenia nowego zlecenia', error.message],
-                confirmAction: () => {
-                    setDialog({ ...dialog, open: false })
-                },
-                confirmLabel: 'Ok',
-            })
-        },
-    })
-
-    const mutationUpdate = useMutation({
-        mutationFn: updateElementEvent,
-        onSuccess(data) {
-            queryData.refetch({
-                queryKey: ['elementEvent', { id: data.id }],
-            })
-            setReadonlyMode(true)
-            displayInfo({
-                dialogText: ['Zmiany w zgłoszeniu zostały zapisane'],
-                confirmAction: () => {
-                    setDialog({ ...dialog, open: false })
-                },
-                confirmLabel: 'Ok',
-            })
-        },
-        onError(error: Error) {
-            displayInfo({
-                dialogText: ['Błąd poczas zapisywania zgłoszenia', error.message],
-                confirmAction: () => {
-                    setDialog({ ...dialog, open: false })
-                },
-                confirmLabel: 'Ok',
-            })
-        },
-    })
-
-    const mutationDelete = useMutation({
-        mutationFn: deleteElementEvent,
-        onSuccess(data) {
-            displayInfo({
-                dialogText: ['Zgłoszenie zostało usunięte'],
-                confirmAction: () => {
-                    setDialog({ ...dialog, open: false })
-                    queryData.remove()
-                    navigation('/events')
-                },
-                confirmLabel: 'Ok',
-            })
-        },
-        onError(error: Error) {
-            displayInfo({
-                dialogText: ['Błąd poczas usuwania zgłoszenia', error.message],
-                confirmAction: () => {
-                    setDialog({ ...dialog, open: false })
-                },
-                confirmLabel: 'Ok',
-            })
-        },
-    })
-
-    const queryData = useQuery<ElementEvent, AxiosError>(
-        ['elementEvent', { id: params.id }],
-        async () => getElementEventDetails(params.id && params.id != 'new' ? params.id : ''),
-        {
-            enabled: !!params.id && params.id != 'new',
-        },
-    )
-
-    const queryElements = useQuery<Array<Element>, AxiosError>(['element-list'], getAllElements)
-
     const formik = useFormik({
         initialValues: initData,
-        validationSchema: elementEventValidationSchema,
+        validationSchema: getValidatinSchema(elementEventFormStructure, pageMode),
         onSubmit: handleSubmit,
     })
 
     const handleReset = () => {
         formik.resetForm()
-        formik.setValues(JSON.parse(JSON.stringify(initData)))
+        formik.setValues(initData)
     }
 
     const handleCancel = () => {
         handleReset()
-        setReadonlyMode(true)
+        setPageMode('read')
+    }
+
+    const handleOnEditSuccess = (data: any) => {
+        elementEventData.refetch({
+            queryKey: ['ElementEvent', { id: data.id }],
+        })
+        setPageMode('read')
     }
 
     useEffect(() => {
-        if (queryData.data) {
-            formik.setValues(JSON.parse(JSON.stringify(queryData.data)))
-            setInitData(JSON.parse(JSON.stringify(queryData.data)))
+        if (elementEventData.data) {
+            formik.setValues(elementEventData.data)
+            setInitData(elementEventData.data)
         }
-    }, [queryData.data])
+    }, [elementEventData.data])
 
     useEffect(() => {
         if (params.id == 'new') {
-            setReadonlyMode(false)
-            formik.setValues(JSON.parse(JSON.stringify(elementEventEmptyForm)))
-            setInitData(JSON.parse(JSON.stringify(elementEventEmptyForm)))
-        } else setReadonlyMode(true)
+            setPageMode('new')
+            formik.setValues(getInitValues(elementEventFormStructure))
+            setInitData(getInitValues(elementEventFormStructure))
+        } else {
+            setPageMode('read')
+        }
     }, [params.id])
 
-    const displayInfo = (params: DialogInfoParams) => {
-        setDialog({
-            ...params,
-            open: true,
-        })
-    }
-
+    const queryElements = useQuery<Array<Element>, AxiosError>(['element-list'], getAllElements, {
+        cacheTime: 15 * 60 * 1000,
+        staleTime: 10 * 60 * 1000,
+    })
     return (
         <>
-            <Box maxWidth={800} style={{ margin: 'auto', marginTop: '20px' }}>
-                <Paper sx={{ p: '10px' }}>
-                    {queryData.isLoading || queryData.isError ? (
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                minHeight: '200px',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            }}
-                        >
-                            {queryData.isLoading ? (
-                                <CircularProgress />
-                            ) : (
-                                <Typography>Nie znaleziono zgłoszenia</Typography>
-                            )}
-                        </Box>
+            <FormBox>
+                {/* TODO check if this return nice result  */}
+                <FormTitle
+                    text={
+                        pageMode == 'new'
+                            ? 'Nowa usterka elementu'
+                            : 'Usterka ' +
+                              queryElements.data
+                                  ?.filter((f) => f.id == formik.values['elementId'])
+                                  .map((x) => x.name + ' - ' + x.code)
+                    }
+                />
+                <FormPaper>
+                    {queriesStatus.result != 'isSuccess' ? (
+                        <QueryBoxStatus queriesStatus={queriesStatus} />
                     ) : (
                         <>
-                            <Grid container>
-                                <Grid
-                                    item
-                                    xs={6}
-                                    style={{
-                                        textAlign: 'end',
-                                    }}
-                                >
-                                    <FormLabel label="Zgłaszany element" formik={formik} id={'elementId'} />
-                                    {params.id !== 'new' ? (
-                                        <>
-                                            <FormLabel label="Data zgłoszenia" formik={formik} id={'eventDate'} />
-                                            <FormLabel label="Data przyjęcia" formik={formik} id={'movingDate'} />
-                                            <FormLabel label="Data zakończenia" formik={formik} id={'completionDate'} />
-                                            <FormLabel label="Status" formik={formik} id={'status'} />
-                                        </>
-                                    ) : null}
-                                    <FormLabel label="Opis" formik={formik} id={'description'} />
-                                    <FormLabel label="Ilość" formik={formik} id={'quantity'} />
-                                </Grid>
-                                <Divider
-                                    orientation="vertical"
-                                    variant="middle"
-                                    style={{ borderColor: theme.palette.primary.main }}
-                                    sx={{ mr: '-1px' }}
-                                    flexItem
-                                />
-                                <Grid item xs={6}>
-                                    <FormSelect //TODO: Autocomplete
-                                        id={'elementId'}
-                                        formik={formik}
-                                        readonly={readonlyMode}
-                                        options={formatArrayToOptions(
-                                            'id',
-                                            (x: Element) => x.name + ' - ' + x.code,
-                                            queryElements.data,
-                                        )}
-                                    />
-                                    {params.id !== 'new' ? (
-                                        /*TODO: Ukrywanie jeśli wartość jest null dla movingDate i completionDate*/
-                                        <>
-                                            <FormInput
-                                                id={'eventDate'}
-                                                formik={formik}
-                                                readonly
-                                                style={{ marginTop: !readonlyMode ? '12px' : '' }}
-                                                type="datetime-local"
-                                            />
-                                            <FormInput
-                                                id={'movingDate'}
-                                                formik={formik}
-                                                readonly
-                                                style={{ marginTop: !readonlyMode ? '12px' : '' }}
-                                                type="datetime-local"
-                                            />
-                                            <FormInput
-                                                id={'completionDate'}
-                                                formik={formik}
-                                                readonly
-                                                style={{ marginTop: !readonlyMode ? '12px' : '' }}
-                                                type="datetime-local"
-                                            />
-                                            <FormSelect /*TODO: Edycja dostępna dla roli: MANAGER i WAREHOUSE_MANAGER*/
-                                                id={'status'}
-                                                formik={formik}
-                                                readonly={readonlyMode}
-                                                options={eventStatusOptions()}
-                                            />
-                                        </>
-                                    ) : null}
-                                    <FormInput id={'description'} formik={formik} readonly={readonlyMode} />
-                                    <FormInput id={'quantity'} formik={formik} readonly={readonlyMode} />
-                                </Grid>
-                            </Grid>
-                            <Box sx={{ margin: '20px', gap: '20px', display: 'flex', flexDirection: 'row-reverse' }}>
-                                {readonlyMode && params.id != 'new' ? (
-                                    <>
-                                        <Button
-                                            color="primary"
-                                            startIcon={<EditIcon />}
-                                            variant="contained"
-                                            type="submit"
-                                            style={{ width: 120 }}
-                                            onClick={() => setReadonlyMode(false)}
-                                        >
-                                            Edytuj
-                                        </Button>
-                                        <Button /*TODO: Dostępne dla roli: MANAGER i WAREHOUSE_MANAGER*/
-                                            color="error"
-                                            startIcon={<DeleteIcon />}
-                                            variant="contained"
-                                            type="submit"
-                                            style={{ width: 120 }}
-                                            onClick={handleDelete}
-                                        >
-                                            Usuń
-                                        </Button>
-                                    </>
-                                ) : (
-                                    <>
-                                        <Button
-                                            color="primary"
-                                            startIcon={<SaveIcon />}
-                                            variant="contained"
-                                            onClick={formik.submitForm}
-                                            style={{ width: 120 }}
-                                        >
-                                            Zapisz
-                                        </Button>
-                                        <Button
-                                            color="primary"
-                                            startIcon={<ReplayIcon style={{ transform: 'rotate(-0.25turn)' }} />}
-                                            style={{ color: theme.palette.primary.main, width: 120 }}
-                                            variant="outlined"
-                                            onClick={handleReset}
-                                        >
-                                            Reset
-                                        </Button>
-                                        {params.id != 'new' && (
-                                            <Button
-                                                color="primary"
-                                                startIcon={<CloseIcon style={{ transform: 'rotate(-0.25turn)' }} />}
-                                                style={{ color: theme.palette.primary.main, width: 120 }}
-                                                variant="outlined"
-                                                onClick={handleCancel}
-                                            >
-                                                Anuluj
-                                            </Button>
-                                        )}
-                                    </>
-                                )}
-                            </Box>
+                            <FormStructure
+                                formStructure={elementEventFormStructure}
+                                formik={formik}
+                                pageMode={pageMode}
+                            />
+                            <FormButtons
+                                id={params.id}
+                                onCancel={handleCancel}
+                                onDelete={handleDelete}
+                                onEdit={() => setPageMode('edit')}
+                                onReset={handleReset}
+                                onSubmit={formik.submitForm}
+                                readonlyMode={pageMode == 'read'}
+                            />
                         </>
                     )}
-                </Paper>
-            </Box>
-            {dialog.open && <DialogInfo {...dialog} />}
+                </FormPaper>
+            </FormBox>
         </>
     )
 }

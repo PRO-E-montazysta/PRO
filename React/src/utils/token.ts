@@ -3,7 +3,7 @@ import jwt_decode from 'jwt-decode'
 
 export const getToken = (): string | undefined => {
     const tokenString = localStorage.getItem('token')
-    if (!!tokenString) {
+    if (!!tokenString && checkToken(tokenString)) {
         return tokenString
     } else {
         return undefined
@@ -48,8 +48,12 @@ export const isExpire = (token?: string) => {
     return false
 }
 
-export const checkToken = () => {
-    if (isExpire(getToken())) logout()
+export const checkToken = (token: string) => {
+    if (isExpire(token)) {
+        logout()
+        return false
+    }
+    return true
 }
 
 export const logout = () => {

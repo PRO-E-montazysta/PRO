@@ -1,4 +1,4 @@
-import { Filter, FilterFormProps } from '../../components/table/filter/TableFilter'
+import { Filter } from '../../components/table/filter/TableFilter'
 import FatTable from '../../components/table/FatTable'
 import { useState } from 'react'
 import { useQuery } from 'react-query'
@@ -19,7 +19,6 @@ const Clients = () => {
     const queryClients = useQuery<Array<Client>, AxiosError>(['clients', filterParams], async () =>
         getFilteredClients({ queryParams: filterParams }),
     )
-
 
     const filter: Filter = {
         formik: useFormik({
