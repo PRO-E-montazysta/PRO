@@ -89,7 +89,7 @@ const LoginForm = () => {
     const dispalyError = (error: any) => {
         if (error == 'AxiosError: Network Error') {
             return 'Skontaktuj się z administratorem systemu!'
-        } else if (error.response.status === 401) {
+        } else if (error.response.status === 400) {
             return 'Błędne dane logowania!'
         } else if (error.response.status === 402) {
             return 'Firma zawieszona, skontaktuj się z administratorem systemu!'

@@ -55,7 +55,7 @@ public class AuthUtils {
 
         //Check if user exists
         if(appUser == null){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
         //Check if user is Cloud_Admin
