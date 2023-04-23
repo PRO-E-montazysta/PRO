@@ -353,19 +353,19 @@ public class DataSeeding {
         DemandAdHoc demandAdHoc1 = addDemandAdHocFromModel(new DemandAdHoc(null, "Test DemandAdHoc 1",
                 null, null, null, null, null,
                 null, new ArrayList<>(), new ArrayList<>(), warehouseManager1, warehouseman1,
-                specialist1, manager1, foreman1, new ArrayList<>()));
+                specialist1, manager1, foreman1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         DemandAdHoc demandAdHoc2 = addDemandAdHocFromModel(new DemandAdHoc(null, "Test DemandAdHoc 2",
                 null, null, null, null, null,
                 null, new ArrayList<>(), new ArrayList<>(), warehouseManager1, warehouseman1,
-                specialist1, manager1, foreman1, new ArrayList<>()));
+                specialist1, manager1, foreman1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         DemandAdHoc demandAdHoc3 = addDemandAdHocFromModel(new DemandAdHoc(null, "Test DemandAdHoc 3",
                 null, null, null, null, null,
                 null, new ArrayList<>(), new ArrayList<>(), warehouseManager2, warehouseman2,
-                specialist2, manager2, foreman2, new ArrayList<>()));
+                specialist2, manager2, foreman2, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         DemandAdHoc demandAdHoc4 = addDemandAdHocFromModel(new DemandAdHoc(null, "Test DemandAdHoc 4",
                 null, null, null, null, null,
                 null, new ArrayList<>(), new ArrayList<>(), warehouseManager2, warehouseman2,
-                specialist2, manager2, foreman2, new ArrayList<>()));
+                specialist2, manager2, foreman2, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
         Warehouse warehouse1 = addWarehouseFromModel(new Warehouse(null, "Test Warehouse 1", "Warehouse 1",
                 "8:00 - 16:00", company1, null, new ArrayList<>(), new ArrayList<>()));

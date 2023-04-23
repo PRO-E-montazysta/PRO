@@ -55,5 +55,11 @@ public class DemandAdHoc {
     @ManyToMany(mappedBy = "demandsAdHoc")
     private List<OrderStage> ordersStages;
 
+    @OneToMany(mappedBy = "demandAdHoc")
+    private List<ToolsPlannedNumber> listOfToolsPlannedNumber;
+
+    @OneToMany(mappedBy = "demandAdHoc")
+    private List<ElementsPlannedNumber> listOfElementsPlannedNumber;
+
     //TODO: relationship to OrderStage needed (many to many) should be replaced with association table in diagram
 }

@@ -27,4 +27,7 @@ public class ToolsPlannedNumber {
 
     @ManyToOne
     private OrderStage orderStage;
+
+    @ManyToOne
+    private DemandAdHoc demandAdHoc;
 }
