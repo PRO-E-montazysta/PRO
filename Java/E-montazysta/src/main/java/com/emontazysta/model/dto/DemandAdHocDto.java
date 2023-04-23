@@ -32,4 +32,6 @@ public class DemandAdHocDto {
     private Long managerId;
     private Long foremanId;
     private List<Long> ordersStages;
+    private List<Long> listOfToolsPlannedNumber;
+    private List<Long> listOfElementsPlannedNumber;
 }

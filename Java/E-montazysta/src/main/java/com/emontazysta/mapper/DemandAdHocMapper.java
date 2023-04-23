@@ -1,18 +1,8 @@
 package com.emontazysta.mapper;
 
-import com.emontazysta.model.DemandAdHoc;
-import com.emontazysta.model.ElementReturnRelease;
-import com.emontazysta.model.OrderStage;
-import com.emontazysta.model.ToolRelease;
+import com.emontazysta.model.*;
 import com.emontazysta.model.dto.DemandAdHocDto;
-import com.emontazysta.repository.ElementReturnReleaseRepository;
-import com.emontazysta.repository.ForemanRepository;
-import com.emontazysta.repository.ManagerRepository;
-import com.emontazysta.repository.OrderStageRepository;
-import com.emontazysta.repository.SpecialistRepository;
-import com.emontazysta.repository.ToolReleaseRepository;
-import com.emontazysta.repository.WarehouseManagerRepository;
-import com.emontazysta.repository.WarehousemanRepository;
+import com.emontazysta.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +22,10 @@ public class DemandAdHocMapper {
     private final ManagerRepository managerRepository;
     private final ForemanRepository foremanRepository;
     private final OrderStageRepository orderStageRepository;
+    private final ToolsPlannedNumberRepository toolsPlannedNumberRepository;
+    private final ToolsPlannedNumberMapper toolsPlannedNumberMapper;
+    private final ElementsPlannedNumberRepository elementsPlannedNumberRepository;
+    private final ElementsPlannedNumberMapper elementsPlannedNumberMapper;
 
     public DemandAdHocDto toDto(DemandAdHoc demandAdHoc) {
         return DemandAdHocDto.builder()
@@ -51,6 +45,8 @@ public class DemandAdHocMapper {
                 .managerId(demandAdHoc.getManager() == null ? null : demandAdHoc.getManager().getId())
                 .foremanId(demandAdHoc.getForeman() == null ? null : demandAdHoc.getForeman().getId())
                 .ordersStages(demandAdHoc.getOrdersStages().stream().map(OrderStage::getId).collect(Collectors.toList()))
+                .listOfToolsPlannedNumber(demandAdHoc.getListOfToolsPlannedNumber().stream().map(ToolsPlannedNumber::getId).collect(Collectors.toList()))
+                .listOfElementsPlannedNumber(demandAdHoc.getListOfElementsPlannedNumber().stream().map(ElementsPlannedNumber::getId).collect(Collectors.toList()))
                 .build();
     }
 
@@ -64,6 +60,12 @@ public class DemandAdHocMapper {
 
         List<OrderStage> orderStageList = new ArrayList<>();
         demandAdHocDto.getOrdersStages().forEach(orderStageId -> orderStageList.add(orderStageRepository.getReferenceById(orderStageId)));
+
+        List<ToolsPlannedNumber> toolTypeList = new ArrayList<>();
+        demandAdHocDto.getListOfToolsPlannedNumber().forEach(toolTypeId -> toolTypeList.add(toolsPlannedNumberRepository.getReferenceById(toolTypeId)));
+
+        List<ElementsPlannedNumber> elementList = new ArrayList<>();
+        demandAdHocDto.getListOfElementsPlannedNumber().forEach(elementId -> elementList.add(elementsPlannedNumberRepository.getReferenceById(elementId)));
 
         return DemandAdHoc.builder()
                 .id(demandAdHocDto.getId())
@@ -82,6 +84,8 @@ public class DemandAdHocMapper {
                 .manager(demandAdHocDto.getManagerId() == null ? null : managerRepository.getReferenceById(demandAdHocDto.getManagerId()))
                 .foreman(demandAdHocDto.getForemanId() == null ? null : foremanRepository.getReferenceById(demandAdHocDto.getForemanId()))
                 .ordersStages(orderStageList)
+                .listOfToolsPlannedNumber(toolTypeList)
+                .listOfElementsPlannedNumber(elementList)
                 .build();
     }
 }
