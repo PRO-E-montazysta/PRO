@@ -23,10 +23,9 @@ public class DemandAdHoc {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String description;
-    private String comments;
-    private LocalDateTime creationTime;
-    private LocalDateTime readByWarehousemanTime;
-    private LocalDateTime realisationTime;
+    private LocalDateTime createdAt;
+    private LocalDateTime readByWarehousemanTime; //DELETE?
+    private LocalDateTime realisationTime; //DELETE?
     private String warehousemanComment; // TODO: should be in other model if we want to have info about warehouseman + timestamp
     private String specialistComment; // TODO: should be in other model if we want to have info about specialist + timestamp
     // TODO: status values not defined
@@ -38,22 +37,22 @@ public class DemandAdHoc {
     private List<ElementReturnRelease> elementReturnReleases;
 
     @ManyToOne
-    private WarehouseManager warehouseManager;
+    private WarehouseManager warehouseManager; //acceptedBy
 
     @ManyToOne
-    private Warehouseman warehouseman;
+    private Warehouseman warehouseman; //DELETE?
 
     @ManyToOne
-    private Specialist specialist;
+    private Specialist specialist; //acceptedBy
 
     @ManyToOne
-    private Manager manager;
+    private Manager manager; //DELETE?
 
     @ManyToOne
-    private Foreman foreman;
+    private Foreman createdBy;
 
-    @ManyToMany(mappedBy = "demandsAdHoc")
-    private List<OrderStage> ordersStages;
+    @ManyToOne
+    private OrderStage orderStage;
 
     @OneToMany(mappedBy = "demandAdHoc")
     private List<ToolsPlannedNumber> listOfToolsPlannedNumber;

@@ -31,8 +31,7 @@ public class DemandAdHocMapper {
         return DemandAdHocDto.builder()
                 .id(demandAdHoc.getId())
                 .description(demandAdHoc.getDescription())
-                .comments(demandAdHoc.getComments())
-                .creationTime(demandAdHoc.getCreationTime())
+                .createdAt(demandAdHoc.getCreatedAt())
                 .readByWarehousemanTime(demandAdHoc.getReadByWarehousemanTime())
                 .realisationTime(demandAdHoc.getRealisationTime())
                 .warehousemanComment(demandAdHoc.getWarehousemanComment())
@@ -43,8 +42,8 @@ public class DemandAdHocMapper {
                 .warehousemanId(demandAdHoc.getWarehouseman() == null ? null : demandAdHoc.getWarehouseman().getId())
                 .specialistId(demandAdHoc.getSpecialist() == null ? null : demandAdHoc.getSpecialist().getId())
                 .managerId(demandAdHoc.getManager() == null ? null : demandAdHoc.getManager().getId())
-                .foremanId(demandAdHoc.getForeman() == null ? null : demandAdHoc.getForeman().getId())
-                .ordersStages(demandAdHoc.getOrdersStages().stream().map(OrderStage::getId).collect(Collectors.toList()))
+                .createdById(demandAdHoc.getCreatedBy() == null ? null : demandAdHoc.getCreatedBy().getId())
+                .orderStageId(demandAdHoc.getOrderStage() == null ? null : demandAdHoc.getOrderStage().getId())
                 .listOfToolsPlannedNumber(demandAdHoc.getListOfToolsPlannedNumber().stream().map(ToolsPlannedNumber::getId).collect(Collectors.toList()))
                 .listOfElementsPlannedNumber(demandAdHoc.getListOfElementsPlannedNumber().stream().map(ElementsPlannedNumber::getId).collect(Collectors.toList()))
                 .build();
@@ -58,9 +57,6 @@ public class DemandAdHocMapper {
         List<ElementReturnRelease> elementReturnReleaseList = new ArrayList<>();
         demandAdHocDto.getElementReturnReleases().forEach(elementReturnReleaseId -> elementReturnReleaseList.add(elementReturnReleaseRepository.getReferenceById(elementReturnReleaseId)));
 
-        List<OrderStage> orderStageList = new ArrayList<>();
-        demandAdHocDto.getOrdersStages().forEach(orderStageId -> orderStageList.add(orderStageRepository.getReferenceById(orderStageId)));
-
         List<ToolsPlannedNumber> toolTypeList = new ArrayList<>();
         demandAdHocDto.getListOfToolsPlannedNumber().forEach(toolTypeId -> toolTypeList.add(toolsPlannedNumberRepository.getReferenceById(toolTypeId)));
 
@@ -70,8 +66,7 @@ public class DemandAdHocMapper {
         return DemandAdHoc.builder()
                 .id(demandAdHocDto.getId())
                 .description(demandAdHocDto.getDescription())
-                .comments(demandAdHocDto.getComments())
-                .creationTime(demandAdHocDto.getCreationTime())
+                .createdAt(demandAdHocDto.getCreatedAt())
                 .readByWarehousemanTime(demandAdHocDto.getReadByWarehousemanTime())
                 .realisationTime(demandAdHocDto.getRealisationTime())
                 .warehousemanComment(demandAdHocDto.getWarehousemanComment())
@@ -82,8 +77,8 @@ public class DemandAdHocMapper {
                 .warehouseman(demandAdHocDto.getWarehousemanId() == null ? null : warehousemanRepository.getReferenceById(demandAdHocDto.getWarehousemanId()))
                 .specialist(demandAdHocDto.getSpecialistId() == null ? null : specialistRepository.getReferenceById(demandAdHocDto.getSpecialistId()))
                 .manager(demandAdHocDto.getManagerId() == null ? null : managerRepository.getReferenceById(demandAdHocDto.getManagerId()))
-                .foreman(demandAdHocDto.getForemanId() == null ? null : foremanRepository.getReferenceById(demandAdHocDto.getForemanId()))
-                .ordersStages(orderStageList)
+                .createdBy(demandAdHocDto.getCreatedById() == null ? null : foremanRepository.getReferenceById(demandAdHocDto.getCreatedById()))
+                .orderStage(demandAdHocDto.getOrderStageId() == null ? null : orderStageRepository.getReferenceById(demandAdHocDto.getOrderStageId()))
                 .listOfToolsPlannedNumber(toolTypeList)
                 .listOfElementsPlannedNumber(elementList)
                 .build();

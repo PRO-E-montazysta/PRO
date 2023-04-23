@@ -39,7 +39,7 @@ public class DemandAdHocServiceImpl implements DemandAdHocService {
     public DemandAdHocDto add(DemandAdHocDto demandAdHocDto) {
 
         DemandAdHoc demandAdHoc = demandAdHocMapper.toEntity(demandAdHocDto);
-        demandAdHoc.setCreationTime(LocalDateTime.now());
+        demandAdHoc.setCreatedAt(LocalDateTime.now());
         return demandAdHocMapper.toDto(repository.save(demandAdHoc));
     }
 
@@ -51,11 +51,10 @@ public class DemandAdHocServiceImpl implements DemandAdHocService {
     @Override
     @Transactional
     public DemandAdHocDto update(Long id, DemandAdHocDto demandAdHocDto) {
-
         DemandAdHoc updatedDemandAdHoc = demandAdHocMapper.toEntity(demandAdHocDto);
         DemandAdHoc demandAdHocDb = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+
         demandAdHocDb.setDescription(updatedDemandAdHoc.getDescription());
-        demandAdHocDb.setComments(updatedDemandAdHoc.getComments());
         demandAdHocDb.setReadByWarehousemanTime(updatedDemandAdHoc.getReadByWarehousemanTime());
         demandAdHocDb.setRealisationTime(updatedDemandAdHoc.getRealisationTime());
         demandAdHocDb.setWarehousemanComment(updatedDemandAdHoc.getWarehousemanComment());

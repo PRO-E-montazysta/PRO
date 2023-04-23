@@ -18,8 +18,7 @@ public class DemandAdHocDto {
     private Long id;
     @NotBlank(message = "Description cannot be empty")
     private String description;
-    private String comments;
-    private LocalDateTime creationTime;
+    private LocalDateTime createdAt;
     private LocalDateTime readByWarehousemanTime;
     private LocalDateTime realisationTime;
     private String warehousemanComment;
@@ -30,8 +29,8 @@ public class DemandAdHocDto {
     private Long warehousemanId;
     private Long specialistId;
     private Long managerId;
-    private Long foremanId;
-    private List<Long> ordersStages;
+    private Long createdById;
+    private Long orderStageId;
     private List<Long> listOfToolsPlannedNumber;
     private List<Long> listOfElementsPlannedNumber;
 }
