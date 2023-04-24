@@ -20,12 +20,9 @@ spec:
         ports:
           - name: http
             containerPort: 8080
-        environment:
+        env:
           - name: DB_URL
-            valueFrom:
-              secretKeyRef:
-                name: postgres-secret
-                key: DB_URL
+            value: jdbc:postgresql://postgres:5432/emontazystadb
           - name: DB_USER
             valueFrom:
               secretKeyRef:
