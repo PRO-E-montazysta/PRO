@@ -4,6 +4,7 @@ import { Client } from '../../types/model/Client'
 import * as yup from 'yup'
 
 import { AppSize } from '../../hooks/useBreakpoints'
+import { FormInputProps } from '../../types/form'
 export const headCells: Array<HeadCell<Client>> = [
     {
         type: 'string',
@@ -39,15 +40,21 @@ export const filterInitStructure: Array<FilterInputType> = [
     },
 ]
 
-export const emptyForm = {
-    id: null,
-    name: '',
-    contactDetails: '',
-    companyId: '',
-    orders: [],
+export const useFormStructure = (): Array<FormInputProps> => {
+    return [
+        {
+            label: 'Nazwa klienta',
+            id: 'name',
+            initValue: '',
+            type: 'input',
+            validation: yup.string().min(3, 'Nazwa musi zaweirać co najmniej 3 znaki').required('Wprowadź nazwę'),
+        },
+        {
+            label: 'Dane kontaktowe',
+            id: 'contactDetails',
+            initValue: '',
+            type: 'input',
+            validation: yup.string().required('Wprowadź dane kontaktowe'),
+        },
+    ]
 }
-
-export const validationSchema = yup.object({
-    name: yup.string().min(3, 'Nazwa musi zaweirać co najmniej 3 znaki').required('Wprowadź nazwę'),
-    contactDetails: yup.string().required('Wprowadź dane kontaktowe'),
-})
