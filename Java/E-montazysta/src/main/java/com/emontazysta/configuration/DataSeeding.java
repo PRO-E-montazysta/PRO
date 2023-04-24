@@ -299,18 +299,18 @@ public class DataSeeding {
         Client client4 = addClientFromModel(new Client(null, "Test Client 4",
                 "em@i.l", company1, new ArrayList<>()));
 
-        Location location1 = addLocationFromModel(new Location(null, "Test Location 1", 1.1,
+        Location location1 = addLocationFromModel(new Location(null, 1.1,
                 1.1, "Miasto1", "Miła", "1",
-                "1A", "01-123", new ArrayList<>(), new ArrayList<>()));
-        Location location2 = addLocationFromModel(new Location(null, "Test Location 2", 1.1,
+                "1A", "01-123", null, null));
+        Location location2 = addLocationFromModel(new Location(null, 1.1,
                 1.1, "Miasto1", "Miła", "1",
-                "1B", "01-123", new ArrayList<>(), new ArrayList<>()));
-        Location location3 = addLocationFromModel(new Location(null, "Test Location 3", 1.1,
+                "1B", "01-123", null, null));
+        Location location3 = addLocationFromModel(new Location(null, 1.1,
                 1.1, "Miasto2", "Ładna", "1",
-                null, "01-124", new ArrayList<>(), new ArrayList<>()));
-        Location location4 = addLocationFromModel(new Location(null, "Test Location 4", 1.1,
+                null, "01-124", null, null));
+        Location location4 = addLocationFromModel(new Location(null, 1.1,
                 1.1, "Miasto3", "Pogodna", "1",
-                null, null, new ArrayList<>(), new ArrayList<>()));
+                null, null, null, null));
 
         Orders order1 = addOrdersFromModel(new Orders(null, "Test Order 1 - from Client 1",
                 TypeOfStatus.PLANNED, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.IMPORTANT,
@@ -326,7 +326,7 @@ public class DataSeeding {
                 new ArrayList<>()));
         Orders order4 = addOrdersFromModel(new Orders(null, "Test Order 4 - from Client 4",
                 TypeOfStatus.FINISHED, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.NORMAL,
-                company4, null, null, null, null, location4, client4,
+                company4, null, null, null, null, null, client4,
                 new ArrayList<>(), new ArrayList<>()));
 
         OrderStage orderStage1 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 1",

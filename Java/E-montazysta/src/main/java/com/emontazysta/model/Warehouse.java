@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Data
@@ -32,7 +31,7 @@ public class Warehouse {
     @ManyToOne
     private Company company;
 
-    @ManyToOne
+    @OneToOne
     private Location location;
 
     @OneToMany(mappedBy = "warehouse")

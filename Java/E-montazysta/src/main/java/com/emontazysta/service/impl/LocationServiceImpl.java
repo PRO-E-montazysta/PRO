@@ -45,10 +45,9 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public LocationDto update(Long id, LocationDto locationDto) {
-
         Location updatedLocation = locationMapper.toEntity(locationDto);
         Location location = repository.findById(id).orElseThrow(EntityNotFoundException::new);
-        location.setName(updatedLocation.getName());
+
         location.setXCoordinate(updatedLocation.getXCoordinate());
         location.setYCoordinate(updatedLocation.getYCoordinate());
         location.setCity(updatedLocation.getCity());
@@ -56,8 +55,6 @@ public class LocationServiceImpl implements LocationService {
         location.setPropertyNumber(updatedLocation.getPropertyNumber());
         location.setApartmentNumber(updatedLocation.getApartmentNumber());
         location.setZipCode(updatedLocation.getZipCode());
-        location.setOrders(updatedLocation.getOrders());
-        location.setWarehouses(updatedLocation.getWarehouses());
 
         return locationMapper.toDto(repository.save(location));
     }

@@ -54,7 +54,7 @@ public class Orders {
     @ManyToOne
     private SalesRepresentative salesRepresentative;
 
-    @ManyToOne
+    @OneToOne
     private Location location;
 
     @ManyToOne
