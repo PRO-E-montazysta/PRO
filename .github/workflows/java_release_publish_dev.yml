@@ -6,7 +6,7 @@ on:
       - 'master'
     paths:
       - Java/**
-
+  workflow_dispatch:
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -60,6 +60,9 @@ jobs:
         with:
           namespace: development
           manifests: |
+            Java/E-montazysta/.build/postgres-deployment.yaml
+            Java/E-montazysta/.build/postgres-service.yaml
+            Java/E-montazysta/.build/postgres-pvc.yaml
             Java/E-montazysta/.build/deployment.yml
             Java/E-montazysta/.build/ingressroute_dev.yml
             Java/E-montazysta/.build/middleware.yml

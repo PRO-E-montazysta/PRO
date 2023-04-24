@@ -10,16 +10,6 @@ COPY src src
 RUN mvn install --no-transfer-progress -DskipTests
 
 FROM builder as dev-envs
-
-RUN apt-get update \
-    && apt-get install -y git
-
-RUN useradd -s /bin/bash -m vscode \
-    && groupadd docker \
-    && usermod -aG docker vscode
-
-# install Docker tools (cli, buildx, compose)
-COPY --from=gloursdocker/docker / /
 CMD ["mvn", "spring-boot:run"]
 
 FROM builder as prepare-production
