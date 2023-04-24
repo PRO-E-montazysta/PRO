@@ -2,6 +2,7 @@ package com.emontazysta.mapper;
 
 import com.emontazysta.model.*;
 import com.emontazysta.model.dto.DemandAdHocDto;
+import com.emontazysta.model.dto.filterDto.DemandAdHocFilterDto;
 import com.emontazysta.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -81,6 +82,16 @@ public class DemandAdHocMapper {
                 .orderStage(demandAdHocDto.getOrderStageId() == null ? null : orderStageRepository.getReferenceById(demandAdHocDto.getOrderStageId()))
                 .listOfToolsPlannedNumber(toolTypeList)
                 .listOfElementsPlannedNumber(elementList)
+                .build();
+    }
+
+    public DemandAdHocFilterDto toFilerDto(DemandAdHoc demandAdHoc) {
+        return DemandAdHocFilterDto.builder()
+                .id(demandAdHoc.getId())
+                .description(demandAdHoc.getDescription())
+                .createdAt(demandAdHoc.getCreatedAt())
+                .createdByName(demandAdHoc.getCreatedBy().getFirstName() + " " + demandAdHoc.getCreatedBy().getLastName())
+                .orderStageName(demandAdHoc.getOrderStage().getName())
                 .build();
     }
 }

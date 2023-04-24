@@ -1,12 +1,17 @@
 package com.emontazysta.controller;
 
+import com.emontazysta.model.dto.ClientDto;
 import com.emontazysta.model.dto.DemandAdHocDto;
+import com.emontazysta.model.dto.filterDto.DemandAdHocFilterDto;
+import com.emontazysta.model.searchcriteria.ClientSearchCriteria;
+import com.emontazysta.model.searchcriteria.DemandAdHocSearchCriteria;
 import com.emontazysta.service.DemandAdHocService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
@@ -58,5 +64,11 @@ public class DemandAdHocController {
     @Operation(description = "Allows to edit Demand Ad Hoc by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public DemandAdHocDto updateDemandAdHoc(@PathVariable Long id, @Valid @RequestBody DemandAdHocDto demandAdHoc) {
         return demandAdHocService.update(id, demandAdHoc);
+    }
+
+    @GetMapping("/filter")
+    @Operation(description = "Return filtered Orders by given parameters.", security = @SecurityRequirement(name = "bearer-key"))
+    public ResponseEntity<List<DemandAdHocFilterDto>> filter(DemandAdHocSearchCriteria demandAdHocSearchCriteria){
+        return new ResponseEntity<>(demandAdHocService.getFiltered(demandAdHocSearchCriteria), HttpStatus.OK);
     }
 }

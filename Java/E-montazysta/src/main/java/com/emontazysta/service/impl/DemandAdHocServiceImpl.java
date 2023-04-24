@@ -3,7 +3,10 @@ package com.emontazysta.service.impl;
 import com.emontazysta.mapper.DemandAdHocMapper;
 import com.emontazysta.model.DemandAdHoc;
 import com.emontazysta.model.dto.DemandAdHocDto;
+import com.emontazysta.model.dto.filterDto.DemandAdHocFilterDto;
+import com.emontazysta.model.searchcriteria.DemandAdHocSearchCriteria;
 import com.emontazysta.repository.DemandAdHocRepository;
+import com.emontazysta.repository.criteria.DemandAdHocCriteriaRepository;
 import com.emontazysta.service.DemandAdHocService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,7 @@ public class DemandAdHocServiceImpl implements DemandAdHocService {
 
     private final DemandAdHocRepository repository;
     private final DemandAdHocMapper demandAdHocMapper;
+    private final DemandAdHocCriteriaRepository demandAdHocCriteriaRepository;
 
     @Override
     public List<DemandAdHocDto> getAll() {
@@ -61,5 +65,10 @@ public class DemandAdHocServiceImpl implements DemandAdHocService {
         demandAdHocDb.setSpecialistComment(updatedDemandAdHoc.getSpecialistComment());
 
         return demandAdHocMapper.toDto(demandAdHocDb);
+    }
+
+    @Override
+    public List<DemandAdHocFilterDto> getFiltered(DemandAdHocSearchCriteria demandAdHocSearchCriteria) {
+        return demandAdHocCriteriaRepository.findAllWithFilters(demandAdHocSearchCriteria);
     }
 }
