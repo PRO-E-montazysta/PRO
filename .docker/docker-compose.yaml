@@ -37,7 +37,7 @@ services:
       - POSTGRES_DB=emontazystadb
       - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "emontazysta-db"]
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "emontazystadb"]
       interval: 3s
       timeout: 5s
       retries: 10
