@@ -66,19 +66,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public void delete(Long id) {
-<<<<<<< HEAD
-
-//        Company company = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
-//        company.setDeleted(true);
-//        company.getWarehouses().forEach(warehouse -> warehouse.setCompany(null));
-//        company.getOrders().forEach(order -> order.setCompany(null));
-//        company.getClients().forEach(client -> client.setCompany(null));
-//        company.getEmployments().forEach(employment -> employment.setCompany(null));
-//        repository.save(company);
-        repository.deleteById(id);
-=======
         companyRepository.deleteById(id);
->>>>>>> master
     }
 
     @Override

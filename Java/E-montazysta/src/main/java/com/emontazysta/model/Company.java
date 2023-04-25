@@ -23,7 +23,8 @@ import java.util.List;
 public class Company {
 
     public Company(Long id, String companyName, LocalDate createdAt, CompanyStatus status, String statusReason,
-                   List<Warehouse> warehouses, List<Orders> orders, List<Client> clients, List<Employment> employments) {
+                   List<Warehouse> warehouses, List<Orders> orders, List<Client> clients, List<Employment> employments,
+                   List<ToolType> toolTypes) {
         this.id = id;
         this.companyName = companyName;
         this.createdAt = createdAt;
@@ -33,6 +34,7 @@ public class Company {
         this.orders = orders;
         this.clients = clients;
         this.employments = employments;
+        this.toolTypes = toolTypes;
     }
 
     @Id

@@ -23,13 +23,14 @@ import java.util.List;
 public class ToolType {
 
     public ToolType(Long id, String name, int criticalNumber, List<Attachment> attachments,
-                    List<OrderStage> orderStages, List<Tool> tools) {
+                    List<OrderStage> orderStages, List<Tool> tools, Company company) {
         this.id = id;
         this.name = name;
         this.criticalNumber = criticalNumber;
         this.attachments = attachments;
         this.orderStages = orderStages;
         this.tools = tools;
+        this.company = company;
     }
 
     @Id

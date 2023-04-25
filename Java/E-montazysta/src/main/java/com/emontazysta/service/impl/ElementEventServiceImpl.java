@@ -14,12 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-<<<<<<< HEAD
-import javax.persistence.EntityNotFoundException;
-=======
 import java.time.LocalDateTime;
 import java.util.ArrayList;
->>>>>>> master
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -70,14 +66,11 @@ public class ElementEventServiceImpl implements ElementEventService {
 
     @Override
     public void delete(Long id) {
-<<<<<<< HEAD
-=======
         ElementEvent elementEvent = repository.findById(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         if(!elementEvent.getElement().getElementInWarehouses().stream().findFirst().get().getWarehouse()
                 .getCompany().getId().equals(authUtils.getLoggedUserCompanyId()))
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
->>>>>>> master
 
         repository.deleteById(id);
     }

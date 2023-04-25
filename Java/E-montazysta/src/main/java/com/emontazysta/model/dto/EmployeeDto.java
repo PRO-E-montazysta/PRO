@@ -16,12 +16,7 @@ import java.util.List;
 public class EmployeeDto extends AppUserDto {
 
     private Long id;
-<<<<<<< HEAD
-    @NotBlank(message = "Phone cannot be empty")
-    @Pattern(regexp ="^\\+?[0-9]{10,}$|^\\+?[0-9]{1,3}[-\\s()]*[0-9]{6,}$", message = "Phone number has to be valid") // TODO custom annotation
-=======
     @PlPhone
->>>>>>> master
     private String phone;
     @PESEL(message = "PESEL is not valid")
     @NotBlank(message = "PESEL cannot be empty")

@@ -10,9 +10,14 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,17 +31,17 @@ import java.util.List;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class OrderStage {
 
-    public OrderStage(Long id, String name, OrderStatus status, BigDecimal price, Integer order, LocalDate plannedEndDate,
-                      LocalDateTime startDate, LocalDateTime endDate, long plannedDurationTime, int plannedFittersNumber,
-                      int minimumImagesNumber, List<Fitter> assignedTo, Foreman managedBy, List<Comment> comments,
-                      List<ToolRelease> toolReleases, List<ElementReturnRelease> elementReturnReleases, Orders orders,
-                      List<Attachment> attachments, List<Notification> notifications, List<ToolType> tools,
+    public OrderStage(Long id, String name, OrderStatus status, BigDecimal price, LocalDateTime plannedStartDate,
+                      LocalDateTime plannedEndDate, LocalDateTime startDate, LocalDateTime endDate, long plannedDurationTime,
+                      int plannedFittersNumber, int minimumImagesNumber, List<Fitter> assignedTo, Foreman managedBy,
+                      List<Comment> comments, List<ToolRelease> toolReleases, List<ElementReturnRelease> elementReturnReleases,
+                      Orders orders, List<Attachment> attachments, List<Notification> notifications, List<ToolType> tools,
                       List<Element> elements, List<DemandAdHoc> demandsAdHoc) {
         this.id = id;
         this.name = name;
         this.status = status;
         this.price = price;
-        this.order = order;
+        this.plannedStartDate = plannedStartDate;
         this.plannedEndDate = plannedEndDate;
         this.startDate = startDate;
         this.endDate = endDate;

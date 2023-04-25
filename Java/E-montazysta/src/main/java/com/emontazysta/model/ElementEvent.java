@@ -25,7 +25,7 @@ import java.util.List;
 public class ElementEvent {
 
     public ElementEvent(Long id, LocalDateTime eventDate, LocalDateTime movingDate, LocalDateTime completionDate,
-                        String description, TypeOfStatus status, int quantity, Manager acceptedBy, AppUser updatedBy,
+                        String description, EventStatus status, int quantity, Manager acceptedBy, AppUser updatedBy,
                         Element element, List<Attachment> attachments) {
         this.id = id;
         this.eventDate = eventDate;
@@ -35,7 +35,7 @@ public class ElementEvent {
         this.status = status;
         this.quantity = quantity;
         this.acceptedBy = acceptedBy;
-        this.updatedBy = updatedBy;
+        this.createdBy = updatedBy;
         this.element = element;
         this.attachments = attachments;
     }
