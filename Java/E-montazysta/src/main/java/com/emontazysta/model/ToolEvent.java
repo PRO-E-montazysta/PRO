@@ -1,5 +1,6 @@
 package com.emontazysta.model;
 
+import com.emontazysta.enums.EventStatus;
 import com.emontazysta.enums.TypeOfStatus;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -25,7 +26,7 @@ import java.util.List;
 public class ToolEvent {
 
     public ToolEvent(Long id, LocalDateTime eventDate, LocalDateTime movingDate, LocalDateTime completionDate,
-                     String description, TypeOfStatus status, AppUser updatedBy, Manager acceptedBy, Tool tool,
+                     String description, EventStatus status, AppUser createdBy, Manager acceptedBy, Tool tool,
                      List<Attachment> attachments) {
         this.id = id;
         this.eventDate = eventDate;
@@ -33,7 +34,7 @@ public class ToolEvent {
         this.completionDate = completionDate;
         this.description = description;
         this.status = status;
-        this.updatedBy = updatedBy;
+        this.createdBy = createdBy;
         this.acceptedBy = acceptedBy;
         this.tool = tool;
         this.attachments = attachments;
@@ -47,11 +48,11 @@ public class ToolEvent {
     private LocalDateTime movingDate;
     private LocalDateTime completionDate;
     private String description;
-    private TypeOfStatus status;
     private boolean deleted = Boolean.FALSE;
+    private EventStatus status;
 
     @ManyToOne
-    private AppUser updatedBy;
+    private AppUser createdBy;
 
     @ManyToOne
     private Manager acceptedBy;

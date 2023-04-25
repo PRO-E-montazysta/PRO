@@ -49,6 +49,7 @@ public class SpecialistMapper {
                 .firstName(specialist.getFirstName())
                 .lastName(specialist.getLastName())
                 .username(specialist.getUsername())
+                .roles(specialist.getRoles())
                 .email(specialist.getEmail())
                 .phone(specialist.getPhone())
                 .pesel(specialist.getPesel())
@@ -125,6 +126,7 @@ public class SpecialistMapper {
         specialist.setFirstName(specialistDto.getFirstName());
         specialist.setLastName(specialistDto.getLastName());
         specialist.setUsername(specialistDto.getUsername());
+        specialist.setRoles(specialistDto.getRoles());
         specialist.setPassword(specialistDto.getPassword());
         specialist.setEmail(specialistDto.getEmail());
         specialist.setPhone(specialistDto.getPhone());

@@ -1,6 +1,5 @@
 package com.example.e_montaysta.ui.login
 
-import DI.appModule
 import android.app.Activity
 import android.content.Intent
 import androidx.lifecycle.Observer
@@ -18,9 +17,6 @@ import com.example.e_montaysta.DashboardActivity
 import com.example.e_montaysta.databinding.ActivityLoginBinding
 
 import com.example.e_montaysta.R
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
 
 class LoginActivity : AppCompatActivity() {
 
@@ -29,11 +25,6 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        startKoin{
-            androidLogger()
-            androidContext(this@LoginActivity)
-            modules(appModule)
-        }
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

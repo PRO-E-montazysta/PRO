@@ -45,10 +45,8 @@ public abstract class Employee extends AppUser {
         this.toolEvents = toolEvents;
     }
 
-    @Column(unique = true)
     private String phone;
 
-    @Column(unique = true)
     private String pesel;
 
     private boolean deleted = Boolean.FALSE;
@@ -62,7 +60,7 @@ public abstract class Employee extends AppUser {
     @OneToMany(mappedBy = "messageCreator")
     private List<Comment> employeeComments;
 
-    @OneToMany(mappedBy = "updatedBy")
+    @OneToMany(mappedBy = "createdBy")
     private List<ElementEvent> elementEvents;
 
     @OneToMany(mappedBy = "employee")
@@ -71,7 +69,7 @@ public abstract class Employee extends AppUser {
     @OneToMany(mappedBy = "employee")
     private List<Attachment> attachments;
 
-    @OneToMany(mappedBy = "updatedBy")
+    @OneToMany(mappedBy = "createdBy")
     private List<ToolEvent> toolEvents;
 
 }

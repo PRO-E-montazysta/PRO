@@ -3,40 +3,41 @@ import { FilterInputType } from '../../components/table/filter/TableFilter'
 import { HeadCell } from '../../components/table/sort/SortedTableHeader'
 import { Employee, EmployeeStatus } from '../../types/model/Employee'
 
+import { AppSize } from '../../hooks/useBreakpoints'
 export const headCells: Array<HeadCell<Employee>> = [
     {
         type: 'string',
         id: 'firstName',
         label: 'Imię',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
     {
         type: 'string',
         id: 'lastName',
         label: 'Nazwisko',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
     {
         type: 'string',
         id: 'email',
         label: 'Email',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
     {
         type: 'string',
         id: 'status',
         label: 'Status',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
     {
         type: 'string',
         id: 'roles',
         label: 'Role',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
 ]

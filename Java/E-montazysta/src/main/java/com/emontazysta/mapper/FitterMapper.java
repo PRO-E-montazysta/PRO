@@ -7,6 +7,7 @@ import com.emontazysta.model.Employment;
 import com.emontazysta.model.Fitter;
 import com.emontazysta.model.Notification;
 import com.emontazysta.model.ToolEvent;
+import com.emontazysta.model.OrderStage;
 import com.emontazysta.model.Unavailability;
 import com.emontazysta.model.dto.FitterDto;
 import com.emontazysta.repository.AttachmentRepository;
@@ -14,6 +15,7 @@ import com.emontazysta.repository.CommentRepository;
 import com.emontazysta.repository.ElementEventRepository;
 import com.emontazysta.repository.EmploymentRepository;
 import com.emontazysta.repository.NotificationRepository;
+import com.emontazysta.repository.OrderStageRepository;
 import com.emontazysta.repository.ToolEventRepository;
 import com.emontazysta.repository.UnavailabilityRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +37,7 @@ public class FitterMapper {
     private final EmploymentRepository employmentRepository;
     private final AttachmentRepository attachmentRepository;
     private final ToolEventRepository toolEventRepository;
+    private final OrderStageRepository orderStageRepository;
 
     public FitterDto toDto(Fitter fitter) {
         return FitterDto.builder()
@@ -42,6 +45,7 @@ public class FitterMapper {
                 .firstName(fitter.getFirstName())
                 .lastName(fitter.getLastName())
                 .username(fitter.getUsername())
+                .roles(fitter.getRoles())
                 .email(fitter.getEmail())
                 .phone(fitter.getPhone())
                 .pesel(fitter.getPesel())
@@ -73,6 +77,10 @@ public class FitterMapper {
                         .filter(toolEvent -> !toolEvent.isDeleted())
                         .map(ToolEvent::getId)
                         .collect(Collectors.toList()))
+                .workingOn(fitter.getWorkingOn().stream()
+                        .filter(orderStage -> !orderStage.isDeleted())
+                        .map(OrderStage::getId)
+                        .collect(Collectors.toList()))
                 .build();
     }
 
@@ -99,11 +107,15 @@ public class FitterMapper {
         List<ToolEvent> toolEventList = new ArrayList<>();
         fitterDto.getToolEvents().forEach(toolEventId -> toolEventList.add(toolEventRepository.findById(toolEventId).orElseThrow(EntityNotFoundException::new)));
 
+        List<OrderStage> workingOnList = new ArrayList<>();
+        fitterDto.getWorkingOn().forEach(workingOnId -> workingOnList.add(orderStageRepository.findById(workingOnId).orElseThrow(EntityNotFoundException::new)));
+
         Fitter fitter = new Fitter();
         fitter.setId(fitterDto.getId());
         fitter.setFirstName(fitterDto.getFirstName());
         fitter.setLastName(fitterDto.getLastName());
         fitter.setUsername(fitterDto.getUsername());
+        fitter.setRoles(fitterDto.getRoles());
         fitter.setPassword(fitterDto.getPassword());
         fitter.setEmail(fitterDto.getEmail());
         fitter.setPhone(fitterDto.getPhone());
@@ -115,6 +127,7 @@ public class FitterMapper {
         fitter.setEmployments(employmentList);
         fitter.setAttachments(attachmentList);
         fitter.setToolEvents(toolEventList);
+        fitter.setWorkingOn(workingOnList);
 
         return fitter;
     }

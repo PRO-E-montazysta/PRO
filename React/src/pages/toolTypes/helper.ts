@@ -4,33 +4,34 @@ import { HeadCell } from '../../components/table/sort/SortedTableHeader'
 
 import * as yup from 'yup'
 
+import { AppSize } from '../../hooks/useBreakpoints'
 export const headCells: Array<HeadCell<ToolType>> = [
     {
         type: 'string',
         id: 'name',
         label: 'Nazwa',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
     {
         type: 'string',
         id: 'inServiceCount',
         label: 'Liczba narzędzi',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: true,
     },
     {
         type: 'string',
         id: 'availableCount',
         label: 'Liczba dostępnych',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: true,
     },
     {
         type: 'string',
         id: 'criticalNumber',
         label: 'Liczba krytyczna',
-        disablePadding: false,
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: true,
     },
 ]

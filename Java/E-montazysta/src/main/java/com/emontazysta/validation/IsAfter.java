@@ -15,7 +15,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy = IsAfterDateValidator.class)
 @Documented
 public @interface IsAfter{
-    String message() default "{message.key}"; // TODO message based on field names
+    String message() default "{startDateFieldName} must be after {endDateFieldName}";
     String startDateFieldName();
     String endDateFieldName();
     Class<?>[] groups() default {};

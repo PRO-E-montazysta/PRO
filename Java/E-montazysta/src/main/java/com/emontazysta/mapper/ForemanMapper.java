@@ -57,6 +57,7 @@ public class ForemanMapper {
                 .firstName(foreman.getFirstName())
                 .lastName(foreman.getLastName())
                 .username(foreman.getUsername())
+                .roles(foreman.getRoles())
                 .email(foreman.getEmail())
                 .phone(foreman.getPhone())
                 .pesel(foreman.getPesel())
@@ -108,6 +109,10 @@ public class ForemanMapper {
                         .filter(demandAdHoc -> !demandAdHoc.isDeleted())
                         .map(DemandAdHoc::getId)
                         .collect(Collectors.toList()))
+                .workingOn(foreman.getWorkingOn().stream()
+                        .filter(orderStage -> !orderStage.isDeleted())
+                        .map(OrderStage::getId)
+                        .collect(Collectors.toList()))
                 .build();
     }
 
@@ -134,6 +139,9 @@ public class ForemanMapper {
         List<ToolEvent> toolEventList = new ArrayList<>();
         foremanDto.getToolEvents().forEach(toolEventId -> toolEventList.add(toolEventRepository.findById(toolEventId).orElseThrow(EntityNotFoundException::new)));
 
+        List<OrderStage> workingOnList = new ArrayList<>();
+        foremanDto.getWorkingOn().forEach(workingOnId -> workingOnList.add(orderStageRepository.findById(workingOnId).orElseThrow(EntityNotFoundException::new)));
+
         List<OrderStage> orderStageList = new ArrayList<>();
         foremanDto.getOrdersStagesList().forEach(orderStageId -> orderStageList.add(orderStageRepository.findById(orderStageId).orElseThrow(EntityNotFoundException::new)));
 
@@ -154,6 +162,7 @@ public class ForemanMapper {
         foreman.setFirstName(foremanDto.getFirstName());
         foreman.setLastName(foremanDto.getLastName());
         foreman.setUsername(foremanDto.getUsername());
+        foreman.setRoles(foremanDto.getRoles());
         foreman.setPassword(foremanDto.getPassword());
         foreman.setEmail(foremanDto.getEmail());
         foreman.setPhone(foremanDto.getPhone());
@@ -165,6 +174,7 @@ public class ForemanMapper {
         foreman.setEmployments(employmentList);
         foreman.setAttachments(attachmentList);
         foreman.setToolEvents(toolEventList);
+        foreman.setWorkingOn(workingOnList);
         foreman.setOrdersStagesList(orderStageList);
         foreman.setReceivedTools(toolReleaseList);
         foreman.setAssignedOrders(ordersList);

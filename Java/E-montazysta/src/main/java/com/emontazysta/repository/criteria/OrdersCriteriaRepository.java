@@ -61,7 +61,9 @@ public class OrdersCriteriaRepository {
                 && Objects.nonNull(ordersSearchCriteria.getPlannedStartMax())) {
 
             if (LocalDateTime.parse(ordersSearchCriteria.getPlannedStartMin())
-                    .isBefore(LocalDateTime.parse(ordersSearchCriteria.getPlannedStartMax()))) {
+                    .isBefore(LocalDateTime.parse(ordersSearchCriteria.getPlannedStartMax())) ||
+                    LocalDateTime.parse(ordersSearchCriteria.getPlannedStartMin())
+                            .isEqual(LocalDateTime.parse(ordersSearchCriteria.getPlannedStartMax()))) {
 
                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(ordersRoot.get("plannedStart"),
                         LocalDateTime.parse(ordersSearchCriteria.getPlannedStartMin())));
@@ -71,6 +73,12 @@ public class OrdersCriteriaRepository {
             } else {
                 throw new IllegalArgumentException("The start time must precede the end time");
             }
+        } else if (Objects.nonNull(ordersSearchCriteria.getPlannedStartMin())) {
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(ordersRoot.get("plannedStart"),
+                    LocalDateTime.parse(ordersSearchCriteria.getPlannedStartMin())));
+        } else if (Objects.nonNull(ordersSearchCriteria.getPlannedStartMax())) {
+            predicates.add(criteriaBuilder.lessThanOrEqualTo(ordersRoot.get("plannedStart"),
+                    LocalDateTime.parse(ordersSearchCriteria.getPlannedStartMax())));
         }
 
         if (Objects.nonNull(ordersSearchCriteria.getTypeOfStatus())) {

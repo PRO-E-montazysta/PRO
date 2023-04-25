@@ -52,6 +52,7 @@ public class WarehouseManagerMapper {
                 .firstName(warehouseManager.getFirstName())
                 .lastName(warehouseManager.getLastName())
                 .username(warehouseManager.getUsername())
+                .roles(warehouseManager.getRoles())
                 .email(warehouseManager.getEmail())
                 .phone(warehouseManager.getPhone())
                 .pesel(warehouseManager.getPesel())
@@ -95,6 +96,10 @@ public class WarehouseManagerMapper {
                         .filter(demandAdHoc -> !demandAdHoc.isDeleted())
                         .map(DemandAdHoc::getId)
                         .collect(Collectors.toList()))
+                .acceptedDemandAdHocs(warehouseManager.getAcceptedDemandAdHocs().stream()
+                        .filter(demandAdHoc -> !demandAdHoc.isDeleted())
+                        .map(DemandAdHoc::getId)
+                        .collect(Collectors.toList()))
                 .build();
     }
 
@@ -130,11 +135,15 @@ public class WarehouseManagerMapper {
         List<DemandAdHoc> demandAdHocList = new ArrayList<>();
         warehouseManagerDto.getDemandAdHocs().forEach(demandAdHocId -> demandAdHocList.add(demandAdHocRepository.findById(demandAdHocId).orElseThrow(EntityNotFoundException::new)));
 
+        List<DemandAdHoc> acceptedDemandAdHocList = new ArrayList<>();
+        warehouseManagerDto.getAcceptedDemandAdHocs().forEach(acceptedDemandAdHocId -> acceptedDemandAdHocList.add(demandAdHocRepository.findById(acceptedDemandAdHocId).orElseThrow(EntityNotFoundException::new)));
+
         WarehouseManager warehouseManager = new WarehouseManager();
         warehouseManager.setId(warehouseManagerDto.getId());
         warehouseManager.setFirstName(warehouseManagerDto.getFirstName());
         warehouseManager.setLastName(warehouseManagerDto.getLastName());
         warehouseManager.setUsername(warehouseManagerDto.getUsername());
+        warehouseManager.setRoles(warehouseManagerDto.getRoles());
         warehouseManager.setPassword(warehouseManagerDto.getPassword());
         warehouseManager.setEmail(warehouseManagerDto.getEmail());
         warehouseManager.setPhone(warehouseManagerDto.getPhone());
@@ -149,6 +158,7 @@ public class WarehouseManagerMapper {
         warehouseManager.setReleasedTools(toolReleaseList);
         warehouseManager.setElementReturnReleases(elementReturnReleaseList);
         warehouseManager.setDemandAdHocs(demandAdHocList);
+        warehouseManager.setAcceptedDemandAdHocs(acceptedDemandAdHocList);
 
         return warehouseManager;
     }

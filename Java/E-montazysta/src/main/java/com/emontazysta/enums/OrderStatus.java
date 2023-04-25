@@ -1,4 +1,4 @@
-package com.emontazysta.model;
+package com.emontazysta.enums;
 
 public enum OrderStatus {
 

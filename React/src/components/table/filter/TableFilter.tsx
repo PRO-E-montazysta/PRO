@@ -1,15 +1,20 @@
-import { Box, Button, Paper, TextField } from "@mui/material";
-import { useFormik } from "formik";
-import { CSSProperties, HTMLInputTypeAttribute } from "react";
-import { getInputs } from "../../../helpers/filter.helper";
-import { theme } from "../../../themes/baseTheme";
-import MultipleSelectChip, { SelectMenuItemProps } from "../../base/Multiselect";
-import SearchIcon from '@mui/icons-material/Search';
-import ReplayIcon from '@mui/icons-material/Replay';
+import { Box, Button, Paper, TextField } from '@mui/material'
+import { CSSProperties, HTMLInputTypeAttribute, useMemo } from 'react'
+import { theme } from '../../../themes/baseTheme'
+import MultipleSelectChip, { SelectMenuItemProps } from '../../base/Multiselect'
+import SearchIcon from '@mui/icons-material/Search'
+import ReplayIcon from '@mui/icons-material/Replay'
 
 import './style.less'
+import useBreakpoints from '../../../hooks/useBreakpoints'
 
-
+export type Filter = {
+    formik: any
+    inputs: Array<any>
+    structureStyle?: CSSProperties
+    resetBtnStyle?: CSSProperties
+    submitBtnStyle?: CSSProperties
+}
 export type FilterFormProps = {
     filterStructure: Array<FilterInputType>
     onSearch: (filters: any) => void
@@ -18,7 +23,6 @@ export type FilterFormProps = {
     resetBtnStyle?: CSSProperties
     submitBtnStyle?: CSSProperties
 }
-
 
 export type FilterInputType = {
     id: string
@@ -34,49 +38,54 @@ export type FilterInputType = {
     style?: CSSProperties
 }
 
+const TableFilter = (props: Filter) => {
+    const { formik, inputs, structureStyle, resetBtnStyle, submitBtnStyle } = props
+    const appSize = useBreakpoints()
 
+    const inputWidth = useMemo(() => {
+        switch (appSize.active) {
+            case 'mobile':
+                return '100%'
+            case 'tablet':
+                return 'calc(50% - 7.5px)'
+            default:
+                return 'calc(25% - calc(45px/4))'
+        }
+    }, [appSize])
 
-const TableFilter = (props: FilterFormProps) => {
-    const { filterStructure, onSearch, onResetFilter, structureStyle, resetBtnStyle, submitBtnStyle } = props
-    const { initialValues, inputs } = getInputs(filterStructure)
-
-    const formik = useFormik({
-        initialValues: initialValues,
-        // validationSchema={{}}
-        onSubmit: onSearch,
-        onReset: onResetFilter
-    })
-
-
-    return <div>
-        <Box sx={{ width: '100%', minWidth: '250px', }}>
+    return (
+        <Box sx={{ width: '100%', minWidth: '280px' }}>
             <Paper sx={{ width: '100%', borderRadius: '5px', padding: '20px' }}>
                 <form
                     noValidate
                     onSubmit={formik.handleSubmit}
                     style={{
+                        ...structureStyle,
                         display: 'flex',
-                        flexDirection: 'column',
+                        flexWrap: 'wrap',
                         gap: '15px',
-                        ...structureStyle
                     }}
                     onReset={formik.handleReset}
-                    className='filter'>
-                    {
-                        inputs.map(({ id, inputType, value, ...props }) => {
-                            switch (inputType) {
-                                case 'multiselect':
-                                    return <MultipleSelectChip
+                    className="filter"
+                >
+                    {inputs.map(({ id, inputType, value, ...props }) => {
+                        switch (inputType) {
+                            case 'multiselect':
+                                return (
+                                    <MultipleSelectChip
                                         key={id}
                                         menuItems={props.options ? props.options : []}
                                         id={id}
                                         label={props.label}
                                         value={formik.values[id]}
                                         formikSetFieldValue={formik.setFieldValue}
+                                        boxStyle={{ width: inputWidth }}
                                     />
+                                )
 
-                                default:
-                                    return <TextField
+                            default:
+                                return (
+                                    <TextField
                                         key={id}
                                         id={id}
                                         name={id}
@@ -85,65 +94,51 @@ const TableFilter = (props: FilterFormProps) => {
                                         type={inputType}
                                         onChange={formik.handleChange}
                                         error={formik.touched[id] && Boolean(formik.errors[id])}
-                                        style={props.style}
+                                        style={{ ...props.style, width: inputWidth }}
                                         variant={'outlined'}
                                         InputLabelProps={{
-                                            shrink: true
+                                            shrink: true,
                                         }}
                                         className={'filter-form'}
-                                        autoComplete='off'
+                                        autoComplete="off"
                                     />
-                            }
-                        })
-                    }
+                                )
+                        }
+                    })}
 
-                    <Box sx={{
-                        display: 'flex',
-                        flexDirection: 'column'
-                    }}>
-                        <Button color="primary" startIcon={<SearchIcon />} style={submitBtnStyle} variant="contained" type="submit">
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            gap: '15px',
+                            margin: 'auto 0 0 auto',
+                            width: appSize.isMobile ? '100%' : 'auto',
+                        }}
+                    >
+                        <Button
+                            fullWidth
+                            color="primary"
+                            startIcon={<SearchIcon />}
+                            style={submitBtnStyle}
+                            variant="contained"
+                            type="submit"
+                        >
                             Szukaj
                         </Button>
-                        <Button color="primary" startIcon={<ReplayIcon style={{transform: 'rotate(-0.25turn)'}} />} style={{ marginTop: '10px', color: theme.palette.primary.main, ...resetBtnStyle }} variant="outlined" type="reset" >
+                        <Button
+                            fullWidth
+                            color="primary"
+                            startIcon={<ReplayIcon style={{ transform: 'rotate(-0.25turn)' }} />}
+                            style={{ color: theme.palette.primary.main, ...resetBtnStyle }}
+                            variant="outlined"
+                            type="reset"
+                        >
                             Reset
                         </Button>
                     </Box>
                 </form>
             </Paper>
         </Box>
-    </div>
-
-
-
+    )
 }
 
-export default TableFilter;
-
-
-
-
-
-
-
-
-
-// type Opt = {
-//     value: string | number
-//     desc: string
-// }
-// type Validation = {
-//     type: 'required' | 'isEmail' | 'minLength' | 'isTrue'
-//     value?: string | number | boolean
-//     message: string
-// }
-
-
-
-
-
-
-
-
-
-
-
+export default TableFilter

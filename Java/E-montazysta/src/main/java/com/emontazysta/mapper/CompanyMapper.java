@@ -5,10 +5,12 @@ import com.emontazysta.model.Company;
 import com.emontazysta.model.Employment;
 import com.emontazysta.model.Orders;
 import com.emontazysta.model.Warehouse;
+import com.emontazysta.model.ToolType;
 import com.emontazysta.model.dto.CompanyDto;
 import com.emontazysta.repository.ClientRepository;
 import com.emontazysta.repository.EmploymentRepository;
 import com.emontazysta.repository.OrderRepository;
+import com.emontazysta.repository.ToolTypeRepository;
 import com.emontazysta.repository.WarehouseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -26,6 +28,7 @@ public class CompanyMapper {
     private final OrderRepository orderRepository;
     private final ClientRepository clientRepository;
     private final EmploymentRepository employmentRepository;
+    private final ToolTypeRepository toolTypeRepository;
 
     public CompanyDto toDto(Company company) {
         return CompanyDto.builder()
@@ -50,6 +53,10 @@ public class CompanyMapper {
                         .filter(employment -> !employment.isDeleted())
                         .map(Employment::getId)
                         .collect(Collectors.toList()))
+                .toolTypes(company.getToolTypes().stream()
+                        .filter(toolType -> !toolType.isDeleted())
+                        .map(ToolType::getId)
+                        .collect(Collectors.toList()))
                 .build();
     }
 
@@ -67,6 +74,9 @@ public class CompanyMapper {
         List<Employment> employmentList = new ArrayList<>();
         companyDto.getEmployments().forEach(employmentId -> employmentList.add(employmentRepository.findById(employmentId).orElseThrow(EntityNotFoundException::new)));
 
+        List<ToolType> toolTypeList = new ArrayList<>();
+        companyDto.getToolTypes().forEach(toolTypeId -> toolTypeList.add(toolTypeRepository.findById(toolTypeId).orElseThrow(EntityNotFoundException::new)));
+
         return Company.builder()
                 .id(companyDto.getId())
                 .companyName(companyDto.getCompanyName())
@@ -77,6 +87,7 @@ public class CompanyMapper {
                 .orders(ordersList)
                 .clients(clientList)
                 .employments(employmentList)
+                .toolTypes(toolTypeList)
                 .build();
     }
 }

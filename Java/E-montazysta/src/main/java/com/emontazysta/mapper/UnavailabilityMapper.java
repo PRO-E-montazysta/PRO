@@ -2,6 +2,7 @@ package com.emontazysta.mapper;
 
 import com.emontazysta.model.Unavailability;
 import com.emontazysta.model.dto.UnavailabilityDto;
+import com.emontazysta.model.dto.filterDto.UnavailabilityFilterDto;
 import com.emontazysta.repository.AppUserRepository;
 import com.emontazysta.repository.ManagerRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,17 @@ public class UnavailabilityMapper {
                 .unavailableTo(unavailabilityDto.getUnavailableTo())
                 .assignedTo(unavailabilityDto.getAssignedToId() == null ? null : appUserRepository.findById(unavailabilityDto.getAssignedToId()).orElseThrow(EntityNotFoundException::new))
                 .assignedBy(unavailabilityDto.getAssignedById() == null ? null : managerRepository.findById(unavailabilityDto.getAssignedById()).orElseThrow(EntityNotFoundException::new))
+                .build();
+    }
+
+    public UnavailabilityFilterDto toFilterDto(Unavailability unavailability) {
+        return UnavailabilityFilterDto.builder()
+                .id(unavailability.getId())
+                .typeOfUnavailability(unavailability.getTypeOfUnavailability())
+                .unavailableFrom(unavailability.getUnavailableFrom())
+                .unavailableTo(unavailability.getUnavailableTo())
+                .assignedTo(unavailability.getAssignedTo().getFirstName() + " "
+                        + unavailability.getAssignedTo().getLastName())
                 .build();
     }
 }

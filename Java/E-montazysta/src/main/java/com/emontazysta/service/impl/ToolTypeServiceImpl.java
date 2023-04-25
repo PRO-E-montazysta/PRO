@@ -7,6 +7,7 @@ import com.emontazysta.model.searchcriteria.ToolTypeSearchCriteria;
 import com.emontazysta.repository.ToolTypeRepository;
 import com.emontazysta.repository.criteria.ToolTypeCriteriaRepository;
 import com.emontazysta.service.ToolTypeService;
+import com.emontazysta.util.AuthUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ public class ToolTypeServiceImpl implements ToolTypeService {
     private final ToolTypeRepository repository;
     private final ToolTypeMapper toolTypeMapper;
     private final ToolTypeCriteriaRepository toolTypeCriteriaRepository;
+    private final AuthUtils authUtils;
 
     @Override
     public List<ToolTypeDto> getAll() {
@@ -37,6 +39,7 @@ public class ToolTypeServiceImpl implements ToolTypeService {
 
     @Override
     public ToolTypeDto add(ToolTypeDto toolTypeDto) {
+        toolTypeDto.setCompanyId(authUtils.getLoggedUserCompanyId());
         ToolType toolType = toolTypeMapper.toEntity(toolTypeDto);
         return toolTypeMapper.toDto(repository.save(toolType));
     }

@@ -1,6 +1,6 @@
 package com.emontazysta.model;
 
-import com.emontazysta.enums.TypeOfStatus;
+import com.emontazysta.enums.EventStatus;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
@@ -48,7 +48,7 @@ public class ElementEvent {
     private LocalDateTime movingDate;
     private LocalDateTime completionDate;
     private String description;
-    private TypeOfStatus status;
+    private EventStatus status;
     private int quantity;
     private boolean deleted = Boolean.FALSE;
 
@@ -56,7 +56,7 @@ public class ElementEvent {
     private Manager acceptedBy;
 
     @ManyToOne
-    private AppUser updatedBy;
+    private AppUser createdBy;
 
     @ManyToOne
     private Element element;

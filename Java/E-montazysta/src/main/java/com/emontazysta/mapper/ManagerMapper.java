@@ -49,6 +49,7 @@ public class ManagerMapper {
                 .firstName(manager.getFirstName())
                 .lastName(manager.getLastName())
                 .username(manager.getUsername())
+                .roles(manager.getRoles())
                 .email(manager.getEmail())
                 .phone(manager.getPhone())
                 .pesel(manager.getPesel())
@@ -143,6 +144,7 @@ public class ManagerMapper {
         manager.setLastName(managerDto.getLastName());
         manager.setEmail(managerDto.getEmail());
         manager.setUsername(managerDto.getUsername());
+        manager.setRoles(managerDto.getRoles());
         manager.setPassword(managerDto.getPassword());
         manager.setPhone(managerDto.getPhone());
         manager.setPesel(managerDto.getPesel());

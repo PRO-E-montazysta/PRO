@@ -16,6 +16,7 @@ export const getInputs = (form: Array<FilterInputType>) => {
 
 
 export const getFilterParams = (filterStructure: Array<FilterInputType>) => {
+    console.log('getFilterParams')
     const filterParams: any = {}
     filterStructure.forEach((f: FilterInputType) => {
         if (!!f.value) {

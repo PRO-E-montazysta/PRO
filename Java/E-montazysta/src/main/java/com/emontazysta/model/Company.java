@@ -57,4 +57,7 @@ public class Company {
 
     @OneToMany(mappedBy = "company")
     private List<Employment> employments;
+
+    @OneToMany(mappedBy = "company")
+    private List<ToolType> toolTypes;
 }

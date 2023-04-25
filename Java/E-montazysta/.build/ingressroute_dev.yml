@@ -5,18 +5,17 @@ metadata:
   name: backend
 spec:
   entryPoints:
+    - web
     - websecure
   routes:
   - kind: Rule
-    match: Host(`backend.dev.emontazysta.pl`)
+    match: Host(`dev.emontazysta.pl`) && PathPrefix(`/api/v1`, `/swagger-ui`, `/v3/api-docs`)
     middlewares:
     - name: backend-add-index-swagger
       namespace: development
-    priority: 10
+    priority: 2
     services:
     - kind: Service
       name: backend
       namespace: development
       port: 80
-  tls:
-    certResolver: cloudflare

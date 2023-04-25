@@ -45,7 +45,7 @@ public class ElementController {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Element.", security = @SecurityRequirement(name = "bearer-key"))
     public ElementDto add(@Valid @RequestBody ElementDto element) {
-        return elementService.add(element);
+        return elementService.addWithWarehouseCount(element);
     }
 
     @DeleteMapping("/{id}")
