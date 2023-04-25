@@ -1,4 +1,4 @@
-import { Paper, Typography } from '@mui/material'
+import { Button, Paper, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import { useFormik } from 'formik'
 import { useContext, useEffect, useState } from 'react'
@@ -19,8 +19,14 @@ import FormPaper from '../../components/form/FormPaper'
 import FormTitle from '../../components/form/FormTitle'
 import FormBox from '../../components/form/FormBox'
 import { PageMode } from '../../types/form'
+import OrderStagesDetails from '../orderStages/OrderStagesDetails'
+import { getRolesFromToken } from '../../utils/token'
+import { Role } from '../../types/roleEnum'
+import EditIcon from '@mui/icons-material/Edit'
 
 const OrderDetails = () => {
+    const [userRole, setUserRole] = useState('')
+
     //parameters from url
     const params = useParams()
 
@@ -43,6 +49,13 @@ const OrderDetails = () => {
     const queriesStatus = useQueriesStatus([orderData], [addOrderMutation, editOrderMutation, deleteOrderMutation])
 
     const appSize = useBreakpoints()
+
+    useEffect(() => {
+        const role = getRolesFromToken()
+        console.log(role)
+        if (role.length !== 0) setUserRole(role[0])
+    }, [])
+
     const handleSubmit = (values: any) => {
         if (pageMode == 'new') addOrderMutation.mutate(values)
         else if (pageMode == 'edit') editOrderMutation.mutate(values)
@@ -104,6 +117,16 @@ const OrderDetails = () => {
         } else setPageMode('read')
     }, [params.id])
 
+    const getAddOrderStageButton = () => {
+        return userRole === Role.SPECIALIST ? true : false
+    }
+
+    const [isAddOrderStageVisible, setIsAddOrderStageVisible] = useState(false)
+
+    const handleAddOrderStage = () => {
+        setIsAddOrderStageVisible(!isAddOrderStageVisible)
+    }
+
     return (
         <>
             <FormBox>
@@ -122,10 +145,14 @@ const OrderDetails = () => {
                                 onReset={handleReset}
                                 onSubmit={formik.submitForm}
                                 readonlyMode={pageMode == 'read'}
+                                orderStageButton={getAddOrderStageButton()}
+                                handleAddOrderStage={handleAddOrderStage}
+                                isAddOrderStageVisible={isAddOrderStageVisible}
                             />
                         </>
                     )}
                 </FormPaper>
+                <OrderStagesDetails isAddOrderStageVisible={isAddOrderStageVisible} />
             </FormBox>
         </>
     )
