@@ -1,9 +1,11 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.mail.MailTemplates;
 import com.emontazysta.mapper.CompanyMapper;
 import com.emontazysta.mapper.CompanyWithAdminMapper;
 import com.emontazysta.model.Company;
 import com.emontazysta.model.CompanyAdmin;
+import com.emontazysta.model.EmailData;
 import com.emontazysta.model.Employment;
 import com.emontazysta.model.dto.CompanyDto;
 import com.emontazysta.model.dto.CompanyWithAdminDto;
@@ -13,7 +15,10 @@ import com.emontazysta.repository.CompanyRepository;
 import com.emontazysta.repository.EmploymentRepository;
 import com.emontazysta.repository.criteria.CompanyCriteriaRepository;
 import com.emontazysta.service.CompanyService;
+import com.emontazysta.service.EmailService;
+import com.emontazysta.util.PasswordGenerator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -32,6 +37,7 @@ public class CompanyServiceImpl implements CompanyService {
     private final EmploymentRepository employmentRepository;
     private final CompanyMapper companyMapper;
     private final CompanyCriteriaRepository companyCriteriaRepository;
+    private final EmailService emailService;
 
     @Override
     public List<CompanyDto> getAll() {
@@ -57,9 +63,18 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @Transactional
     public CompanyDto addCompanyWithAdmin(CompanyWithAdminDto companyWithAdminDto) {
+        companyWithAdminDto.setPassword(PasswordGenerator.generatePassword(10));
         Company company = companyRepository.save(CompanyWithAdminMapper.companyFromDto(companyWithAdminDto));
         CompanyAdmin companyAdmin = companyAdminRepository.save(CompanyWithAdminMapper.companyAdminFromDto(companyWithAdminDto));
         employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company, companyAdmin));
+
+        emailService.sendEmail(
+                EmailData.builder()
+                .to(companyAdmin.getEmail())
+                .message(MailTemplates.companyCreate(company.getCompanyName(), companyAdmin.getUsername(), companyWithAdminDto.getPassword()))
+                .subject("Witaj w E-Montażysta!")
+                .build()
+        );
 
         return companyMapper.toDto(company);
     }
