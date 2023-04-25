@@ -16,26 +16,16 @@ import java.time.Duration;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ToolSeleniumTests {
     private WebDriver driver;
+    private WebDriverWait wait;
 
     @Before
     public void setUp() {
-//  options.addArguments("--remote-allow-origins=*");
-
         WebDriverManager.firefoxdriver().setup();
         driver = new FirefoxDriver();
+        wait = new WebDriverWait(driver, Duration.ofMillis(1000));
 
-
-
-    }
-    @After
-    public void tearDown(){
-        driver.quit();
-    }
-    @Test
-    public void addToolTestSelenium() throws InterruptedException {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000));
-
-        driver.get("https://dev.emontazysta.pl");
+        driver.get("https://dev.emontazysta.pl/login");
+        driver.manage().window().maximize();
 
         wait.until(ExpectedConditions.elementToBeClickable(By.id(":r0:"))).click();
 
@@ -44,6 +34,14 @@ public class ToolSeleniumTests {
         driver.findElement(By.id(":r1:")).sendKeys("password");
 
         driver.findElement(By.cssSelector(".MuiButton-contained")).click();
+
+    }
+    @After
+    public void tearDown(){
+        driver.quit();
+    }
+    @Test
+    public void addToolTestSelenium() throws InterruptedException {
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/header/div/div/div[2]/button")));
         driver.findElement(By.xpath("/html/body/div/header/div/div/div[2]/button")).click();
@@ -71,10 +69,8 @@ public class ToolSeleniumTests {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[2]/div")));
         driver.findElement(By.xpath("/html/body/div/div[2]/div/form/div/button")).click();
 
-//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[2]/div")));
-//        driver.findElement(By.xpath("/html/body/div/div[2]/div/form/div/button")).click();
 
-        Thread.sleep(2000);
+        Thread.sleep(5000);
 
         driver.findElement(By.xpath("/html/body/div/header/div/div/button")).click();
 
@@ -82,18 +78,6 @@ public class ToolSeleniumTests {
 
     @Test
     public void filterListToolTestSelenium() throws InterruptedException {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000));
-
-        driver.get("https://dev.emontazysta.pl");
-
-
-        wait.until(ExpectedConditions.elementToBeClickable(By.id(":r0:"))).click();
-
-        driver.findElement(By.id(":r0:")).sendKeys("warehouseManager1");
-
-        driver.findElement(By.id(":r1:")).sendKeys("password");
-
-        driver.findElement(By.cssSelector(".MuiButton-contained")).click();
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/header/div/div/div[2]/button")));
         driver.findElement(By.xpath("/html/body/div/header/div/div/div[2]/button")).click();
@@ -120,18 +104,6 @@ public class ToolSeleniumTests {
 
     @Test
     public void zDeleteToolTypeTestSelenium() throws InterruptedException {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000));
-
-        driver.get("https://dev.emontazysta.pl");
-
-
-        wait.until(ExpectedConditions.elementToBeClickable(By.id(":r0:"))).click();
-
-        driver.findElement(By.id(":r0:")).sendKeys("warehouseManager1");
-
-        driver.findElement(By.id(":r1:")).sendKeys("password");
-
-        driver.findElement(By.cssSelector(".MuiButton-contained")).click();
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/header/div/div/div[2]/button")));
         driver.findElement(By.xpath("/html/body/div/header/div/div/div[2]/button")).click();

@@ -29,6 +29,7 @@ public class CompanyAdminMapper {
 
         return CompanyAdminDto.builder()
                 .id(companyAdmin.getId())
+                .roles(companyAdmin.getRoles())
                 .firstName(companyAdmin.getFirstName())
                 .lastName(companyAdmin.getLastName())
                 .username(companyAdmin.getUsername())
@@ -91,6 +92,7 @@ public class CompanyAdminMapper {
 
         CompanyAdmin companyAdmin = new CompanyAdmin();
         companyAdmin.setId(companyAdminDto.getId());
+        companyAdmin.setRoles(companyAdminDto.getRoles());
         companyAdmin.setFirstName(companyAdminDto.getFirstName());
         companyAdmin.setLastName(companyAdminDto.getLastName());
         companyAdmin.setUsername(companyAdminDto.getUsername());

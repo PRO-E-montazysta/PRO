@@ -1,10 +1,11 @@
 import { FilterInputType } from '../../components/table/filter/TableFilter'
 import { ToolType } from '../../types/model/ToolType'
 import { HeadCell } from '../../components/table/sort/SortedTableHeader'
-
 import * as yup from 'yup'
-
 import { AppSize } from '../../hooks/useBreakpoints'
+import { FormInputProps } from '../../types/form'
+import { Role } from '../../types/roleEnum'
+
 export const headCells: Array<HeadCell<ToolType>> = [
     {
         type: 'string',
@@ -47,17 +48,44 @@ export const filterInitStructure: Array<FilterInputType> = [
 ]
 
 export const emptyForm = {
-    id: null,
-    name: '',
-    inServiceCount: '',
-    criticalNumber: '',
-    availableCount: '',
     attachments: [],
     orderStages: [],
     tools: [],
 }
 
-export const validationSchema = yup.object({
-    name: yup.string().min(3, 'Nazwa musi zaweirać co najmniej 3 znaki').required('Wprowadź nazwę'),
-    criticalNumber: yup.string().required('Wprowadź liczbę krytyczną'),
-})
+export const useFormStructure = (): Array<FormInputProps> => {
+    return [
+        {
+            label: 'Nazwa typu narzędzia',
+            id: 'name',
+            initValue: '',
+            type: 'input',
+            validation: yup.string().min(3, 'Nazwa musi zaweirać co najmniej 3 znaki').required('Wprowadź nazwę'),
+        },
+        {
+            label: 'Liczba krytyczna',
+            id: 'criticalNumber',
+            initValue: '',
+            type: 'input',
+            validation: yup.string().required('Wprowadź liczbę krytyczną'),
+        },
+        {
+            label: 'Liczba narzędzi',
+            id: 'inServiceCount',
+            initValue: '',
+            type: 'input',
+            addNewPermissionRoles: [Role.NOBODY],
+            editPermissionRoles: [Role.NOBODY],
+            viewPermissionRoles: [Role['*']],
+        },
+        {
+            label: 'Liczba dostępnych',
+            id: 'availableCount',
+            initValue: '',
+            type: 'input',
+            addNewPermissionRoles: [Role.NOBODY],
+            editPermissionRoles: [Role.NOBODY],
+            viewPermissionRoles: [Role['*']],
+        },
+    ]
+}

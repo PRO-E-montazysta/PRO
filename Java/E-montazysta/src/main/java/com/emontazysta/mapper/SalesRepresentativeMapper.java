@@ -18,6 +18,7 @@ import com.emontazysta.repository.NotificationRepository;
 import com.emontazysta.repository.OrderRepository;
 import com.emontazysta.repository.ToolEventRepository;
 import com.emontazysta.repository.UnavailabilityRepository;
+import com.emontazysta.service.StatusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -38,6 +39,7 @@ public class SalesRepresentativeMapper {
     private final AttachmentRepository attachmentRepository;
     private final ToolEventRepository toolEventRepository;
     private final OrderRepository orderRepository;
+    private final StatusService statusService;
 
     public SalesRepresentativeDto toDto(SalesRepresentative salesRepresentative) {
 
@@ -82,6 +84,10 @@ public class SalesRepresentativeMapper {
                         .filter(order -> !order.isDeleted())
                         .map(Orders::getId)
                         .collect(Collectors.toList()))
+                .status(statusService.checkUnavailability(salesRepresentative) == null ? "AVAILABLE" : String.valueOf(statusService.checkUnavailability(salesRepresentative).getTypeOfUnavailability()))
+                .unavailableFrom(statusService.checkUnavailability(salesRepresentative) == null ? null : statusService.checkUnavailability(salesRepresentative).getUnavailableFrom())
+                .unavailableTo(statusService.checkUnavailability(salesRepresentative) == null ? null : statusService.checkUnavailability(salesRepresentative).getUnavailableTo())
+                .unavailbilityDescription(statusService.checkUnavailability(salesRepresentative) == null ? null : statusService.checkUnavailability(salesRepresentative).getDescription())
                 .build();
     }
 

@@ -56,10 +56,7 @@ const validationSchema = yup.object({
 const LoginForm = () => {
     const theme = useTheme()
     const navigation = useNavigate()
-    const { isLoading, isError, error, mutate } = useMutation({
-        // pokazanie jak przekazwyane są zmienne
-        // można odkomentować i sprawdzić
-        // mutationFn: (variables: any) => logIn(variables),
+    const { data, isLoading, isError, error, mutate } = useMutation({
         mutationFn: logIn,
         onSuccess(data) {
             setToken(data)
@@ -73,12 +70,12 @@ const LoginForm = () => {
 
     const formik = useFormik({
         initialValues: {
-            email: '',
-            password: '',
+            username: '',
+            password: 'password',
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            return mutate({ username: values.email, password: values.password })
+            return mutate({ username: values.username, password: values.password })
         },
     })
 
@@ -92,7 +89,6 @@ const LoginForm = () => {
 
     return (
         <>
-
             <Box
                 bgcolor="secondary.main"
                 color="secondary.contrastText"
@@ -121,21 +117,21 @@ const LoginForm = () => {
                         className={'login-form-input'}
                         fullWidth
                         margin="normal"
-                        label="Email"
-                        name="email"
+                        label="Nazwa użytkownika"
+                        name="username"
                         InputLabelProps={{
                             shrink: true,
                         }}
-                        value={formik.values.email}
+                        value={formik.values.username}
                         onChange={formik.handleChange}
-                        error={formik.touched.email && Boolean(formik.errors.email)}
-                        helperText={formik.touched.email && formik.errors.email}
+                        error={formik.touched.username && Boolean(formik.errors.username)}
+                        helperText={formik.touched.username && formik.errors.username}
                     />
                     <CustomTextField
                         className={'login-form-input'}
                         fullWidth
                         margin="normal"
-                        label="Password"
+                        label="Hasło"
                         name="password"
                         type={showPassword ? 'text' : 'password'}
                         InputLabelProps={{
@@ -184,7 +180,7 @@ const LoginForm = () => {
                     </Grid>
                 </Box>
             </Box>
-            <Box sx={{ m: '10px', mt: '1000px' }}>{JSON.stringify(error)}</Box>
+            <Box sx={{ m: '10px', mt: '1000px' }}>{isError ? JSON.stringify(error) : JSON.stringify(data)}</Box>
         </>
     )
 }

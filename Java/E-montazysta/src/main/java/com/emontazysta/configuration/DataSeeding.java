@@ -3,6 +3,9 @@ package com.emontazysta.configuration;
 import com.emontazysta.enums.*;
 import com.emontazysta.mapper.*;
 import com.emontazysta.model.*;
+import com.emontazysta.model.dto.OrderStageWithToolsAndElementsDto;
+import com.emontazysta.model.dto.ToolsPlannedNumberDto;
+import com.emontazysta.model.dto.UnavailabilityWithLocalDateDto;
 import com.emontazysta.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -80,6 +83,10 @@ public class DataSeeding {
 
     private Unavailability addUnavailabilityFromModel(Unavailability unavailability) {
         return unavailabilityMapper.toEntity(unavailabilityService.add(unavailabilityMapper.toDto(unavailability)));
+    }
+
+    private Unavailability addUnavailabilityWithLocalDateDtoFromModel(UnavailabilityWithLocalDateDto unavailability) {
+        return unavailabilityMapper.toEntity(unavailabilityService.addWithLocalDate(unavailability));
     }
 
     private Client addClientFromModel(Client client) {
@@ -233,9 +240,13 @@ public class DataSeeding {
                 "manager2Phone", "manager2Pesel", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        CompanyAdmin companyAdmin1 = new CompanyAdmin(null, "Test Company", "Admin Test", "admin@ema.il",
+                "password", "companyAdmin1", null, Set.of(Role.ADMIN),
+                "+48123123123", "02292464175", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         List<AppUser> appUserList = List.of(appUser, fitter1, fitter2, fitter3, foreman1, foreman2, warehouseman1, warehouseman2,
                 warehouseManager1, warehouseManager2, specialist1, specialist2, salesRepresentative1, salesRepresentative2,
-                manager1, manager2);
+                manager1, manager2, companyAdmin1);
         appUserList.forEach(appUserService::add);
 
         Company company1 = addCompanyFromModel(new Company(null, "Test Comapny 1", null,
@@ -252,7 +263,7 @@ public class DataSeeding {
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
         Employment employment1 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, fitter1));
-        Employment employment2 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, fitter2));
+        Employment employment2 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), LocalDateTime.now(), company1, fitter2));
         Employment employment3 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, foreman1));
         Employment employment4 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, foreman2));
         Employment employment5 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, warehouseman1));
@@ -264,7 +275,8 @@ public class DataSeeding {
         Employment employment11 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, salesRepresentative1));
         Employment employment12 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, salesRepresentative2));
         Employment employment13 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, manager1));
-        Employment employment14 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, manager2));
+        Employment employment14 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company3, manager2));
+        Employment employment15 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, companyAdmin1));
 
         context.setAuthentication(null);
         Authentication authenticationMng = new UsernamePasswordAuthenticationToken(
@@ -272,31 +284,33 @@ public class DataSeeding {
         context.setAuthentication(authenticationMng);
 
         Unavailability unavailability1 = addUnavailabilityFromModel(new Unavailability(null,
-                TypeOfUnavailability.HOLIDAY, "Test Unavailability 1", LocalDateTime.parse( "2023-03-06T12:00:00.000"), LocalDateTime.parse("2023-03-06T23:00:00.000"), fitter1, manager1));
-        Unavailability unavailability2 = addUnavailabilityFromModel(new Unavailability(null,
-                TypeOfUnavailability.BEREAVEMENT_LEAVE,"Test Unavailability 2",LocalDateTime.parse( "2023-03-05T12:00:00.000"),LocalDateTime.parse("2023-03-05T16:00:00.000"), fitter2, manager1));
+                TypeOfUnavailability.BUSY, "Test Unavailability 1", LocalDateTime.parse( "2023-03-06T12:00:00.000"),
+                LocalDateTime.parse("2023-03-06T23:00:00.000"), fitter1, manager1));
+        Unavailability unavailability2 = addUnavailabilityWithLocalDateDtoFromModel(new UnavailabilityWithLocalDateDto(
+                null, TypeOfUnavailability.BEREAVEMENT_LEAVE,"Test Unavailability 2", LocalDate.now(),
+                LocalDate.now(), fitter2.getId(), manager1.getId()));
 
-        Client client1 = addClientFromModel(new Client(null, "Test Client 1 - from Company 1",
+        Client client1 = addClientFromModel(new Client(null, "Test Client 1",
                 "em@i.l", company1, new ArrayList<>()));
-        Client client2 = addClientFromModel(new Client(null, "Test Client 2 - from Company 1",
+        Client client2 = addClientFromModel(new Client(null, "Test Client 2",
                 "em@i.l", company1, new ArrayList<>()));
-        Client client3 = addClientFromModel(new Client(null, "Test Client 3 - from Company 3",
-                "em@i.l", company3, new ArrayList<>()));
-        Client client4 = addClientFromModel(new Client(null, "Test Client 4 - from Company 4",
-                "em@i.l", company4, new ArrayList<>()));
+        Client client3 = addClientFromModel(new Client(null, "Test Client 3",
+                "em@i.l", company1, new ArrayList<>()));
+        Client client4 = addClientFromModel(new Client(null, "Test Client 4",
+                "em@i.l", company1, new ArrayList<>()));
 
-        Location location1 = addLocationFromModel(new Location(null, "Test Location 1", 1.1,
+        Location location1 = addLocationFromModel(new Location(null, 1.1,
                 1.1, "Miasto1", "Miła", "1",
-                "1A", "01-123", new ArrayList<>(), new ArrayList<>()));
-        Location location2 = addLocationFromModel(new Location(null, "Test Location 2", 1.1,
+                "1A", "01-123", null, null));
+        Location location2 = addLocationFromModel(new Location(null, 1.1,
                 1.1, "Miasto1", "Miła", "1",
-                "1B", "01-123", new ArrayList<>(), new ArrayList<>()));
-        Location location3 = addLocationFromModel(new Location(null, "Test Location 3", 1.1,
+                "1B", "01-123", null, null));
+        Location location3 = addLocationFromModel(new Location(null, 1.1,
                 1.1, "Miasto2", "Ładna", "1",
-                null, "01-124", new ArrayList<>(), new ArrayList<>()));
-        Location location4 = addLocationFromModel(new Location(null, "Test Location 4", 1.1,
+                null, "01-124", null, null));
+        Location location4 = addLocationFromModel(new Location(null, 1.1,
                 1.1, "Miasto3", "Pogodna", "1",
-                null, null, new ArrayList<>(), new ArrayList<>()));
+                null, null, null, null));
 
         Orders order1 = addOrdersFromModel(new Orders(null, "Test Order 1 - from Client 1",
                 TypeOfStatus.PLANNED, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.IMPORTANT,
@@ -312,7 +326,7 @@ public class DataSeeding {
                 new ArrayList<>()));
         Orders order4 = addOrdersFromModel(new Orders(null, "Test Order 4 - from Client 4",
                 TypeOfStatus.FINISHED, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.NORMAL,
-                company4, null, null, null, null, location4, client4,
+                company4, null, null, null, null, null, client4,
                 new ArrayList<>(), new ArrayList<>()));
 
         OrderStage orderStage1 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 1",

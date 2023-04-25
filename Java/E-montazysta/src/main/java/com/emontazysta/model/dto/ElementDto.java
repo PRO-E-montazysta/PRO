@@ -29,5 +29,5 @@ public class ElementDto {
     private List<Long> elementInWarehouses;
     private List<Long> elementEvents;
     private Long attachmentId;
-    private List<Long> ordersStages;
+    private List<Long> ListOfElementsPlannedNumber;
 }

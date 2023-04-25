@@ -1,6 +1,10 @@
 import { Tool } from '../types/model/Tool'
 import { makeServiceCall, PayloadProps } from './utils.api'
 
+export const getAllTools = () => {
+    return makeServiceCall('/tools/filter', 'GET', {})
+}
+
 export const getFilteredTools = (payload: PayloadProps) => {
     return makeServiceCall('/tools/filter', 'GET', { ...payload })
 }

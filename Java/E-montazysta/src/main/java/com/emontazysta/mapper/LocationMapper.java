@@ -24,7 +24,6 @@ public class LocationMapper {
     public LocationDto toDto (Location location) {
         return LocationDto.builder()
                 .id(location.getId())
-                .name(location.getName())
                 .xCoordinate(location.getXCoordinate())
                 .yCoordinate(location.getYCoordinate())
                 .city(location.getCity())
@@ -32,28 +31,14 @@ public class LocationMapper {
                 .propertyNumber(location.getPropertyNumber())
                 .apartmentNumber(location.getApartmentNumber())
                 .zipCode(location.getZipCode())
-                .orders(location.getOrders().stream()
-                        .filter(order -> !order.isDeleted())
-                        .map(Orders::getId)
-                        .collect(Collectors.toList()))
-                .warehouses(location.getWarehouses().stream()
-                        .filter(warehouse -> !warehouse.isDeleted())
-                        .map(Warehouse::getId)
-                        .collect(Collectors.toList()))
+                .orderId(location.getOrder() == null ? null : location.getOrder().getId())
+                .warehouseId(location.getWarehouse() == null ? null : location.getWarehouse().getId())
                 .build();
     }
 
     public Location toEntity(LocationDto locationDto) {
-
-        List<Orders> ordersList = new ArrayList<>();
-        locationDto.getOrders().forEach(locationId -> ordersList.add(orderRepository.findById(locationId).orElseThrow(EntityNotFoundException::new)));
-
-        List<Warehouse> warehouseList = new ArrayList<>();
-        locationDto.getWarehouses().forEach(warehouseId -> warehouseList.add(warehouseRepository.findById(warehouseId).orElseThrow(EntityNotFoundException::new)));
-
         return Location.builder()
                 .id(locationDto.getId())
-                .name(locationDto.getName())
                 .xCoordinate(locationDto.getXCoordinate())
                 .yCoordinate(locationDto.getYCoordinate())
                 .city(locationDto.getCity())
@@ -61,8 +46,8 @@ public class LocationMapper {
                 .propertyNumber(locationDto.getPropertyNumber())
                 .apartmentNumber(locationDto.getApartmentNumber())
                 .zipCode(locationDto.getZipCode())
-                .orders(ordersList)
-                .warehouses(warehouseList)
+                .order(locationDto.getOrderId() == null ? null : orderRepository.getReferenceById(locationDto.getOrderId()))
+                .warehouse(locationDto.getWarehouseId() == null ? null : warehouseRepository.getReferenceById(locationDto.getWarehouseId()))
                 .build();
     }
 }

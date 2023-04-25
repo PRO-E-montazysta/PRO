@@ -4,13 +4,13 @@ import com.emontazysta.model.Element;
 import com.emontazysta.model.ElementEvent;
 import com.emontazysta.model.ElementInWarehouse;
 import com.emontazysta.model.ElementReturnRelease;
-import com.emontazysta.model.OrderStage;
+import com.emontazysta.model.ElementsPlannedNumber;
 import com.emontazysta.model.dto.ElementDto;
 import com.emontazysta.repository.AttachmentRepository;
 import com.emontazysta.repository.ElementEventRepository;
 import com.emontazysta.repository.ElementInWarehouseRepository;
 import com.emontazysta.repository.ElementReturnReleaseRepository;
-import com.emontazysta.repository.OrderStageRepository;
+import com.emontazysta.repository.ElementsPlannedNumberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +27,7 @@ public class ElementMapper {
     private final ElementInWarehouseRepository elementInWarehouseRepository;
     private final ElementEventRepository elementEventRepository;
     private final AttachmentRepository attachmentRepository;
-    private final OrderStageRepository orderStageRepository;
+    private final ElementsPlannedNumberRepository elementsPlannedNumberRepository;
 
     public ElementDto toDto (Element element) {
         return ElementDto.builder()
@@ -49,10 +49,7 @@ public class ElementMapper {
                         .map(ElementEvent::getId)
                         .collect(Collectors.toList()))
                 .attachmentId(element.getAttachment() == null ? null : element.getAttachment().isDeleted() ? null : element.getAttachment().getId())
-                .ordersStages(element.getOrdersStages().stream()
-                        .filter(orderStage -> !orderStage.isDeleted())
-                        .map(OrderStage::getId)
-                        .collect(Collectors.toList()))
+                .ListOfElementsPlannedNumber(element.getListOfElementsPlannedNumber().stream().map(ElementsPlannedNumber::getId).collect(Collectors.toList()))
                 .build();
     }
 
@@ -67,8 +64,8 @@ public class ElementMapper {
         List<ElementEvent> elementEventList = new ArrayList<>();
         elementDto.getElementEvents().forEach(elementEventId -> elementEventList.add(elementEventRepository.findById(elementEventId).orElseThrow(EntityNotFoundException::new)));
 
-        List<OrderStage> orderStageList = new ArrayList<>();
-        elementDto.getOrdersStages().forEach(orderStageId -> orderStageList.add(orderStageRepository.findById(orderStageId).orElseThrow(EntityNotFoundException::new)));
+        List<ElementsPlannedNumber> elementsPlannedNumberList = new ArrayList<>();
+        elementDto.getListOfElementsPlannedNumber().forEach(elementsPlannedNumberId -> elementsPlannedNumberList.add(elementsPlannedNumberRepository.getReferenceById(elementsPlannedNumberId)));
 
         return Element.builder()
                 .id(elementDto.getId())
@@ -80,7 +77,7 @@ public class ElementMapper {
                 .elementInWarehouses(elementInWarehouseList)
                 .elementEvents(elementEventList)
                 .attachment(elementDto.getAttachmentId() == null ? null : attachmentRepository.findById(elementDto.getAttachmentId()).orElseThrow(EntityNotFoundException::new))
-                .ordersStages(orderStageList)
+                .listOfElementsPlannedNumber(elementsPlannedNumberList)
                 .build();
     }
 }

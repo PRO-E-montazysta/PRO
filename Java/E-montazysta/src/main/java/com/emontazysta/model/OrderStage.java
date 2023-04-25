@@ -111,17 +111,13 @@ public class OrderStage {
     @OneToMany(mappedBy = "orderStage")
     private List<Notification> notifications;
 
-    @ManyToMany
-    private List<ToolType> tools;
+    @OneToMany(mappedBy = "orderStage")
+    private List<ToolsPlannedNumber> listOfToolsPlannedNumber;
 
-    @ManyToMany
-    private List<Element> elements;
+    @OneToMany(mappedBy = "orderStage")
+    private List<ElementsPlannedNumber> listOfElementsPlannedNumber;
 
     @ManyToMany
     private List<DemandAdHoc> demandsAdHoc;
-
-
-
-    //TODO: relationship to Element, ToolType, Fitter, DemandAdHoc  needed (many to many) should be replaced with association table in diagram
 }
 

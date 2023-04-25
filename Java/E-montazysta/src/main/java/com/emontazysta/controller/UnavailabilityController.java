@@ -1,6 +1,7 @@
 package com.emontazysta.controller;
 
 import com.emontazysta.model.dto.UnavailabilityDto;
+import com.emontazysta.model.dto.UnavailabilityWithLocalDateDto;
 import com.emontazysta.model.dto.filterDto.UnavailabilityFilterDto;
 import com.emontazysta.model.searchcriteria.UnavailabilitySearchCriteria;
 import com.emontazysta.service.UnavailabilityService;
@@ -10,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,11 +21,13 @@ import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 
 @RestController
 @AllArgsConstructor
+@PreAuthorize("hasAuthority('SCOPE_MANAGER')")
 @RequestMapping(value = API_BASE_CONSTANT + "/unavailabilities", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UnavailabilityController {
 
     private final UnavailabilityService unavailabilityService;
 
+    //TO DELETE
     @GetMapping("/all")
     @Operation(description = "Allows to get all Unavailabilities.", security = @SecurityRequirement(name = "bearer-key"))
     public List<UnavailabilityDto> getAll() {
@@ -39,8 +43,8 @@ public class UnavailabilityController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Unavailability.", security = @SecurityRequirement(name = "bearer-key"))
-    public UnavailabilityDto add(@Valid @RequestBody UnavailabilityDto unavailability) {
-        return unavailabilityService.add(unavailability);
+    public UnavailabilityDto add(@Valid @RequestBody UnavailabilityWithLocalDateDto unavailability) {
+        return unavailabilityService.addWithLocalDate(unavailability);
     }
 
     @DeleteMapping("/{id}")
@@ -52,8 +56,8 @@ public class UnavailabilityController {
     @PutMapping("/{id}")
     @Operation(description = "Allows to update Unavailability by given Id, and Unavailability.", security = @SecurityRequirement(name = "bearer-key"))
     public UnavailabilityDto update(@PathVariable("id") Long id,
-                                     @Valid @RequestBody UnavailabilityDto unavailability) {
-        return unavailabilityService.update(id, unavailability);
+                                     @Valid @RequestBody UnavailabilityWithLocalDateDto unavailability) {
+        return unavailabilityService.updateWithLocalDate(id, unavailability);
     }
 
     @GetMapping("/filter")

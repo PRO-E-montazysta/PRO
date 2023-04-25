@@ -46,6 +46,7 @@ public class AppUserServiceImpl  implements AppUserService {
 
     @Override
     public AppUser add(AppUser user) {
+        user.setUsername(user.getUsername().toLowerCase());
         log.info("Saving new user {} to the database",user.getUsername());
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return appUserRepository.save(user);
@@ -64,9 +65,9 @@ public class AppUserServiceImpl  implements AppUserService {
                 .id(id)
                 .firstName(newUser.getFirstName())
                 .lastName(newUser.getLastName())
-                .username(newUser.getUsername())
                 .email(newUser.getEmail())
                 .password(newUser.getPassword())
+                .username(user.getUsername())
                 .roles(user.getRoles())
                 .build();
         return appUserRepository.save(updatedUser);

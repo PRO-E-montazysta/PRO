@@ -49,7 +49,7 @@ public class Warehouse {
     @ManyToOne
     private Company company;
 
-    @ManyToOne
+    @OneToOne
     private Location location;
 
     @OneToMany(mappedBy = "warehouse")

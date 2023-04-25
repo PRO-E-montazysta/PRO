@@ -60,8 +60,6 @@ public class Element {
     @OneToOne
     private Attachment attachment;
 
-    @ManyToMany(mappedBy = "elements")
-    private List<OrderStage> ordersStages;
-
-    //TODO: relationship to OrderStage needed (many to many) should be replaced with association table in diagram
+    @OneToMany(mappedBy ="element" )
+    private List<ElementsPlannedNumber> listOfElementsPlannedNumber;
 }

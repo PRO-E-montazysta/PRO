@@ -46,8 +46,8 @@ public class ToolType {
     @OneToMany(mappedBy = "toolType")
     private List<Attachment> attachments;
 
-    @ManyToMany(mappedBy = "tools")
-    private List<OrderStage> orderStages;
+    @OneToMany(mappedBy = "toolType")
+    private List<ToolsPlannedNumber> listOfToolsPlannedNumber;
 
     @OneToMany(mappedBy = "toolType")
     private List<Tool> tools;

@@ -1,7 +1,7 @@
 import { Button } from '@mui/material'
-import { MouseEvent, useLayoutEffect, useState } from 'react'
+import { CSSProperties, MouseEvent, useLayoutEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { isAuthorized } from '../../utils/authorize'
+import { isAuthorizedToPage } from '../../utils/authorize'
 import { PageProps } from '../../utils/pageList'
 
 import NavMenu from './NavMenu'
@@ -15,7 +15,7 @@ const NavMenuButton = (props: PageProps) => {
     const [allowedChilds, setAllowedChilds] = useState<Array<PageProps>>([])
 
     useLayoutEffect(() => {
-        if (!!children) setAllowedChilds(children.filter((child) => child.inNav && isAuthorized(child)))
+        if (!!children) setAllowedChilds(children.filter((child) => child.inNav && isAuthorizedToPage(child)))
     }, [])
 
     const handleClick = () => {
@@ -27,20 +27,19 @@ const NavMenuButton = (props: PageProps) => {
         if (allowedChilds && allowedChilds.length > 0) setOpen(true)
     }
 
-    const handleMouseLeave = () => {
-        handleClose()
-    }
-
     const handleClose = () => {
         setOpen(false)
     }
 
-    if (!inNav || !isAuthorized(props)) return null
-
     return (
         <>
-            <div onMouseOver={handleMouseEnter} onMouseLeave={handleMouseLeave} style={{ zIndex: open ? 1000 : 5 }}>
-                <Button sx={{ m: '0 10px', cursor: 'pointer', fontSize: '15px' }} onClick={handleClick}>
+            <div
+                id={path}
+                onMouseOver={handleMouseEnter}
+                onMouseLeave={handleClose}
+                style={{ zIndex: open ? 1000 : 5 }}
+            >
+                <Button sx={{ m: '0 5px', cursor: 'pointer', whiteSpace: 'nowrap' }} onClick={handleClick}>
                     {name}
                 </Button>
                 <NavMenu allowedChilds={allowedChilds} onClose={handleClose} open={open} />
