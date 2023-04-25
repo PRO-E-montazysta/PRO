@@ -18,7 +18,7 @@ export const headCells: Array<HeadCell<WarehouseFilterDto>> = [
         type: 'string',
         id: 'description',
         label: 'Opis',
-        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
+        visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
     {
@@ -32,7 +32,7 @@ export const headCells: Array<HeadCell<WarehouseFilterDto>> = [
         type: 'string',
         id: 'fullAddress',
         label: 'Adres',
-        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
+        visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
 ]

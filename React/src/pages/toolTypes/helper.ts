@@ -32,7 +32,7 @@ export const headCells: Array<HeadCell<ToolType>> = [
         type: 'string',
         id: 'criticalNumber',
         label: 'Liczba krytyczna',
-        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
+        visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: true,
     },
 ]

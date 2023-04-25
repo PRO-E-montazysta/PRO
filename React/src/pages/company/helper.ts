@@ -21,7 +21,7 @@ export const headCells: Array<HeadCell<Company>> = [
         type: 'string',
         id: 'createdAt',
         label: 'Data utworzenia',
-        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
+        visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
         formatFn: (date: string) => (date ? formatDate(date) : ''),
     },
@@ -37,7 +37,7 @@ export const headCells: Array<HeadCell<Company>> = [
         type: 'string',
         id: 'statusReason',
         label: 'Uzasadnienie statusu',
-        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
+        visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
 ]
