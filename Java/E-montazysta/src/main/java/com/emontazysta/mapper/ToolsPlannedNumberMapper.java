@@ -7,6 +7,8 @@ import com.emontazysta.repository.ToolTypeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
+
 @Component
 @RequiredArgsConstructor
 public class ToolsPlannedNumberMapper {
@@ -28,8 +30,8 @@ public class ToolsPlannedNumberMapper {
         return ToolsPlannedNumber.builder()
                 .id(toolsPlannedNumberDto.getId())
                 .numberOfTools(toolsPlannedNumberDto.getNumberOfTools())
-                .toolType(toolsPlannedNumberDto.getToolTypeId() == null ? null : toolTypeRepository.getReferenceById(toolsPlannedNumberDto.getToolTypeId()))
-                .orderStage(toolsPlannedNumberDto.getOrderStageId() == null ? null : orderStageRepository.getReferenceById(toolsPlannedNumberDto.getOrderStageId()))
+                .toolType(toolsPlannedNumberDto.getToolTypeId() == null ? null : toolTypeRepository.findById(toolsPlannedNumberDto.getToolTypeId()).orElseThrow(EntityNotFoundException::new))
+                .orderStage(toolsPlannedNumberDto.getOrderStageId() == null ? null : orderStageRepository.findById(toolsPlannedNumberDto.getOrderStageId()).orElseThrow(EntityNotFoundException::new))
                 .build();
     }
 }

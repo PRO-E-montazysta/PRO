@@ -7,6 +7,8 @@ import com.emontazysta.repository.OrderStageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
+
 @Component
 @RequiredArgsConstructor
 public class ElementsPlannedNumberMapper {
@@ -28,8 +30,8 @@ public class ElementsPlannedNumberMapper {
         return ElementsPlannedNumber.builder()
                 .id(elementsPlannedNumberDto.getId())
                 .numberOfElements(elementsPlannedNumberDto.getNumberOfElements())
-                .element(elementsPlannedNumberDto.getElementId() == null ? null : elementRepository.getReferenceById(elementsPlannedNumberDto.getElementId()))
-                .orderStage(elementsPlannedNumberDto.getOrderStageId() == null ? null : orderStageRepository.getReferenceById(elementsPlannedNumberDto.getOrderStageId()))
+                .element(elementsPlannedNumberDto.getElementId() == null ? null : elementRepository.findById(elementsPlannedNumberDto.getElementId()).orElseThrow(EntityNotFoundException::new))
+                .orderStage(elementsPlannedNumberDto.getOrderStageId() == null ? null : orderStageRepository.findById(elementsPlannedNumberDto.getOrderStageId()).orElseThrow(EntityNotFoundException::new))
                 .build();
     }
 }

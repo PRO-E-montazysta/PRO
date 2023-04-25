@@ -25,7 +25,7 @@ public class Element {
 
     public Element(Long id, String name, String code, TypeOfUnit typeOfUnit, float quantityInUnit,
                    List<ElementReturnRelease> elementReturnReleases, List<ElementInWarehouse> elementInWarehouses,
-                   List<ElementEvent> elementEvents, Attachment attachment, List<OrderStage> ordersStages) {
+                   List<ElementEvent> elementEvents, Attachment attachment, List<ElementsPlannedNumber> listOfElementsPlannedNumber) {
         this.id = id;
         this.name = name;
         this.code = code;
@@ -35,7 +35,7 @@ public class Element {
         this.elementInWarehouses = elementInWarehouses;
         this.elementEvents = elementEvents;
         this.attachment = attachment;
-        this.ordersStages = ordersStages;
+        this.listOfElementsPlannedNumber = listOfElementsPlannedNumber;
     }
 
     @Id

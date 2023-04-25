@@ -45,9 +45,9 @@ public class ToolTypeMapper {
                         .filter(attachment -> !attachment.isDeleted())
                         .map(Attachment::getId)
                         .collect(Collectors.toList()))
-                .orderStages(toolType.getOrderStages().stream()
+                .ListOfToolsPlannedNumber(toolType.getListOfToolsPlannedNumber().stream()
                         .filter(orderStage -> !orderStage.isDeleted())
-                        .map(OrderStage::getId)
+                        .map(ToolsPlannedNumber::getId)
                         .collect(Collectors.toList()))
                 .tools(toolType.getTools().stream()
                         .filter(tool -> !tool.isDeleted())
@@ -63,7 +63,7 @@ public class ToolTypeMapper {
         toolTypeDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.findById(attachmentId).orElseThrow(EntityNotFoundException::new)));
 
         List<ToolsPlannedNumber> toolsPlannedNumberList = new ArrayList<>();
-        toolTypeDto.getListOfToolsPlannedNumber().forEach(toolsPlanedNumberId -> toolsPlannedNumberList.add(toolsPlannedNumberRepository.getReferenceById(toolsPlanedNumberId)));
+        toolTypeDto.getListOfToolsPlannedNumber().forEach(toolsPlanedNumberId -> toolsPlannedNumberList.add(toolsPlannedNumberRepository.findById(toolsPlanedNumberId).orElseThrow(EntityNotFoundException::new)));
 
         List<Tool> toolList = new ArrayList<>();
         toolTypeDto.getTools().forEach(toolId -> toolList.add(toolRepository.findById(toolId).orElseThrow(EntityNotFoundException::new)));
@@ -75,7 +75,7 @@ public class ToolTypeMapper {
                 .attachments(attachmentList)
                 .listOfToolsPlannedNumber(toolsPlannedNumberList)
                 .tools(toolList)
-                .company(toolTypeDto.getCompanyId() == null ? null : companyRepository.getReferenceById(toolTypeDto.getCompanyId()))
+                .company(toolTypeDto.getCompanyId() == null ? null : companyRepository.findById(toolTypeDto.getCompanyId()).orElseThrow(EntityNotFoundException::new))
                 .build();
     }
 }

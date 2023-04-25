@@ -65,7 +65,7 @@ public class ElementMapper {
         elementDto.getElementEvents().forEach(elementEventId -> elementEventList.add(elementEventRepository.findById(elementEventId).orElseThrow(EntityNotFoundException::new)));
 
         List<ElementsPlannedNumber> elementsPlannedNumberList = new ArrayList<>();
-        elementDto.getListOfElementsPlannedNumber().forEach(elementsPlannedNumberId -> elementsPlannedNumberList.add(elementsPlannedNumberRepository.getReferenceById(elementsPlannedNumberId)));
+        elementDto.getListOfElementsPlannedNumber().forEach(elementsPlannedNumberId -> elementsPlannedNumberList.add(elementsPlannedNumberRepository.findById(elementsPlannedNumberId).orElseThrow(EntityNotFoundException::new)));
 
         return Element.builder()
                 .id(elementDto.getId())

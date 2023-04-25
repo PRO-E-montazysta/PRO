@@ -22,10 +22,9 @@ import java.util.List;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Location {
 
-    public Location(Long id, String name, Double xCoordinate, Double yCoordinate, String city, String street,
-                    String propertyNumber, String apartmentNumber, String zipCode, Orders orders, List<Warehouse> warehouses) {
+    public Location(Long id, Double xCoordinate, Double yCoordinate, String city, String street,
+                    String propertyNumber, String apartmentNumber, String zipCode, Orders orders, Warehouse warehouse) {
         this.id = id;
-        this.name = name;
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
         this.city = city;
@@ -33,8 +32,8 @@ public class Location {
         this.propertyNumber = propertyNumber;
         this.apartmentNumber = apartmentNumber;
         this.zipCode = zipCode;
-        this.orders = orders;
-        this.warehouses = warehouses;
+        this.order = orders;
+        this.warehouse = warehouse;
     }
 
     @Id

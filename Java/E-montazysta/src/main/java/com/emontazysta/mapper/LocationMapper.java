@@ -46,8 +46,8 @@ public class LocationMapper {
                 .propertyNumber(locationDto.getPropertyNumber())
                 .apartmentNumber(locationDto.getApartmentNumber())
                 .zipCode(locationDto.getZipCode())
-                .order(locationDto.getOrderId() == null ? null : orderRepository.getReferenceById(locationDto.getOrderId()))
-                .warehouse(locationDto.getWarehouseId() == null ? null : warehouseRepository.getReferenceById(locationDto.getWarehouseId()))
+                .order(locationDto.getOrderId() == null ? null : orderRepository.findById(locationDto.getOrderId()).orElseThrow(EntityNotFoundException::new))
+                .warehouse(locationDto.getWarehouseId() == null ? null : warehouseRepository.findById(locationDto.getWarehouseId()).orElseThrow(EntityNotFoundException::new))
                 .build();
     }
 }

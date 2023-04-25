@@ -35,8 +35,9 @@ public class OrderStage {
                       LocalDateTime plannedEndDate, LocalDateTime startDate, LocalDateTime endDate, long plannedDurationTime,
                       int plannedFittersNumber, int minimumImagesNumber, List<Fitter> assignedTo, Foreman managedBy,
                       List<Comment> comments, List<ToolRelease> toolReleases, List<ElementReturnRelease> elementReturnReleases,
-                      Orders orders, List<Attachment> attachments, List<Notification> notifications, List<ToolType> tools,
-                      List<Element> elements, List<DemandAdHoc> demandsAdHoc) {
+                      Orders orders, List<Attachment> attachments, List<Notification> notifications,
+                      List<ToolsPlannedNumber> listOfToolsPlannedNumber, List<ElementsPlannedNumber> listOfElementsPlannedNumber,
+                      List<DemandAdHoc> demandsAdHoc) {
         this.id = id;
         this.name = name;
         this.status = status;
@@ -56,8 +57,8 @@ public class OrderStage {
         this.orders = orders;
         this.attachments = attachments;
         this.notifications = notifications;
-        this.tools = tools;
-        this.elements = elements;
+        this.listOfToolsPlannedNumber = listOfToolsPlannedNumber;
+        this.listOfElementsPlannedNumber = listOfElementsPlannedNumber;
         this.demandsAdHoc = demandsAdHoc;
     }
 

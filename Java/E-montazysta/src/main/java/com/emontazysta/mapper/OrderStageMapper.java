@@ -73,13 +73,13 @@ public class OrderStageMapper {
                         .filter(notification -> !notification.isDeleted())
                         .map(Notification::getId)
                         .collect(Collectors.toList()))
-                .tools(orderStage.getTools().stream()
+                .listOfToolsPlannedNumber(orderStage.getListOfToolsPlannedNumber().stream()
                         .filter(tool -> !tool.isDeleted())
-                        .map(ToolType::getId)
+                        .map(ToolsPlannedNumber::getId)
                         .collect(Collectors.toList()))
-                .elements(orderStage.getElements().stream()
+                .listOfElementsPlannedNumber(orderStage.getListOfElementsPlannedNumber().stream()
                         .filter(element -> !element.isDeleted())
-                        .map(Element::getId)
+                        .map(ElementsPlannedNumber::getId)
                         .collect(Collectors.toList()))
                 .demandAdHocs(orderStage.getDemandsAdHoc().stream()
                         .filter(demandAdHoc -> !demandAdHoc.isDeleted())
@@ -109,10 +109,10 @@ public class OrderStageMapper {
         orderStageDto.getNotifications().forEach(notificationId -> notificationList.add(notificationRepository.findById(notificationId).orElseThrow(EntityNotFoundException::new)));
 
         List<ToolsPlannedNumber> toolTypeList = new ArrayList<>();
-        orderStageDto.getListOfToolsPlannedNumber().forEach(toolTypeId -> toolTypeList.add(toolsPlannedNumberRepository.getReferenceById(toolTypeId)));
+        orderStageDto.getListOfToolsPlannedNumber().forEach(toolTypeId -> toolTypeList.add(toolsPlannedNumberRepository.findById(toolTypeId).orElseThrow(EntityNotFoundException::new)));
 
         List<ElementsPlannedNumber> elementList = new ArrayList<>();
-        orderStageDto.getListOfElementsPlannedNumber().forEach(elementId -> elementList.add(elementsPlannedNumberRepository.getReferenceById(elementId)));
+        orderStageDto.getListOfElementsPlannedNumber().forEach(elementId -> elementList.add(elementsPlannedNumberRepository.findById(elementId).orElseThrow(EntityNotFoundException::new)));
 
         List<DemandAdHoc> demandAdHocList = new ArrayList<>();
         orderStageDto.getDemandAdHocs().forEach(demandAdHocId -> demandAdHocList.add(demandAdHocRepository.findById(demandAdHocId).orElseThrow(EntityNotFoundException::new)));
@@ -146,22 +146,22 @@ public class OrderStageMapper {
     public OrderStage toEntity(OrderStageWithToolsAndElementsDto orderStageToolsElementsDto) {
 
         List<Fitter> fitterList = new ArrayList<>();
-        orderStageToolsElementsDto.getFitters().forEach(fitterId -> fitterList.add(fitterRepository.getReferenceById(fitterId)));
+        orderStageToolsElementsDto.getFitters().forEach(fitterId -> fitterList.add(fitterRepository.findById(fitterId).orElseThrow(EntityNotFoundException::new)));
 
         List<Comment> commentList = new ArrayList<>();
-        orderStageToolsElementsDto.getComments().forEach(commentId -> commentList.add(commentRepository.getReferenceById(commentId)));
+        orderStageToolsElementsDto.getComments().forEach(commentId -> commentList.add(commentRepository.findById(commentId).orElseThrow(EntityNotFoundException::new)));
 
         List<ToolRelease> toolReleaseList = new ArrayList<>();
-        orderStageToolsElementsDto.getToolReleases().forEach(toolReleaseId -> toolReleaseList.add(toolReleaseRepository.getReferenceById(toolReleaseId)));
+        orderStageToolsElementsDto.getToolReleases().forEach(toolReleaseId -> toolReleaseList.add(toolReleaseRepository.findById(toolReleaseId).orElseThrow(EntityNotFoundException::new)));
 
         List<ElementReturnRelease> elementReturnReleaseList = new ArrayList<>();
-        orderStageToolsElementsDto.getElementReturnReleases().forEach(elementReturnReleaseId -> elementReturnReleaseList.add(elementReturnReleaseRepository.getReferenceById(elementReturnReleaseId)));
+        orderStageToolsElementsDto.getElementReturnReleases().forEach(elementReturnReleaseId -> elementReturnReleaseList.add(elementReturnReleaseRepository.findById(elementReturnReleaseId).orElseThrow(EntityNotFoundException::new)));
 
         List<Attachment> attachmentList = new ArrayList<>();
-        orderStageToolsElementsDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.getReferenceById(attachmentId)));
+        orderStageToolsElementsDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.findById(attachmentId).orElseThrow(EntityNotFoundException::new)));
 
         List<Notification> notificationList = new ArrayList<>();
-        orderStageToolsElementsDto.getNotifications().forEach(notificationId -> notificationList.add(notificationRepository.getReferenceById(notificationId)));
+        orderStageToolsElementsDto.getNotifications().forEach(notificationId -> notificationList.add(notificationRepository.findById(notificationId).orElseThrow(EntityNotFoundException::new)));
 
         List<ToolsPlannedNumber> toolTypeList = new ArrayList<>();
         orderStageToolsElementsDto.getListOfToolsPlannedNumber().forEach(toolsPlannedNumberDto -> toolTypeList.add(toolsPlannedNumberMapper.toEntity(toolsPlannedNumberDto)));
@@ -170,7 +170,7 @@ public class OrderStageMapper {
         orderStageToolsElementsDto.getListOfElementsPlannedNumber().forEach(elementsPlannedNumberDto -> elementList.add(elementsPlannedNumberMapper.toEntity(elementsPlannedNumberDto)));
 
         List<DemandAdHoc> demandAdHocList = new ArrayList<>();
-        orderStageToolsElementsDto.getDemandAdHocs().forEach(demandAdHocId -> demandAdHocList.add(demandAdHocRepository.getReferenceById(demandAdHocId)));
+        orderStageToolsElementsDto.getDemandAdHocs().forEach(demandAdHocId -> demandAdHocList.add(demandAdHocRepository.findById(demandAdHocId).orElseThrow(EntityNotFoundException::new)));
 
         return OrderStage.builder()
                 .id(orderStageToolsElementsDto.getId())
@@ -185,11 +185,11 @@ public class OrderStageMapper {
                 .plannedFittersNumber(orderStageToolsElementsDto.getPlannedFittersNumber())
                 .minimumImagesNumber(orderStageToolsElementsDto.getMinimumImagesNumber())
                 .assignedTo(fitterList)
-                .managedBy(orderStageToolsElementsDto.getForemanId() == null ? null : foremanRepository.getReferenceById(orderStageToolsElementsDto.getForemanId()))
+                .managedBy(orderStageToolsElementsDto.getForemanId() == null ? null : foremanRepository.findById(orderStageToolsElementsDto.getForemanId()).orElseThrow(EntityNotFoundException::new))
                 .comments(commentList)
                 .toolReleases(toolReleaseList)
                 .elementReturnReleases(elementReturnReleaseList)
-                .orders(orderStageToolsElementsDto.getOrderId() == null ? null : orderRepository.getReferenceById(orderStageToolsElementsDto.getOrderId()))
+                .orders(orderStageToolsElementsDto.getOrderId() == null ? null : orderRepository.findById(orderStageToolsElementsDto.getOrderId()).orElseThrow(EntityNotFoundException::new))
                 .attachments(attachmentList)
                 .notifications(notificationList)
                 .listOfToolsPlannedNumber(toolTypeList)
