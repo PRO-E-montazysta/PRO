@@ -25,14 +25,14 @@ export const headCells: Array<HeadCell<WarehouseFilterDto>> = [
         type: 'string',
         id: 'openingHours',
         label: 'Godziny otwarcia',
-        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
+        visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
     {
         type: 'string',
         id: 'fullAddress',
         label: 'Adres',
-        visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
+        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
 ]
