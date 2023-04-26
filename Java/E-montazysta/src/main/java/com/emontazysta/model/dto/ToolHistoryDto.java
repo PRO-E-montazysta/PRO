@@ -14,6 +14,7 @@ public class ToolHistoryDto {
 
     private String orderStageName;
     private LocalDateTime orderStageStartDate;
+    private LocalDateTime orderStageEndDate;
     private String foremanName;
 
 }
