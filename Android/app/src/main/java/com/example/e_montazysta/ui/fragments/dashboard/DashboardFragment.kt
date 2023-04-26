@@ -34,6 +34,12 @@ class DashboardFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+        val releases = binding.releases
+        releases.setOnClickListener{
+            val action = DashboardFragmentDirections.actionNavigationDashboardToReleaseListFragment()
+            findNavController().navigate(action)
+        }
+
         return root
     }
 

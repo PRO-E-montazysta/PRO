@@ -1,4 +1,4 @@
-package com.example.e_montazysta.ui.toollist
+package com.example.e_montazysta.ui.release
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,51 +6,37 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import com.example.e_montazysta.databinding.FragmentToolsBinding
+import com.example.e_montazysta.databinding.FragmentReleasesBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ToolsListFragment : Fragment() {
-    private val toolsListViewModel: ToolsListViewModel by viewModel()
+class ReleaseListFragment : Fragment() {
+    private val releaseListViewModel: ReleaseListViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         // Get a reference to the binding object and inflate the fragment views.
-        val binding: FragmentToolsBinding = FragmentToolsBinding.inflate(inflater, container, false)
+        val binding: FragmentReleasesBinding = FragmentReleasesBinding.inflate(inflater, container, false)
         val application = requireNotNull(this.activity).application
 
         // To use the View Model with data binding, you have to explicitly
         // give the binding object a reference to it.
-        binding.toolsListViewModel = toolsListViewModel
+        // binding.releaseListViewModel = releaseListViewModel
 
-        val adapter = ToolsListAdapter()
+        val adapter = ReleaseListAdapter()
         binding.toolList.adapter = adapter
 
-        toolsListViewModel.getTools()
+        releaseListViewModel.getRelease()
 
-        toolsListViewModel.tools.observe(viewLifecycleOwner, Observer {
+        releaseListViewModel.release.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.elements = it
             }
         })
-
-        toolsListViewModel.isLoadingLiveData.observe(viewLifecycleOwner, Observer<Boolean> {
-            it?.let {
-                
-            }
-        }
         // Specify the current activity as the lifecycle owner of the binding.
         // This is necessary so that the binding can observe LiveData updates.
         binding.setLifecycleOwner(this)
         return binding.root
 
-
-    //        binding = FragmentToolsBinding.inflate(inflater, container,false)
-//        binding.toolsListViewModel = viewModel
-//        binding.lifecycleOwner = this
-//        adapter = ToolsListAdapter()
-//        binding.toolList.adapter = adapter
-//        viewModel.getTools()
-//        return binding.root
     }
 
 }

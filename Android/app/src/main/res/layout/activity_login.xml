@@ -33,24 +33,31 @@
                 android:contentDescription="@string/logo_desc"
                 android:src="@drawable/logo" />
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/prompt_username">
             <EditText
                 android:id="@+id/username"
-                style="@style/text_field"
+                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
                 android:autofillHints="username"
-                android:hint="@string/prompt_email"
-                android:inputType="textEmailAddress" />
-
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/prompt_password">
             <EditText
                 android:id="@+id/password"
-                style="@style/text_field"
-                android:layout_marginTop="8dp"
-                android:autofillHints="password"
-                android:hint="@string/prompt_password"
+                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
                 android:imeActionLabel="@string/action_sign_in_short"
                 android:imeOptions="actionDone"
                 android:inputType="textPassword"
-                android:selectAllOnFocus="true" />
-
+                android:selectAllOnFocus="true"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"/>
+            </com.google.android.material.textfield.TextInputLayout>
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
