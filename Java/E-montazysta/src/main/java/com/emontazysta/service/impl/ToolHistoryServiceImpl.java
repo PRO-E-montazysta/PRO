@@ -10,8 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +44,7 @@ public class ToolHistoryServiceImpl implements ToolHistoryService {
             }
         });
 
+        Collections.sort(result, Collections.reverseOrder());
         return result;
     }
 }
