@@ -14,9 +14,12 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Card from '@mui/material/Card'
 import AssignmentIcon from '@mui/icons-material/Assignment'
 import Collapse from '@mui/material/Collapse'
-import { ExpandMore, TabPanel } from './helper'
+import OrderStageDetailsTable, { ExpandMore, TabPanel } from './helper'
 import { getRolesFromToken } from '../../utils/token'
 import { Role } from '../../types/roleEnum'
+import { useMutation, useQuery } from 'react-query'
+import { AxiosError } from 'axios'
+import { getAllToolTypes } from '../../api/toolType.api'
 
 type OrderStageCardProps = {
     index?: string
@@ -34,11 +37,25 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
     const [preparedPlannedStartDate, setPreparedPlannedStartDate] = useState('')
     const [preparedPlannedEndDate, setPreparedPlannedEndDate] = useState('')
     const [userRole, setUserRole] = useState('')
+
+    const [plannedToolType, setPlannedToolType] = useState<[{ numberOfTools: number; toolTypeId: string }]>()
+    const [plannedElement, setPlannedElement] = useState<[{ numberOfElements: number; elementId: string }]>()
+
     const dummyScrollDiv = useRef<any>(null)
 
     const params = useParams()
 
+    const queryToolTypes = useQuery<Array<OrderStage>, AxiosError>(
+        ['toolType-list'],
+        async () => await getAllToolTypes(),
+    )
+
     useEffect(() => {
+        console.log('lalala', queryToolTypes)
+    }, [queryToolTypes])
+
+    useEffect(() => {
+        console.log(queryToolTypes)
         const role = getRolesFromToken()
         if (role.length !== 0) setUserRole(role[0])
     }, [])
@@ -85,18 +102,21 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
         initialValues: {
             id: params.id,
             name: '',
-            status: '',
+            status: 'TODO',
             price: '',
             plannedStartDate: preparedPlannedStartDate,
             plannedEndDate: preparedPlannedEndDate,
-            startDate: '',
-            endDate: '',
-            plannedDurationTime: '', //jak chcemy to podawać?
+            // startDate: '',
+            // endDate: '',
+            // plannedDurationTime: '', //jak chcemy to podawać?
             plannedFittersNumber: '',
             minimumImagesNumber: '',
-            fitters: '',
+            // fitters: '',
             foremanId: '',
-            tools: '',
+            comments: '',
+            // tools: '',
+            listOfToolsPlannedNumber: plannedToolType,
+            listOfElementsPlannedNumber: plannedElement,
             elements: '',
             attachments: '',
             test: '',
@@ -186,37 +206,13 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
         )
     }
 
-    const getStageDetails = () => {
-        return (
-            <>
-                <Grid item xs={2}>
-                    <TextField
-                        sx={{ width: '100%' }}
-                        required
-                        id="outlined-required"
-                        label="Narzędzia"
-                        name="tools"
-                        value={formik.values.tools}
-                        onChange={formik.handleChange}
-                    />
-                </Grid>
-                <Grid item xs={2}>
-                    <TextField
-                        sx={{ width: '100%' }}
-                        required
-                        id="outlined-required"
-                        label="Elementy"
-                        name="elements"
-                        value={formik.values.elements}
-                        onChange={formik.handleChange}
-                    />
-                </Grid>
-                <Grid item xs={2}>
-                    <TextField sx={{ width: '100%' }} label="Załączniki" name="attachments" />
-                </Grid>
-            </>
-        )
-    }
+    // const getStageDetails = () => {
+    //     return (
+    //         <>
+
+    //         </>
+    //     )
+    // }
 
     return (
         <Card id={index ? index.toString() : ''} sx={{ margin: 'auto', marginTop: '20px', border: '1px solid' }}>
@@ -327,18 +323,50 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                             >
                                 <Tabs value={tabValue} onChange={handleTabChange} aria-label="basic tabs example">
                                     <Tab label="Informacje o datach" {...tabProps(0)} />
-                                    <Tab label="Szczegóły etapu" {...tabProps(1)} />
+                                    <Tab label="Narzędzia" {...tabProps(1)} />
+                                    <Tab label="Elementy" {...tabProps(2)} />
                                     {isDisplayingMode ? <Tab label="Montażyści..." {...tabProps(2)} /> : null}
+                                    <Tab label="Szczegóły etapu/Zalaczniki" {...tabProps(1)} />
                                 </Tabs>
                             </Box>
                             <TabPanel value={tabValue} index={0}>
                                 {getDateInformations(stage)}
                             </TabPanel>
                             <TabPanel value={tabValue} index={1}>
-                                {getStageDetails()}
+                                {/* <Grid item xs={2}>
+                                    <TextField
+                                        sx={{ width: '100%' }}
+                                        required
+                                        id="outlined-required"
+                                        label="Narzędzia"
+                                        name="tools"
+                                        value={formik.values.elements}
+                                        onChange={formik.handleChange}
+                                    />
+                                </Grid> */}
+                             <OrderStageDetailsTable itemsArray={queryToolTypes.data} setItem={setPlannedToolType}/>
                             </TabPanel>
                             <TabPanel value={tabValue} index={2}>
+                                <Grid item xs={2}>
+                                    <TextField
+                                        sx={{ width: '100%' }}
+                                        required
+                                        id="outlined-required"
+                                        label="Elementy"
+                                        name="elements"
+                                        value={formik.values.elements}
+                                        onChange={formik.handleChange}
+                                    />
+                                </Grid>
+                            </TabPanel>
+
+                            <TabPanel value={tabValue} index={3}>
                                 Montażyści...
+                            </TabPanel>
+                            <TabPanel value={tabValue} index={4}>
+                                <Grid item xs={2}>
+                                    <TextField sx={{ width: '100%' }} label="Załączniki" name="attachments" />
+                                </Grid>{' '}
                             </TabPanel>
                         </Box>
 
