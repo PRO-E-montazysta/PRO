@@ -63,20 +63,19 @@ export const ExpandMore = styled((props: ExpandMoreProps) => {
 
 type OrderStageDetailsTableType = {
     itemsArray: Array<any> | undefined
-    setItem: React.Dispatch<
+    plannedData: Array<{ numberOfTools: number; toolTypeId: string }>
+    setPlannedData: React.Dispatch<
         React.SetStateAction<
-            | [
-                  {
-                      numberOfTools: number
-                      toolTypeId: string
-                  },
-              ]
+            | {
+                  numberOfTools: number
+                  toolTypeId: string
+              }[]
             | undefined
         >
     >
 }
 
-const OrderStageDetailsTable = ({ itemsArray, setItem }: OrderStageDetailsTableType) => {
+const OrderStageDetailsTable = ({ itemsArray, setPlannedData, plannedData }: OrderStageDetailsTableType) => {
     const [tableData, setTableData] = useState([{ numberOfTools: 0, toolTypeId: 'toChange' }])
     const [tableRow, setTableRow] = useState([{}])
     const [tableRowIndex, setTableRowIndex] = useState(0)
@@ -91,17 +90,44 @@ const OrderStageDetailsTable = ({ itemsArray, setItem }: OrderStageDetailsTableT
     //     setTableData((prevData) => [...prevData, { index: index, numberOfTools: 1, toolTypeId: 'sada' }])
     // }
 
-    const handleItemNumberChange = (event: any) =>{
-        const { value: newValue } = event.target;
+    const handleItemNumberChange = (event: any) => {
+        const { value: newValue } = event.target
         setSelectedItemNumber(event.target.value)
-        const regExp = /^\d*$/; // regular expression to match only digits
-        if (regExp.test(newValue) ) {
-            setSelectedItemNumber(newValue);
+        const regExp = /^\d*$/ // regular expression to match only digits
+        if (regExp.test(newValue)) {
+            setSelectedItemNumber(newValue)
         }
     }
 
     useEffect(() => {
-        console.log('useeffect', selectedItemId + ' row' + tableRowIndex + ' number' + selectedItemNumber)
+        console.log(
+            'useeffect',
+            'plannedData ' +
+                plannedData +
+                ' ' +
+                selectedItemId +
+                ' row' +
+                tableRowIndex +
+                ' number' +
+                selectedItemNumber,
+        )
+
+        if (!plannedData) {
+            console.log('jestem tu-------')
+
+            return setPlannedData([{ numberOfTools: selectedItemNumber, toolTypeId: selectedItemId }])
+        }
+        if (!!plannedData && plannedData.length === 0) {
+            console.log('jestem tu')
+            return setPlannedData([{ numberOfTools: selectedItemNumber, toolTypeId: selectedItemId }])
+        }
+        if (!!plannedData) {
+            console.log('jestem tu2')
+
+            const tempArray = [...plannedData]
+            tempArray[tableRowIndex] = { numberOfTools: selectedItemNumber, toolTypeId: selectedItemId }
+            setPlannedData(tempArray)
+        }
     }, [selectedItemId, selectedItemNumber])
 
     return (
@@ -134,10 +160,16 @@ const OrderStageDetailsTable = ({ itemsArray, setItem }: OrderStageDetailsTableT
                             <TableCell align="right">
                                 <Box sx={{ minWidth: 120 }}>
                                     <FormControl fullWidth>
-                                        <TextField type='number' value={selectedItemNumber} id="outlined-basic" label="Ilość" variant="outlined" onChange={(event)=>{
-                                            setTableRowIndex(rowIndex)
-                                            handleItemNumberChange(event)
-                                        }}
+                                        <TextField
+                                            type="number"
+                                            value={selectedItemNumber}
+                                            id="outlined-basic"
+                                            label="Ilość"
+                                            variant="outlined"
+                                            onChange={(event) => {
+                                                setTableRowIndex(rowIndex)
+                                                handleItemNumberChange(event)
+                                            }}
                                         />
                                         {/* <TableItemSelect
                                             label={'Ilość'}

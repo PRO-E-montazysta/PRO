@@ -38,7 +38,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
     const [preparedPlannedEndDate, setPreparedPlannedEndDate] = useState('')
     const [userRole, setUserRole] = useState('')
 
-    const [plannedToolType, setPlannedToolType] = useState<[{ numberOfTools: number; toolTypeId: string }]>()
+    const [plannedToolType, setPlannedToolType] = useState<{ numberOfTools: number; toolTypeId: string }[]>()
     const [plannedElement, setPlannedElement] = useState<[{ numberOfElements: number; elementId: string }]>()
 
     const dummyScrollDiv = useRef<any>(null)
@@ -49,6 +49,10 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
         ['toolType-list'],
         async () => await getAllToolTypes(),
     )
+
+    useEffect(() => {
+        console.log('dzialaj', plannedToolType)
+    }, [plannedToolType])
 
     useEffect(() => {
         console.log('lalala', queryToolTypes)
@@ -344,7 +348,11 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                         onChange={formik.handleChange}
                                     />
                                 </Grid> */}
-                             <OrderStageDetailsTable itemsArray={queryToolTypes.data} setItem={setPlannedToolType}/>
+                                <OrderStageDetailsTable
+                                    itemsArray={queryToolTypes.data}
+                                    plannedData={plannedToolType!}
+                                    setPlannedData={setPlannedToolType}
+                                />
                             </TabPanel>
                             <TabPanel value={tabValue} index={2}>
                                 <Grid item xs={2}>
