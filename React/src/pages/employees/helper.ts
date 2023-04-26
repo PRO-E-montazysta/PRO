@@ -28,7 +28,7 @@ export const headCells: Array<HeadCell<Employee>> = [
         type: 'string',
         id: 'email',
         label: 'Email',
-        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
+        visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
     {
@@ -47,14 +47,14 @@ export const headCells: Array<HeadCell<Employee>> = [
         type: 'string',
         id: 'status',
         label: 'Status',
-        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
+        visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
     {
         type: 'string',
         id: 'roles',
         label: 'Role',
-        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
+        visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
     {
