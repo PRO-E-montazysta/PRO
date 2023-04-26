@@ -7,6 +7,6 @@ data class Tool(
     val id: Int,
     val name: String,
     val code: String,
-    val toolType: ToolType,
-    val warehouse: Warehouse
+    val toolType: String,
+    val warehouse: String
 )

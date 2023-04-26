@@ -14,7 +14,7 @@ class ToolsDataSource (){
     }
     companion object {
         val toolList = listOf<Tool>(
-            Tool(1, "Młotek","asd", ToolType(1, "typ1"), Warehouse(1,"magazyn1"))
+            Tool(1, "Młotek","asd", "1", "1")
         )
     }
 }

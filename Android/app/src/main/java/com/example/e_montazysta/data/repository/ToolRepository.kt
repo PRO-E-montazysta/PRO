@@ -23,7 +23,7 @@ class ToolRepository(
             val toolService = serviceProvider.getToolService()
             val toolDAOs = toolService.getTools(token)
             val tools = toolDAOs.map { it.mapToTool() }
-             Result.Success(tools)
+            Result.Success(tools)
         } catch (e: Exception) {
             Result.Error(e)
         }

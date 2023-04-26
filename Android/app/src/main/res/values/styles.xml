@@ -37,6 +37,6 @@
         <item name="cardCornerRadius">12dp</item>
     </style>
     <style name="backdrop" >
-        <item name="android:background">@color/md_theme_dark_primaryContainer</item>
+        <item name="android:background">?backgroundColor</item>
     </style>
 </resources>

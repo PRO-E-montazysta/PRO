@@ -7,11 +7,9 @@
          the whole ViewModel, so that we can access the LiveData,
          click handlers, and state variables. -->
     <data>
-
         <variable
             name="ToolsListViewModel"
             type="com.example.e_montazysta.ui.toollist.ToolsListViewModel" />
-
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -22,7 +20,7 @@
             android:id="@+id/tool_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/tool_item"
+            tools:listitem="@layout/list_item_tool"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             />
 

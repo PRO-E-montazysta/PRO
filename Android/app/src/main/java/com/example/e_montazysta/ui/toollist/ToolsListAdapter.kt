@@ -3,31 +3,41 @@ package com.example.e_montazysta.ui.toollist
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.e_montazysta.databinding.ToolItemBinding
-import com.example.e_montazysta.ui.tools.ToolItem
+import com.example.e_montazysta.databinding.ListItemToolBinding
 
-class ToolsListAdapter : RecyclerView.Adapter<ToolItemViewHolder>() {
+class ToolsListAdapter : RecyclerView.Adapter<ToolsListAdapter.ViewHolder>() {
 
-    private var elements = listOf<ToolItem>()
+    var elements = listOf<ToolListItem>()
 
     set(value) {
         field = value
         notifyDataSetChanged()
     }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ToolItemViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = ToolItemBinding.inflate(layoutInflater, parent, false)
-        return ToolItemViewHolder(binding)
-    }
-
     override fun getItemCount(): Int {
         return elements.size
     }
 
-    override fun onBindViewHolder(holder: ToolItemViewHolder, position: Int) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return ViewHolder.from(parent)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = elements[position]
         holder.bind(item)
     }
+    class ViewHolder( val binding: ListItemToolBinding) : RecyclerView.ViewHolder(binding.root) {
 
+        fun bind(data: ToolListItem) {
+            binding.toolName.text = data.name
+            binding.toolCode.text = data.code
+            binding.executePendingBindings()
+        }
+        companion object {
+            fun from(parent: ViewGroup): ViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = ListItemToolBinding.inflate(layoutInflater, parent, false)
+                return ViewHolder(binding)
+            }
+        }
+    }
 }
