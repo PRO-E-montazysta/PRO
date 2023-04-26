@@ -98,7 +98,7 @@ export const headCells: Array<HeadCell<Tool>> = [
         type: 'string',
         id: 'warehouse',
         label: 'Magazyn',
-        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
+        visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
     {
