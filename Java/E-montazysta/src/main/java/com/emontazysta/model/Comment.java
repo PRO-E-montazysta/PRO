@@ -4,7 +4,6 @@ package com.emontazysta.model;
 import javax.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,7 +14,6 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Where(clause = "deleted=false")
 @SQLDelete(sql = "UPDATE comment SET deleted = true WHERE id=?")
 public class Comment {
 
