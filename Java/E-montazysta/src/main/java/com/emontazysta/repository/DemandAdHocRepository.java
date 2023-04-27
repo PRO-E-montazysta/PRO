@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface DemandAdHocRepository extends JpaRepository<DemandAdHoc, Long> {
 
+    Optional<DemandAdHoc> findByIdAndDeletedIsFalse(Long id);
+    List<DemandAdHoc> findAllByDeletedIsFalse();
 }

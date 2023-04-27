@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface CompanyRepository extends JpaRepository<Company, Long> {
 
+    Optional<Company> findByIdAndDeletedIsFalse(Long id);
+    List<Company> findAllByDeletedIsFalse();
 }

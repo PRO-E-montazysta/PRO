@@ -28,14 +28,14 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public List<ClientDto> getAll() {
-        return repository.findAll().stream()
+        return repository.findAllByDeletedIsFalse().stream()
                 .map(clientMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public ClientDto getById(Long id) {
-        Client client = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Client client = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
         return clientMapper.toDto(client);
     }
 
@@ -57,7 +57,7 @@ public class ClientServiceImpl implements ClientService {
     public ClientDto update(Long id, ClientDto clientDto) {
 
         Client updatedClient = clientMapper.toEntity(clientDto);
-        Client clientToUpdate = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Client clientToUpdate = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
         clientToUpdate.setName(updatedClient.getName());
         clientToUpdate.setContactDetails(updatedClient.getContactDetails());
         clientToUpdate.setCompany(updatedClient.getCompany());

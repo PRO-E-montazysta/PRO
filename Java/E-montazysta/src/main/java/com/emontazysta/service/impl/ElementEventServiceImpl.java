@@ -29,14 +29,14 @@ public class ElementEventServiceImpl implements ElementEventService {
 
     @Override
     public List<ElementEventDto> getAll() {
-        return repository.findAll().stream()
+        return repository.findAllByDeletedIsFalse().stream()
                 .map(elementEventMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public ElementEventDto getById(Long id){
-        ElementEvent elementEvent = repository.findById(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        ElementEvent elementEvent = repository.findByIdAndDeletedIsFalse(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         AppUser user =  authUtils.getLoggedUser();
         Boolean isFitter = user.getRoles().contains(Role.FITTER);
@@ -66,7 +66,7 @@ public class ElementEventServiceImpl implements ElementEventService {
 
     @Override
     public void delete(Long id) {
-        ElementEvent elementEvent = repository.findById(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        ElementEvent elementEvent = repository.findByIdAndDeletedIsFalse(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         if(!elementEvent.getElement().getElementInWarehouses().stream().findFirst().get().getWarehouse()
                 .getCompany().getId().equals(authUtils.getLoggedUserCompanyId()))
@@ -78,7 +78,7 @@ public class ElementEventServiceImpl implements ElementEventService {
     @Override
     public ElementEventDto update(Long id, ElementEventDto event) {
         ElementEvent updatedElementEvent = elementEventMapper.toEntity(event);
-        ElementEvent elementEvent = repository.findById(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        ElementEvent elementEvent = repository.findByIdAndDeletedIsFalse(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         AppUser user =  authUtils.getLoggedUser();
         Boolean isFitter = user.getRoles().contains(Role.FITTER);

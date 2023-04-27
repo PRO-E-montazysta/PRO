@@ -35,12 +35,12 @@ public class AppUserServiceImpl  implements AppUserService {
     @Override
     public List<AppUser> getAll() {
         log.info("Fetching all users");
-        return appUserRepository.findAll();
+        return appUserRepository.findAllByDeletedIsFalse();
     }
 
     @Override
     public AppUser getById(Long id) {
-        return appUserRepository.findById(id)
+        return appUserRepository.findByIdAndDeletedIsFalse(id)
                 .orElseThrow(EntityNotFoundException::new);
     }
 

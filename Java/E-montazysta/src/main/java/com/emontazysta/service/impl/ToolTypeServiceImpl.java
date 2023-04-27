@@ -26,14 +26,14 @@ public class ToolTypeServiceImpl implements ToolTypeService {
 
     @Override
     public List<ToolTypeDto> getAll() {
-        return repository.findAll().stream()
+        return repository.findAllByDeletedIsFalse().stream()
                 .map(toolTypeMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public ToolTypeDto getById(Long id) {
-        ToolType toolType = repository.findById(id).orElseThrow(() -> new RuntimeException("Tool type with id " + id + " not found!"));
+        ToolType toolType = repository.findByIdAndDeletedIsFalse(id).orElseThrow(() -> new RuntimeException("Tool type with id " + id + " not found!"));
         return toolTypeMapper.toDto(toolType);
 
     }
@@ -61,7 +61,7 @@ public class ToolTypeServiceImpl implements ToolTypeService {
 
     public ToolTypeDto update(Long id, ToolTypeDto toolTypeDto) {
         ToolType updatedToolType = toolTypeMapper.toEntity(toolTypeDto);
-        ToolType toolType = repository.findById(id).orElseThrow(() -> new RuntimeException("Tool type with id " + id + " not found!"));
+        ToolType toolType = repository.findByIdAndDeletedIsFalse(id).orElseThrow(() -> new RuntimeException("Tool type with id " + id + " not found!"));
         toolType.setName(updatedToolType.getName());
         toolType.setCriticalNumber(updatedToolType.getCriticalNumber());
         toolType.setAttachments(updatedToolType.getAttachments());

@@ -30,14 +30,14 @@ public class ForemanServiceImpl implements ForemanService {
 
     @Override
     public List<ForemanDto> getAll() {
-        return repository.findAll().stream()
+        return repository.findAllByDeletedIsFalse().stream()
                 .map(foremanMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public ForemanDto getById(Long id) {
-        Foreman foreman = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Foreman foreman = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
         return foremanMapper.toDto(foreman);
     }
 
@@ -80,7 +80,7 @@ public class ForemanServiceImpl implements ForemanService {
     @Override
     public ForemanDto update(Long id, ForemanDto foremanDto) {
         Foreman updatedForeman = foremanMapper.toEntity(foremanDto);
-        Foreman foreman = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Foreman foreman = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
         foreman.setFirstName(updatedForeman.getFirstName());
         foreman.setLastName(updatedForeman.getLastName());
         foreman.setEmail(updatedForeman.getEmail());

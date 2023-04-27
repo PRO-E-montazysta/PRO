@@ -44,14 +44,14 @@ public class OrderStageImpl implements OrderStageService {
 
     @Override
     public List<OrderStageDto> getAll() {
-        return repository.findAll().stream()
+        return repository.findAllByDeletedIsFalse().stream()
                 .map(orderStageMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public OrderStageDto getById(Long id) {
-        OrderStage orderStage = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        OrderStage orderStage = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
         return orderStageMapper.toDto(orderStage);
     }
 
@@ -130,7 +130,7 @@ public class OrderStageImpl implements OrderStageService {
 
         OrderStage updatedOrderStage = orderStageMapper.toEntity(modiffiedOrderStageDto);
 
-        OrderStage orderStageDb = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        OrderStage orderStageDb = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
 
         List<ToolsPlannedNumber> updatedToolsList = new ArrayList<>();
         List<ElementsPlannedNumber> updatedElementsList = new ArrayList<>();

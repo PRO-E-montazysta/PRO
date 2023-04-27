@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface ElementInWarehouseRepository  extends JpaRepository<ElementInWarehouse, Long> {
 
+    Optional<ElementInWarehouse> findByIdAndDeletedIsFalse(Long id);
+    List<ElementInWarehouse> findAllByDeletedIsFalse();
 }

@@ -23,7 +23,7 @@ public class DemandAdHocServiceImpl implements DemandAdHocService {
 
     @Override
     public List<DemandAdHocDto> getAll() {
-        return repository.findAll().stream()
+        return repository.findAllByDeletedIsFalse().stream()
                 .map(demandAdHocMapper::toDto)
                 .collect(Collectors.toList());
     }
@@ -31,7 +31,7 @@ public class DemandAdHocServiceImpl implements DemandAdHocService {
     @Override
     public DemandAdHocDto getById(Long id) {
 
-        DemandAdHoc demandAdHoc = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        DemandAdHoc demandAdHoc = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
         return demandAdHocMapper.toDto(demandAdHoc);
     }
 
@@ -64,7 +64,7 @@ public class DemandAdHocServiceImpl implements DemandAdHocService {
     public DemandAdHocDto update(Long id, DemandAdHocDto demandAdHocDto) {
 
         DemandAdHoc updatedDemandAdHoc = demandAdHocMapper.toEntity(demandAdHocDto);
-        DemandAdHoc demandAdHocDb = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        DemandAdHoc demandAdHocDb = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
         demandAdHocDb.setDescription(updatedDemandAdHoc.getDescription());
         demandAdHocDb.setComments(updatedDemandAdHoc.getComments());
         demandAdHocDb.setReadByWarehousemanTime(updatedDemandAdHoc.getReadByWarehousemanTime());

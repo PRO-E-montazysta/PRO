@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface AttachmentRepository extends JpaRepository<Attachment, Long> {
 
+    Optional<Attachment> findByIdAndDeletedIsFalse(Long id);
+    List<Attachment> findAllByDeletedIsFalse();
 }

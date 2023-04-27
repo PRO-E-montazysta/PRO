@@ -33,14 +33,14 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public List<OrdersDto> getAll() {
-        return repository.findAll().stream()
+        return repository.findAllByDeletedIsFalse().stream()
                 .map(ordersMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public OrdersDto getById(Long id) {
-        Orders order = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Orders order = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
         return ordersMapper.toDto(order);
     }
 
@@ -62,7 +62,7 @@ public class OrdersServiceImpl implements OrdersService {
     public OrdersDto update(Long id, OrdersDto ordersDto) {
 
         Orders updatedOrder = ordersMapper.toEntity(ordersDto);
-        Orders order = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Orders order = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
         order.setName(updatedOrder.getName());
         order.setTypeOfStatus(updatedOrder.getTypeOfStatus());
         order.setTypeOfPriority(updatedOrder.getTypeOfPriority());

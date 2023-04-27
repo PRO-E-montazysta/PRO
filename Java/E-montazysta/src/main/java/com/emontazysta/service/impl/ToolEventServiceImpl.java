@@ -29,14 +29,14 @@ public class ToolEventServiceImpl implements ToolEventService {
 
     @Override
     public List<ToolEventDto> getAll() {
-        return repository.findAll().stream()
+        return repository.findAllByDeletedIsFalse().stream()
                 .map(toolEventMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public ToolEventDto getById(Long id) {
-        ToolEvent toolEvent = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        ToolEvent toolEvent = repository.findByIdAndDeletedIsFalse(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         AppUser user =  authUtils.getLoggedUser();
         Boolean isFitter = user.getRoles().contains(Role.FITTER);
@@ -77,7 +77,7 @@ public class ToolEventServiceImpl implements ToolEventService {
     @Override
     public ToolEventDto update(Long id, ToolEventDto toolEventDto) {
         ToolEvent updatedToolEvent = toolEventMapper.toEntity(toolEventDto);
-        ToolEvent toolEvent = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        ToolEvent toolEvent = repository.findByIdAndDeletedIsFalse(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         AppUser user =  authUtils.getLoggedUser();
         Boolean isFitter = user.getRoles().contains(Role.FITTER);

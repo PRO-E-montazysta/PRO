@@ -35,14 +35,14 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<CompanyDto> getAll() {
-        return companyRepository.findAll().stream()
+        return companyRepository.findAllByDeletedIsFalse().stream()
                 .map(companyMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public CompanyDto getById(Long id) {
-        Company company = companyRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Company company = companyRepository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
         return companyMapper.toDto(company);
     }
 
@@ -73,7 +73,7 @@ public class CompanyServiceImpl implements CompanyService {
     public CompanyDto update(Long id, CompanyDto companyDto) {
 
         Company updatedCompany = companyMapper.toEntity(companyDto);
-        Company companyToUpdate = companyRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Company companyToUpdate = companyRepository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
         companyToUpdate.setCompanyName(updatedCompany.getCompanyName());
         companyToUpdate.setStatus(updatedCompany.getStatus());
         companyToUpdate.setStatusReason(updatedCompany.getStatusReason());

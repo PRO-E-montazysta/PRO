@@ -30,14 +30,14 @@ public class WarehousemanServiceImpl implements WarehousemanService {
 
     @Override
     public List<WarehousemanDto> getAll() {
-        return repository.findAll().stream()
+        return repository.findAllByDeletedIsFalse().stream()
                 .map(warehousemanMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public WarehousemanDto getById(Long id) {
-        Warehouseman warehouseman = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Warehouseman warehouseman = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
         return warehousemanMapper.toDto(warehouseman);
     }
 
@@ -77,7 +77,7 @@ public class WarehousemanServiceImpl implements WarehousemanService {
     @Override
     public WarehousemanDto update(Long id, WarehousemanDto warehousemanDto) {
         Warehouseman updatedWarehouseman = warehousemanMapper.toEntity(warehousemanDto);
-        Warehouseman warehouseman = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Warehouseman warehouseman = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
         warehouseman.setFirstName(updatedWarehouseman.getFirstName());
         warehouseman.setLastName(updatedWarehouseman.getLastName());
         warehouseman.setEmail(updatedWarehouseman.getEmail());

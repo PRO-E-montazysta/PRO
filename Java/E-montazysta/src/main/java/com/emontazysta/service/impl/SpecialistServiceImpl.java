@@ -30,14 +30,14 @@ public class SpecialistServiceImpl implements SpecialistService {
 
     @Override
     public List<SpecialistDto> getAll() {
-        return repository.findAll().stream()
+        return repository.findAllByDeletedIsFalse().stream()
                 .map(specialistMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public SpecialistDto getById(Long id) {
-        Specialist specialist = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Specialist specialist = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
         return specialistMapper.toDto(specialist);
     }
 
@@ -76,7 +76,7 @@ public class SpecialistServiceImpl implements SpecialistService {
     @Override
     public SpecialistDto update(Long id, SpecialistDto specialistDto) {
         Specialist updatedSpecialist = specialistMapper.toEntity(specialistDto);
-        Specialist specialist = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Specialist specialist = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
         specialist.setFirstName(updatedSpecialist.getFirstName());
         specialist.setLastName(updatedSpecialist.getLastName());
         specialist.setEmail(updatedSpecialist.getEmail());

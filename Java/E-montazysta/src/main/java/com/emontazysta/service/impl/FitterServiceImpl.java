@@ -30,7 +30,7 @@ public class FitterServiceImpl implements FitterService {
 
     @Override
     public List<FitterDto> getAll() {
-        return repository.findAll().stream()
+        return repository.findAllByDeletedIsFalse().stream()
                 .map(fitterMapper::toDto)
                 .collect(Collectors.toList());
     }
@@ -38,7 +38,7 @@ public class FitterServiceImpl implements FitterService {
 
     @Override
     public FitterDto getById(Long id) {
-        Fitter fitter = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Fitter fitter = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
         return fitterMapper.toDto(fitter);
     }
 
@@ -76,7 +76,7 @@ public class FitterServiceImpl implements FitterService {
     @Override
     public FitterDto update(Long id, FitterDto fitterDto) {
         Fitter updatedFitter = fitterMapper.toEntity(fitterDto);
-        Fitter fitter = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Fitter fitter = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
 
         fitter.setFirstName(updatedFitter.getFirstName());
         fitter.setLastName(updatedFitter.getLastName());

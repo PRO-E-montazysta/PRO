@@ -22,14 +22,14 @@ public class EmploymentServiceImpl implements EmploymentService {
 
     @Override
     public List<EmploymentDto> getAll() {
-        return repository.findAll().stream()
+        return repository.findAllByDeletedIsFalse().stream()
                 .map(employmentMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public EmploymentDto getById(Long id) {
-        Employment employment = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Employment employment = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
         return employmentMapper.toDto(employment);
     }
 
@@ -47,7 +47,7 @@ public class EmploymentServiceImpl implements EmploymentService {
     @Override
     public EmploymentDto update(Long id, EmploymentDto employmentDto) {
         Employment updatedEmployment = employmentMapper.toEntity(employmentDto);
-        Employment employment = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Employment employment = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
         employment.setDateOfEmployment(updatedEmployment.getDateOfEmployment());
         employment.setDateOfDismiss(updatedEmployment.getDateOfDismiss());
         employment.setCompany(updatedEmployment.getCompany());

@@ -20,14 +20,14 @@ public class CompanyAdminServiceImpl implements CompanyAdminService {
 
     @Override
     public List<CompanyAdminDto> getAll() {
-        return repository.findAll().stream()
+        return repository.findAllByDeletedIsFalse().stream()
                 .map(mapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public CompanyAdminDto getById(Long id) {
-        CompanyAdmin companyAdmin = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        CompanyAdmin companyAdmin = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
         return mapper.toDto(companyAdmin);
     }
 
@@ -46,7 +46,7 @@ public class CompanyAdminServiceImpl implements CompanyAdminService {
     @Override
     public CompanyAdminDto update(Long id, CompanyAdminDto companyAdminDto) {
         CompanyAdmin updatedCompanyAdmin = mapper.toEntity(companyAdminDto);
-        CompanyAdmin companyAdmin = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        CompanyAdmin companyAdmin = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
 
         companyAdmin.setFirstName(updatedCompanyAdmin.getFirstName());
         companyAdmin.setLastName(updatedCompanyAdmin.getLastName());

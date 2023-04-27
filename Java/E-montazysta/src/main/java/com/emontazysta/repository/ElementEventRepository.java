@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface ElementEventRepository extends JpaRepository<ElementEvent, Long> {
 
+    Optional<ElementEvent> findByIdAndDeletedIsFalse(Long id);
+    List<ElementEvent> findAllByDeletedIsFalse();
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ToolTypeRepository extends JpaRepository<ToolType, Long> {
+
+    Optional<ToolType> findByIdAndDeletedIsFalse(Long id);
     List<ToolType> findAllByDeletedIsFalse();
-    Optional<ToolType> findById(Long id);
 }
