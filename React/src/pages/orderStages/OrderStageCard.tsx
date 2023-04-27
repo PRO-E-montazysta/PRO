@@ -306,7 +306,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                 defaultValue={isDisplayingMode ? stage!.minimumImagesNumber : null}
                             />
                         </Grid>
-                        {isDisplayingMode || (!isDisplayingMode && userRole) === Role.MANAGER ? (
+                        {isDisplayingMode || (!isDisplayingMode && (userRole === Role.MANAGER)) ? (
                             <Grid item xs={4}>
                                 <TextField
                                     id="standard-basic"
@@ -337,21 +337,11 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                 {getDateInformations(stage)}
                             </TabPanel>
                             <TabPanel value={tabValue} index={1}>
-                                {/* <Grid item xs={2}>
-                                    <TextField
-                                        sx={{ width: '100%' }}
-                                        required
-                                        id="outlined-required"
-                                        label="Narzędzia"
-                                        name="tools"
-                                        value={formik.values.elements}
-                                        onChange={formik.handleChange}
-                                    />
-                                </Grid> */}
                                 <OrderStageDetailsTable
                                     itemsArray={queryToolTypes.data}
                                     plannedData={plannedToolType!}
                                     setPlannedData={setPlannedToolType}
+                                    isDisplayingMode={isDisplayingMode!}
                                 />
                             </TabPanel>
                             <TabPanel value={tabValue} index={2}>

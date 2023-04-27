@@ -73,22 +73,22 @@ type OrderStageDetailsTableType = {
             | undefined
         >
     >
+    isDisplayingMode: boolean
 }
 
-const OrderStageDetailsTable = ({ itemsArray, setPlannedData, plannedData }: OrderStageDetailsTableType) => {
+const OrderStageDetailsTable = ({
+    itemsArray,
+    setPlannedData,
+    plannedData,
+    isDisplayingMode,
+}: OrderStageDetailsTableType) => {
     const [tableData, setTableData] = useState([{ numberOfTools: 0, toolTypeId: 'toChange' }])
     const [tableRow, setTableRow] = useState([{}])
     const [tableRowIndex, setTableRowIndex] = useState(0)
     const [selectedItemId, setSelectedItemId] = useState('')
     const [selectedItemNumber, setSelectedItemNumber] = useState(0)
 
-    //useEffect, ktory odpali sie gdy zmieni sie stan i ustawi TableData odpowiednio
-    // const handleChange = () => {
-    //     if (index === 0) {
-    //         setTableData([{ index: index, numberOfTools: 0, toolTypeId: 'sada' }])
-    //     }
-    //     setTableData((prevData) => [...prevData, { index: index, numberOfTools: 1, toolTypeId: 'sada' }])
-    // }
+    // [{ numberOfTools: 0, toolTypeId: 'toChange' }]
 
     const handleItemNumberChange = (event: any) => {
         const { value: newValue } = event.target
@@ -98,6 +98,15 @@ const OrderStageDetailsTable = ({ itemsArray, setPlannedData, plannedData }: Ord
             setSelectedItemNumber(newValue)
         }
     }
+
+    useEffect(() => {
+        console.log('zero danych1')
+
+        if (!plannedData || plannedData.length === 0) {
+            console.log('zero danych')
+            setPlannedData([{ numberOfTools: 0, toolTypeId: 'toChange' }])
+        }
+    }, [])
 
     useEffect(() => {
         console.log(
@@ -112,16 +121,16 @@ const OrderStageDetailsTable = ({ itemsArray, setPlannedData, plannedData }: Ord
                 selectedItemNumber,
         )
 
-        if (!plannedData) {
-            console.log('jestem tu-------')
+        // if (!plannedData) {
+        //     console.log('jestem tu-------')
 
-            return setPlannedData([{ numberOfTools: selectedItemNumber, toolTypeId: selectedItemId }])
-        }
-        if (!!plannedData && plannedData.length === 0) {
-            console.log('jestem tu')
-            return setPlannedData([{ numberOfTools: selectedItemNumber, toolTypeId: selectedItemId }])
-        }
-        if (!!plannedData) {
+        //     return setPlannedData([{ numberOfTools: selectedItemNumber, toolTypeId: selectedItemId }])
+        // }
+        // if (!!plannedData && plannedData.length === 0) {
+        //     console.log('jestem tu')
+        //     return setPlannedData([{ numberOfTools: selectedItemNumber, toolTypeId: selectedItemId }])
+        // }
+        if (!!plannedData && !!selectedItemId) {
             console.log('jestem tu2')
 
             const tempArray = [...plannedData]
@@ -130,6 +139,19 @@ const OrderStageDetailsTable = ({ itemsArray, setPlannedData, plannedData }: Ord
         }
     }, [selectedItemId, selectedItemNumber])
 
+    const handleDeleteItem = (rowIndex: number) => {
+        console.log('tableData', plannedData)
+        const tempArray = [...plannedData]
+        // console.log('looking', tableData)
+        // console.log('looking2', tempArray)
+        console.log('row', rowIndex)
+        console.log('tempArray', tempArray)
+        tempArray.splice(rowIndex, 1)
+        console.log('tempArray2', tempArray)
+        setPlannedData(tempArray)
+        // console.log('dziala delete?', tempArray)
+    }
+
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -137,71 +159,71 @@ const OrderStageDetailsTable = ({ itemsArray, setPlannedData, plannedData }: Ord
                     <TableRow>
                         <TableCell>Typ narzedzia</TableCell>
                         <TableCell align="right">Planowana potrzebna ilosc</TableCell>
-                        <TableCell align="right">Wydane narzedzie</TableCell>
+                        {isDisplayingMode && <TableCell align="right">Wydane narzedzie</TableCell>}
+                        {!isDisplayingMode && <TableCell align="right">Akcja</TableCell>}
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {tableRow.map((row, rowIndex) => (
-                        <TableRow key={rowIndex} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                            <TableCell component="th" scope="row">
-                                <Box sx={{ minWidth: 120 }}>
-                                    <FormControl fullWidth>
-                                        <InputLabel id="demo-simple-select-label">Typ narzedzia</InputLabel>
-                                        <TableItemSelect
-                                            label={'Typ narzedzia'}
-                                            itemsArray={itemsArray}
-                                            rowIndex={rowIndex}
-                                            setSelectedItemId={setSelectedItemId}
-                                            setTableRowIndex={setTableRowIndex}
-                                        />
-                                    </FormControl>
-                                </Box>
-                            </TableCell>
-                            <TableCell align="right">
-                                <Box sx={{ minWidth: 120 }}>
-                                    <FormControl fullWidth>
-                                        <TextField
-                                            type="number"
-                                            value={selectedItemNumber}
-                                            id="outlined-basic"
-                                            label="Ilość"
-                                            variant="outlined"
-                                            onChange={(event) => {
-                                                setTableRowIndex(rowIndex)
-                                                handleItemNumberChange(event)
+                    {!!plannedData &&
+                        plannedData.map((rowData, rowIndex) => (
+                            <TableRow key={rowIndex} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                <TableCell component="th" scope="row">
+                                    <Box sx={{ minWidth: 120 }}>
+                                        <FormControl fullWidth>
+                                            <InputLabel id="demo-simple-select-label">Typ narzedzia</InputLabel>
+                                            <TableItemSelect
+                                                label={'Typ narzedzia'}
+                                                itemsArray={itemsArray}
+                                                rowData={rowData}
+                                                rowIndex={rowIndex}
+                                                setSelectedItemId={setSelectedItemId}
+                                                setTableRowIndex={setTableRowIndex}
+                                            />
+                                        </FormControl>
+                                    </Box>
+                                </TableCell>
+                                <TableCell align="right">
+                                    <Box sx={{ minWidth: 120 }}>
+                                        <FormControl fullWidth>
+                                            <TableItemNumber
+                                                selectedItemNumber={rowData.numberOfTools}
+                                                setTableRowIndex={setTableRowIndex}
+                                                handleItemNumberChange={handleItemNumberChange}
+                                                rowIndex={rowIndex}
+                                            />
+                                        </FormControl>
+                                    </Box>
+                                </TableCell>
+                                {isDisplayingMode && <TableCell align="right">bla</TableCell>}
+                                {!isDisplayingMode && (
+                                    <TableCell align="right">
+                                        {rowIndex === plannedData.length - 1 && (
+                                            <Button
+                                                color="primary"
+                                                variant="contained"
+                                                onClick={() => {
+                                                    setPlannedData((plannedData) => [
+                                                        ...plannedData!,
+                                                        { numberOfTools: 0, toolTypeId: 'toChange' },
+                                                    ])
+                                                }}
+                                            >
+                                                Dodaj następne
+                                            </Button>
+                                        )}
+                                        <Button
+                                            color="error"
+                                            variant="contained"
+                                            onClick={() => {
+                                                handleDeleteItem(rowIndex)
                                             }}
-                                        />
-                                        {/* <TableItemSelect
-                                            label={'Ilość'}
-                                            itemsArray={itemsArray}
-                                            rowIndex={rowIndex}
-                                            setSelectedItemNumber={setSelectedItemNumber}
-                                            setTableRowIndex={setTableRowIndex}
-                                        /> */}
-                                    </FormControl>
-                                </Box>
-                            </TableCell>
-                            <TableCell align="right">bla</TableCell>
-                            <Button
-                                color="primary"
-                                variant="contained"
-                                onClick={() => {
-                                    setTableRow((tableData) => [...tableData, { new: 'new' }])
-                                }}
-                            >
-                                Add
-                            </Button>
-                            <Button
-                                color="primary"
-                                variant="contained"
-                                onClick={() => {
-                                    setTableRow((tableData) => [...tableData, { new: 'new' }])
-                                }}
-                            >
-                                Delete
-                            </Button>
-                        </TableRow>
-                    ))}
+                                        >
+                                            Usuń
+                                        </Button>
+                                    </TableCell>
+                                )}
+                            </TableRow>
+                        ))}
                 </TableBody>
             </Table>
         </TableContainer>
@@ -212,6 +234,7 @@ export default OrderStageDetailsTable
 
 //select for table - so i can manage state for every row
 const chooseSelectItemId = (
+    defaultValue: string,
     itemsArray: Array<any> | undefined,
     setSelectedItemId: React.Dispatch<React.SetStateAction<string>>,
 ) => {
@@ -233,6 +256,7 @@ const chooseSelectItemId = (
 type TableItemSelectTypes = {
     label: string
     itemsArray: Array<any> | undefined
+    rowData: { numberOfTools: number; toolTypeId: string }
     rowIndex: number
     setTableRowIndex: React.Dispatch<React.SetStateAction<number>>
     setSelectedItemId: React.Dispatch<React.SetStateAction<string>>
@@ -241,26 +265,56 @@ type TableItemSelectTypes = {
 const TableItemSelect = ({
     label,
     itemsArray,
+    rowData,
     rowIndex,
     setSelectedItemId,
     setTableRowIndex,
 }: TableItemSelectTypes) => {
-    const [displayedSelectedItemName, setDisplaySelectedItemName] = useState('')
+    // const [displayedSelectedItemName, setDisplaySelectedItemName] = useState('')
 
     return (
         <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={displayedSelectedItemName}
+            value={rowData.toolTypeId}
             label={label}
             onChange={(event: SelectChangeEvent) => {
                 console.log('hejehejehej', event)
-                setDisplaySelectedItemName(event.target.value as string)
+                // setDisplaySelectedItemName(event.target.value as string)
                 setTableRowIndex(rowIndex)
-                // setTableData((prevData) => [...prevData, { index: index, numberOfTools: 1, toolTypeId: 'sada' }])
             }}
         >
-            {chooseSelectItemId(itemsArray, setSelectedItemId)}
+            {chooseSelectItemId(rowData.toolTypeId, itemsArray, setSelectedItemId)}
         </Select>
+    )
+}
+
+type TableItemNumberType = {
+    selectedItemNumber: number
+    setTableRowIndex: React.Dispatch<React.SetStateAction<number>>
+    handleItemNumberChange: (event: any) => void
+    rowIndex: number
+}
+const TableItemNumber = ({
+    selectedItemNumber,
+    setTableRowIndex,
+    handleItemNumberChange,
+    rowIndex,
+}: TableItemNumberType) => {
+    const [displayNumber, setDisplayNumber] = useState(0)
+
+    return (
+        <TextField
+            type="number"
+            value={selectedItemNumber}
+            id="outlined-basic"
+            label="Ilość"
+            variant="outlined"
+            onChange={(event) => {
+                setTableRowIndex(rowIndex)
+                handleItemNumberChange(event)
+                setDisplayNumber(event.target.value as any)
+            }}
+        />
     )
 }
