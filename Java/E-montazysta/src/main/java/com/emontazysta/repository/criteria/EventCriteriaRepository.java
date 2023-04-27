@@ -174,8 +174,8 @@ public class EventCriteriaRepository {
 
         //Get events by createdBy or from user company
         AppUser user =  authUtils.getLoggedUser();
-        Boolean isFitter = user.getRoles().contains(Role.FITTER);
-        if(isFitter) {
+        Boolean displayOwn = user.getRoles().contains(Role.FITTER) || user.getRoles().contains(Role.FOREMAN);
+        if(displayOwn) {
             predicates.add(criteriaBuilder.equal(elementEventRoot.get("createdBy").get("id"), user.getId()));
         }else{
             predicates.add(criteriaBuilder.equal(elementEventRoot.join("element").join("elementInWarehouses")
