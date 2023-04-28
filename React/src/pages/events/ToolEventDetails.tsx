@@ -17,7 +17,7 @@ import { useQuery } from 'react-query'
 import { Tool, ToolHistory } from '../../types/model/Tool'
 import { AxiosError } from 'axios'
 import { getAllTools, getToolHistory } from '../../api/tool.api'
-import { Table, TableHead, TableRow, TableCell, TableBody, Card, Grid } from '@mui/material'
+import { Table, TableHead, TableRow, TableCell, TableBody, Card, Grid, Typography } from '@mui/material'
 import { formatDate } from '../../helpers/format.helper'
 import ExpandMore from '../../components/expandMore/ExpandMore'
 import HistoryIcon from '@mui/icons-material/History'
@@ -137,6 +137,28 @@ const ToolEventDetails = () => {
         )
     }
 
+    const addToolHistory = () => {
+        if (queryToolHistory.data && queryToolHistory.data?.length > 0) {
+            return (
+                <Grid container alignItems="center" justifyContent="center" marginTop={2}>
+                    <Card sx={{ width: '100%', left: '50%' }}>
+                        <ExpandMore
+                            titleIcon={<HistoryIcon />}
+                            title="Historia narzędzia"
+                            cardContent={addToolHistoryTableCard()}
+                        />
+                    </Card>
+                </Grid>
+            )
+        } else {
+            return (
+                <Grid container alignItems="center" justifyContent="center" marginTop={2}>
+                    <Typography>Narzędzie nie było jeszcze używane podczas etapów</Typography>
+                </Grid>
+            )
+        }
+    }
+
     return (
         <>
             <FormBox>
@@ -157,17 +179,7 @@ const ToolEventDetails = () => {
                     ) : (
                         <>
                             <FormStructure formStructure={toolEventFormStructure} formik={formik} pageMode={pageMode} />
-
-                            <Grid container alignItems="center" justifyContent="center" marginTop={2}>
-                                <Card sx={{ width: '100%', left: '50%' }}>
-                                    <ExpandMore
-                                        titleIcon={<HistoryIcon />}
-                                        title="Historia narzędzia"
-                                        cardContent={addToolHistoryTableCard()}
-                                    />
-                                </Card>
-                            </Grid>
-
+                            {addToolHistory()}
                             <FormButtons
                                 id={params.id}
                                 onCancel={handleCancel}
