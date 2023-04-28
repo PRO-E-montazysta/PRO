@@ -3,10 +3,10 @@ package com.emontazysta.mapper;
 import com.emontazysta.model.*;
 import com.emontazysta.model.dto.DemandAdHocDto;
 import com.emontazysta.model.dto.filterDto.DemandAdHocFilterDto;
+import com.emontazysta.model.dto.filterDto.DemandAdHocWithToolsAndElementsDto;
 import com.emontazysta.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -59,10 +59,45 @@ public class DemandAdHocMapper {
         demandAdHocDto.getElementReturnReleases().forEach(elementReturnReleaseId -> elementReturnReleaseList.add(elementReturnReleaseRepository.getReferenceById(elementReturnReleaseId)));
 
         List<ToolsPlannedNumber> toolTypeList = new ArrayList<>();
-        demandAdHocDto.getListOfToolsPlannedNumber().forEach(toolTypeId -> toolTypeList.add(toolsPlannedNumberRepository.getReferenceById(toolTypeId)));
+        demandAdHocDto.getListOfToolsPlannedNumber().forEach(toolsPlannedNumberId -> toolTypeList.add(toolsPlannedNumberRepository.getReferenceById(toolsPlannedNumberId)));
 
         List<ElementsPlannedNumber> elementList = new ArrayList<>();
-        demandAdHocDto.getListOfElementsPlannedNumber().forEach(elementId -> elementList.add(elementsPlannedNumberRepository.getReferenceById(elementId)));
+        demandAdHocDto.getListOfElementsPlannedNumber().forEach(elementsPlannedNumberId -> elementList.add(elementsPlannedNumberRepository.getReferenceById(elementsPlannedNumberId)));
+
+        return DemandAdHoc.builder()
+                .id(demandAdHocDto.getId())
+                .description(demandAdHocDto.getDescription())
+                .createdAt(demandAdHocDto.getCreatedAt())
+                .readByWarehousemanTime(demandAdHocDto.getReadByWarehousemanTime())
+                .realisationTime(demandAdHocDto.getRealisationTime())
+                .warehousemanComment(demandAdHocDto.getWarehousemanComment())
+                .specialistComment(demandAdHocDto.getSpecialistComment())
+                .toolReleases(toolReleaseList)
+                .elementReturnReleases(elementReturnReleaseList)
+                .warehouseManager(demandAdHocDto.getWarehouseManagerId() == null ? null : warehouseManagerRepository.getReferenceById(demandAdHocDto.getWarehouseManagerId()))
+                .warehouseman(demandAdHocDto.getWarehousemanId() == null ? null : warehousemanRepository.getReferenceById(demandAdHocDto.getWarehousemanId()))
+                .specialist(demandAdHocDto.getSpecialistId() == null ? null : specialistRepository.getReferenceById(demandAdHocDto.getSpecialistId()))
+                .manager(demandAdHocDto.getManagerId() == null ? null : managerRepository.getReferenceById(demandAdHocDto.getManagerId()))
+                .createdBy(demandAdHocDto.getCreatedById() == null ? null : foremanRepository.getReferenceById(demandAdHocDto.getCreatedById()))
+                .orderStage(demandAdHocDto.getOrderStageId() == null ? null : orderStageRepository.getReferenceById(demandAdHocDto.getOrderStageId()))
+                .listOfToolsPlannedNumber(toolTypeList)
+                .listOfElementsPlannedNumber(elementList)
+                .build();
+    }
+
+    public DemandAdHoc toEntity(DemandAdHocWithToolsAndElementsDto demandAdHocDto) {
+
+        List<ToolRelease> toolReleaseList = new ArrayList<>();
+        demandAdHocDto.getToolReleases().forEach(toolReleaseId -> toolReleaseList.add(toolReleaseRepository.getReferenceById(toolReleaseId)));
+
+        List<ElementReturnRelease> elementReturnReleaseList = new ArrayList<>();
+        demandAdHocDto.getElementReturnReleases().forEach(elementReturnReleaseId -> elementReturnReleaseList.add(elementReturnReleaseRepository.getReferenceById(elementReturnReleaseId)));
+
+        List<ToolsPlannedNumber> toolTypeList = new ArrayList<>();
+        demandAdHocDto.getListOfToolsPlannedNumber().forEach(toolsPlannedNumberDto -> toolTypeList.add(toolsPlannedNumberMapper.toEntity(toolsPlannedNumberDto)));
+
+        List<ElementsPlannedNumber> elementList = new ArrayList<>();
+        demandAdHocDto.getListOfElementsPlannedNumber().forEach(elementsPlannedNumberDto -> elementList.add(elementsPlannedNumberMapper.toEntity(elementsPlannedNumberDto)));
 
         return DemandAdHoc.builder()
                 .id(demandAdHocDto.getId())

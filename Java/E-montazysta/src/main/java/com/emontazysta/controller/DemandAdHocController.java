@@ -1,9 +1,8 @@
 package com.emontazysta.controller;
 
-import com.emontazysta.model.dto.ClientDto;
 import com.emontazysta.model.dto.DemandAdHocDto;
 import com.emontazysta.model.dto.filterDto.DemandAdHocFilterDto;
-import com.emontazysta.model.searchcriteria.ClientSearchCriteria;
+import com.emontazysta.model.dto.filterDto.DemandAdHocWithToolsAndElementsDto;
 import com.emontazysta.model.searchcriteria.DemandAdHocSearchCriteria;
 import com.emontazysta.service.DemandAdHocService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,9 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.List;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
@@ -50,8 +47,8 @@ public class DemandAdHocController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Demand Ad Hoc.", security = @SecurityRequirement(name = "bearer-key"))
-    public DemandAdHocDto addDemandAdHoc(@Valid @RequestBody DemandAdHocDto demandAdHoc) {
-        return demandAdHocService.add(demandAdHoc);
+    public DemandAdHocDto addDemandAdHoc(@Valid @RequestBody DemandAdHocWithToolsAndElementsDto demandAdHoc) {
+        return demandAdHocService.addWithToolsAndElements(demandAdHoc);
     }
 
     @DeleteMapping("/{id}")
@@ -62,7 +59,7 @@ public class DemandAdHocController {
 
     @PutMapping("/{id}")
     @Operation(description = "Allows to edit Demand Ad Hoc by given Id.", security = @SecurityRequirement(name = "bearer-key"))
-    public DemandAdHocDto updateDemandAdHoc(@PathVariable Long id, @Valid @RequestBody DemandAdHocDto demandAdHoc) {
+    public DemandAdHocDto updateDemandAdHoc(@PathVariable Long id, @Valid @RequestBody DemandAdHocWithToolsAndElementsDto demandAdHoc) {
         return demandAdHocService.update(id, demandAdHoc);
     }
 
