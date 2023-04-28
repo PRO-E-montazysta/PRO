@@ -43,17 +43,20 @@ public class EmploymentServiceImpl implements EmploymentService {
 
     @Override
     public EmploymentDto add(EmploymentDto employmentDto) {
+        //Employee for which we set employment
         AppUser employee = appUserService.getById(employmentDto.getEmployeeId());
+        Long employeeCompanyId = employee.getEmployments().get(0).getCompany().getId();
 
-        Employment lastEmployment = employee.getEmployments().get(0);
+        //Logged user
+        Long loggedUserCompanyId = getCurrentEmploymentByEmployeeId(getLoggedUser().getId()).get().getCompanyId();
 
         //Check if employee is from company
-        Long loggedUserCompanyId = getCurrentEmploymentByEmployeeId(getLoggedUser().getId()).get().getCompanyId();
-        if(!lastEmployment.getCompany().getId().equals(loggedUserCompanyId)) {
+        if(!employeeCompanyId.equals(loggedUserCompanyId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
+
         //Check if employee is still working
-        if(lastEmployment.getDateOfDismiss() == null) {
+        if(getCurrentEmploymentByEmployeeId(employee.getId()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
