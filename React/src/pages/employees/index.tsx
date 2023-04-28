@@ -20,7 +20,6 @@ const Employees = () => {
         getFilteredEmployees({ queryParams: filterParams }),
     )
 
-
     const filter: Filter = {
         formik: useFormik({
             initialValues: initialValues,
@@ -36,6 +35,7 @@ const Employees = () => {
 
     return (
         <FatTable
+            idPropName="id"
             query={queryData}
             filterProps={filter}
             headCells={headCells}

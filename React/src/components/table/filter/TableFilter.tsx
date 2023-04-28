@@ -107,6 +107,7 @@ const TableFilter = (props: Filter) => {
                         }}
                     >
                         <Button
+                            id="tableFilter-submit"
                             color="primary"
                             startIcon={<SearchIcon />}
                             style={{ ...submitBtnStyle, width: appSize.isMobile ? 'auto' : 120 }}
@@ -116,6 +117,7 @@ const TableFilter = (props: Filter) => {
                             Szukaj
                         </Button>
                         <Button
+                            id="tableFilter-reset"
                             color="primary"
                             startIcon={<ReplayIcon style={{ transform: 'rotate(-0.25turn)' }} />}
                             style={{

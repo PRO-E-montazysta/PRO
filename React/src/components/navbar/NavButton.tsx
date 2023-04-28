@@ -39,7 +39,7 @@ const NavMenuButton = (props: PageProps) => {
                 onMouseLeave={handleClose}
                 style={{ zIndex: open ? 1000 : 5 }}
             >
-                <Button sx={{ m: '0 5px', cursor: 'pointer', whiteSpace: 'nowrap' }} onClick={handleClick}>
+                <Button sx={{ m: '0 5px', cursor: 'pointer', whiteSpace: 'nowrap' }} id={`navBtn-${path}`}  onClick={handleClick}>
                     {name}
                 </Button>
                 <NavMenu allowedChilds={allowedChilds} onClose={handleClose} open={open} />
