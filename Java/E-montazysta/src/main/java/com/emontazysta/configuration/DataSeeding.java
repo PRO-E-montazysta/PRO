@@ -191,22 +191,22 @@ public class DataSeeding {
                 "warehouseman1@ema.il", "password", "warehouseman1", null,
                 Set.of(Role.WAREHOUSE_MAN), "warehouseman1Phone", "warehouseman1Pesel", new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         Warehouseman warehouseman2 = new Warehouseman(null, "Test Warehouseman 2", "Test Warehouseman 2",
                 "warehouseman2@ema.il", "password", "warehouseman2", null,
                 Set.of(Role.WAREHOUSE_MAN), "warehouseman2Phone", "warehouseman2Pesel", new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         WarehouseManager warehouseManager1 = new WarehouseManager(null, "Test WarehouseManager 1", "Test WarehouseManager 1",
                 "warehouseManager1@ema.il", "password", "warehouseManager1", null,
                 Set.of(Role.WAREHOUSE_MANAGER), "warehouseManager1Phone", "warehouseManager1Pesel", new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         WarehouseManager warehouseManager2 = new WarehouseManager(null, "Test WarehouseManager 2", "Test WarehouseManager 2",
                 "warehouseManager2@ema.il", "password", "warehouseManager2", null,
                 Set.of(Role.WAREHOUSE_MANAGER), "warehouseManager2Phone", "warehouseManager2Pesel", new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         Specialist specialist1 = new Specialist(null, "Test Specialist 1", "Test Specialist 1",
                 "specialist1@ema.il", "password", "specialist1", null,
@@ -234,12 +234,12 @@ public class DataSeeding {
                 "password", "manager1", null, Set.of(Role.MANAGER),
                 "manager1Phone", "manager1Pesel", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         Manager manager2 = new Manager(null, "Test Manager 2", "Test Manager 2", "manager2@ema.il",
                 "password", "manager2", null, Set.of(Role.MANAGER),
                 "manager2Phone", "manager2Pesel", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         CompanyAdmin companyAdmin1 = new CompanyAdmin(null, "Test Company", "Admin Test", "admin@ema.il",
                 "password", "companyAdmin1", null, Set.of(Role.ADMIN),
                 "+48123123123", "02292464175", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
@@ -351,21 +351,17 @@ public class DataSeeding {
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
         DemandAdHoc demandAdHoc1 = addDemandAdHocFromModel(new DemandAdHoc(null, "Test DemandAdHoc 1",
-                LocalDateTime.now(), null, null, null, null,
-                new ArrayList<>(), new ArrayList<>(), warehouseManager1, warehouseman1,
-                specialist1, manager1, foreman1, orderStage1, new ArrayList<>(), new ArrayList<>()));
+                LocalDateTime.now(), new ArrayList<>(), new ArrayList<>(), warehouseManager1, specialist1, foreman1,
+                orderStage1, new ArrayList<>(), new ArrayList<>()));
         DemandAdHoc demandAdHoc2 = addDemandAdHocFromModel(new DemandAdHoc(null, "Test DemandAdHoc 2",
-                LocalDateTime.now(), null, null, null, null,
-                new ArrayList<>(), new ArrayList<>(), warehouseManager1, warehouseman1,
-                specialist1, manager1, foreman1, orderStage1, new ArrayList<>(), new ArrayList<>()));
+                LocalDateTime.now(), new ArrayList<>(), new ArrayList<>(), warehouseManager1, specialist1, foreman1,
+                orderStage1, new ArrayList<>(), new ArrayList<>()));
         DemandAdHoc demandAdHoc3 = addDemandAdHocFromModel(new DemandAdHoc(null, "Test DemandAdHoc 3",
-                LocalDateTime.now(), null, null, null, null,
-                new ArrayList<>(), new ArrayList<>(), warehouseManager2, warehouseman2,
-                specialist2, manager2, foreman2, orderStage2, new ArrayList<>(), new ArrayList<>()));
+                LocalDateTime.now(), new ArrayList<>(), new ArrayList<>(), warehouseManager2, specialist2, foreman2,
+                orderStage2, new ArrayList<>(), new ArrayList<>()));
         DemandAdHoc demandAdHoc4 = addDemandAdHocFromModel(new DemandAdHoc(null, "Test DemandAdHoc 4",
-                LocalDateTime.now(), null, null, null, null,
-                new ArrayList<>(), new ArrayList<>(), warehouseManager2, warehouseman2,
-                specialist2, manager2, foreman2, orderStage4, new ArrayList<>(), new ArrayList<>()));
+                LocalDateTime.now(), new ArrayList<>(), new ArrayList<>(), warehouseManager2, specialist2, foreman2,
+                orderStage4, new ArrayList<>(), new ArrayList<>()));
 
         Warehouse warehouse1 = addWarehouseFromModel(new Warehouse(null, "Test Warehouse 1", "Warehouse 1",
                 "8:00 - 16:00", company1, null, new ArrayList<>(), new ArrayList<>()));

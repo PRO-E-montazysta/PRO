@@ -57,12 +57,13 @@ public class DemandAdHocServiceImpl implements DemandAdHocService {
 
     @Override
     public DemandAdHocDto add(DemandAdHocDto demandAdHocDto) {
-        demandAdHocDto.setToolReleases(new ArrayList<>());
-        demandAdHocDto.setElementReturnReleases(new ArrayList<>());
-        demandAdHocDto.setCreatedById(authUtils.getLoggedUser().getId());
-        demandAdHocDto.setListOfToolsPlannedNumber(demandAdHocDto.getListOfToolsPlannedNumber() == null ? new ArrayList<>() : demandAdHocDto.getListOfToolsPlannedNumber());
-        demandAdHocDto.setListOfElementsPlannedNumber(demandAdHocDto.getListOfElementsPlannedNumber() == null ? new ArrayList<>() : demandAdHocDto.getListOfElementsPlannedNumber());
-        demandAdHocDto.setCreatedAt(LocalDateTime.now());
+        //Used only in seeding
+        //demandAdHocDto.setToolReleases(new ArrayList<>());
+        //demandAdHocDto.setElementReturnReleases(new ArrayList<>());
+        //demandAdHocDto.setCreatedById(authUtils.getLoggedUser().getId());
+        //demandAdHocDto.setListOfToolsPlannedNumber(demandAdHocDto.getListOfToolsPlannedNumber() == null ? new ArrayList<>() : demandAdHocDto.getListOfToolsPlannedNumber());
+        //demandAdHocDto.setListOfElementsPlannedNumber(demandAdHocDto.getListOfElementsPlannedNumber() == null ? new ArrayList<>() : demandAdHocDto.getListOfElementsPlannedNumber());
+        //demandAdHocDto.setCreatedAt(LocalDateTime.now());
         DemandAdHoc demandAdHoc = demandAdHocMapper.toEntity(demandAdHocDto);
 
         return demandAdHocMapper.toDto(repository.save(demandAdHoc));
@@ -110,7 +111,6 @@ public class DemandAdHocServiceImpl implements DemandAdHocService {
         DemandAdHoc demandAdHocDb = repository.findById(id).orElseThrow(EntityNotFoundException::new);
 
         demandAdHocDb.setDescription(demandAdHocDto.getDescription());
-        demandAdHocDb.setRealisationTime(demandAdHocDto.getRealisationTime());
 
         return demandAdHocMapper.toDto(demandAdHocDb);
     }

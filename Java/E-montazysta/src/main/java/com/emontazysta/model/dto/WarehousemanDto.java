@@ -13,5 +13,4 @@ public class WarehousemanDto extends EmployeeDto {
 
     private List<Long> releaseTools;
     private List<Long> elementReturnReleases;
-    private List<Long> demandAdHocs;
 }

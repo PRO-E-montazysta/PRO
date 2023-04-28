@@ -54,7 +54,6 @@ public class WarehousemanServiceImpl implements WarehousemanService {
         warehousemanDto.setToolEvents(new ArrayList<>());
         warehousemanDto.setReleaseTools(new ArrayList<>());
         warehousemanDto.setElementReturnReleases(new ArrayList<>());
-        warehousemanDto.setDemandAdHocs(new ArrayList<>());
 
         Warehouseman warehouseman = repository.save(warehousemanMapper.toEntity(warehousemanDto));
 
@@ -92,7 +91,6 @@ public class WarehousemanServiceImpl implements WarehousemanService {
         warehouseman.setToolEvents(updatedWarehouseman.getToolEvents());
         warehouseman.setReleasedTools(updatedWarehouseman.getReleasedTools());
         warehouseman.setElementReturnReleases(updatedWarehouseman.getElementReturnReleases());
-        warehouseman.setDemandAdHocs(updatedWarehouseman.getDemandAdHocs());
         return warehousemanMapper.toDto(repository.save(warehouseman));
     }
 }

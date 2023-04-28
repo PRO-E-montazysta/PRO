@@ -54,7 +54,6 @@ public class WarehouseManagerServiceImpl implements WarehouseManagerService {
         warehouseManagerDto.setToolEvents(new ArrayList<>());
         warehouseManagerDto.setReleaseTools(new ArrayList<>());
         warehouseManagerDto.setElementReturnReleases(new ArrayList<>());
-        warehouseManagerDto.setDemandAdHocs(new ArrayList<>());
         warehouseManagerDto.setAcceptedDemandAdHocs(new ArrayList<>());
 
         WarehouseManager warehouseManager = repository.save(warehouseManagerMapper.toEntity(warehouseManagerDto));
@@ -93,7 +92,6 @@ public class WarehouseManagerServiceImpl implements WarehouseManagerService {
         warehouseManager.setToolEvents(updatedWarehouseManager.getToolEvents());
         warehouseManager.setReleasedTools(updatedWarehouseManager.getReleasedTools());
         warehouseManager.setElementReturnReleases(updatedWarehouseManager.getElementReturnReleases());
-        warehouseManager.setDemandAdHocs(updatedWarehouseManager.getDemandAdHocs());
         warehouseManager.setAcceptedDemandAdHocs(updatedWarehouseManager.getAcceptedDemandAdHocs());
         return warehouseManagerMapper.toDto(repository.save(warehouseManager));
     }

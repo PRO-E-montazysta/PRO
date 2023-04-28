@@ -55,7 +55,6 @@ public class ManagerServiceImpl implements ManagerService {
         managerDto.setCreatedUnavailabilities(new ArrayList<>());
         managerDto.setAcceptedEvents(new ArrayList<>());
         managerDto.setManagedOrders(new ArrayList<>());
-        managerDto.setDemandsAdHocs(new ArrayList<>());
         managerDto.setElementEvents(new ArrayList<>());
 
         Manager manager = repository.save(managerMapper.toEntity(managerDto));
@@ -95,7 +94,6 @@ public class ManagerServiceImpl implements ManagerService {
         manager.setCreatedUnavailabilities(updatedManager.getCreatedUnavailabilities());
         manager.setAcceptedEvents(updatedManager.getAcceptedEvents());
         manager.setManagedOrders(updatedManager.getManagedOrders());
-        manager.setDemandsAdHocs(updatedManager.getDemandsAdHocs());
         manager.setElementEvents(updatedManager.getElementEvents());
         return managerMapper.toDto(repository.save(manager));
     }

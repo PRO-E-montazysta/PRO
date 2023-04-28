@@ -20,16 +20,10 @@ public class DemandAdHocWithToolsAndElementsDto {
     @NotBlank(message = "Description cannot be empty")
     private String description;
     private LocalDateTime createdAt;
-    private LocalDateTime readByWarehousemanTime;
-    private LocalDateTime realisationTime;
-    private String warehousemanComment;
-    private String specialistComment;
     private List<Long> toolReleases;
     private List<Long> elementReturnReleases;
     private Long warehouseManagerId;
-    private Long warehousemanId;
     private Long specialistId;
-    private Long managerId;
     private Long createdById;
     private Long orderStageId;
     private List<ToolsPlannedNumberDto> listOfToolsPlannedNumber;
