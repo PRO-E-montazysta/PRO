@@ -83,7 +83,7 @@ public class DemandAdHocServiceImpl implements DemandAdHocService {
 
         if(!demandAdHoc.getListOfToolsPlannedNumber().isEmpty()) {
             for (ToolsPlannedNumberDto toolsPlannedNumberDto : demandAdHocDto.getListOfToolsPlannedNumber()) {
-                toolsPlannedNumberDto.setOrderStageId(savedDemandAdHoc.getId());
+                toolsPlannedNumberDto.setDemandAdHocId(savedDemandAdHoc.getId());
                 ToolsPlannedNumber toolsPlannedNumber = toolsPlannedNumberMapper.toEntity(toolsPlannedNumberDto);
                 toolsPlannedNumberRepository.save(toolsPlannedNumber);
             }
@@ -91,7 +91,7 @@ public class DemandAdHocServiceImpl implements DemandAdHocService {
 
         if(!demandAdHoc.getListOfElementsPlannedNumber().isEmpty()) {
             for (ElementsPlannedNumberDto elementsPlannedNumberDto : demandAdHocDto.getListOfElementsPlannedNumber()) {
-                elementsPlannedNumberDto.setOrderStageId(savedDemandAdHoc.getId());
+                elementsPlannedNumberDto.setDemandAdHocId(savedDemandAdHoc.getId());
                 ElementsPlannedNumber elementsPlannedNumber = elementsPlannedNumberMapper.toEntity(elementsPlannedNumberDto);
                 elementsPlannedNumberRepository.save(elementsPlannedNumber);
             }
