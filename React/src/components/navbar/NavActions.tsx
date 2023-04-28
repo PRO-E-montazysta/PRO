@@ -81,6 +81,7 @@ const NavActions = (props: NavActionsProps) => {
                     {avatar}
                     <NotiButton userInfo={userInfo} />
                     <IconButton
+                        id={'navBtn-logout'}
                         color="inherit"
                         onClick={handleLogout}
                         title="Wyloguj"
@@ -91,7 +92,13 @@ const NavActions = (props: NavActionsProps) => {
                 </Box>
             ) : (
                 <Box>
-                    <IconButton color="inherit" onClick={() => setDrawerOpen(true)} title="Więcej" sx={{ p: 0 }}>
+                    <IconButton
+                        id={`navBtn-hamburger-showMore`}
+                        color="inherit"
+                        onClick={() => setDrawerOpen(true)}
+                        title="Więcej"
+                        sx={{ p: 0 }}
+                    >
                         {avatar}
                     </IconButton>
                     <Drawer anchor={'right'} open={drawerOpen} onClose={() => setDrawerOpen(false)}>
@@ -101,6 +108,7 @@ const NavActions = (props: NavActionsProps) => {
                             height={'100vh'}
                         >
                             <IconButton
+                                id={`navBtn-hamburger-close`}
                                 aria-label="close"
                                 title="close menu"
                                 size="large"
@@ -114,13 +122,19 @@ const NavActions = (props: NavActionsProps) => {
                             {userInfoComponent}
                             <List>
                                 <NavMenuItem
+                                    id={`navBtn-hamburger-navItem`}
                                     sx={{ pl: '5px' }}
                                     text="Powiadomienia"
                                     onItemClick={() => {
                                         console.log('Not implemented yet')
                                     }}
                                 />
-                                <NavMenuItem sx={{ pl: '5px' }} text="Wyloguj się" onItemClick={handleLogout} />
+                                <NavMenuItem
+                                    id={`navBtn-hamburger-logout`}
+                                    sx={{ pl: '5px' }}
+                                    text="Wyloguj się"
+                                    onItemClick={handleLogout}
+                                />
                             </List>
                         </Box>
                     </Drawer>

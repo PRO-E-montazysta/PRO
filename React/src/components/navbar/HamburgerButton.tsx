@@ -39,7 +39,11 @@ const HamburgerButton = (props: HamburgerButtonProps) => {
 
     return (
         <Box>
-            <MenuItem sx={{ p: '0 20px', position: 'relative', height: '50px' }} onClick={onItemClick}>
+            <MenuItem
+                id={`hamburgerBtn-${page.path}`}
+                sx={{ p: '0 20px', position: 'relative', height: '50px' }}
+                onClick={onItemClick}
+            >
                 {page.name}
 
                 {availableChilds && availableChilds.length > 0 && (
@@ -60,6 +64,7 @@ const HamburgerButton = (props: HamburgerButtonProps) => {
                 availableChilds.map((c) => {
                     return (
                         <MenuItem
+                            id={`hamburgerBtn-${page.path}-opt-${c.path}`}
                             sx={{ p: '0 20px', position: 'relative', height: '50px', ml: '20px' }}
                             onClick={() => onSubitemClick(c)}
                         >

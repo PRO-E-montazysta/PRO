@@ -36,6 +36,7 @@ const Orders = () => {
 
     return (
         <FatTable
+            idPropName="id"
             query={queryOrders}
             filterProps={filter}
             headCells={headCells}

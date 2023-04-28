@@ -65,7 +65,7 @@ const FormAutocomplete = (params: FormInputParams) => {
                 renderOption={(props, option) => {
                     if (option.key)
                         return (
-                            <li {...props} key={option.key}>
+                            <li id={`formAutocomplete-${id}-opt-${option.key}`} {...props} key={option.key}>
                                 {option.value}
                             </li>
                         )

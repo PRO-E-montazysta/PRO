@@ -119,6 +119,7 @@ const LoginForm = () => {
                         margin="normal"
                         label="Nazwa użytkownika"
                         name="username"
+                        id="username"
                         InputLabelProps={{
                             shrink: true,
                         }}
@@ -133,6 +134,7 @@ const LoginForm = () => {
                         margin="normal"
                         label="Hasło"
                         name="password"
+                        id="password"
                         type={showPassword ? 'text' : 'password'}
                         InputLabelProps={{
                             shrink: true,
@@ -145,6 +147,7 @@ const LoginForm = () => {
                             endAdornment: (
                                 <InputAdornment position="end">
                                     <IconButton
+                                        id={`showPassword`}
                                         sx={{
                                             color: theme.palette.secondary.contrastText,
                                         }}
@@ -168,12 +171,18 @@ const LoginForm = () => {
 
                     <Grid spacing={2} container justifyContent="flex-end" sx={{ marginTop: '62px' }}>
                         <Grid item>
-                            <Button type="submit" color="primary" variant="contained" disabled={isLoading}>
+                            <Button
+                                id={'login-logIn'}
+                                type="submit"
+                                color="primary"
+                                variant="contained"
+                                disabled={isLoading}
+                            >
                                 Zaloguj się
                             </Button>
                         </Grid>
                         <Grid item>
-                            <Button color="secondary" variant="text">
+                            <Button id={'login-reset'} color="secondary" variant="text">
                                 Resetuj hasło
                             </Button>
                         </Grid>

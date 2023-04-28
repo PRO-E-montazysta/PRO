@@ -16,6 +16,7 @@ const Hamburger = () => {
     return (
         <Box>
             <IconButton
+                id={`hamburgerBtn-open`}
                 edge="start"
                 color="inherit"
                 aria-label="menu"
@@ -33,6 +34,7 @@ const Hamburger = () => {
                 >
                     <List>
                         <IconButton
+                            id={`hamburgerBtn-close`}
                             aria-label="close"
                             title="close menu"
                             size="large"

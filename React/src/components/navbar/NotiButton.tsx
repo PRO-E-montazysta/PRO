@@ -31,6 +31,7 @@ const NotiButton = (props: NotiButtonProps) => {
             <ClickAwayListener onClickAway={handleClose}>
                 <Box>
                     <IconButton
+                        id={'navBtn-notifications'}
                         color="inherit"
                         onClick={() => handleClick()}
                         title="Powiadomienia"
