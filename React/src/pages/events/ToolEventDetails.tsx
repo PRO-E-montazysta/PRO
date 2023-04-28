@@ -41,8 +41,8 @@ const ToolEventDetails = () => {
     )
 
     const handleSubmit = (values: any) => {
-        if (pageMode == 'new') addToolEventMutation.mutate(values)
-        else if (pageMode == 'edit') editToolEventMutation.mutate(values)
+        if (pageMode === 'new') addToolEventMutation.mutate(values)
+        else if (pageMode === 'edit') editToolEventMutation.mutate(values)
         else console.warn('Try to submit while read mode')
     }
 
@@ -54,7 +54,7 @@ const ToolEventDetails = () => {
                 { text: 'Anuluj', value: 0, variant: 'outlined' },
             ],
             callback: (result: number) => {
-                if (result == 1 && params.id && Number.isInteger(params.id)) deleteToolEventMutation.mutate(params.id)
+                if (result === 1 && params.id && Number.isInteger(params.id)) deleteToolEventMutation.mutate(params.id)
             },
         })
     }
@@ -90,7 +90,7 @@ const ToolEventDetails = () => {
     }, [toolEventData.data])
 
     useEffect(() => {
-        if (params.id == 'new') {
+        if (params.id === 'new') {
             setPageMode('new')
             formik.setValues(getInitValues(toolEventFormStructure))
             setInitData(getInitValues(toolEventFormStructure))
@@ -104,7 +104,13 @@ const ToolEventDetails = () => {
         staleTime: 10 * 60 * 1000,
     })
 
-    const queryToolHistory = useQuery<Array<ToolHistory>, AxiosError>(['tools'], async () => getToolHistory(params.id))
+    const queryToolHistory = useQuery<Array<ToolHistory>, AxiosError>(
+        ['tool-history'],
+        async () => getToolHistory(params.id && params.id !== 'new' ? params.id : ''),
+        {
+            enabled: !!params.id && params.id !== 'new',
+        },
+    )
 
     const addToolHistoryTableCard = () => {
         return (
@@ -165,21 +171,21 @@ const ToolEventDetails = () => {
                 {/* TODO check if this return nice result  */}
                 <FormTitle
                     text={
-                        pageMode == 'new'
+                        pageMode === 'new'
                             ? 'Nowa usterka narzędzia'
                             : 'Usterka ' +
                               queryTools.data
-                                  ?.filter((f) => f.id == formik.values['elementId'])
+                                  ?.filter((f) => f.id === formik.values['elementId'])
                                   .map((x) => x.name + ' - ' + x.code)
                     }
                 />
                 <FormPaper>
-                    {queriesStatus.result != 'isSuccess' ? (
+                    {queriesStatus.result !== 'isSuccess' ? (
                         <QueryBoxStatus queriesStatus={queriesStatus} />
                     ) : (
                         <>
                             <FormStructure formStructure={toolEventFormStructure} formik={formik} pageMode={pageMode} />
-                            {addToolHistory()}
+                            {pageMode !== 'new' ? addToolHistory() : ''}
                             <FormButtons
                                 id={params.id}
                                 onCancel={handleCancel}
@@ -187,7 +193,7 @@ const ToolEventDetails = () => {
                                 onEdit={() => setPageMode('edit')}
                                 onReset={handleReset}
                                 onSubmit={formik.submitForm}
-                                readonlyMode={pageMode == 'read'}
+                                readonlyMode={pageMode === 'read'}
                             />
                         </>
                     )}
