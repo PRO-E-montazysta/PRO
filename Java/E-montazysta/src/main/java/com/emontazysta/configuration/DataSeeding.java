@@ -271,7 +271,7 @@ public class DataSeeding {
         Employment employment11 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, salesRepresentative1));
         Employment employment12 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, salesRepresentative2));
         Employment employment13 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, manager1));
-        Employment employment14 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company2, manager2));
+        Employment employment14 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company3, manager2));
         Employment employment15 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, companyAdmin1));
 
         context.setAuthentication(null);
