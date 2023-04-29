@@ -36,6 +36,7 @@ const Unavailabilities = () => {
 
     return (
         <FatTable
+            idPropName="id"
             query={queryUnavailabilities}
             filterProps={filter}
             headCells={headCells}
