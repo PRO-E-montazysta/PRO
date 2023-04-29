@@ -59,5 +59,9 @@
     <fragment
         android:id="@+id/releaseDetailFragment"
         android:name="com.example.e_montazysta.ui.release.ReleaseDetailFragment"
-        android:label="ReleaseDetailFragment" />
+        android:label="ReleaseDetailFragment" >
+        <argument
+            android:name="releaseId"
+            app:argType="string" />
+    </fragment>
 </navigation>

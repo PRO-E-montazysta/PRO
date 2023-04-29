@@ -26,7 +26,7 @@ class ReleaseDetailViewModel(private val repository: IReleaseRepository) : ViewM
 
     fun getReleaseDetail(id: String) {
         job = launch {
-            getReleaseDetailAsync("1")
+            getReleaseDetailAsync(id)
         }
     }
 

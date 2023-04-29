@@ -10,39 +10,49 @@
             name="itemClickListener"
             type="com.example.e_montazysta.ui.release.CustomClickListener" />
     </data>
-    
 
-    <LinearLayout
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Widget.Material3.CardView.Elevated"
+        android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingStart="16dp"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginVertical="5dp"
         android:onClick="@{() -> itemClickListener.cardClicked(release)}"
         >
-
-
-        <TextView
-            android:id="@+id/releaseId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            tools:text="@{release.id}" />
-
-        <TextView
-            android:id="@+id/toolType"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            tools:text="@{release.type}" />
-
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:alpha=".30"
-            android:background="?colorOnPrimaryContainer"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="3dp" />
-    </LinearLayout>
+            android:paddingStart="16dp"
+            >
+
+
+            <TextView
+                android:id="@+id/releaseId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="@{release.id}" />
+
+            <TextView
+                android:id="@+id/toolType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                tools:text="@{release.type}" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:alpha=".30"
+                android:background="?colorOnPrimaryContainer"
+                android:orientation="vertical"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 </layout>

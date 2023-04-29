@@ -25,7 +25,9 @@ class ReleaseListFragment : Fragment() {
         // give the binding object a reference to it.
         // binding.releaseListViewModel = releaseListViewModel
         val adapter = ReleaseListAdapter(CustomClickListener{
-            releaseId -> Toast.makeText(context, releaseId, Toast.LENGTH_LONG).show()
+            releaseId -> Toast.makeText(context, releaseId, Toast.LENGTH_SHORT).show()
+            val action = ReleaseListFragmentDirections.actionReleaseListFragmentToReleaseDetailFragment(releaseId)
+            findNavController().navigate(action)
         })
 
         binding.toolList.adapter = adapter

@@ -102,7 +102,7 @@
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/content_description_media"
                         android:layout_gravity="center"
-                        android:src="@drawable/baseline_tools_24"
+                        android:src="@drawable/baseline_swap_horiz_24"
                         android:scaleType="centerCrop" />
 
 
