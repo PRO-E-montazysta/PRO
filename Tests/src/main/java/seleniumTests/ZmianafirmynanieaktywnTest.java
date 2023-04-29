@@ -25,14 +25,6 @@ public class ZmianafirmynanieaktywnTest extends BasePage {
   @Before
   public void setUp() {
     WebDriverManager.edgedriver().setup();
-
-  }
-  @After
-  public void tearDown() {
-    driver.quit();
-  }
-  @Test
-  public void zmianafirmynanieaktywn() throws InterruptedException {
     driver.get(baseUrl);
 
     wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("username")));
@@ -40,80 +32,37 @@ public class ZmianafirmynanieaktywnTest extends BasePage {
 
 
     clickElement(loginElement);
-    loginElement.sendKeys("manager1");
+    loginElement.sendKeys("admin");
 
-    wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\":r1:\"]")));
-    WebElement passwordElement = driver.findElement(By.xpath("//*[@id=\":r1:\"]"));
-    passwordElement.sendKeys(getPassword());
 
-    WebElement loginButtonElement = driver.findElement(By.xpath("//*[@id=\"root\"]/div/form/div[3]/div[1]/button"));
+    WebElement loginButtonElement = driver.findElement(By.id("login-logIn"));
     clickElement(loginButtonElement);
-    wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".MuiButtonBase-root:nth-child(2)")));
+  }
+  @After
+  public void tearDown() {
+    driver.quit();
+  }
+  @Test
+  public void zmianafirmynanieaktywn() throws InterruptedException {
 
-    {
-      WebElement element = driver.findElement(By.cssSelector(".MuiButtonBase-root:nth-child(2)"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).perform();
-    }
-    driver.findElement(By.cssSelector(".MuiButtonBase-root:nth-child(2)")).click();
-    {
-      WebElement element = driver.findElement(By.tagName("body"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element, 0, 0).perform();
-    }
-    driver.findElement(By.cssSelector(".MuiButtonBase-root:nth-child(1)")).click();
-    wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".MuiTableRow-hover:nth-child(1) > .MuiTableCell-root:nth-child(1)")));
+    wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("navBtn-/companies")));
 
-    driver.findElement(By.cssSelector(".MuiTableRow-hover:nth-child(1) > .MuiTableCell-root:nth-child(1)")).click();
+    driver.findElement(By.id("navBtn-/companies")).click();
+    driver.findElement(By.id("navMenu-/companies")).click();
+    Thread.sleep(1000);
 
-    wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".MuiButton-containedPrimary")));
+    driver.findElement(By.xpath("//*[@id=\"tableRow-1\"]/td[1]")).click();
 
-    {
-      WebElement element = driver.findElement(By.cssSelector(".MuiButton-containedPrimary"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).perform();
-    }
-    wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".MuiButton-containedPrimary")));
+    wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("formButton-edit")));
+    driver.findElement(By.id("formButton-edit")).click();
 
-    driver.findElement(By.cssSelector(".MuiButton-containedPrimary")).click();
-    {
-      WebElement element = driver.findElement(By.tagName("body"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element, 0, 0).perform();
-    }
-    wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(":r8:")));
+    wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("formButton-cancel")));
 
-    {
-      WebElement element = driver.findElement(By.id(":r8:"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).clickAndHold().perform();
-    }
-    wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".MuiBackdrop-root")));
-    Thread.sleep(5000);
+    driver.findElement(By.id("mui-component-select-status")).click();
 
-    {
-      WebElement element = driver.findElement(By.cssSelector(".MuiBackdrop-root"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).release().perform();
-    }
+    driver.findElement(By.id("formSelect-status-opt-DISABLED")).click();
 
-    wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".MuiMenuItem-root:nth-child(3)")));
-
-    driver.findElement(By.cssSelector(".MuiMenuItem-root:nth-child(3)")).click();
-    wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".MuiButton-contained")));
-
-
-    driver.findElement(By.cssSelector(".MuiButton-contained")).click();
-
-    wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".MuiButton-text:nth-child(1)")));
-
-    {
-      WebElement element = driver.findElement(By.cssSelector(".MuiButton-text:nth-child(1)"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).perform();
-    }
-    driver.findElement(By.cssSelector(".MuiButton-text:nth-child(1)")).click();
-
+    driver.findElement(By.id("formButton-save")).click();
 
   }
 }
