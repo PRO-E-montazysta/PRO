@@ -9,7 +9,11 @@
         android:id="@+id/navigation_dashboard"
         android:name="com.example.e_montaysta.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard" >
+        <action
+            android:id="@+id/action_navigation_dashboard_to_elementMainActivity"
+            app:destination="@id/elementMainActivity" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_qrscan"
@@ -23,4 +27,9 @@
         android:name="com.example.e_montaysta.ui.settings.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" />
+    <activity
+        android:id="@+id/elementMainActivity"
+        android:name="com.example.e_montaysta.ElementMainActivity"
+        android:label="activity_element"
+        tools:layout="@layout/activity_element" />
 </navigation>
