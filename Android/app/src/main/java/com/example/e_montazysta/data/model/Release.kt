@@ -1,7 +1,5 @@
 package com.example.e_montazysta.data.model
 
-import com.squareup.moshi.Json
-
 data class Release(
     val id: String,
     val releaseTime: String?,

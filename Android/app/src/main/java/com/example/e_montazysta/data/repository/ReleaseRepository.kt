@@ -1,7 +1,7 @@
 package com.example.e_montazysta.data.repository
 
-import com.example.e_montazysta.data.model.Result
 import com.example.e_montazysta.data.model.Release
+import com.example.e_montazysta.data.model.Result
 import com.example.e_montazysta.data.repository.Interfaces.IReleaseRepository
 import com.example.e_montazysta.data.services.IServiceProvider
 import com.example.e_montazysta.helpers.Interfaces.ISharedPreferencesHelper
@@ -19,6 +19,17 @@ class ReleaseRepository (
             val releaseDAOs = releaseService.getRelease(token)
             val releases = releaseDAOs.map { it.mapToRelease() }
             Result.Success(releases)
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
+    }
+
+    override suspend fun getReleaseDetail(id: String): Result<Release> {
+        return try {
+            val releaseService = serviceProvider.getReleaseService()
+            val releaseDAO = releaseService.getReleaseDetail(token, id)
+            val releaseDetail = releaseDAO.mapToRelease()
+            Result.Success(releaseDetail)
         } catch (e: Exception) {
             Result.Error(e)
         }

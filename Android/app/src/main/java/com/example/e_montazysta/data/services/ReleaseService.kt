@@ -7,7 +7,9 @@ import retrofit2.http.*
 interface ReleaseService {
 
     @GET("/api/v1/tool-releases/all")
-    @Headers("Cache-Control: no-cache")
     suspend fun getRelease(@Header("Authorization") token: String
     ): List<ReleaseDAO>
+
+    @GET("/api/v1/tool-releases/{id}")
+    suspend fun getReleaseDetail(@Header("Authorization") token: String, @Path("id") id: String): ReleaseDAO
 }

@@ -1,14 +1,13 @@
 package com.example.e_montazysta
 
-import com.example.e_montazysta.di.appModule
-import com.example.e_montazysta.data.dataModule
-import com.example.e_montazysta.helpers.Interfaces.ISharedPreferencesHelper
-import com.example.e_montazysta.helpers.SharedPreferencesHelper
 import android.app.Application
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.preference.PreferenceManager
+import com.example.e_montazysta.data.dataModule
+import com.example.e_montazysta.helpers.Interfaces.ISharedPreferencesHelper
+import com.example.e_montazysta.helpers.SharedPreferencesHelper
 import com.example.e_montazysta.ui.uiModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger

@@ -8,7 +8,7 @@
          click handlers, and state variables. -->
     <data>
         <variable
-            name="ToolsListViewModel"
+            name="ReleaseListViewModel"
             type="com.example.e_montazysta.ui.release.ReleaseListViewModel" />
     </data>
 

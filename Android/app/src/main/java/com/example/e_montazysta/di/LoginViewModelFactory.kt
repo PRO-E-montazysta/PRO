@@ -1,9 +1,9 @@
 package com.example.e_montazysta.di
 
-import com.example.e_montazysta.data.controllers.AuthController
-import com.example.e_montazysta.data.repository.AuthRepository
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.e_montazysta.data.controllers.AuthController
+import com.example.e_montazysta.data.repository.AuthRepository
 import com.example.e_montazysta.ui.viewmodels.LoginViewModel
 
 /**

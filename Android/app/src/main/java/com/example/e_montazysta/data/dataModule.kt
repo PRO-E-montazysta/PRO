@@ -1,10 +1,5 @@
 package com.example.e_montazysta.data
 
-import com.squareup.moshi.Moshi
-import org.koin.dsl.module
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.converter.moshi.MoshiConverterFactory
 import com.example.e_montazysta.data.environments.Environment
 import com.example.e_montazysta.data.network.NetworkServiceFactory
 import com.example.e_montazysta.data.network.ServiceFactory
@@ -16,8 +11,13 @@ import com.example.e_montazysta.data.services.IServiceProvider
 import com.example.e_montazysta.data.services.ServiceProvider
 import com.example.e_montazysta.ui.release.ReleaseListViewModel
 import com.example.e_montazysta.ui.toollist.ToolsListViewModel
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.dsl.module
 import retrofit2.Converter
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 val dataModule = module {
     factory {

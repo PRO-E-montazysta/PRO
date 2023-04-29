@@ -1,11 +1,11 @@
 package com.example.e_montazysta.ui.activities
 
-import com.example.e_montazysta.data.controllers.Interfaces.IAuthController
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.e_montazysta.R
+import com.example.e_montazysta.data.controllers.Interfaces.IAuthController
 import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {

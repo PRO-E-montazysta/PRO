@@ -1,7 +1,6 @@
 package com.example.e_montazysta.data.model
 
 import com.squareup.moshi.Json
-import com.example.e_montazysta.data.model.Tool
 
 data class ToolDAO(
     @Json(name = "id")

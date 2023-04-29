@@ -1,12 +1,11 @@
 package com.example.e_montazysta.ui.viewmodels
 
-import com.example.e_montazysta.data.controllers.Interfaces.IAuthController
+import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import android.util.Patterns
-
 import com.example.e_montazysta.R
+import com.example.e_montazysta.data.controllers.Interfaces.IAuthController
 import com.example.e_montazysta.data.model.LoggedInUserView
 import com.example.e_montazysta.data.model.LoginFormState
 import com.example.e_montazysta.data.model.LoginResult

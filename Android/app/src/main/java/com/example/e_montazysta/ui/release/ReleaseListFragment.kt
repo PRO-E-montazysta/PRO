@@ -1,11 +1,14 @@
 package com.example.e_montazysta.ui.release
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.e_montazysta.databinding.FragmentReleasesBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -21,10 +24,10 @@ class ReleaseListFragment : Fragment() {
         // To use the View Model with data binding, you have to explicitly
         // give the binding object a reference to it.
         // binding.releaseListViewModel = releaseListViewModel
-
-        val adapter = ReleaseListAdapter()
+        val adapter = ReleaseListAdapter(ReleaseClickListener {
+                _ -> findNavController().navigate(ReleaseListFragmentDirections.actionReleaseListFragmentToReleaseDetailFragment())
+        })
         binding.toolList.adapter = adapter
-
         releaseListViewModel.getRelease()
 
         releaseListViewModel.release.observe(viewLifecycleOwner, Observer {

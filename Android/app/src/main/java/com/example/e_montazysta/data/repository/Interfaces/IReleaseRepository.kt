@@ -5,4 +5,6 @@ import com.example.e_montazysta.data.model.Result
 
 interface IReleaseRepository {
     suspend fun getRelease() : Result<List<Release>>
+
+    suspend fun getReleaseDetail(id: String): Result<Release>
 }
