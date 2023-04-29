@@ -7,8 +7,8 @@
             name="release"
             type="com.example.e_montazysta.ui.release.ReleaseListItem" />
         <variable
-            name="clickListener"
-            type="com.example.e_montazysta.ui.release.ReleaseClickListener" />
+            name="itemClickListener"
+            type="com.example.e_montazysta.ui.release.CustomClickListener" />
     </data>
     
 
@@ -16,7 +16,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingStart="16dp">
+        android:paddingStart="16dp"
+        android:onClick="@{() -> itemClickListener.cardClicked(release)}"
+        >
 
 
         <TextView
@@ -24,14 +26,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            tools:text="releaseId" />
+            tools:text="@{release.id}" />
 
         <TextView
             android:id="@+id/toolType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            tools:text="toolType" />
+            tools:text="@{release.type}" />
 
 
         <LinearLayout

@@ -3,13 +3,12 @@ package com.example.e_montazysta.ui.release
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.e_montazysta.data.model.Release
 import com.example.e_montazysta.databinding.ListItemReleaseBinding
 
-class ReleaseListAdapter(val clickListener: ReleaseClickListener) : RecyclerView.Adapter<ReleaseListAdapter.ViewHolder>() {
+
+class ReleaseListAdapter(val clickListener: CustomClickListener) : RecyclerView.Adapter<ReleaseListAdapter.ViewHolder>(){
 
     var elements = listOf<ReleaseListItem>()
-    private var onClickListener: ReleaseClickListener? = null
 
     set(value) {
         field = value
@@ -30,12 +29,10 @@ class ReleaseListAdapter(val clickListener: ReleaseClickListener) : RecyclerView
 
     class ViewHolder( val binding: ListItemReleaseBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(data: ReleaseListItem, clickListener: ReleaseClickListener) {
-            binding.releaseId.text = data.id
-            binding.toolType.text = data.type
-//            binding.clickListener = clickListener
+        fun bind(data: ReleaseListItem, clickListener: CustomClickListener) {
+            binding.release = data
+            binding.itemClickListener = clickListener
             binding.executePendingBindings()
-
         }
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
@@ -45,9 +42,8 @@ class ReleaseListAdapter(val clickListener: ReleaseClickListener) : RecyclerView
             }
         }
     }
-
-
 }
-class ReleaseClickListener(val clickListener: (releaseId: String) -> Unit) {
-    fun onClick(release: ReleaseListItem) = clickListener(release.id)
+class CustomClickListener(val clickListener: (releaseId: String) -> Unit) {
+
+    fun cardClicked(release: ReleaseListItem) = clickListener(release.id)
 }

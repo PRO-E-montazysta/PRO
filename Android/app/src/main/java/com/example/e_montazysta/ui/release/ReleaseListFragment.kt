@@ -24,9 +24,10 @@ class ReleaseListFragment : Fragment() {
         // To use the View Model with data binding, you have to explicitly
         // give the binding object a reference to it.
         // binding.releaseListViewModel = releaseListViewModel
-        val adapter = ReleaseListAdapter(ReleaseClickListener {
-                _ -> findNavController().navigate(ReleaseListFragmentDirections.actionReleaseListFragmentToReleaseDetailFragment())
+        val adapter = ReleaseListAdapter(CustomClickListener{
+            releaseId -> Toast.makeText(context, releaseId, Toast.LENGTH_LONG).show()
         })
+
         binding.toolList.adapter = adapter
         releaseListViewModel.getRelease()
 
