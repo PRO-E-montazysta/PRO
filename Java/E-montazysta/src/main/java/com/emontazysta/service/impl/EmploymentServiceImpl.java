@@ -1,5 +1,6 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.EmploymentMapper;
 import com.emontazysta.model.AppUser;
 import com.emontazysta.model.Employment;
@@ -45,6 +46,13 @@ public class EmploymentServiceImpl implements EmploymentService {
     public EmploymentDto add(EmploymentDto employmentDto) {
         //Employee for which we set employment
         AppUser employee = appUserService.getById(employmentDto.getEmployeeId());
+
+        //Check if user is cloud admin
+        if(employee.getRoles().contains(Role.CLOUD_ADMIN)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        //Get user company
         Long employeeCompanyId = employee.getEmployments().get(0).getCompany().getId();
 
         //Logged user
