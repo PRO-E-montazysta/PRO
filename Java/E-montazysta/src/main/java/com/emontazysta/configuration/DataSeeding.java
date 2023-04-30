@@ -7,6 +7,8 @@ import com.emontazysta.model.dto.OrderStageWithToolsAndElementsDto;
 import com.emontazysta.model.dto.ToolsPlannedNumberDto;
 import com.emontazysta.model.dto.UnavailabilityWithLocalDateDto;
 import com.emontazysta.repository.EmploymentRepository;
+import com.emontazysta.repository.ElementEventRepository;
+import com.emontazysta.repository.ToolEventRepository;
 import com.emontazysta.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -42,12 +44,12 @@ public class DataSeeding {
     private final AttachmentService attachmentService;
     private final CommentService commentService;
     private final ToolTypeService toolTypeService;
-    private final ToolEventService toolEventService;
+    private final ToolEventRepository toolEventRepository;
     private final OrderStageService orderStageService;
     private final ToolReleaseService toolReleaseService;
     private final ElementService elementService;
     private final DemandAdHocService demandAdHocService;
-    private final ElementEventService elementEventService;
+    private final ElementEventRepository elementEventRepository;
     private final ElementInWarehouseService elementInWarehouseService;
     private final ElementReturnReleaseService elementReturnReleaseService;
     private final AppUserService appUserService;
@@ -118,7 +120,7 @@ public class DataSeeding {
     }
 
     private ToolEvent addToolEventFromModel(ToolEvent toolEvent) {
-        return toolEventMapper.toEntity(toolEventService.add(toolEventMapper.toDto(toolEvent)));
+        return toolEventRepository.save(toolEvent);
     }
 
     private Comment addCommentFromModel(Comment comment) {
@@ -138,7 +140,7 @@ public class DataSeeding {
     }
 
     private ElementEvent addElementEventFromModel(ElementEvent elementEvent) {
-        return elementEventMapper.toEntity(elementEventService.add(elementEventMapper.toDto(elementEvent)));
+        return elementEventRepository.save(elementEvent);
     }
 
     private ElementInWarehouse addElementInWarehouseFromModel(ElementInWarehouse elementInWarehouse) {
@@ -326,12 +328,12 @@ public class DataSeeding {
                 new ArrayList<>(), new ArrayList<>()));
 
         OrderStage orderStage1 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 1",
-                OrderStatus.TODO, new BigDecimal(1), LocalDateTime.now(), LocalDateTime.now(), null, null,
+                OrderStatus.TODO, new BigDecimal(1), LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(),
                 1, 1, 1, new ArrayList<>(), foreman1,
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         OrderStage orderStage2 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 2",
-                OrderStatus.TODO, new BigDecimal(2), LocalDateTime.now(), LocalDateTime.now(), null, null,
+                OrderStatus.TODO, new BigDecimal(2), LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), null,
                 1, 1, 1, new ArrayList<>(), foreman1,
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
@@ -391,13 +393,13 @@ public class DataSeeding {
                 warehouse2, new ArrayList<>(), toolType4));
 
         ToolEvent toolEvent1 = addToolEventFromModel(new ToolEvent(null, LocalDateTime.now(), null, null,
-                "Test ToolEvent 1", EventStatus.CREATED, null, null, tool1, new ArrayList<>()));
+                "Test ToolEvent 1", EventStatus.CREATED, fitter1, null, tool1, new ArrayList<>()));
         ToolEvent toolEvent2 = addToolEventFromModel(new ToolEvent(null, LocalDateTime.now(), null, null,
-                "Test ToolEvent 2", EventStatus.CREATED, null, null, tool1, new ArrayList<>()));
+                "Test ToolEvent 2", EventStatus.CREATED, fitter1, null, tool1, new ArrayList<>()));
         ToolEvent toolEvent3 = addToolEventFromModel(new ToolEvent(null, LocalDateTime.now(), null, null,
-                "Test ToolEvent 3", EventStatus.CREATED, null, null, tool2, new ArrayList<>()));
+                "Test ToolEvent 3", EventStatus.CREATED, foreman1, null, tool2, new ArrayList<>()));
         ToolEvent toolEvent4 = addToolEventFromModel(new ToolEvent(null, LocalDateTime.now(), null, null,
-                "Test ToolEvent 4", EventStatus.CREATED, null, null, tool3, new ArrayList<>()));
+                "Test ToolEvent 4", EventStatus.CREATED, warehouseman1, null, tool3, new ArrayList<>()));
 
         Comment comment1 = addCommentFromModel(new Comment(null, "Test Comment 1", null, fitter1,
                 orderStage1, new ArrayList<>()));
@@ -441,16 +443,16 @@ public class DataSeeding {
 
         ElementEvent elementEvent1 = addElementEventFromModel(new ElementEvent(null, LocalDateTime.now(),
                 null, null, "Test ElementEvent 1", EventStatus.CREATED, 1,
-                null, null, element1, new ArrayList<>()));
+                null, fitter1, element1, new ArrayList<>()));
         ElementEvent elementEvent2 = addElementEventFromModel(new ElementEvent(null, LocalDateTime.now(),
                 null, null, "Test ElementEvent 2", EventStatus.CREATED, 1,
-                null, null, element1, new ArrayList<>()));
+                null, fitter1, element1, new ArrayList<>()));
         ElementEvent elementEvent3 = addElementEventFromModel(new ElementEvent(null, LocalDateTime.now(),
                 null, null, "Test ElementEvent 3", EventStatus.CREATED, 1,
-                null, null, element2, new ArrayList<>()));
+                null, foreman1, element2, new ArrayList<>()));
         ElementEvent elementEvent4 = addElementEventFromModel(new ElementEvent(null, LocalDateTime.now(),
                 null, null, "Test ElementEvent 4", EventStatus.CREATED, 1,
-                null, null, element3, new ArrayList<>()));
+                null, warehouseman1, element3, new ArrayList<>()));
 
         ElementInWarehouse elementInWarehouse1 = addElementInWarehouseFromModel(new ElementInWarehouse(null,
                 1, 1, "1", "1", element1, warehouse1));

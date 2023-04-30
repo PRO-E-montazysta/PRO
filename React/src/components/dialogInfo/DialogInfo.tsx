@@ -1,9 +1,9 @@
-import { Button, TextField } from '@mui/material';
-import './style.less';
+import { Button, TextField } from '@mui/material'
+import './style.less'
 
 import { v4 as uuidv4 } from 'uuid'
-import { CSSProperties } from 'react';
-import { theme } from '../../themes/baseTheme';
+import { CSSProperties } from 'react'
+import { theme } from '../../themes/baseTheme'
 
 export type DialogInfoParams = {
     dialogText: Array<string>
@@ -19,13 +19,14 @@ const DialogInfo = (params: DialogInfoParams) => {
         <div className="blur-background">
             <div className="confirm-dialog">
                 <form>
-                    {
-                        dialogText.map(d => (
-                            <p style={{}} key={uuidv4()}>{d}</p>
-                        ))
-                    }
+                    {dialogText.map((d) => (
+                        <p style={{}} key={uuidv4()}>
+                            {d}
+                        </p>
+                    ))}
                     <div className="action-buttons">
                         <Button
+                            id={`dialog-btn-confirm`}
                             onClick={confirmAction}
                             style={{
                                 color: theme.palette.primary.main,
@@ -34,23 +35,23 @@ const DialogInfo = (params: DialogInfoParams) => {
                         >
                             {confirmLabel}
                         </Button>
-                        {
-                            !!cancelLabel &&
+                        {!!cancelLabel && (
                             <Button
+                                id={`dialog-btn-cancel`}
                                 onClick={cancelAction}
                                 style={{
                                     color: theme.palette.primary.contrastText,
-                                    border: '1px solid ' + theme.palette.primary.contrastText
+                                    border: '1px solid ' + theme.palette.primary.contrastText,
                                 }}
                             >
                                 {cancelLabel}
                             </Button>
-                        }
+                        )}
                     </div>
                 </form>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default DialogInfo;
+export default DialogInfo

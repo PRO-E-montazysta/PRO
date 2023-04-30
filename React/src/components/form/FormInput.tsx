@@ -1,5 +1,5 @@
 import { TextField, styled } from '@mui/material'
-import { formatDate } from '../../helpers/format.helper'
+import { formatDate, formatShortDate } from '../../helpers/format.helper'
 import useBreakpoints from '../../hooks/useBreakpoints'
 import { FormInputParams } from './types'
 
@@ -15,7 +15,12 @@ const CustomTextField = styled(TextField)((props: CustomTextFieldProps) => ({
 
 const FormInput = (params: FormInputParams) => {
     const { id, readonly, style, type, formik, label } = params
-    const value = type == 'datetime-local' ? formatDate(formik.values[id]) : String(formik.values[id])
+    const value =
+        type == 'datetime-local'
+            ? formatDate(formik.values[id])
+            : type == 'date'
+            ? formatShortDate(formik.values[id])
+            : String(formik.values[id])
 
     const appSize = useBreakpoints()
     return (

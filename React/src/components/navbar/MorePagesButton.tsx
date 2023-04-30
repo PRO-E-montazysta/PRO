@@ -33,7 +33,10 @@ const MorePagesButton = (props: MorePagesButtonProps) => {
     return (
         <>
             <div onMouseOver={handleMouseEnter} onMouseLeave={handleClose} style={{ zIndex: open ? 1000 : 5 }}>
-                <Button sx={{ cursor: 'pointer', whiteSpace: 'nowrap', width: '30px' , minWidth: 'auto' }} >
+                <Button
+                    id={'morePageBtn'}
+                    sx={{ cursor: 'pointer', whiteSpace: 'nowrap', width: '30px', minWidth: 'auto' }}
+                >
                     <MoreVertIcon />
                 </Button>
                 <NavMenu allowedChilds={pages} onClose={handleClose} open={open} />

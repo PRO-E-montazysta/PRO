@@ -35,6 +35,7 @@ const Events = () => {
 
     return (
         <FatTable
+            idPropName="id"
             query={queryEvents}
             filterProps={filter}
             headCells={headCells}

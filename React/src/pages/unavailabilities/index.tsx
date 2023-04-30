@@ -3,21 +3,22 @@ import FatTable from '../../components/table/FatTable'
 import { useState } from 'react'
 import { useQuery } from 'react-query'
 import { AxiosError } from 'axios'
+import { getFilteredUnavailabilities } from '../../api/unavailability.api'
 import { filterInitStructure, headCells } from './helper'
 import { useNavigate } from 'react-router-dom'
 import { getFilterParams, getInputs, setNewFilterValues } from '../../helpers/filter.helper'
-import { Element } from '../../types/model/Element'
-import { getFilteredElements } from '../../api/element.api'
 import { useFormik } from 'formik'
+import { UnavailabilityFilter } from '../../types/model/Unavailability'
 
-const Elements = () => {
+const Unavailabilities = () => {
     const [filterStructure, setFilterStructure] = useState(filterInitStructure)
     const [filterParams, setFilterParams] = useState(getFilterParams(filterInitStructure))
     const { initialValues, inputs } = getInputs(filterInitStructure)
     const navigation = useNavigate()
 
-    const queryOrders = useQuery<Array<Element>, AxiosError>(['orders', filterParams], async () =>
-        getFilteredElements({ queryParams: filterParams }),
+    const queryUnavailabilities = useQuery<Array<UnavailabilityFilter>, AxiosError>(
+        ['unavailabilities', filterParams],
+        async () => getFilteredUnavailabilities({ queryParams: filterParams }),
     )
 
     const filter: Filter = {
@@ -36,16 +37,16 @@ const Elements = () => {
     return (
         <FatTable
             idPropName="id"
-            query={queryOrders}
+            query={queryUnavailabilities}
             filterProps={filter}
             headCells={headCells}
-            initOrderBy={'name'}
+            initOrderBy={'assignedTo'}
             onClickRow={(e, row) => {
-                navigation(`/elements/${row.id}`)
+                navigation(`/unavailabilities/${row.id}`)
             }}
-            pageHeader="Lista elementów"
+            pageHeader="Lista niedostępności"
         />
     )
 }
 
-export default Elements
+export default Unavailabilities

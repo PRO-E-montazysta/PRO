@@ -48,7 +48,7 @@ const FormSelect = (params: FormInputParams) => {
                     -- WYBIERZ --
                 </MenuItem>
                 {options?.map((o) => (
-                    <MenuItem key={o.key} value={o.key}>
+                    <MenuItem key={o.key} value={o.key} id={`formSelect-${id}-opt-${o.key}`}>
                         {o.value}
                     </MenuItem>
                 ))}
