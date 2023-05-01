@@ -1,6 +1,6 @@
 package com.emontazysta.model.dto;
 
-import com.emontazysta.enums.OrderStatus;
+import com.emontazysta.enums.OrderStageStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,7 +23,7 @@ public class OrderStageWithToolsAndElementsDto {
     @NotBlank(message = "Name cannot be empty")
     private String name;
     @NotNull(message = "Status cannot be empty")
-    private OrderStatus status;
+    private OrderStageStatus status;
     @NotNull(message = "Price cannot be empty")
     private BigDecimal price;
     private LocalDateTime plannedStartDate;
