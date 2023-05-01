@@ -22,7 +22,6 @@ public class OrderStageWithToolsAndElementsDto {
     private Long id;
     @NotBlank(message = "Name cannot be empty")
     private String name;
-    @NotNull(message = "Status cannot be empty")
     private OrderStageStatus status;
     @NotNull(message = "Price cannot be empty")
     private BigDecimal price;
