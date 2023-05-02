@@ -315,39 +315,39 @@ public class DataSeeding {
                 null, null, null, null));
 
         Orders order1 = addOrdersFromModel(new Orders(null, "Test Order 1 - from Client 1",
-                TypeOfStatus.PLANNED, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.IMPORTANT,
+                OrderStatus.CREATED, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.IMPORTANT,
                 company1, manager1, foreman1, specialist1, salesRepresentative1, location1, client1, new ArrayList<>(),
                 new ArrayList<>()));
         Orders order2 = addOrdersFromModel(new Orders(null, "Test Order 2 - from Client 1",
-                TypeOfStatus.PLANNED, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.NORMAL,
+                OrderStatus.CREATED, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.NORMAL,
                 company1, manager2, foreman2, specialist2, salesRepresentative2, location2, client1, new ArrayList<>(),
                 new ArrayList<>()));
         Orders order3 = addOrdersFromModel(new Orders(null, "Test Order 3 - from Client 2",
-                TypeOfStatus.IN_PROGRESS, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.IMMEDIATE,
+                OrderStatus.CREATED, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.IMMEDIATE,
                 company1, manager1, foreman1, specialist1, salesRepresentative1, location3, client2, new ArrayList<>(),
                 new ArrayList<>()));
         Orders order4 = addOrdersFromModel(new Orders(null, "Test Order 4 - from Client 4",
-                TypeOfStatus.FINISHED, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.NORMAL,
+                OrderStatus.CREATED, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.NORMAL,
                 company4, null, null, null, null, null, client4,
                 new ArrayList<>(), new ArrayList<>()));
 
         OrderStage orderStage1 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 1",
-                OrderStatus.TODO, new BigDecimal(1), LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(),
+                OrderStatus.CREATED, new BigDecimal(1), LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(),
                 1, 1, 1, new ArrayList<>(), foreman1,
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         OrderStage orderStage2 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 2",
-                OrderStatus.TODO, new BigDecimal(2), LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), null,
+                OrderStatus.CREATED, new BigDecimal(2), LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), null,
                 1, 1, 1, new ArrayList<>(), foreman1,
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         OrderStage orderStage3 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 3",
-                OrderStatus.TODO, new BigDecimal(3), LocalDateTime.now(), LocalDateTime.now(), null, null,
+                OrderStatus.CREATED, new BigDecimal(3), LocalDateTime.now(), LocalDateTime.now(), null, null,
                 1, 1, 1, new ArrayList<>(), foreman1,
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         OrderStage orderStage4 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 4",
-                OrderStatus.TODO, new BigDecimal(4), LocalDateTime.now(), LocalDateTime.now(), null, null,
+                OrderStatus.CREATED, new BigDecimal(4), LocalDateTime.now(), LocalDateTime.now(), null, null,
                 1, 1, 1, new ArrayList<>(), foreman2,
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), order2, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
