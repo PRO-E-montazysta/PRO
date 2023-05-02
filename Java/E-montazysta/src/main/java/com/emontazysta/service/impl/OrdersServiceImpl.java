@@ -64,7 +64,7 @@ public class OrdersServiceImpl implements OrdersService {
         Orders updatedOrder = ordersMapper.toEntity(ordersDto);
         Orders order = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         order.setName(updatedOrder.getName());
-        order.setTypeOfStatus(updatedOrder.getTypeOfStatus());
+        order.setStatus(updatedOrder.getStatus());
         order.setTypeOfPriority(updatedOrder.getTypeOfPriority());
         order.setPlannedStart(updatedOrder.getPlannedStart());
         order.setPlannedEnd(updatedOrder.getPlannedEnd());
