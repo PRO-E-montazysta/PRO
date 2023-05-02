@@ -1,5 +1,6 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.enums.OrderStageStatus;
 import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.ElementsPlannedNumberMapper;
 import com.emontazysta.mapper.OrderStageMapper;
@@ -67,6 +68,7 @@ public class OrderStageImpl implements OrderStageService {
             orderStageDto.setListOfToolsPlannedNumber(new ArrayList<>());
             orderStageDto.setListOfElementsPlannedNumber(new ArrayList<>());
             orderStageDto.setPlannedDurationTime(ChronoUnit.HOURS.between(orderStageDto.getPlannedStartDate(),orderStageDto.getPlannedEndDate()));
+            orderStageDto.setStatus(OrderStageStatus.PLANNING);
 
             OrderStage orderStage = orderStageMapper.toEntity(orderStageDto);
             return orderStageMapper.toDto(repository.save(orderStage));
@@ -76,6 +78,7 @@ public class OrderStageImpl implements OrderStageService {
     @Override
     @Transactional
     public OrderStageDto addWithToolsAndElements(OrderStageWithToolsAndElementsDto orderStageDto) {
+        orderStageDto.setStatus(OrderStageStatus.PLANNING);
 
         OrderStageWithToolsAndElementsDto modiffiedOrderStageDto = completeEmptyAttributes(orderStageDto);
 
