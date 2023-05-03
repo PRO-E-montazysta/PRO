@@ -71,7 +71,6 @@ public class ForemanMapper {
                 .toolEvents(foreman.getToolEvents().stream().map(ToolEvent::getId).collect(Collectors.toList()))
                 .workingOn(foreman.getWorkingOn().stream().map(OrderStage::getId).collect(Collectors.toList()))
                 .ordersStagesList(foreman.getOrdersStagesList().stream().map(OrderStage::getId).collect(Collectors.toList()))
-                .receivedTools(foreman.getReceivedTools().stream().map(ToolRelease::getId).collect(Collectors.toList()))
                 .assignedOrders(foreman.getAssignedOrders().stream().map(Orders::getId).collect(Collectors.toList()))
                 .elementReturnReleases(foreman.getElementReturnReleases().stream().map(ElementReturnRelease::getId).collect(Collectors.toList()))
                 .demandsAdHocs(foreman.getDemandsAdHocs().stream().map(DemandAdHoc::getId).collect(Collectors.toList()))
@@ -111,9 +110,6 @@ public class ForemanMapper {
         List<OrderStage> orderStageList = new ArrayList<>();
         foremanDto.getOrdersStagesList().forEach(orderStageId -> orderStageList.add(orderStageRepository.getReferenceById(orderStageId)));
 
-        List<ToolRelease> toolReleaseList = new ArrayList<>();
-        foremanDto.getReceivedTools().forEach(toolReleaseId -> toolReleaseList.add(toolReleaseRepository.getReferenceById(toolReleaseId)));
-
         List<Orders> ordersList = new ArrayList<>();
         foremanDto.getOrdersStagesList().forEach(orderStageId -> ordersList.add(orderRepository.getReferenceById(orderStageId)));
 
@@ -142,7 +138,6 @@ public class ForemanMapper {
         foreman.setToolEvents(toolEventList);
         foreman.setWorkingOn(workingOnList);
         foreman.setOrdersStagesList(orderStageList);
-        foreman.setReceivedTools(toolReleaseList);
         foreman.setAssignedOrders(ordersList);
         foreman.setElementReturnReleases(elementReturnReleasesList);
         foreman.setDemandsAdHocs(demandAdHocsList);

@@ -12,7 +12,6 @@ import java.util.List;
 public class ForemanDto extends FitterDto {
 
     private List<Long> ordersStagesList;
-    private List<Long> receivedTools;
     private List<Long> assignedOrders;
     private List<Long> elementReturnReleases;
     private List<Long> demandsAdHocs;
