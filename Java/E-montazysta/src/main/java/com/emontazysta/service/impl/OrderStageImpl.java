@@ -200,21 +200,39 @@ public class OrderStageImpl implements OrderStageService {
                 }
             }
 
-            //Tool return
+            //Tool & Element return
             if(orderStageDb.getStatus().equals(OrderStageStatus.RETURN) &&
                     (authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MAN) ||
-                            authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MANAGER)) &&
-                    Optional.ofNullable(orderStageDto.getReturningTools()).isPresent())
+                            authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MANAGER)))
             {
-                for (String toolCode : orderStageDto.getReturningTools()) {
-                    Optional<ToolRelease> toolReleaseOptional = orderStageDb.getToolReleases().stream()
-                            .filter(o -> o.getTool().getCode().equals(toolCode))
-                            .filter(o -> o.getReturnTime() == null)
-                            .findFirst();
-                    if (toolReleaseOptional.isEmpty()) {
-                        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nie można zwrócić narzędzia o kodzie: " + toolCode);
-                    }else {
-                        toolReleaseOptional.get().setReturnTime(LocalDateTime.now());
+                //Tool return
+                if(Optional.ofNullable(orderStageDto.getReturningTools()).isPresent()) {
+                    for (String toolCode : orderStageDto.getReturningTools()) {
+                        Optional<ToolRelease> toolReleaseOptional = orderStageDb.getToolReleases().stream()
+                                .filter(o -> o.getTool().getCode().equals(toolCode))
+                                .filter(o -> o.getReturnTime() == null)
+                                .findFirst();
+                        if (toolReleaseOptional.isEmpty()) {
+                            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nie można zwrócić narzędzia o kodzie: " + toolCode);
+                        }else {
+                            toolReleaseOptional.get().setReturnTime(LocalDateTime.now());
+                        }
+                    }
+                }
+
+                //Element return
+                if(Optional.ofNullable(orderStageDto.getReturningElements()).isPresent()) {
+                    for(ElementReturnDto elementReturn : orderStageDto.getReturningElements()) {
+                        Optional<ElementReturnRelease> elementReturnReleaseOptional = orderStageDb.getElementReturnReleases().stream()
+                                .filter(o -> o.getElement().getCode().equals(elementReturn.getElementCode()))
+                                .filter(o ->  (o.getReleasedQuantity()-o.getReturnedQuantity()-elementReturn.getQuantity() >= 0)
+                                        && o.getReturnTime() == null)
+                                .findFirst();
+                        if (elementReturnReleaseOptional.isEmpty()) {
+                            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nie można zwrócić elementu o kodzie: " + elementReturn.getElementCode());
+                        }else {
+                            elementReturnReleaseOptional.get().setReturnTime(LocalDateTime.now());
+                        }
                     }
                 }
             }

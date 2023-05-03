@@ -48,4 +48,5 @@ public class OrderStageWithToolsAndElementsDto {
     private List<ElementsPlannedNumberDto> listOfElementsPlannedNumber;
     private List<Long> demandAdHocs;
     private List<String> returningTools;
+    private List<ElementReturnDto> returningElements;
 }
