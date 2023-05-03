@@ -174,8 +174,9 @@ public class OrderStageImpl implements OrderStageService {
         //As updated set old lists
         List<ToolRelease> updatedToolReleaseList = orderStageDb.getToolReleases();
         List<ElementReturnRelease> updatedElementReturnReleaseList = orderStageDb.getElementReturnReleases();
-        if(authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MAN) ||
-                authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MANAGER)) {
+        if(orderStageDb.getStatus().equals(OrderStageStatus.PICK_UP) && (
+                authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MAN) ||
+                authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MANAGER))) {
             //Tool and Element release
             //As updated set new lists
             updatedToolReleaseList = updatedOrderStage.getToolReleases();
@@ -200,7 +201,11 @@ public class OrderStageImpl implements OrderStageService {
             }
 
             //Tool return
-            if(Optional.ofNullable(orderStageDto.getReturningTools()).isPresent()) {
+            if(orderStageDb.getStatus().equals(OrderStageStatus.RETURN) &&
+                    (authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MAN) ||
+                            authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MANAGER)) &&
+                    Optional.ofNullable(orderStageDto.getReturningTools()).isPresent())
+            {
                 for (String toolCode : orderStageDto.getReturningTools()) {
                     Optional<ToolRelease> toolReleaseOptional = orderStageDb.getToolReleases().stream()
                             .filter(o -> o.getTool().getCode().equals(toolCode))
