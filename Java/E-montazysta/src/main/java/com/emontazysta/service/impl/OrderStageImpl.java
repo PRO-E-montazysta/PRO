@@ -5,17 +5,10 @@ import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.ElementsPlannedNumberMapper;
 import com.emontazysta.mapper.OrderStageMapper;
 import com.emontazysta.mapper.ToolsPlannedNumberMapper;
-import com.emontazysta.model.ElementsPlannedNumber;
-import com.emontazysta.model.OrderStage;
-import com.emontazysta.model.ToolsPlannedNumber;
-import com.emontazysta.model.dto.ElementsPlannedNumberDto;
-import com.emontazysta.model.dto.OrderStageDto;
-import com.emontazysta.model.dto.OrderStageWithToolsAndElementsDto;
-import com.emontazysta.model.dto.ToolsPlannedNumberDto;
+import com.emontazysta.model.*;
+import com.emontazysta.model.dto.*;
 import com.emontazysta.model.searchcriteria.OrdersStageSearchCriteria;
-import com.emontazysta.repository.ElementsPlannedNumberRepository;
-import com.emontazysta.repository.OrderStageRepository;
-import com.emontazysta.repository.ToolsPlannedNumberRepository;
+import com.emontazysta.repository.*;
 import com.emontazysta.repository.criteria.OrdersStageCriteriaRepository;
 import com.emontazysta.service.OrderStageService;
 import com.emontazysta.util.AuthUtils;
@@ -41,6 +34,8 @@ public class OrderStageImpl implements OrderStageService {
     private final ToolsPlannedNumberMapper toolsPlannedNumberMapper;
     private final ElementsPlannedNumberRepository elementsPlannedNumberRepository;
     private final ElementsPlannedNumberMapper elementsPlannedNumberMapper;
+    private final ToolReleaseRepository toolReleaseRepository;
+    private final ElementReturnReleaseRepository elementReturnReleaseRepository;
     private final AuthUtils authUtils;
 
     @Override
@@ -168,6 +163,36 @@ public class OrderStageImpl implements OrderStageService {
             updatedElementsList = updatedOrderStage.getListOfElementsPlannedNumber();
         }
 
+        //As updated set old lists
+        List<ToolRelease> updatedToolReleaseList = orderStageDb.getToolReleases();
+        List<ElementReturnRelease> updatedElementReturnReleaseList = orderStageDb.getElementReturnReleases();
+        if(authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MAN) ||
+                authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MANAGER)) {
+
+            //As updated set new lists
+            updatedToolReleaseList = updatedOrderStage.getToolReleases();
+            updatedElementReturnReleaseList = updatedOrderStage.getElementReturnReleases();
+
+            //Check if toolRelease exists, if not add it
+            for (ToolRelease toolRelease : updatedOrderStage.getToolReleases()) {
+                if(!orderStageDb.getToolReleases().contains(toolRelease)) {
+                    toolRelease.setOrderStage(orderStageDb);
+                    toolRelease.setReleasedBy((Warehouseman) authUtils.getLoggedUser());
+                    toolReleaseRepository.save(toolRelease);
+                }
+            }
+
+            //Check if elementReturnRelease exists, if not add it
+            for (ElementReturnRelease elementReturnRelease : updatedOrderStage.getElementReturnReleases()) {
+                if(!orderStageDb.getElementReturnReleases().contains(elementReturnRelease)) {
+                    elementReturnRelease.setOrderStage(orderStageDb);
+                    elementReturnRelease.setServedBy((Warehouseman) authUtils.getLoggedUser());
+                    elementReturnReleaseRepository.save(elementReturnRelease);
+                }
+            }
+        }
+
+
         orderStageDb.setName(updatedOrderStage.getName());
         orderStageDb.setStatus(updatedOrderStage.getStatus());
         orderStageDb.setPrice(updatedOrderStage.getPrice());
@@ -181,15 +206,15 @@ public class OrderStageImpl implements OrderStageService {
         orderStageDb.setAssignedTo(updatedOrderStage.getAssignedTo());
         orderStageDb.setManagedBy(updatedOrderStage.getManagedBy());
         orderStageDb.setComments(updatedOrderStage.getComments());
-        orderStageDb.setToolReleases(updatedOrderStage.getToolReleases());
-        orderStageDb.setElementReturnReleases(updatedOrderStage.getElementReturnReleases());
         orderStageDb.setAttachments(updatedOrderStage.getAttachments());
         orderStageDb.setNotifications(updatedOrderStage.getNotifications());
         orderStageDb.setDemandsAdHoc(updatedOrderStage.getDemandsAdHoc());
-       orderStageDb.setListOfToolsPlannedNumber(updatedToolsList);
-       orderStageDb.setListOfElementsPlannedNumber(updatedElementsList);
+        orderStageDb.setListOfToolsPlannedNumber(updatedToolsList);
+        orderStageDb.setListOfElementsPlannedNumber(updatedElementsList);
+        orderStageDb.setToolReleases(updatedToolReleaseList);
+        orderStageDb.setElementReturnReleases(updatedElementReturnReleaseList);
 
-        return orderStageMapper.toDto(orderStageDb);
+        return orderStageMapper.toDto(repository.save(orderStageDb));
     }
 
     @Override

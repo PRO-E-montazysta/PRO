@@ -38,8 +38,8 @@ public class OrderStageWithToolsAndElementsDto {
     private List<Long> fitters;
     private Long foremanId;
     private List<Long> comments;
-    private List<Long> toolReleases;
-    private List<Long> elementReturnReleases;
+    private List<ToolReleaseDto> toolReleases;
+    private List<ElementReturnReleaseDto> elementReturnReleases;
     private Long orderId;
     private List<Long> attachments;
     private List<Long> notifications;

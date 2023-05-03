@@ -24,14 +24,13 @@ public class OrderStageMapper {
     private final OrderRepository orderRepository;
     private final AttachmentRepository attachmentRepository;
     private final NotificationRepository notificationRepository;
-    private final ToolTypeRepository toolTypeRepository;
-    private final ElementRepository elementRepository;
     private final DemandAdHocRepository demandAdHocRepository;
-
     private final ToolsPlannedNumberRepository toolsPlannedNumberRepository;
     private final ToolsPlannedNumberMapper toolsPlannedNumberMapper;
     private final ElementsPlannedNumberRepository elementsPlannedNumberRepository;
     private final ElementsPlannedNumberMapper elementsPlannedNumberMapper;
+    private final ToolReleaseMapper toolReleaseMapper;
+    private final ElementReturnReleaseMapper elementReturnReleaseMapper;
 
     public OrderStageDto toDto(OrderStage orderStage) {
         return OrderStageDto.builder()
@@ -124,10 +123,10 @@ public class OrderStageMapper {
         orderStageToolsElementsDto.getComments().forEach(commentId -> commentList.add(commentRepository.getReferenceById(commentId)));
 
         List<ToolRelease> toolReleaseList = new ArrayList<>();
-        orderStageToolsElementsDto.getToolReleases().forEach(toolReleaseId -> toolReleaseList.add(toolReleaseRepository.getReferenceById(toolReleaseId)));
+        orderStageToolsElementsDto.getToolReleases().forEach(toolRelease -> toolReleaseList.add(toolReleaseMapper.toEntity(toolRelease)));
 
         List<ElementReturnRelease> elementReturnReleaseList = new ArrayList<>();
-        orderStageToolsElementsDto.getElementReturnReleases().forEach(elementReturnReleaseId -> elementReturnReleaseList.add(elementReturnReleaseRepository.getReferenceById(elementReturnReleaseId)));
+        orderStageToolsElementsDto.getElementReturnReleases().forEach(elementReturnRelease -> elementReturnReleaseList.add(elementReturnReleaseMapper.toEntity(elementReturnRelease)));
 
         List<Attachment> attachmentList = new ArrayList<>();
         orderStageToolsElementsDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.getReferenceById(attachmentId)));
