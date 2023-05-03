@@ -38,7 +38,17 @@ public class WarehousemanServiceImpl implements WarehousemanService {
     @Override
     public WarehousemanDto getById(Long id) {
         Warehouseman warehouseman = repository.findById(id).orElseThrow(EntityNotFoundException::new);
-        return warehousemanMapper.toDto(warehouseman);
+        WarehousemanDto result = warehousemanMapper.toDto(warehouseman);
+
+        if(!authUtils.getLoggedUser().getRoles().contains(Role.ADMIN)) {
+            result.setUsername(null);
+        }
+        if(!authUtils.getLoggedUser().getRoles().contains(Role.ADMIN) ||
+                !authUtils.getLoggedUser().getRoles().contains(Role.MANAGER)) {
+            result.setPesel(null);
+        }
+
+        return result;
     }
 
     @Override
