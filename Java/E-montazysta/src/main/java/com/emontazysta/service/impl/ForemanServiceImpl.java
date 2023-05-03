@@ -55,7 +55,6 @@ public class ForemanServiceImpl implements ForemanService {
         foremanDto.setWorkingOn(new ArrayList<>());
         foremanDto.setOrdersStagesList(new ArrayList<>());
         foremanDto.setAssignedOrders(new ArrayList<>());
-        foremanDto.setElementReturnReleases(new ArrayList<>());
         foremanDto.setDemandsAdHocs(new ArrayList<>());
 
         Foreman foreman = repository.save(foremanMapper.toEntity(foremanDto));
@@ -95,7 +94,6 @@ public class ForemanServiceImpl implements ForemanService {
         foreman.setWorkingOn(updatedForeman.getWorkingOn());
         foreman.setOrdersStagesList(updatedForeman.getOrdersStagesList());
         foreman.setAssignedOrders(updatedForeman.getAssignedOrders());
-        foreman.setElementReturnReleases(updatedForeman.getElementReturnReleases());
         foreman.setDemandsAdHocs(updatedForeman.getDemandsAdHocs());
         return foremanMapper.toDto(repository.save(foreman));
     }

@@ -38,8 +38,5 @@ public class ElementReturnRelease {
     private DemandAdHoc demandAdHoc;
 
     @ManyToOne
-    private Foreman foreman;
-
-    @ManyToOne
     private OrderStage orderStage;
 }

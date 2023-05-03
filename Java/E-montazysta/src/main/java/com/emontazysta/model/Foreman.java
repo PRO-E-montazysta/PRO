@@ -25,14 +25,12 @@ public class Foreman extends Fitter {
                   List<Unavailability> unavailabilities, List<Notification> notifications,
                   List<Comment> employeeComments, List<ElementEvent> elementEvents, List<Employment> employments,
                   List<Attachment> attachments, List<ToolEvent> toolEvents, List<OrderStage> workingOn,
-                  List<OrderStage> ordersStagesList, List<Orders> assignedOrders,
-                  List<ElementReturnRelease> elementReturnReleases, List<DemandAdHoc> demandsAdHocs) {
+                  List<OrderStage> ordersStagesList, List<Orders> assignedOrders, List<DemandAdHoc> demandsAdHocs) {
 
         super(id, firstName, lastName, email, password, username, resetPasswordToken, roles, phone, pesel,
                 unavailabilities, notifications, employeeComments, elementEvents, employments, attachments, toolEvents, workingOn);
         this.ordersStagesList = ordersStagesList;
         this.assignedOrders = assignedOrders;
-        this.elementReturnReleases = elementReturnReleases;
         this.demandsAdHocs = demandsAdHocs;
     }
 
@@ -41,9 +39,6 @@ public class Foreman extends Fitter {
 
     @OneToMany(mappedBy = "assignedTo")
     private List<Orders> assignedOrders;
-
-    @OneToMany(mappedBy = "foreman")
-    private List<ElementReturnRelease> elementReturnReleases;
 
     @OneToMany(mappedBy = "foreman")
     private List<DemandAdHoc> demandsAdHocs;

@@ -28,6 +28,5 @@ public class ElementReturnReleaseDto {
     @NotNull(message = "Element id cannot be empty")
     private Long elementId;
     private Long demandAdHocId;
-    private Long foremanId;
     private Long orderStageId;
 }

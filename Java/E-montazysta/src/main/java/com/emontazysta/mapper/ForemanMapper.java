@@ -72,7 +72,6 @@ public class ForemanMapper {
                 .workingOn(foreman.getWorkingOn().stream().map(OrderStage::getId).collect(Collectors.toList()))
                 .ordersStagesList(foreman.getOrdersStagesList().stream().map(OrderStage::getId).collect(Collectors.toList()))
                 .assignedOrders(foreman.getAssignedOrders().stream().map(Orders::getId).collect(Collectors.toList()))
-                .elementReturnReleases(foreman.getElementReturnReleases().stream().map(ElementReturnRelease::getId).collect(Collectors.toList()))
                 .demandsAdHocs(foreman.getDemandsAdHocs().stream().map(DemandAdHoc::getId).collect(Collectors.toList()))
                 .status(statusService.checkUnavailability(foreman) == null ? "AVAILABLE" : String.valueOf(statusService.checkUnavailability(foreman).getTypeOfUnavailability()))
                 .unavailableFrom(statusService.checkUnavailability(foreman) == null ? null : statusService.checkUnavailability(foreman).getUnavailableFrom())
@@ -113,9 +112,6 @@ public class ForemanMapper {
         List<Orders> ordersList = new ArrayList<>();
         foremanDto.getOrdersStagesList().forEach(orderStageId -> ordersList.add(orderRepository.getReferenceById(orderStageId)));
 
-        List<ElementReturnRelease> elementReturnReleasesList = new ArrayList<>();
-        foremanDto.getElementReturnReleases().forEach(elementReturnReleaseId -> elementReturnReleasesList.add(elementReturnReleaseRepository.getReferenceById(elementReturnReleaseId)));
-
         List<DemandAdHoc> demandAdHocsList = new ArrayList<>();
         foremanDto.getDemandsAdHocs().forEach(demandAdHocId -> demandAdHocsList.add(demandAdHocRepository.getReferenceById(demandAdHocId)));
 
@@ -139,7 +135,6 @@ public class ForemanMapper {
         foreman.setWorkingOn(workingOnList);
         foreman.setOrdersStagesList(orderStageList);
         foreman.setAssignedOrders(ordersList);
-        foreman.setElementReturnReleases(elementReturnReleasesList);
         foreman.setDemandsAdHocs(demandAdHocsList);
 
         return foreman;

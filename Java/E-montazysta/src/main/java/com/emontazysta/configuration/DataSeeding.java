@@ -182,12 +182,12 @@ public class DataSeeding {
                 "password", "foreman1", null, Set.of(Role.FOREMAN), "foreman1Phone",
                 "foreman1Pesel", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                new ArrayList<>(), new ArrayList<>());
         Foreman foreman2 = new Foreman(null, "Test Foreman 2", "Test Foreman 2", "foreman2@ema.il",
                 "password", "foreman2", null, Set.of(Role.FOREMAN), "foreman2Phone",
                 "foreman2Pesel", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                new ArrayList<>(), new ArrayList<>());
 
         Warehouseman warehouseman1 = new Warehouseman(null, "Test Warehouseman 1", "Test Warehouseman 1",
                 "warehouseman1@ema.il", "password", "warehouseman1", null,
@@ -469,16 +469,16 @@ public class DataSeeding {
 
         ElementReturnRelease elementReturnRelease1 = addElementReturnReleaseFromModel(new ElementReturnRelease(null,
                 LocalDateTime.now(), 1, 1, LocalDateTime.now(), warehouseman1, element1,
-                demandAdHoc1, foreman1, orderStage1));
+                demandAdHoc1, orderStage1));
         ElementReturnRelease elementReturnRelease2 = addElementReturnReleaseFromModel(new ElementReturnRelease(null,
                 LocalDateTime.now(), 1, 0, null, warehouseman1, element2,
-                demandAdHoc1, foreman1, orderStage1));
+                demandAdHoc1, orderStage1));
         ElementReturnRelease elementReturnRelease3 = addElementReturnReleaseFromModel(new ElementReturnRelease(null,
                 LocalDateTime.now(), 1, 0, null, warehouseManager1, element3,
-                demandAdHoc3, foreman2, orderStage1));
+                demandAdHoc3, orderStage1));
         ElementReturnRelease elementReturnRelease4 = addElementReturnReleaseFromModel(new ElementReturnRelease(null,
                 LocalDateTime.now(), 1, 0, null, warehouseman2, element4,
-                demandAdHoc4, foreman2, orderStage1));
+                demandAdHoc4, orderStage1));
 
         context.setAuthentication(null);
     }

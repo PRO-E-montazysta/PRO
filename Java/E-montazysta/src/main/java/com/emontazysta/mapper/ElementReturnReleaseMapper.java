@@ -30,7 +30,6 @@ public class ElementReturnReleaseMapper {
                 .servedById(elementReturnRelease.getServedBy() == null ? null : elementReturnRelease.getServedBy().getId())
                 .elementId(elementReturnRelease.getElement() == null ? null : elementReturnRelease.getElement().getId())
                 .demandAdHocId(elementReturnRelease.getDemandAdHoc() == null ? null : elementReturnRelease.getDemandAdHoc().getId())
-                .foremanId(elementReturnRelease.getForeman() == null ? null : elementReturnRelease.getForeman().getId())
                 .orderStageId(elementReturnRelease.getOrderStage() == null ? null : elementReturnRelease.getOrderStage().getId())
                 .build();
     }
@@ -45,7 +44,6 @@ public class ElementReturnReleaseMapper {
                 .servedBy(elementReturnReleaseDto.getServedById() == null ? null : warehousemanRepository.getReferenceById(elementReturnReleaseDto.getServedById()))
                 .element(elementReturnReleaseDto.getElementId() == null ? null : elementRepository.getReferenceById(elementReturnReleaseDto.getElementId()))
                 .demandAdHoc(elementReturnReleaseDto.getDemandAdHocId() == null ? null : demandAdHocRepository.getReferenceById(elementReturnReleaseDto.getDemandAdHocId()))
-                .foreman(elementReturnReleaseDto.getForemanId() == null ? null : foremanRepository.getReferenceById(elementReturnReleaseDto.getForemanId()))
                 .orderStage(elementReturnReleaseDto.getOrderStageId() == null ? null : orderStageRepository.getReferenceById(elementReturnReleaseDto.getOrderStageId()))
                 .build();
     }

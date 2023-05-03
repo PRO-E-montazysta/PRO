@@ -56,7 +56,6 @@ public class ElementReturnReleaseServiceImpl implements ElementReturnReleaseServ
         elementReturnReleaseDb.setServedBy(updatedElementReturnRelease.getServedBy());
         elementReturnReleaseDb.setElement(updatedElementReturnRelease.getElement());
         elementReturnReleaseDb.setDemandAdHoc(updatedElementReturnRelease.getDemandAdHoc());
-        elementReturnReleaseDb.setForeman(updatedElementReturnRelease.getForeman());
         elementReturnReleaseDb.setOrderStage(updatedElementReturnRelease.getOrderStage());
         return elementReturnReleaseMapper.toDto(elementReturnReleaseDb);
     }
