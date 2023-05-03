@@ -4,6 +4,7 @@ import com.emontazysta.enums.OrderStageStatus;
 import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.ElementsPlannedNumberMapper;
 import com.emontazysta.mapper.OrderStageMapper;
+import com.emontazysta.mapper.ToolMapper;
 import com.emontazysta.mapper.ToolsPlannedNumberMapper;
 import com.emontazysta.model.*;
 import com.emontazysta.model.dto.*;
@@ -11,16 +12,21 @@ import com.emontazysta.model.searchcriteria.OrdersStageSearchCriteria;
 import com.emontazysta.repository.*;
 import com.emontazysta.repository.criteria.OrdersStageCriteriaRepository;
 import com.emontazysta.service.OrderStageService;
+import com.emontazysta.service.ToolService;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,6 +42,8 @@ public class OrderStageImpl implements OrderStageService {
     private final ElementsPlannedNumberMapper elementsPlannedNumberMapper;
     private final ToolReleaseRepository toolReleaseRepository;
     private final ElementReturnReleaseRepository elementReturnReleaseRepository;
+    private final ToolService toolService;
+    private final ToolMapper toolMapper;
     private final AuthUtils authUtils;
 
     @Override
@@ -168,7 +176,7 @@ public class OrderStageImpl implements OrderStageService {
         List<ElementReturnRelease> updatedElementReturnReleaseList = orderStageDb.getElementReturnReleases();
         if(authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MAN) ||
                 authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MANAGER)) {
-
+            //Tool and Element release
             //As updated set new lists
             updatedToolReleaseList = updatedOrderStage.getToolReleases();
             updatedElementReturnReleaseList = updatedOrderStage.getElementReturnReleases();
@@ -188,6 +196,21 @@ public class OrderStageImpl implements OrderStageService {
                     elementReturnRelease.setOrderStage(orderStageDb);
                     elementReturnRelease.setServedBy((Warehouseman) authUtils.getLoggedUser());
                     elementReturnReleaseRepository.save(elementReturnRelease);
+                }
+            }
+
+            //Tool return
+            if(Optional.ofNullable(orderStageDto.getReturningTools()).isPresent()) {
+                for (String toolCode : orderStageDto.getReturningTools()) {
+                    Optional<ToolRelease> toolReleaseOptional = orderStageDb.getToolReleases().stream()
+                            .filter(o -> o.getTool().getCode().equals(toolCode))
+                            .filter(o -> o.getReturnTime() == null)
+                            .findFirst();
+                    if (toolReleaseOptional.isEmpty()) {
+                        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nie można zwrócić narzędzia o kodzie: " + toolCode);
+                    }else {
+                        toolReleaseOptional.get().setReturnTime(LocalDateTime.now());
+                    }
                 }
             }
         }

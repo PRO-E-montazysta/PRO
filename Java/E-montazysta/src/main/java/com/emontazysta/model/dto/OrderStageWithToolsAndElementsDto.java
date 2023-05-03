@@ -1,6 +1,7 @@
 package com.emontazysta.model.dto;
 
 import com.emontazysta.enums.OrderStageStatus;
+import com.emontazysta.model.Tool;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -46,4 +47,5 @@ public class OrderStageWithToolsAndElementsDto {
     private List<ToolsPlannedNumberDto> listOfToolsPlannedNumber;
     private List<ElementsPlannedNumberDto> listOfElementsPlannedNumber;
     private List<Long> demandAdHocs;
+    private List<String> returningTools;
 }
