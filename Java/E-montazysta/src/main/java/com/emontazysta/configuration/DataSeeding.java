@@ -6,6 +6,7 @@ import com.emontazysta.model.*;
 import com.emontazysta.model.dto.OrderStageWithToolsAndElementsDto;
 import com.emontazysta.model.dto.ToolsPlannedNumberDto;
 import com.emontazysta.model.dto.UnavailabilityWithLocalDateDto;
+import com.emontazysta.repository.EmploymentRepository;
 import com.emontazysta.repository.ElementEventRepository;
 import com.emontazysta.repository.ToolEventRepository;
 import com.emontazysta.service.*;
@@ -52,7 +53,7 @@ public class DataSeeding {
     private final ElementInWarehouseService elementInWarehouseService;
     private final ElementReturnReleaseService elementReturnReleaseService;
     private final AppUserService appUserService;
-    private final EmploymentService employmentService;
+    private final EmploymentRepository employmentRepository;
     private final UnavailabilityService unavailabilityService;
 
     private final CompanyMapper companyMapper;
@@ -73,11 +74,6 @@ public class DataSeeding {
     private final ElementInWarehouseMapper elementInWarehouseMapper;
     private final ElementReturnReleaseMapper elementReturnReleaseMapper;
     private final UnavailabilityMapper unavailabilityMapper;
-    private final EmploymentMapper employmentMapper;
-
-    private Employment addEmploymentFromModel(Employment employment) {
-        return employmentMapper.toEntity(employmentService.add(employmentMapper.toDto(employment)));
-    }
 
     private Company addCompanyFromModel(Company company) {
         return companyMapper.toEntity(companyService.add(companyMapper.toDto(company)));
@@ -264,21 +260,21 @@ public class DataSeeding {
                 CompanyStatus.DISABLED, "Closed company", new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
-        Employment employment1 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, fitter1));
-        Employment employment2 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), LocalDateTime.now(), company1, fitter2));
-        Employment employment3 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, foreman1));
-        Employment employment4 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, foreman2));
-        Employment employment5 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, warehouseman1));
-        Employment employment6 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, warehouseman2));
-        Employment employment7 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, warehouseManager1));
-        Employment employment8 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, warehouseManager2));
-        Employment employment9 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, specialist1));
-        Employment employment10 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, specialist2));
-        Employment employment11 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, salesRepresentative1));
-        Employment employment12 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, salesRepresentative2));
-        Employment employment13 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, manager1));
-        Employment employment14 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company3, manager2));
-        Employment employment15 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, companyAdmin1));
+        Employment employment1 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, fitter1));
+        Employment employment2 = employmentRepository.save(new Employment(null, LocalDateTime.now(), LocalDateTime.now(), company1, fitter2));
+        Employment employment3 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, foreman1));
+        Employment employment4 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, foreman2));
+        Employment employment5 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, warehouseman1));
+        Employment employment6 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, warehouseman2));
+        Employment employment7 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, warehouseManager1));
+        Employment employment8 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, warehouseManager2));
+        Employment employment9 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, specialist1));
+        Employment employment10 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, specialist2));
+        Employment employment11 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, salesRepresentative1));
+        Employment employment12 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, salesRepresentative2));
+        Employment employment13 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, manager1));
+        Employment employment14 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company3, manager2));
+        Employment employment15 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, companyAdmin1));
 
         context.setAuthentication(null);
         Authentication authenticationMng = new UsernamePasswordAuthenticationToken(
