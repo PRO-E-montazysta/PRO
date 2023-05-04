@@ -29,4 +29,7 @@ public class ElementsPlannedNumber {
 
     @ManyToOne
     private OrderStage orderStage;
+
+    @ManyToOne
+    private DemandAdHoc demandAdHoc;
 }

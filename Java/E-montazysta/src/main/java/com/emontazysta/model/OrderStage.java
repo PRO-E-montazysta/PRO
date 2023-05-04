@@ -74,7 +74,7 @@ public class OrderStage {
     @OneToMany(mappedBy = "orderStage")
     private List<ElementsPlannedNumber> listOfElementsPlannedNumber;
 
-    @ManyToMany
+    @OneToMany(mappedBy = "orderStage")
     private List<DemandAdHoc> demandsAdHoc;
 }
 

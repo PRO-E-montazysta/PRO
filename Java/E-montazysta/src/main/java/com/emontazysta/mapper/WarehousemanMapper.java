@@ -66,7 +66,6 @@ public class WarehousemanMapper {
                 .toolEvents(warehouseman.getToolEvents().stream().map(ToolEvent::getId).collect(Collectors.toList()))
                 .releaseTools(warehouseman.getReleasedTools().stream().map(ToolRelease::getId).collect(Collectors.toList()))
                 .elementReturnReleases(warehouseman.getElementReturnReleases().stream().map(ElementReturnRelease::getId).collect(Collectors.toList()))
-                .demandAdHocs(warehouseman.getDemandAdHocs().stream().map(DemandAdHoc::getId).collect(Collectors.toList()))
                 .status(statusService.checkUnavailability(warehouseman) == null ? "AVAILABLE" : String.valueOf(statusService.checkUnavailability(warehouseman).getTypeOfUnavailability()))
                 .unavailableFrom(statusService.checkUnavailability(warehouseman) == null ? null : statusService.checkUnavailability(warehouseman).getUnavailableFrom())
                 .unavailableTo(statusService.checkUnavailability(warehouseman) == null ? null : statusService.checkUnavailability(warehouseman).getUnavailableTo())
@@ -103,9 +102,6 @@ public class WarehousemanMapper {
         List<ElementReturnRelease> elementReturnReleaseList = new ArrayList<>();
         warehousemanDto.getElementReturnReleases().forEach(elementReturnReleaseId -> elementReturnReleaseList.add(elementReturnReleaseRepository.getReferenceById(elementReturnReleaseId)));
 
-        List<DemandAdHoc> demandAdHocList = new ArrayList<>();
-        warehousemanDto.getDemandAdHocs().forEach(demandAdHocId -> demandAdHocList.add(demandAdHocRepository.getReferenceById(demandAdHocId)));
-
         Warehouseman warehouseman = new Warehouseman();
         warehouseman.setId(warehousemanDto.getId());
         warehouseman.setFirstName(warehousemanDto.getFirstName());
@@ -125,7 +121,6 @@ public class WarehousemanMapper {
         warehouseman.setToolEvents(toolEventList);
         warehouseman.setReleasedTools(toolReleaseList);
         warehouseman.setElementReturnReleases(elementReturnReleaseList);
-        warehouseman.setDemandAdHocs(demandAdHocList);
 
         return warehouseman;
     }

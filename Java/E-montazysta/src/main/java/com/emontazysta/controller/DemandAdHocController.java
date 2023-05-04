@@ -1,12 +1,17 @@
 package com.emontazysta.controller;
 
 import com.emontazysta.model.dto.DemandAdHocDto;
+import com.emontazysta.model.dto.filterDto.DemandAdHocFilterDto;
+import com.emontazysta.model.dto.filterDto.DemandAdHocWithToolsAndElementsDto;
+import com.emontazysta.model.searchcriteria.DemandAdHocSearchCriteria;
 import com.emontazysta.service.DemandAdHocService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.validation.Valid;
 import java.util.List;
 
@@ -41,11 +45,12 @@ public class DemandAdHocController {
         return demandAdHocService.getById(id);
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_FOREMAN')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Demand Ad Hoc.", security = @SecurityRequirement(name = "bearer-key"))
-    public DemandAdHocDto addDemandAdHoc(@Valid @RequestBody DemandAdHocDto demandAdHoc) {
-        return demandAdHocService.add(demandAdHoc);
+    public DemandAdHocDto addDemandAdHoc(@Valid @RequestBody DemandAdHocWithToolsAndElementsDto demandAdHoc) {
+        return demandAdHocService.addWithToolsAndElements(demandAdHoc);
     }
 
     @DeleteMapping("/{id}")
@@ -56,7 +61,13 @@ public class DemandAdHocController {
 
     @PutMapping("/{id}")
     @Operation(description = "Allows to edit Demand Ad Hoc by given Id.", security = @SecurityRequirement(name = "bearer-key"))
-    public DemandAdHocDto updateDemandAdHoc(@PathVariable Long id, @Valid @RequestBody DemandAdHocDto demandAdHoc) {
+    public DemandAdHocDto updateDemandAdHoc(@PathVariable Long id, @Valid @RequestBody DemandAdHocWithToolsAndElementsDto demandAdHoc) {
         return demandAdHocService.update(id, demandAdHoc);
+    }
+
+    @GetMapping("/filter")
+    @Operation(description = "Return filtered Orders by given parameters.", security = @SecurityRequirement(name = "bearer-key"))
+    public ResponseEntity<List<DemandAdHocFilterDto>> filter(DemandAdHocSearchCriteria demandAdHocSearchCriteria){
+        return new ResponseEntity<>(demandAdHocService.getFiltered(demandAdHocSearchCriteria), HttpStatus.OK);
     }
 }

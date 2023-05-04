@@ -66,7 +66,6 @@ public class WarehouseManagerMapper {
                 .toolEvents(warehouseManager.getToolEvents().stream().map(ToolEvent::getId).collect(Collectors.toList()))
                 .releaseTools(warehouseManager.getReleasedTools().stream().map(ToolRelease::getId).collect(Collectors.toList()))
                 .elementReturnReleases(warehouseManager.getElementReturnReleases().stream().map(ElementReturnRelease::getId).collect(Collectors.toList()))
-                .demandAdHocs(warehouseManager.getDemandAdHocs().stream().map(DemandAdHoc::getId).collect(Collectors.toList()))
                 .acceptedDemandAdHocs(warehouseManager.getAcceptedDemandAdHocs().stream().map(DemandAdHoc::getId).collect(Collectors.toList()))
                 .status(statusService.checkUnavailability(warehouseManager) == null ? "AVAILABLE" : String.valueOf(statusService.checkUnavailability(warehouseManager).getTypeOfUnavailability()))
                 .unavailableFrom(statusService.checkUnavailability(warehouseManager) == null ? null : statusService.checkUnavailability(warehouseManager).getUnavailableFrom())
@@ -104,9 +103,6 @@ public class WarehouseManagerMapper {
         List<ElementReturnRelease> elementReturnReleaseList = new ArrayList<>();
         warehouseManagerDto.getElementReturnReleases().forEach(elementReturnReleaseId -> elementReturnReleaseList.add(elementReturnReleaseRepository.getReferenceById(elementReturnReleaseId)));
 
-        List<DemandAdHoc> demandAdHocList = new ArrayList<>();
-        warehouseManagerDto.getDemandAdHocs().forEach(demandAdHocId -> demandAdHocList.add(demandAdHocRepository.getReferenceById(demandAdHocId)));
-
         List<DemandAdHoc> acceptedDemandAdHocList = new ArrayList<>();
         warehouseManagerDto.getAcceptedDemandAdHocs().forEach(acceptedDemandAdHocId -> acceptedDemandAdHocList.add(demandAdHocRepository.getReferenceById(acceptedDemandAdHocId)));
 
@@ -129,7 +125,6 @@ public class WarehouseManagerMapper {
         warehouseManager.setToolEvents(toolEventList);
         warehouseManager.setReleasedTools(toolReleaseList);
         warehouseManager.setElementReturnReleases(elementReturnReleaseList);
-        warehouseManager.setDemandAdHocs(demandAdHocList);
         warehouseManager.setAcceptedDemandAdHocs(acceptedDemandAdHocList);
 
         return warehouseManager;
