@@ -2,6 +2,7 @@ package com.emontazysta.controller;
 
 import com.emontazysta.model.dto.OrderStageDto;
 import com.emontazysta.model.dto.OrderStageWithToolsAndElementsDto;
+import com.emontazysta.model.dto.ToolSimpleReturnReleaseDto;
 import com.emontazysta.model.searchcriteria.OrdersStageSearchCriteria;
 import com.emontazysta.service.OrderStageService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -66,13 +67,13 @@ public class OrderStageController {
 
     @PutMapping("/releaseTools/{id}")
     @Operation(description = "Allows to update Order Stage by given Id.", security = @SecurityRequirement(name = "bearer-key"))
-    public OrderStageDto releaseTools(@PathVariable Long id, @RequestBody List<String> toolCodes) {
+    public OrderStageDto releaseTools(@PathVariable Long id, @RequestBody List<ToolSimpleReturnReleaseDto> toolCodes) {
         return orderStageService.releaseTools(id, toolCodes);
     }
 
     @PutMapping("/returnTools/{id}")
     @Operation(description = "Allows to update Order Stage by given Id.", security = @SecurityRequirement(name = "bearer-key"))
-    public OrderStageDto returnTools(@PathVariable Long id, @RequestBody List<String> toolCodes) {
+    public OrderStageDto returnTools(@PathVariable Long id, @RequestBody List<ToolSimpleReturnReleaseDto> toolCodes) {
         return orderStageService.returnTools(id, toolCodes);
     }
 

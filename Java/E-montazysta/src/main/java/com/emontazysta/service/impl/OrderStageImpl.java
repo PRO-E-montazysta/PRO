@@ -201,7 +201,7 @@ public class OrderStageImpl implements OrderStageService {
 
     @Override
     @Transactional
-    public OrderStageDto releaseTools(Long id, List<String> toolCodes) {
+    public OrderStageDto releaseTools(Long id, List<ToolSimpleReturnReleaseDto> toolCodes) {
         OrderStage orderStage = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         //Sprawdzenie, czy etap jest z firmy użytkownika
         if(!orderStage.getOrders().getCompany().getId().equals(authUtils.getLoggedUserCompanyId())) {
@@ -215,7 +215,8 @@ public class OrderStageImpl implements OrderStageService {
             //Zmienna przechowująca błędne kody
             StringBuilder errorCodes = new StringBuilder();
 
-            for(String toolCode : toolCodes) {
+            for(ToolSimpleReturnReleaseDto toolSimpleReturnReleaseDto : toolCodes) {
+                String toolCode = toolSimpleReturnReleaseDto.getToolCode();
                 try {
                     Tool tool = toolMapper.toEntity(toolService.getByCode(toolCode));
                     //Sprawdzenie, czy narzędzie jest dostępne do wydania
@@ -249,7 +250,7 @@ public class OrderStageImpl implements OrderStageService {
 
     @Override
     @Transactional
-    public OrderStageDto returnTools(Long id, List<String> toolCodes) {
+    public OrderStageDto returnTools(Long id, List<ToolSimpleReturnReleaseDto> toolCodes) {
         OrderStage orderStage = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         //Sprawdzenie, czy etap jest z firmy użytkownika
         if(!orderStage.getOrders().getCompany().getId().equals(authUtils.getLoggedUserCompanyId())) {
@@ -263,7 +264,8 @@ public class OrderStageImpl implements OrderStageService {
             //Zmienna przechowująca błędne kody
             StringBuilder errorCodes = new StringBuilder();
 
-            for(String toolCode : toolCodes) {
+            for(ToolSimpleReturnReleaseDto toolSimpleReturnReleaseDto : toolCodes) {
+                String toolCode = toolSimpleReturnReleaseDto.getToolCode();
                 try {
                     Tool tool = toolMapper.toEntity(toolService.getByCode(toolCode));
                     //Sprawdzenie, czy narzędzie można zwrócić
