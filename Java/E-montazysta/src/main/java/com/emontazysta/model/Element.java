@@ -45,7 +45,21 @@ public class Element {
     private List<ElementsPlannedNumber> listOfElementsPlannedNumber;
 
     public int getInWarehouseCount(Warehouse inWarehouse) {
-        ElementInWarehouse elementInWarehouse = elementInWarehouses.stream().filter(o -> o.getWarehouse().equals(inWarehouse)).findFirst().get();
-        return elementInWarehouse.getInWarehouseCount();
+        Optional<ElementInWarehouse> elementInWarehouseOptional = elementInWarehouses.stream().filter(o -> o.getWarehouse().equals(inWarehouse)).findFirst();
+        if(elementInWarehouseOptional.isPresent()) {
+            return elementInWarehouseOptional.get().getInWarehouseCount();
+        }else {
+            throw new EntityNotFoundException();
+        }
+    }
+
+    public void changeInWarehouseCountByQuantity(Warehouse inWarehouse, int quantity) {
+        Optional<ElementInWarehouse> elementInWarehouseOptional = elementInWarehouses.stream().filter(o -> o.getWarehouse().equals(inWarehouse)).findFirst();
+        if(elementInWarehouseOptional.isPresent()) {
+            ElementInWarehouse elementInWarehouse = elementInWarehouseOptional.get();
+            elementInWarehouse.setInWarehouseCount(elementInWarehouse.getInWarehouseCount() + quantity);
+        }else {
+            throw new EntityNotFoundException();
+        }
     }
 }

@@ -3,17 +3,16 @@ package com.emontazysta.service.impl;
 import com.emontazysta.enums.OrderStageStatus;
 import com.emontazysta.enums.Role;
 import com.emontazysta.enums.ToolStatus;
-import com.emontazysta.mapper.ElementsPlannedNumberMapper;
-import com.emontazysta.mapper.OrderStageMapper;
-import com.emontazysta.mapper.ToolMapper;
-import com.emontazysta.mapper.ToolsPlannedNumberMapper;
+import com.emontazysta.mapper.*;
 import com.emontazysta.model.*;
 import com.emontazysta.model.dto.*;
 import com.emontazysta.model.searchcriteria.OrdersStageSearchCriteria;
 import com.emontazysta.repository.*;
 import com.emontazysta.repository.criteria.OrdersStageCriteriaRepository;
+import com.emontazysta.service.ElementService;
 import com.emontazysta.service.OrderStageService;
 import com.emontazysta.service.ToolService;
+import com.emontazysta.service.WarehouseService;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -45,6 +44,10 @@ public class OrderStageImpl implements OrderStageService {
     private final ElementReturnReleaseRepository elementReturnReleaseRepository;
     private final ToolService toolService;
     private final ToolMapper toolMapper;
+    private final ElementService elementService;
+    private final ElementMapper elementMapper;
+    private final WarehouseService warehouseService;
+    private final WarehouseMapper warehouseMapper;
     private final AuthUtils authUtils;
 
     @Override
@@ -313,13 +316,46 @@ public class OrderStageImpl implements OrderStageService {
         if(!orderStage.getOrders().getCompany().getId().equals(authUtils.getLoggedUserCompanyId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
+        
+        Warehouse warehouse = warehouseMapper.toEntity(warehouseService.getById(1L));//TODO:PASS WAREHOUSE ID
 
         //Sprawdzenie czy można wydać elementy- Status etapu na PICK_UP i zapytanie wysłane przez WAREHOUSE_MAN lub WAREHOUSE_MANAGER
         if(orderStage.getStatus().equals(OrderStageStatus.PICK_UP) && (
                 authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MAN) ||
                         authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MANAGER))) {
+            //Zmienna przechowująca błędne kody
+            StringBuilder errorCodes = new StringBuilder();
 
-            return orderStageMapper.toDto(repository.save(orderStage));
+            for(ElementSimpleReturnReleaseDto elementSimpleReturnReleaseDto : elements) {
+                String elementCode = elementSimpleReturnReleaseDto.getElementCode();
+
+                try {
+                    Element element = elementMapper.toEntity(elementService.getByCode(elementCode));
+                    //Sprawdzenie, czy można wydać element
+                    if(element.getInWarehouseCount(warehouse) - elementSimpleReturnReleaseDto.getQuantity() >= 0) {
+                        ElementReturnRelease elementReturnRelease = elementReturnReleaseRepository.save(ElementReturnRelease.builder()
+                                .releaseTime(LocalDateTime.now())
+                                .releasedBy((Warehouseman) authUtils.getLoggedUser())
+                                .element(element)
+                                .orderStage(orderStage)
+                                .build());
+                        orderStage.getElementReturnReleases().add(elementReturnRelease);
+                        element.changeInWarehouseCountByQuantity(warehouse, -elementSimpleReturnReleaseDto.getQuantity());
+                    }else {
+                        //Kody elementów, które nie są aktualnie dostępne
+                        errorCodes.append(elementCode + "- niedostępne ");
+                    }
+                }catch (EntityNotFoundException e) {
+                    //Kody elementów, które nie istnieją, bądź są z innej firmy
+                    errorCodes.append(elementCode + "- nie znaleziono ");
+                }
+            }
+
+            if(errorCodes.isEmpty()){
+                return orderStageMapper.toDto(repository.save(orderStage));
+            }else {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nie można wykonać operacji. Błędne kody: " + errorCodes);
+            }
         }else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
@@ -334,12 +370,25 @@ public class OrderStageImpl implements OrderStageService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
+        Warehouse warehouse = warehouseMapper.toEntity(warehouseService.getById(1L));//TODO:PASS WAREHOUSE ID
+
         //Sprawdzenie czy można zwrócić elementy- Status etapu na RETURN i zapytanie wysłane przez WAREHOUSE_MAN lub WAREHOUSE_MANAGER
         if(orderStage.getStatus().equals(OrderStageStatus.RETURN) && (
                 authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MAN) ||
                         authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MANAGER))) {
+            //Zmienna przechowująca błędne kody
+            StringBuilder errorCodes = new StringBuilder();
 
-            return orderStageMapper.toDto(repository.save(orderStage));
+            for(ElementSimpleReturnReleaseDto elementSimpleReturnReleaseDto : elements) {
+                String elementCode = elementSimpleReturnReleaseDto.getElementCode();
+
+            }
+
+            if(errorCodes.isEmpty()){
+                return orderStageMapper.toDto(repository.save(orderStage));
+            }else {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nie można wykonać operacji. Błędne kody: " + errorCodes);
+            }
         }else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
