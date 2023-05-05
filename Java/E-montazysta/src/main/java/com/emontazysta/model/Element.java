@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Optional;
 
 @Data
 @Entity
@@ -42,4 +43,9 @@ public class Element {
 
     @OneToMany(mappedBy ="element" )
     private List<ElementsPlannedNumber> listOfElementsPlannedNumber;
+
+    public int getInWarehouseCount(Warehouse inWarehouse) {
+        ElementInWarehouse elementInWarehouse = elementInWarehouses.stream().filter(o -> o.getWarehouse().equals(inWarehouse)).findFirst().get();
+        return elementInWarehouse.getInWarehouseCount();
+    }
 }
