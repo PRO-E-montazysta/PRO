@@ -64,6 +64,12 @@ public class OrderStageController {
         return orderStageService.update(id, orderStage);
     }
 
+    @PutMapping("/releaseTools/{id}")
+    @Operation(description = "Allows to update Order Stage by given Id.", security = @SecurityRequirement(name = "bearer-key"))
+    public OrderStageDto releaseTools(@PathVariable Long id, @Valid @RequestBody List<String> toolCodes) {
+        return orderStageService.releaseTools(id, toolCodes);
+    }
+
     @GetMapping("/filter")
     @Operation(description = "Return filtered OrdersStage by given parameters.", security = @SecurityRequirement(name = "bearer-key"))
     public ResponseEntity<List<OrderStageDto>> Stages(OrdersStageSearchCriteria ordersStageSearchCriteria, Principal principal){

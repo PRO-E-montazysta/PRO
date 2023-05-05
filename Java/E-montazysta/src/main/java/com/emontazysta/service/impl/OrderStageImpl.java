@@ -2,6 +2,7 @@ package com.emontazysta.service.impl;
 
 import com.emontazysta.enums.OrderStageStatus;
 import com.emontazysta.enums.Role;
+import com.emontazysta.enums.ToolStatus;
 import com.emontazysta.mapper.ElementsPlannedNumberMapper;
 import com.emontazysta.mapper.OrderStageMapper;
 import com.emontazysta.mapper.ToolMapper;
@@ -171,74 +172,6 @@ public class OrderStageImpl implements OrderStageService {
             updatedElementsList = updatedOrderStage.getListOfElementsPlannedNumber();
         }
 
-        //As updated set old lists
-        List<ToolRelease> updatedToolReleaseList = orderStageDb.getToolReleases();
-        List<ElementReturnRelease> updatedElementReturnReleaseList = orderStageDb.getElementReturnReleases();
-        if(orderStageDb.getStatus().equals(OrderStageStatus.PICK_UP) && (
-                authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MAN) ||
-                authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MANAGER))) {
-            //Tool and Element release
-            //As updated set new lists
-            updatedToolReleaseList = updatedOrderStage.getToolReleases();
-            updatedElementReturnReleaseList = updatedOrderStage.getElementReturnReleases();
-
-            //Check if toolRelease exists, if not add it
-            for (ToolRelease toolRelease : updatedOrderStage.getToolReleases()) {
-                if(!orderStageDb.getToolReleases().contains(toolRelease)) {
-                    toolRelease.setOrderStage(orderStageDb);
-                    toolRelease.setReleasedBy((Warehouseman) authUtils.getLoggedUser());
-                    toolReleaseRepository.save(toolRelease);
-                }
-            }
-
-            //Check if elementReturnRelease exists, if not add it
-            for (ElementReturnRelease elementReturnRelease : updatedOrderStage.getElementReturnReleases()) {
-                if(!orderStageDb.getElementReturnReleases().contains(elementReturnRelease)) {
-                    elementReturnRelease.setOrderStage(orderStageDb);
-                    elementReturnRelease.setServedBy((Warehouseman) authUtils.getLoggedUser());
-                    elementReturnReleaseRepository.save(elementReturnRelease);
-                }
-            }
-
-            //Tool & Element return
-            if(orderStageDb.getStatus().equals(OrderStageStatus.RETURN) &&
-                    (authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MAN) ||
-                            authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MANAGER)))
-            {
-                //Tool return
-                if(Optional.ofNullable(orderStageDto.getReturningTools()).isPresent()) {
-                    for (String toolCode : orderStageDto.getReturningTools()) {
-                        Optional<ToolRelease> toolReleaseOptional = orderStageDb.getToolReleases().stream()
-                                .filter(o -> o.getTool().getCode().equals(toolCode))
-                                .filter(o -> o.getReturnTime() == null)
-                                .findFirst();
-                        if (toolReleaseOptional.isEmpty()) {
-                            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nie można zwrócić narzędzia o kodzie: " + toolCode);
-                        }else {
-                            toolReleaseOptional.get().setReturnTime(LocalDateTime.now());
-                        }
-                    }
-                }
-
-                //Element return
-                if(Optional.ofNullable(orderStageDto.getReturningElements()).isPresent()) {
-                    for(ElementReturnDto elementReturn : orderStageDto.getReturningElements()) {
-                        Optional<ElementReturnRelease> elementReturnReleaseOptional = orderStageDb.getElementReturnReleases().stream()
-                                .filter(o -> o.getElement().getCode().equals(elementReturn.getElementCode()))
-                                .filter(o ->  (o.getReleasedQuantity()-o.getReturnedQuantity()-elementReturn.getQuantity() >= 0)
-                                        && o.getReturnTime() == null)
-                                .findFirst();
-                        if (elementReturnReleaseOptional.isEmpty()) {
-                            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nie można zwrócić elementu o kodzie: " + elementReturn.getElementCode());
-                        }else {
-                            elementReturnReleaseOptional.get().setReturnTime(LocalDateTime.now());
-                        }
-                    }
-                }
-            }
-        }
-
-
         orderStageDb.setName(updatedOrderStage.getName());
         orderStageDb.setStatus(updatedOrderStage.getStatus());
         orderStageDb.setPrice(updatedOrderStage.getPrice());
@@ -257,8 +190,6 @@ public class OrderStageImpl implements OrderStageService {
         orderStageDb.setDemandsAdHoc(updatedOrderStage.getDemandsAdHoc());
         orderStageDb.setListOfToolsPlannedNumber(updatedToolsList);
         orderStageDb.setListOfElementsPlannedNumber(updatedElementsList);
-        orderStageDb.setToolReleases(updatedToolReleaseList);
-        orderStageDb.setElementReturnReleases(updatedElementReturnReleaseList);
 
         return orderStageMapper.toDto(repository.save(orderStageDb));
     }
@@ -266,5 +197,49 @@ public class OrderStageImpl implements OrderStageService {
     @Override
     public List<OrderStageDto> getFilteredOrders(OrdersStageSearchCriteria ordersStageSearchCriteria, Principal principal) {
         return  ordersStageCriteriaRepository.findAllWithFilters(ordersStageSearchCriteria, principal);
+    }
+
+    @Override
+    @Transactional
+    public OrderStageDto releaseTools(Long id, List<String> toolCodes) {
+        OrderStage orderStage = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+
+        //Sprawdzenie czy można wydać narzędzia- Status etapu na PICK_UP i zapytanie wysłane przez WAREHOUSE_MAN lub WAREHOUSE_MANAGER
+        if(orderStage.getStatus().equals(OrderStageStatus.PICK_UP) && (
+                authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MAN) ||
+                        authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MANAGER))) {
+            //Zmienna przechowująca błędne kody
+            StringBuilder errorCodes = new StringBuilder();
+
+            for(String toolCode : toolCodes) {
+                try {
+                    Tool tool = toolMapper.toEntity(toolService.getByCode(toolCode));
+                    //Sprawdzenie, czy narzędzie jest dostępne do wydania
+                    if(tool.getStatus().equals(ToolStatus.AVAILABLE)) {
+                        ToolRelease toolRelease = toolReleaseRepository.save(ToolRelease.builder()
+                                .releaseTime(LocalDateTime.now())
+                                .releasedBy((Warehouseman) authUtils.getLoggedUser())
+                                .tool(tool)
+                                .orderStage(orderStage)
+                                .build());
+                        orderStage.getToolReleases().add(toolRelease);
+                    }else {
+                        //Kody narzędzi, które nie są aktualnie dostępne
+                        errorCodes.append(toolCodes + "- niedostępne ");
+                    }
+                }catch (EntityNotFoundException e) {
+                    //Kody narzędzi, które nie istnieją, bądź są z innej firmy
+                    errorCodes.append(toolCodes + "- nie znaleziono ");
+                }
+            }
+
+            if(errorCodes.isEmpty()){
+                return orderStageMapper.toDto(repository.save(orderStage));
+            }else {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nie można wykonać operacji. Błędne kody: " + errorCodes);
+            }
+        }else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
     }
 }

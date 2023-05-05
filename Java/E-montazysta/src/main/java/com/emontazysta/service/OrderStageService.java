@@ -24,4 +24,6 @@ public interface OrderStageService {
     OrderStageDto update(Long id, OrderStageWithToolsAndElementsDto orderStage);
 
     List<OrderStageDto> getFilteredOrders(OrdersStageSearchCriteria ordersStageSearchCriteria, Principal principal);
+
+    OrderStageDto releaseTools(Long id, List<String> toolCodes);
 }
