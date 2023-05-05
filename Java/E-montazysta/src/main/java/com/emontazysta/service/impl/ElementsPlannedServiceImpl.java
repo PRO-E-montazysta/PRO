@@ -2,6 +2,7 @@ package com.emontazysta.service.impl;
 
 import com.emontazysta.mapper.ElementsPlannedNumberMapper;
 import com.emontazysta.model.ElementsPlannedNumber;
+import com.emontazysta.model.dto.ElementsDtoPlannedNumberDto;
 import com.emontazysta.model.dto.ElementsPlannedNumberDto;
 import com.emontazysta.repository.ElementsPlannedNumberRepository;
 import com.emontazysta.service.ElementsPlannedNumberService;
@@ -25,9 +26,9 @@ public class ElementsPlannedServiceImpl implements ElementsPlannedNumberService 
     }
 
     @Override
-    public ElementsPlannedNumberDto getById(Long id) {
+    public ElementsDtoPlannedNumberDto getById(Long id) {
         ElementsPlannedNumber elementsPlannedNumber = elementsPlannedNumberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        return elementsPlannedNumberMapper.toDto(elementsPlannedNumber);
+        return elementsPlannedNumberMapper.toDtoWithElementDto(elementsPlannedNumber);
     }
 
     @Override
