@@ -63,20 +63,21 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @Transactional
     public CompanyDto addCompanyWithAdmin(CompanyWithAdminDto companyWithAdminDto) {
-        companyWithAdminDto.setPassword(PasswordGenerator.generatePassword(10));
+            //companyWithAdminDto.setPassword(PasswordGenerator.generatePassword(10)); TODO: uncomment to generate password
 
         Company company = companyRepository.save(CompanyWithAdminMapper.companyFromDto(companyWithAdminDto));
         CompanyAdmin companyAdmin = companyAdminRepository.save(CompanyWithAdminMapper.companyAdminFromDto(companyWithAdminDto));
 
         employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company, companyAdmin));
 
+        /* TODO: uncomment to send email on company create
         emailService.sendEmail(
                 EmailData.builder()
                 .to(companyAdmin.getEmail())
                 .message(MailTemplates.companyCreate(company.getCompanyName(), companyAdmin.getUsername(), companyWithAdminDto.getPassword()))
                 .subject("Witaj w E-Montażysta!")
                 .build()
-        );
+        );*/
 
         return companyMapper.toDto(company);
     }
