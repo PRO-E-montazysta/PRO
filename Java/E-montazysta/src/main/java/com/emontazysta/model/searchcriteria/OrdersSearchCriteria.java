@@ -8,7 +8,7 @@ import java.util.List;
 public class OrdersSearchCriteria {
 
     private String name;
-    private List<String> typeOfStatus;
+    private List<String> status;
     private List<String> typeOfPriority;
     private String plannedStartMin;
     private String plannedStartMax;

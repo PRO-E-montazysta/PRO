@@ -24,6 +24,8 @@ public class ToolsPlannedNumber {
     private Long id;
 
     private int numberOfTools;
+    
+    private boolean deleted = Boolean.FALSE;
 
     @ManyToOne
     private ToolType toolType;
@@ -31,5 +33,6 @@ public class ToolsPlannedNumber {
     @ManyToOne
     private OrderStage orderStage;
 
-    private boolean deleted = Boolean.FALSE;
+    @ManyToOne
+    private DemandAdHoc demandAdHoc;
 }

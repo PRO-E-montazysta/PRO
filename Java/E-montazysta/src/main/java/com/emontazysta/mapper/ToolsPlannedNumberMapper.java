@@ -2,6 +2,7 @@ package com.emontazysta.mapper;
 
 import com.emontazysta.model.ToolsPlannedNumber;
 import com.emontazysta.model.dto.ToolsPlannedNumberDto;
+import com.emontazysta.repository.DemandAdHocRepository;
 import com.emontazysta.repository.OrderStageRepository;
 import com.emontazysta.repository.ToolTypeRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +15,8 @@ import javax.persistence.EntityNotFoundException;
 public class ToolsPlannedNumberMapper {
 
     private final ToolTypeRepository toolTypeRepository;
-
     private final OrderStageRepository orderStageRepository;
+    private final DemandAdHocRepository demandAdHocRepository;
 
     public ToolsPlannedNumberDto toDto (ToolsPlannedNumber toolsPlannedNumber) {
         return ToolsPlannedNumberDto.builder()
@@ -23,6 +24,7 @@ public class ToolsPlannedNumberMapper {
                 .numberOfTools(toolsPlannedNumber.getNumberOfTools())
                 .toolTypeId(toolsPlannedNumber.getToolType() == null ? null : toolsPlannedNumber.getToolType().getId())
                 .orderStageId(toolsPlannedNumber.getOrderStage() == null ? null : toolsPlannedNumber.getOrderStage().getId())
+                .demandAdHocId(toolsPlannedNumber.getDemandAdHoc() == null ? null : toolsPlannedNumber.getDemandAdHoc().getId())
                 .build();
     }
 
@@ -30,8 +32,9 @@ public class ToolsPlannedNumberMapper {
         return ToolsPlannedNumber.builder()
                 .id(toolsPlannedNumberDto.getId())
                 .numberOfTools(toolsPlannedNumberDto.getNumberOfTools())
-                .toolType(toolsPlannedNumberDto.getToolTypeId() == null ? null : toolTypeRepository.findById(toolsPlannedNumberDto.getToolTypeId()).orElseThrow(EntityNotFoundException::new))
-                .orderStage(toolsPlannedNumberDto.getOrderStageId() == null ? null : orderStageRepository.findById(toolsPlannedNumberDto.getOrderStageId()).orElseThrow(EntityNotFoundException::new))
+                .toolType(toolsPlannedNumberDto.getToolTypeId() == null ? null : toolTypeRepository.getReferenceById(toolsPlannedNumberDto.getToolTypeId()))
+                .orderStage(toolsPlannedNumberDto.getOrderStageId() == null ? null : orderStageRepository.getReferenceById(toolsPlannedNumberDto.getOrderStageId()))
+                .demandAdHoc(toolsPlannedNumberDto.getDemandAdHocId() == null ? null : demandAdHocRepository.getReferenceById(toolsPlannedNumberDto.getDemandAdHocId()))
                 .build();
     }
 }

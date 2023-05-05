@@ -38,7 +38,17 @@ public class SpecialistServiceImpl implements SpecialistService {
     @Override
     public SpecialistDto getById(Long id) {
         Specialist specialist = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
-        return specialistMapper.toDto(specialist);
+        SpecialistDto result = specialistMapper.toDto(specialist);
+
+        if(!authUtils.getLoggedUser().getRoles().contains(Role.ADMIN)) {
+            result.setUsername(null);
+        }
+        if(!authUtils.getLoggedUser().getRoles().contains(Role.ADMIN) ||
+                !authUtils.getLoggedUser().getRoles().contains(Role.MANAGER)) {
+            result.setPesel(null);
+        }
+
+        return result;
     }
 
     @Override

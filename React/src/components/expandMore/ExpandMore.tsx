@@ -38,7 +38,9 @@ const ExpandMore = ({ titleIcon, title, cardContent }: ExpandMoreProps) => {
     return (
         <>
             <CardActions disableSpacing>
-                <IconButton aria-label="share">{titleIcon}</IconButton>
+                <IconButton id={`expandMore-${title}`} aria-label="share">
+                    {titleIcon}
+                </IconButton>
                 <Typography variant="body2" color="text.secondary">
                     {title}
                 </Typography>

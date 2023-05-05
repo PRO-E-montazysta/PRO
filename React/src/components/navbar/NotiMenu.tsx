@@ -40,9 +40,17 @@ const NotiMenu = (params: NotiMenuParams) => {
                 }}
             >
                 {notifications.map((noti, index) => {
-                    return <NotiMenuItem onItemClick={() => handleMenuItemClick(noti)} text={noti.text} key={index} />
+                    return (
+                        <NotiMenuItem
+                            id={`navBtn-notifications-goTo-${noti.id}`}
+                            onItemClick={() => handleMenuItemClick(noti)}
+                            text={noti.text}
+                            key={index}
+                        />
+                    )
                 })}
                 <NotiMenuItem
+                    id={`navBtn-notifications-showMore`}
                     onItemClick={handleLoadMoreNotifications}
                     text={notifications.length > 0 ? '' : 'Brak nowych powiadomień'}
                     link={'Pokaż starsze powiadomienia'}

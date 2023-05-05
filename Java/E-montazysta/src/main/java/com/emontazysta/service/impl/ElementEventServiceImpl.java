@@ -39,8 +39,8 @@ public class ElementEventServiceImpl implements ElementEventService {
         ElementEvent elementEvent = repository.findByIdAndDeletedIsFalse(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         AppUser user =  authUtils.getLoggedUser();
-        Boolean isFitter = user.getRoles().contains(Role.FITTER);
-        if(isFitter) {
+        Boolean displayOwn = user.getRoles().contains(Role.FITTER) || user.getRoles().contains(Role.FOREMAN);
+        if(displayOwn) {
             if(!elementEvent.getCreatedBy().getId().equals(user.getId()))
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }else {
@@ -57,6 +57,13 @@ public class ElementEventServiceImpl implements ElementEventService {
         elementEventDto.setAttachments(new ArrayList<>());
 
         ElementEvent elementEvent = elementEventMapper.toEntity(elementEventDto);
+
+        //Check if element in event is from user company
+        if(!elementEvent.getElement().getElementInWarehouses().stream().findFirst().get().getWarehouse()
+                .getCompany().getId().equals(authUtils.getLoggedUserCompanyId())){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
         elementEvent.setCreatedBy(authUtils.getLoggedUser());
         elementEvent.setEventDate(LocalDateTime.now());
         elementEvent.setStatus(EventStatus.CREATED);
@@ -80,10 +87,17 @@ public class ElementEventServiceImpl implements ElementEventService {
         ElementEvent updatedElementEvent = elementEventMapper.toEntity(event);
         ElementEvent elementEvent = repository.findByIdAndDeletedIsFalse(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
+        //Check if element in event is from user company
+        if(!updatedElementEvent.getElement().getElementInWarehouses().stream().findFirst().get().getWarehouse()
+                .getCompany().getId().equals(authUtils.getLoggedUserCompanyId())){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
         AppUser user =  authUtils.getLoggedUser();
         Boolean isFitter = user.getRoles().contains(Role.FITTER);
         Boolean isWarehouseMan = user.getRoles().contains(Role.WAREHOUSE_MAN);
-        if(isFitter || isWarehouseMan) {
+        Boolean isForeman = user.getRoles().contains(Role.FOREMAN);
+        if(isFitter || isWarehouseMan || isForeman) {
             if(!elementEvent.getCreatedBy().getId().equals(user.getId()))
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }else {
@@ -106,7 +120,6 @@ public class ElementEventServiceImpl implements ElementEventService {
         elementEvent.setDescription(updatedElementEvent.getDescription());
         elementEvent.setQuantity(updatedElementEvent.getQuantity());
         elementEvent.setElement(updatedElementEvent.getElement());
-        elementEvent.setAttachments(updatedElementEvent.getAttachments());
 
         return elementEventMapper.toDto(repository.save(elementEvent));
     }

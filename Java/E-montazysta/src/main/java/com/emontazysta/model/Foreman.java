@@ -53,6 +53,6 @@ public class Foreman extends Fitter {
     @OneToMany(mappedBy = "foreman")
     private List<ElementReturnRelease> elementReturnReleases;
 
-    @OneToMany(mappedBy = "foreman")
+    @OneToMany(mappedBy = "createdBy")
     private List<DemandAdHoc> demandsAdHocs;
 }

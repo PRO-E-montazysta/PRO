@@ -20,7 +20,6 @@ const Elements = () => {
         getFilteredElements({ queryParams: filterParams }),
     )
 
-
     const filter: Filter = {
         formik: useFormik({
             initialValues: initialValues,
@@ -36,6 +35,7 @@ const Elements = () => {
 
     return (
         <FatTable
+            idPropName="id"
             query={queryOrders}
             filterProps={filter}
             headCells={headCells}

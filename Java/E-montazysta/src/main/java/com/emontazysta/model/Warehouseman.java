@@ -26,13 +26,12 @@ public class Warehouseman extends Employee {
                         List<Unavailability> unavailabilities, List<Notification> notifications,
                         List<Comment> employeeComments, List<ElementEvent> elementEvents, List<Employment> employments,
                         List<Attachment> attachments, List<ToolEvent> toolEvents, List<ToolRelease> releasedTools,
-                        List<ElementReturnRelease> elementReturnReleases, List<DemandAdHoc> demandAdHocs) {
+                        List<ElementReturnRelease> elementReturnReleases) {
 
         super(id, firstName, lastName, email, password, username, resetPasswordToken, roles, phone, pesel,
                 unavailabilities, notifications, employeeComments, elementEvents, employments, attachments, toolEvents);
         this.releasedTools = releasedTools;
         this.elementReturnReleases = elementReturnReleases;
-        this.demandAdHocs = demandAdHocs;
     }
 
     private boolean deleted = Boolean.FALSE;
@@ -42,7 +41,4 @@ public class Warehouseman extends Employee {
 
     @OneToMany(mappedBy = "servedBy")
     private List<ElementReturnRelease> elementReturnReleases;
-
-    @OneToMany(mappedBy = "warehouseman")
-    private List<DemandAdHoc> demandAdHocs;
 }

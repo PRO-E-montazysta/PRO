@@ -23,6 +23,8 @@ public class ElementsPlannedNumber {
     private Long id;
 
     private int numberOfElements;
+    
+    private boolean deleted = Boolean.FALSE;
 
     @ManyToOne
     private Element element;
@@ -30,5 +32,6 @@ public class ElementsPlannedNumber {
     @ManyToOne
     private OrderStage orderStage;
 
-    private boolean deleted = Boolean.FALSE;
+    @ManyToOne
+    private DemandAdHoc demandAdHoc;
 }

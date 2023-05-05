@@ -15,7 +15,7 @@ const PrintQRCodeLabel = ({ label, code }: LabelTypes) => {
         <Box>
             <ReactToPrint
                 trigger={() => (
-                    <Button color="secondary" variant="contained">
+                    <Button id={`printQtCode-${code}`} color="secondary" variant="contained">
                         Wydrukuj etykietę
                     </Button>
                 )}

@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -16,6 +17,7 @@ import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 
 @RestController
 @RequiredArgsConstructor
+@PreAuthorize("hasAuthority('SCOPE_ADMIN')")
 @RequestMapping(value = API_BASE_CONSTANT + "/employments", produces = MediaType.APPLICATION_JSON_VALUE)
 public class EmploymentController {
 

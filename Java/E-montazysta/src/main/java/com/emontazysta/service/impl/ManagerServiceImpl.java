@@ -38,7 +38,17 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public ManagerDto getById(Long id) {
         Manager manager = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
-        return managerMapper.toDto(manager);
+        ManagerDto result = managerMapper.toDto(manager);
+
+        if(!authUtils.getLoggedUser().getRoles().contains(Role.ADMIN)) {
+            result.setUsername(null);
+        }
+        if(!authUtils.getLoggedUser().getRoles().contains(Role.ADMIN) ||
+                !authUtils.getLoggedUser().getRoles().contains(Role.MANAGER)) {
+            result.setPesel(null);
+        }
+
+        return result;
     }
 
     @Override
@@ -55,7 +65,6 @@ public class ManagerServiceImpl implements ManagerService {
         managerDto.setCreatedUnavailabilities(new ArrayList<>());
         managerDto.setAcceptedEvents(new ArrayList<>());
         managerDto.setManagedOrders(new ArrayList<>());
-        managerDto.setDemandsAdHocs(new ArrayList<>());
         managerDto.setElementEvents(new ArrayList<>());
 
         Manager manager = repository.save(managerMapper.toEntity(managerDto));
@@ -95,7 +104,6 @@ public class ManagerServiceImpl implements ManagerService {
         manager.setCreatedUnavailabilities(updatedManager.getCreatedUnavailabilities());
         manager.setAcceptedEvents(updatedManager.getAcceptedEvents());
         manager.setManagedOrders(updatedManager.getManagedOrders());
-        manager.setDemandsAdHocs(updatedManager.getDemandsAdHocs());
         manager.setElementEvents(updatedManager.getElementEvents());
         return managerMapper.toDto(repository.save(manager));
     }

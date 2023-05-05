@@ -21,7 +21,6 @@ const Tools = () => {
         getFilteredTools({ queryParams: filterParams }),
     )
 
-
     const filter: Filter = {
         formik: useFormik({
             initialValues: initialValues,
@@ -35,9 +34,9 @@ const Tools = () => {
         inputs: inputs,
     }
 
-
     return (
         <FatTable
+            idPropName="id"
             query={queryTools}
             filterProps={filter}
             headCells={headCells}

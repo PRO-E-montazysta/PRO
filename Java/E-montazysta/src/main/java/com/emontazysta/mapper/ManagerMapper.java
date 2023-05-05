@@ -95,10 +95,6 @@ public class ManagerMapper {
                         .filter(order -> !order.isDeleted())
                         .map(Orders::getId)
                         .collect(Collectors.toList()))
-                .demandsAdHocs(manager.getDemandsAdHocs().stream()
-                        .filter(demandAdHoc -> !demandAdHoc.isDeleted())
-                        .map(DemandAdHoc::getId)
-                        .collect(Collectors.toList()))
                 .status(statusService.checkUnavailability(manager) == null ? "AVAILABLE" : String.valueOf(statusService.checkUnavailability(manager).getTypeOfUnavailability()))
                 .unavailableFrom(statusService.checkUnavailability(manager) == null ? null : statusService.checkUnavailability(manager).getUnavailableFrom())
                 .unavailableTo(statusService.checkUnavailability(manager) == null ? null : statusService.checkUnavailability(manager).getUnavailableTo())
@@ -138,9 +134,6 @@ public class ManagerMapper {
         List<Orders> ordersList = new ArrayList<>();
         managerDto.getManagedOrders().forEach(orderId -> ordersList.add(orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new)));
 
-        List<DemandAdHoc> demandAdHocList = new ArrayList<>();
-        managerDto.getDemandsAdHocs().forEach(demandAdHocId -> demandAdHocList.add(demandAdHocRepository.findById(demandAdHocId).orElseThrow(EntityNotFoundException::new)));
-
         List<ElementEvent> elementEvents = new ArrayList<>();
         managerDto.getElementEvents().forEach(elementEventId -> elementEvents.add(elementEventRepository.findById(elementEventId).orElseThrow(EntityNotFoundException::new)));
 
@@ -164,7 +157,6 @@ public class ManagerMapper {
         manager.setCreatedUnavailabilities(createdUnavailabilities);
         manager.setAcceptedEvents(acceptedEvents);
         manager.setManagedOrders(ordersList);
-        manager.setDemandsAdHocs(demandAdHocList);
         manager.setElementEvents(elementEvents);
 
         return manager;

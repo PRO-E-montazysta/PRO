@@ -7,12 +7,14 @@ type NotiMenuItemProps = {
     text: string
     subtext?: string
     link?: string
+    id: string
 }
 
 const NotiMenuItem = (props: NotiMenuItemProps) => {
-    const { onItemClick, text, subtext, link } = props
+    const { onItemClick, text, subtext, link, id } = props
     return (
         <MenuItem
+            id={id}
             sx={{
                 p: '10px 20px',
                 position: 'relative',

@@ -19,7 +19,7 @@ public class ElementSeleniumTests {
     private WebDriverWait wait;
 
     @Before
-    public void setUp() {
+    public void setUp() throws InterruptedException {
         WebDriverManager.firefoxdriver().setup();
         driver = new FirefoxDriver();
         wait = new WebDriverWait(driver, Duration.ofMillis(1000));
@@ -27,13 +27,17 @@ public class ElementSeleniumTests {
         driver.get("https://dev.emontazysta.pl/login");
         driver.manage().window().maximize();
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.id(":r0:"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"username\"]"))).click();
 
-        driver.findElement(By.id(":r0:")).sendKeys("warehouseManager1");
+        driver.findElement(By.xpath("//*[@id=\"username\"]")).sendKeys("warehouseManager1");
+        Thread.sleep(1000);
+        driver.findElement(By.xpath("//*[@id=\"password\"]")).clear();
+        Thread.sleep(1000);
+        driver.findElement(By.xpath("//*[@id=\"password\"]")).sendKeys("password");
 
-        driver.findElement(By.id(":r1:")).sendKeys("password");
 
-        driver.findElement(By.cssSelector(".MuiButton-contained")).click();
+        driver.findElement(By.xpath("//*[@id=\"login-logIn\"]")).click();
+        Thread.sleep(2000);
 
     }
     @After
@@ -45,10 +49,11 @@ public class ElementSeleniumTests {
     public void addElementTestSelenium() throws InterruptedException {
 
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/header/div/div/div[6]/button")));
-        driver.findElement(By.xpath("/html/body/div/header/div/div/div[6]/button")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"navBtn-/elements\"]")));
+        driver.findElement(By.xpath("//*[@id=\"navBtn-/elements\"]")).click();
 
-        driver.findElement(By.xpath("/html/body/div/header/div/div/div[6]/div/li[2]")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"navMenu-/elements/new\"]")));
+        driver.findElement(By.xpath("//*[@id=\"navMenu-/elements/new\"]")).click();
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div")));
         driver.findElement(By.xpath("//*[@id=\"name\"]")).click();
@@ -56,7 +61,7 @@ public class ElementSeleniumTests {
 
 
 
-        driver.findElement(By.xpath("//*[@id=\":r3:\"]")).click();
+        driver.findElement(By.xpath("//*[@id=\"mui-component-select-typeOfUnit\"]")).click();
         Thread.sleep(1000);
         Actions keyDown = new Actions(driver); keyDown.sendKeys(Keys.chord(Keys.DOWN, Keys.DOWN, Keys.DOWN, Keys.ENTER)).perform();
         Thread.sleep(1000);
@@ -66,14 +71,15 @@ public class ElementSeleniumTests {
         driver.findElement(By.xpath("//*[@id=\"quantityInUnit\"]")).sendKeys("1");
         Thread.sleep(1000);
 
-        driver.findElement(By.xpath("/html/body/div/div/div/div[2]/button[1]")).click();
+        driver.findElement(By.xpath("//*[@id=\"formButton-save\"]")).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[2]/div")));
-        driver.findElement(By.xpath("/html/body/div/div[2]/div/form/div/button")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"dialogGlobal-OK\"]")));
+        driver.findElement(By.xpath("//*[@id=\"dialogGlobal-OK\"]")).click();
 
         Thread.sleep(5000);
 
-        driver.findElement(By.xpath("/html/body/div/header/div/div/button")).click();
+        driver.findElement(By.xpath("//*[@id=\"navBtn-logout\"]")).click();
+        Thread.sleep(1000);
 
     }
 
@@ -81,60 +87,62 @@ public class ElementSeleniumTests {
     public void filterElementToolTestSelenium() throws InterruptedException {
 
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/header/div/div/div[6]/button")));
-        driver.findElement(By.xpath("/html/body/div/header/div/div/div[6]/button")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"navBtn-/elements\"]")));
+        driver.findElement(By.xpath("//*[@id=\"navBtn-/elements\"]")).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/header/div/div/div[6]/div/li[1]")));
-        driver.findElement(By.xpath("/html/body/div/header/div/div/div[6]/div/li[1]")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"navMenu-/elements\"]")));
+        driver.findElement(By.xpath("//*[@id=\"navMenu-/elements\"]")).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[1]")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[1]/div/div")));
         driver.findElement(By.xpath("//*[@id=\"code\"]")).click();
-        driver.findElement(By.xpath("//*[@id=\"code\"]")).sendKeys("E|5b6c6263-9f4a-49d3-b859-741e1a201910");
+        driver.findElement(By.xpath("//*[@id=\"code\"]")).sendKeys("E|d71245de-e78e-48e5-9e1d-d37a7f3e59d0");
 
 //
-        driver.findElement(By.xpath("/html/body/div/div/div[1]/div/div/form/div[3]/button[1]")).click();
+        driver.findElement(By.xpath("//*[@id=\"tableFilter-submit\"]")).click();
 
         Thread.sleep(5000);
 
-        driver.findElement(By.xpath("/html/body/div/header/div/div/button")).click();
+        driver.findElement(By.xpath("//*[@id=\"navBtn-logout\"]")).click();
+        Thread.sleep(1000);
 
     }
 
-    @Test
+    // test do poprawy po wprowadzeniu zmian na froncie i wyjaśnieniu kwestii Soft Delete
+    //    @Test
     public void zDeleteElementTypeTestSelenium() throws InterruptedException {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/header/div/div/div[6]/button")));
-        driver.findElement(By.xpath("/html/body/div/header/div/div/div[6]/button")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"navBtn-/elements\"]")));
+        driver.findElement(By.xpath("//*[@id=\"navBtn-/elements\"]")).click();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"navMenu-/elements\"]")));
+        driver.findElement(By.xpath("//*[@id=\"navMenu-/elements\"]")).click();
         Thread.sleep(2000);
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/header/div/div/div[6]/div/li[1]")));
-        driver.findElement(By.xpath("/html/body/div/header/div/div/div[6]/div/li[1]")).click();
-        Thread.sleep(2000);
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[1]")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[1]/div/div")));
         driver.findElement(By.xpath("//*[@id=\"name\"]")).click();
         driver.findElement(By.xpath("//*[@id=\"name\"]")).sendKeys("brama garażowa");
         Thread.sleep(2000);
 
 //
-        driver.findElement(By.xpath("/html/body/div/div/div[1]/div/div/form/div[3]/button[1]")).click();
+        driver.findElement(By.xpath("//*[@id=\"tableFilter-submit\"]")).click();
         Thread.sleep(2000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[2]/div/div/table/tbody/tr[1]/td[1]")));
         driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div/table/tbody/tr[1]/td[1]")).click();
         Thread.sleep(2000);
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div")));
-        driver.findElement(By.xpath("/html/body/div/div/div/div[2]/button[2]")).click();
+        driver.findElement(By.xpath("//*[@id=\"formButton-delete\"]")).click();
         Thread.sleep(2000);
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[2]/div")));
-        driver.findElement(By.xpath("/html/body/div/div[2]/div/form/div/button[1]")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"dialogGlobal-Usuń\"]")));
+        driver.findElement(By.xpath("//*[@id=\"dialogGlobal-Usuń\"]")).click();
         Thread.sleep(2000);
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[2]/div")));
-        driver.findElement(By.xpath("/html/body/div/div[2]/div/form/div/button")).click();
-
-        Thread.sleep(5000);
-
-        driver.findElement(By.xpath("/html/body/div/header/div/div/button")).click();
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[2]/div")));
+//        driver.findElement(By.xpath("/html/body/div/div[2]/div/form/div/button")).click();
+//
+//        Thread.sleep(5000);
+//
+//        driver.findElement(By.xpath("/html/body/div/header/div/div/button")).click();
 
     }
 

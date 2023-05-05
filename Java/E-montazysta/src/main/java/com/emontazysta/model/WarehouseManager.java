@@ -26,12 +26,11 @@ public class WarehouseManager extends Warehouseman {
                             List<Unavailability> unavailabilities, List<Notification> notifications,
                             List<Comment> employeeComments, List<ElementEvent> elementEvents, List<Employment> employments,
                             List<Attachment> attachments, List<ToolEvent> toolEvents, List<ToolRelease> releasedTools,
-                            List<ElementReturnRelease> elementReturnReleases, List<DemandAdHoc> demandAdHocs,
-                            List<DemandAdHoc> acceptedDemandAdHocs) {
+                            List<ElementReturnRelease> elementReturnReleases, List<DemandAdHoc> acceptedDemandAdHocs) {
 
         super(id, firstName, lastName, email, password, username, resetPasswordToken, roles, phone, pesel,
                 unavailabilities, notifications, employeeComments, elementEvents, employments, attachments, toolEvents,
-                releasedTools, elementReturnReleases, demandAdHocs);
+                releasedTools, elementReturnReleases);
         this.acceptedDemandAdHocs = acceptedDemandAdHocs;
     }
 

@@ -1,18 +1,10 @@
 package com.emontazysta.mapper;
 
-import com.emontazysta.model.DemandAdHoc;
-import com.emontazysta.model.ElementReturnRelease;
-import com.emontazysta.model.OrderStage;
-import com.emontazysta.model.ToolRelease;
+import com.emontazysta.model.*;
 import com.emontazysta.model.dto.DemandAdHocDto;
-import com.emontazysta.repository.ElementReturnReleaseRepository;
-import com.emontazysta.repository.ForemanRepository;
-import com.emontazysta.repository.ManagerRepository;
-import com.emontazysta.repository.OrderStageRepository;
-import com.emontazysta.repository.SpecialistRepository;
-import com.emontazysta.repository.ToolReleaseRepository;
-import com.emontazysta.repository.WarehouseManagerRepository;
-import com.emontazysta.repository.WarehousemanRepository;
+import com.emontazysta.model.dto.filterDto.DemandAdHocFilterDto;
+import com.emontazysta.model.dto.filterDto.DemandAdHocWithToolsAndElementsDto;
+import com.emontazysta.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -33,17 +25,16 @@ public class DemandAdHocMapper {
     private final ManagerRepository managerRepository;
     private final ForemanRepository foremanRepository;
     private final OrderStageRepository orderStageRepository;
+    private final ToolsPlannedNumberRepository toolsPlannedNumberRepository;
+    private final ToolsPlannedNumberMapper toolsPlannedNumberMapper;
+    private final ElementsPlannedNumberRepository elementsPlannedNumberRepository;
+    private final ElementsPlannedNumberMapper elementsPlannedNumberMapper;
 
     public DemandAdHocDto toDto(DemandAdHoc demandAdHoc) {
         return DemandAdHocDto.builder()
                 .id(demandAdHoc.getId())
                 .description(demandAdHoc.getDescription())
-                .comments(demandAdHoc.getComments())
-                .creationTime(demandAdHoc.getCreationTime())
-                .readByWarehousemanTime(demandAdHoc.getReadByWarehousemanTime())
-                .realisationTime(demandAdHoc.getRealisationTime())
-                .warehousemanComment(demandAdHoc.getWarehousemanComment())
-                .specialistComment(demandAdHoc.getSpecialistComment())
+                .createdAt(demandAdHoc.getCreatedAt())
                 .toolReleases(demandAdHoc.getToolReleases().stream()
                         .filter(toolRelease -> !toolRelease.isDeleted())
                         .map(ToolRelease::getId)
@@ -53,14 +44,15 @@ public class DemandAdHocMapper {
                         .map(ElementReturnRelease::getId)
                         .collect(Collectors.toList()))
                 .warehouseManagerId(demandAdHoc.getWarehouseManager() == null ? null : demandAdHoc.getWarehouseManager().isDeleted() ? null : demandAdHoc.getWarehouseManager().getId())
-                .warehousemanId(demandAdHoc.getWarehouseman() == null ? null : demandAdHoc.getWarehouseman().isDeleted() ? null : demandAdHoc.getWarehouseman().getId())
                 .specialistId(demandAdHoc.getSpecialist() == null ? null : demandAdHoc.getSpecialist().isDeleted() ? null : demandAdHoc.getSpecialist().getId())
-                .managerId(demandAdHoc.getManager() == null ? null : demandAdHoc.getManager().isDeleted() ? null : demandAdHoc.getManager().getId())
-                .foremanId(demandAdHoc.getForeman() == null ? null : demandAdHoc.getForeman().isDeleted() ? null : demandAdHoc.getForeman().getId())
+                .createdById(demandAdHoc.getCreatedBy() == null ? null : demandAdHoc.getCreatedBy().isDeleted() ? null : demandAdHoc.getCreatedBy().getId())
                 .ordersStages(demandAdHoc.getOrdersStages().stream()
                         .filter(orderStage -> !orderStage.isDeleted())
                         .map(OrderStage::getId)
                         .collect(Collectors.toList()))
+                .orderStageId(demandAdHoc.getOrderStage() == null ? null : demandAdHoc.getOrderStage().getId())
+                .listOfToolsPlannedNumber(demandAdHoc.getListOfToolsPlannedNumber().stream().map(ToolsPlannedNumber::getId).collect(Collectors.toList()))
+                .listOfElementsPlannedNumber(demandAdHoc.getListOfElementsPlannedNumber().stream().map(ElementsPlannedNumber::getId).collect(Collectors.toList()))
                 .build();
     }
 
@@ -72,26 +64,63 @@ public class DemandAdHocMapper {
         List<ElementReturnRelease> elementReturnReleaseList = new ArrayList<>();
         demandAdHocDto.getElementReturnReleases().forEach(elementReturnReleaseId -> elementReturnReleaseList.add(elementReturnReleaseRepository.findById(elementReturnReleaseId).orElseThrow(EntityNotFoundException::new)));
 
-        List<OrderStage> orderStageList = new ArrayList<>();
-        demandAdHocDto.getOrdersStages().forEach(orderStageId -> orderStageList.add(orderStageRepository.findById(orderStageId).orElseThrow(EntityNotFoundException::new)));
+        List<ToolsPlannedNumber> toolTypeList = new ArrayList<>();
+        demandAdHocDto.getListOfToolsPlannedNumber().forEach(toolsPlannedNumberId -> toolTypeList.add(toolsPlannedNumberRepository.getReferenceById(toolsPlannedNumberId)));
+
+        List<ElementsPlannedNumber> elementList = new ArrayList<>();
+        demandAdHocDto.getListOfElementsPlannedNumber().forEach(elementsPlannedNumberId -> elementList.add(elementsPlannedNumberRepository.getReferenceById(elementsPlannedNumberId)));
 
         return DemandAdHoc.builder()
                 .id(demandAdHocDto.getId())
                 .description(demandAdHocDto.getDescription())
-                .comments(demandAdHocDto.getComments())
-                .creationTime(demandAdHocDto.getCreationTime())
-                .readByWarehousemanTime(demandAdHocDto.getReadByWarehousemanTime())
-                .realisationTime(demandAdHocDto.getRealisationTime())
-                .warehousemanComment(demandAdHocDto.getWarehousemanComment())
-                .specialistComment(demandAdHocDto.getSpecialistComment())
+                .createdAt(demandAdHocDto.getCreatedAt())
                 .toolReleases(toolReleaseList)
                 .elementReturnReleases(elementReturnReleaseList)
-                .warehouseManager(demandAdHocDto.getWarehouseManagerId() == null ? null : warehouseManagerRepository.findById(demandAdHocDto.getWarehouseManagerId()).orElseThrow(EntityNotFoundException::new))
-                .warehouseman(demandAdHocDto.getWarehousemanId() == null ? null : warehousemanRepository.findById(demandAdHocDto.getWarehousemanId()).orElseThrow(EntityNotFoundException::new))
-                .specialist(demandAdHocDto.getSpecialistId() == null ? null : specialistRepository.findById(demandAdHocDto.getSpecialistId()).orElseThrow(EntityNotFoundException::new))
-                .manager(demandAdHocDto.getManagerId() == null ? null : managerRepository.findById(demandAdHocDto.getManagerId()).orElseThrow(EntityNotFoundException::new))
-                .foreman(demandAdHocDto.getForemanId() == null ? null : foremanRepository.findById(demandAdHocDto.getForemanId()).orElseThrow(EntityNotFoundException::new))
-                .ordersStages(orderStageList)
+                .warehouseManager(demandAdHocDto.getWarehouseManagerId() == null ? null : warehouseManagerRepository.getReferenceById(demandAdHocDto.getWarehouseManagerId()))
+                .specialist(demandAdHocDto.getSpecialistId() == null ? null : specialistRepository.getReferenceById(demandAdHocDto.getSpecialistId()))
+                .createdBy(demandAdHocDto.getCreatedById() == null ? null : foremanRepository.getReferenceById(demandAdHocDto.getCreatedById()))
+                .orderStage(demandAdHocDto.getOrderStageId() == null ? null : orderStageRepository.getReferenceById(demandAdHocDto.getOrderStageId()))
+                .listOfToolsPlannedNumber(toolTypeList)
+                .listOfElementsPlannedNumber(elementList)
+                .build();
+    }
+
+    public DemandAdHoc toEntity(DemandAdHocWithToolsAndElementsDto demandAdHocDto) {
+
+        List<ToolRelease> toolReleaseList = new ArrayList<>();
+        demandAdHocDto.getToolReleases().forEach(toolReleaseId -> toolReleaseList.add(toolReleaseRepository.getReferenceById(toolReleaseId)));
+
+        List<ElementReturnRelease> elementReturnReleaseList = new ArrayList<>();
+        demandAdHocDto.getElementReturnReleases().forEach(elementReturnReleaseId -> elementReturnReleaseList.add(elementReturnReleaseRepository.getReferenceById(elementReturnReleaseId)));
+
+        List<ToolsPlannedNumber> toolTypeList = new ArrayList<>();
+        demandAdHocDto.getListOfToolsPlannedNumber().forEach(toolsPlannedNumberDto -> toolTypeList.add(toolsPlannedNumberMapper.toEntity(toolsPlannedNumberDto)));
+
+        List<ElementsPlannedNumber> elementList = new ArrayList<>();
+        demandAdHocDto.getListOfElementsPlannedNumber().forEach(elementsPlannedNumberDto -> elementList.add(elementsPlannedNumberMapper.toEntity(elementsPlannedNumberDto)));
+
+        return DemandAdHoc.builder()
+                .id(demandAdHocDto.getId())
+                .description(demandAdHocDto.getDescription())
+                .createdAt(demandAdHocDto.getCreatedAt())
+                .toolReleases(toolReleaseList)
+                .elementReturnReleases(elementReturnReleaseList)
+                .warehouseManager(demandAdHocDto.getWarehouseManagerId() == null ? null : warehouseManagerRepository.getReferenceById(demandAdHocDto.getWarehouseManagerId()))
+                .specialist(demandAdHocDto.getSpecialistId() == null ? null : specialistRepository.getReferenceById(demandAdHocDto.getSpecialistId()))
+                .createdBy(demandAdHocDto.getCreatedById() == null ? null : foremanRepository.getReferenceById(demandAdHocDto.getCreatedById()))
+                .orderStage(demandAdHocDto.getOrderStageId() == null ? null : orderStageRepository.getReferenceById(demandAdHocDto.getOrderStageId()))
+                .listOfToolsPlannedNumber(toolTypeList)
+                .listOfElementsPlannedNumber(elementList)
+                .build();
+    }
+
+    public DemandAdHocFilterDto toFilerDto(DemandAdHoc demandAdHoc) {
+        return DemandAdHocFilterDto.builder()
+                .id(demandAdHoc.getId())
+                .description(demandAdHoc.getDescription())
+                .createdAt(demandAdHoc.getCreatedAt())
+                .createdByName(demandAdHoc.getCreatedBy().getFirstName() + " " + demandAdHoc.getCreatedBy().getLastName())
+                .orderStageName(demandAdHoc.getOrderStage().getName())
                 .build();
     }
 }

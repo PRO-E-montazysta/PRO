@@ -38,7 +38,17 @@ public class SalesRepresentativeServiceImpl implements SalesRepresentativeServic
     @Override
     public SalesRepresentativeDto getById(Long id) {
         SalesRepresentative salesRepresentative = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
-        return salesRepresentativeMapper.toDto(salesRepresentative);
+        SalesRepresentativeDto result = salesRepresentativeMapper.toDto(salesRepresentative);
+
+        if(!authUtils.getLoggedUser().getRoles().contains(Role.ADMIN)) {
+            result.setUsername(null);
+        }
+        if(!authUtils.getLoggedUser().getRoles().contains(Role.ADMIN) ||
+                !authUtils.getLoggedUser().getRoles().contains(Role.MANAGER)) {
+            result.setPesel(null);
+        }
+
+        return result;
     }
 
     @Override

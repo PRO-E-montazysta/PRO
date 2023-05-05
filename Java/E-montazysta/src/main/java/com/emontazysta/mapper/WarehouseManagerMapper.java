@@ -94,10 +94,6 @@ public class WarehouseManagerMapper {
                         .filter(elementReturnRelease -> !elementReturnRelease.isDeleted())
                         .map(ElementReturnRelease::getId)
                         .collect(Collectors.toList()))
-                .demandAdHocs(warehouseManager.getDemandAdHocs().stream()
-                        .filter(demandAdHoc -> !demandAdHoc.isDeleted())
-                        .map(DemandAdHoc::getId)
-                        .collect(Collectors.toList()))
                 .acceptedDemandAdHocs(warehouseManager.getAcceptedDemandAdHocs().stream()
                         .filter(demandAdHoc -> !demandAdHoc.isDeleted())
                         .map(DemandAdHoc::getId)
@@ -163,7 +159,6 @@ public class WarehouseManagerMapper {
         warehouseManager.setToolEvents(toolEventList);
         warehouseManager.setReleasedTools(toolReleaseList);
         warehouseManager.setElementReturnReleases(elementReturnReleaseList);
-        warehouseManager.setDemandAdHocs(demandAdHocList);
         warehouseManager.setAcceptedDemandAdHocs(acceptedDemandAdHocList);
 
         return warehouseManager;
