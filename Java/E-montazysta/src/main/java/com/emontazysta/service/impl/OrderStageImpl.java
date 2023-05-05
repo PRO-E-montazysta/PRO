@@ -314,7 +314,15 @@ public class OrderStageImpl implements OrderStageService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        return orderStageMapper.toDto(repository.save(orderStage));
+        //Sprawdzenie czy można wydać elementy- Status etapu na PICK_UP i zapytanie wysłane przez WAREHOUSE_MAN lub WAREHOUSE_MANAGER
+        if(orderStage.getStatus().equals(OrderStageStatus.PICK_UP) && (
+                authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MAN) ||
+                        authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MANAGER))) {
+
+            return orderStageMapper.toDto(repository.save(orderStage));
+        }else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
     }
 
     @Override
@@ -325,7 +333,15 @@ public class OrderStageImpl implements OrderStageService {
         if(!orderStage.getOrders().getCompany().getId().equals(authUtils.getLoggedUserCompanyId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        
-        return orderStageMapper.toDto(repository.save(orderStage));
+
+        //Sprawdzenie czy można zwrócić elementy- Status etapu na RETURN i zapytanie wysłane przez WAREHOUSE_MAN lub WAREHOUSE_MANAGER
+        if(orderStage.getStatus().equals(OrderStageStatus.RETURN) && (
+                authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MAN) ||
+                        authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MANAGER))) {
+
+            return orderStageMapper.toDto(repository.save(orderStage));
+        }else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
     }
 }
