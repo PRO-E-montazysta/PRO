@@ -203,6 +203,7 @@ public class OrderStageImpl implements OrderStageService {
     @Transactional
     public OrderStageDto releaseTools(Long id, List<String> toolCodes) {
         OrderStage orderStage = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        //Sprawdzenie, czy etap jest z firmy użytkownika
         if(!orderStage.getOrders().getCompany().getId().equals(authUtils.getLoggedUserCompanyId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
@@ -247,12 +248,58 @@ public class OrderStageImpl implements OrderStageService {
     }
 
     @Override
+    @Transactional
     public OrderStageDto returnTools(Long id, List<String> toolCodes) {
         OrderStage orderStage = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        //Sprawdzenie, czy etap jest z firmy użytkownika
         if(!orderStage.getOrders().getCompany().getId().equals(authUtils.getLoggedUserCompanyId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        return orderStageMapper.toDto(repository.save(orderStage));
+        //Sprawdzenie czy można zwrócić narzędzia- Status etapu na RETURN i zapytanie wysłane przez WAREHOUSE_MAN lub WAREHOUSE_MANAGER
+        if(orderStage.getStatus().equals(OrderStageStatus.RETURN) && (
+                authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MAN) ||
+                        authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MANAGER))) {
+            //Zmienna przechowująca błędne kody
+            StringBuilder errorCodes = new StringBuilder();
+
+            for(String toolCode : toolCodes) {
+                try {
+                    Tool tool = toolMapper.toEntity(toolService.getByCode(toolCode));
+                    //Sprawdzenie, czy narzędzie można zwrócić
+                    if(tool.getStatus().equals(ToolStatus.RELEASED)) {
+                        //Znalezienie wydania dla narzędzia bez daty zwrotu
+                        Optional<ToolRelease> toolReleaseOptional = orderStage.getToolReleases().stream()
+                                .filter(o -> o.getTool().getCode().equals(toolCode))
+                                .filter(o -> o.getReturnTime() == null)
+                                .findFirst();
+
+                        //Ustawienie daty zwrotu, jeśli znaleziono
+                        if(toolReleaseOptional.isPresent()) {
+                            ToolRelease toolRelease = toolReleaseOptional.get();
+                            toolRelease.setReturnTime(LocalDateTime.now());
+                            toolReleaseRepository.save(toolRelease);
+                        }else {
+                            //Kody narzędzi, których nie można zwrócić w tym etapie
+                            errorCodes.append(toolCodes + "- brak możliwości ");
+                        }
+                    }else {
+                        //Kody narzędzi, które nie są aktualnie wydane
+                        errorCodes.append(toolCodes + "- niewydane ");
+                    }
+                }catch (EntityNotFoundException e) {
+                    //Kody narzędzi, które nie istnieją, bądź są z innej firmy
+                    errorCodes.append(toolCodes + "- nie znaleziono ");
+                }
+            }
+
+            if(errorCodes.isEmpty()){
+                return orderStageMapper.toDto(repository.save(orderStage));
+            }else {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nie można wykonać operacji. Błędne kody: " + errorCodes);
+            }
+        }else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
     }
 }
