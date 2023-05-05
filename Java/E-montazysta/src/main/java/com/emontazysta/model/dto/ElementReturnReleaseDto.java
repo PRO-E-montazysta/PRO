@@ -24,7 +24,7 @@ public class ElementReturnReleaseDto {
     @PositiveOrZero(message = "Quantity cannot be negative")
     private int returnedQuantity;
     private LocalDateTime returnTime;
-    private Long servedById;
+    private Long releasedById;
     @NotNull(message = "Element id cannot be empty")
     private Long elementId;
     private Long demandAdHocId;

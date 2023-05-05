@@ -53,7 +53,7 @@ public class ElementReturnReleaseServiceImpl implements ElementReturnReleaseServ
         elementReturnReleaseDb.setReleasedQuantity(updatedElementReturnRelease.getReleasedQuantity());
         elementReturnReleaseDb.setReturnedQuantity(updatedElementReturnRelease.getReturnedQuantity());
         elementReturnReleaseDb.setReturnTime(updatedElementReturnRelease.getReturnTime());
-        elementReturnReleaseDb.setServedBy(updatedElementReturnRelease.getServedBy());
+        elementReturnReleaseDb.setReleasedBy(updatedElementReturnRelease.getReleasedBy());
         elementReturnReleaseDb.setElement(updatedElementReturnRelease.getElement());
         elementReturnReleaseDb.setDemandAdHoc(updatedElementReturnRelease.getDemandAdHoc());
         elementReturnReleaseDb.setOrderStage(updatedElementReturnRelease.getOrderStage());

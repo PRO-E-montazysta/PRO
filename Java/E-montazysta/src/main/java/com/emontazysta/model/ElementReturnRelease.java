@@ -29,7 +29,7 @@ public class ElementReturnRelease {
     private LocalDateTime returnTime;
 
     @ManyToOne
-    private Warehouseman servedBy;
+    private Warehouseman releasedBy;
 
     @ManyToOne
     private Element element;

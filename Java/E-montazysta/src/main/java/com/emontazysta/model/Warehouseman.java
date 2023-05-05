@@ -36,7 +36,7 @@ public class Warehouseman extends Employee {
     @OneToMany(mappedBy = "releasedBy")
     private List<ToolRelease> releasedTools;
 
-    @OneToMany(mappedBy = "servedBy")
+    @OneToMany(mappedBy = "releasedBy")
     private List<ElementReturnRelease> elementReturnReleases;
 
     @OneToMany(mappedBy = "warehouseman")
