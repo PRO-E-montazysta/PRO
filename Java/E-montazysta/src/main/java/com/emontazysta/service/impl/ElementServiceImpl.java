@@ -12,6 +12,7 @@ import com.emontazysta.repository.criteria.ElementCriteriaRepository;
 import com.emontazysta.repository.criteria.WarehouseCriteriaRepository;
 import com.emontazysta.service.ElementInWarehouseService;
 import com.emontazysta.service.ElementService;
+import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,7 @@ public class ElementServiceImpl implements ElementService {
     private final ElementCriteriaRepository elementCriteriaRepository;
     private final WarehouseCriteriaRepository warehouseCriteriaRepository;
     private final ElementInWarehouseService elementInWarehouseService;
+    private final AuthUtils authUtils;
 
 
     @Override
@@ -44,16 +46,31 @@ public class ElementServiceImpl implements ElementService {
     @Override
     public ElementDto getById(Long id) {
         Element element = repository.findById(id).orElseThrow(EntityNotFoundException::new);
-        return elementMapper.toDto(element);
+
+        if(element == null) {
+            throw new EntityNotFoundException();
+        }else {
+            if(element.getElementInWarehouses().get(0).getWarehouse().getCompany().getId().equals(authUtils.getLoggedUserCompanyId())) {
+                return elementMapper.toDto(element);
+            }else {
+                throw new EntityNotFoundException();
+            }
+        }
     }
 
     @Override
     public ElementDto getByCode(String code) {
-        Element response = repository.findByCode(code);
-        if(response == null)
+        Element element = repository.findByCode(code);
+
+        if(element == null) {
             throw new EntityNotFoundException();
-        else
-            return elementMapper.toDto(response);
+        }else {
+            if(element.getElementInWarehouses().get(0).getWarehouse().getCompany().getId().equals(authUtils.getLoggedUserCompanyId())) {
+                return elementMapper.toDto(element);
+            }else {
+                throw new EntityNotFoundException();
+            }
+        }
     }
 
     @Override
