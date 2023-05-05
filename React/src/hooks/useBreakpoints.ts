@@ -7,7 +7,7 @@ export enum AppSize {
     desktop = 'desktop',
 }
 
-//480, 768. 1024,
+//480, 768, 1024,
 export default function useBreakpoints() {
     const breakpoints = {
         isMobile: useAppWidth('(max-width: 480px)'),

@@ -7,7 +7,6 @@ import TableFilter, { Filter, FilterFormProps } from './filter/TableFilter'
 import SortedTable from './sort/SortedTable'
 import { HeadCell } from './sort/SortedTableHeader'
 
-
 import { theme } from '../../themes/baseTheme'
 
 type FatTableParams<T> = {
@@ -17,10 +16,11 @@ type FatTableParams<T> = {
     initOrderBy: keyof T
     onClickRow: (event: React.MouseEvent<unknown>, row: T) => void
     pageHeader: string
+    idPropName: keyof T
 }
 
 function FatTable<T>(props: FatTableParams<T>) {
-    const { query, filterProps, headCells, initOrderBy, onClickRow, pageHeader } = props
+    const { query, filterProps, headCells, initOrderBy, onClickRow, pageHeader, idPropName } = props
     const appSize = useBreakpoints()
 
     const headCellsFiltered = useMemo(() => {
@@ -57,6 +57,7 @@ function FatTable<T>(props: FatTableParams<T>) {
 
             {
                 <SortedTable
+                    idPropName={idPropName}
                     query={query}
                     headCells={headCellsFiltered}
                     initOrderBy={initOrderBy}

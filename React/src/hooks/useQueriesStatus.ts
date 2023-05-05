@@ -28,16 +28,12 @@ export const useQueriesStatus = (
             queryList.findIndex((q) => q.isSuccess || q.isIdle) > -1 ||
             mutationList.findIndex((q) => q.isSuccess || q.isIdle) > -1
 
-        console.log('isLoading: ' + isLoading)
-        console.log('isError: ' + isError)
-        console.log('isSuccess: ' + isSuccess)
 
         let newResult: QueriesStatus = ''
         if (isLoading) newResult = 'isLoading'
         else if (isError) newResult = 'isError'
         else if (isSuccess) newResult = 'isSuccess'
         if (result != newResult) {
-            console.log('new result -> ' + newResult)
             setResult(newResult)
         }
         const errorQuery = queryList.find((q) => q.error)

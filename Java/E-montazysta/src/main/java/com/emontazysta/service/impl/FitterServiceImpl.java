@@ -39,7 +39,17 @@ public class FitterServiceImpl implements FitterService {
     @Override
     public FitterDto getById(Long id) {
         Fitter fitter = repository.findById(id).orElseThrow(EntityNotFoundException::new);
-        return fitterMapper.toDto(fitter);
+        FitterDto result = fitterMapper.toDto(fitter);
+
+        if(!authUtils.getLoggedUser().getRoles().contains(Role.ADMIN)) {
+            result.setUsername(null);
+        }
+        if(!authUtils.getLoggedUser().getRoles().contains(Role.ADMIN) ||
+                !authUtils.getLoggedUser().getRoles().contains(Role.MANAGER)) {
+            result.setPesel(null);
+        }
+
+        return result;
     }
 
     @Override

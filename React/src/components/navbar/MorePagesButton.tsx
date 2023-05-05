@@ -1,7 +1,7 @@
 import { Button } from '@mui/material'
 import { CSSProperties, MouseEvent, useLayoutEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { isAuthorized } from '../../utils/authorize'
+import { isAuthorizedToPage } from '../../utils/authorize'
 import { PageProps } from '../../utils/pageList'
 
 import NavMenu from './NavMenu'
@@ -19,7 +19,7 @@ const MorePagesButton = (props: MorePagesButtonProps) => {
     const [allowedPages, setAllowedPages] = useState<Array<PageProps>>([])
 
     useLayoutEffect(() => {
-        if (!!pages) setAllowedPages(pages.filter((child) => child.inNav && isAuthorized(child)))
+        if (!!pages) setAllowedPages(pages.filter((child) => child.inNav && isAuthorizedToPage(child)))
     }, [])
 
     const handleMouseEnter = () => {
@@ -33,7 +33,10 @@ const MorePagesButton = (props: MorePagesButtonProps) => {
     return (
         <>
             <div onMouseOver={handleMouseEnter} onMouseLeave={handleClose} style={{ zIndex: open ? 1000 : 5 }}>
-                <Button sx={{ cursor: 'pointer', whiteSpace: 'nowrap', width: '30px' , minWidth: 'auto' }} >
+                <Button
+                    id={'morePageBtn'}
+                    sx={{ cursor: 'pointer', whiteSpace: 'nowrap', width: '30px', minWidth: 'auto' }}
+                >
                     <MoreVertIcon />
                 </Button>
                 <NavMenu allowedChilds={pages} onClose={handleClose} open={open} />

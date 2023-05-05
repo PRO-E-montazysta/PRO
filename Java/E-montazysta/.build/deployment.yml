@@ -20,6 +20,19 @@ spec:
         ports:
           - name: http
             containerPort: 8080
+        env:
+          - name: DB_URL
+            value: jdbc:postgresql://postgres:5432/emontazystadb
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: DB_USER
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: DB_PASSWORD
         livenessProbe:
           httpGet:
             path: /actuator/health/liveness

@@ -17,7 +17,7 @@ public class OrdersCompanyManagerMapper {
         return OrdersCompanyManagerDto.builder()
                 .id(orders.getId())
                 .name(orders.getName())
-                .typeOfStatus(orders.getTypeOfStatus())
+                .status(orders.getStatus())
                 .plannedStart(orders.getPlannedStart())
                 .plannedEnd(orders.getPlannedEnd())
                 .createdAt(orders.getCreatedAt())

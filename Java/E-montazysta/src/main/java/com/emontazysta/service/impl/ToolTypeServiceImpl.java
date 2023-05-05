@@ -11,6 +11,7 @@ import com.emontazysta.util.AuthUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,6 +41,9 @@ public class ToolTypeServiceImpl implements ToolTypeService {
     @Override
     public ToolTypeDto add(ToolTypeDto toolTypeDto) {
         toolTypeDto.setCompanyId(authUtils.getLoggedUserCompanyId());
+        toolTypeDto.setAttachments(new ArrayList<>());
+        toolTypeDto.setListOfToolsPlannedNumber(new ArrayList<>());
+        toolTypeDto.setTools(new ArrayList<>());
         ToolType toolType = toolTypeMapper.toEntity(toolTypeDto);
         return toolTypeMapper.toDto(repository.save(toolType));
     }
@@ -61,7 +65,7 @@ public class ToolTypeServiceImpl implements ToolTypeService {
         toolType.setName(updatedToolType.getName());
         toolType.setCriticalNumber(updatedToolType.getCriticalNumber());
         toolType.setAttachments(updatedToolType.getAttachments());
-        toolType.setOrderStages(updatedToolType.getOrderStages());
+        toolType.setListOfToolsPlannedNumber(updatedToolType.getListOfToolsPlannedNumber());
         toolType.setTools(updatedToolType.getTools());
         return toolTypeMapper.toDto(repository.save(toolType));
 

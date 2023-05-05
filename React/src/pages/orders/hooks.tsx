@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material'
+import { Box } from '@mui/material'
 import { AxiosError } from 'axios'
 import { useContext } from 'react'
 import { useMutation, useQuery } from 'react-query'
@@ -6,10 +6,12 @@ import { useNavigate } from 'react-router-dom'
 import { deleteOrder, getOrderDetails, postOrder, updateOrder } from '../../api/order.api'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { Order } from '../../types/model/Order'
+import useError from '../../hooks/useError'
 
 export const useAddOrder = () => {
     const navigate = useNavigate()
     const { showDialog } = useContext(DialogGlobalContext)
+    const showError = useError()
     return useMutation({
         mutationFn: postOrder,
         onSuccess(data) {
@@ -28,30 +30,13 @@ export const useAddOrder = () => {
                 },
             })
         },
-        onError(error: any) {
-            console.error(error)
-            showDialog({
-                btnOptions: [
-                    {
-                        text: 'OK',
-                        value: 0,
-                    },
-                ],
-                title: 'Błąd!',
-                content: (
-                    <Box>
-                        {error.response && process.env.NODE_ENV === 'development'
-                            ? error.response.data
-                            : 'Wewnętrzny błąd serwera. Skontaktuj się z administratorem'}
-                    </Box>
-                ),
-            })
-        },
+        onError: showError,
     })
 }
 
 export const useEditOrder = (onSuccess: (data: any) => void) => {
     const { showDialog } = useContext(DialogGlobalContext)
+    const showError = useError()
     return useMutation({
         mutationFn: updateOrder,
         onSuccess(data) {
@@ -67,30 +52,13 @@ export const useEditOrder = (onSuccess: (data: any) => void) => {
                 callback: () => onSuccess(data),
             })
         },
-        onError(error: any) {
-            console.error(error)
-            showDialog({
-                btnOptions: [
-                    {
-                        text: 'OK',
-                        value: 0,
-                    },
-                ],
-                title: 'Błąd!',
-                content: (
-                    <Box>
-                        {error.response && process.env.NODE_ENV === 'development'
-                            ? error.response.data
-                            : 'Wewnętrzny błąd serwera. Skontaktuj się z administratorem'}
-                    </Box>
-                ),
-            })
-        },
+        onError: showError,
     })
 }
 export const useDeleteOrder = (onSuccess: () => void) => {
     const navigate = useNavigate()
     const { showDialog } = useContext(DialogGlobalContext)
+    const showError = useError()
     return useMutation({
         mutationFn: deleteOrder,
         onSuccess(data) {
@@ -109,25 +77,7 @@ export const useDeleteOrder = (onSuccess: () => void) => {
                 },
             })
         },
-        onError(error: any) {
-            console.error(error)
-            showDialog({
-                btnOptions: [
-                    {
-                        text: 'OK',
-                        value: 0,
-                    },
-                ],
-                title: 'Błąd!',
-                content: (
-                    <Box>
-                        {error.response && process.env.NODE_ENV === 'development'
-                            ? error.response.data
-                            : 'Wewnętrzny błąd serwera. Skontaktuj się z administratorem'}
-                    </Box>
-                ),
-            })
-        },
+        onError: showError,
     })
 }
 

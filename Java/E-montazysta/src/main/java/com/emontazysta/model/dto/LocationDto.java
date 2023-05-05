@@ -16,8 +16,6 @@ import java.util.List;
 public class LocationDto {
 
     private Long id;
-    @NotBlank(message = "Name cannot be empty")
-    private String name;
     @NotNull(message = "X coordinate cannot be empty")
     private Double xCoordinate;
     @NotNull(message = "Y coordinate cannot be empty")
@@ -32,6 +30,6 @@ public class LocationDto {
     private String apartmentNumber;
     @NotBlank(message = "Zip code cannot be empty")
     private String zipCode;
-    private List<Long> orders;
-    private List<Long> warehouses;
+    private Long orderId;
+    private Long warehouseId;
 }

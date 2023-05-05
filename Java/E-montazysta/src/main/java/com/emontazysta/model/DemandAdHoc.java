@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,13 +22,7 @@ public class DemandAdHoc {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String description;
-    private String comments;
-    private LocalDateTime creationTime;
-    private LocalDateTime readByWarehousemanTime;
-    private LocalDateTime realisationTime;
-    private String warehousemanComment; // TODO: should be in other model if we want to have info about warehouseman + timestamp
-    private String specialistComment; // TODO: should be in other model if we want to have info about specialist + timestamp
-    // TODO: status values not defined
+    private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "demandAdHoc")
     private List<ToolRelease> toolReleases;
@@ -38,22 +31,21 @@ public class DemandAdHoc {
     private List<ElementReturnRelease> elementReturnReleases;
 
     @ManyToOne
-    private WarehouseManager warehouseManager;
+    private WarehouseManager warehouseManager; //acceptedBy
 
     @ManyToOne
-    private Warehouseman warehouseman;
+    private Specialist specialist; //acceptedBy
 
     @ManyToOne
-    private Specialist specialist;
+    private Foreman createdBy;
 
     @ManyToOne
-    private Manager manager;
+    private OrderStage orderStage;
 
-    @ManyToOne
-    private Foreman foreman;
+    @OneToMany(mappedBy = "demandAdHoc")
+    private List<ToolsPlannedNumber> listOfToolsPlannedNumber;
 
-    @ManyToMany(mappedBy = "demandsAdHoc")
-    private List<OrderStage> ordersStages;
+    @OneToMany(mappedBy = "demandAdHoc")
+    private List<ElementsPlannedNumber> listOfElementsPlannedNumber;
 
-    //TODO: relationship to OrderStage needed (many to many) should be replaced with association table in diagram
 }

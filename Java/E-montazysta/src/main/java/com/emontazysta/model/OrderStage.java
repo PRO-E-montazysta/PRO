@@ -1,16 +1,14 @@
 package com.emontazysta.model;
 
-import com.emontazysta.enums.OrderStatus;
+import com.emontazysta.enums.OrderStageStatus;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -28,7 +26,7 @@ public class OrderStage {
 
     private String name;
 
-    private OrderStatus status;
+    private OrderStageStatus status;
 
     private BigDecimal price;
 
@@ -70,17 +68,13 @@ public class OrderStage {
     @OneToMany(mappedBy = "orderStage")
     private List<Notification> notifications;
 
-    @ManyToMany
-    private List<ToolType> tools;
+    @OneToMany(mappedBy = "orderStage")
+    private List<ToolsPlannedNumber> listOfToolsPlannedNumber;
 
-    @ManyToMany
-    private List<Element> elements;
+    @OneToMany(mappedBy = "orderStage")
+    private List<ElementsPlannedNumber> listOfElementsPlannedNumber;
 
-    @ManyToMany
+    @OneToMany(mappedBy = "orderStage")
     private List<DemandAdHoc> demandsAdHoc;
-
-
-
-    //TODO: relationship to Element, ToolType, Fitter, DemandAdHoc  needed (many to many) should be replaced with association table in diagram
 }
 

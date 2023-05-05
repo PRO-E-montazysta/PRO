@@ -1,6 +1,6 @@
 import { Box, IconButton, MenuItem } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { isAuthorized } from '../../utils/authorize'
+import { isAuthorizedToPage } from '../../utils/authorize'
 import { PageProps } from '../../utils/pageList'
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
@@ -19,7 +19,7 @@ const HamburgerButton = (props: HamburgerButtonProps) => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (page.children) setAvailableChilds(page.children.filter((c) => c.inNav && isAuthorized(c)))
+        if (page.children) setAvailableChilds(page.children.filter((c) => c.inNav && isAuthorizedToPage(c)))
     }, [page.children])
 
     const onItemClick = () => {
@@ -39,7 +39,11 @@ const HamburgerButton = (props: HamburgerButtonProps) => {
 
     return (
         <Box>
-            <MenuItem sx={{ p: '0 20px', position: 'relative', height: '50px' }} onClick={onItemClick}>
+            <MenuItem
+                id={`hamburgerBtn-${page.path}`}
+                sx={{ p: '0 20px', position: 'relative', height: '50px' }}
+                onClick={onItemClick}
+            >
                 {page.name}
 
                 {availableChilds && availableChilds.length > 0 && (
@@ -60,6 +64,7 @@ const HamburgerButton = (props: HamburgerButtonProps) => {
                 availableChilds.map((c) => {
                     return (
                         <MenuItem
+                            id={`hamburgerBtn-${page.path}-opt-${c.path}`}
                             sx={{ p: '0 20px', position: 'relative', height: '50px', ml: '20px' }}
                             onClick={() => onSubitemClick(c)}
                         >

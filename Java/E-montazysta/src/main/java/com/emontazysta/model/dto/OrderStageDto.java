@@ -1,11 +1,10 @@
 package com.emontazysta.model.dto;
 
-import com.emontazysta.enums.OrderStatus;
+import com.emontazysta.enums.OrderStageStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
@@ -22,8 +21,7 @@ public class OrderStageDto {
     private Long id;
     @NotBlank(message = "Name cannot be empty")
     private String name;
-    @NotNull(message = "Status cannot be empty")
-    private OrderStatus status;
+    private OrderStageStatus status;
     @NotNull(message = "Price cannot be empty")
     private BigDecimal price;
     private LocalDateTime plannedStartDate;
@@ -44,7 +42,7 @@ public class OrderStageDto {
     private Long orderId;
     private List<Long> attachments;
     private List<Long> notifications;
-    private List<Long> tools;
-    private List<Long> elements;
+    private List<Long> listOfToolsPlannedNumber;
+    private List<Long> listOfElementsPlannedNumber;
     private List<Long> demandAdHocs;
 }

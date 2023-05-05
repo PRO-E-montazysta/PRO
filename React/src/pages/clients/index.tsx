@@ -1,4 +1,4 @@
-import { Filter, FilterFormProps } from '../../components/table/filter/TableFilter'
+import { Filter } from '../../components/table/filter/TableFilter'
 import FatTable from '../../components/table/FatTable'
 import { useState } from 'react'
 import { useQuery } from 'react-query'
@@ -20,7 +20,6 @@ const Clients = () => {
         getFilteredClients({ queryParams: filterParams }),
     )
 
-
     const filter: Filter = {
         formik: useFormik({
             initialValues: initialValues,
@@ -36,6 +35,7 @@ const Clients = () => {
 
     return (
         <FatTable
+            idPropName="id"
             query={queryClients}
             filterProps={filter}
             headCells={headCells}
