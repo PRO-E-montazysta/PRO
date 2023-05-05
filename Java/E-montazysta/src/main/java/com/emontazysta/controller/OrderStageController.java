@@ -66,8 +66,14 @@ public class OrderStageController {
 
     @PutMapping("/releaseTools/{id}")
     @Operation(description = "Allows to update Order Stage by given Id.", security = @SecurityRequirement(name = "bearer-key"))
-    public OrderStageDto releaseTools(@PathVariable Long id, @Valid @RequestBody List<String> toolCodes) {
+    public OrderStageDto releaseTools(@PathVariable Long id, @RequestBody List<String> toolCodes) {
         return orderStageService.releaseTools(id, toolCodes);
+    }
+
+    @PutMapping("/returnTools/{id}")
+    @Operation(description = "Allows to update Order Stage by given Id.", security = @SecurityRequirement(name = "bearer-key"))
+    public OrderStageDto returnTools(@PathVariable Long id, @RequestBody List<String> toolCodes) {
+        return orderStageService.returnTools(id, toolCodes);
     }
 
     @GetMapping("/filter")

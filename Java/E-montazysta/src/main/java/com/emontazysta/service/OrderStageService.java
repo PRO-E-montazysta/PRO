@@ -26,4 +26,5 @@ public interface OrderStageService {
     List<OrderStageDto> getFilteredOrders(OrdersStageSearchCriteria ordersStageSearchCriteria, Principal principal);
 
     OrderStageDto releaseTools(Long id, List<String> toolCodes);
+    OrderStageDto returnTools(Long id, List<String> toolCodes);
 }
