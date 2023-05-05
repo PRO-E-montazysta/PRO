@@ -110,7 +110,7 @@ const OrderDetails = () => {
     //new mode
     //set readonly mode, populate formik and init data with init values from helper
     useEffect(() => {
-        if (params.id == 'new') {
+        if (params.id === 'new') {
             setPageMode('new')
             formik.setValues(getInitValues(formStructure))
             setInitData(getInitValues(formStructure))

@@ -2,14 +2,15 @@ export type OrderStage = {
     id?: number
     name: string
     status: string
-    price: number
+    price: string
     order: 0
-    plannedEndDate: Date
+    plannedStartDate: string
+    plannedEndDate: string
     startDate: Date
     endDate: Date
     plannedDurationTime: Date //jak chcemy to podawać?
-    plannedFittersNumber: number
-    minimumImagesNumber: 0
+    plannedFittersNumber:  string
+    minimumImagesNumber: string
     fitters: Array<number>
     foremanId: number
     comments?: Array<string>
@@ -21,19 +22,32 @@ export type OrderStage = {
     tools: Array<number>
     elements: Array<number>
     demandAdHocs: Array<string>
+    listOfToolsPlannedNumber: Array<{
+        numberOfTools: number
+        toolTypeId: string
+    }>
+    listOfElementsPlannedNumber: Array<{
+        numberOfElements: number
+        elementId: string
+    }>
 }
 
 export type CreateOrderStage = {
-    orderId: number
+    orderId: string
     name: string
     status: string
-    price: number
-    order: number
-    plannedDurationTime: number
-    plannedFittersNumber: number
-    minimumImagesNumber: number
-    foremanId: number
-    tools: Array<number>
-    elements: Array<number>
+    price: string
+    plannedStartDate: string
+    plannedEndDate: string
+    plannedFittersNumber: string
+    minimumImagesNumber: string
+    listOfToolsPlannedNumber: Array<{
+        numberOfTools: number
+        toolTypeId: string
+    }>
+    listOfElementsPlannedNumber: Array<{
+        numberOfElements: number
+        elementId: string
+    }>
     attachments: Array<number>
 }

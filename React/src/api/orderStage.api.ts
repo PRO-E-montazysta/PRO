@@ -2,6 +2,8 @@ import { CreateOrderStage, OrderStage } from '../types/model/OrderStage'
 import { makeServiceCall } from './utils.api'
 
 export const createOrderStage = (data: CreateOrderStage) => {
+    console.log('json', data)
+
     return makeServiceCall(`/order-stages`, 'POST', { body: data })
 }
 

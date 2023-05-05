@@ -19,7 +19,6 @@ const OrderStagesDetails = ({ isAddOrderStageVisible }: OrderStagesDetailsProps)
     const queryOrderStages = useQuery<Array<OrderStage>, AxiosError>(['orderStage-list'], () =>
         getAllOrderStages(params.id!),
     )
-    console.log('details in zlecenie', queryOrderStages)
 
     useEffect(() => {
         if (isAddOrderStageVisible === true) {
@@ -41,7 +40,6 @@ const OrderStagesDetails = ({ isAddOrderStageVisible }: OrderStagesDetailsProps)
         // mutationFn: (variables: any) => console.log(variables),
         mutationFn: createOrderStage,
         onSuccess(data) {
-            console.log('navigation')
             navigation('/', { replace: true })
         },
         onError(error: Error) {
@@ -51,6 +49,7 @@ const OrderStagesDetails = ({ isAddOrderStageVisible }: OrderStagesDetailsProps)
     })
 
     const getListOfStages = () => {
+        console.log('querujemy', queryOrderStages)
         return (
             <>
                 {queryOrderStages.data!.map((stage, index) => (

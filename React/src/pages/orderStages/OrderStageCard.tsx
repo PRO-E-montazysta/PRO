@@ -14,12 +14,16 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Card from '@mui/material/Card'
 import AssignmentIcon from '@mui/icons-material/Assignment'
 import Collapse from '@mui/material/Collapse'
-import OrderStageDetailsTable, { ExpandMore, TabPanel } from './helper'
+import { ExpandMore, TabPanel } from './helper'
 import { getRolesFromToken } from '../../utils/token'
 import { Role } from '../../types/roleEnum'
 import { useMutation, useQuery } from 'react-query'
 import { AxiosError } from 'axios'
 import { getAllToolTypes } from '../../api/toolType.api'
+import { getAllElements } from '../../api/element.api'
+import OrderStageToolTypesTable from './ToolTypesTable'
+import OrderStageDetailsElementsTable from './ElementsTable'
+import { useAddOrderStage } from './hooks'
 
 type OrderStageCardProps = {
     index?: string
@@ -31,15 +35,16 @@ type OrderStageCardProps = {
 const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStageCardProps) => {
     const [tabValue, setTabValue] = useState(0)
     const [expandedInformation, setExpandedInformation] = useState(false)
-    const [plannedStartDate, setPlannedStartDate] = useState<Dayjs | null>(null)
-    const [plannedStartHour, setPlannedStartHour] = useState<Dayjs | null>(dayjs('14:30'))
-    const [plannedFinishHour, setPlannedFinishHour] = useState<Dayjs | null>(dayjs('15:30'))
+    const [plannedStartDate, setPlannedStartDate] = useState<Dayjs | null>(dayjs(stage?.plannedStartDate))
+    const [plannedStartHour, setPlannedStartHour] = useState<Dayjs | null>(dayjs(stage?.plannedStartDate))
+    const [plannedFinishHour, setPlannedFinishHour] = useState<Dayjs | null>(dayjs(stage?.plannedEndDate))
     const [preparedPlannedStartDate, setPreparedPlannedStartDate] = useState('')
     const [preparedPlannedEndDate, setPreparedPlannedEndDate] = useState('')
     const [userRole, setUserRole] = useState('')
+    const addOrderStage = useAddOrderStage()
 
-    const [plannedToolType, setPlannedToolType] = useState<{ numberOfTools: number; toolTypeId: string }[]>()
-    const [plannedElement, setPlannedElement] = useState<[{ numberOfElements: number; elementId: string }]>()
+    const [plannedToolTypes, setPlannedToolTypes] = useState<{ numberOfTools: number; toolTypeId: string }[]>()
+    const [plannedElements, setPlannedElements] = useState<{ numberOfElements: number; elementId: string }[]>()
 
     const dummyScrollDiv = useRef<any>(null)
 
@@ -50,18 +55,16 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
         async () => await getAllToolTypes(),
     )
 
-    useEffect(() => {
-        console.log('dzialaj', plannedToolType)
-    }, [plannedToolType])
+    const queryElements = useQuery<Array<OrderStage>, AxiosError>(['elements-list'], async () => await getAllElements())
 
     useEffect(() => {
-        console.log('lalala', queryToolTypes)
-    }, [queryToolTypes])
-
-    useEffect(() => {
-        console.log(queryToolTypes)
         const role = getRolesFromToken()
         if (role.length !== 0) setUserRole(role[0])
+        //musze tutaj chyba wrzucic w stan daty
+        if (stage?.listOfToolsPlannedNumber) {
+            console.log('in tools', stage)
+            setPlannedToolTypes(stage.listOfToolsPlannedNumber)
+        }
     }, [])
 
     useEffect(() => {
@@ -71,11 +74,9 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
     }, [isDisplayingMode])
 
     useEffect(() => {
-        console.log(isDisplayingMode)
         const date = dayjs(plannedStartDate).format('YYYY-MM-DDTHH:mm:ss.SSS')
         const hours = dayjs(plannedStartHour).format('HH:mm:ss.SSS')
         const preparedDate = date.substring(0, date.indexOf('T') + 1).replace('T', 'T' + hours)
-        console.log('xd', preparedDate)
         setPreparedPlannedStartDate(preparedDate)
     }, [plannedStartHour])
 
@@ -83,7 +84,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
         const date = dayjs(plannedStartDate).format('YYYY-MM-DDTHH:mm:ss.SSS')
         const hours = dayjs(plannedFinishHour).format('HH:mm:ss.SSS')
         const preparedDate = date.substring(0, date.indexOf('T') + 1).replace('T', 'T' + hours)
-        console.log('xd', preparedDate)
         setPreparedPlannedEndDate(preparedDate)
     }, [plannedFinishHour])
 
@@ -102,33 +102,38 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
         setExpandedInformation(!expandedInformation)
     }
 
+    // const getData = async () => {
+    //     console.log('in get', plannedToolTypes)
+    //     await formik.setFieldValue('listOfToolsPlannedNumber', plannedToolTypes)
+    //     await formik.setFieldValue('listOfElementsPlannedNumber', plannedElements)
+    //     await formik.setFieldValue('plannedStartDate', preparedPlannedStartDate)
+    //     await formik.setFieldValue('plannedEndDate', preparedPlannedEndDate)
+    // }
+
     const formik = useFormik({
         initialValues: {
-            id: params.id,
-            name: '',
-            status: 'TODO',
-            price: '',
-            plannedStartDate: preparedPlannedStartDate,
-            plannedEndDate: preparedPlannedEndDate,
-            // startDate: '',
-            // endDate: '',
-            // plannedDurationTime: '', //jak chcemy to podawać?
-            plannedFittersNumber: '',
-            minimumImagesNumber: '',
-            // fitters: '',
-            foremanId: '',
-            comments: '',
-            // tools: '',
-            listOfToolsPlannedNumber: plannedToolType,
-            listOfElementsPlannedNumber: plannedElement,
-            elements: '',
-            attachments: '',
+            orderId: params.id!,
+            name: isDisplayingMode ? stage!.name : '',
+            status: isDisplayingMode ? stage!.status : 'TODO',
+            price: isDisplayingMode ? stage!.price : '',
+            plannedStartDate: isDisplayingMode ? '2023-04-08' : '',
+            plannedEndDate: isDisplayingMode ? stage!.plannedEndDate : '',
+            plannedFittersNumber: isDisplayingMode ? stage!.plannedFittersNumber : '',
+            minimumImagesNumber: isDisplayingMode ? stage!.minimumImagesNumber : '0',
+            listOfToolsPlannedNumber: isDisplayingMode ? stage!.listOfToolsPlannedNumber : [],
+            listOfElementsPlannedNumber: isDisplayingMode ? stage!.listOfElementsPlannedNumber : [],
+            attachments: [],
             test: '',
         },
+
         // validationSchema: validationSchema,
-        onSubmit: (values) => {
-            console.log(values)
-            //   return mutate({ username: values.email, password: values.password });
+        onSubmit: async (values) => {
+            values.listOfElementsPlannedNumber = plannedElements!
+            values.listOfToolsPlannedNumber = plannedToolTypes!
+            values.plannedStartDate = preparedPlannedStartDate
+            values.plannedEndDate = preparedPlannedEndDate
+
+            await addOrderStage.mutate(values)
         },
     })
 
@@ -168,9 +173,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                             format={'HH:mm:ss'}
                             value={plannedStartHour}
                             onChange={(data) => {
-                                console.log('kurwa', data)
                                 // const formattedDate = dayjs(data).format('YYYY-MM-DDTHH:mm:ss.SSS')
-                                // setPlannedStartDate(data)
                                 setPlannedStartHour(data)
                             }}
                         />
@@ -185,7 +188,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                 label="Data zakończenia"
                                 onChange={(data) => {
                                     // const formattedDate = dayjs(data).format('YYYY-MM-DDTHH:mm:ss.SSS')
-                                    // setPlannedStartDate(data)
                                 }}
                             />
                         </LocalizationProvider>
@@ -199,8 +201,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                             format={'HH:mm:ss'}
                             value={plannedFinishHour}
                             onChange={(data) => {
-                                // const formattedDate = dayjs(data).format('YYYY-MM-DDTHH:mm:ss.SSS')
-                                // setPlannedStartDate(data)
                                 setPlannedFinishHour(data)
                             }}
                         />
@@ -209,14 +209,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
             </Grid>
         )
     }
-
-    // const getStageDetails = () => {
-    //     return (
-    //         <>
-
-    //         </>
-    //     )
-    // }
 
     return (
         <Card id={index ? index.toString() : ''} sx={{ margin: 'auto', marginTop: '20px', border: '1px solid' }}>
@@ -240,7 +232,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                 <Paper sx={{ p: '10px' }}>
                     <Grid
                         component="form"
-                        // onSubmit={formik.handleSubmit}
+                        onSubmit={formik.handleSubmit}
                         container
                         spacing={{ xs: 2, md: 2 }}
                         columns={{ xs: 2, sm: 4, md: 12 }}
@@ -252,7 +244,11 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                 variant="standard"
                                 label="Nazwa"
                                 name="name"
-                                defaultValue={isDisplayingMode ? stage!.name : null}
+                                // defaultValue={isDisplayingMode ? stage!.name : null}
+                                value={formik.values.name}
+                                onChange={formik.handleChange}
+                                error={formik.touched.name && Boolean(formik.errors.name)}
+                                helperText={formik.touched.name && formik.errors.name}
                             />
                         </Grid>
                         {isDisplayingMode ? (
@@ -275,16 +271,10 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                 label="Cena"
                                 name="price"
                                 defaultValue={isDisplayingMode ? stage!.price : null}
-                            />
-                        </Grid>
-                        <Grid item xs={3}>
-                            <TextField
-                                sx={{ width: '100%' }}
-                                id="standard-basic"
-                                variant="standard"
-                                label="Planowany czas trwania"
-                                name="plannedDurationTime"
-                                defaultValue={isDisplayingMode ? stage!.plannedDurationTime : null}
+                                value={formik.values.price}
+                                onChange={formik.handleChange}
+                                error={formik.touched.price && Boolean(formik.errors.price)}
+                                helperText={formik.touched.price && formik.errors.price}
                             />
                         </Grid>
 
@@ -296,6 +286,12 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                 variant="standard"
                                 label="Planowana liczba montażystów"
                                 name="plannedFittersNumber"
+                                value={formik.values.plannedFittersNumber}
+                                onChange={formik.handleChange}
+                                error={
+                                    formik.touched.plannedFittersNumber && Boolean(formik.errors.plannedFittersNumber)
+                                }
+                                helperText={formik.touched.plannedFittersNumber && formik.errors.plannedFittersNumber}
                             />
                         </Grid>
                         <Grid item xs={4}>
@@ -304,9 +300,14 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                 label="Minimalna liczba zdjęć"
                                 variant="standard"
                                 defaultValue={isDisplayingMode ? stage!.minimumImagesNumber : null}
+                                name="minimumImagesNumber"
+                                value={formik.values.minimumImagesNumber}
+                                onChange={formik.handleChange}
+                                error={formik.touched.minimumImagesNumber && Boolean(formik.errors.minimumImagesNumber)}
+                                helperText={formik.touched.minimumImagesNumber && formik.errors.minimumImagesNumber}
                             />
                         </Grid>
-                        {isDisplayingMode || (!isDisplayingMode && (userRole === Role.MANAGER)) ? (
+                        {isDisplayingMode || (!isDisplayingMode && userRole === Role.MANAGER) ? (
                             <Grid item xs={4}>
                                 <TextField
                                     id="standard-basic"
@@ -327,7 +328,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                             >
                                 <Tabs value={tabValue} onChange={handleTabChange} aria-label="basic tabs example">
                                     <Tab label="Informacje o datach" {...tabProps(0)} />
-                                    <Tab label="Narzędzia" {...tabProps(1)} />
+                                    <Tab label="Planowane narzędzia" {...tabProps(1)} />
                                     <Tab label="Elementy" {...tabProps(2)} />
                                     {isDisplayingMode ? <Tab label="Montażyści..." {...tabProps(2)} /> : null}
                                     <Tab label="Szczegóły etapu/Zalaczniki" {...tabProps(1)} />
@@ -337,29 +338,24 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                 {getDateInformations(stage)}
                             </TabPanel>
                             <TabPanel value={tabValue} index={1}>
-                                <OrderStageDetailsTable
+                                <OrderStageToolTypesTable
                                     itemsArray={queryToolTypes.data}
-                                    plannedData={plannedToolType!}
-                                    setPlannedData={setPlannedToolType}
+                                    plannedData={plannedToolTypes!}
+                                    setPlannedData={setPlannedToolTypes}
                                     isDisplayingMode={isDisplayingMode!}
                                 />
                             </TabPanel>
                             <TabPanel value={tabValue} index={2}>
-                                <Grid item xs={2}>
-                                    <TextField
-                                        sx={{ width: '100%' }}
-                                        required
-                                        id="outlined-required"
-                                        label="Elementy"
-                                        name="elements"
-                                        value={formik.values.elements}
-                                        onChange={formik.handleChange}
-                                    />
-                                </Grid>
+                                <OrderStageDetailsElementsTable
+                                    itemsArray={queryElements.data}
+                                    plannedData={plannedElements!}
+                                    setPlannedData={setPlannedElements}
+                                    isDisplayingMode={isDisplayingMode!}
+                                />
                             </TabPanel>
 
                             <TabPanel value={tabValue} index={3}>
-                                Montażyści...
+                                Zalaczniki...
                             </TabPanel>
                             <TabPanel value={tabValue} index={4}>
                                 <Grid item xs={2}>
