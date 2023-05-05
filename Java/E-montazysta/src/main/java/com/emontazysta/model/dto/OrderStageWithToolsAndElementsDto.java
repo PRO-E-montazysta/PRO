@@ -39,14 +39,12 @@ public class OrderStageWithToolsAndElementsDto {
     private List<Long> fitters;
     private Long foremanId;
     private List<Long> comments;
-    private List<ToolReleaseDto> toolReleases;
-    private List<ElementReturnReleaseDto> elementReturnReleases;
+    private List<Long> toolReleases;
+    private List<Long> elementReturnReleases;
     private Long orderId;
     private List<Long> attachments;
     private List<Long> notifications;
     private List<ToolsPlannedNumberDto> listOfToolsPlannedNumber;
     private List<ElementsPlannedNumberDto> listOfElementsPlannedNumber;
     private List<Long> demandAdHocs;
-    private List<String> returningTools;
-    private List<ElementReturnDto> returningElements;
 }

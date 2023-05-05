@@ -123,11 +123,10 @@ public class OrderStageMapper {
         orderStageToolsElementsDto.getComments().forEach(commentId -> commentList.add(commentRepository.getReferenceById(commentId)));
 
         List<ToolRelease> toolReleaseList = new ArrayList<>();
-        orderStageToolsElementsDto.getToolReleases().forEach(toolRelease -> toolReleaseList.add(toolReleaseMapper.toEntity(toolRelease)));
+        orderStageToolsElementsDto.getToolReleases().forEach(toolReleaseId -> toolReleaseList.add(toolReleaseRepository.getReferenceById(toolReleaseId)));
 
         List<ElementReturnRelease> elementReturnReleaseList = new ArrayList<>();
-        orderStageToolsElementsDto.getElementReturnReleases().forEach(elementReturnRelease -> elementReturnReleaseList.add(elementReturnReleaseMapper.toEntity(elementReturnRelease)));
-
+        orderStageToolsElementsDto.getElementReturnReleases().forEach(elementReturnReleaseId -> elementReturnReleaseList.add(elementReturnReleaseRepository.getReferenceById(elementReturnReleaseId)));
         List<Attachment> attachmentList = new ArrayList<>();
         orderStageToolsElementsDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.getReferenceById(attachmentId)));
 
