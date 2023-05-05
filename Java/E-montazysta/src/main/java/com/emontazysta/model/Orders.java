@@ -23,13 +23,13 @@ import java.util.List;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Orders {
 
-    public Orders(Long id, String name, TypeOfStatus typeOfStatus, LocalDateTime plannedStart, LocalDateTime plannedEnd,
+    public Orders(Long id, String name, OrderStatus status, LocalDateTime plannedStart, LocalDateTime plannedEnd,
                   LocalDateTime createdAt, LocalDateTime editedAt, TypeOfPriority typeOfPriority, Company company,
                   Manager managedBy, Foreman assignedTo, Specialist specialist, SalesRepresentative salesRepresentative,
                   Location location, Client client, List<OrderStage> orderStages, List<Attachment> attachments) {
         this.id = id;
         this.name = name;
-        this.typeOfStatus = typeOfStatus;
+        this.status = status;
         this.plannedStart = plannedStart;
         this.plannedEnd = plannedEnd;
         this.createdAt = createdAt;

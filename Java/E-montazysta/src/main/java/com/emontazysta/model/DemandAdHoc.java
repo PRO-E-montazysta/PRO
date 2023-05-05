@@ -1,5 +1,6 @@
 package com.emontazysta.model;
 
+import com.emontazysta.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
@@ -21,27 +22,21 @@ import java.util.List;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class DemandAdHoc {
 
-    public DemandAdHoc(Long id, String description, String comments, LocalDateTime creationTime,
-                       LocalDateTime readByWarehousemanTime, LocalDateTime realisationTime, String warehousemanComment,
-                       String specialistComment, List<ToolRelease> toolReleases, List<ElementReturnRelease> elementReturnReleases,
-                       WarehouseManager warehouseManager, Warehouseman warehouseman, Specialist specialist, Manager manager,
-                       Foreman foreman, List<OrderStage> ordersStages) {
+    public DemandAdHoc(Long id, String description, LocalDateTime createdAt, List<ToolRelease> toolReleases,
+                       List<ElementReturnRelease> elementReturnReleases, WarehouseManager warehouseManager,
+                       Specialist specialist, Foreman createdBy, OrderStage orderStage,
+                       List<ToolsPlannedNumber> listOfToolsPlannedNumber, List<ElementsPlannedNumber> listOfElementsPlannedNumber) {
         this.id = id;
         this.description = description;
-        this.comments = comments;
-        this.creationTime = creationTime;
-        this.readByWarehousemanTime = readByWarehousemanTime;
-        this.realisationTime = realisationTime;
-        this.warehousemanComment = warehousemanComment;
-        this.specialistComment = specialistComment;
+        this.createdAt = createdAt;
         this.toolReleases = toolReleases;
         this.elementReturnReleases = elementReturnReleases;
         this.warehouseManager = warehouseManager;
-        this.warehouseman = warehouseman;
         this.specialist = specialist;
-        this.manager = manager;
-        this.foreman = foreman;
-        this.ordersStages = ordersStages;
+        this.createdBy = createdBy;
+        this.orderStage = orderStage;
+        this.listOfToolsPlannedNumber = listOfToolsPlannedNumber;
+        this.listOfElementsPlannedNumber = listOfElementsPlannedNumber;
     }
 
     @Id

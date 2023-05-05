@@ -29,7 +29,7 @@ import java.util.List;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class OrderStage {
 
-    public OrderStage(Long id, String name, OrderStatus status, BigDecimal price, LocalDateTime plannedStartDate,
+    public OrderStage(Long id, String name, OrderStageStatus status, BigDecimal price, LocalDateTime plannedStartDate,
                       LocalDateTime plannedEndDate, LocalDateTime startDate, LocalDateTime endDate, long plannedDurationTime,
                       int plannedFittersNumber, int minimumImagesNumber, List<Fitter> assignedTo, Foreman managedBy,
                       List<Comment> comments, List<ToolRelease> toolReleases, List<ElementReturnRelease> elementReturnReleases,

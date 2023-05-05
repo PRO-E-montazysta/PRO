@@ -134,9 +134,6 @@ public class WarehouseManagerMapper {
         List<ElementReturnRelease> elementReturnReleaseList = new ArrayList<>();
         warehouseManagerDto.getElementReturnReleases().forEach(elementReturnReleaseId -> elementReturnReleaseList.add(elementReturnReleaseRepository.findById(elementReturnReleaseId).orElseThrow(EntityNotFoundException::new)));
 
-        List<DemandAdHoc> demandAdHocList = new ArrayList<>();
-        warehouseManagerDto.getDemandAdHocs().forEach(demandAdHocId -> demandAdHocList.add(demandAdHocRepository.findById(demandAdHocId).orElseThrow(EntityNotFoundException::new)));
-
         List<DemandAdHoc> acceptedDemandAdHocList = new ArrayList<>();
         warehouseManagerDto.getAcceptedDemandAdHocs().forEach(acceptedDemandAdHocId -> acceptedDemandAdHocList.add(demandAdHocRepository.findById(acceptedDemandAdHocId).orElseThrow(EntityNotFoundException::new)));
 
