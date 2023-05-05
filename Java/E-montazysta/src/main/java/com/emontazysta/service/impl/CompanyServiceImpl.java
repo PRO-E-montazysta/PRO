@@ -64,8 +64,10 @@ public class CompanyServiceImpl implements CompanyService {
     @Transactional
     public CompanyDto addCompanyWithAdmin(CompanyWithAdminDto companyWithAdminDto) {
         companyWithAdminDto.setPassword(PasswordGenerator.generatePassword(10));
+
         Company company = companyRepository.save(CompanyWithAdminMapper.companyFromDto(companyWithAdminDto));
         CompanyAdmin companyAdmin = companyAdminRepository.save(CompanyWithAdminMapper.companyAdminFromDto(companyWithAdminDto));
+
         employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company, companyAdmin));
 
         emailService.sendEmail(
