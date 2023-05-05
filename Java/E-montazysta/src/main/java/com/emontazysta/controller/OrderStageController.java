@@ -1,5 +1,6 @@
 package com.emontazysta.controller;
 
+import com.emontazysta.model.dto.ElementSimpleReturnReleaseDto;
 import com.emontazysta.model.dto.OrderStageDto;
 import com.emontazysta.model.dto.OrderStageWithToolsAndElementsDto;
 import com.emontazysta.model.dto.ToolSimpleReturnReleaseDto;
@@ -75,6 +76,18 @@ public class OrderStageController {
     @Operation(description = "Allows to update Order Stage by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public OrderStageDto returnTools(@PathVariable Long id, @RequestBody List<ToolSimpleReturnReleaseDto> toolCodes) {
         return orderStageService.returnTools(id, toolCodes);
+    }
+
+    @PutMapping("/releaseElements/{id}")
+    @Operation(description = "Allows to update Order Stage by given Id.", security = @SecurityRequirement(name = "bearer-key"))
+    public OrderStageDto releaseElements(@PathVariable Long id, @RequestBody List<ElementSimpleReturnReleaseDto> elements) {
+        return orderStageService.releaseElements(id, elements);
+    }
+
+    @PutMapping("/returnElements/{id}")
+    @Operation(description = "Allows to update Order Stage by given Id.", security = @SecurityRequirement(name = "bearer-key"))
+    public OrderStageDto returnElements(@PathVariable Long id, @RequestBody List<ElementSimpleReturnReleaseDto> elements) {
+        return orderStageService.returnElements(id, elements);
     }
 
     @GetMapping("/filter")

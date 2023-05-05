@@ -304,4 +304,28 @@ public class OrderStageImpl implements OrderStageService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
     }
+
+    @Override
+    @Transactional
+    public OrderStageDto releaseElements(Long id, List<ElementSimpleReturnReleaseDto> elements) {
+        OrderStage orderStage = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        //Sprawdzenie, czy etap jest z firmy użytkownika
+        if(!orderStage.getOrders().getCompany().getId().equals(authUtils.getLoggedUserCompanyId())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        return orderStageMapper.toDto(repository.save(orderStage));
+    }
+
+    @Override
+    @Transactional
+    public OrderStageDto returnElements(Long id, List<ElementSimpleReturnReleaseDto> elements) {
+        OrderStage orderStage = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        //Sprawdzenie, czy etap jest z firmy użytkownika
+        if(!orderStage.getOrders().getCompany().getId().equals(authUtils.getLoggedUserCompanyId())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        
+        return orderStageMapper.toDto(repository.save(orderStage));
+    }
 }

@@ -1,5 +1,6 @@
 package com.emontazysta.service;
 
+import com.emontazysta.model.dto.ElementSimpleReturnReleaseDto;
 import com.emontazysta.model.dto.OrderStageDto;
 import com.emontazysta.model.dto.OrderStageWithToolsAndElementsDto;
 import com.emontazysta.model.dto.ToolSimpleReturnReleaseDto;
@@ -28,4 +29,6 @@ public interface OrderStageService {
 
     OrderStageDto releaseTools(Long id, List<ToolSimpleReturnReleaseDto> toolCodes);
     OrderStageDto returnTools(Long id, List<ToolSimpleReturnReleaseDto> toolCodes);
+    OrderStageDto releaseElements(Long id, List<ElementSimpleReturnReleaseDto> elements);
+    OrderStageDto returnElements(Long id, List<ElementSimpleReturnReleaseDto> elements);
 }
