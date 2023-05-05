@@ -49,7 +49,6 @@ const OrderStagesDetails = ({ isAddOrderStageVisible }: OrderStagesDetailsProps)
     })
 
     const getListOfStages = () => {
-        console.log('querujemy', queryOrderStages)
         return (
             <>
                 {queryOrderStages.data!.map((stage, index) => (

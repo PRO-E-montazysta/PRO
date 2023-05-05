@@ -60,11 +60,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
     useEffect(() => {
         const role = getRolesFromToken()
         if (role.length !== 0) setUserRole(role[0])
-        //musze tutaj chyba wrzucic w stan daty
-        if (stage?.listOfToolsPlannedNumber) {
-            console.log('in tools', stage)
-            setPlannedToolTypes(stage.listOfToolsPlannedNumber)
-        }
     }, [])
 
     useEffect(() => {
@@ -102,19 +97,12 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
         setExpandedInformation(!expandedInformation)
     }
 
-    // const getData = async () => {
-    //     console.log('in get', plannedToolTypes)
-    //     await formik.setFieldValue('listOfToolsPlannedNumber', plannedToolTypes)
-    //     await formik.setFieldValue('listOfElementsPlannedNumber', plannedElements)
-    //     await formik.setFieldValue('plannedStartDate', preparedPlannedStartDate)
-    //     await formik.setFieldValue('plannedEndDate', preparedPlannedEndDate)
-    // }
 
     const formik = useFormik({
         initialValues: {
             orderId: params.id!,
             name: isDisplayingMode ? stage!.name : '',
-            status: isDisplayingMode ? stage!.status : 'TODO',
+            status: isDisplayingMode ? stage!.status : null,
             price: isDisplayingMode ? stage!.price : '',
             plannedStartDate: isDisplayingMode ? '2023-04-08' : '',
             plannedEndDate: isDisplayingMode ? stage!.plannedEndDate : '',
@@ -343,6 +331,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                     plannedData={plannedToolTypes!}
                                     setPlannedData={setPlannedToolTypes}
                                     isDisplayingMode={isDisplayingMode!}
+                                    toolTypesListIds={stage?.listOfToolsPlannedNumber as any}
                                 />
                             </TabPanel>
                             <TabPanel value={tabValue} index={2}>
@@ -351,6 +340,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                     plannedData={plannedElements!}
                                     setPlannedData={setPlannedElements}
                                     isDisplayingMode={isDisplayingMode!}
+                                    elementsListIds={stage?.listOfElementsPlannedNumber as any}
                                 />
                             </TabPanel>
 

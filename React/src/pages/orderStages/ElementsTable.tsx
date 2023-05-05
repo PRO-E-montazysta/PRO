@@ -1,6 +1,4 @@
-import { Box, Button, TextField, Typography } from '@mui/material'
-import IconButton, { IconButtonProps } from '@mui/material/IconButton'
-import { styled } from '@mui/material/styles'
+import { Box, Button, TextField } from '@mui/material'
 import * as React from 'react'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -13,10 +11,14 @@ import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
-import { UseQueryResult } from 'react-query'
 import { OrderStage } from '../../types/model/OrderStage'
 import { AxiosError } from 'axios'
+import { useQuery } from 'react-query'
+import { PlannedToolType } from '../../types/model/ToolType'
+import { number } from 'yup'
 import { useEffect, useState } from 'react'
+import { PlannedElements } from '../../types/model/Element'
+import { getPlannedElementById } from '../../api/element.api'
 
 type OrderStageDetailsElementsTableType = {
     itemsArray: Array<any> | undefined
@@ -31,6 +33,7 @@ type OrderStageDetailsElementsTableType = {
         >
     >
     isDisplayingMode: boolean
+    elementsListIds: Array<number> | []
 }
 
 const OrderStageDetailsElementsTable = ({
@@ -38,14 +41,19 @@ const OrderStageDetailsElementsTable = ({
     setPlannedData,
     plannedData,
     isDisplayingMode,
+    elementsListIds,
 }: OrderStageDetailsElementsTableType) => {
-    const [tableData, setTableData] = useState([{ numberOfTools: 0, toolTypeId: 'toChange' }])
-    const [tableRow, setTableRow] = useState([{}])
     const [tableRowIndex, setTableRowIndex] = useState(0)
     const [selectedItemId, setSelectedItemId] = useState('')
     const [selectedItemNumber, setSelectedItemNumber] = useState(0)
 
-    // [{ numberOfTools: 0, toolTypeId: 'toChange' }]
+    const queryElements = useQuery<Array<PlannedElements>, AxiosError>(['planned-elements-list'], async () => {
+        return await Promise.all(
+            elementsListIds.map(async (element) => {
+                return await getPlannedElementById(element)
+            }),
+        )
+    })
 
     const handleItemNumberChange = (event: any) => {
         const { value: newValue } = event.target
@@ -57,39 +65,32 @@ const OrderStageDetailsElementsTable = ({
     }
 
     useEffect(() => {
-        console.log('zero danych1')
-
         if (!plannedData || plannedData.length === 0) {
-            console.log('zero danych')
             setPlannedData([{ numberOfElements: 0, elementId: 'toChange' }])
         }
+
+       
     }, [])
 
-    useEffect(() => {
-        console.log(
-            'useeffect',
-            'plannedData ' +
-                plannedData +
-                ' ' +
-                selectedItemId +
-                ' row' +
-                tableRowIndex +
-                ' number' +
-                selectedItemNumber,
-        )
+    useEffect(()=>{
+        if (!!queryElements.data) {
+            const filteredData = queryElements!.data!.map((element) => {
+                const data = { numberOfElements: element.numberOfElements, elementId: element.element.id.toString() }
+                return data
+            })
+            setPlannedData(filteredData)
+        }
+    },[queryElements])
 
+    useEffect(() => {
         // if (!plannedData) {
-        //     console.log('jestem tu-------')
 
         //     return setPlannedData([{ numberOfTools: selectedItemNumber, toolTypeId: selectedItemId }])
         // }
         // if (!!plannedData && plannedData.length === 0) {
-        //     console.log('jestem tu')
         //     return setPlannedData([{ numberOfTools: selectedItemNumber, toolTypeId: selectedItemId }])
         // }
         if (!!plannedData && !!selectedItemId) {
-            console.log('jestem tu2')
-
             const tempArray = [...plannedData]
             tempArray[tableRowIndex] = { numberOfElements: selectedItemNumber, elementId: selectedItemId }
             setPlannedData(tempArray)
@@ -97,16 +98,9 @@ const OrderStageDetailsElementsTable = ({
     }, [selectedItemId, selectedItemNumber])
 
     const handleDeleteItem = (rowIndex: number) => {
-        console.log('tableData', plannedData)
         const tempArray = [...plannedData]
-        // console.log('looking', tableData)
-        // console.log('looking2', tempArray)
-        console.log('row', rowIndex)
-        console.log('tempArray', tempArray)
         tempArray.splice(rowIndex, 1)
-        console.log('tempArray2', tempArray)
         setPlannedData(tempArray)
-        // console.log('dziala delete?', tempArray)
     }
 
     return (
@@ -236,7 +230,6 @@ const TableItemSelect = ({
             value={rowData.elementId}
             label={label}
             onChange={(event: SelectChangeEvent) => {
-                console.log('hejehejehej', event)
                 // setDisplaySelectedItemName(event.target.value as string)
                 setTableRowIndex(rowIndex)
             }}

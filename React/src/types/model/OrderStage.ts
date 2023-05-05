@@ -35,7 +35,7 @@ export type OrderStage = {
 export type CreateOrderStage = {
     orderId: string
     name: string
-    status: string
+    status: string | null
     price: string
     plannedStartDate: string
     plannedEndDate: string
