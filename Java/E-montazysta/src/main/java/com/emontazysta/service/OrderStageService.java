@@ -32,4 +32,5 @@ public interface OrderStageService {
     OrderStageDto releaseElements(Long id, List<ElementSimpleReturnReleaseDto> elements);
     OrderStageDto returnElements(Long id, List<ElementSimpleReturnReleaseDto> elements);
     OrderStageDto nextStatus(Long id);
+    OrderStageDto previousStatus(Long id);
 }

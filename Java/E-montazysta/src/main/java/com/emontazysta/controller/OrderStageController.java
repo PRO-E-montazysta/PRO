@@ -96,6 +96,12 @@ public class OrderStageController {
         return orderStageService.nextStatus(id);
     }
 
+    @PutMapping("/previousStatus/{id}")
+    @Operation(description = "Allows to change OrderStatus to previous one.", security = @SecurityRequirement(name = "bearer-key"))
+    public OrderStageDto previousStatus(@PathVariable Long id) {
+        return orderStageService.previousStatus(id);
+    }
+
     @GetMapping("/filter")
     @Operation(description = "Return filtered OrdersStage by given parameters.", security = @SecurityRequirement(name = "bearer-key"))
     public ResponseEntity<List<OrderStageDto>> Stages(OrdersStageSearchCriteria ordersStageSearchCriteria, Principal principal){

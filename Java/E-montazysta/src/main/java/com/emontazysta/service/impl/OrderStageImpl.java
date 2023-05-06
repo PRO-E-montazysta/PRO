@@ -444,4 +444,37 @@ public class OrderStageImpl implements OrderStageService {
 
         return orderStageMapper.toDto(repository.save(orderStage));
     }
+
+    @Override
+    public OrderStageDto previousStatus(Long id) {
+        OrderStage orderStage = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        //Check if OrderStage is from logged user company
+        if(!orderStage.getOrders().getCompany().getId().equals(authUtils.getLoggedUserCompanyId())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        Set<Role> loggedUserRoles = authUtils.getLoggedUser().getRoles();
+
+        if(orderStage.getStatus().equals(OrderStageStatus.ADDING_FITTERS) && loggedUserRoles.contains(Role.FOREMAN)) {
+            orderStage.setStatus(OrderStageStatus.PLANNING);
+        }else if(orderStage.getStatus().equals(OrderStageStatus.PICK_UP) && (loggedUserRoles.contains(Role.WAREHOUSE_MAN)
+                || loggedUserRoles.contains(Role.WAREHOUSE_MANAGER))) {
+            orderStage.setStatus(OrderStageStatus.ADDING_FITTERS);
+        }else if(orderStage.getStatus().equals(OrderStageStatus.REALESED) && loggedUserRoles.contains(Role.FOREMAN)) {
+            orderStage.setStatus(OrderStageStatus.PICK_UP);
+        }else if(orderStage.getStatus().equals(OrderStageStatus.ON_WORK) && loggedUserRoles.contains(Role.FOREMAN)) {
+            orderStage.setStatus(OrderStageStatus.REALESED);
+        }else if(orderStage.getStatus().equals(OrderStageStatus.RETURN) && (loggedUserRoles.contains(Role.WAREHOUSE_MAN)
+                || loggedUserRoles.contains(Role.WAREHOUSE_MANAGER))) {
+            orderStage.setStatus(OrderStageStatus.ON_WORK);
+        }else if(orderStage.getStatus().equals(OrderStageStatus.RETURNED) && loggedUserRoles.contains(Role.FOREMAN)) {
+            orderStage.setStatus(OrderStageStatus.RETURN);
+        }else if(orderStage.getStatus().equals(OrderStageStatus.FINISHED) && loggedUserRoles.contains(Role.FOREMAN)) {
+            orderStage.setStatus(OrderStageStatus.RETURNED);
+        }else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Brak możliwości zmiany!");
+        }
+
+        return orderStageMapper.toDto(repository.save(orderStage));
+    }
 }
