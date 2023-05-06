@@ -29,11 +29,10 @@ public class ElementSeleniumTests {
 
         wait.until(ExpectedConditions.elementToBeClickable(By.id(":r0:"))).click();
 
-        driver.findElement(By.id(":r0:")).sendKeys("warehouseManager1");
+        driver.findElement(By.id("username")).sendKeys("warehouseManager1");
 
-        driver.findElement(By.id(":r1:")).sendKeys("password");
 
-        driver.findElement(By.cssSelector(".MuiButton-contained")).click();
+        driver.findElement(By.id("login-LogIn")).click();
 
     }
     @After
