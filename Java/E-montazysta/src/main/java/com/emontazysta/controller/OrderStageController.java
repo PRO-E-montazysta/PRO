@@ -67,27 +67,33 @@ public class OrderStageController {
     }
 
     @PutMapping("/releaseTools/{id}")
-    @Operation(description = "Allows to update Order Stage by given Id.", security = @SecurityRequirement(name = "bearer-key"))
+    @Operation(description = "Allows to release given tools.", security = @SecurityRequirement(name = "bearer-key"))
     public OrderStageDto releaseTools(@PathVariable Long id, @RequestBody List<ToolSimpleReturnReleaseDto> toolCodes) {
         return orderStageService.releaseTools(id, toolCodes);
     }
 
     @PutMapping("/returnTools/{id}")
-    @Operation(description = "Allows to update Order Stage by given Id.", security = @SecurityRequirement(name = "bearer-key"))
+    @Operation(description = "Allows to return given tools.", security = @SecurityRequirement(name = "bearer-key"))
     public OrderStageDto returnTools(@PathVariable Long id, @RequestBody List<ToolSimpleReturnReleaseDto> toolCodes) {
         return orderStageService.returnTools(id, toolCodes);
     }
 
     @PutMapping("/releaseElements/{id}")
-    @Operation(description = "Allows to update Order Stage by given Id.", security = @SecurityRequirement(name = "bearer-key"))
+    @Operation(description = "Allows to release given elements.", security = @SecurityRequirement(name = "bearer-key"))
     public OrderStageDto releaseElements(@PathVariable Long id, @RequestBody List<ElementSimpleReturnReleaseDto> elements) {
         return orderStageService.releaseElements(id, elements);
     }
 
     @PutMapping("/returnElements/{id}")
-    @Operation(description = "Allows to update Order Stage by given Id.", security = @SecurityRequirement(name = "bearer-key"))
+    @Operation(description = "Allows to return given elements.", security = @SecurityRequirement(name = "bearer-key"))
     public OrderStageDto returnElements(@PathVariable Long id, @RequestBody List<ElementSimpleReturnReleaseDto> elements) {
         return orderStageService.returnElements(id, elements);
+    }
+
+    @PutMapping("/nextStatus/{id}")
+    @Operation(description = "Allows to change OrderStatus to next one.", security = @SecurityRequirement(name = "bearer-key"))
+    public OrderStageDto nextStatus(@PathVariable Long id) {
+        return orderStageService.nextStatus(id);
     }
 
     @GetMapping("/filter")

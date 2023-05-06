@@ -393,4 +393,15 @@ public class OrderStageImpl implements OrderStageService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
     }
+
+    @Override
+    public OrderStageDto nextStatus(Long id) {
+        OrderStage orderStage = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        //Sprawdzenie, czy etap jest z firmy użytkownika
+        if(!orderStage.getOrders().getCompany().getId().equals(authUtils.getLoggedUserCompanyId())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        return orderStageMapper.toDto(repository.save(orderStage));
+    }
 }
