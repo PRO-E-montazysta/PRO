@@ -27,6 +27,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -397,9 +398,48 @@ public class OrderStageImpl implements OrderStageService {
     @Override
     public OrderStageDto nextStatus(Long id) {
         OrderStage orderStage = repository.findById(id).orElseThrow(EntityNotFoundException::new);
-        //Sprawdzenie, czy etap jest z firmy użytkownika
+        //Check if OrderStage is from logged user company
         if(!orderStage.getOrders().getCompany().getId().equals(authUtils.getLoggedUserCompanyId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        Set<Role> loggedUserRoles = authUtils.getLoggedUser().getRoles();
+
+        if(orderStage.getStatus().equals(OrderStageStatus.PLANNING) && loggedUserRoles.contains(Role.SPECIALIST)) {
+            orderStage.setStatus(OrderStageStatus.ADDING_FITTERS);
+        }else if(orderStage.getStatus().equals(OrderStageStatus.ADDING_FITTERS) && loggedUserRoles.contains(Role.FOREMAN)) {
+            //Check if fitters are assigned
+            if(orderStage.getAssignedTo().size() > 0) {
+                //Check if needs to PICK_UP tools
+                if(orderStage.getListOfToolsPlannedNumber().size() == 0 &&
+                        orderStage.getListOfElementsPlannedNumber().size() == 0){
+                    orderStage.setStatus(OrderStageStatus.REALESED);
+                } else {
+                    orderStage.setStatus(OrderStageStatus.PICK_UP);
+                }
+            }else {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Przypisz montażystów do etapu!");
+            }
+        }else if(orderStage.getStatus().equals(OrderStageStatus.PICK_UP) && (loggedUserRoles.contains(Role.WAREHOUSE_MAN)
+                || loggedUserRoles.contains(Role.WAREHOUSE_MANAGER))) {
+            orderStage.setStatus(OrderStageStatus.REALESED);
+        }else if(orderStage.getStatus().equals(OrderStageStatus.REALESED) && loggedUserRoles.contains(Role.FOREMAN)) {
+            orderStage.setStatus(OrderStageStatus.ON_WORK);
+        }else if(orderStage.getStatus().equals(OrderStageStatus.ON_WORK) && loggedUserRoles.contains(Role.FOREMAN)) {
+            orderStage.setStatus(OrderStageStatus.RETURN);
+        }else if(orderStage.getStatus().equals(OrderStageStatus.RETURN) && (loggedUserRoles.contains(Role.WAREHOUSE_MAN)
+                || loggedUserRoles.contains(Role.WAREHOUSE_MANAGER))) {
+            //Check if all tools are returned
+            for(ToolRelease toolRelease : orderStage.getToolReleases()) {
+                if(toolRelease.getReturnTime() == null) {
+                    throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Zwróć wszystkie narzędzia!");
+                }
+                orderStage.setStatus(OrderStageStatus.RETURNED);
+            }
+        }else if(orderStage.getStatus().equals(OrderStageStatus.RETURNED) && loggedUserRoles.contains(Role.FOREMAN)) {
+            orderStage.setStatus(OrderStageStatus.FINISHED);
+        }else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Brak możliwości zmiany!");
         }
 
         return orderStageMapper.toDto(repository.save(orderStage));
