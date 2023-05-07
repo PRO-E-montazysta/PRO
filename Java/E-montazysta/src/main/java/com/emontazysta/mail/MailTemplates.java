@@ -31,4 +31,9 @@ public class MailTemplates {
                 "<p>Do zobaczenia w systemie<br />Zesp&oacute;ł <em>E-Montażysta</em></p>";
         return content;
     }
+
+    public static String resetPassword(String url) {
+        return "<p>Aby zresetować hasło kliknij poniższy link:</p>" +
+                "<p><a href=\"" + url + "\">Resetowanie hasła</a></p>";
+    }
 }
