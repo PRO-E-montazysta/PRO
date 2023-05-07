@@ -100,13 +100,12 @@ const ToolEventDetails = () => {
         staleTime: 10 * 60 * 1000,
     })
 
-
     return (
         <>
             <FormBox>
                 {/* TODO check if this return nice result  */}
                 <FormTitle
-                    text={
+                    mainTitle={
                         pageMode == 'new'
                             ? 'Nowa usterka narzędzia'
                             : 'Usterka ' +

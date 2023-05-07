@@ -94,7 +94,7 @@ const WarehouseDetails = () => {
 
     return (
         <FormBox>
-            <FormTitle text={pageMode == 'new' ? 'Nowy magazyn' : formik.values['name']} />
+            <FormTitle mainTitle={pageMode == 'new' ? 'Nowy magazyn' : formik.values['name']} />
             <FormPaper>
                 {queriesStatus.result != 'isSuccess' ? (
                     <QueryBoxStatus queriesStatus={queriesStatus} />

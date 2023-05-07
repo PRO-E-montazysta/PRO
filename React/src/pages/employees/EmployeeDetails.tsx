@@ -93,7 +93,7 @@ const EmployeeDetails = () => {
 
     return (
         <FormBox>
-            <FormTitle text={pageMode == 'new' ? 'Nowy pracownik' : formik.values['firstName']} />
+            <FormTitle mainTitle={pageMode == 'new' ? 'Nowy pracownik' : formik.values['firstName']} />
             <FormPaper>
                 {queriesStatus.result != 'isSuccess' ? (
                     <QueryBoxStatus queriesStatus={queriesStatus} />

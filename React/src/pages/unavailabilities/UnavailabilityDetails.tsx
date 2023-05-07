@@ -94,7 +94,7 @@ const UnavailabilityDetails = () => {
 
     return (
         <FormBox>
-            <FormTitle text={pageMode == 'new' ? 'Nowa nieobecność' : 'Nieobecność'} />
+            <FormTitle mainTitle={pageMode == 'new' ? 'Nowa nieobecność' : 'Nieobecność'} />
             <FormPaper>
                 {queriesStatus.result != 'isSuccess' ? (
                     <QueryBoxStatus queriesStatus={queriesStatus} />

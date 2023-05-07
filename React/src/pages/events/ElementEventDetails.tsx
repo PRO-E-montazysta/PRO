@@ -108,7 +108,7 @@ const ElementEventDetails = () => {
             <FormBox>
                 {/* TODO check if this return nice result  */}
                 <FormTitle
-                    text={
+                    mainTitle={
                         pageMode == 'new'
                             ? 'Nowa usterka elementu'
                             : 'Usterka ' +
