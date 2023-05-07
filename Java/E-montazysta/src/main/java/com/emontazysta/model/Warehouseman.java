@@ -34,8 +34,6 @@ public class Warehouseman extends Employee {
         this.elementReturnReleases = elementReturnReleases;
     }
 
-    private boolean deleted = Boolean.FALSE;
-
     @OneToMany(mappedBy = "releasedBy")
     private List<ToolRelease> releasedTools;
 

@@ -36,8 +36,6 @@ public class Manager extends Employee {
         this.elementEvents = mngElementEvents;
     }
 
-    private boolean deleted = Boolean.FALSE;
-
     @OneToMany(mappedBy = "assignedBy")
     private List<Unavailability> createdUnavailabilities;
 

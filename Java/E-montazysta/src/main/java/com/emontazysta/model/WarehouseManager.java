@@ -34,8 +34,6 @@ public class WarehouseManager extends Warehouseman {
         this.acceptedDemandAdHocs = acceptedDemandAdHocs;
     }
 
-    private boolean deleted = Boolean.FALSE;
-
     @OneToMany(mappedBy = "warehouseManager")
     private List<DemandAdHoc> acceptedDemandAdHocs;
 }

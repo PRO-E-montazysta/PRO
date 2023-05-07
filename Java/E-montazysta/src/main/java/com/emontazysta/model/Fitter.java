@@ -35,8 +35,6 @@ public class Fitter extends Employee {
           this.workingOn = workingOn;
      }
 
-     private boolean deleted = Boolean.FALSE;
-
      @ManyToMany
      private List<OrderStage> workingOn;
 

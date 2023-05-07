@@ -39,8 +39,6 @@ public class Foreman extends Fitter {
         this.demandsAdHocs = demandsAdHocs;
     }
 
-    private boolean deleted = Boolean.FALSE;
-
     @OneToMany(mappedBy = "managedBy")
     private List<OrderStage> ordersStagesList;
 

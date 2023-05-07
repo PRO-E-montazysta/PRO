@@ -33,8 +33,6 @@ public class Specialist extends Employee {
         this.demandAdHocs = demandAdHocs;
     }
 
-    private boolean deleted = Boolean.FALSE;
-
     @OneToMany(mappedBy = "specialist")
     private List<Orders> orders;
 
