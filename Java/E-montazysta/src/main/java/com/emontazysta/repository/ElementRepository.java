@@ -9,6 +9,6 @@ import java.util.Optional;
 public interface ElementRepository extends JpaRepository<Element,Long> {
 
     Optional<Element> findByIdAndDeletedIsFalse(Long id);
-    Optional<Element> findByCodeAndDeletedIsFalse(String code);
+    Optional<Element> findByCode(String code);
     List<Element> findAllByDeletedIsFalse();
 }

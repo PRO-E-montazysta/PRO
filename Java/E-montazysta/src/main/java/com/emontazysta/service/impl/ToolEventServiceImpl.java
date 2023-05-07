@@ -29,14 +29,14 @@ public class ToolEventServiceImpl implements ToolEventService {
 
     @Override
     public List<ToolEventDto> getAll() {
-        return repository.findAllByDeletedIsFalse().stream()
+        return repository.findAll().stream()
                 .map(toolEventMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public ToolEventDto getById(Long id) {
-        ToolEvent toolEvent = repository.findByIdAndDeletedIsFalse(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        ToolEvent toolEvent = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         AppUser user =  authUtils.getLoggedUser();
         Boolean displayOwn = user.getRoles().contains(Role.FITTER) || user.getRoles().contains(Role.FOREMAN);
@@ -83,7 +83,7 @@ public class ToolEventServiceImpl implements ToolEventService {
     @Override
     public ToolEventDto update(Long id, ToolEventDto toolEventDto) {
         ToolEvent updatedToolEvent = toolEventMapper.toEntity(toolEventDto);
-        ToolEvent toolEvent = repository.findByIdAndDeletedIsFalse(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        ToolEvent toolEvent = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         //Check if tool in event is from user company
         if(!updatedToolEvent.getTool().getWarehouse().getCompany().getId().equals(authUtils.getLoggedUserCompanyId())){

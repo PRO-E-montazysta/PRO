@@ -22,14 +22,14 @@ public class ElementReturnReleaseServiceImpl implements ElementReturnReleaseServ
 
     @Override
     public List<ElementReturnReleaseDto> getAll() {
-        return repository.findAllByDeletedIsFalse().stream()
+        return repository.findAll().stream()
                 .map(elementReturnReleaseMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public ElementReturnReleaseDto getById(Long id) {
-        ElementReturnRelease elementReturnRelease = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        ElementReturnRelease elementReturnRelease = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         return elementReturnReleaseMapper.toDto(elementReturnRelease);
     }
 
@@ -48,7 +48,7 @@ public class ElementReturnReleaseServiceImpl implements ElementReturnReleaseServ
     @Transactional
     public ElementReturnReleaseDto update(Long id, ElementReturnReleaseDto elementReturnReleaseDto) {
         ElementReturnRelease updatedElementReturnRelease = elementReturnReleaseMapper.toEntity(elementReturnReleaseDto);
-        ElementReturnRelease elementReturnReleaseDb = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        ElementReturnRelease elementReturnReleaseDb = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         elementReturnReleaseDb.setReleaseTime(updatedElementReturnRelease.getReleaseTime());
         elementReturnReleaseDb.setReleasedQuantity(updatedElementReturnRelease.getReleasedQuantity());
         elementReturnReleaseDb.setReturnedQuantity(updatedElementReturnRelease.getReturnedQuantity());

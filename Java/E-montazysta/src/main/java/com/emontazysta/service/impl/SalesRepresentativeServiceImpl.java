@@ -30,14 +30,14 @@ public class SalesRepresentativeServiceImpl implements SalesRepresentativeServic
 
     @Override
     public List<SalesRepresentativeDto> getAll() {
-        return repository.findAllByDeletedIsFalse().stream()
+        return repository.findAll().stream()
                 .map(salesRepresentativeMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public SalesRepresentativeDto getById(Long id) {
-        SalesRepresentative salesRepresentative = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        SalesRepresentative salesRepresentative = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         SalesRepresentativeDto result = salesRepresentativeMapper.toDto(salesRepresentative);
 
         if(!authUtils.getLoggedUser().getRoles().contains(Role.ADMIN)) {
@@ -85,7 +85,7 @@ public class SalesRepresentativeServiceImpl implements SalesRepresentativeServic
     @Override
     public SalesRepresentativeDto update(Long id, SalesRepresentativeDto salesRepresentativeDto) {
         SalesRepresentative updatedSalesRepresentative = salesRepresentativeMapper.toEntity(salesRepresentativeDto);
-        SalesRepresentative salesRepresentative = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        SalesRepresentative salesRepresentative = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         salesRepresentative.setFirstName(updatedSalesRepresentative.getFirstName());
         salesRepresentative.setLastName(updatedSalesRepresentative.getLastName());
         salesRepresentative.setEmail(updatedSalesRepresentative.getEmail());

@@ -23,14 +23,14 @@ public class ToolReleaseServiceImpl implements ToolReleaseService {
 
     @Override
     public List<ToolReleaseDto> getAll() {
-        return repository.findAllByDeletedIsFalse().stream()
+        return repository.findAll().stream()
                 .map(toolReleaseMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public ToolReleaseDto getById(Long id) {
-        ToolRelease toolRelease = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        ToolRelease toolRelease = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         return toolReleaseMapper.toDto(toolRelease);
     }
 
@@ -51,7 +51,7 @@ public class ToolReleaseServiceImpl implements ToolReleaseService {
     public ToolReleaseDto update(Long id, ToolReleaseDto toolReleaseDto) {
 
         ToolRelease updatedToolRelease = toolReleaseMapper.toEntity(toolReleaseDto);
-        ToolRelease toolReleaseDb = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        ToolRelease toolReleaseDb = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         toolReleaseDb.setReturnTime(updatedToolRelease.getReturnTime());
         toolReleaseDb.setReceivedBy(updatedToolRelease.getReceivedBy());
         toolReleaseDb.setReleasedBy(updatedToolRelease.getReleasedBy());

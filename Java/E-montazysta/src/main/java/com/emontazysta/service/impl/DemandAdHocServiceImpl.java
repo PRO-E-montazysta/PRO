@@ -43,7 +43,7 @@ public class DemandAdHocServiceImpl implements DemandAdHocService {
 
     @Override
     public List<DemandAdHocDto> getAll() {
-        return repository.findAllByDeletedIsFalse().stream()
+        return repository.findAll().stream()
                 .map(demandAdHocMapper::toDto)
                 .collect(Collectors.toList());
     }
@@ -51,7 +51,7 @@ public class DemandAdHocServiceImpl implements DemandAdHocService {
     @Override
     public DemandAdHocDto getById(Long id) {
 
-        DemandAdHoc demandAdHoc = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        DemandAdHoc demandAdHoc = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         return demandAdHocMapper.toDto(demandAdHoc);
     }
 
@@ -119,7 +119,7 @@ public class DemandAdHocServiceImpl implements DemandAdHocService {
     @Override
     @Transactional
     public DemandAdHocDto update(Long id, DemandAdHocWithToolsAndElementsDto demandAdHocDto) {
-        DemandAdHoc demandAdHocDb = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        DemandAdHoc demandAdHocDb = repository.findById(id).orElseThrow(EntityNotFoundException::new);
 
         demandAdHocDb.setDescription(demandAdHocDto.getDescription());
 

@@ -31,14 +31,14 @@ public class ToolServiceImpl implements ToolService {
 
     @Override
     public List<ToolDto> getAll() {
-        return repository.findAllByDeletedIsFalse().stream()
+        return repository.findAll().stream()
                 .map(toolMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public ToolDto getById(Long id) {
-        Tool tool = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        Tool tool = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         return toolMapper.toDto(tool);
     }
 
@@ -70,7 +70,7 @@ public class ToolServiceImpl implements ToolService {
     public ToolDto update(Long id, ToolDto toolDto) {
 
         Tool updatedTool = toolMapper.toEntity(toolDto);
-        Tool tool = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        Tool tool = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         tool.setName(updatedTool.getName());
         tool.setToolReleases(updatedTool.getToolReleases());
         tool.setWarehouse(updatedTool.getWarehouse());

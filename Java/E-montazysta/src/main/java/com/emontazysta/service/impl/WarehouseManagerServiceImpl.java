@@ -30,14 +30,14 @@ public class WarehouseManagerServiceImpl implements WarehouseManagerService {
 
     @Override
     public List<WarehouseManagerDto> getAll() {
-        return repository.findAllByDeletedIsFalse().stream()
+        return repository.findAll().stream()
                 .map(warehouseManagerMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public WarehouseManagerDto getById(Long id) {
-        WarehouseManager warehouseManager = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        WarehouseManager warehouseManager = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         WarehouseManagerDto result = warehouseManagerMapper.toDto(warehouseManager);
 
         if(!authUtils.getLoggedUser().getRoles().contains(Role.ADMIN)) {
@@ -86,7 +86,7 @@ public class WarehouseManagerServiceImpl implements WarehouseManagerService {
     @Override
     public WarehouseManagerDto update(Long id, WarehouseManagerDto warehouseManagerDto) {
         WarehouseManager updatedWarehouseManager = warehouseManagerMapper.toEntity(warehouseManagerDto);
-        WarehouseManager warehouseManager = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        WarehouseManager warehouseManager = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         warehouseManager.setFirstName(updatedWarehouseManager.getFirstName());
         warehouseManager.setLastName(updatedWarehouseManager.getLastName());
         warehouseManager.setEmail(updatedWarehouseManager.getEmail());

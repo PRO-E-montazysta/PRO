@@ -42,14 +42,14 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     @Override
     public List<WarehouseDto> getAll() {
-        return repository.findAllByDeletedIsFalse().stream()
+        return repository.findAll().stream()
                 .map(warehouseMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public WarehouseDto getById(Long id) {
-        Warehouse warehouse = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        Warehouse warehouse = repository.findById(id).orElseThrow(EntityNotFoundException::new);
 
         //Check if Warehouse is from user company
         if(!Objects.equals(warehouse.getCompany().getId(), authUtils.getLoggedUserCompanyId())){
@@ -81,7 +81,7 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     @Override
     public WarehouseDto update(Long id, WarehouseWithLocationDto warehouseWithLocationDto) {
-        Warehouse warehouse = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        Warehouse warehouse = repository.findById(id).orElseThrow(EntityNotFoundException::new);
 
         //Check if Warehouse is from user company
         if(!Objects.equals(warehouse.getCompany().getId(), authUtils.getLoggedUserCompanyId())){
@@ -111,7 +111,7 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     @Override
     public WarehouseDto addWithWarehouseCount(WarehouseDto warehouseDto) {
-        Company company = companyRepository.findByIdAndDeletedIsFalse(authUtils.getLoggedUserCompanyId()).orElseThrow(EntityNotFoundException::new);
+        Company company = companyRepository.findById(authUtils.getLoggedUserCompanyId()).orElseThrow(EntityNotFoundException::new);
         warehouseDto.setCompanyId(company.getId());
         warehouseDto.setElementInWarehouses(new ArrayList<>());
         warehouseDto.setTools(new ArrayList<>());

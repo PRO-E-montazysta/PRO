@@ -19,14 +19,14 @@ public class ElementsPlannedServiceImpl implements ElementsPlannedNumberService 
     private final ElementsPlannedNumberMapper elementsPlannedNumberMapper;
     @Override
     public List<ElementsPlannedNumberDto> getAll() {
-        return elementsPlannedNumberRepository.findAllByDeletedIsFalse().stream()
+        return elementsPlannedNumberRepository.findAll().stream()
                 .map(elementsPlannedNumberMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public ElementsPlannedNumberDto getById(Long id) {
-        ElementsPlannedNumber elementsPlannedNumber = elementsPlannedNumberRepository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        ElementsPlannedNumber elementsPlannedNumber = elementsPlannedNumberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         return elementsPlannedNumberMapper.toDto(elementsPlannedNumber);
     }
 
@@ -44,7 +44,7 @@ public class ElementsPlannedServiceImpl implements ElementsPlannedNumberService 
     @Override
     public ElementsPlannedNumberDto update(Long id, ElementsPlannedNumberDto elementsPlannedNumberDto) {
         ElementsPlannedNumber updatedElementPlannedNumber = elementsPlannedNumberMapper.toEntity(elementsPlannedNumberDto);
-        ElementsPlannedNumber elementsPlannedNumber = elementsPlannedNumberRepository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        ElementsPlannedNumber elementsPlannedNumber = elementsPlannedNumberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         elementsPlannedNumber.setElement(updatedElementPlannedNumber.getElement());
         elementsPlannedNumber.setNumberOfElements(updatedElementPlannedNumber.getNumberOfElements());
         elementsPlannedNumber.setOrderStage(updatedElementPlannedNumber.getOrderStage());

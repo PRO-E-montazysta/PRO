@@ -20,14 +20,14 @@ public class ToolsPlannedNumberServiceImpl implements ToolsPlannedNumberService 
     private final ToolsPlannedNumberMapper toolsPlannedNumberMapper;
     @Override
     public List<ToolsPlannedNumberDto> getAll() {
-        return toolsPlannedNumberRepository.findAllByDeletedIsFalse().stream()
+        return toolsPlannedNumberRepository.findAll().stream()
                 .map(toolsPlannedNumberMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public ToolsPlannedNumberDto getById(Long id) {
-        ToolsPlannedNumber toolsPlannedNumber = toolsPlannedNumberRepository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        ToolsPlannedNumber toolsPlannedNumber = toolsPlannedNumberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         return toolsPlannedNumberMapper.toDto(toolsPlannedNumber);
     }
 
@@ -45,7 +45,7 @@ public class ToolsPlannedNumberServiceImpl implements ToolsPlannedNumberService 
     @Override
     public ToolsPlannedNumberDto update(Long id, ToolsPlannedNumberDto toolsPlannedNumberDto) {
         ToolsPlannedNumber updatedToolsPlannedNumber = toolsPlannedNumberMapper.toEntity(toolsPlannedNumberDto);
-        ToolsPlannedNumber toolsPlannedNumber = toolsPlannedNumberRepository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        ToolsPlannedNumber toolsPlannedNumber = toolsPlannedNumberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         toolsPlannedNumber.setNumberOfTools(updatedToolsPlannedNumber.getNumberOfTools());
         toolsPlannedNumber.setToolType(updatedToolsPlannedNumber.getToolType());
         toolsPlannedNumber.setOrderStage(updatedToolsPlannedNumber.getOrderStage());

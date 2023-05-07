@@ -21,14 +21,14 @@ public class ElementInWarehouseServiceImpl implements ElementInWarehouseService 
 
     @Override
     public List<ElementInWarehouseDto> getAll(){
-        return elementInWarehouseRepository.findAllByDeletedIsFalse().stream()
+        return elementInWarehouseRepository.findAll().stream()
                 .map(elementInWarehouseMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public ElementInWarehouseDto getById(Long id) {
-        ElementInWarehouse elementInWarehouse = elementInWarehouseRepository.findByIdAndDeletedIsFalse(id).orElseThrow(() -> new EntityNotFoundException("Element with id " + id + " not found in warehouse!"));
+        ElementInWarehouse elementInWarehouse = elementInWarehouseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Element with id " + id + " not found in warehouse!"));
         return elementInWarehouseMapper.toDto(elementInWarehouse);
 
     }
@@ -47,7 +47,7 @@ public class ElementInWarehouseServiceImpl implements ElementInWarehouseService 
     @Override
     public ElementInWarehouseDto update(Long id, ElementInWarehouseDto elementInWarehouseDto) {
         ElementInWarehouse updatedElementInWarehouse = elementInWarehouseMapper.toEntity(elementInWarehouseDto);
-        ElementInWarehouse elementInWarehouse = elementInWarehouseRepository.findByIdAndDeletedIsFalse(id).orElseThrow(() -> new EntityNotFoundException("Element with id " + id + " not found in warehouse!"));
+        ElementInWarehouse elementInWarehouse = elementInWarehouseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Element with id " + id + " not found in warehouse!"));
         elementInWarehouse.setInWarehouseCount(updatedElementInWarehouse.getInWarehouseCount());
         elementInWarehouse.setInUnitCount(updatedElementInWarehouse.getInUnitCount());
         elementInWarehouse.setRack(updatedElementInWarehouse.getRack());

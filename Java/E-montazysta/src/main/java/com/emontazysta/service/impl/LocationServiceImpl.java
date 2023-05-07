@@ -21,14 +21,14 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public List<LocationDto> getAll() {
-        return repository.findAllByDeletedIsFalse().stream()
+        return repository.findAll().stream()
                 .map(locationMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public LocationDto getById(Long id) {
-        Location location = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        Location location = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         return locationMapper.toDto(location);
     }
 
@@ -46,7 +46,7 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public LocationDto update(Long id, LocationDto locationDto) {
         Location updatedLocation = locationMapper.toEntity(locationDto);
-        Location location = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        Location location = repository.findById(id).orElseThrow(EntityNotFoundException::new);
 
         location.setXCoordinate(updatedLocation.getXCoordinate());
         location.setYCoordinate(updatedLocation.getYCoordinate());

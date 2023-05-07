@@ -30,14 +30,14 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Override
     public List<ManagerDto> getAll() {
-        return repository.findAllByDeletedIsFalse().stream()
+        return repository.findAll().stream()
                 .map(managerMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public ManagerDto getById(Long id) {
-        Manager manager = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        Manager manager = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         ManagerDto result = managerMapper.toDto(manager);
 
         if(!authUtils.getLoggedUser().getRoles().contains(Role.ADMIN)) {
@@ -88,7 +88,7 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public ManagerDto update(Long id, ManagerDto managerDto) {
         Manager updatedManager = managerMapper.toEntity(managerDto);
-        Manager manager = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        Manager manager = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         manager.setFirstName(updatedManager.getFirstName());
         manager.setLastName(updatedManager.getLastName());
         manager.setEmail(updatedManager.getEmail());

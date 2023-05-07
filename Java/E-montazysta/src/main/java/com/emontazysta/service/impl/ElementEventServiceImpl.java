@@ -29,14 +29,14 @@ public class ElementEventServiceImpl implements ElementEventService {
 
     @Override
     public List<ElementEventDto> getAll() {
-        return repository.findAllByDeletedIsFalse().stream()
+        return repository.findAll().stream()
                 .map(elementEventMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public ElementEventDto getById(Long id){
-        ElementEvent elementEvent = repository.findByIdAndDeletedIsFalse(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        ElementEvent elementEvent = repository.findById(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         AppUser user =  authUtils.getLoggedUser();
         Boolean displayOwn = user.getRoles().contains(Role.FITTER) || user.getRoles().contains(Role.FOREMAN);
@@ -73,7 +73,7 @@ public class ElementEventServiceImpl implements ElementEventService {
 
     @Override
     public void delete(Long id) {
-        ElementEvent elementEvent = repository.findByIdAndDeletedIsFalse(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        ElementEvent elementEvent = repository.findById(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         if(!elementEvent.getElement().getElementInWarehouses().stream().findFirst().get().getWarehouse()
                 .getCompany().getId().equals(authUtils.getLoggedUserCompanyId()))
@@ -85,7 +85,7 @@ public class ElementEventServiceImpl implements ElementEventService {
     @Override
     public ElementEventDto update(Long id, ElementEventDto event) {
         ElementEvent updatedElementEvent = elementEventMapper.toEntity(event);
-        ElementEvent elementEvent = repository.findByIdAndDeletedIsFalse(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        ElementEvent elementEvent = repository.findById(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         //Check if element in event is from user company
         if(!updatedElementEvent.getElement().getElementInWarehouses().stream().findFirst().get().getWarehouse()

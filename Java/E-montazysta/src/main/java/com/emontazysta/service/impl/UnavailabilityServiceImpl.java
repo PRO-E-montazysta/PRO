@@ -30,14 +30,14 @@ public class UnavailabilityServiceImpl implements UnavailabilityService {
 
     @Override
     public List<UnavailabilityDto> getAll() {
-        return repository.findAllByDeletedIsFalse().stream()
+        return repository.findAll().stream()
                 .map(unavailabilityMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public UnavailabilityDto getById(Long id) {
-        Unavailability unavailability = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        Unavailability unavailability = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         return unavailabilityMapper.toDto(unavailability);
     }
 
@@ -70,7 +70,7 @@ public class UnavailabilityServiceImpl implements UnavailabilityService {
     @Override
     public UnavailabilityDto update(Long id, UnavailabilityDto unavailabilityDto) {
         Unavailability updatedUnavailability = unavailabilityMapper.toEntity(unavailabilityDto);
-        Unavailability unavailability = repository.findByIdAndDeletedIsFalse(id).orElseThrow(EntityNotFoundException::new);
+        Unavailability unavailability = repository.findById(id).orElseThrow(EntityNotFoundException::new);
 
         unavailability.setTypeOfUnavailability(updatedUnavailability.getTypeOfUnavailability());
         unavailability.setDescription(updatedUnavailability.getDescription());
