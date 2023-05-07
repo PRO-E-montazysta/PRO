@@ -33,6 +33,7 @@ public class CommentMapper {
                 .attachments(comment.getAttachments().stream()
                         .map(Attachment::getId)
                         .collect(Collectors.toList()))
+                .deleted(comment.isDeleted())
                 .build();
     }
 

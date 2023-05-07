@@ -39,6 +39,7 @@ public class ToolMapper {
                         .map(ToolEvent::getId)
                         .collect(Collectors.toList()))
                 .toolTypeId(tool.getToolType() == null ? null : tool.getToolType().getId())
+                .deleted(tool.isDeleted())
                 .build();
     }
 

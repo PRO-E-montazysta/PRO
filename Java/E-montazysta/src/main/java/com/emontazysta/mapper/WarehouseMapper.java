@@ -39,6 +39,7 @@ public class WarehouseMapper {
                 .tools(warehouse.getTools().stream()
                         .map(Tool::getId)
                         .collect(Collectors.toList()))
+                .deleted(warehouse.isDeleted())
                 .build();
     }
 

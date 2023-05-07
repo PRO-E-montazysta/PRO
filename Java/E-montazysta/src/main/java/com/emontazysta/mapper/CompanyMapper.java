@@ -52,6 +52,7 @@ public class CompanyMapper {
                 .toolTypes(company.getToolTypes().stream()
                         .map(ToolType::getId)
                         .collect(Collectors.toList()))
+                .deleted(company.isDeleted())
                 .build();
     }
 

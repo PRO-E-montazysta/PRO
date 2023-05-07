@@ -23,4 +23,5 @@ public class CommentDto {
     private Long messageCreatorId;
     private Long orderStageId;
     private List<Long> attachments;
+    private boolean deleted;
 }

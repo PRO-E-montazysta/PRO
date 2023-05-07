@@ -28,4 +28,5 @@ public class ToolEventDto {
     @NotNull(message = "Tool id cannot be empty")
     private Long toolId;
     private List<Long> attachments;
+    private boolean deleted;
 }

@@ -32,6 +32,7 @@ public class ToolReleaseMapper {
                 .toolId(toolRelease.getTool() == null ? null : toolRelease.getTool().getId())
                 .demandAdHocId(toolRelease.getDemandAdHoc() == null ? null : toolRelease.getDemandAdHoc().getId())
                 .orderStageId(toolRelease.getOrderStage() == null ? null : toolRelease.getOrderStage().getId())
+                .deleted(toolRelease.isDeleted())
                 .build();
     }
 

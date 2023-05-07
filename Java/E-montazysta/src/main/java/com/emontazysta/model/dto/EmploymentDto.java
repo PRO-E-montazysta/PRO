@@ -23,4 +23,5 @@ public class EmploymentDto {
     private Long companyId;
     @NotNull(message = "Employee id cannot be empty")
     private Long employeeId;
+    private boolean deleted;
 }

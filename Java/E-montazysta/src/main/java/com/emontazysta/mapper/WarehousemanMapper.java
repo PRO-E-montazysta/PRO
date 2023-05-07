@@ -89,6 +89,7 @@ public class WarehousemanMapper {
                 .unavailableFrom(statusService.checkUnavailability(warehouseman) == null ? null : statusService.checkUnavailability(warehouseman).getUnavailableFrom())
                 .unavailableTo(statusService.checkUnavailability(warehouseman) == null ? null : statusService.checkUnavailability(warehouseman).getUnavailableTo())
                 .unavailbilityDescription(statusService.checkUnavailability(warehouseman) == null ? null : statusService.checkUnavailability(warehouseman).getDescription())
+                .deleted(warehouseman.isDeleted())
                 .build();
     }
 

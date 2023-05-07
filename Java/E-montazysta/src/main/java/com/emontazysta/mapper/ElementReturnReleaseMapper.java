@@ -34,6 +34,7 @@ public class ElementReturnReleaseMapper {
                 .demandAdHocId(elementReturnRelease.getDemandAdHoc() == null ? null : elementReturnRelease.getDemandAdHoc().getId())
                 .foremanId(elementReturnRelease.getForeman() == null ? null : elementReturnRelease.getForeman().getId())
                 .orderStageId(elementReturnRelease.getOrderStage() == null ? null : elementReturnRelease.getOrderStage().getId())
+                .deleted(elementReturnRelease.isDeleted())
                 .build();
     }
 

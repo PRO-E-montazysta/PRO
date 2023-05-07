@@ -33,4 +33,5 @@ public class AttachmentDto {
     private Long elementId;
     private Long orderStageId;
     private Long elementEventId;
+    private boolean deleted;
 }

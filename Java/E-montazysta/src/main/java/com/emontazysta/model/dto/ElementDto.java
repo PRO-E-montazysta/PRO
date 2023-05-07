@@ -30,4 +30,5 @@ public class ElementDto {
     private List<Long> elementEvents;
     private Long attachmentId;
     private List<Long> ListOfElementsPlannedNumber;
+    private boolean deleted;
 }

@@ -79,6 +79,7 @@ public class FitterMapper {
                 .unavailableFrom(statusService.checkUnavailability(fitter) == null ? null : statusService.checkUnavailability(fitter).getUnavailableFrom())
                 .unavailableTo(statusService.checkUnavailability(fitter) == null ? null : statusService.checkUnavailability(fitter).getUnavailableTo())
                 .unavailbilityDescription(statusService.checkUnavailability(fitter) == null ? null : statusService.checkUnavailability(fitter).getDescription())
+                .deleted(fitter.isDeleted())
                 .build();
     }
 

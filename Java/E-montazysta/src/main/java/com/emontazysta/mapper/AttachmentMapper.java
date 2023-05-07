@@ -44,6 +44,7 @@ public class AttachmentMapper {
                 .elementId(attachment.getElement() == null ? null : attachment.getElement().getId())
                 .orderStageId(attachment.getOrderStage() == null ? null : attachment.getOrderStage().getId())
                 .elementEventId(attachment.getElementEvent() == null ? null : attachment.getElementEvent().getId())
+                .deleted(attachment.isDeleted())
                 .build();
     }
 

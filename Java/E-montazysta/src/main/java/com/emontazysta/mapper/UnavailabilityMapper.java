@@ -26,6 +26,7 @@ public class UnavailabilityMapper {
                 .unavailableTo(unavailability.getUnavailableTo())
                 .assignedToId(unavailability.getAssignedTo() == null ? null : unavailability.getAssignedTo().getId())
                 .assignedById(unavailability.getAssignedBy() == null ? null : unavailability.getAssignedBy().getId())
+                .deleted(unavailability.isDeleted())
                 .build();
     }
 

@@ -23,6 +23,7 @@ public class EmploymentMapper {
                 .dateOfDismiss(employment.getDateOfDismiss())
                 .companyId(employment.getCompany() == null ? null : employment.getCompany().getId())
                 .employeeId(employment.getEmployee() == null ? null : employment.getEmployee().getId())
+                .deleted(employment.isDeleted())
                 .build();
     }
 

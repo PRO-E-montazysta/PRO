@@ -33,6 +33,7 @@ public class LocationMapper {
                 .zipCode(location.getZipCode())
                 .orderId(location.getOrder() == null ? null : location.getOrder().getId())
                 .warehouseId(location.getWarehouse() == null ? null : location.getWarehouse().getId())
+                .deleted(location.isDeleted())
                 .build();
     }
 

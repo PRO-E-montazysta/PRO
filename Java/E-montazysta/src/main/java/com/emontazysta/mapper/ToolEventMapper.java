@@ -38,6 +38,7 @@ public class ToolEventMapper {
                 .attachments(event.getAttachments().stream()
                         .map(Attachment::getId)
                         .collect(Collectors.toList()))
+                .deleted(event.isDeleted())
                 .build();
     }
 

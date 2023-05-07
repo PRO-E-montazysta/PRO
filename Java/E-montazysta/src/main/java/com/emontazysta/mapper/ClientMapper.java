@@ -29,6 +29,7 @@ public class ClientMapper {
                 .orders(client.getOrders().stream()
                         .map(Orders::getId)
                         .collect(Collectors.toList()))
+                .deleted(client.isDeleted())
                 .build();
     }
 

@@ -49,6 +49,7 @@ public class ElementMapper {
                 .ListOfElementsPlannedNumber(element.getListOfElementsPlannedNumber().stream()
                         .map(ElementsPlannedNumber::getId)
                         .collect(Collectors.toList()))
+                .deleted(element.isDeleted())
                 .build();
     }
 

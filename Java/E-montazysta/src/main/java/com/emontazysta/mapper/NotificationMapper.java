@@ -31,6 +31,7 @@ public class NotificationMapper {
                         .map(AppUser::getId)
                         .collect(Collectors.toList()))
                 .orderStageId(notification.getOrderStage() == null ? null : notification.getOrderStage().getId())
+                .deleted(notification.isDeleted())
                 .build();
     }
 

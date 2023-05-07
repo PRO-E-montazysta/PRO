@@ -89,6 +89,7 @@ public class ManagerMapper {
                 .unavailableFrom(statusService.checkUnavailability(manager) == null ? null : statusService.checkUnavailability(manager).getUnavailableFrom())
                 .unavailableTo(statusService.checkUnavailability(manager) == null ? null : statusService.checkUnavailability(manager).getUnavailableTo())
                 .unavailbilityDescription(statusService.checkUnavailability(manager) == null ? null : statusService.checkUnavailability(manager).getDescription())
+                .deleted(manager.isDeleted())
                 .build();
     }
 

@@ -57,6 +57,7 @@ public class CompanyAdminMapper {
                 .toolEvents(companyAdmin.getToolEvents().stream()
                         .map(ToolEvent::getId)
                         .collect(Collectors.toList()))
+                .deleted(companyAdmin.isDeleted())
                 .build();
     }
 

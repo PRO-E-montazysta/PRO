@@ -20,5 +20,5 @@ public class ElementsPlannedNumberDto {
     private Long elementId;
     private Long orderStageId;
     private Long demandAdHocId;
-
+    private boolean deleted;
 }

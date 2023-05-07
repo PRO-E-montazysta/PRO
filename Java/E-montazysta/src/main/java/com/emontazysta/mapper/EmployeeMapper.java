@@ -31,6 +31,7 @@ public class EmployeeMapper {
                 .unavailableFrom(statusService.checkUnavailability(employee) == null ? null : statusService.checkUnavailability(employee).getUnavailableFrom())
                 .unavailableTo(statusService.checkUnavailability(employee) == null ? null : statusService.checkUnavailability(employee).getUnavailableTo())
                 .unavailbilityDescription(statusService.checkUnavailability(employee) == null ? null : statusService.checkUnavailability(employee).getDescription())
+                .deleted(employee.isDeleted())
                 .build();
     }
 }

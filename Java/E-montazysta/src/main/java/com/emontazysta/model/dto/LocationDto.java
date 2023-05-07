@@ -32,4 +32,5 @@ public class LocationDto {
     private String zipCode;
     private Long orderId;
     private Long warehouseId;
+    private boolean deleted;
 }

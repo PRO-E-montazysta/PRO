@@ -76,6 +76,7 @@ public class OrderStageMapper {
                 .demandAdHocs(orderStage.getDemandsAdHoc().stream()
                         .map(DemandAdHoc::getId)
                         .collect(Collectors.toList()))
+                .deleted(orderStage.isDeleted())
                 .build();
     }
 

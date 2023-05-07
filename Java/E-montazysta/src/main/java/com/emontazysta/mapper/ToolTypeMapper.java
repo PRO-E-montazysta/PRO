@@ -50,6 +50,7 @@ public class ToolTypeMapper {
                         .map(Tool::getId)
                         .collect(Collectors.toList()))
                 .companyId(toolType.getCompany().getId())
+                .deleted(toolType.isDeleted())
                 .build();
     }
 

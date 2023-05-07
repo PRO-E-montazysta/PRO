@@ -92,6 +92,7 @@ public class WarehouseManagerMapper {
                 .unavailableFrom(statusService.checkUnavailability(warehouseManager) == null ? null : statusService.checkUnavailability(warehouseManager).getUnavailableFrom())
                 .unavailableTo(statusService.checkUnavailability(warehouseManager) == null ? null : statusService.checkUnavailability(warehouseManager).getUnavailableTo())
                 .unavailbilityDescription(statusService.checkUnavailability(warehouseManager) == null ? null : statusService.checkUnavailability(warehouseManager).getDescription())
+                .deleted(warehouseManager.isDeleted())
                 .build();
     }
 

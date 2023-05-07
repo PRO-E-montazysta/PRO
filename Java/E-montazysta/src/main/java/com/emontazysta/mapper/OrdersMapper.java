@@ -58,6 +58,7 @@ public class OrdersMapper {
                 .attachments(orders.getAttachments().stream()
                         .map(Attachment::getId)
                         .collect(Collectors.toList()))
+                .deleted(orders.isDeleted())
                 .build();
     }
 

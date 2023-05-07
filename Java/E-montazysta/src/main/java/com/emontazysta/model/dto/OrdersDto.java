@@ -39,4 +39,5 @@ public class OrdersDto {
     private Long clientId;
     private List<Long> orderStages;
     private List<Long> attachments;
+    private boolean deleted;
 }

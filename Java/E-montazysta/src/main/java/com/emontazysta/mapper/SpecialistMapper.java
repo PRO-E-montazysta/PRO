@@ -86,6 +86,7 @@ public class SpecialistMapper {
                 .unavailableFrom(statusService.checkUnavailability(specialist) == null ? null : statusService.checkUnavailability(specialist).getUnavailableFrom())
                 .unavailableTo(statusService.checkUnavailability(specialist) == null ? null : statusService.checkUnavailability(specialist).getUnavailableTo())
                 .unavailbilityDescription(statusService.checkUnavailability(specialist) == null ? null : statusService.checkUnavailability(specialist).getDescription())
+                .deleted(specialist.isDeleted())
                 .build();
     }
 
