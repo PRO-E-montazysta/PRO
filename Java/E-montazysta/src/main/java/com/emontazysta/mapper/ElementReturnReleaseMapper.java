@@ -29,11 +29,11 @@ public class ElementReturnReleaseMapper {
                 .releasedQuantity(elementReturnRelease.getReleasedQuantity())
                 .returnedQuantity(elementReturnRelease.getReturnedQuantity())
                 .returnTime(elementReturnRelease.getReturnTime())
-                .servedById(elementReturnRelease.getServedBy() == null ? null : elementReturnRelease.getServedBy().isDeleted() ? null : elementReturnRelease.getServedBy().getId())
-                .elementId(elementReturnRelease.getElement() == null ? null : elementReturnRelease.getElement().isDeleted() ? null : elementReturnRelease.getElement().getId())
-                .demandAdHocId(elementReturnRelease.getDemandAdHoc() == null ? null : elementReturnRelease.getDemandAdHoc().isDeleted() ? null : elementReturnRelease.getDemandAdHoc().getId())
-                .foremanId(elementReturnRelease.getForeman() == null ? null : elementReturnRelease.getForeman().isDeleted() ? null : elementReturnRelease.getForeman().getId())
-                .orderStageId(elementReturnRelease.getOrderStage() == null ? null : elementReturnRelease.getOrderStage().isDeleted() ? null : elementReturnRelease.getOrderStage().getId())
+                .servedById(elementReturnRelease.getServedBy() == null ? null : elementReturnRelease.getServedBy().getId())
+                .elementId(elementReturnRelease.getElement() == null ? null : elementReturnRelease.getElement().getId())
+                .demandAdHocId(elementReturnRelease.getDemandAdHoc() == null ? null : elementReturnRelease.getDemandAdHoc().getId())
+                .foremanId(elementReturnRelease.getForeman() == null ? null : elementReturnRelease.getForeman().getId())
+                .orderStageId(elementReturnRelease.getOrderStage() == null ? null : elementReturnRelease.getOrderStage().getId())
                 .build();
     }
 

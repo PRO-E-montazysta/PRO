@@ -28,10 +28,9 @@ public class CommentMapper {
                 .id(comment.getId())
                 .content(comment.getContent())
                 .createdAt(comment.getCreatedAt())
-                .messageCreatorId(comment.getMessageCreator() == null ? null : comment.getMessageCreator().isDeleted() ? null : comment.getMessageCreator().getId())
-                .orderStageId(comment.getOrderStage() == null ? null : comment.getOrderStage().isDeleted() ? null : comment.getOrderStage().getId())
+                .messageCreatorId(comment.getMessageCreator() == null ? null : comment.getMessageCreator().getId())
+                .orderStageId(comment.getOrderStage() == null ? null : comment.getOrderStage().getId())
                 .attachments(comment.getAttachments().stream()
-                        .filter(attachment -> !attachment.isDeleted())
                         .map(Attachment::getId)
                         .collect(Collectors.toList()))
                 .build();

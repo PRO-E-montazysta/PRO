@@ -27,11 +27,11 @@ public class ToolReleaseMapper {
                 .id(toolRelease.getId())
                 .releaseTime(toolRelease.getReleaseTime())
                 .returnTime(toolRelease.getReturnTime())
-                .receivedById(toolRelease.getReceivedBy() == null ? null : toolRelease.getReceivedBy().isDeleted() ? null : toolRelease.getReceivedBy().getId())
-                .releasedById(toolRelease.getReleasedBy() == null ? null : toolRelease.getReleasedBy().isDeleted() ? null : toolRelease.getReleasedBy().getId())
-                .toolId(toolRelease.getTool() == null ? null : toolRelease.getTool().isDeleted() ? null : toolRelease.getTool().getId())
-                .demandAdHocId(toolRelease.getDemandAdHoc() == null ? null : toolRelease.getDemandAdHoc().isDeleted() ? null : toolRelease.getDemandAdHoc().getId())
-                .orderStageId(toolRelease.getOrderStage() == null ? null : toolRelease.getOrderStage().isDeleted() ? null : toolRelease.getOrderStage().getId())
+                .receivedById(toolRelease.getReceivedBy() == null ? null : toolRelease.getReceivedBy().getId())
+                .releasedById(toolRelease.getReleasedBy() == null ? null : toolRelease.getReleasedBy().getId())
+                .toolId(toolRelease.getTool() == null ? null : toolRelease.getTool().getId())
+                .demandAdHocId(toolRelease.getDemandAdHoc() == null ? null : toolRelease.getDemandAdHoc().getId())
+                .orderStageId(toolRelease.getOrderStage() == null ? null : toolRelease.getOrderStage().getId())
                 .build();
     }
 

@@ -25,7 +25,6 @@ public class EmployeeMapper {
                 .roles(employee.getRoles())
                 .phone(employee.getPhone())
                 .attachments( employee.getAttachments() == null ? null : employee.getAttachments().stream()
-                        .filter(attachment -> !attachment.isDeleted())
                         .map(Attachment::getId)
                         .collect(Collectors.toList()))
                 .status(statusService.checkUnavailability(employee) == null ? "AVAILABLE" : String.valueOf(statusService.checkUnavailability(employee).getTypeOfUnavailability()))

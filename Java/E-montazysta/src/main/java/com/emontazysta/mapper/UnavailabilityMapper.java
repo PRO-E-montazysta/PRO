@@ -24,8 +24,8 @@ public class UnavailabilityMapper {
                 .description(unavailability.getDescription())
                 .unavailableFrom(unavailability.getUnavailableFrom())
                 .unavailableTo(unavailability.getUnavailableTo())
-                .assignedToId(unavailability.getAssignedTo() == null ? null : unavailability.getAssignedTo().isDeleted() ? null : unavailability.getAssignedTo().getId())
-                .assignedById(unavailability.getAssignedBy() == null ? null : unavailability.getAssignedBy().isDeleted() ? null : unavailability.getAssignedBy().getId())
+                .assignedToId(unavailability.getAssignedTo() == null ? null : unavailability.getAssignedTo().getId())
+                .assignedById(unavailability.getAssignedBy() == null ? null : unavailability.getAssignedBy().getId())
                 .build();
     }
 

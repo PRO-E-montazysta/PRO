@@ -32,15 +32,13 @@ public class ToolMapper {
                 .createdAt(tool.getCreatedAt())
                 .code(tool.getCode())
                 .toolReleases(tool.getToolReleases().stream()
-                        .filter(toolRelease -> !toolRelease.isDeleted())
                         .map(ToolRelease::getId)
                         .collect(Collectors.toList()))
-                .warehouseId(tool.getWarehouse() == null ? null : tool.getWarehouse().isDeleted() ? null : tool.getWarehouse().getId())
+                .warehouseId(tool.getWarehouse() == null ? null : tool.getWarehouse().getId())
                 .toolEvents(tool.getToolEvents().stream()
-                        .filter(toolEvent -> !toolEvent.isDeleted())
                         .map(ToolEvent::getId)
                         .collect(Collectors.toList()))
-                .toolTypeId(tool.getToolType() == null ? null : tool.getToolType().isDeleted() ? null : tool.getToolType().getId())
+                .toolTypeId(tool.getToolType() == null ? null : tool.getToolType().getId())
                 .build();
     }
 

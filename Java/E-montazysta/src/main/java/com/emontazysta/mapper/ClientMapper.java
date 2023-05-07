@@ -25,9 +25,8 @@ public class ClientMapper {
                 .id(client.getId())
                 .name(client.getName())
                 .contactDetails(client.getContactDetails())
-                .companyId(client.getCompany() == null ? null : client.getCompany().isDeleted() ? null : client.getCompany().getId())
+                .companyId(client.getCompany() == null ? null : client.getCompany().getId())
                 .orders(client.getOrders().stream()
-                        .filter(order -> !order.isDeleted())
                         .map(Orders::getId)
                         .collect(Collectors.toList()))
                 .build();

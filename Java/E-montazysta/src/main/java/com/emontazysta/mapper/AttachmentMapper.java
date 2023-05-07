@@ -36,14 +36,14 @@ public class AttachmentMapper {
                 .description(attachment.getDescription())
                 .typeOfAttachment(attachment.getTypeOfAttachment())
                 .createdAt(attachment.getCreatedAt())
-                .toolTypeId(attachment.getToolType() == null ? null : attachment.getToolType().isDeleted() ? null : attachment.getToolType().getId())
-                .commentId(attachment.getComment() == null ? null : attachment.getComment().isDeleted() ? null : attachment.getComment().getId())
-                .employeeId(attachment.getEmployee() == null ? null : attachment.getEmployee().isDeleted() ? null : attachment.getEmployee().getId())
-                .toolEventId(attachment.getToolEvent() == null ? null : attachment.getToolEvent().isDeleted() ? null : attachment.getToolEvent().getId())
-                .orderId(attachment.getOrder() == null ? null : attachment.getOrder().isDeleted() ? null : attachment.getOrder().getId())
-                .elementId(attachment.getElement() == null ? null : attachment.getElement().isDeleted() ? null : attachment.getElement().getId())
-                .orderStageId(attachment.getOrderStage() == null ? null : attachment.getOrderStage().isDeleted() ? null : attachment.getOrderStage().getId())
-                .elementEventId(attachment.getElementEvent() == null ? null : attachment.getElementEvent().isDeleted() ? null : attachment.getElementEvent().getId())
+                .toolTypeId(attachment.getToolType() == null ? null : attachment.getToolType().getId())
+                .commentId(attachment.getComment() == null ? null : attachment.getComment().getId())
+                .employeeId(attachment.getEmployee() == null ? null : attachment.getEmployee().getId())
+                .toolEventId(attachment.getToolEvent() == null ? null : attachment.getToolEvent().getId())
+                .orderId(attachment.getOrder() == null ? null : attachment.getOrder().getId())
+                .elementId(attachment.getElement() == null ? null : attachment.getElement().getId())
+                .orderStageId(attachment.getOrderStage() == null ? null : attachment.getOrderStage().getId())
+                .elementEventId(attachment.getElementEvent() == null ? null : attachment.getElementEvent().getId())
                 .build();
     }
 

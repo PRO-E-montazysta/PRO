@@ -31,7 +31,6 @@ public class ToolTypeMapper {
     public ToolTypeDto toDto(ToolType toolType){
 
         int availableCount = (int) toolType.getTools().stream()
-                .filter(tool -> !tool.isDeleted())
                 .filter(tool -> ToolStatus.AVAILABLE.equals(tool.getStatus()))
                 .count();
 
@@ -42,15 +41,12 @@ public class ToolTypeMapper {
                 .criticalNumber(toolType.getCriticalNumber())
                 .availableCount(availableCount)
                 .attachments(toolType.getAttachments().stream()
-                        .filter(attachment -> !attachment.isDeleted())
                         .map(Attachment::getId)
                         .collect(Collectors.toList()))
                 .ListOfToolsPlannedNumber(toolType.getListOfToolsPlannedNumber().stream()
-                        .filter(orderStage -> !orderStage.isDeleted())
                         .map(ToolsPlannedNumber::getId)
                         .collect(Collectors.toList()))
                 .tools(toolType.getTools().stream()
-                        .filter(tool -> !tool.isDeleted())
                         .map(Tool::getId)
                         .collect(Collectors.toList()))
                 .companyId(toolType.getCompany().getId())

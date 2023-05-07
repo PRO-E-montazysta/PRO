@@ -23,8 +23,8 @@ public class ElementInWarehouseMapper {
                 .inUnitCount(elementInWarehouse.getInUnitCount())
                 .rack(elementInWarehouse.getRack())
                 .shelf(elementInWarehouse.getShelf())
-                .elementId(elementInWarehouse.getElement() == null ? null : elementInWarehouse.getElement().isDeleted() ? null : elementInWarehouse.getElement().getId())
-                .warehouseId(elementInWarehouse.getWarehouse() == null ? null : elementInWarehouse.getWarehouse().isDeleted() ? null : elementInWarehouse.getWarehouse().getId())
+                .elementId(elementInWarehouse.getElement() == null ? null : elementInWarehouse.getElement().getId())
+                .warehouseId(elementInWarehouse.getWarehouse() == null ? null : elementInWarehouse.getWarehouse().getId())
                 .build();
     }
 

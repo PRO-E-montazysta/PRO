@@ -37,19 +37,18 @@ public class ElementMapper {
                 .typeOfUnit(element.getTypeOfUnit())
                 .quantityInUnit(element.getQuantityInUnit())
                 .elementReturnReleases(element.getElementReturnReleases().stream()
-                        .filter(elementReturnRelease -> !elementReturnRelease.isDeleted())
                         .map(ElementReturnRelease::getId)
                         .collect(Collectors.toList()))
                 .elementInWarehouses(element.getElementInWarehouses().stream()
-                        .filter(elementInWarehouse -> !elementInWarehouse.isDeleted())
                         .map(ElementInWarehouse::getId)
                         .collect(Collectors.toList()))
                 .elementEvents(element.getElementEvents().stream()
-                        .filter(elementEvent -> !elementEvent.isDeleted())
                         .map(ElementEvent::getId)
                         .collect(Collectors.toList()))
-                .attachmentId(element.getAttachment() == null ? null : element.getAttachment().isDeleted() ? null : element.getAttachment().getId())
-                .ListOfElementsPlannedNumber(element.getListOfElementsPlannedNumber().stream().map(ElementsPlannedNumber::getId).collect(Collectors.toList()))
+                .attachmentId(element.getAttachment() == null ? null : element.getAttachment().getId())
+                .ListOfElementsPlannedNumber(element.getListOfElementsPlannedNumber().stream()
+                        .map(ElementsPlannedNumber::getId)
+                        .collect(Collectors.toList()))
                 .build();
     }
 

@@ -26,12 +26,11 @@ public class NotificationMapper {
                 .content(notification.getContent())
                 .createdAt(notification.getCreatedAt())
                 .readAt(notification.getReadAt())
-                .createdById(notification.getCreatedBy() == null ? null : notification.getCreatedBy().isDeleted() ? null : notification.getCreatedBy().getId())
+                .createdById(notification.getCreatedBy() == null ? null : notification.getCreatedBy().getId())
                 .notifiedEmployees(notification.getNotifiedEmployees().stream()
-                        .filter(appUser -> !appUser.isDeleted())
                         .map(AppUser::getId)
                         .collect(Collectors.toList()))
-                .orderStageId(notification.getOrderStage() == null ? null : notification.getOrderStage().isDeleted() ? null : notification.getOrderStage().getId())
+                .orderStageId(notification.getOrderStage() == null ? null : notification.getOrderStage().getId())
                 .build();
     }
 

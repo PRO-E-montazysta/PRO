@@ -21,8 +21,8 @@ public class EmploymentMapper {
                 .id(employment.getId())
                 .dateOfEmployment(employment.getDateOfEmployment())
                 .dateOfDismiss(employment.getDateOfDismiss())
-                .companyId(employment.getCompany() == null ? null : employment.getCompany().isDeleted() ? null : employment.getCompany().getId())
-                .employeeId(employment.getEmployee() == null ? null : employment.getEmployee().isDeleted() ? null : employment.getEmployee().getId())
+                .companyId(employment.getCompany() == null ? null : employment.getCompany().getId())
+                .employeeId(employment.getEmployee() == null ? null : employment.getEmployee().getId())
                 .build();
     }
 
