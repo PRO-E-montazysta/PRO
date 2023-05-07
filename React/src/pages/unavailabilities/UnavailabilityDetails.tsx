@@ -13,6 +13,7 @@ import QueryBoxStatus from '../../components/base/QueryStatusBox'
 import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
+import { typeOfUnavailabilityName } from '../../helpers/enum.helper'
 
 const UnavailabilityDetails = () => {
     const params = useParams()
@@ -94,7 +95,10 @@ const UnavailabilityDetails = () => {
 
     return (
         <FormBox>
-            <FormTitle mainTitle={pageMode == 'new' ? 'Nowa nieobecność' : 'Nieobecność'} />
+            <FormTitle
+                mainTitle={pageMode == 'new' ? 'Nowa nieobecność' : 'Nieobecność'}
+                subTitle={pageMode == 'new' ? '' : typeOfUnavailabilityName(formik.values['typeOfUnavailability'])}
+            />
             <FormPaper>
                 {queriesStatus.result != 'isSuccess' ? (
                     <QueryBoxStatus queriesStatus={queriesStatus} />

@@ -93,7 +93,10 @@ const ToolTypeDetails = () => {
 
     return (
         <FormBox>
-            <FormTitle mainTitle={pageMode == 'new' ? 'Nowy typ narzędzia' : formik.values['name']} />
+            <FormTitle
+                mainTitle={pageMode == 'new' ? 'Nowy typ narzędzia' : 'Typ narzędzia'}
+                subTitle={pageMode == 'new' ? null : formik.values['name']}
+            />
             <FormPaper>
                 {queriesStatus.result != 'isSuccess' ? (
                     <QueryBoxStatus queriesStatus={queriesStatus} />

@@ -165,7 +165,10 @@ const CompanyDetails = () => {
     return (
         <>
             <FormBox>
-                <FormTitle mainTitle={pageMode == 'new' ? 'Nowa firma' : formik.values['companyName']} />
+                <FormTitle
+                    mainTitle={pageMode == 'new' ? 'Nowa firma' : 'Firma'}
+                    subTitle={pageMode == 'new' ? null : formik.values['companyName']}
+                />
                 <FormPaper>
                     {queriesStatus.result != 'isSuccess' ? (
                         <QueryBoxStatus queriesStatus={queriesStatus} />

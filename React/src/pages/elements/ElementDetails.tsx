@@ -95,7 +95,10 @@ const ElementDetails = () => {
     return (
         <>
             <FormBox>
-                <FormTitle mainTitle={pageMode == 'new' ? 'Nowy element' : formik.values['name']} />
+                <FormTitle
+                    mainTitle={pageMode == 'new' ? 'Nowy element' : 'Element'}
+                    subTitle={pageMode == 'new' ? '' : String(formik.values['name'] + ' - ' + formik.values['code'])}
+                />
                 <FormPaper>
                     {queriesStatus.result != 'isSuccess' ? (
                         <QueryBoxStatus queriesStatus={queriesStatus} />
