@@ -1,22 +1,22 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.enums.NotificationType;
 import com.emontazysta.enums.OrderStageStatus;
+import com.emontazysta.enums.OrderStatus;
 import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.ElementsPlannedNumberMapper;
 import com.emontazysta.mapper.OrderStageMapper;
 import com.emontazysta.mapper.ToolsPlannedNumberMapper;
-import com.emontazysta.model.ElementsPlannedNumber;
-import com.emontazysta.model.OrderStage;
-import com.emontazysta.model.ToolsPlannedNumber;
+import com.emontazysta.model.*;
 import com.emontazysta.model.dto.ElementsPlannedNumberDto;
 import com.emontazysta.model.dto.OrderStageDto;
 import com.emontazysta.model.dto.OrderStageWithToolsAndElementsDto;
 import com.emontazysta.model.dto.ToolsPlannedNumberDto;
 import com.emontazysta.model.searchcriteria.OrdersStageSearchCriteria;
-import com.emontazysta.repository.ElementsPlannedNumberRepository;
-import com.emontazysta.repository.OrderStageRepository;
-import com.emontazysta.repository.ToolsPlannedNumberRepository;
+import com.emontazysta.repository.*;
 import com.emontazysta.repository.criteria.OrdersStageCriteriaRepository;
+import com.emontazysta.service.AppUserService;
+import com.emontazysta.service.NotificationService;
 import com.emontazysta.service.OrderStageService;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +28,7 @@ import java.security.Principal;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,6 +43,9 @@ public class OrderStageImpl implements OrderStageService {
     private final ElementsPlannedNumberRepository elementsPlannedNumberRepository;
     private final ElementsPlannedNumberMapper elementsPlannedNumberMapper;
     private final AuthUtils authUtils;
+    private final NotificationService notificationService;
+    private final AppUserService userService;
+    private final OrderRepository orderRepository;
 
     @Override
     public List<OrderStageDto> getAll() {
@@ -78,11 +82,15 @@ public class OrderStageImpl implements OrderStageService {
     @Override
     @Transactional
     public OrderStageDto addWithToolsAndElements(OrderStageWithToolsAndElementsDto orderStageDto) {
+       //zmiana statusu dla utworzenia etapu zlecenia
         orderStageDto.setStatus(OrderStageStatus.PLANNING);
 
         OrderStageWithToolsAndElementsDto modiffiedOrderStageDto = completeEmptyAttributes(orderStageDto);
 
         OrderStage orderStage = orderStageMapper.toEntity(modiffiedOrderStageDto);
+
+        //zmiana statusu dla zamówienia
+        orderStage.getOrders().setStatus(OrderStatus.PLANNING);
         OrderStageDto savedOrderStageDto = orderStageMapper.toDto(repository.save(orderStage));
 
 
@@ -101,6 +109,9 @@ public class OrderStageImpl implements OrderStageService {
                 elementsPlannedNumberRepository.save(elementsPlannedNumber);
             }
         }
+
+        List<AppUser> notifiedEmployees = createListOfEmployeesToNotificate(userService.findAllByRole(Role.MANAGER));
+        notificationService.createNotification(NotificationType.STAGE_ADD.getMessage(), authUtils.getLoggedUser().getId(),notifiedEmployees, savedOrderStageDto.getId());
 
         return getById(savedOrderStageDto.getId());
     }
@@ -129,9 +140,25 @@ public class OrderStageImpl implements OrderStageService {
     @Transactional
     public OrderStageDto update(Long id, OrderStageWithToolsAndElementsDto orderStageDto) {
 
+
+
         OrderStageWithToolsAndElementsDto modiffiedOrderStageDto = completeEmptyAttributes(orderStageDto);
 
         OrderStage updatedOrderStage = orderStageMapper.toEntity(modiffiedOrderStageDto);
+
+        if (authUtils.getLoggedUser().getRoles().contains(Role.SPECIALIST)){
+            updatedOrderStage.setStatus(OrderStageStatus.PLANNING);
+            updatedOrderStage.getOrders().setStatus(OrderStatus.TO_ACCEPT);
+            List<AppUser> notifiedEmployees = userService.findAllByIds( List.of(updatedOrderStage.getOrders().getManagedBy().getId()));
+            notificationService.createNotification(updatedOrderStage.getOrders().getId(),NotificationType.STAGE_MODIFIED.getMessage(), authUtils.getLoggedUser().getId(),notifiedEmployees );
+
+        }else if (authUtils.getLoggedUser().getRoles().contains(Role.FOREMAN)){
+            updatedOrderStage.setStatus(OrderStageStatus.ADDING_FITTERS);
+            updatedOrderStage.getOrders().setStatus(OrderStatus.IN_PROGRESS);
+
+            List<AppUser> notifiedEmployees = userService.findAllByIds(orderStageDto.getFitters());
+            notificationService.createNotification(NotificationType.FITTER_ASSIGNMENT.getMessage(), authUtils.getLoggedUser().getId(),notifiedEmployees, id);
+        }
 
         OrderStage orderStageDb = repository.findById(id).orElseThrow(EntityNotFoundException::new);
 
@@ -179,7 +206,6 @@ public class OrderStageImpl implements OrderStageService {
         orderStageDb.setPlannedFittersNumber(updatedOrderStage.getPlannedFittersNumber());
         orderStageDb.setMinimumImagesNumber(updatedOrderStage.getMinimumImagesNumber());
         orderStageDb.setAssignedTo(updatedOrderStage.getAssignedTo());
-        orderStageDb.setManagedBy(updatedOrderStage.getManagedBy());
         orderStageDb.setComments(updatedOrderStage.getComments());
         orderStageDb.setToolReleases(updatedOrderStage.getToolReleases());
         orderStageDb.setElementReturnReleases(updatedOrderStage.getElementReturnReleases());
@@ -195,5 +221,22 @@ public class OrderStageImpl implements OrderStageService {
     @Override
     public List<OrderStageDto> getFilteredOrders(OrdersStageSearchCriteria ordersStageSearchCriteria, Principal principal) {
         return  ordersStageCriteriaRepository.findAllWithFilters(ordersStageSearchCriteria, principal);
+    }
+    private List<AppUser> createListOfEmployeesToNotificate(List<AppUser> allByRole) {
+        Long companyId = authUtils.getLoggedUserCompanyId();
+        List<AppUser> filteredUsers = new ArrayList<>();
+
+        for (AppUser user : allByRole) {
+            Optional<Employment> takingEmployment = user.getEmployments().stream()
+                    .filter(employment -> employment.getDateOfDismiss() == null)
+                    .findFirst();
+            if (takingEmployment.isPresent()) {
+                Long employeeCompanyId = takingEmployment.get().getCompany().getId();
+                if (employeeCompanyId==companyId) {
+                    filteredUsers.add(user);
+                }
+            }
+        }
+        return filteredUsers;
     }
 }

@@ -16,11 +16,11 @@ import java.util.List;
 public class NotificationDto {
 
     private Long id;
-    @NotBlank(message = "Content cannot be empty")
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime readAt;
     private Long createdById;
     private List<Long> notifiedEmployees;
     private Long orderStageId;
+    private Long orderId;
 }

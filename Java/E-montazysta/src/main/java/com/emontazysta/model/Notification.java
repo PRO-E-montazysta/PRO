@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.engine.profile.Fetch;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -32,13 +33,16 @@ public class Notification {
     @ManyToOne
     private AppUser createdBy;
 
-    @OneToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<AppUser> notifiedEmployees;
 
     @ManyToOne
     private OrderStage orderStage;
 
-    // ToDo topic Enum
+    @ManyToOne
+    private Orders order;
+
+    // ToDo content Enum
 
 
 

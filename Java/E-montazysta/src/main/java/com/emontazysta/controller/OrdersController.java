@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -39,6 +40,8 @@ public class OrdersController {
         return orderService.getById(id);
     }
 
+
+    @PreAuthorize("hasAuthority('SCOPE_SALES_REPRESENTATIVE')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Order.", security = @SecurityRequirement(name = "bearer-key"))
@@ -53,6 +56,7 @@ public class OrdersController {
         orderService.delete(id);
     }
 
+    @PreAuthorize("hasAnyAuthority('SCOPE_MANAGER','SCOPE_SALES_REPRESENTATIVE')")
     @PutMapping("/{id}")
     @Operation(description = "Allows to edit Order by given Id and Order data.", security = @SecurityRequirement(name = "bearer-key"))
     public OrdersDto update(@PathVariable Long id, @Valid @RequestBody OrdersDto orders) {

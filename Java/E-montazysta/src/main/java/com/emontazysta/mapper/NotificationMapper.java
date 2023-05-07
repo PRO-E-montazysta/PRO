@@ -4,6 +4,7 @@ import com.emontazysta.model.AppUser;
 import com.emontazysta.model.Notification;
 import com.emontazysta.model.dto.NotificationDto;
 import com.emontazysta.repository.AppUserRepository;
+import com.emontazysta.repository.OrderRepository;
 import com.emontazysta.repository.OrderStageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,7 @@ public class NotificationMapper {
 
     private final AppUserRepository appUserRepository;
     private final OrderStageRepository orderStageRepository;
+    private final OrderRepository orderRepository;
 
     public NotificationDto toDto(Notification notification) {
         return NotificationDto.builder()
@@ -28,6 +30,7 @@ public class NotificationMapper {
                 .createdById(notification.getCreatedBy() == null ? null : notification.getCreatedBy().getId())
                 .notifiedEmployees(notification.getNotifiedEmployees().stream().map(AppUser::getId).collect(Collectors.toList()))
                 .orderStageId(notification.getOrderStage() == null ? null : notification.getOrderStage().getId())
+                .orderId(notification.getOrder() == null ? null : notification.getOrder().getId())
                 .build();
     }
 
@@ -44,6 +47,7 @@ public class NotificationMapper {
                 .createdBy(notificationDto.getCreatedById() == null ? null : appUserRepository.getReferenceById(notificationDto.getCreatedById()))
                 .notifiedEmployees(appUserList)
                 .orderStage(notificationDto.getOrderStageId() == null ? null : orderStageRepository.getReferenceById(notificationDto.getOrderStageId()))
+                .order(notificationDto.getOrderId() == null ? null : orderRepository.getReferenceById(notificationDto.getOrderId()))
                 .build();
     }
 }
