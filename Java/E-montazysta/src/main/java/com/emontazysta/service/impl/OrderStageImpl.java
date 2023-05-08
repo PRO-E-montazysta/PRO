@@ -82,15 +82,12 @@ public class OrderStageImpl implements OrderStageService {
     @Override
     @Transactional
     public OrderStageDto addWithToolsAndElements(OrderStageWithToolsAndElementsDto orderStageDto) {
-       //zmiana statusu dla utworzenia etapu zlecenia
+       //Ustawienie statusu początkowego dla etapu zlecenia
         orderStageDto.setStatus(OrderStageStatus.PLANNING);
 
         OrderStageWithToolsAndElementsDto modiffiedOrderStageDto = completeEmptyAttributes(orderStageDto);
 
         OrderStage orderStage = orderStageMapper.toEntity(modiffiedOrderStageDto);
-
-        //zmiana statusu dla zamówienia
-        orderStage.getOrders().setStatus(OrderStatus.PLANNING);
         OrderStageDto savedOrderStageDto = orderStageMapper.toDto(repository.save(orderStage));
 
 
