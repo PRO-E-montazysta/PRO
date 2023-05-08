@@ -197,7 +197,7 @@ const LoginForm = () => {
                             </Button>
                         </Grid>
                         <Grid item>
-                            <Button id={'login-reset'} color="secondary" variant="text">
+                            <Button id={'login-reset'} color="secondary" variant="text" href="/forgot">
                                 Resetuj hasło
                             </Button>
                         </Grid>
