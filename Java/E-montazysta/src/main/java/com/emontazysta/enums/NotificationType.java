@@ -2,11 +2,10 @@ package com.emontazysta.enums;
 
 public enum NotificationType {
 
-    ORDER_CREATED("Zostało utworzone nowe zlecenie"),
-    STAGE_ADD("Dodano nowy etap do zlecenia"),
-    STAGE_MODIFIED("Zmodyfikowano jeden z etapów zlecenia"),
-    FITTER_ASSIGNMENT("Zostałeś przypisany do etapu zlecenia"),
-    FOREMAN_ASSIGNMENT("Zostałeś przypisany do zlecenia"),
+    ORDER_CREATED("Utworzono nowe zlecenie"), //Powiadamia specjalistów, że handlowiec utworzył nowe zlecenie
+    ACCEPT_ORDER("Zlecenie oczekuje na zaakceptowanie"), //Powiadamia menagera, że specjalista wypełnił zlecenie i należy przypisać brygadziste
+    FOREMAN_ASSIGNMENT("Zostałeś przypisany do zlecenia"), //Powiadamia brygadzistę, że menager przypisał go do zlecenia
+    FITTER_ASSIGNMENT("Zostałeś przypisany do etapu zlecenia"), //Powiadamia montażyste, że brygadzsista przypisał go do etapu
     AD_HOC_NOTIFICATION("Złożono zapotrzebowanie ad-hoc");
 
     private String message;

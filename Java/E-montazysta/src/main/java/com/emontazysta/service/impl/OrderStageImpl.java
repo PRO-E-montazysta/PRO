@@ -110,9 +110,6 @@ public class OrderStageImpl implements OrderStageService {
             }
         }
 
-        List<AppUser> notifiedEmployees = createListOfEmployeesToNotificate(userService.findAllByRole(Role.MANAGER));
-        notificationService.createNotification(notifiedEmployees, savedOrderStageDto.getId(), NotificationType.STAGE_ADD);
-
         return getById(savedOrderStageDto.getId());
     }
 
@@ -146,13 +143,8 @@ public class OrderStageImpl implements OrderStageService {
 
         OrderStage updatedOrderStage = orderStageMapper.toEntity(modiffiedOrderStageDto);
 
-        if (authUtils.getLoggedUser().getRoles().contains(Role.SPECIALIST)){
-            updatedOrderStage.setStatus(OrderStageStatus.PLANNING);
-            updatedOrderStage.getOrders().setStatus(OrderStatus.TO_ACCEPT);
-            List<AppUser> notifiedEmployees = userService.findAllByIds( List.of(updatedOrderStage.getOrders().getManagedBy().getId()));
-            notificationService.createNotification(notifiedEmployees, updatedOrderStage.getId(), NotificationType.STAGE_MODIFIED);
-
-        }else if (authUtils.getLoggedUser().getRoles().contains(Role.FOREMAN)){
+        //TODO: generowanie powiadomienia przy zmianie statusów
+        if (authUtils.getLoggedUser().getRoles().contains(Role.FOREMAN)){
             updatedOrderStage.setStatus(OrderStageStatus.ADDING_FITTERS);
             updatedOrderStage.getOrders().setStatus(OrderStatus.IN_PROGRESS);
 
