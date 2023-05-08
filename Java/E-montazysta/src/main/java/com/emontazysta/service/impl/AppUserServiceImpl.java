@@ -96,7 +96,7 @@ public class AppUserServiceImpl  implements AppUserService {
             throw new EntityNotFoundException();
         }
         user.setResetPasswordToken(UUID.randomUUID().toString());
-        String url = frontendUrl + "/auth/new-password?token=" + user.getResetPasswordToken();
+        String url = frontendUrl + "/new-password?token=" + user.getResetPasswordToken();
         emailService.sendEmail(
                 EmailData.builder()
                         .to(user.getEmail())
