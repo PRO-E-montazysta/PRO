@@ -58,17 +58,16 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     @Transactional
     public OrdersDto add(OrdersDto ordersDto) {
-
         Orders order = ordersMapper.toEntity(ordersDto);
         order.setCreatedAt(LocalDateTime.now());
-        order.setEditedAt(LocalDateTime.now());
+        order.setEditedAt(null);
         order.setStatus(OrderStatus.CREATED);
         OrdersDto savedOrderDto = ordersMapper.toDto(repository.save(order));
 
         List<AppUser> notifiedEmployees = createListOfEmployeesToNotificate(userService.findAllByRole(Role.SPECIALIST));
         notificationService.createNotification(notifiedEmployees, savedOrderDto.getId(), NotificationType.ORDER_CREATED);
 
-        return ordersMapper.toDto(repository.findById(savedOrderDto.getId()).orElseThrow(EntityNotFoundException::new));
+        return savedOrderDto;
     }
 
     @Override
