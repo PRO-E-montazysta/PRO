@@ -24,6 +24,7 @@ public class NotificationMapper {
     public NotificationDto toDto(Notification notification) {
         return NotificationDto.builder()
                 .id(notification.getId())
+                .notificationType(notification.getNotificationType())
                 .content(notification.getContent())
                 .createdAt(notification.getCreatedAt())
                 .readAt(notification.getReadAt())
@@ -41,6 +42,7 @@ public class NotificationMapper {
 
         return Notification.builder()
                 .id(notificationDto.getId())
+                .notificationType(notificationDto.getNotificationType())
                 .content(notificationDto.getContent())
                 .createdAt(notificationDto.getCreatedAt())
                 .readAt(notificationDto.getReadAt())

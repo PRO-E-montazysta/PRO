@@ -1,5 +1,6 @@
 package com.emontazysta.model.dto;
 
+import com.emontazysta.enums.NotificationType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +17,8 @@ import java.util.List;
 public class NotificationDto {
 
     private Long id;
+
+    private NotificationType notificationType;
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime readAt;

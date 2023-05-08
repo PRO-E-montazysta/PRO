@@ -111,7 +111,7 @@ public class OrderStageImpl implements OrderStageService {
         }
 
         List<AppUser> notifiedEmployees = createListOfEmployeesToNotificate(userService.findAllByRole(Role.MANAGER));
-        notificationService.createNotification(NotificationType.STAGE_ADD.getMessage(), authUtils.getLoggedUser().getId(),notifiedEmployees, savedOrderStageDto.getId());
+        notificationService.createNotification(notifiedEmployees, savedOrderStageDto.getId(), NotificationType.STAGE_ADD);
 
         return getById(savedOrderStageDto.getId());
     }
@@ -150,14 +150,14 @@ public class OrderStageImpl implements OrderStageService {
             updatedOrderStage.setStatus(OrderStageStatus.PLANNING);
             updatedOrderStage.getOrders().setStatus(OrderStatus.TO_ACCEPT);
             List<AppUser> notifiedEmployees = userService.findAllByIds( List.of(updatedOrderStage.getOrders().getManagedBy().getId()));
-            notificationService.createNotification(updatedOrderStage.getOrders().getId(),NotificationType.STAGE_MODIFIED.getMessage(), authUtils.getLoggedUser().getId(),notifiedEmployees );
+            notificationService.createNotification(notifiedEmployees, updatedOrderStage.getId(), NotificationType.STAGE_MODIFIED);
 
         }else if (authUtils.getLoggedUser().getRoles().contains(Role.FOREMAN)){
             updatedOrderStage.setStatus(OrderStageStatus.ADDING_FITTERS);
             updatedOrderStage.getOrders().setStatus(OrderStatus.IN_PROGRESS);
 
             List<AppUser> notifiedEmployees = userService.findAllByIds(orderStageDto.getFitters());
-            notificationService.createNotification(NotificationType.FITTER_ASSIGNMENT.getMessage(), authUtils.getLoggedUser().getId(),notifiedEmployees, id);
+            notificationService.createNotification(notifiedEmployees, id, NotificationType.FITTER_ASSIGNMENT);
         }
 
         OrderStage orderStageDb = repository.findById(id).orElseThrow(EntityNotFoundException::new);

@@ -1,5 +1,6 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.enums.NotificationType;
 import com.emontazysta.mapper.NotificationMapper;
 import com.emontazysta.model.AppUser;
 import com.emontazysta.model.Notification;
@@ -29,28 +30,28 @@ public class NotificationServiceImpl implements NotificationService {
     private final AppUserServiceImpl appUserService;
     private final OrderStageRepository orderStageRepository;
     private final OrderRepository orderRepository;
+    private final AuthUtils authUtils;
 
     @Override
-    public void createNotification(String content, Long createdByUserId, List<AppUser> notifiedEmployees, Long orderStageId) {
+    public void createNotification(List<AppUser> notifiedEmployees, Long triggerId, NotificationType triggerType) {
         Notification notification = Notification.builder()
                 .createdAt(LocalDateTime.now())
-                .content(content)
-                .createdBy(appUserService.getById(createdByUserId))
+                .notificationType(triggerType)
+                .content(triggerType.getMessage())
+                .createdBy(authUtils.getLoggedUser())
                 .notifiedEmployees(notifiedEmployees)
-                .orderStage(orderStageRepository.findById(orderStageId).orElseThrow(EntityNotFoundException::new))
                 .build();
-        notificationRepository.save(notification);
-    }
 
-    @Override
-    public void createNotification(Long orderId, String content, Long createdByUserId, List<AppUser> notifiedEmployees) {
-        Notification notification = Notification.builder()
-                .createdAt(LocalDateTime.now())
-                .content(content)
-                .createdBy(appUserService.getById(createdByUserId))
-                .notifiedEmployees(notifiedEmployees)
-                .order(orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new))
-                .build();
+        switch (triggerType) {
+            case ORDER_CREATED:
+            case FOREMAN_ASSIGNMENT:
+                notification.setOrder(orderRepository.findById(triggerId).orElseThrow(EntityNotFoundException::new));
+                break;
+            case FITTER_ASSIGNMENT:
+                notification.setOrderStage(orderStageRepository.findById(triggerId).orElseThrow(EntityNotFoundException::new));
+                break;
+        }
+
         notificationRepository.save(notification);
     }
 

@@ -66,7 +66,7 @@ public class OrdersServiceImpl implements OrdersService {
         OrdersDto savedOrderDto = ordersMapper.toDto(repository.save(order));
 
         List<AppUser> notifiedEmployees = createListOfEmployeesToNotificate(userService.findAllByRole(Role.SPECIALIST));
-        notificationService.createNotification(savedOrderDto.getId(), NotificationType.ORDER_CREATED.getMessage(), authUtils.getLoggedUser().getId(), notifiedEmployees);
+        notificationService.createNotification(notifiedEmployees, savedOrderDto.getId(), NotificationType.ORDER_CREATED);
 
         return ordersMapper.toDto(repository.findById(savedOrderDto.getId()).orElseThrow(EntityNotFoundException::new));
     }
@@ -85,7 +85,7 @@ public class OrdersServiceImpl implements OrdersService {
 
             List<AppUser> notifiedEmployees = new ArrayList<>();
             notifiedEmployees.add(userService.getById(ordersDto.getForemanId()));
-            notificationService.createNotification(ordersDto.getId(), NotificationType.FOREMAN_ASSIGNMENT.getMessage(),authUtils.getLoggedUser().getId(),notifiedEmployees);
+            notificationService.createNotification(notifiedEmployees, ordersDto.getId(), NotificationType.FOREMAN_ASSIGNMENT);
 
         } else if (authUtils.getLoggedUser().getRoles().contains(Role.SALES_REPRESENTATIVE)) {
             //zlecenie edytowane przez handlowca
