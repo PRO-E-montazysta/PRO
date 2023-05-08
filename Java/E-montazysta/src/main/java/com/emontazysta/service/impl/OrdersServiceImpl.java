@@ -7,12 +7,10 @@ import com.emontazysta.mapper.OrdersMapper;
 import com.emontazysta.model.AppUser;
 import com.emontazysta.model.Employment;
 import com.emontazysta.model.Orders;
-import com.emontazysta.model.SalesRepresentative;
 import com.emontazysta.model.dto.OrdersCompanyManagerDto;
 import com.emontazysta.model.dto.OrdersDto;
 import com.emontazysta.model.searchcriteria.OrdersSearchCriteria;
 import com.emontazysta.repository.OrderRepository;
-import com.emontazysta.repository.SalesRepresentativeRepository;
 import com.emontazysta.repository.criteria.OrdersCriteriaRepository;
 import com.emontazysta.service.AppUserService;
 import com.emontazysta.service.NotificationService;
@@ -40,7 +38,6 @@ public class OrdersServiceImpl implements OrdersService {
     private final AppUserService userService;
     private final NotificationService notificationService;
     private final AuthUtils authUtils;
-    private final SalesRepresentativeRepository salesRepresentativeRepository;
 
     @Override
     public List<OrdersDto> getAll() {
@@ -64,7 +61,7 @@ public class OrdersServiceImpl implements OrdersService {
         order.setStatus(OrderStatus.CREATED);
         OrdersDto savedOrderDto = ordersMapper.toDto(repository.save(order));
 
-        List<AppUser> notifiedEmployees = createListOfEmployeesToNotificate(userService.findAllByRole(Role.SPECIALIST));
+        List<AppUser> notifiedEmployees = notificationService.createListOfEmployeesToNotificate(userService.findAllByRole(Role.SPECIALIST));
         notificationService.createNotification(notifiedEmployees, savedOrderDto.getId(), NotificationType.ORDER_CREATED);
 
         return savedOrderDto;
@@ -78,6 +75,7 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public OrdersDto update(Long id, OrdersDto ordersDto) {
 
+        //TODO:
         if (authUtils.getLoggedUser().getRoles().contains(Role.MANAGER) && ordersDto.getForemanId()!=null){
             //zlecenie zaakceptowane przez managera
             ordersDto.setStatus(OrderStatus.ACCEPTED);
@@ -135,24 +133,5 @@ public class OrdersServiceImpl implements OrdersService {
         }
         return ordersDto;
     }
-
-    private List<AppUser> createListOfEmployeesToNotificate(List<AppUser> allByRole) {
-        Long companyId = authUtils.getLoggedUserCompanyId();
-        List<AppUser> filteredUsers = new ArrayList<>();
-
-        for (AppUser user : allByRole) {
-            Optional<Employment> takingEmployment = user.getEmployments().stream()
-                    .filter(employment -> employment.getDateOfDismiss() == null)
-                    .findFirst();
-            if (takingEmployment.isPresent()) {
-                Long employeeCompanyId = takingEmployment.get().getCompany().getId();
-                if (employeeCompanyId==companyId) {
-                    filteredUsers.add(user);
-                }
-            }
-        }
-        return filteredUsers;
-    }
-
 }
 

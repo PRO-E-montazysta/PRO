@@ -3,6 +3,7 @@ package com.emontazysta.service.impl;
 import com.emontazysta.enums.NotificationType;
 import com.emontazysta.mapper.NotificationMapper;
 import com.emontazysta.model.AppUser;
+import com.emontazysta.model.Employment;
 import com.emontazysta.model.Notification;
 import com.emontazysta.model.dto.NotificationDto;
 import com.emontazysta.repository.AppUserRepository;
@@ -19,6 +20,7 @@ import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -77,5 +79,24 @@ public class NotificationServiceImpl implements NotificationService {
         notification.setReadAt(LocalDateTime.now());
 
         return notificationMapper.toDto(notificationRepository.save(notification));
+    }
+
+    @Override
+    public List<AppUser> createListOfEmployeesToNotificate(List<AppUser> allByRole) {
+        Long companyId = authUtils.getLoggedUserCompanyId();
+        List<AppUser> filteredUsers = new ArrayList<>();
+
+        for (AppUser user : allByRole) {
+            Optional<Employment> takingEmployment = user.getEmployments().stream()
+                    .filter(employment -> employment.getDateOfDismiss() == null)
+                    .findFirst();
+            if (takingEmployment.isPresent()) {
+                Long employeeCompanyId = takingEmployment.get().getCompany().getId();
+                if (employeeCompanyId.equals(companyId)) {
+                    filteredUsers.add(user);
+                }
+            }
+        }
+        return filteredUsers;
     }
 }

@@ -214,21 +214,4 @@ public class OrderStageImpl implements OrderStageService {
     public List<OrderStageDto> getFilteredOrders(OrdersStageSearchCriteria ordersStageSearchCriteria, Principal principal) {
         return  ordersStageCriteriaRepository.findAllWithFilters(ordersStageSearchCriteria, principal);
     }
-    private List<AppUser> createListOfEmployeesToNotificate(List<AppUser> allByRole) {
-        Long companyId = authUtils.getLoggedUserCompanyId();
-        List<AppUser> filteredUsers = new ArrayList<>();
-
-        for (AppUser user : allByRole) {
-            Optional<Employment> takingEmployment = user.getEmployments().stream()
-                    .filter(employment -> employment.getDateOfDismiss() == null)
-                    .findFirst();
-            if (takingEmployment.isPresent()) {
-                Long employeeCompanyId = takingEmployment.get().getCompany().getId();
-                if (employeeCompanyId==companyId) {
-                    filteredUsers.add(user);
-                }
-            }
-        }
-        return filteredUsers;
-    }
 }

@@ -13,4 +13,6 @@ public interface NotificationService {
     List<NotificationDto> getAllNotReaded(Long employeeId);
 
     NotificationDto update(Long notificationId);
+
+    List<AppUser> createListOfEmployeesToNotificate(List<AppUser> allByRole);
 }
