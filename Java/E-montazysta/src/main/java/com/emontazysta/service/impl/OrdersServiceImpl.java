@@ -119,6 +119,10 @@ public class OrdersServiceImpl implements OrdersService {
         }else if(order.getStatus().equals(OrderStatus.PLANNING) && loggedUserRoles.contains(Role.SPECIALIST)) {
             if(order.getOrderStages().size() > 0) {
                 order.setStatus(OrderStatus.TO_ACCEPT);
+
+                //Wysłanie powiadomienia do menagerów o potrzebie akceptacji zlecenia
+                List<AppUser> notifiedEmployees = notificationService.createListOfEmployeesToNotificate(userService.findAllByRole(Role.MANAGER));
+                notificationService.createNotification(notifiedEmployees, order.getId(), NotificationType.ACCEPT_ORDER);
             }else {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Podziel zlecenie na etapy!");
             }

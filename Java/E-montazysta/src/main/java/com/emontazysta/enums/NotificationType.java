@@ -6,7 +6,7 @@ public enum NotificationType {
     ACCEPT_ORDER("Zlecenie oczekuje na zaakceptowanie"), //Powiadamia menagera, że specjalista wypełnił zlecenie i należy przypisać brygadziste
     FOREMAN_ASSIGNMENT("Zostałeś przypisany do zlecenia"), //Powiadamia brygadzistę, że menager przypisał go do zlecenia
     FITTER_ASSIGNMENT("Zostałeś przypisany do etapu zlecenia"), //Powiadamia montażyste, że brygadzsista przypisał go do etapu
-    AD_HOC_NOTIFICATION("Złożono zapotrzebowanie ad-hoc");
+    AD_HOC_CREATED("Utworzono zapotrzebowanie ad-hoc");
 
     private String message;
 

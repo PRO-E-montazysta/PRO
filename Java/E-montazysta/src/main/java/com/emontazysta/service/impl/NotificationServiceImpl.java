@@ -46,11 +46,15 @@ public class NotificationServiceImpl implements NotificationService {
 
         switch (triggerType) {
             case ORDER_CREATED:
+            case ACCEPT_ORDER:
             case FOREMAN_ASSIGNMENT:
                 notification.setOrder(orderRepository.findById(triggerId).orElseThrow(EntityNotFoundException::new));
                 break;
             case FITTER_ASSIGNMENT:
                 notification.setOrderStage(orderStageRepository.findById(triggerId).orElseThrow(EntityNotFoundException::new));
+                break;
+            case AD_HOC_CREATED:
+                //TODO On DemandAdHoc implementation
                 break;
         }
 
