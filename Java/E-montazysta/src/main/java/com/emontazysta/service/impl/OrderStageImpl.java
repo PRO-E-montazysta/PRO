@@ -133,23 +133,11 @@ public class OrderStageImpl implements OrderStageService {
     @Override
     @Transactional
     public OrderStageDto update(Long id, OrderStageWithToolsAndElementsDto orderStageDto) {
-
-
-
         OrderStageWithToolsAndElementsDto modiffiedOrderStageDto = completeEmptyAttributes(orderStageDto);
-
         OrderStage updatedOrderStage = orderStageMapper.toEntity(modiffiedOrderStageDto);
-
-        //TODO: generowanie powiadomienia przy zmianie statusów
-        if (authUtils.getLoggedUser().getRoles().contains(Role.FOREMAN)){
-            updatedOrderStage.setStatus(OrderStageStatus.ADDING_FITTERS);
-            updatedOrderStage.getOrders().setStatus(OrderStatus.IN_PROGRESS);
-
-            List<AppUser> notifiedEmployees = userService.findAllByIds(orderStageDto.getFitters());
-            notificationService.createNotification(notifiedEmployees, id, NotificationType.FITTER_ASSIGNMENT);
-        }
-
         OrderStage orderStageDb = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+
+        //TODO: Send notification on status change
 
         List<ToolsPlannedNumber> updatedToolsList = new ArrayList<>();
         List<ElementsPlannedNumber> updatedElementsList = new ArrayList<>();
