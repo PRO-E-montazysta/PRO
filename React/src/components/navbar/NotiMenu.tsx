@@ -1,35 +1,38 @@
-import { Box, Menu, MenuItem } from '@mui/material'
+import { Box } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import { PageProps } from '../../utils/pageList'
-
 import { theme } from '../../themes/baseTheme'
 import NotiMenuItem from './NotiMenuItem'
+import { AxiosError } from 'axios'
+import { useQuery } from 'react-query'
+import { getNotifications, updateNotification } from '../../api/notification.api'
+import { Notification } from '../../types/model/Notification'
 
 type NotiMenuParams = {
     open: boolean
-    notifications: Array<any>
     onClose: () => void
 }
 
 const NotiMenu = (params: NotiMenuParams) => {
-    const { open, notifications, onClose } = params
+    const notificationQuery = useQuery<Array<Notification>, AxiosError>(['notification'], async () =>
+        getNotifications(),
+    )
+    const notificationCount = Number(notificationQuery.data?.length)
+    const { open, onClose } = params
 
     const navigate = useNavigate()
 
-    const handleMenuItemClick = (noti: any) => {
-        navigate(noti.url)
+    const handleMenuItemClick = (url: string, id: number) => {
+        updateNotification(id)
+        navigate(url)
         onClose()
     }
 
-    const handleLoadMoreNotifications = () => {
-        console.log('handleLoadMoreNotifications not implemented yet')
-    }
     return (
         <>
             <Box
                 sx={{
                     transitionDuration: '.5s',
-                    height: open ? (notifications.length + 1) * 60 + 'px' : 0,
+                    height: open ? (notificationCount > 0 ? notificationCount * 40 + 'px' : '40px') : 0,
                     position: 'absolute',
                     backgroundColor: theme.palette.primary.main,
                     borderRadius: '5px',
@@ -39,22 +42,35 @@ const NotiMenu = (params: NotiMenuParams) => {
                     right: '10px',
                 }}
             >
-                {notifications.map((noti, index) => {
-                    return (
+                {notificationQuery.data &&
+                    notificationQuery.data.map((row) => {
+                        let url = '/'
+                        switch (row.notificationType) {
+                            case 'ORDER_CREATED':
+                            case 'ACCEPT_ORDER':
+                            case 'FOREMAN_ASSIGNMENT':
+                                url += 'orders/' + row.orderId
+                                break
+                        }
+
+                        return (
+                            <NotiMenuItem
+                                id={`navBtn-notification-${row.id}`}
+                                onItemClick={() => handleMenuItemClick(url, row.id)}
+                                text={row.content}
+                                key={row.id}
+                            />
+                        )
+                    })}
+                {notificationCount == 0 ? (
+                    <>
                         <NotiMenuItem
-                            id={`navBtn-notifications-goTo-${noti.id}`}
-                            onItemClick={() => handleMenuItemClick(noti)}
-                            text={noti.text}
-                            key={index}
+                            id="navBtn-notifications-noNotifications"
+                            onItemClick={() => {}}
+                            text="Brak powiadomień"
                         />
-                    )
-                })}
-                <NotiMenuItem
-                    id={`navBtn-notifications-showMore`}
-                    onItemClick={handleLoadMoreNotifications}
-                    text={notifications.length > 0 ? '' : 'Brak nowych powiadomień'}
-                    link={'Pokaż starsze powiadomienia'}
-                />
+                    </>
+                ) : null}
             </Box>
         </>
     )

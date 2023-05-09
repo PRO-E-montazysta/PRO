@@ -42,7 +42,7 @@ const NotiButton = (props: NotiButtonProps) => {
                         </Badge>
                     </IconButton>
 
-                    <NotiMenu notifications={userInfo.notifications} onClose={handleClose} open={open} />
+                    <NotiMenu onClose={handleClose} open={open} />
                 </Box>
             </ClickAwayListener>
         </>

@@ -1,24 +1,20 @@
-import { Box, MenuItem, Typography } from '@mui/material'
-
-import { theme } from '../../themes/baseTheme'
+import { MenuItem } from '@mui/material'
 
 type NotiMenuItemProps = {
     onItemClick: () => void
     text: string
-    subtext?: string
-    link?: string
     id: string
 }
 
 const NotiMenuItem = (props: NotiMenuItemProps) => {
-    const { onItemClick, text, subtext, link, id } = props
+    const { onItemClick, text, id } = props
     return (
         <MenuItem
             id={id}
             sx={{
                 p: '10px 20px',
                 position: 'relative',
-                height: '60px',
+                height: '40px',
                 fontSize: '14px',
                 display: 'block',
                 justifyContent: 'space-evenly',
@@ -26,13 +22,6 @@ const NotiMenuItem = (props: NotiMenuItemProps) => {
             onClick={onItemClick}
         >
             {text}
-            {subtext ? (
-                <Typography sx={{ color: theme.palette.primary.light, fontSize: '13px' }}>{subtext}</Typography>
-            ) : (
-                <Typography sx={{ color: theme.palette.primary.light, textDecoration: 'underline', fontSize: '12px' }}>
-                    {link}
-                </Typography>
-            )}
         </MenuItem>
     )
 }
