@@ -63,15 +63,12 @@ public class OrdersServiceImpl implements OrdersService {
     @Transactional
     public OrdersDto add(OrdersDto ordersDto) {
         Orders order = ordersMapper.toEntity(ordersDto);
+        
         order.setCreatedAt(LocalDateTime.now());
         order.setEditedAt(null);
         order.setStatus(OrderStatus.CREATED);
-        OrdersDto savedOrderDto = ordersMapper.toDto(repository.save(order));
 
-        List<AppUser> notifiedEmployees = notificationService.createListOfEmployeesToNotificate(userService.findAllByRole(Role.SPECIALIST));
-        notificationService.createNotification(notifiedEmployees, savedOrderDto.getId(), NotificationType.ORDER_CREATED);
-
-        return savedOrderDto;
+        return ordersMapper.toDto(repository.save(order));
     }
 
     @Override
@@ -81,23 +78,9 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public OrdersDto update(Long id, OrdersDto ordersDto) {
-
-        //TODO:
-        if (authUtils.getLoggedUser().getRoles().contains(Role.MANAGER) && ordersDto.getForemanId()!=null){
-            //zlecenie zaakceptowane przez managera
-            ordersDto.setStatus(OrderStatus.ACCEPTED);
-
-            List<AppUser> notifiedEmployees = new ArrayList<>();
-            notifiedEmployees.add(userService.getById(ordersDto.getForemanId()));
-            notificationService.createNotification(notifiedEmployees, ordersDto.getId(), NotificationType.FOREMAN_ASSIGNMENT);
-
-        } else if (authUtils.getLoggedUser().getRoles().contains(Role.SALES_REPRESENTATIVE)) {
-            //zlecenie edytowane przez handlowca
-            ordersDto.setStatus(OrderStatus.TO_ACCEPT);
-        }
-
         Orders updatedOrder = ordersMapper.toEntity(ordersDto);
         Orders order = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+
         order.setName(updatedOrder.getName());
         order.setStatus(updatedOrder.getStatus());
         order.setTypeOfPriority(updatedOrder.getTypeOfPriority());
@@ -129,6 +112,10 @@ public class OrdersServiceImpl implements OrdersService {
 
         if(order.getStatus().equals(OrderStatus.CREATED) && loggedUserRoles.contains(Role.SALES_REPRESENTATIVE)) {
             order.setStatus(OrderStatus.PLANNING);
+
+            //Wysłanie powiadomienia do specjalistów o utworzeniu zlecenia
+            List<AppUser> notifiedEmployees = notificationService.createListOfEmployeesToNotificate(userService.findAllByRole(Role.SPECIALIST));
+            notificationService.createNotification(notifiedEmployees, order.getId(), NotificationType.ORDER_CREATED);
         }else if(order.getStatus().equals(OrderStatus.PLANNING) && loggedUserRoles.contains(Role.SPECIALIST)) {
             if(order.getOrderStages().size() > 0) {
                 order.setStatus(OrderStatus.TO_ACCEPT);
@@ -139,10 +126,17 @@ public class OrdersServiceImpl implements OrdersService {
             if(order.getAssignedTo() != null) {
                 order.setStatus(OrderStatus.ACCEPTED);
 
+                //Ustawienie ADDING_FITTERS dla etapów zlecenia
                 for(OrderStage orderStage : order.getOrderStages()) {
                     orderStage.setStatus(OrderStageStatus.ADDING_FITTERS);
                     orderStageRepository.save(orderStage);
                 }
+
+                //Wysłanie powiadomienia do brygadzisty o przypisaniu do zlecenia
+                List<AppUser> notifiedEmployees = new ArrayList<>();
+                notifiedEmployees.add(userService.getById(order.getAssignedTo().getId()));
+                notificationService.createNotification(notifiedEmployees, order.getId(), NotificationType.FOREMAN_ASSIGNMENT);
+
             }else {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Podziel zlecenie na etapy!");
             }
