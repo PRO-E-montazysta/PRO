@@ -163,6 +163,33 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
+    public OrdersDto previousStatus(Long id) {
+        Orders order = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        //Check if Order is from logged user company
+        if(!order.getCompany().getId().equals(authUtils.getLoggedUserCompanyId())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        Set<Role> loggedUserRoles = authUtils.getLoggedUser().getRoles();
+
+        if(order.getStatus().equals(OrderStatus.PLANNING) && loggedUserRoles.contains(Role.SPECIALIST)) {
+            order.setStatus(OrderStatus.CREATED);
+        }else if(order.getStatus().equals(OrderStatus.TO_ACCEPT) && loggedUserRoles.contains(Role.MANAGER)) {
+            order.setStatus(OrderStatus.PLANNING);
+        }else if(order.getStatus().equals(OrderStatus.ACCEPTED) && loggedUserRoles.contains(Role.FOREMAN)) {
+            order.setStatus(OrderStatus.TO_ACCEPT);
+        }else if(order.getStatus().equals(OrderStatus.IN_PROGRESS) && loggedUserRoles.contains(Role.FOREMAN)) {
+            order.setStatus(OrderStatus.ACCEPTED);
+        }else if(order.getStatus().equals(OrderStatus.FINISHED) && loggedUserRoles.contains(Role.FOREMAN)) {
+            order.setStatus(OrderStatus.IN_PROGRESS);
+        }else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Brak możliwości zmiany!");
+        }
+
+        return ordersMapper.toDto(repository.save(order));
+    }
+
+    @Override
     public List<OrdersCompanyManagerDto> getFilteredOrders(OrdersSearchCriteria ordersSearchCriteria, Principal principal) {
         return ordersCriteriaRepository.findAllWithFilters(ordersSearchCriteria, principal);
     }

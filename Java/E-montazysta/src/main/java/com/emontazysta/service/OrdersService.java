@@ -14,5 +14,6 @@ public interface OrdersService {
     void delete(Long id);
     OrdersDto update(Long id, OrdersDto orders);
     OrdersDto nextStatus(Long id);
+    OrdersDto previousStatus(Long id);
     List<OrdersCompanyManagerDto> getFilteredOrders(OrdersSearchCriteria ordersSearchCriteria, Principal principal);
 }
