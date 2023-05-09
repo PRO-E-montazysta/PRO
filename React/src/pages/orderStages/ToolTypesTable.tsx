@@ -14,11 +14,9 @@ import Select, { SelectChangeEvent } from '@mui/material/Select'
 import { useEffect, useState } from 'react'
 import { OrderStage } from '../../types/model/OrderStage'
 import { AxiosError } from 'axios'
-import { getOrderStageById } from '../../api/orderStage.api'
-import { useQuery } from 'react-query'
+import { UseQueryResult, useQuery } from 'react-query'
 import { PlannedToolType } from '../../types/model/ToolType'
 import { getPlannedToolTypesById } from '../../api/toolType.api'
-import { number } from 'yup'
 
 type OrderStageToolTypesTableType = {
     itemsArray: Array<any> | undefined
@@ -47,7 +45,7 @@ const OrderStageToolTypesTable = ({
     const [selectedItemId, setSelectedItemId] = useState('')
     const [selectedItemNumber, setSelectedItemNumber] = useState(0)
 
-    const queryToolTypes = useQuery<Array<PlannedToolType>, AxiosError>(['toolsType-list'], async () => {
+    const queryPlannedToolTypes = useQuery<Array<PlannedToolType>, AxiosError>(['toolsType-list'], async () => {
         return await Promise.all(
             toolTypesListIds.map(async (tool) => {
                 return await getPlannedToolTypesById(tool)
@@ -71,14 +69,14 @@ const OrderStageToolTypesTable = ({
     }, [])
 
     useEffect(() => {
-        if (!!queryToolTypes.data) {
-            const filteredData = queryToolTypes!.data!.map((tool) => {
+        if (!!queryPlannedToolTypes.data) {
+            const filteredData = queryPlannedToolTypes!.data!.map((tool) => {
                 const data = { numberOfTools: tool.numberOfTools, toolTypeId: tool.toolType.id.toString() }
                 return data
             })
             setPlannedData(filteredData)
         }
-    }, [queryToolTypes])
+    }, [])
 
     useEffect(() => {
         // if (!plannedData) {
@@ -249,7 +247,6 @@ const TableItemNumber = ({
     handleItemNumberChange,
     rowIndex,
 }: TableItemNumberType) => {
-    const [displayNumber, setDisplayNumber] = useState(0)
 
     return (
         <TextField
@@ -261,7 +258,6 @@ const TableItemNumber = ({
             onChange={(event) => {
                 setTableRowIndex(rowIndex)
                 handleItemNumberChange(event)
-                setDisplayNumber(event.target.value as any)
             }}
         />
     )

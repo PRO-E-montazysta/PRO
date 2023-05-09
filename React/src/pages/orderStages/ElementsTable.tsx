@@ -80,7 +80,7 @@ const OrderStageDetailsElementsTable = ({
             })
             setPlannedData(filteredData)
         }
-    },[queryElements])
+    },[])
 
     useEffect(() => {
         // if (!plannedData) {
