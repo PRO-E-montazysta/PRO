@@ -68,4 +68,16 @@ public class OrdersController {
     public ResponseEntity<List<OrdersCompanyManagerDto>> filterOrders(OrdersSearchCriteria ordersSearchCriteria, Principal principal){
         return new ResponseEntity<>(orderService.getFilteredOrders(ordersSearchCriteria, principal), HttpStatus.OK);
     }
+
+    @PutMapping("/nextStatus/{id}")
+    @Operation(description = "Allows to change OrderStatus to next one.", security = @SecurityRequirement(name = "bearer-key"))
+    public OrdersDto nextStatus(@PathVariable Long id) {
+        return orderService.nextStatus(id);
+    }
+
+    @PutMapping("/previousStatus/{id}")
+    @Operation(description = "Allows to change OrderStatus to previous one.", security = @SecurityRequirement(name = "bearer-key"))
+    public OrdersDto previousStatus(@PathVariable Long id) {
+        return orderService.previousStatus(id);
+    }
 }
