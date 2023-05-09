@@ -26,7 +26,7 @@ public class NotificationsController {
         return notificationService.getAllNotReaded(authUtils.getLoggedUser().getId());
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{notificationId}")
     @Operation(description = "Allows to update Notifications for logged user.", security = @SecurityRequirement(name = "bearer-key"))
     public NotificationDto update(@PathVariable Long notificationId) {
         return notificationService.update(notificationId);
