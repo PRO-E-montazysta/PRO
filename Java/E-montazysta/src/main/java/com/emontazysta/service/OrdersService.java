@@ -13,6 +13,6 @@ public interface OrdersService {
     OrdersDto add(OrdersDto orders);
     void delete(Long id);
     OrdersDto update(Long id, OrdersDto orders);
-
-    public List<OrdersCompanyManagerDto> getFilteredOrders(OrdersSearchCriteria ordersSearchCriteria, Principal principal);
+    OrdersDto nextStatus(Long id);
+    List<OrdersCompanyManagerDto> getFilteredOrders(OrdersSearchCriteria ordersSearchCriteria, Principal principal);
 }
