@@ -19,6 +19,7 @@ import FormPaper from '../../components/form/FormPaper'
 import FormTitle from '../../components/form/FormTitle'
 import FormBox from '../../components/form/FormBox'
 import { PageMode } from '../../types/form'
+import MapContainer from '../../components/map/MapContainer'
 
 const OrderDetails = () => {
     //parameters from url
@@ -123,6 +124,7 @@ const OrderDetails = () => {
                                 onSubmit={formik.submitForm}
                                 readonlyMode={pageMode == 'read'}
                             />
+                            <MapContainer />
                         </>
                     )}
                 </FormPaper>
