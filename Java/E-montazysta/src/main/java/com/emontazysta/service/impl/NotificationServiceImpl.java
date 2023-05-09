@@ -65,6 +65,7 @@ public class NotificationServiceImpl implements NotificationService {
 
         if (!notifications.isEmpty()){
             notificationDtos = notifications.stream()
+                    .filter(notification -> notification.getReadAt() == null)
                     .map(notification -> notificationMapper.toDto(notification))
                     .collect(Collectors.toList());
         }
