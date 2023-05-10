@@ -4,11 +4,8 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -69,10 +66,14 @@ public class AddTaskTest {
     driver.findElement(By.tagName("body")).click();
 
     driver.findElement(By.id("plannedStart")).click();
-    driver.findElement(By.id("plannedStart")).sendKeys("2023-03-25T07:41");
+    driver.findElement(By.id("plannedStart")).sendKeys("25032023");
+    driver.findElement(By.id("plannedStart")).sendKeys(Keys.ARROW_RIGHT);
+    driver.findElement(By.id("plannedStart")).sendKeys("1200");
 
     driver.findElement(By.id("plannedEnd")).click();
-    driver.findElement(By.id("plannedEnd")).sendKeys("2024-11-14T08:39");
+    driver.findElement(By.id("plannedEnd")).sendKeys("14112024");
+    driver.findElement(By.id("plannedEnd")).sendKeys(Keys.ARROW_RIGHT);
+    driver.findElement(By.id("plannedEnd")).sendKeys("0839");
 
     driver.findElement(By.id("mui-component-select-clientId")).click();
 
@@ -83,21 +84,29 @@ public class AddTaskTest {
     driver.findElement(By.id("mui-component-select-foremanId")).click();
     driver.findElement(By.id("formSelect-foremanId-opt-6")).click();
 
-
+    driver.findElement(By.cssSelector("body")).click();
     driver.findElement(By.id("mui-component-select-locationId")).click();
     driver.findElement(By.id("formSelect-locationId-opt-2")).click();
+
+    driver.findElement(By.cssSelector("body")).click();
 
     driver.findElement(By.id("mui-component-select-managerId")).click();
     driver.findElement(By.id("formSelect-managerId-opt-16")).click();
 
+    driver.findElement(By.cssSelector("body")).click();
+
     driver.findElement(By.id("mui-component-select-specialistId")).click();
     driver.findElement(By.id("formSelect-specialistId-opt-12")).click();
+
+    driver.findElement(By.cssSelector("body")).click();
 
     driver.findElement(By.id("mui-component-select-salesRepresentativeId")).click();
     driver.findElement(By.id("formSelect-salesRepresentativeId-opt-15")).click();
 
+    driver.findElement(By.cssSelector("body")).click();
+
     driver.findElement(By.id("formButton-save")).click();
-    Thread.sleep(3000);
+
 
   }
   @Test
@@ -119,10 +128,14 @@ public class AddTaskTest {
     driver.findElement(By.tagName("body")).click();
 
     driver.findElement(By.id("plannedStart")).click();
-    driver.findElement(By.id("plannedStart")).sendKeys("2023-03-25T07:41");
+    driver.findElement(By.id("plannedStart")).sendKeys("25032023");
+    driver.findElement(By.id("plannedStart")).sendKeys(Keys.ARROW_RIGHT);
+    driver.findElement(By.id("plannedStart")).sendKeys("1200");
 
     driver.findElement(By.id("plannedEnd")).click();
-    driver.findElement(By.id("plannedEnd")).sendKeys("2024-11-14T08:39");
+    driver.findElement(By.id("plannedEnd")).sendKeys("14112024");
+    driver.findElement(By.id("plannedEnd")).sendKeys(Keys.ARROW_RIGHT);
+    driver.findElement(By.id("plannedEnd")).sendKeys("0839");
 
     driver.findElement(By.id("mui-component-select-clientId")).click();
 
@@ -170,10 +183,14 @@ public class AddTaskTest {
     driver.findElement(By.tagName("body")).click();
 
     driver.findElement(By.id("plannedStart")).click();
-    driver.findElement(By.id("plannedStart")).sendKeys("2023-05-20T18:48");
+    driver.findElement(By.id("plannedStart")).sendKeys("25032023");
+    driver.findElement(By.id("plannedStart")).sendKeys(Keys.ARROW_RIGHT);
+    driver.findElement(By.id("plannedStart")).sendKeys("1200");
 
     driver.findElement(By.id("plannedEnd")).click();
-    driver.findElement(By.id("plannedEnd")).sendKeys("2023-01-02T07:45");
+    driver.findElement(By.id("plannedEnd")).sendKeys("14112024");
+    driver.findElement(By.id("plannedEnd")).sendKeys(Keys.ARROW_RIGHT);
+    driver.findElement(By.id("plannedEnd")).sendKeys("0839");
 
     driver.findElement(By.id("mui-component-select-clientId")).click();
 
@@ -220,9 +237,14 @@ public class AddTaskTest {
     driver.findElement(By.tagName("body")).click();
 
     driver.findElement(By.id("plannedStart")).click();
-    driver.findElement(By.id("plannedStart")).sendKeys("1920-03-14T20:57");
+    driver.findElement(By.id("plannedStart")).sendKeys("25032023");
+    driver.findElement(By.id("plannedStart")).sendKeys(Keys.ARROW_RIGHT);
+    driver.findElement(By.id("plannedStart")).sendKeys("1200");
+
     driver.findElement(By.id("plannedEnd")).click();
-    driver.findElement(By.id("plannedEnd")).sendKeys("2137-09-04T21:37");
+    driver.findElement(By.id("plannedEnd")).sendKeys("14112024");
+    driver.findElement(By.id("plannedEnd")).sendKeys(Keys.ARROW_RIGHT);
+    driver.findElement(By.id("plannedEnd")).sendKeys("0839");
 
     driver.findElement(By.id("mui-component-select-clientId")).click();
 
