@@ -28,6 +28,8 @@ public class Notification {
 
     private String content;
 
+    private String subContent;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime readAt;

@@ -2,9 +2,7 @@ package com.emontazysta.service.impl;
 
 import com.emontazysta.enums.NotificationType;
 import com.emontazysta.mapper.NotificationMapper;
-import com.emontazysta.model.AppUser;
-import com.emontazysta.model.Employment;
-import com.emontazysta.model.Notification;
+import com.emontazysta.model.*;
 import com.emontazysta.model.dto.NotificationDto;
 import com.emontazysta.repository.AppUserRepository;
 import com.emontazysta.repository.NotificationRepository;
@@ -48,10 +46,14 @@ public class NotificationServiceImpl implements NotificationService {
             case ORDER_CREATED:
             case ACCEPT_ORDER:
             case FOREMAN_ASSIGNMENT:
-                notification.setOrder(orderRepository.findById(triggerId).orElseThrow(EntityNotFoundException::new));
+                Orders order = orderRepository.findById(triggerId).orElseThrow(EntityNotFoundException::new);
+                notification.setOrder(order);
+                notification.setSubContent(order.getName());
                 break;
             case FITTER_ASSIGNMENT:
-                notification.setOrderStage(orderStageRepository.findById(triggerId).orElseThrow(EntityNotFoundException::new));
+                OrderStage orderStage = orderStageRepository.findById(triggerId).orElseThrow(EntityNotFoundException::new);
+                notification.setOrderStage(orderStage);
+                notification.setSubContent(orderStage.getName());
                 break;
             case AD_HOC_CREATED:
                 //TODO On DemandAdHoc implementation

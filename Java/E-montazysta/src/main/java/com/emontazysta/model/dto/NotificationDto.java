@@ -20,6 +20,7 @@ public class NotificationDto {
 
     private NotificationType notificationType;
     private String content;
+    private String subContent;
     private LocalDateTime createdAt;
     private LocalDateTime readAt;
     private Long createdById;
