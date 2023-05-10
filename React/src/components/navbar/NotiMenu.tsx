@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { theme } from '../../themes/baseTheme'
 import NotiMenuItem from './NotiMenuItem'
 import { AxiosError } from 'axios'
-import { useQuery } from 'react-query'
+import { useQuery, useQueryClient } from 'react-query'
 import { getNotifications, updateNotification } from '../../api/notification.api'
 import { Notification } from '../../types/model/Notification'
 
@@ -13,7 +13,9 @@ type NotiMenuParams = {
 }
 
 const NotiMenu = (params: NotiMenuParams) => {
-    const notificationQuery = useQuery<Array<Notification>, AxiosError>(['notification'], async () =>
+    const queryClient = useQueryClient()
+    queryClient.invalidateQueries('notifications')
+    const notificationQuery = useQuery<Array<Notification>, AxiosError>(['notifications'], async () =>
         getNotifications(),
     )
     const notificationCount = Number(notificationQuery.data?.length)
@@ -53,7 +55,6 @@ const NotiMenu = (params: NotiMenuParams) => {
                                 url += 'orders/' + row.orderId
                                 break
                         }
-
                         return (
                             <NotiMenuItem
                                 id={`navBtn-notification-${row.id}`}
