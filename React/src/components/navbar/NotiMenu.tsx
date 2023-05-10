@@ -14,7 +14,6 @@ type NotiMenuParams = {
 
 const NotiMenu = (params: NotiMenuParams) => {
     const queryClient = useQueryClient()
-    queryClient.invalidateQueries('notifications')
     const notificationQuery = useQuery<Array<Notification>, AxiosError>(['notifications'], async () =>
         getNotifications(),
     )
@@ -27,6 +26,7 @@ const NotiMenu = (params: NotiMenuParams) => {
         updateNotification(id)
         navigate(url)
         onClose()
+        queryClient.invalidateQueries('notifications')
     }
 
     return (
