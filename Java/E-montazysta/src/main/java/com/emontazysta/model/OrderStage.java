@@ -47,9 +47,6 @@ public class OrderStage {
     @ManyToMany(mappedBy = "workingOn")
     private List<Fitter> assignedTo;
 
-    @ManyToOne
-    private Foreman managedBy;
-
     @OneToMany(mappedBy = "orderStage")
     private List<Comment> comments;
 

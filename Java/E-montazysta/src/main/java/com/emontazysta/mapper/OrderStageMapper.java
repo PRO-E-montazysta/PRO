@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 public class OrderStageMapper {
 
     private final FitterRepository fitterRepository;
-    private final ForemanRepository foremanRepository;
     private final CommentRepository commentRepository;
     private final ToolReleaseRepository toolReleaseRepository;
     private final ElementReturnReleaseRepository elementReturnReleaseRepository;
@@ -47,7 +46,6 @@ public class OrderStageMapper {
                 .plannedFittersNumber(orderStage.getPlannedFittersNumber())
                 .minimumImagesNumber(orderStage.getMinimumImagesNumber())
                 .fitters(orderStage.getAssignedTo().stream().map(Fitter::getId).collect(Collectors.toList()))
-                .foremanId(orderStage.getManagedBy() == null ? null : orderStage.getManagedBy().getId())
                 .comments(orderStage.getComments().stream().map(Comment::getId).collect(Collectors.toList()))
                 .toolReleases(orderStage.getToolReleases().stream().map(ToolRelease::getId).collect(Collectors.toList()))
                 .elementReturnReleases(orderStage.getElementReturnReleases().stream().map(ElementReturnRelease::getId).collect(Collectors.toList()))
@@ -102,7 +100,6 @@ public class OrderStageMapper {
                 .plannedFittersNumber(orderStageDto.getPlannedFittersNumber())
                 .minimumImagesNumber(orderStageDto.getMinimumImagesNumber())
                 .assignedTo(fitterList)
-                .managedBy(orderStageDto.getForemanId() == null ? null : foremanRepository.getReferenceById(orderStageDto.getForemanId()))
                 .comments(commentList)
                 .toolReleases(toolReleaseList)
                 .elementReturnReleases(elementReturnReleaseList)
@@ -157,7 +154,6 @@ public class OrderStageMapper {
                 .plannedFittersNumber(orderStageToolsElementsDto.getPlannedFittersNumber())
                 .minimumImagesNumber(orderStageToolsElementsDto.getMinimumImagesNumber())
                 .assignedTo(fitterList)
-                .managedBy(orderStageToolsElementsDto.getForemanId() == null ? null : foremanRepository.getReferenceById(orderStageToolsElementsDto.getForemanId()))
                 .comments(commentList)
                 .toolReleases(toolReleaseList)
                 .elementReturnReleases(elementReturnReleaseList)
