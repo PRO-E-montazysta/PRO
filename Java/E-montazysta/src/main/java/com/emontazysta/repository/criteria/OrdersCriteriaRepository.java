@@ -52,6 +52,10 @@ public class OrdersCriteriaRepository {
 
     private Predicate getPredicate(OrdersSearchCriteria ordersSearchCriteria, Root<Orders> ordersRoot, Principal principal) {
         List<Predicate> predicates = new ArrayList<>();
+
+        //Get not-deleted
+        predicates.add(criteriaBuilder.equal(ordersRoot.get("deleted"), false));
+
         if (Objects.nonNull(ordersSearchCriteria.getName())) {
             predicates.add(criteriaBuilder.like(ordersRoot.get("name"), "%" + ordersSearchCriteria.getName() + "%"));
         }

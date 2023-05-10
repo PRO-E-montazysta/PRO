@@ -91,6 +91,9 @@ public class DemandAdHocCriteriaRepository {
         predicates.add(criteriaBuilder.equal(root.get("orderStage").get("orders").get("company").get("id"),
                 authUtils.getLoggedUserCompanyId()));
 
+        //Get not-deleted
+        predicates.add(criteriaBuilder.equal(root.get("deleted"), false));
+
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 }
