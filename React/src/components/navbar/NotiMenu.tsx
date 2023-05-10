@@ -32,7 +32,7 @@ const NotiMenu = (params: NotiMenuParams) => {
             <Box
                 sx={{
                     transitionDuration: '.5s',
-                    height: open ? (notificationCount > 0 ? notificationCount * 40 + 'px' : '40px') : 0,
+                    height: open ? (notificationCount > 0 ? notificationCount * 60 + 'px' : '40px') : 0,
                     position: 'absolute',
                     backgroundColor: theme.palette.primary.main,
                     borderRadius: '5px',
@@ -45,6 +45,7 @@ const NotiMenu = (params: NotiMenuParams) => {
                 {notificationQuery.data &&
                     notificationQuery.data.map((row) => {
                         let url = '/'
+
                         switch (row.notificationType) {
                             case 'ORDER_CREATED':
                             case 'ACCEPT_ORDER':
@@ -58,6 +59,7 @@ const NotiMenu = (params: NotiMenuParams) => {
                                 id={`navBtn-notification-${row.id}`}
                                 onItemClick={() => handleMenuItemClick(url, row.id)}
                                 text={row.content}
+                                subtext={row.subContent}
                                 key={row.id}
                             />
                         )

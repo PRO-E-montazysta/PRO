@@ -1,20 +1,23 @@
-import { MenuItem } from '@mui/material'
+import { MenuItem, Typography } from '@mui/material'
+import { theme } from '../../themes/baseTheme'
 
 type NotiMenuItemProps = {
     onItemClick: () => void
     text: string
+    subtext?: string
     id: string
 }
 
 const NotiMenuItem = (props: NotiMenuItemProps) => {
-    const { onItemClick, text, id } = props
+    const { onItemClick, text, subtext, id } = props
+    let height = subtext ? '60px' : '40px'
     return (
         <MenuItem
             id={id}
             sx={{
                 p: '10px 20px',
                 position: 'relative',
-                height: '40px',
+                height: { height },
                 fontSize: '14px',
                 display: 'block',
                 justifyContent: 'space-evenly',
@@ -22,6 +25,9 @@ const NotiMenuItem = (props: NotiMenuItemProps) => {
             onClick={onItemClick}
         >
             {text}
+            {subtext ? (
+                <Typography sx={{ color: theme.palette.primary.light, fontSize: '13px' }}>{subtext}</Typography>
+            ) : null}
         </MenuItem>
     )
 }
