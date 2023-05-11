@@ -1,23 +1,14 @@
 import { Box, IconButton } from '@mui/material'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import { Badge } from '@mui/material'
 import NotiMenu from './NotiMenu'
 import ClickAwayListener from '@mui/base/ClickAwayListener'
-import { UserInfo } from './NavActions'
 import { AxiosError } from 'axios'
 import { useQuery } from 'react-query'
 import { getNotifications } from '../../api/notification.api'
 
-type NotiButtonProps = {
-    userInfo: UserInfo
-}
-
-const NotiButton = (props: NotiButtonProps) => {
-    const { userInfo } = props
-
-    const navigate = useNavigate()
+const NotiButton = () => {
     const [open, setOpen] = useState(false)
 
     const handleClick = () => {
