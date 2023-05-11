@@ -1,19 +1,24 @@
 import { useEffect, useState } from 'react'
 import Map from './Map'
-import { getPositionError } from './helper'
+import { Coordinates, getLocationFromAddress, getLocationFromCoordinates, getPositionError } from './helper'
+import { Location } from '../../types/model/Location'
 
 export default function MapContainer() {
-    const [coords, setCorrds] = useState({
-        latitude: 0,
-        longitude: 0,
-    })
     const [popupText, setPopupText] = useState('')
-    const [address, setAddress] = useState({
-        street: '',
+    const [currentCoordinates, setCurrentCoordinates] = useState<Coordinates>({
+        lat: 0,
+        lon: 0,
+    })
+
+    const [location, setLocation] = useState<Location>({
+        id: 0,
         city: '',
-        number: '',
-        country: 'Polska',
-        postalcode: '',
+        street: '',
+        propertyNumber: '',
+        apartmentNumber: '',
+        xCoordinate: 0,
+        yCoordinate: 0,
+        zipCode: '',
     })
 
     const options = {
@@ -23,78 +28,46 @@ export default function MapContainer() {
     }
 
     useEffect(() => {
-        navigator.geolocation.getCurrentPosition(getCurrentCityName, getPositionError, options)
-    }, [])
-
-    //get current location when the app loads for the first time
-    const getCurrentCityName = (position: any) => {
-        setCorrds({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-        })
-
-        let url =
-            'https://nominatim.openstreetmap.org/reverse?format=jsonv2' +
-            '&lat=' +
-            coords.latitude +
-            '&lon=' +
-            coords.longitude
-
-        fetch(url, {
-            method: 'GET',
-            mode: 'cors',
-            headers: {
-                'Access-Control-Allow-Origin': 'https://o2cj2q.csb.app',
+        navigator.geolocation.getCurrentPosition(
+            (position: any) => {
+                setCurrentCoordinates({
+                    lat: position.coords.latitude,
+                    lon: position.coords.longitude,
+                })
             },
-        })
-            .then((response) => response.json())
-            .then((data) => setPopupText(data.display_name))
+            getPositionError,
+            options,
+        )
+    }, [])
+    useEffect(() => {
+        setMapOnMe()
+    }, [currentCoordinates])
+
+    const setMapOnMe = async (e?: any) => {
+        const location = await getLocationFromCoordinates(currentCoordinates)
+        setLocation(location)
     }
 
     //get input from text fields and append it to address object
     const update = (field: any) => {
         return (e: any) => {
             const value = e.currentTarget.value
-            setAddress((address) => ({ ...address, [field]: value }))
+            setLocation((location) => ({ ...location, [field]: value }))
         }
     }
 
-    //send the data on the state to the API
-    const getData = (url: any) => {
-        fetch(url, {
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-                'Access-Control-Allow-Origin': 'https://o2cj2q.csb.app',
-            },
-        })
-            .then((response) => {
-                if (response.ok) {
-                    return response.json()
-                }
-            })
-            .then((data) => {
-                setPopupText(data[0].display_name)
-                setCorrds({
-                    latitude: data[0].lat,
-                    longitude: data[0].lon,
-                })
-            })
-            .catch(() => getPositionError('Please Check your input'))
+    const onSubmit = async (e: any) => {
+        e.preventDefault()
+        const loc = await getLocationFromAddress(location)
+        console.log(loc)
+        setLocation(loc)
     }
 
-    //set form input( data entered ) to state on form submit
-    const submitHandler = (e: any) => {
-        e.preventDefault()
-        console.log(address)
-
-        let url = `https://nominatim.openstreetmap.org/search?
-    street=${address.street}
-    &city=${address.city}
-    &country=${address.country}
-    &postalcode=${address.postalcode}&format=json`
-
-        getData(url)
+    const onCoordinatesChange = async (coords: Coordinates) => {
+        console.log(coords)
+        const loc = await getLocationFromCoordinates(coords)
+        console.log(loc)
+        setLocation(loc)
     }
 
     return (
@@ -103,19 +76,37 @@ export default function MapContainer() {
             <section>
                 <form>
                     <label>Miasto:</label>
-                    <input type="text" value={address.city} onChange={update('city')} id="city" />
+                    <input type="text" value={location.city} onChange={update('city')} id="city" />
                     <br />
                     <label>Ulica:</label>
-                    <input value={address.street} onChange={update('street')} id="street" type="text" />
+                    <input value={location.street} onChange={update('street')} id="street" type="text" />
                     <label>Numer:</label>
-                    <input type="number" value={address.number} onChange={update('number')} id="number" />
+                    <input
+                        type="text"
+                        value={location.propertyNumber}
+                        onChange={update('propertyNumber')}
+                        id="propertyNumber"
+                    />
                     <label>Kod pocztowy:</label>
-                    <input type="text" value={address.postalcode} onChange={update('postalcode')} id="postalcode" />
+                    <input type="text" value={location.zipCode} onChange={update('zipCode')} id="zipCode" />
+
+                    <label>x:</label>
+                    <input readOnly type="text" value={location.xCoordinate} id="xCoordinate" />
+                    <label>y:</label>
+                    <input readOnly type="text" value={location.yCoordinate} id="yCoordinate" />
+
                     <br />
-                    <button onClick={(e) => submitHandler(e)}>Search</button>
+                    <button onClick={(e) => onSubmit(e)}>Search</button>
+                    <button type="button" onClick={setMapOnMe}>
+                        My location
+                    </button>
                 </form>
             </section>
-            <Map coords={coords} popupText={popupText} />
+            <Map
+                coords={{ lat: location.xCoordinate, lon: location.yCoordinate }}
+                popupText={popupText}
+                handleCoordinatesChange={onCoordinatesChange}
+            />
         </div>
     )
 }

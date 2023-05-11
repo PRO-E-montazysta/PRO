@@ -2,10 +2,11 @@
 
 export type Location = {
    id: number
-   name: string
    city: string
    street: string
    propertyNumber: string
    apartmentNumber: string
    zipCode: string
+   xCoordinate: number
+   yCoordinate: number
 };
