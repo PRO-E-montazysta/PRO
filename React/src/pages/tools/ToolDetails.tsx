@@ -13,14 +13,7 @@ import QueryBoxStatus from '../../components/base/QueryStatusBox'
 import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
-import { getToolHistory } from '../../api/tool.api'
-import { ToolHistory } from '../../types/model/Tool'
-import { AxiosError } from 'axios'
-import { useQuery } from 'react-query'
-import { Card, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
-import { formatDate } from '../../helpers/format.helper'
-import ExpandMore from '../../components/expandMore/ExpandMore'
-import HistoryIcon from '@mui/icons-material/History'
+import DisplayToolHistory from '../../components/toolHistory/DisplayToolHistory'
 
 const ToolDetails = () => {
     const params = useParams()
@@ -96,67 +89,6 @@ const ToolDetails = () => {
         }
     }, [params.id])
 
-    const queryToolHistory = useQuery<Array<ToolHistory>, AxiosError>(
-        ['tool-history'],
-        async () => getToolHistory(params.id && params.id !== 'new' ? params.id : ''),
-        {
-            enabled: !!params.id && params.id !== 'new',
-        },
-    )
-
-    const addToolHistoryTableCard = () => {
-        return (
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Nazwa etapu</TableCell>
-                        <TableCell align="right">Brygadzista</TableCell>
-                        <TableCell align="right">Początek etapu</TableCell>
-                        <TableCell align="right">Koniec etapu</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {queryToolHistory.data &&
-                        queryToolHistory.data.map((row) => (
-                            <TableRow
-                                key={row['orderStageName']}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                <TableCell component="th" scope="row">
-                                    {row['orderStageName']}
-                                </TableCell>
-                                <TableCell align="right">{row['foremanName']}</TableCell>
-                                <TableCell align="right">{formatDate(row['orderStageStartDate'])}</TableCell>
-                                <TableCell align="right">{formatDate(row['orderStageStartDate'])}</TableCell>
-                            </TableRow>
-                        ))}
-                </TableBody>
-            </Table>
-        )
-    }
-
-    const addToolHistory = () => {
-        if (queryToolHistory.data && queryToolHistory.data?.length > 0) {
-            return (
-                <Grid container alignItems="center" justifyContent="center" marginTop={2}>
-                    <Card sx={{ width: '100%', left: '50%' }}>
-                        <ExpandMore
-                            titleIcon={<HistoryIcon />}
-                            title="Historia narzędzia"
-                            cardContent={addToolHistoryTableCard()}
-                        />
-                    </Card>
-                </Grid>
-            )
-        } else {
-            return (
-                <Grid container alignItems="center" justifyContent="center" marginTop={2}>
-                    <Typography>Narzędzie nie było jeszcze używane podczas etapów</Typography>
-                </Grid>
-            )
-        }
-    }
-
     return (
         <FormBox>
             <FormTitle text={pageMode === 'new' ? 'Nowe narzędzie' : formik.values['name']} />
@@ -166,7 +98,7 @@ const ToolDetails = () => {
                 ) : (
                     <>
                         <FormStructure formStructure={formStructure} formik={formik} pageMode={pageMode} />
-                        {pageMode !== 'new' ? addToolHistory() : ''}
+                        {pageMode !== 'new' ? <DisplayToolHistory toolId={params.id}></DisplayToolHistory> : ''}
                         <FormButtons
                             id={params.id}
                             onCancel={handleCancel}

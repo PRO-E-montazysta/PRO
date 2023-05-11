@@ -8,7 +8,9 @@ export type Tool = {
 
 export type ToolHistory = {
     orderStageName: string
+    orderStageId: number
     orderStageStartDate: string
     orderStageEndDate: string
     foremanName: string
+    foremanId: number
 }
