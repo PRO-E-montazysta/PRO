@@ -46,4 +46,10 @@ public class Notification {
     @ManyToOne
     private Orders order;
 
+    @ManyToOne
+    private ToolEvent toolEvent;
+
+    @ManyToOne
+    private ElementEvent elementEvent;
+
 }
