@@ -11,47 +11,94 @@ import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
-import { useEffect, useState } from 'react'
 import { OrderStage } from '../../types/model/OrderStage'
 import { AxiosError } from 'axios'
-import { UseQueryResult, useQuery } from 'react-query'
+import { useQuery } from 'react-query'
 import { PlannedToolType } from '../../types/model/ToolType'
-import { getPlannedToolTypesById } from '../../api/toolType.api'
+import { number } from 'yup'
+import { useEffect, useState } from 'react'
+import { PlannedElements } from '../../types/model/Element'
+import { getPlannedElementById } from '../../api/element.api'
+import { v4 as uuidv4 } from 'uuid'
 
-type OrderStageToolTypesTableType = {
+type TestTestTest = {
     itemsArray: Array<any> | undefined
-    plannedData: Array<{ numberOfTools: number; toolTypeId: string }>
-    setPlannedData: React.Dispatch<
-        React.SetStateAction<
-            | {
-                  numberOfTools: number
-                  toolTypeId: string
-              }[]
-            | undefined
-        >
-    >
+    // plannedData: Array<{ numberOfElements: number; elementId: string }>
+    // setPlannedData: React.Dispatch<
+    //     React.SetStateAction<
+    //         | {
+    //               numberOfElements: number
+    //               elementId: string
+    //           }[]
+    //         | undefined
+    //     >
+    // >
+    preparedPlannedData: any
     isDisplayingMode: boolean
-    toolTypesListIds: Array<number> | []
+    elementsListIds: Array<number> | []
 }
 
-const OrderStageToolTypesTable = ({
-    itemsArray,
-    setPlannedData,
-    plannedData,
-    isDisplayingMode,
-    toolTypesListIds,
-}: OrderStageToolTypesTableType) => {
+const TestTestTest = ({ itemsArray, preparedPlannedData, isDisplayingMode, elementsListIds }: TestTestTest) => {
     const [tableRowIndex, setTableRowIndex] = useState(0)
     const [selectedItemId, setSelectedItemId] = useState('')
     const [selectedItemNumber, setSelectedItemNumber] = useState(0)
+    // const queryElements = useQuery<Array<PlannedElements>, AxiosError>(['planned-elements-list'], async () => {
+    //     return await Promise.all(
+    //         elementsListIds.map(async (element) => {
+    //             return await getPlannedElementById(element)
+    //         }),
+    //     )
+    // })
 
-    const queryPlannedToolTypes = useQuery<Array<PlannedToolType>, AxiosError>(['toolsType-list'], async () => {
-        return await Promise.all(
-            toolTypesListIds.map(async (tool) => {
-                return await getPlannedToolTypesById(tool)
-            }),
-        )
-    })
+    //new2
+    const [tableData, setTableData] = useState<{ numberOfElements: number; elementId: string }[]>([
+        { numberOfElements: 0, elementId: 'toChange' },
+    ])
+
+    useEffect(() => {
+        // setPlannedData(tableData)
+        //przekazać funkcję ktora zmienia stan komponentu
+        preparedPlannedData = [...tableData]
+        console.log('gowno', preparedPlannedData)
+    }, [tableData])
+
+    const getElementsData = async () => {
+        if (!!elementsListIds) {
+            const check = await Promise.all(
+                elementsListIds.map(async (element) => {
+                    return await getPlannedElementById(element)
+                }),
+            )
+            if (!!check && check.length > 0) {
+                const filteredData = check.map((element) => {
+                    const data = {
+                        numberOfElements: element.numberOfElements,
+                        elementId: element.element.id.toString(),
+                    }
+                    return data
+                })
+                setTableData([...filteredData])
+            }
+        }
+    }
+
+    useEffect(() => {
+        // console.log('idki ktore musze pobrac', elementsListIds)
+        getElementsData()
+        // getElementsData().then((data) => {
+        //     console.log('dane tabeli222', data)
+        //     if (!!data && data.length > 0) {
+        //         const filteredData = data.map((element) => {
+        //             const preparedData = {
+        //                 numberOfElements: element.numberOfElements,
+        //                 elementId: element.element.id.toString(),
+        //             }
+        //             return preparedData
+        //         })
+        //         setPlannedData([...filteredData])
+        //     }
+        // })
+    }, [])
 
     const handleItemNumberChange = (event: any) => {
         const { value: newValue } = event.target
@@ -62,21 +109,21 @@ const OrderStageToolTypesTable = ({
         }
     }
 
-    useEffect(() => {
-        if (!plannedData || plannedData.length === 0) {
-            setPlannedData([{ numberOfTools: 0, toolTypeId: 'toChange' }])
-        }
-    }, [])
+    // useEffect(() => {
+    //     if (!plannedData || plannedData.length === 0) {
+    //         setPlannedData([{ numberOfElements: 0, elementId: 'toChange' }])
+    //     }
+    // }, [])
 
-    useEffect(() => {
-        if (!!queryPlannedToolTypes.data) {
-            const filteredData = queryPlannedToolTypes!.data!.map((tool) => {
-                const data = { numberOfTools: tool.numberOfTools, toolTypeId: tool.toolType.id.toString() }
-                return data
-            })
-            setPlannedData(filteredData)
-        }
-    }, [])
+    // useEffect(()=>{
+    //     if (!!tableData) {
+    //         const filteredData = tableData!.map((element) => {
+    //             const data = { numberOfElements: element.numberOfElements, elementId: element.id.toString() }
+    //             return data
+    //         })
+    //         setPlannedData(filteredData)
+    //     }
+    // },[])
 
     useEffect(() => {
         // if (!plannedData) {
@@ -86,17 +133,22 @@ const OrderStageToolTypesTable = ({
         // if (!!plannedData && plannedData.length === 0) {
         //     return setPlannedData([{ numberOfTools: selectedItemNumber, toolTypeId: selectedItemId }])
         // }
-        if (!!plannedData && !!selectedItemId) {
-            const tempArray = [...plannedData]
-            tempArray[tableRowIndex] = { numberOfTools: selectedItemNumber, toolTypeId: selectedItemId }
-            setPlannedData(() => tempArray)
+        // if (!!plannedData && !!selectedItemId) {
+        //     const tempArray = [...plannedData]
+        //     tempArray[tableRowIndex] = { numberOfElements: selectedItemNumber, elementId: selectedItemId }
+        //     setPlannedData(tempArray)
+        // }
+        if (!!tableData && !!selectedItemId) {
+            const tempArray = [...tableData]
+            tempArray[tableRowIndex] = { numberOfElements: selectedItemNumber, elementId: selectedItemId }
+            setTableData(tempArray)
         }
     }, [selectedItemId, selectedItemNumber])
 
     const handleDeleteItem = (rowIndex: number) => {
-        const tempArray = [...plannedData]
+        const tempArray = [...tableData]
         tempArray.splice(rowIndex, 1)
-        setPlannedData(() => tempArray)
+        setTableData(tempArray)
     }
 
     return (
@@ -104,20 +156,20 @@ const OrderStageToolTypesTable = ({
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        <TableCell>Typ narzedzia</TableCell>
+                        <TableCell>Element</TableCell>
                         <TableCell align="right">Planowana potrzebna ilosc</TableCell>
-                        {isDisplayingMode && <TableCell align="right">Wydane narzedzie</TableCell>}
+                        {isDisplayingMode && <TableCell align="right">Wydana ilosć elementy</TableCell>}
                         {!isDisplayingMode && <TableCell align="right">Akcja</TableCell>}
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {!!plannedData &&
-                        plannedData.map((rowData, rowIndex) => (
+                    {!!tableData &&
+                        tableData.map((rowData, rowIndex) => (
                             <TableRow key={rowIndex} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                 <TableCell component="th" scope="row">
                                     <Box sx={{ minWidth: 120 }}>
                                         <FormControl fullWidth>
-                                            <InputLabel id="demo-simple-select-label">Typ narzedzia</InputLabel>
+                                            <InputLabel id="demo-simple-select-label">Element</InputLabel>
                                             <TableItemSelect
                                                 label={'Typ narzedzia'}
                                                 itemsArray={itemsArray}
@@ -133,7 +185,7 @@ const OrderStageToolTypesTable = ({
                                     <Box sx={{ minWidth: 120 }}>
                                         <FormControl fullWidth>
                                             <TableItemNumber
-                                                selectedItemNumber={rowData.numberOfTools}
+                                                selectedItemNumber={rowData.numberOfElements}
                                                 setTableRowIndex={setTableRowIndex}
                                                 handleItemNumberChange={handleItemNumberChange}
                                                 rowIndex={rowIndex}
@@ -144,14 +196,14 @@ const OrderStageToolTypesTable = ({
                                 {isDisplayingMode && <TableCell align="right">bla</TableCell>}
                                 {!isDisplayingMode && (
                                     <TableCell align="right">
-                                        {rowIndex === plannedData.length - 1 && (
+                                        {rowIndex === tableData.length - 1 && (
                                             <Button
                                                 color="primary"
                                                 variant="contained"
                                                 onClick={() => {
-                                                    setPlannedData((plannedData) => [
-                                                        ...plannedData!,
-                                                        { numberOfTools: 0, toolTypeId: 'toChange' },
+                                                    setTableData((tableData) => [
+                                                        ...tableData!,
+                                                        { numberOfElements: 0, elementId: 'toChange' },
                                                     ])
                                                 }}
                                             >
@@ -177,7 +229,7 @@ const OrderStageToolTypesTable = ({
     )
 }
 
-export default OrderStageToolTypesTable
+export default TestTestTest
 
 //select for table - so i can manage state for every row
 const chooseSelectItemId = (
@@ -188,6 +240,7 @@ const chooseSelectItemId = (
     if (itemsArray) {
         return itemsArray.map((item: any) => (
             <MenuItem
+                id={uuidv4()}
                 value={item.id}
                 onClick={() => {
                     setSelectedItemId(item.id)
@@ -203,7 +256,7 @@ const chooseSelectItemId = (
 type TableItemSelectTypes = {
     label: string
     itemsArray: Array<any> | undefined
-    rowData: { numberOfTools: number; toolTypeId: string }
+    rowData: { numberOfElements: number; elementId: string }
     rowIndex: number
     setTableRowIndex: React.Dispatch<React.SetStateAction<number>>
     setSelectedItemId: React.Dispatch<React.SetStateAction<string>>
@@ -222,15 +275,16 @@ const TableItemSelect = ({
     return (
         <Select
             labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={rowData.toolTypeId}
+            id={uuidv4()}
+            defaultValue=""
+            value={rowData.elementId}
             label={label}
             onChange={(event: SelectChangeEvent) => {
                 // setDisplaySelectedItemName(event.target.value as string)
                 setTableRowIndex(rowIndex)
             }}
         >
-            {chooseSelectItemId(rowData.toolTypeId, itemsArray, setSelectedItemId)}
+            {chooseSelectItemId(rowData.elementId, itemsArray, setSelectedItemId)}
         </Select>
     )
 }
@@ -247,17 +301,19 @@ const TableItemNumber = ({
     handleItemNumberChange,
     rowIndex,
 }: TableItemNumberType) => {
+    const [displayNumber, setDisplayNumber] = useState(0)
 
     return (
         <TextField
             type="number"
             value={selectedItemNumber}
-            id="outlined-basic"
+            id={uuidv4()}
             label="Ilość"
             variant="outlined"
             onChange={(event) => {
                 setTableRowIndex(rowIndex)
                 handleItemNumberChange(event)
+                setDisplayNumber(event.target.value as any)
             }}
         />
     )

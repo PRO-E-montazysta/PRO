@@ -11,72 +11,50 @@ import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
+import { useEffect, useState } from 'react'
 import { OrderStage } from '../../types/model/OrderStage'
 import { AxiosError } from 'axios'
-import { useQuery } from 'react-query'
+import { UseQueryResult, useQuery } from 'react-query'
 import { PlannedToolType } from '../../types/model/ToolType'
-import { number } from 'yup'
-import { useEffect, useState } from 'react'
-import { PlannedElements } from '../../types/model/Element'
-import { getPlannedElementById } from '../../api/element.api'
-import { v4 as uuidv4 } from 'uuid'
+import { getPlannedToolTypesById } from '../../api/toolType.api'
+import { CustomTextField } from '../../components/form/FormInput'
 
-type OrderStageDetailsElementsTableType = {
+type OrderStageToolTypesTableType = {
     itemsArray: Array<any> | undefined
-    plannedData: Array<{ numberOfElements: number; elementId: string }>
+    plannedData: Array<{ numberOfTools: number; toolTypeId: string }>
     setPlannedData: React.Dispatch<
         React.SetStateAction<
             | {
-                  numberOfElements: number
-                  elementId: string
+                  numberOfTools: number
+                  toolTypeId: string
               }[]
             | undefined
         >
     >
     isDisplayingMode: boolean
-    elementsListIds: Array<number> | []
+    toolTypesListIds: Array<number> | []
 }
 
-const OrderStageDetailsElementsTable = ({
+const OrderStageToolTypesTable = ({
     itemsArray,
     setPlannedData,
     plannedData,
     isDisplayingMode,
-    elementsListIds,
-}: OrderStageDetailsElementsTableType) => {
+    toolTypesListIds,
+}: OrderStageToolTypesTableType) => {
     const [tableRowIndex, setTableRowIndex] = useState(0)
     const [selectedItemId, setSelectedItemId] = useState('')
     const [selectedItemNumber, setSelectedItemNumber] = useState(0)
+    const [orderStageData, setOrderStageData] = useState(plannedData)
+    //start2
 
-    // const queryElements = useQuery<Array<PlannedElements>, AxiosError>(['planned-elements-list'], async () => {
-    //     return await Promise.all(
-    //         elementsListIds.map(async (element) => {
-    //             return await getPlannedElementById(element)
-    //         }),
-    //     )
-    // })
-    useEffect(() => {
-        console.log('idki ktore musze pobrac', elementsListIds)
-        getElementsData()
-    }, [])
-
-    const getElementsData = async () => {
-        const plannedElements = await Promise.all(
-            elementsListIds.map(async (element) => {
-                return await getPlannedElementById(element)
+    const queryPlannedToolTypes = useQuery<Array<PlannedToolType>, AxiosError>(['toolsType-list'], async () => {
+        return await Promise.all(
+            toolTypesListIds.map(async (tool) => {
+                return await getPlannedToolTypesById(tool)
             }),
         )
-        if (!!plannedElements && plannedElements.length > 0) {
-            const filteredData = plannedElements.map((element) => {
-                const data = { numberOfElements: element.numberOfElements, elementId: element.element.id.toString() }
-                return data
-            })
-            setPlannedData(filteredData)
-        }else{
-            setPlannedData([{ numberOfElements: 0, elementId: 'toChange' }])
-
-        }
-    }
+    })
 
     const handleItemNumberChange = (event: any) => {
         const { value: newValue } = event.target
@@ -87,67 +65,145 @@ const OrderStageDetailsElementsTable = ({
         }
     }
 
-    // useEffect(() => {
-    //     if (!plannedData || plannedData.length === 0) {
-    //         setPlannedData([{ numberOfElements: 0, elementId: 'toChange' }])
-    //     }
-    // }, [])
+    useEffect(() => {
+        if (!plannedData || plannedData.length === 0) {
+            setPlannedData([{ numberOfTools: 0, toolTypeId: 'toChange' }])
+        }
+    }, [])
 
-    // useEffect(() => {
-    //     if (!!queryElements.data) {
-    //         const filteredData = queryElements!.data!.map((element) => {
-    //             const data = { numberOfElements: element.numberOfElements, elementId: element.element.id.toString() }
-    //             return data
-    //         })
-    //         setPlannedData(filteredData)
-    //     }
-    // }, [])
+    useEffect(() => {
+        if (!!queryPlannedToolTypes.data) {
+            const filteredData = queryPlannedToolTypes!.data!.map((tool) => {
+                const data = { numberOfTools: tool.numberOfTools, toolTypeId: tool.toolType.id.toString() }
+                return data
+            })
+            setPlannedData(filteredData)
+        }
+    }, [queryPlannedToolTypes])
 
-    // useEffect(() => {
-    //     // if (!plannedData) {
+    useEffect(() => {
+        // if (!plannedData) {
 
-    //     //     return setPlannedData([{ numberOfTools: selectedItemNumber, toolTypeId: selectedItemId }])
-    //     // }
-    //     // if (!!plannedData && plannedData.length === 0) {
-    //     //     return setPlannedData([{ numberOfTools: selectedItemNumber, toolTypeId: selectedItemId }])
-    //     // }
-    //     if (!!plannedData && !!selectedItemId) {
-    //         const tempArray = [...plannedData]
-    //         tempArray[tableRowIndex] = { numberOfElements: selectedItemNumber, elementId: selectedItemId }
-    //         setPlannedData(tempArray)
-    //     }
-    // }, [selectedItemId, selectedItemNumber])
+        //     return setPlannedData([{ numberOfTools: selectedItemNumber, toolTypeId: selectedItemId }])
+        // }
+        // if (!!plannedData && plannedData.length === 0) {
+        //     return setPlannedData([{ numberOfTools: selectedItemNumber, toolTypeId: selectedItemId }])
+        // }
+        if (!!plannedData && !!selectedItemId) {
+            const tempArray = [...plannedData]
+            tempArray[tableRowIndex] = { numberOfTools: selectedItemNumber, toolTypeId: selectedItemId }
+            setPlannedData(() => tempArray)
+        }
+    }, [selectedItemId, selectedItemNumber])
 
     const handleDeleteItem = (rowIndex: number) => {
         const tempArray = [...plannedData]
         tempArray.splice(rowIndex, 1)
-        setPlannedData(tempArray)
+        setPlannedData(() => tempArray)
+    }
+
+    const getTableBody = () => {
+        console.log('kupa', plannedData)
+
+        // if (!plannedData) {
+        //     console.log('kupa1111', plannedData)
+        //     setPlannedData([{ numberOfTools: 0, toolTypeId: 'toChange' }])
+        // }
+
+        // if (!!plannedData && plannedData.length === 0 && isDisplayingMode) {
+        //     console.log('here', plannedData.length)
+        //     return <h4> Nie zostały dodane jeszcze żadne type narzędzi</h4>
+        // }
+        if (!!plannedData) {
+            console.log('kupa222', plannedData)
+
+            return plannedData.map((rowData, rowIndex) => (
+                <TableRow key={rowIndex} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                    <TableCell component="th" scope="row">
+                        <Box sx={{ minWidth: 120 }}>
+                            <FormControl fullWidth>
+                                <InputLabel id="demo-simple-select-label">Typ narzedzia</InputLabel>
+                                <TableItemSelect
+                                    label={'Typ narzedzia'}
+                                    itemsArray={itemsArray}
+                                    rowData={rowData}
+                                    rowIndex={rowIndex}
+                                    setSelectedItemId={setSelectedItemId}
+                                    setTableRowIndex={setTableRowIndex}
+                                />
+                            </FormControl>
+                        </Box>
+                    </TableCell>
+                    <TableCell align="right">
+                        <Box sx={{ minWidth: 120 }}>
+                            <FormControl fullWidth>
+                                <TableItemNumber
+                                    selectedItemNumber={rowData.numberOfTools}
+                                    setTableRowIndex={setTableRowIndex}
+                                    handleItemNumberChange={handleItemNumberChange}
+                                    rowIndex={rowIndex}
+                                    isDisplayingMode={isDisplayingMode}
+                                />
+                            </FormControl>
+                        </Box>
+                    </TableCell>
+                    {isDisplayingMode && <TableCell align="right">bla</TableCell>}
+                    {!isDisplayingMode && (
+                        <TableCell align="right">
+                            {rowIndex === plannedData.length - 1 && (
+                                <Button
+                                    color="primary"
+                                    variant="contained"
+                                    onClick={() => {
+                                        setPlannedData((plannedData) => [
+                                            ...plannedData!,
+                                            { numberOfTools: 0, toolTypeId: 'toChange' },
+                                        ])
+                                    }}
+                                >
+                                    Dodaj następne
+                                </Button>
+                            )}
+                            <Button
+                                color="error"
+                                variant="contained"
+                                onClick={() => {
+                                    handleDeleteItem(rowIndex)
+                                }}
+                            >
+                                Usuń
+                            </Button>
+                        </TableCell>
+                    )}
+                </TableRow>
+            ))
+        }
     }
 
     return (
-        <TableContainer key={uuidv4()} component={Paper}>
-            <Table key={uuidv4()} sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        <TableCell>Element</TableCell>
+                        <TableCell>Typ narzedzia</TableCell>
                         <TableCell align="right">Planowana potrzebna ilosc</TableCell>
-                        {isDisplayingMode && <TableCell align="right">Wydana ilosć elementy</TableCell>}
+                        {isDisplayingMode && <TableCell align="right">Wydane narzedzie</TableCell>}
                         {!isDisplayingMode && <TableCell align="right">Akcja</TableCell>}
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {!!plannedData &&
                         plannedData.map((rowData, rowIndex) => (
-                            <TableRow key={uuidv4()} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                            <TableRow key={rowIndex} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                 <TableCell component="th" scope="row">
                                     <Box sx={{ minWidth: 120 }}>
                                         <FormControl fullWidth>
-                                            <InputLabel id={uuidv4()}>Element</InputLabel>
+                                            <InputLabel id="demo-simple-select-label">Typ narzedzia</InputLabel>
                                             <TableItemSelect
                                                 label={'Typ narzedzia'}
                                                 itemsArray={itemsArray}
                                                 rowData={rowData}
-                                                rowIndex={Number(uuidv4())}
+                                                rowIndex={rowIndex}
                                                 setSelectedItemId={setSelectedItemId}
                                                 setTableRowIndex={setTableRowIndex}
                                             />
@@ -158,10 +214,11 @@ const OrderStageDetailsElementsTable = ({
                                     <Box sx={{ minWidth: 120 }}>
                                         <FormControl fullWidth>
                                             <TableItemNumber
-                                                selectedItemNumber={rowData.numberOfElements}
+                                                selectedItemNumber={rowData.numberOfTools}
                                                 setTableRowIndex={setTableRowIndex}
                                                 handleItemNumberChange={handleItemNumberChange}
                                                 rowIndex={rowIndex}
+                                                isDisplayingMode={isDisplayingMode}
                                             />
                                         </FormControl>
                                     </Box>
@@ -176,7 +233,7 @@ const OrderStageDetailsElementsTable = ({
                                                 onClick={() => {
                                                     setPlannedData((plannedData) => [
                                                         ...plannedData!,
-                                                        { numberOfElements: 0, elementId: 'toChange' },
+                                                        { numberOfTools: 0, toolTypeId: 'toChange' },
                                                     ])
                                                 }}
                                             >
@@ -202,7 +259,7 @@ const OrderStageDetailsElementsTable = ({
     )
 }
 
-export default OrderStageDetailsElementsTable
+export default OrderStageToolTypesTable
 
 //select for table - so i can manage state for every row
 const chooseSelectItemId = (
@@ -213,7 +270,6 @@ const chooseSelectItemId = (
     if (itemsArray) {
         return itemsArray.map((item: any) => (
             <MenuItem
-                key={uuidv4()}
                 value={item.id}
                 onClick={() => {
                     setSelectedItemId(item.id)
@@ -229,7 +285,7 @@ const chooseSelectItemId = (
 type TableItemSelectTypes = {
     label: string
     itemsArray: Array<any> | undefined
-    rowData: { numberOfElements: number; elementId: string }
+    rowData: { numberOfTools: number; toolTypeId: string }
     rowIndex: number
     setTableRowIndex: React.Dispatch<React.SetStateAction<number>>
     setSelectedItemId: React.Dispatch<React.SetStateAction<string>>
@@ -248,15 +304,15 @@ const TableItemSelect = ({
     return (
         <Select
             labelId="demo-simple-select-label"
-            id={uuidv4()}
-            value={rowData.elementId}
+            id="demo-simple-select"
+            value={rowData.toolTypeId}
             label={label}
             onChange={(event: SelectChangeEvent) => {
                 // setDisplaySelectedItemName(event.target.value as string)
                 setTableRowIndex(rowIndex)
             }}
         >
-            {chooseSelectItemId(rowData.elementId, itemsArray, setSelectedItemId)}
+            {chooseSelectItemId(rowData.toolTypeId, itemsArray, setSelectedItemId)}
         </Select>
     )
 }
@@ -266,26 +322,26 @@ type TableItemNumberType = {
     setTableRowIndex: React.Dispatch<React.SetStateAction<number>>
     handleItemNumberChange: (event: any) => void
     rowIndex: number
+    isDisplayingMode: boolean
 }
 const TableItemNumber = ({
     selectedItemNumber,
     setTableRowIndex,
     handleItemNumberChange,
     rowIndex,
+    isDisplayingMode,
 }: TableItemNumberType) => {
-    const [displayNumber, setDisplayNumber] = useState(0)
-
     return (
-        <TextField
+        <CustomTextField
+            readOnly={isDisplayingMode!}
             type="number"
-            value={selectedItemNumber}
-            id={uuidv4()}
+            value={selectedItemNumber === 0 ? '' : selectedItemNumber}
+            id="outlined-basic"
             label="Ilość"
             variant="outlined"
             onChange={(event) => {
                 setTableRowIndex(rowIndex)
                 handleItemNumberChange(event)
-                setDisplayNumber(event.target.value as any)
             }}
         />
     )

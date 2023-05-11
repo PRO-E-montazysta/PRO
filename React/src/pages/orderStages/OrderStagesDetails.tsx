@@ -6,6 +6,7 @@ import { useMutation, useQuery } from 'react-query'
 import { AxiosError } from 'axios'
 import OrderStageCard from './OrderStageCard'
 import { createOrderStage, getAllOrderStages } from '../../api/orderStage.api'
+import { v4 as uuidv4 } from 'uuid'
 
 type OrderStagesDetailsProps = {
     isAddOrderStageVisible: boolean
@@ -53,6 +54,7 @@ const OrderStagesDetails = ({ isAddOrderStageVisible }: OrderStagesDetailsProps)
             <>
                 {queryOrderStages.data!.map((stage, index) => (
                     <OrderStageCard
+                        key={uuidv4()}
                         index={index.toString()}
                         stage={stage}
                         isLoading={isLoading}
@@ -61,7 +63,7 @@ const OrderStagesDetails = ({ isAddOrderStageVisible }: OrderStagesDetailsProps)
                 ))}
                 {isAddOrderStageVisible ? (
                     <>
-                        <OrderStageCard isLoading={isLoading} isDisplayingMode={false} />
+                        <OrderStageCard key={uuidv4()} isLoading={isLoading} isDisplayingMode={false} />
                         <div ref={scrollerRef}></div>
                     </>
                 ) : null}
@@ -86,31 +88,3 @@ const OrderStagesDetails = ({ isAddOrderStageVisible }: OrderStagesDetailsProps)
 }
 
 export default OrderStagesDetails
-
-// <Grid item xs={2}>
-// <LocalizationProvider dateAdapter={AdapterDayjs}>
-//     <DatePicker
-//         label="Planowana data startu"
-//         value={plannedStartDate}
-//         onChange={(data) => {
-//             const formattedDate = dayjs(data).format('YYYY-MM-DDTHH:mm:ss.SSS')
-//             setPlannedStartDate(data)
-//             setFieldValue(plannedStartDate, formattedDate)
-//         }}
-//     />
-// </LocalizationProvider>
-// </Grid>
-// <Grid item xs={2}>
-// <LocalizationProvider dateAdapter={AdapterDayjs}>
-//     <DatePicker
-//         label="Planowana data końca"
-//         value={plannedEndDate}
-//         onChange={(data) => {
-//             const formattedDate = dayjs(data).format('YYYY-MM-DDTHH:mm:ssZ[Z]')
-//             setPlannedEndDate(data)
-//             setFieldValue(plannedStartDate, formattedDate)
-
-//         }}
-//     />
-// </LocalizationProvider>
-// </Grid>

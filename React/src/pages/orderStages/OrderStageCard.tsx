@@ -1,4 +1,4 @@
-import { Grid, Paper, Box, Button, Tabs, Tab, CircularProgress, Typography, CardActions } from '@mui/material'
+import { Grid, Paper, Box, Button, Tabs, Tab, CircularProgress, Typography, CardActions, styled } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import dayjs, { Dayjs } from 'dayjs'
 import * as yup from 'yup'
@@ -21,9 +21,13 @@ import { useMutation, useQuery } from 'react-query'
 import { AxiosError } from 'axios'
 import { getAllToolTypes } from '../../api/toolType.api'
 import { getAllElements } from '../../api/element.api'
-import OrderStageToolTypesTable from './ToolTypesTable'
+import OrderStageToolTypesTable from './OrderStageToolTypesTable'
 import OrderStageDetailsElementsTable from './ElementsTable'
 import { useAddOrderStage } from './hooks'
+import { CustomTextField } from '../../components/form/FormInput'
+import TestE from './Test'
+import { v4 as uuidv4 } from 'uuid'
+import TestTestTest from './TestTestTest'
 
 type OrderStageCardProps = {
     index?: string
@@ -42,6 +46,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
     const [preparedPlannedEndDate, setPreparedPlannedEndDate] = useState('')
     const [userRole, setUserRole] = useState('')
     const addOrderStage = useAddOrderStage()
+    let preparedPlannedData;
 
     const [plannedToolTypes, setPlannedToolTypes] = useState<{ numberOfTools: number; toolTypeId: string }[]>()
     const [plannedElements, setPlannedElements] = useState<{ numberOfElements: number; elementId: string }[]>()
@@ -96,7 +101,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
     const handleExpandInformationClick = () => {
         setExpandedInformation(!expandedInformation)
     }
-
 
     const formik = useFormik({
         initialValues: {
@@ -205,7 +209,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                     <AssignmentIcon />
                 </IconButton>
                 <Typography variant="h5" color="text.secondary">
-                    {stage ? `Etap ${stage.order} zlecenia` : `Dodaj etap`}
+                    {stage ? <Typography>Etap stage.order zlecenia</Typography> : <Typography>Dodaj etap</Typography>}
                 </Typography>
                 <ExpandMore
                     expand={expandedInformation}
@@ -226,13 +230,13 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                         columns={{ xs: 2, sm: 4, md: 12 }}
                     >
                         <Grid item xs={3}>
-                            <TextField
+                            <CustomTextField
+                                readOnly={isDisplayingMode!}
                                 sx={{ width: '100%' }}
                                 id="standard-basic"
-                                variant="standard"
-                                label="Nazwa"
+                                variant="outlined"
+                                label="Nazwaaaaaa"
                                 name="name"
-                                // defaultValue={isDisplayingMode ? stage!.name : null}
                                 value={formik.values.name}
                                 onChange={formik.handleChange}
                                 error={formik.touched.name && Boolean(formik.errors.name)}
@@ -241,10 +245,11 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                         </Grid>
                         {isDisplayingMode ? (
                             <Grid item xs={3}>
-                                <TextField
+                                <CustomTextField
+                                    readOnly={isDisplayingMode!}
                                     sx={{ width: '100%' }}
                                     id="standard-basic"
-                                    variant="standard"
+                                    variant="outlined"
                                     label="Status"
                                     name="status"
                                     defaultValue={isDisplayingMode ? stage!.status : null}
@@ -252,13 +257,14 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                             </Grid>
                         ) : null}
                         <Grid item xs={3}>
-                            <TextField
+                            <CustomTextField
+                                readOnly={isDisplayingMode!}
                                 sx={{ width: '100%' }}
                                 id="standard-basic"
-                                variant="standard"
+                                variant="outlined"
                                 label="Cena"
                                 name="price"
-                                defaultValue={isDisplayingMode ? stage!.price : null}
+                                // defaultValue={isDisplayingMode ? stage!.price : null}
                                 value={formik.values.price}
                                 onChange={formik.handleChange}
                                 error={formik.touched.price && Boolean(formik.errors.price)}
@@ -267,11 +273,12 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                         </Grid>
 
                         <Grid item xs={4}>
-                            <TextField
-                                defaultValue={isDisplayingMode ? stage!.plannedFittersNumber : null}
+                            <CustomTextField
+                                readOnly={isDisplayingMode!}
+                                // defaultValue={isDisplayingMode ? stage!.plannedFittersNumber : null}
                                 sx={{ width: '100%' }}
                                 id="standard-basic"
-                                variant="standard"
+                                variant="outlined"
                                 label="Planowana liczba montażystów"
                                 name="plannedFittersNumber"
                                 value={formik.values.plannedFittersNumber}
@@ -283,11 +290,12 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                             />
                         </Grid>
                         <Grid item xs={4}>
-                            <TextField
+                            <CustomTextField
+                                readOnly={isDisplayingMode!}
                                 id="standard-basic"
                                 label="Minimalna liczba zdjęć"
-                                variant="standard"
-                                defaultValue={isDisplayingMode ? stage!.minimumImagesNumber : null}
+                                variant="outlined"
+                                // defaultValue={isDisplayingMode ? stage!.minimumImagesNumber : null}
                                 name="minimumImagesNumber"
                                 value={formik.values.minimumImagesNumber}
                                 onChange={formik.handleChange}
@@ -297,10 +305,11 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                         </Grid>
                         {isDisplayingMode || (!isDisplayingMode && userRole === Role.MANAGER) ? (
                             <Grid item xs={4}>
-                                <TextField
+                                <CustomTextField
+                                    readOnly={isDisplayingMode!}
                                     id="standard-basic"
                                     label="Brygadzista"
-                                    variant="standard"
+                                    variant="outlined"
                                     defaultValue={isDisplayingMode ? stage!.foremanId : null}
                                 />
                             </Grid>
@@ -314,7 +323,12 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                     justifyContent: 'space-around',
                                 }}
                             >
-                                <Tabs value={tabValue} onChange={handleTabChange} aria-label="basic tabs example">
+                                <Tabs
+                                    component="div"
+                                    value={tabValue}
+                                    onChange={handleTabChange}
+                                    aria-label="basic tabs example"
+                                >
                                     <Tab label="Informacje o datach" {...tabProps(0)} />
                                     <Tab label="Planowane narzędzia" {...tabProps(1)} />
                                     <Tab label="Elementy" {...tabProps(2)} />
@@ -322,35 +336,51 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                     <Tab label="Szczegóły etapu/Zalaczniki" {...tabProps(1)} />
                                 </Tabs>
                             </Box>
-                            <TabPanel value={tabValue} index={0}>
+                            <TabPanel key={uuidv4()} value={tabValue} index={0}>
                                 {getDateInformations(stage)}
                             </TabPanel>
-                            <TabPanel value={tabValue} index={1}>
-                                <OrderStageToolTypesTable
-                                    itemsArray={queryToolTypes.data}
-                                    plannedData={plannedToolTypes!}
-                                    setPlannedData={setPlannedToolTypes}
-                                    isDisplayingMode={isDisplayingMode!}
-                                    toolTypesListIds={stage?.listOfToolsPlannedNumber as any}
-                                />
+                            <TabPanel key={uuidv4()} value={tabValue} index={1}>
+                                    <OrderStageToolTypesTable
+                                        itemsArray={queryToolTypes.data}
+                                        plannedData={plannedToolTypes!}
+                                        setPlannedData={setPlannedToolTypes}
+                                        isDisplayingMode={isDisplayingMode!}
+                                        toolTypesListIds={stage?.listOfToolsPlannedNumber as any}
+                                    />
                             </TabPanel>
-                            <TabPanel value={tabValue} index={2}>
-                                <OrderStageDetailsElementsTable
-                                    itemsArray={queryElements.data}
-                                    plannedData={plannedElements!}
-                                    setPlannedData={setPlannedElements}
+                            <TabPanel key={uuidv4()} value={tabValue} index={2}>
+                                {/* <Paper component="div">
+                                    <Typography component="span">Zalaczniki.2..</Typography>
+                                </Paper> */}
+                                   {/* <OrderStageDetailsElementsTable
+                                       itemsArray={queryToolTypes.data}
+                                       plannedData={plannedElements!}
+                                       setPlannedData={setPlannedElements}
+                                       isDisplayingMode={isDisplayingMode!}
+                                       elementsListIds={stage?.listOfElementsPlannedNumber as any}
+                                    /> */}
+                                <TestTestTest
+                                    itemsArray={queryElements.data!}
+                                    // plannedData={plannedElements!}
+                                    preparedPlannedData={preparedPlannedData}
+                                    // setPlannedData={setPlannedElements}
                                     isDisplayingMode={isDisplayingMode!}
                                     elementsListIds={stage?.listOfElementsPlannedNumber as any}
                                 />
                             </TabPanel>
 
-                            <TabPanel value={tabValue} index={3}>
-                                Zalaczniki...
+                            <TabPanel key={uuidv4()} value={tabValue} index={3}>
+                                <Typography>Zalaczniki...</Typography>
                             </TabPanel>
-                            <TabPanel value={tabValue} index={4}>
+                            <TabPanel key={uuidv4()} value={tabValue} index={4}>
                                 <Grid item xs={2}>
-                                    <TextField sx={{ width: '100%' }} label="Załączniki" name="attachments" />
-                                </Grid>{' '}
+                                    <CustomTextField
+                                        readOnly={isDisplayingMode!}
+                                        sx={{ width: '100%' }}
+                                        label="Załączniki"
+                                        name="attachments"
+                                    />
+                                </Grid>
                             </TabPanel>
                         </Box>
 

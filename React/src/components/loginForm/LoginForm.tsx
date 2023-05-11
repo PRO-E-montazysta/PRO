@@ -59,6 +59,7 @@ const LoginForm = () => {
     const { data, isLoading, isError, error, mutate } = useMutation({
         mutationFn: logIn,
         onSuccess(data) {
+            console.log('tutaj1')
             setToken(data)
             navigation('/', { replace: true })
         },
