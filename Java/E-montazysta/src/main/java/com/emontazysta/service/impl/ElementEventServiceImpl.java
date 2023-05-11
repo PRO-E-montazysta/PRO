@@ -1,13 +1,16 @@
 package com.emontazysta.service.impl;
 
 import com.emontazysta.enums.EventStatus;
+import com.emontazysta.enums.NotificationType;
 import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.ElementEventMapper;
 import com.emontazysta.model.AppUser;
 import com.emontazysta.model.ElementEvent;
 import com.emontazysta.model.dto.ElementEventDto;
 import com.emontazysta.repository.ElementEventRepository;
+import com.emontazysta.service.AppUserService;
 import com.emontazysta.service.ElementEventService;
+import com.emontazysta.service.NotificationService;
 import com.emontazysta.util.AuthUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +29,8 @@ public class ElementEventServiceImpl implements ElementEventService {
     private final ElementEventRepository repository;
     private final ElementEventMapper elementEventMapper;
     private final AuthUtils authUtils;
+    private final AppUserService userService;
+    private final NotificationService notificationService;
 
     @Override
     public List<ElementEventDto> getAll() {
@@ -68,7 +73,14 @@ public class ElementEventServiceImpl implements ElementEventService {
         elementEvent.setEventDate(LocalDateTime.now());
         elementEvent.setStatus(EventStatus.CREATED);
 
-        return elementEventMapper.toDto(repository.save(elementEvent));
+        ElementEvent savedElementEvent = repository.save(elementEvent);
+
+        //Wysłanie powiadomienia do specjalistów o utworzeniu zlecenia
+        List<AppUser> notifiedEmployees = notificationService.createListOfEmployeesToNotificate(userService.findAllByRole(Role.MANAGER));
+        notifiedEmployees.addAll(notificationService.createListOfEmployeesToNotificate(userService.findAllByRole(Role.WAREHOUSE_MANAGER)));
+        notificationService.createNotification(notifiedEmployees, savedElementEvent.getId(), NotificationType.ELEMENT_EVENT);
+
+        return elementEventMapper.toDto(repository.save(savedElementEvent));
     }
 
     @Override

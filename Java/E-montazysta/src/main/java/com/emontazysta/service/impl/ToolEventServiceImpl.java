@@ -1,12 +1,15 @@
 package com.emontazysta.service.impl;
 
 import com.emontazysta.enums.EventStatus;
+import com.emontazysta.enums.NotificationType;
 import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.ToolEventMapper;
 import com.emontazysta.model.AppUser;
 import com.emontazysta.model.ToolEvent;
 import com.emontazysta.model.dto.ToolEventDto;
 import com.emontazysta.repository.ToolEventRepository;
+import com.emontazysta.service.AppUserService;
+import com.emontazysta.service.NotificationService;
 import com.emontazysta.service.ToolEventService;
 import com.emontazysta.util.AuthUtils;
 import lombok.AllArgsConstructor;
@@ -26,6 +29,8 @@ public class ToolEventServiceImpl implements ToolEventService {
     private final ToolEventRepository repository;
     private final ToolEventMapper toolEventMapper;
     private final AuthUtils authUtils;
+    private final AppUserService userService;
+    private final NotificationService notificationService;
 
     @Override
     public List<ToolEventDto> getAll() {
@@ -67,7 +72,14 @@ public class ToolEventServiceImpl implements ToolEventService {
         toolEvent.setEventDate(LocalDateTime.now());
         toolEvent.setStatus(EventStatus.CREATED);
 
-        return toolEventMapper.toDto(repository.save(toolEvent));
+        ToolEvent savedToolEvent = repository.save(toolEvent);
+
+        //Wysłanie powiadomienia do specjalistów o utworzeniu zlecenia
+        List<AppUser> notifiedEmployees = notificationService.createListOfEmployeesToNotificate(userService.findAllByRole(Role.MANAGER));
+        notifiedEmployees.addAll(notificationService.createListOfEmployeesToNotificate(userService.findAllByRole(Role.WAREHOUSE_MANAGER)));
+        notificationService.createNotification(notifiedEmployees, savedToolEvent.getId(), NotificationType.TOOL_EVENT);
+
+        return toolEventMapper.toDto(savedToolEvent);
     }
 
     @Override
