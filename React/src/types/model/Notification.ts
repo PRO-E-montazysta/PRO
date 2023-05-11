@@ -9,4 +9,6 @@ export type Notification = {
 
     orderStageId: number
     orderId: number
+    toolEventId: number
+    elementEventId: number
 }

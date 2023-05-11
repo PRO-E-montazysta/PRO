@@ -54,6 +54,12 @@ const NotiMenu = (params: NotiMenuParams) => {
                             case 'FOREMAN_ASSIGNMENT':
                                 url += 'orders/' + row.orderId
                                 break
+                            case 'TOOL_EVENT':
+                                url += 'toolevent/' + row.toolEventId
+                                break
+                            case 'ELEMENT_EVENT':
+                                url += 'elementevent/' + row.elementEventId
+                                break
                         }
                         return (
                             <NotiMenuItem
