@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import Map from './Map'
-import { Coordinates, getLocationFromAddress, getLocationFromCoordinates, getPositionError } from './helper'
+import { Coordinates, getLocationFromAddress, getLocationFromCoordinates, getPositionError, options } from './helper'
 import { Location } from '../../types/model/Location'
 
 export default function MapContainer() {
@@ -20,12 +20,6 @@ export default function MapContainer() {
         yCoordinate: 0,
         zipCode: '',
     })
-
-    const options = {
-        enableHighAccuracy: true,
-        maximumAge: 30000,
-        timeout: 27000,
-    }
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(

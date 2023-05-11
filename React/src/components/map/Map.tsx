@@ -1,18 +1,21 @@
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
-import React, { useCallback, useEffect } from 'react'
+import React, { CSSProperties, useEffect } from 'react'
 import 'leaflet/dist/leaflet.css'
 import icon from '../../assets/img/logo.png'
 import L from 'leaflet'
 import { Coordinates } from './helper'
+import { PageMode } from '../../types/form'
 
 type MapProps = {
     coords: Coordinates
     popupText: string
+    pageMode?: PageMode
     handleCoordinatesChange: (coords: Coordinates) => void
+    style?: CSSProperties
 }
 
 export default function Map(props: MapProps) {
-    const { coords, popupText, handleCoordinatesChange } = props
+    const { coords, popupText, handleCoordinatesChange, pageMode, style } = props
     const customIcon = new L.Icon({
         //creating a custom icon to use in Marker
         iconUrl: icon,
@@ -21,15 +24,7 @@ export default function Map(props: MapProps) {
     })
 
     return (
-        <MapContainer
-            center={[coords.lat, coords.lon]}
-            zoom={15}
-            scrollWheelZoom={true}
-            style={{
-                width: '500px',
-                height: '500px',
-            }}
-        >
+        <MapContainer center={[coords.lat, coords.lon]} zoom={15} scrollWheelZoom={true} style={style}>
             <TileLayer
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> 
         contributors'
@@ -38,18 +33,18 @@ export default function Map(props: MapProps) {
             <Marker icon={customIcon} position={[coords.lat, coords.lon]}>
                 <Popup>{popupText}</Popup>
             </Marker>
-            <MapView coords={coords} handleCoordinatesChange={handleCoordinatesChange} />
+            <MapView coords={coords} handleCoordinatesChange={handleCoordinatesChange} pageMode={pageMode} />
         </MapContainer>
     )
 }
 type MapViewProps = {
     coords: Coordinates
-    handleCoordinatesChange: (coords: Coordinates) => void
+    pageMode?: PageMode
+    handleCoordinatesChange: (coords: Coordinates, pageMode?: PageMode) => void
 }
 const MapView = (props: MapViewProps) => {
-    const { coords, handleCoordinatesChange } = props
+    const { coords, handleCoordinatesChange, pageMode } = props
     const map = useMap()
-    console.log('useMap')
     map.setView([coords.lat, coords.lon], map.getZoom())
     //Sets geographical center and zoom for the view of the map
     const mapOnClick = (e: any) => {
@@ -63,6 +58,6 @@ const MapView = (props: MapViewProps) => {
         return () => {
             map.off('click', mapOnClick)
         }
-    }, [])
+    }, [pageMode])
     return null
 }

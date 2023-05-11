@@ -249,3 +249,58 @@ export const useFormStructure = (): Array<FormInputProps> => {
         },
     ]
 }
+
+export const useFormStructureLocation = (): Array<FormInputProps> => {
+    return [
+        {
+            label: 'Miasto',
+            id: 'city',
+            initValue: '',
+            type: 'input',
+        },
+        {
+            label: 'Ulica',
+            id: 'street',
+            initValue: '',
+            type: 'input',
+        },
+        {
+            label: 'Numer posiadłości',
+            id: 'propertyNumber',
+            initValue: '',
+            type: 'input',
+        },
+        {
+            label: 'Numer apartamentu',
+            id: 'apartmentNumber',
+            initValue: '',
+            type: 'input',
+        },
+        {
+            label: 'Kod pocztowy',
+            id: 'zipCode',
+            initValue: '',
+            type: 'input',
+            validation: yup
+                .string()
+                .trim()
+                .matches(/^[0-9]{2}-[0-9]{3}$/),
+        },
+        {
+            label: 'x',
+            id: 'xCoordinate',
+            initValue: '',
+            type: 'number',
+            dontIncludeInFormStructure: true,
+            readonly: true,
+        },
+        {
+            label: 'y',
+            id: 'yCoordinate',
+            initValue: '',
+            type: 'number',
+            dontIncludeInFormStructure: true,
+            readonly: true,
+        },
+    ]
+}

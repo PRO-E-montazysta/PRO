@@ -92,3 +92,9 @@ export const getLocationFromAddress = async (location: Location): Promise<Locati
 
     return localization
 }
+
+export const options = {
+    enableHighAccuracy: true,
+    maximumAge: 30000,
+    timeout: 27000,
+}

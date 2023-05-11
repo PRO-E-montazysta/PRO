@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom'
 
 import { theme } from '../../themes/baseTheme'
 
-import { useFormStructure } from './helper'
+import { useFormStructure, useFormStructureLocation } from './helper'
 import { useAddOrder, useDeleteOrder, useEditOrder, useOrderData } from './hooks'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { FormButtons } from '../../components/form/FormButtons'
@@ -20,6 +20,7 @@ import FormTitle from '../../components/form/FormTitle'
 import FormBox from '../../components/form/FormBox'
 import { PageMode } from '../../types/form'
 import MapContainer from '../../components/map/MapContainer'
+import Localization from '../../components/map/Localization'
 
 const OrderDetails = () => {
     //parameters from url
@@ -72,6 +73,8 @@ const OrderDetails = () => {
     const handleReset = () => {
         formik.resetForm()
         formik.setValues(initData)
+        formikLocation.resetForm()
+        formikLocation.setValues(initDataLocation)
     }
 
     const handleCancel = () => {
@@ -105,6 +108,21 @@ const OrderDetails = () => {
         } else setPageMode('read')
     }, [params.id])
 
+    const formStructureLocation = useFormStructureLocation()
+    const [initDataLocation, setInitDataLocation] = useState(getInitValues(formStructureLocation))
+    const formikLocation = useFormik({
+        initialValues: initDataLocation,
+        validationSchema: getValidatinSchema(formStructureLocation, pageMode),
+        onSubmit: () => {
+            console.log('lelelelelelelel')
+        },
+    })
+
+    useEffect(() => {
+        console.log(formikLocation.values)
+    }, [formikLocation.values])
+
+
     return (
         <>
             <FormBox>
@@ -115,6 +133,15 @@ const OrderDetails = () => {
                     ) : (
                         <>
                             <FormStructure formStructure={formStructure} formik={formik} pageMode={pageMode} />
+
+                            <Box sx={{ ml: 'auto', mr: 0 }}>
+                                <Localization
+                                    title="Lokalizacja"
+                                    formik={formikLocation}
+                                    formStructure={formStructureLocation}
+                                    pageMode={pageMode}
+                                />
+                            </Box>
                             <FormButtons
                                 id={params.id}
                                 onCancel={handleCancel}
@@ -124,7 +151,7 @@ const OrderDetails = () => {
                                 onSubmit={formik.submitForm}
                                 readonlyMode={pageMode == 'read'}
                             />
-                            <MapContainer />
+                            {/* <MapContainer /> */}
                         </>
                     )}
                 </FormPaper>
