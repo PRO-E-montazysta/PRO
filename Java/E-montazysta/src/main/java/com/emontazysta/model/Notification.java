@@ -37,8 +37,8 @@ public class Notification {
     @ManyToOne
     private AppUser createdBy;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<AppUser> notifiedEmployees;
+    @ManyToOne
+    private AppUser notifiedEmployee;
 
     @ManyToOne
     private OrderStage orderStage;

@@ -30,17 +30,13 @@ public class NotificationMapper {
                 .createdAt(notification.getCreatedAt())
                 .readAt(notification.getReadAt())
                 .createdById(notification.getCreatedBy() == null ? null : notification.getCreatedBy().getId())
-                .notifiedEmployees(notification.getNotifiedEmployees().stream().map(AppUser::getId).collect(Collectors.toList()))
+                .notifiedEmployeeId(notification.getNotifiedEmployee().getId())
                 .orderStageId(notification.getOrderStage() == null ? null : notification.getOrderStage().getId())
                 .orderId(notification.getOrder() == null ? null : notification.getOrder().getId())
                 .build();
     }
 
     public Notification toEntity(NotificationDto notificationDto) {
-
-        List<AppUser> appUserList = new ArrayList<>();
-        notificationDto.getNotifiedEmployees().forEach(appUserId -> appUserList.add(appUserRepository.getReferenceById(appUserId)));
-
         return Notification.builder()
                 .id(notificationDto.getId())
                 .notificationType(notificationDto.getNotificationType())
@@ -49,7 +45,7 @@ public class NotificationMapper {
                 .createdAt(notificationDto.getCreatedAt())
                 .readAt(notificationDto.getReadAt())
                 .createdBy(notificationDto.getCreatedById() == null ? null : appUserRepository.getReferenceById(notificationDto.getCreatedById()))
-                .notifiedEmployees(appUserList)
+                .notifiedEmployee(notificationDto.getNotifiedEmployeeId() == null ? null : appUserRepository.getReferenceById(notificationDto.getNotifiedEmployeeId()))
                 .orderStage(notificationDto.getOrderStageId() == null ? null : orderStageRepository.getReferenceById(notificationDto.getOrderStageId()))
                 .order(notificationDto.getOrderId() == null ? null : orderRepository.getReferenceById(notificationDto.getOrderId()))
                 .build();

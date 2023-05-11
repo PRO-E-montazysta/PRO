@@ -24,7 +24,7 @@ public class NotificationDto {
     private LocalDateTime createdAt;
     private LocalDateTime readAt;
     private Long createdById;
-    private List<Long> notifiedEmployees;
+    private Long notifiedEmployeeId;
     private Long orderStageId;
     private Long orderId;
 }
