@@ -3,6 +3,7 @@ package com.emontazysta.service.impl;
 import com.emontazysta.mapper.ToolsPlannedNumberMapper;
 import com.emontazysta.model.ToolsPlannedNumber;
 import com.emontazysta.model.dto.ToolsPlannedNumberDto;
+import com.emontazysta.model.dto.ToolsDtoPlannedNumberDto;
 import com.emontazysta.repository.ToolsPlannedNumberRepository;
 import com.emontazysta.service.ToolsPlannedNumberService;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +27,9 @@ public class ToolsPlannedNumberServiceImpl implements ToolsPlannedNumberService 
     }
 
     @Override
-    public ToolsPlannedNumberDto getById(Long id) {
+    public ToolsDtoPlannedNumberDto getById(Long id) {
         ToolsPlannedNumber toolsPlannedNumber = toolsPlannedNumberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        return toolsPlannedNumberMapper.toDto(toolsPlannedNumber);
+        return toolsPlannedNumberMapper.toDtoWithToolTypeDto(toolsPlannedNumber);
     }
 
     @Override

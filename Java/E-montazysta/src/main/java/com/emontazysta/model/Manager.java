@@ -24,15 +24,13 @@ public class Manager extends Employee {
                    List<Unavailability> unavailabilities, List<Notification> notifications,
                    List<Comment> employeeComments, List<ElementEvent> elementEvents, List<Employment> employments,
                    List<Attachment> attachments, List<ToolEvent> toolEvents, List<Unavailability> createdUnavailabilities,
-                   List<ToolEvent> acceptedEvents, List<Orders> managedOrders, List<DemandAdHoc> demandsAdHocs,
-                   List<ElementEvent> mngElementEvents) {
+                   List<ToolEvent> acceptedEvents, List<Orders> managedOrders, List<ElementEvent> mngElementEvents) {
 
         super(id, firstName, lastName, email, password, username, resetPasswordToken, roles, phone, pesel,
                 unavailabilities, notifications, employeeComments, elementEvents, employments, attachments, toolEvents);
         this.createdUnavailabilities = createdUnavailabilities;
         this.acceptedEvents = acceptedEvents;
         this.managedOrders = managedOrders;
-        this.demandsAdHocs = demandsAdHocs;
         this.elementEvents = mngElementEvents;
     }
 
@@ -44,9 +42,6 @@ public class Manager extends Employee {
 
     @OneToMany(mappedBy = "managedBy")
     private List<Orders> managedOrders;
-
-    @OneToMany(mappedBy = "manager")
-    private List<DemandAdHoc> demandsAdHocs;
 
     @OneToMany(mappedBy = "acceptedBy")
     private List<ElementEvent> elementEvents;

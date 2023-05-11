@@ -104,15 +104,16 @@ const ToolEventDetails = () => {
     return (
         <>
             <FormBox>
-                {/* TODO check if this return nice result  */}
                 <FormTitle
-                    text={
-                        pageMode === 'new'
-                            ? 'Nowa usterka narzędzia'
-                            : 'Usterka ' +
-                              queryTools.data
-                                  ?.filter((f) => f.id === formik.values['elementId'])
-                                  .map((x) => x.name + ' - ' + x.code)
+                    mainTitle={pageMode == 'new' ? 'Nowa usterka narzędzia' : 'Usterka narzędzia'}
+                    subTitle={
+                        pageMode == 'new'
+                            ? ''
+                            : String(
+                                  queryTools.data
+                                      ?.filter((f) => f.id == formik.values['toolId'])
+                                      .map((x) => x.name + ' - ' + x.code),
+                              )
                     }
                 />
                 <FormPaper>

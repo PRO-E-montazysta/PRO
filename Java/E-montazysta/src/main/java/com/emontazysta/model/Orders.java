@@ -1,14 +1,13 @@
 package com.emontazysta.model;
 
+import com.emontazysta.enums.OrderStatus;
 import com.emontazysta.enums.TypeOfPriority;
-import com.emontazysta.enums.TypeOfStatus;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,7 +26,7 @@ public class Orders {
 
     private String name;
 
-    private TypeOfStatus typeOfStatus;
+    private OrderStatus status;
 
     private LocalDateTime plannedStart;
 

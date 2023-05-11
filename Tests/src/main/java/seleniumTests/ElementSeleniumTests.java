@@ -27,13 +27,12 @@ public class ElementSeleniumTests {
         driver.get("https://dev.emontazysta.pl/login");
         driver.manage().window().maximize();
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.id(":r0:"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("username"))).click();
 
-        driver.findElement(By.id(":r0:")).sendKeys("warehouseManager1");
+        driver.findElement(By.id("username")).sendKeys("warehouseManager1");
 
-        driver.findElement(By.id(":r1:")).sendKeys("password");
 
-        driver.findElement(By.cssSelector(".MuiButton-contained")).click();
+        driver.findElement(By.id("login-logIn")).click();
 
     }
     @After
@@ -42,38 +41,38 @@ public class ElementSeleniumTests {
     }
 
     @Test
-    public void addElementTestSelenium() throws InterruptedException {
+    public void addElementTest() throws InterruptedException {
 
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/header/div/div/div[6]/button")));
-        driver.findElement(By.xpath("/html/body/div/header/div/div/div[6]/button")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("navBtn-/elements")));
+        driver.findElement(By.id("navBtn-/elements")).click();
 
-        driver.findElement(By.xpath("/html/body/div/header/div/div/div[6]/div/li[2]")).click();
+        driver.findElement(By.id("navMenu-/elements/new")).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div")));
-        driver.findElement(By.xpath("//*[@id=\"name\"]")).click();
-        driver.findElement(By.xpath("//*[@id=\"name\"]")).sendKeys("brama garażowa");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("name")));
+        driver.findElement(By.id("name")).click();
+        driver.findElement(By.id("name")).sendKeys("brama garażowa");
 
 
 
-        driver.findElement(By.xpath("//*[@id=\":r3:\"]")).click();
-        Thread.sleep(1000);
-        Actions keyDown = new Actions(driver); keyDown.sendKeys(Keys.chord(Keys.DOWN, Keys.DOWN, Keys.DOWN, Keys.ENTER)).perform();
-        Thread.sleep(1000);
+        driver.findElement(By.id("mui-component-select-typeOfUnit")).click();
 
-        driver.findElement(By.xpath("//*[@id=\"quantityInUnit\"]")).click();
-        Thread.sleep(1000);
-        driver.findElement(By.xpath("//*[@id=\"quantityInUnit\"]")).sendKeys("1");
-        Thread.sleep(1000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("formSelect-typeOfUnit-opt-PIECE")));
+        driver.findElement(By.id("formSelect-typeOfUnit-opt-PIECE")).click();
 
-        driver.findElement(By.xpath("/html/body/div/div/div/div[2]/button[1]")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("quantityInUnit")));
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[2]/div")));
-        driver.findElement(By.xpath("/html/body/div/div[2]/div/form/div/button")).click();
+        Thread.sleep(2000);
+        driver.findElement(By.id("quantityInUnit")).click();
+        Thread.sleep(2000);
+        driver.findElement(By.id("quantityInUnit")).sendKeys("1");
 
-        Thread.sleep(5000);
 
-        driver.findElement(By.xpath("/html/body/div/header/div/div/button")).click();
+        driver.findElement(By.id("formButton-save")).click();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("dialogGlobal-OK")));
+        driver.findElement(By.id("dialogGlobal-OK")).click();
+
 
     }
 
@@ -81,52 +80,44 @@ public class ElementSeleniumTests {
     public void filterElementToolTestSelenium() throws InterruptedException {
 
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/header/div/div/div[6]/button")));
-        driver.findElement(By.xpath("/html/body/div/header/div/div/div[6]/button")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("navBtn-/elements")));
+        driver.findElement(By.id("navBtn-/elements")).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/header/div/div/div[6]/div/li[1]")));
-        driver.findElement(By.xpath("/html/body/div/header/div/div/div[6]/div/li[1]")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("navMenu-/elements")));
+        driver.findElement(By.id("navMenu-/elements")).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[1]")));
-        driver.findElement(By.xpath("//*[@id=\"code\"]")).click();
-        driver.findElement(By.xpath("//*[@id=\"code\"]")).sendKeys("E|5b6c6263-9f4a-49d3-b859-741e1a201910");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("code")));
+        driver.findElement(By.id("code")).click();
+        driver.findElement(By.id("code")).sendKeys("E|62d245c1-ffb9-420c-9d91-17823ea6e12c");
 
-//
-        driver.findElement(By.xpath("/html/body/div/div/div[1]/div/div/form/div[3]/button[1]")).click();
-
-        Thread.sleep(5000);
-
-        driver.findElement(By.xpath("/html/body/div/header/div/div/button")).click();
+        driver.findElement(By.id("tableFilter-submit")).click();
 
     }
 
     @Test
     public void zDeleteElementTypeTestSelenium() throws InterruptedException {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/header/div/div/div[6]/button")));
-        driver.findElement(By.xpath("/html/body/div/header/div/div/div[6]/button")).click();
-        Thread.sleep(2000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("navBtn-/elements")));
+        driver.findElement(By.id("navBtn-/elements")).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/header/div/div/div[6]/div/li[1]")));
-        driver.findElement(By.xpath("/html/body/div/header/div/div/div[6]/div/li[1]")).click();
-        Thread.sleep(2000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("navMenu-/elements")));
+        driver.findElement(By.id("navMenu-/elements")).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[1]")));
-        driver.findElement(By.xpath("//*[@id=\"name\"]")).click();
-        driver.findElement(By.xpath("//*[@id=\"name\"]")).sendKeys("brama garażowa");
-        Thread.sleep(2000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("name")));
+        driver.findElement(By.id("name")).click();
+        driver.findElement(By.id("name")).sendKeys("brama garażowa");
 
-//
-        driver.findElement(By.xpath("/html/body/div/div/div[1]/div/div/form/div[3]/button[1]")).click();
+
+        driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div/table/tbody/tr[1]/td[1]")).click();
         Thread.sleep(2000);
         driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div/table/tbody/tr[1]/td[1]")).click();
         Thread.sleep(2000);
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div")));
-        driver.findElement(By.xpath("/html/body/div/div/div/div[2]/button[2]")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("formButton-delete")));
+        driver.findElement(By.id("formButton-delete")).click();
         Thread.sleep(2000);
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[2]/div")));
-        driver.findElement(By.xpath("/html/body/div/div[2]/div/form/div/button[1]")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("dialogGlobal-Usuń")));
+        driver.findElement(By.id("dialogGlobal-Usuń")).click();
         Thread.sleep(2000);
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[2]/div")));

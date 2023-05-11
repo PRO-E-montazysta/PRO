@@ -1,21 +1,22 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.enums.NotificationType;
+import com.emontazysta.enums.OrderStageStatus;
+import com.emontazysta.enums.OrderStatus;
 import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.ElementsPlannedNumberMapper;
 import com.emontazysta.mapper.OrderStageMapper;
 import com.emontazysta.mapper.ToolsPlannedNumberMapper;
-import com.emontazysta.model.ElementsPlannedNumber;
-import com.emontazysta.model.OrderStage;
-import com.emontazysta.model.ToolsPlannedNumber;
+import com.emontazysta.model.*;
 import com.emontazysta.model.dto.ElementsPlannedNumberDto;
 import com.emontazysta.model.dto.OrderStageDto;
 import com.emontazysta.model.dto.OrderStageWithToolsAndElementsDto;
 import com.emontazysta.model.dto.ToolsPlannedNumberDto;
 import com.emontazysta.model.searchcriteria.OrdersStageSearchCriteria;
-import com.emontazysta.repository.ElementsPlannedNumberRepository;
-import com.emontazysta.repository.OrderStageRepository;
-import com.emontazysta.repository.ToolsPlannedNumberRepository;
+import com.emontazysta.repository.*;
 import com.emontazysta.repository.criteria.OrdersStageCriteriaRepository;
+import com.emontazysta.service.AppUserService;
+import com.emontazysta.service.NotificationService;
 import com.emontazysta.service.OrderStageService;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ import java.security.Principal;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,6 +43,9 @@ public class OrderStageImpl implements OrderStageService {
     private final ElementsPlannedNumberRepository elementsPlannedNumberRepository;
     private final ElementsPlannedNumberMapper elementsPlannedNumberMapper;
     private final AuthUtils authUtils;
+    private final NotificationService notificationService;
+    private final AppUserService userService;
+    private final OrderRepository orderRepository;
 
     @Override
     public List<OrderStageDto> getAll() {
@@ -67,6 +72,7 @@ public class OrderStageImpl implements OrderStageService {
             orderStageDto.setListOfToolsPlannedNumber(new ArrayList<>());
             orderStageDto.setListOfElementsPlannedNumber(new ArrayList<>());
             orderStageDto.setPlannedDurationTime(ChronoUnit.HOURS.between(orderStageDto.getPlannedStartDate(),orderStageDto.getPlannedEndDate()));
+            orderStageDto.setStatus(OrderStageStatus.PLANNING);
 
             OrderStage orderStage = orderStageMapper.toEntity(orderStageDto);
             return orderStageMapper.toDto(repository.save(orderStage));
@@ -76,6 +82,8 @@ public class OrderStageImpl implements OrderStageService {
     @Override
     @Transactional
     public OrderStageDto addWithToolsAndElements(OrderStageWithToolsAndElementsDto orderStageDto) {
+       //Ustawienie statusu początkowego dla etapu zlecenia
+        orderStageDto.setStatus(OrderStageStatus.PLANNING);
 
         OrderStageWithToolsAndElementsDto modiffiedOrderStageDto = completeEmptyAttributes(orderStageDto);
 
@@ -125,12 +133,11 @@ public class OrderStageImpl implements OrderStageService {
     @Override
     @Transactional
     public OrderStageDto update(Long id, OrderStageWithToolsAndElementsDto orderStageDto) {
-
         OrderStageWithToolsAndElementsDto modiffiedOrderStageDto = completeEmptyAttributes(orderStageDto);
-
         OrderStage updatedOrderStage = orderStageMapper.toEntity(modiffiedOrderStageDto);
-
         OrderStage orderStageDb = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+
+        //TODO: Send notification on status change
 
         List<ToolsPlannedNumber> updatedToolsList = new ArrayList<>();
         List<ElementsPlannedNumber> updatedElementsList = new ArrayList<>();
@@ -176,7 +183,6 @@ public class OrderStageImpl implements OrderStageService {
         orderStageDb.setPlannedFittersNumber(updatedOrderStage.getPlannedFittersNumber());
         orderStageDb.setMinimumImagesNumber(updatedOrderStage.getMinimumImagesNumber());
         orderStageDb.setAssignedTo(updatedOrderStage.getAssignedTo());
-        orderStageDb.setManagedBy(updatedOrderStage.getManagedBy());
         orderStageDb.setComments(updatedOrderStage.getComments());
         orderStageDb.setToolReleases(updatedOrderStage.getToolReleases());
         orderStageDb.setElementReturnReleases(updatedOrderStage.getElementReturnReleases());

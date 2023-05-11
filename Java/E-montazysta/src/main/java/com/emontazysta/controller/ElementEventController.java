@@ -22,7 +22,7 @@ public class ElementEventController {
 
     private final ElementEventService service;
 
-    //TO_DELETE
+    //TODO: DELETE
     @GetMapping("/all")
     @Operation(description = "Allows to get list of all events", security= @SecurityRequirement(name = "bearer-key"))
     public List<ElementEventDto> getAllEvents() {

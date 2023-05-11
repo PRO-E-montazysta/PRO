@@ -1,6 +1,6 @@
 package com.emontazysta.model;
 
-import com.emontazysta.enums.OrderStatus;
+import com.emontazysta.enums.OrderStageStatus;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
@@ -26,7 +26,7 @@ public class OrderStage {
 
     private String name;
 
-    private OrderStatus status;
+    private OrderStageStatus status;
 
     private BigDecimal price;
 
@@ -46,9 +46,6 @@ public class OrderStage {
 
     @ManyToMany(mappedBy = "workingOn")
     private List<Fitter> assignedTo;
-
-    @ManyToOne
-    private Foreman managedBy;
 
     @OneToMany(mappedBy = "orderStage")
     private List<Comment> comments;
@@ -74,7 +71,7 @@ public class OrderStage {
     @OneToMany(mappedBy = "orderStage")
     private List<ElementsPlannedNumber> listOfElementsPlannedNumber;
 
-    @ManyToMany
+    @OneToMany(mappedBy = "orderStage")
     private List<DemandAdHoc> demandsAdHoc;
 }
 

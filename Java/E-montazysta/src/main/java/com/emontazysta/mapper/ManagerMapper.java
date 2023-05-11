@@ -64,7 +64,6 @@ public class ManagerMapper {
                 .createdUnavailabilities(manager.getCreatedUnavailabilities().stream().map(Unavailability::getId).collect(Collectors.toList()))
                 .acceptedEvents(manager.getAcceptedEvents().stream().map(ToolEvent::getId).collect(Collectors.toList()))
                 .managedOrders(manager.getManagedOrders().stream().map(Orders::getId).collect(Collectors.toList()))
-                .demandsAdHocs(manager.getDemandsAdHocs().stream().map(DemandAdHoc::getId).collect(Collectors.toList()))
                 .elementEvents(manager.getElementEvents().stream().map(ElementEvent::getId).collect(Collectors.toList()))
                 .status(statusService.checkUnavailability(manager) == null ? "AVAILABLE" : String.valueOf(statusService.checkUnavailability(manager).getTypeOfUnavailability()))
                 .unavailableFrom(statusService.checkUnavailability(manager) == null ? null : statusService.checkUnavailability(manager).getUnavailableFrom())
@@ -105,9 +104,6 @@ public class ManagerMapper {
         List<Orders> ordersList = new ArrayList<>();
         managerDto.getManagedOrders().forEach(orderId -> ordersList.add(orderRepository.getReferenceById(orderId)));
 
-        List<DemandAdHoc> demandAdHocList = new ArrayList<>();
-        managerDto.getDemandsAdHocs().forEach(demandAdHocId -> demandAdHocList.add(demandAdHocRepository.getReferenceById(demandAdHocId)));
-
         List<ElementEvent> elementEvents = new ArrayList<>();
         managerDto.getElementEvents().forEach(elementEventId -> elementEvents.add(elementEventRepository.getReferenceById(elementEventId)));
 
@@ -131,7 +127,6 @@ public class ManagerMapper {
         manager.setCreatedUnavailabilities(createdUnavailabilities);
         manager.setAcceptedEvents(acceptedEvents);
         manager.setManagedOrders(ordersList);
-        manager.setDemandsAdHocs(demandAdHocList);
         manager.setElementEvents(elementEvents);
 
         return manager;

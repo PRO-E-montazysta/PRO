@@ -18,7 +18,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -38,19 +37,23 @@ public class AuthController {
 
     @PostMapping("/gettoken")
     @Operation(description = "Allows authenticate user")
-    public TokenDto token(@RequestBody LoginRequest userLogin) throws AuthenticationException {
+    public TokenDto token(@RequestBody LoginRequest userLogin) {
         if(authUtils.userCanLogin(userLogin.username().toLowerCase())){
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLogin.username().toLowerCase(), userLogin.password()));
-            TokenDto tokenDto = new TokenDto();
-            tokenDto.setToken(tokenService.generateToken(authentication));
-            return tokenDto;
+            try {
+                Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLogin.username().toLowerCase(), userLogin.password()));
+                TokenDto tokenDto = new TokenDto();
+                tokenDto.setToken(tokenService.generateToken(authentication));
+                return tokenDto;
+            }catch (AuthenticationException e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            }
         }
         throw new ResponseStatusException(HttpStatus.FORBIDDEN);
     }
 
     @PostMapping("/password/forgot")
     @Operation(description = "Generates email to reset the password for the user.")
-    public void generateResetPasswordToken(@RequestParam @Valid ForgotPasswordDto forgotPasswordDto) {
+    public void generateResetPasswordToken(@RequestBody @Valid ForgotPasswordDto forgotPasswordDto) {
         String username = forgotPasswordDto.getUsername();
         userService.generateResetPasswordToken(username);
     }

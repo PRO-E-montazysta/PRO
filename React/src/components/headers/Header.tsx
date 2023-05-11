@@ -24,6 +24,7 @@ const Header = () => {
             >
                 {appSize.isMobile || appSize.isTablet ? <Hamburger /> : null}
                 <Box
+                    id={`navBtn-goHHome`}
                     component="img"
                     alt="Logo"
                     title="Strona główna"

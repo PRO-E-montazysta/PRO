@@ -22,7 +22,7 @@ public class ToolEventController {
 
     private final ToolEventService service;
 
-    //TO_DELETE
+    //TODO: DELETE
     @GetMapping("/all")
     @Operation(description = "Allows to get all tool event.", security = @SecurityRequirement(name = "bearer-key"))
     public List<ToolEventDto> getAllToolEvents() {

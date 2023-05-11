@@ -20,7 +20,6 @@ const Warehouses = () => {
         getFilteredWarehouses({ queryParams: filterParams }),
     )
 
-
     const filter: Filter = {
         formik: useFormik({
             initialValues: initialValues,
@@ -36,6 +35,7 @@ const Warehouses = () => {
 
     return (
         <FatTable
+            idPropName="id"
             query={queryWarehouses}
             filterProps={filter}
             headCells={headCells}

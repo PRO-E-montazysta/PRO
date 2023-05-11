@@ -6,6 +6,9 @@ import com.emontazysta.model.*;
 import com.emontazysta.model.dto.OrderStageWithToolsAndElementsDto;
 import com.emontazysta.model.dto.ToolsPlannedNumberDto;
 import com.emontazysta.model.dto.UnavailabilityWithLocalDateDto;
+import com.emontazysta.repository.EmploymentRepository;
+import com.emontazysta.repository.ElementEventRepository;
+import com.emontazysta.repository.ToolEventRepository;
 import com.emontazysta.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -41,16 +44,16 @@ public class DataSeeding {
     private final AttachmentService attachmentService;
     private final CommentService commentService;
     private final ToolTypeService toolTypeService;
-    private final ToolEventService toolEventService;
+    private final ToolEventRepository toolEventRepository;
     private final OrderStageService orderStageService;
     private final ToolReleaseService toolReleaseService;
     private final ElementService elementService;
     private final DemandAdHocService demandAdHocService;
-    private final ElementEventService elementEventService;
+    private final ElementEventRepository elementEventRepository;
     private final ElementInWarehouseService elementInWarehouseService;
     private final ElementReturnReleaseService elementReturnReleaseService;
     private final AppUserService appUserService;
-    private final EmploymentService employmentService;
+    private final EmploymentRepository employmentRepository;
     private final UnavailabilityService unavailabilityService;
 
     private final CompanyMapper companyMapper;
@@ -71,11 +74,6 @@ public class DataSeeding {
     private final ElementInWarehouseMapper elementInWarehouseMapper;
     private final ElementReturnReleaseMapper elementReturnReleaseMapper;
     private final UnavailabilityMapper unavailabilityMapper;
-    private final EmploymentMapper employmentMapper;
-
-    private Employment addEmploymentFromModel(Employment employment) {
-        return employmentMapper.toEntity(employmentService.add(employmentMapper.toDto(employment)));
-    }
 
     private Company addCompanyFromModel(Company company) {
         return companyMapper.toEntity(companyService.add(companyMapper.toDto(company)));
@@ -122,7 +120,7 @@ public class DataSeeding {
     }
 
     private ToolEvent addToolEventFromModel(ToolEvent toolEvent) {
-        return toolEventMapper.toEntity(toolEventService.add(toolEventMapper.toDto(toolEvent)));
+        return toolEventRepository.save(toolEvent);
     }
 
     private Comment addCommentFromModel(Comment comment) {
@@ -142,7 +140,7 @@ public class DataSeeding {
     }
 
     private ElementEvent addElementEventFromModel(ElementEvent elementEvent) {
-        return elementEventMapper.toEntity(elementEventService.add(elementEventMapper.toDto(elementEvent)));
+        return elementEventRepository.save(elementEvent);
     }
 
     private ElementInWarehouse addElementInWarehouseFromModel(ElementInWarehouse elementInWarehouse) {
@@ -179,34 +177,34 @@ public class DataSeeding {
         Foreman foreman1 = new Foreman(null, "Test Foreman 1", "Test Foreman 1", "foreman1@ema.il",
                 "password", "foreman1", null, Set.of(Role.FOREMAN), "foreman1Phone",
                 "foreman1Pesel", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         Foreman foreman2 = new Foreman(null, "Test Foreman 2", "Test Foreman 2", "foreman2@ema.il",
                 "password", "foreman2", null, Set.of(Role.FOREMAN), "foreman2Phone",
                 "foreman2Pesel", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         Warehouseman warehouseman1 = new Warehouseman(null, "Test Warehouseman 1", "Test Warehouseman 1",
                 "warehouseman1@ema.il", "password", "warehouseman1", null,
                 Set.of(Role.WAREHOUSE_MAN), "warehouseman1Phone", "warehouseman1Pesel", new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         Warehouseman warehouseman2 = new Warehouseman(null, "Test Warehouseman 2", "Test Warehouseman 2",
                 "warehouseman2@ema.il", "password", "warehouseman2", null,
                 Set.of(Role.WAREHOUSE_MAN), "warehouseman2Phone", "warehouseman2Pesel", new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         WarehouseManager warehouseManager1 = new WarehouseManager(null, "Test WarehouseManager 1", "Test WarehouseManager 1",
                 "warehouseManager1@ema.il", "password", "warehouseManager1", null,
                 Set.of(Role.WAREHOUSE_MANAGER), "warehouseManager1Phone", "warehouseManager1Pesel", new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         WarehouseManager warehouseManager2 = new WarehouseManager(null, "Test WarehouseManager 2", "Test WarehouseManager 2",
                 "warehouseManager2@ema.il", "password", "warehouseManager2", null,
                 Set.of(Role.WAREHOUSE_MANAGER), "warehouseManager2Phone", "warehouseManager2Pesel", new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         Specialist specialist1 = new Specialist(null, "Test Specialist 1", "Test Specialist 1",
                 "specialist1@ema.il", "password", "specialist1", null,
@@ -234,12 +232,12 @@ public class DataSeeding {
                 "password", "manager1", null, Set.of(Role.MANAGER),
                 "manager1Phone", "manager1Pesel", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         Manager manager2 = new Manager(null, "Test Manager 2", "Test Manager 2", "manager2@ema.il",
                 "password", "manager2", null, Set.of(Role.MANAGER),
                 "manager2Phone", "manager2Pesel", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         CompanyAdmin companyAdmin1 = new CompanyAdmin(null, "Test Company", "Admin Test", "admin@ema.il",
                 "password", "companyAdmin1", null, Set.of(Role.ADMIN),
                 "+48123123123", "02292464175", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
@@ -262,21 +260,21 @@ public class DataSeeding {
                 CompanyStatus.DISABLED, "Closed company", new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
-        Employment employment1 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, fitter1));
-        Employment employment2 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), LocalDateTime.now(), company1, fitter2));
-        Employment employment3 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, foreman1));
-        Employment employment4 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, foreman2));
-        Employment employment5 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, warehouseman1));
-        Employment employment6 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, warehouseman2));
-        Employment employment7 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, warehouseManager1));
-        Employment employment8 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, warehouseManager2));
-        Employment employment9 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, specialist1));
-        Employment employment10 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, specialist2));
-        Employment employment11 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, salesRepresentative1));
-        Employment employment12 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, salesRepresentative2));
-        Employment employment13 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, manager1));
-        Employment employment14 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company3, manager2));
-        Employment employment15 = addEmploymentFromModel(new Employment(null, LocalDateTime.now(), null, company1, companyAdmin1));
+        Employment employment1 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, fitter1));
+        Employment employment2 = employmentRepository.save(new Employment(null, LocalDateTime.now(), LocalDateTime.now(), company1, fitter2));
+        Employment employment3 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, foreman1));
+        Employment employment4 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, foreman2));
+        Employment employment5 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, warehouseman1));
+        Employment employment6 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, warehouseman2));
+        Employment employment7 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, warehouseManager1));
+        Employment employment8 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, warehouseManager2));
+        Employment employment9 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, specialist1));
+        Employment employment10 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company2, specialist2));
+        Employment employment11 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, salesRepresentative1));
+        Employment employment12 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company2, salesRepresentative2));
+        Employment employment13 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, manager1));
+        Employment employment14 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company3, manager2));
+        Employment employment15 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, companyAdmin1));
 
         context.setAuthentication(null);
         Authentication authenticationMng = new UsernamePasswordAuthenticationToken(
@@ -313,59 +311,55 @@ public class DataSeeding {
                 null, null, null, null));
 
         Orders order1 = addOrdersFromModel(new Orders(null, "Test Order 1 - from Client 1",
-                TypeOfStatus.PLANNED, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.IMPORTANT,
+                OrderStatus.CREATED, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.IMPORTANT,
                 company1, manager1, foreman1, specialist1, salesRepresentative1, location1, client1, new ArrayList<>(),
                 new ArrayList<>()));
         Orders order2 = addOrdersFromModel(new Orders(null, "Test Order 2 - from Client 1",
-                TypeOfStatus.PLANNED, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.NORMAL,
+                OrderStatus.CREATED, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.NORMAL,
                 company1, manager2, foreman2, specialist2, salesRepresentative2, location2, client1, new ArrayList<>(),
                 new ArrayList<>()));
         Orders order3 = addOrdersFromModel(new Orders(null, "Test Order 3 - from Client 2",
-                TypeOfStatus.IN_PROGRESS, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.IMMEDIATE,
+                OrderStatus.CREATED, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.IMMEDIATE,
                 company1, manager1, foreman1, specialist1, salesRepresentative1, location3, client2, new ArrayList<>(),
                 new ArrayList<>()));
         Orders order4 = addOrdersFromModel(new Orders(null, "Test Order 4 - from Client 4",
-                TypeOfStatus.FINISHED, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.NORMAL,
+                OrderStatus.CREATED, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.NORMAL,
                 company4, null, null, null, null, null, client4,
                 new ArrayList<>(), new ArrayList<>()));
 
         OrderStage orderStage1 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 1",
-                OrderStatus.TODO, new BigDecimal(1), LocalDateTime.now(), LocalDateTime.now(), null, null,
-                1, 1, 1, new ArrayList<>(), foreman1,
+                OrderStageStatus.PLANNING, new BigDecimal(1), LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(),
+                1, 1, 1, new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         OrderStage orderStage2 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 2",
-                OrderStatus.TODO, new BigDecimal(2), LocalDateTime.now(), LocalDateTime.now(), null, null,
-                1, 1, 1, new ArrayList<>(), foreman1,
+                OrderStageStatus.PLANNING, new BigDecimal(2), LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), null,
+                1, 1, 1, new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         OrderStage orderStage3 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 3",
-                OrderStatus.TODO, new BigDecimal(3), LocalDateTime.now(), LocalDateTime.now(), null, null,
-                1, 1, 1, new ArrayList<>(), foreman1,
+                OrderStageStatus.PLANNING, new BigDecimal(3), LocalDateTime.now(), LocalDateTime.now(), null, null,
+                1, 1, 1, new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         OrderStage orderStage4 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 4",
-                OrderStatus.TODO, new BigDecimal(4), LocalDateTime.now(), LocalDateTime.now(), null, null,
-                1, 1, 1, new ArrayList<>(), foreman2,
+                OrderStageStatus.PLANNING, new BigDecimal(4), LocalDateTime.now(), LocalDateTime.now(), null, null,
+                1, 1, 1, new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), order2, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
         DemandAdHoc demandAdHoc1 = addDemandAdHocFromModel(new DemandAdHoc(null, "Test DemandAdHoc 1",
-                null, null, null, null, null,
-                null, new ArrayList<>(), new ArrayList<>(), warehouseManager1, warehouseman1,
-                specialist1, manager1, foreman1, new ArrayList<>()));
+                LocalDateTime.now(), new ArrayList<>(), new ArrayList<>(), warehouseManager1, specialist1, foreman1,
+                orderStage1, new ArrayList<>(), new ArrayList<>()));
         DemandAdHoc demandAdHoc2 = addDemandAdHocFromModel(new DemandAdHoc(null, "Test DemandAdHoc 2",
-                null, null, null, null, null,
-                null, new ArrayList<>(), new ArrayList<>(), warehouseManager1, warehouseman1,
-                specialist1, manager1, foreman1, new ArrayList<>()));
+                LocalDateTime.now(), new ArrayList<>(), new ArrayList<>(), warehouseManager1, specialist1, foreman1,
+                orderStage1, new ArrayList<>(), new ArrayList<>()));
         DemandAdHoc demandAdHoc3 = addDemandAdHocFromModel(new DemandAdHoc(null, "Test DemandAdHoc 3",
-                null, null, null, null, null,
-                null, new ArrayList<>(), new ArrayList<>(), warehouseManager2, warehouseman2,
-                specialist2, manager2, foreman2, new ArrayList<>()));
+                LocalDateTime.now(), new ArrayList<>(), new ArrayList<>(), warehouseManager2, specialist2, foreman2,
+                orderStage2, new ArrayList<>(), new ArrayList<>()));
         DemandAdHoc demandAdHoc4 = addDemandAdHocFromModel(new DemandAdHoc(null, "Test DemandAdHoc 4",
-                null, null, null, null, null,
-                null, new ArrayList<>(), new ArrayList<>(), warehouseManager2, warehouseman2,
-                specialist2, manager2, foreman2, new ArrayList<>()));
+                LocalDateTime.now(), new ArrayList<>(), new ArrayList<>(), warehouseManager2, specialist2, foreman2,
+                orderStage4, new ArrayList<>(), new ArrayList<>()));
 
         Warehouse warehouse1 = addWarehouseFromModel(new Warehouse(null, "Test Warehouse 1", "Warehouse 1",
                 "8:00 - 16:00", company1, null, new ArrayList<>(), new ArrayList<>()));
@@ -395,13 +389,13 @@ public class DataSeeding {
                 warehouse2, new ArrayList<>(), toolType4));
 
         ToolEvent toolEvent1 = addToolEventFromModel(new ToolEvent(null, LocalDateTime.now(), null, null,
-                "Test ToolEvent 1", EventStatus.CREATED, null, null, tool1, new ArrayList<>()));
+                "Test ToolEvent 1", EventStatus.CREATED, fitter1, null, tool1, new ArrayList<>()));
         ToolEvent toolEvent2 = addToolEventFromModel(new ToolEvent(null, LocalDateTime.now(), null, null,
-                "Test ToolEvent 2", EventStatus.CREATED, null, null, tool1, new ArrayList<>()));
+                "Test ToolEvent 2", EventStatus.CREATED, fitter1, null, tool1, new ArrayList<>()));
         ToolEvent toolEvent3 = addToolEventFromModel(new ToolEvent(null, LocalDateTime.now(), null, null,
-                "Test ToolEvent 3", EventStatus.CREATED, null, null, tool2, new ArrayList<>()));
+                "Test ToolEvent 3", EventStatus.CREATED, foreman1, null, tool2, new ArrayList<>()));
         ToolEvent toolEvent4 = addToolEventFromModel(new ToolEvent(null, LocalDateTime.now(), null, null,
-                "Test ToolEvent 4", EventStatus.CREATED, null, null, tool3, new ArrayList<>()));
+                "Test ToolEvent 4", EventStatus.CREATED, warehouseman1, null, tool3, new ArrayList<>()));
 
         Comment comment1 = addCommentFromModel(new Comment(null, "Test Comment 1", null, fitter1,
                 orderStage1, new ArrayList<>()));
@@ -445,16 +439,16 @@ public class DataSeeding {
 
         ElementEvent elementEvent1 = addElementEventFromModel(new ElementEvent(null, LocalDateTime.now(),
                 null, null, "Test ElementEvent 1", EventStatus.CREATED, 1,
-                null, null, element1, new ArrayList<>()));
+                null, fitter1, element1, new ArrayList<>()));
         ElementEvent elementEvent2 = addElementEventFromModel(new ElementEvent(null, LocalDateTime.now(),
                 null, null, "Test ElementEvent 2", EventStatus.CREATED, 1,
-                null, null, element1, new ArrayList<>()));
+                null, fitter1, element1, new ArrayList<>()));
         ElementEvent elementEvent3 = addElementEventFromModel(new ElementEvent(null, LocalDateTime.now(),
                 null, null, "Test ElementEvent 3", EventStatus.CREATED, 1,
-                null, null, element2, new ArrayList<>()));
+                null, foreman1, element2, new ArrayList<>()));
         ElementEvent elementEvent4 = addElementEventFromModel(new ElementEvent(null, LocalDateTime.now(),
                 null, null, "Test ElementEvent 4", EventStatus.CREATED, 1,
-                null, null, element3, new ArrayList<>()));
+                null, warehouseman1, element3, new ArrayList<>()));
 
         ElementInWarehouse elementInWarehouse1 = addElementInWarehouseFromModel(new ElementInWarehouse(null,
                 1, 1, "1", "1", element1, warehouse1));

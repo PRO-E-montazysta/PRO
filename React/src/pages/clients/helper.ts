@@ -24,7 +24,7 @@ export const headCells: Array<HeadCell<Client>> = [
         type: 'string',
         id: 'orders',
         label: 'Liczba zleceń',
-        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
+        visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
         formatFn: (orders) => orders.length,
     },

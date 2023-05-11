@@ -1,6 +1,6 @@
 package com.emontazysta.model.dto;
 
-import com.emontazysta.enums.OrderStatus;
+import com.emontazysta.enums.OrderStageStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,8 +21,7 @@ public class OrderStageDto {
     private Long id;
     @NotBlank(message = "Name cannot be empty")
     private String name;
-    @NotNull(message = "Status cannot be empty")
-    private OrderStatus status;
+    private OrderStageStatus status;
     @NotNull(message = "Price cannot be empty")
     private BigDecimal price;
     private LocalDateTime plannedStartDate;
@@ -36,7 +35,6 @@ public class OrderStageDto {
     @PositiveOrZero(message = "Minimum images number cannot be negative")
     private int minimumImagesNumber;
     private List<Long> fitters;
-    private Long foremanId;
     private List<Long> comments;
     private List<Long> toolReleases;
     private List<Long> elementReturnReleases;

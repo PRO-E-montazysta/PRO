@@ -106,15 +106,16 @@ const ElementEventDetails = () => {
     return (
         <>
             <FormBox>
-                {/* TODO check if this return nice result  */}
                 <FormTitle
-                    text={
+                    mainTitle={pageMode == 'new' ? 'Nowa usterka elementu' : 'Usterka elementu'}
+                    subTitle={
                         pageMode == 'new'
-                            ? 'Nowa usterka elementu'
-                            : 'Usterka ' +
-                              queryElements.data
-                                  ?.filter((f) => f.id == formik.values['elementId'])
-                                  .map((x) => x.name + ' - ' + x.code)
+                            ? ''
+                            : String(
+                                  queryElements.data
+                                      ?.filter((f) => f.id == formik.values['elementId'])
+                                      .map((x) => x.name + ' - ' + x.code),
+                              )
                     }
                 />
                 <FormPaper>

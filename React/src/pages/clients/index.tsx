@@ -35,6 +35,7 @@ const Clients = () => {
 
     return (
         <FatTable
+            idPropName="id"
             query={queryClients}
             filterProps={filter}
             headCells={headCells}
