@@ -4,12 +4,8 @@ import com.emontazysta.enums.NotificationType;
 import com.emontazysta.mapper.NotificationMapper;
 import com.emontazysta.model.*;
 import com.emontazysta.model.dto.NotificationDto;
-import com.emontazysta.repository.AppUserRepository;
-import com.emontazysta.repository.NotificationRepository;
-import com.emontazysta.repository.OrderRepository;
-import com.emontazysta.repository.OrderStageRepository;
+import com.emontazysta.repository.*;
 import com.emontazysta.service.NotificationService;
-import com.emontazysta.service.OrderStageService;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,6 +26,8 @@ public class NotificationServiceImpl implements NotificationService {
     private final AppUserServiceImpl appUserService;
     private final OrderStageRepository orderStageRepository;
     private final OrderRepository orderRepository;
+    private final ToolEventRepository toolEventRepository;
+    private final ElementEventRepository elementEventRepository;
     private final AuthUtils authUtils;
 
     @Override
@@ -57,6 +55,16 @@ public class NotificationServiceImpl implements NotificationService {
                 break;
             case AD_HOC_CREATED:
                 //TODO On DemandAdHoc implementation
+                break;
+            case TOOL_EVENT:
+                ToolEvent toolEvent = toolEventRepository.findById(triggerId).orElseThrow(EntityNotFoundException::new);
+                notification.setToolEvent(toolEvent);
+                notification.setSubContent("Usterka " + toolEvent.getTool().getName());
+                break;
+            case ELEMENT_EVENT:
+                ElementEvent elementEvent = elementEventRepository.findById(triggerId).orElseThrow(EntityNotFoundException::new);
+                notification.setElementEvent(elementEvent);
+                notification.setSubContent("Usterka " + elementEvent.getElement().getName());
                 break;
         }
 
