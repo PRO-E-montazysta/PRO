@@ -75,12 +75,12 @@ public class ElementEventServiceImpl implements ElementEventService {
 
         ElementEvent savedElementEvent = repository.save(elementEvent);
 
-        //Wysłanie powiadomienia do specjalistów o utworzeniu zlecenia
+        //Wysłanie powiadomienia o utworzonym evencie
         List<AppUser> notifiedEmployees = notificationService.createListOfEmployeesToNotificate(userService.findAllByRole(Role.MANAGER));
         notifiedEmployees.addAll(notificationService.createListOfEmployeesToNotificate(userService.findAllByRole(Role.WAREHOUSE_MANAGER)));
         notificationService.createNotification(notifiedEmployees, savedElementEvent.getId(), NotificationType.ELEMENT_EVENT);
 
-        return elementEventMapper.toDto(repository.save(savedElementEvent));
+        return elementEventMapper.toDto(savedElementEvent);
     }
 
     @Override

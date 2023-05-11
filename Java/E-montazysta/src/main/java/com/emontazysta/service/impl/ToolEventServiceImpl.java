@@ -74,7 +74,7 @@ public class ToolEventServiceImpl implements ToolEventService {
 
         ToolEvent savedToolEvent = repository.save(toolEvent);
 
-        //Wysłanie powiadomienia do specjalistów o utworzeniu zlecenia
+        //Wysłanie powiadomienia o utworzonym evencie
         List<AppUser> notifiedEmployees = notificationService.createListOfEmployeesToNotificate(userService.findAllByRole(Role.MANAGER));
         notifiedEmployees.addAll(notificationService.createListOfEmployeesToNotificate(userService.findAllByRole(Role.WAREHOUSE_MANAGER)));
         notificationService.createNotification(notifiedEmployees, savedToolEvent.getId(), NotificationType.TOOL_EVENT);
