@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
-    List<Notification> getAllByNotifiedEmployeesContaining(AppUser notifiedEmployee);
+    List<Notification> getAllByNotifiedEmployee(AppUser notifiedEmployee);
 
 
 }
