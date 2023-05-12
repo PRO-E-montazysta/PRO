@@ -31,7 +31,7 @@ public class OrderStage {
 
     public OrderStage(Long id, String name, OrderStageStatus status, BigDecimal price, LocalDateTime plannedStartDate,
                       LocalDateTime plannedEndDate, LocalDateTime startDate, LocalDateTime endDate, long plannedDurationTime,
-                      int plannedFittersNumber, int minimumImagesNumber, List<Fitter> assignedTo, Foreman managedBy,
+                      int plannedFittersNumber, int minimumImagesNumber, List<Fitter> assignedTo,
                       List<Comment> comments, List<ToolRelease> toolReleases, List<ElementReturnRelease> elementReturnReleases,
                       Orders orders, List<Attachment> attachments, List<Notification> notifications,
                       List<ToolsPlannedNumber> listOfToolsPlannedNumber, List<ElementsPlannedNumber> listOfElementsPlannedNumber,
@@ -48,7 +48,6 @@ public class OrderStage {
         this.plannedFittersNumber = plannedFittersNumber;
         this.minimumImagesNumber = minimumImagesNumber;
         this.assignedTo = assignedTo;
-        this.managedBy = managedBy;
         this.comments = comments;
         this.toolReleases = toolReleases;
         this.elementReturnReleases = elementReturnReleases;
