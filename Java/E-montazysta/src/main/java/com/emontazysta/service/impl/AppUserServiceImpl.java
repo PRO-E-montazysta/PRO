@@ -124,6 +124,11 @@ public class AppUserServiceImpl  implements AppUserService {
     }
 
     @Override
+    public List<AppUser> findAllByIds(List<Long> listOfIds) {
+        return appUserRepository.findAllByIdIn(listOfIds);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         AppUser user = appUserRepository
                 .findByUsername(username);
@@ -139,5 +144,9 @@ public class AppUserServiceImpl  implements AppUserService {
     @Override
     public List <EmployeeDto> getFilteredUsers(AppUserSearchCriteria appUserSearchCriteria){
     return appUserCriteriaRepository.findAllWithFilters(appUserSearchCriteria);
+    }
+
+    public List<AppUser> findAllByRole(Role role){
+        return appUserRepository.findAllByRolesContaining(role);
     }
 }

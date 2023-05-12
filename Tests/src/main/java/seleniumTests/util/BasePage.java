@@ -10,7 +10,7 @@ import java.time.Duration;
 public abstract class BasePage {
 
 
-    public static final String baseUrl = "https://dev.emontazysta.pl";
+    public static final String baseUrl = "https://dev.emontazysta.pl/";
     @Getter
     private static final String login = "admin";
     @Getter

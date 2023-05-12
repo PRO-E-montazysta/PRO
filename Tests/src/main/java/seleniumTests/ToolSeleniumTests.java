@@ -28,17 +28,8 @@ public class ToolSeleniumTests {
         driver.manage().window().maximize();
 
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"username\"]"))).click();
-
-        driver.findElement(By.xpath("//*[@id=\"username\"]")).sendKeys("warehouseManager1");
-        Thread.sleep(1000);
-        driver.findElement(By.xpath("//*[@id=\"password\"]")).clear();
-        Thread.sleep(1000);
-        driver.findElement(By.xpath("//*[@id=\"password\"]")).sendKeys("password");
-
-
-        driver.findElement(By.xpath("//*[@id=\"login-logIn\"]")).click();
-        Thread.sleep(2000);
-
+        driver.findElement(By.id("username")).sendKeys("warehouseManager1");
+        driver.findElement(By.id("login-logIn")).click();
     }
     @After
     public void tearDown(){

@@ -70,7 +70,6 @@ public class ForemanMapper {
                 .attachments(foreman.getAttachments().stream().map(Attachment::getId).collect(Collectors.toList()))
                 .toolEvents(foreman.getToolEvents().stream().map(ToolEvent::getId).collect(Collectors.toList()))
                 .workingOn(foreman.getWorkingOn().stream().map(OrderStage::getId).collect(Collectors.toList()))
-                .ordersStagesList(foreman.getOrdersStagesList().stream().map(OrderStage::getId).collect(Collectors.toList()))
                 .receivedTools(foreman.getReceivedTools().stream().map(ToolRelease::getId).collect(Collectors.toList()))
                 .assignedOrders(foreman.getAssignedOrders().stream().map(Orders::getId).collect(Collectors.toList()))
                 .elementReturnReleases(foreman.getElementReturnReleases().stream().map(ElementReturnRelease::getId).collect(Collectors.toList()))
@@ -141,7 +140,6 @@ public class ForemanMapper {
         foreman.setAttachments(attachmentList);
         foreman.setToolEvents(toolEventList);
         foreman.setWorkingOn(workingOnList);
-        foreman.setOrdersStagesList(orderStageList);
         foreman.setReceivedTools(toolReleaseList);
         foreman.setAssignedOrders(ordersList);
         foreman.setElementReturnReleases(elementReturnReleasesList);

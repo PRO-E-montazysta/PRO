@@ -1,4 +1,3 @@
-
 import { SelectMenuItemProps } from '../components/form/types'
 import { CompanyStatus } from '../types/model/Company'
 import { TypeOfUnit } from '../types/model/Element'
@@ -33,6 +32,10 @@ export const typeOfUnitName = (key: string) => {
 
 export const typeOfUnavailabilityName = (key: string) => {
     return Object.values(TypeOfUnavailability)[Object.keys(TypeOfUnavailability).indexOf(key)]
+}
+
+export const roleName = (key: string) => {
+    return Object.values(UserRole)[Object.keys(UserRole).indexOf(key)]
 }
 
 export const priorityOptions = () => {
