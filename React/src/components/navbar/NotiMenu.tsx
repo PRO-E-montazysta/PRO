@@ -22,8 +22,8 @@ const NotiMenu = (params: NotiMenuParams) => {
 
     const navigate = useNavigate()
 
-    const handleMenuItemClick = (url: string, id: number) => {
-        updateNotification(id)
+    const handleMenuItemClick = async (url: string, id: number) => {
+        await updateNotification(id)
         navigate(url)
         onClose()
         queryClient.invalidateQueries('notifications')
@@ -42,6 +42,7 @@ const NotiMenu = (params: NotiMenuParams) => {
                     overflow: 'hidden',
                     mt: '10px',
                     right: '10px',
+                    zIndex: 100,
                 }}
             >
                 {notificationQuery.data &&
