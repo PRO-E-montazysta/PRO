@@ -19,7 +19,7 @@ export default function Map(props: MapProps) {
     const customIcon = new L.Icon({
         //creating a custom icon to use in Marker
         iconUrl: icon,
-        iconSize: [25, 35],
+        iconSize: [30, 30],
         iconAnchor: [5, 30],
     })
 

@@ -161,7 +161,7 @@ export const useFormStructure = (): Array<FormInputProps> => {
         },
         {
             label: 'Status',
-            id: 'typeOfStatus',
+            id: 'status',
             initValue: '',
             type: 'select',
             validation: yup.string().required('Wybierz status'),
@@ -284,7 +284,7 @@ export const useFormStructureLocation = (): Array<FormInputProps> => {
             validation: yup
                 .string()
                 .trim()
-                .matches(/^[0-9]{2}-[0-9]{3}$/),
+                .matches(/^[0-9]{2}-[0-9]{3}$/, 'Kod pocztowy musi być formatu xx-xxx'),
         },
         {
             label: 'x',

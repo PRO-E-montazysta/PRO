@@ -7,6 +7,6 @@ export type Location = {
    propertyNumber: string
    apartmentNumber: string
    zipCode: string
-   xCoordinate: number
-   yCoordinate: number
+   xcoordinate: number
+   ycoordinate: number
 };

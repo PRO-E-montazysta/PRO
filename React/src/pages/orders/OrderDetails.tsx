@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom'
 import { theme } from '../../themes/baseTheme'
 
 import { useFormStructure, useFormStructureLocation } from './helper'
-import { useAddOrder, useDeleteOrder, useEditOrder, useOrderData } from './hooks'
+import { useAddLocation, useAddOrder, useDeleteOrder, useEditOrder, useLocationData, useOrderData } from './hooks'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { FormButtons } from '../../components/form/FormButtons'
 import { FormStructure } from '../../components/form/FormStructure'
@@ -21,6 +21,7 @@ import FormBox from '../../components/form/FormBox'
 import { PageMode } from '../../types/form'
 import MapContainer from '../../components/map/MapContainer'
 import Localization from '../../components/map/Localization'
+import { Location } from '../../types/model/Location'
 
 const OrderDetails = () => {
     //parameters from url
@@ -45,10 +46,18 @@ const OrderDetails = () => {
     const queriesStatus = useQueriesStatus([orderData], [addOrderMutation, editOrderMutation, deleteOrderMutation])
 
     const appSize = useBreakpoints()
-    const handleSubmit = (values: any) => {
-        if (pageMode == 'new') addOrderMutation.mutate(values)
-        else if (pageMode == 'edit') editOrderMutation.mutate(values)
+    const handleSubmit = async (values: any) => {
+        if (pageMode == 'new') {
+            formikLocation.submitForm()
+        } else if (pageMode == 'edit') editOrderMutation.mutate(values)
         else console.warn('Try to submit while read mode')
+    }
+
+    const addLocationCallback = (data: Location) => {
+        if (data && data.id) {
+            formik.setFieldValue('locationId', data.id)
+            addOrderMutation.mutate(formik.values)
+        }
     }
 
     const handleDelete = () => {
@@ -114,14 +123,21 @@ const OrderDetails = () => {
         initialValues: initDataLocation,
         validationSchema: getValidatinSchema(formStructureLocation, pageMode),
         onSubmit: () => {
-            console.log('lelelelelelelel')
+            if (pageMode == 'new') {
+                addLocationMutation.mutate(formikLocation.values)
+            }
         },
     })
+    const queryLocationData = useLocationData(orderData.data ? orderData.data.locationId.toString() : '')
+    const addLocationMutation = useAddLocation(addLocationCallback)
 
     useEffect(() => {
-        console.log(formikLocation.values)
-    }, [formikLocation.values])
-
+        console.log(queryLocationData.data)
+        if (queryLocationData.data) {
+            formikLocation.setValues(queryLocationData.data)
+            setInitDataLocation(queryLocationData.data)
+        }
+    }, [queryLocationData.data])
 
     return (
         <>
@@ -151,7 +167,6 @@ const OrderDetails = () => {
                                 onSubmit={formik.submitForm}
                                 readonlyMode={pageMode == 'read'}
                             />
-                            {/* <MapContainer /> */}
                         </>
                     )}
                 </FormPaper>

@@ -7,6 +7,7 @@ import { deleteOrder, getOrderDetails, postOrder, updateOrder } from '../../api/
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { Order } from '../../types/model/Order'
 import useError from '../../hooks/useError'
+import { getLocationById, postLocation } from '../../api/location.api'
 
 export const useAddOrder = () => {
     const navigate = useNavigate()
@@ -89,4 +90,23 @@ export const useOrderData = (id: string | undefined) => {
             enabled: !!id && id != 'new',
         },
     )
+}
+
+export const useLocationData = (id: string | undefined) => {
+    return useQuery<Location, AxiosError>(
+        ['location', { id: id }],
+        async () => getLocationById(id && id != 'new' ? id : ''),
+        {
+            enabled: !!id && id != 'new',
+        },
+    )
+}
+
+export const useAddLocation = (onSuccessCallback: (data: any) => void) => {
+    const showError = useError()
+    return useMutation({
+        mutationFn: postLocation,
+        onSuccess: onSuccessCallback,
+        onError: showError,
+    })
 }

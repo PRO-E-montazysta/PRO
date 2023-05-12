@@ -16,8 +16,8 @@ export default function MapContainer() {
         street: '',
         propertyNumber: '',
         apartmentNumber: '',
-        xCoordinate: 0,
-        yCoordinate: 0,
+        xcoordinate: 0,
+        ycoordinate: 0,
         zipCode: '',
     })
 
@@ -85,9 +85,9 @@ export default function MapContainer() {
                     <input type="text" value={location.zipCode} onChange={update('zipCode')} id="zipCode" />
 
                     <label>x:</label>
-                    <input readOnly type="text" value={location.xCoordinate} id="xCoordinate" />
+                    <input readOnly type="text" value={location.xcoordinate} id="xCoordinate" />
                     <label>y:</label>
-                    <input readOnly type="text" value={location.yCoordinate} id="yCoordinate" />
+                    <input readOnly type="text" value={location.ycoordinate} id="yCoordinate" />
 
                     <br />
                     <button onClick={(e) => onSubmit(e)}>Search</button>
@@ -97,7 +97,7 @@ export default function MapContainer() {
                 </form>
             </section>
             <Map
-                coords={{ lat: location.xCoordinate, lon: location.yCoordinate }}
+                coords={{ lat: location.xcoordinate, lon: location.ycoordinate }}
                 popupText={popupText}
                 handleCoordinatesChange={onCoordinatesChange}
             />

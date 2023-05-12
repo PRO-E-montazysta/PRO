@@ -29,8 +29,8 @@ export const getLocationFromCoordinates = async (coords: Coordinates): Promise<L
         propertyNumber: '',
         apartmentNumber: '',
         zipCode: '',
-        xCoordinate: coords.lat,
-        yCoordinate: coords.lon,
+        xcoordinate: coords.lat,
+        ycoordinate: coords.lon,
     }
 
     const reposnose = await axios(url, {
@@ -74,8 +74,8 @@ export const getLocationFromAddress = async (location: Location): Promise<Locati
         propertyNumber: location.propertyNumber,
         apartmentNumber: location.apartmentNumber,
         zipCode: location.zipCode,
-        xCoordinate: location.xCoordinate,
-        yCoordinate: location.yCoordinate,
+        xcoordinate: location.xcoordinate,
+        ycoordinate: location.ycoordinate,
     }
 
     const response = await axios(url, {
@@ -86,8 +86,8 @@ export const getLocationFromAddress = async (location: Location): Promise<Locati
     })
     console.log(response)
     if (response && response.data && response.data.length > 0) {
-        localization.xCoordinate = response.data[0].lat
-        localization.yCoordinate = response.data[0].lon
+        localization.xcoordinate = response.data[0].lat
+        localization.ycoordinate = response.data[0].lon
     }
 
     return localization

@@ -20,33 +20,42 @@ type LocalizationProps = {
 const Localization = (props: LocalizationProps) => {
     const { title, formStructure, formik, pageMode } = props
     const appSize = useBreakpoints()
-    const [initCoordinates, setInitCoordinates] = useState<Coordinates>({
-        lat: formik.values.xCoordinate,
-        lon: formik.values.yCoordinate,
+    const [coordinates, setCoordinates] = useState<Coordinates | null>(null)
+
+    const [userCoordintates, setUserCoordinates] = useState<Coordinates>({
+        lat: 0,
+        lon: 0,
     })
 
     useEffect(() => {
-        if (!formik.values.xCoordinate && !formik.values.yCoordinate)
-            navigator.geolocation.getCurrentPosition(
-                (position: any) => {
-                    setLocationByCoordinates({
-                        lat: position.coords.latitude,
-                        lon: position.coords.longitude,
-                    })
-                },
-                getPositionError,
-                options,
-            )
-    }, [formik.values])
+        navigator.geolocation.getCurrentPosition(
+            (position: any) => {
+                setUserCoordinates({
+                    lat: position.coords.latitude,
+                    lon: position.coords.longitude,
+                })
+            },
+            getPositionError,
+            options,
+        )
+    }, [])
 
+    useEffect(() => {
+        if (formik.values.xcoordinate && formik.values.ycoordinate) {
+            setCoordinates({
+                lat: formik.values.xcoordinate,
+                lon: formik.values.ycoordinate,
+            })
+        }
+    }, [formik.values])
 
     const search = async () => {
         if (pageMode != 'read') {
             const location = await getLocationFromAddress(formik.values)
             formik.setValues(location)
-            setInitCoordinates({
-                lat: location.xCoordinate,
-                lon: location.yCoordinate,
+            setCoordinates({
+                lat: location.xcoordinate,
+                lon: location.ycoordinate,
             })
         }
     }
@@ -54,7 +63,7 @@ const Localization = (props: LocalizationProps) => {
     const setLocationByCoordinates = async (coords: Coordinates) => {
         const location = await getLocationFromCoordinates(coords)
         formik.setValues(location)
-        setInitCoordinates({
+        setCoordinates({
             lat: coords.lat,
             lon: coords.lon,
         })
@@ -84,12 +93,11 @@ const Localization = (props: LocalizationProps) => {
                             transform: !appSize.isMobile ? 'translate(0, -100%)' : '',
                         }}
                     >
-                        Szukaj
+                        Potwierdź
                     </Button>
                 )}
-
                 <Map
-                    coords={initCoordinates}
+                    coords={coordinates ? coordinates : userCoordintates}
                     popupText={'lel'}
                     handleCoordinatesChange={onCoordinatesChange}
                     pageMode={pageMode}
