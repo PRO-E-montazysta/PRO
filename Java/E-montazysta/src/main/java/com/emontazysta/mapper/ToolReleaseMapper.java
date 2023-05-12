@@ -40,7 +40,6 @@ public class ToolReleaseMapper {
                 .id(toolReleaseDto.getId())
                 .releaseTime(toolReleaseDto.getReleaseTime())
                 .returnTime(toolReleaseDto.getReturnTime())
-                .receivedBy(toolReleaseDto.getReceivedById() == null ? null : foremanRepository.findById(toolReleaseDto.getReceivedById()).orElseThrow(EntityNotFoundException::new))
                 .releasedBy(toolReleaseDto.getReleasedById() == null ? null : warehousemanRepository.findById(toolReleaseDto.getReleasedById()).orElseThrow(EntityNotFoundException::new))
                 .tool(toolReleaseDto.getToolId() == null ? null : toolRepository.findById(toolReleaseDto.getToolId()).orElseThrow(EntityNotFoundException::new))
                 .demandAdHoc(toolReleaseDto.getDemandAdHocId() == null ? null : demandAdHocRepository.findById(toolReleaseDto.getDemandAdHocId()).orElseThrow(EntityNotFoundException::new))

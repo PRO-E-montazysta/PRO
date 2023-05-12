@@ -21,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -60,13 +61,13 @@ public class ElementServiceImpl implements ElementService {
 
     @Override
     public ElementDto getByCode(String code) {
-        Element element = repository.findByCode(code);
+        Optional<Element> element = repository.findByCode(code);
 
-        if(element == null) {
+        if(element.isEmpty()) {
             throw new EntityNotFoundException();
         }else {
-            if(element.getElementInWarehouses().get(0).getWarehouse().getCompany().getId().equals(authUtils.getLoggedUserCompanyId())) {
-                return elementMapper.toDto(element);
+            if(element.get().getElementInWarehouses().get(0).getWarehouse().getCompany().getId().equals(authUtils.getLoggedUserCompanyId())) {
+                return elementMapper.toDto(element.get());
             }else {
                 throw new EntityNotFoundException();
             }

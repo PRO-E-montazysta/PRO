@@ -4,27 +4,23 @@ import com.emontazysta.model.Attachment;
 import com.emontazysta.model.Comment;
 import com.emontazysta.model.DemandAdHoc;
 import com.emontazysta.model.ElementEvent;
-import com.emontazysta.model.ElementReturnRelease;
 import com.emontazysta.model.Employment;
 import com.emontazysta.model.Foreman;
 import com.emontazysta.model.Notification;
 import com.emontazysta.model.OrderStage;
 import com.emontazysta.model.Orders;
 import com.emontazysta.model.ToolEvent;
-import com.emontazysta.model.ToolRelease;
 import com.emontazysta.model.Unavailability;
 import com.emontazysta.model.dto.ForemanDto;
 import com.emontazysta.repository.AttachmentRepository;
 import com.emontazysta.repository.CommentRepository;
 import com.emontazysta.repository.DemandAdHocRepository;
 import com.emontazysta.repository.ElementEventRepository;
-import com.emontazysta.repository.ElementReturnReleaseRepository;
 import com.emontazysta.repository.EmploymentRepository;
 import com.emontazysta.repository.NotificationRepository;
 import com.emontazysta.repository.OrderRepository;
 import com.emontazysta.repository.OrderStageRepository;
 import com.emontazysta.repository.ToolEventRepository;
-import com.emontazysta.repository.ToolReleaseRepository;
 import com.emontazysta.repository.UnavailabilityRepository;
 import com.emontazysta.service.StatusService;
 import lombok.RequiredArgsConstructor;
@@ -47,9 +43,7 @@ public class ForemanMapper {
     private final AttachmentRepository attachmentRepository;
     private final ToolEventRepository toolEventRepository;
     private final OrderStageRepository orderStageRepository;
-    private final ToolReleaseRepository toolReleaseRepository;
     private final OrderRepository orderRepository;
-    private final ElementReturnReleaseRepository elementReturnReleaseRepository;
     private final DemandAdHocRepository demandAdHocRepository;
     private final StatusService statusService;
 
@@ -71,8 +65,6 @@ public class ForemanMapper {
                 .attachments(foreman.getAttachments().stream().map(Attachment::getId).collect(Collectors.toList()))
                 .toolEvents(foreman.getToolEvents().stream().map(ToolEvent::getId).collect(Collectors.toList()))
                 .workingOn(foreman.getWorkingOn().stream().map(OrderStage::getId).collect(Collectors.toList()))
-                .ordersStagesList(foreman.getOrdersStagesList().stream().map(OrderStage::getId).collect(Collectors.toList()))
-                .receivedTools(foreman.getReceivedTools().stream().map(ToolRelease::getId).collect(Collectors.toList()))
                 .assignedOrders(foreman.getAssignedOrders().stream().map(Orders::getId).collect(Collectors.toList()))
                 .demandsAdHocs(foreman.getDemandsAdHocs().stream().map(DemandAdHoc::getId).collect(Collectors.toList()))
                 .status(statusService.checkUnavailability(foreman) == null ? "AVAILABLE" : String.valueOf(statusService.checkUnavailability(foreman).getTypeOfUnavailability()))
@@ -109,17 +101,8 @@ public class ForemanMapper {
         List<OrderStage> workingOnList = new ArrayList<>();
         foremanDto.getWorkingOn().forEach(workingOnId -> workingOnList.add(orderStageRepository.findById(workingOnId).orElseThrow(EntityNotFoundException::new)));
 
-        List<OrderStage> orderStageList = new ArrayList<>();
-        foremanDto.getOrdersStagesList().forEach(orderStageId -> orderStageList.add(orderStageRepository.findById(orderStageId).orElseThrow(EntityNotFoundException::new)));
-
-        List<ToolRelease> toolReleaseList = new ArrayList<>();
-        foremanDto.getReceivedTools().forEach(toolReleaseId -> toolReleaseList.add(toolReleaseRepository.findById(toolReleaseId).orElseThrow(EntityNotFoundException::new)));
-
         List<Orders> ordersList = new ArrayList<>();
-        foremanDto.getOrdersStagesList().forEach(orderStageId -> ordersList.add(orderRepository.findById(orderStageId).orElseThrow(EntityNotFoundException::new)));
-
-        List<ElementReturnRelease> elementReturnReleasesList = new ArrayList<>();
-        foremanDto.getElementReturnReleases().forEach(elementReturnReleaseId -> elementReturnReleasesList.add(elementReturnReleaseRepository.findById(elementReturnReleaseId).orElseThrow(EntityNotFoundException::new)));
+        foremanDto.getAssignedOrders().forEach(orderStageId -> ordersList.add(orderRepository.findById(orderStageId).orElseThrow(EntityNotFoundException::new)));
 
         List<DemandAdHoc> demandAdHocsList = new ArrayList<>();
         foremanDto.getDemandsAdHocs().forEach(demandAdHocId -> demandAdHocsList.add(demandAdHocRepository.findById(demandAdHocId).orElseThrow(EntityNotFoundException::new)));
@@ -142,8 +125,6 @@ public class ForemanMapper {
         foreman.setAttachments(attachmentList);
         foreman.setToolEvents(toolEventList);
         foreman.setWorkingOn(workingOnList);
-        foreman.setOrdersStagesList(orderStageList);
-        foreman.setReceivedTools(toolReleaseList);
         foreman.setAssignedOrders(ordersList);
         foreman.setDemandsAdHocs(demandAdHocsList);
 

@@ -44,10 +44,9 @@ public class ElementReturnReleaseMapper {
                 .releasedQuantity(elementReturnReleaseDto.getReleasedQuantity())
                 .returnedQuantity(elementReturnReleaseDto.getReturnedQuantity())
                 .returnTime(elementReturnReleaseDto.getReturnTime())
-                .servedBy(elementReturnReleaseDto.getServedById() == null ? null : warehousemanRepository.findById(elementReturnReleaseDto.getServedById()).orElseThrow(EntityNotFoundException::new))
+                .releasedBy(elementReturnReleaseDto.getReleasedById() == null ? null : warehousemanRepository.findById(elementReturnReleaseDto.getReleasedById()).orElseThrow(EntityNotFoundException::new))
                 .element(elementReturnReleaseDto.getElementId() == null ? null : elementRepository.findById(elementReturnReleaseDto.getElementId()).orElseThrow(EntityNotFoundException::new))
                 .demandAdHoc(elementReturnReleaseDto.getDemandAdHocId() == null ? null : demandAdHocRepository.findById(elementReturnReleaseDto.getDemandAdHocId()).orElseThrow(EntityNotFoundException::new))
-                .foreman(elementReturnReleaseDto.getForemanId() == null ? null : foremanRepository.findById(elementReturnReleaseDto.getForemanId()).orElseThrow(EntityNotFoundException::new))
                 .orderStage(elementReturnReleaseDto.getOrderStageId() == null ? null : orderStageRepository.findById(elementReturnReleaseDto.getOrderStageId()).orElseThrow(EntityNotFoundException::new))
                 .build();
     }
