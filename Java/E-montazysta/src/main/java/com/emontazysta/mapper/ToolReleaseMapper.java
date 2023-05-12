@@ -10,6 +10,8 @@ import com.emontazysta.repository.WarehousemanRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
+
 @Component
 @RequiredArgsConstructor
 public class ToolReleaseMapper {
@@ -30,6 +32,7 @@ public class ToolReleaseMapper {
                 .toolId(toolRelease.getTool() == null ? null : toolRelease.getTool().getId())
                 .demandAdHocId(toolRelease.getDemandAdHoc() == null ? null : toolRelease.getDemandAdHoc().getId())
                 .orderStageId(toolRelease.getOrderStage() == null ? null : toolRelease.getOrderStage().getId())
+                .deleted(toolRelease.isDeleted())
                 .build();
     }
 
@@ -38,11 +41,11 @@ public class ToolReleaseMapper {
                 .id(toolReleaseDto.getId())
                 .releaseTime(toolReleaseDto.getReleaseTime())
                 .returnTime(toolReleaseDto.getReturnTime())
-                .receivedBy(toolReleaseDto.getReceivedById() == null ? null : foremanRepository.getReferenceById(toolReleaseDto.getReceivedById()))
-                .releasedBy(toolReleaseDto.getReleasedById() == null ? null : warehousemanRepository.getReferenceById(toolReleaseDto.getReleasedById()))
-                .tool(toolReleaseDto.getToolId() == null ? null : toolRepository.getReferenceById(toolReleaseDto.getToolId()))
-                .demandAdHoc(toolReleaseDto.getDemandAdHocId() == null ? null : demandAdHocRepository.getReferenceById(toolReleaseDto.getDemandAdHocId()))
-                .orderStage(toolReleaseDto.getOrderStageId() == null ? null : orderStageRepository.getReferenceById(toolReleaseDto.getOrderStageId()))
+                .receivedBy(toolReleaseDto.getReceivedById() == null ? null : foremanRepository.findById(toolReleaseDto.getReceivedById()).orElseThrow(EntityNotFoundException::new))
+                .releasedBy(toolReleaseDto.getReleasedById() == null ? null : warehousemanRepository.findById(toolReleaseDto.getReleasedById()).orElseThrow(EntityNotFoundException::new))
+                .tool(toolReleaseDto.getToolId() == null ? null : toolRepository.findById(toolReleaseDto.getToolId()).orElseThrow(EntityNotFoundException::new))
+                .demandAdHoc(toolReleaseDto.getDemandAdHocId() == null ? null : demandAdHocRepository.findById(toolReleaseDto.getDemandAdHocId()).orElseThrow(EntityNotFoundException::new))
+                .orderStage(toolReleaseDto.getOrderStageId() == null ? null : orderStageRepository.findById(toolReleaseDto.getOrderStageId()).orElseThrow(EntityNotFoundException::new))
                 .build();
     }
 }

@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { AppBar, Avatar, Box, Drawer, IconButton, List, Toolbar } from '@mui/material'
+import { Avatar, Box, Drawer, IconButton, List } from '@mui/material'
 import { logout } from '../../utils/token'
 import LogoutIcon from '@mui/icons-material/Logout'
-
 import { theme } from '../../themes/baseTheme'
 import NotiButton from '../navbar/NotiButton'
 import useBreakpoints from '../../hooks/useBreakpoints'
-
 import CloseIcon from '@mui/icons-material/Close'
 import NavMenuItem from './NavMenuItem'
 import { useQuery } from 'react-query'
@@ -17,13 +15,6 @@ export type UserInfo = {
     name: string
     company: string
     photoSrc: string
-    notifications: Array<Notification>
-}
-
-export type Notification = {
-    url: string
-    dateTime: Date
-    text: string
 }
 
 type NavActionsProps = {}
@@ -43,7 +34,6 @@ const NavActions = (props: NavActionsProps) => {
         name: 'Imię Nazwisko',
         company: 'Firma',
         photoSrc: MOCK_CAT_URL,
-        notifications: [],
     })
 
     useEffect(() => {
@@ -51,7 +41,6 @@ const NavActions = (props: NavActionsProps) => {
             setUserInfo({
                 name: aboutMeQuery.data.firstName + ' ' + aboutMeQuery.data.lastName,
                 company: aboutMeQuery.data.companyName,
-                notifications: [],
                 photoSrc:
                     aboutMeQuery.data.profilePhotoUrl != 'null' ? aboutMeQuery.data.profilePhotoUrl : MOCK_CAT_URL,
             })
@@ -79,7 +68,7 @@ const NavActions = (props: NavActionsProps) => {
                 <Box display={'flex'}>
                     {userInfoComponent}
                     {avatar}
-                    <NotiButton userInfo={userInfo} />
+                    <NotiButton />
                     <IconButton
                         id={'navBtn-logout'}
                         color="inherit"

@@ -1,20 +1,14 @@
-import { Box, Button, IconButton } from '@mui/material'
+import { Box, IconButton } from '@mui/material'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import { Badge } from '@mui/material'
 import NotiMenu from './NotiMenu'
 import ClickAwayListener from '@mui/base/ClickAwayListener'
-import { UserInfo } from './NavActions'
+import { AxiosError } from 'axios'
+import { useQuery } from 'react-query'
+import { getNotifications } from '../../api/notification.api'
 
-type NotiButtonProps = {
-    userInfo: UserInfo
-}
-
-const NotiButton = (props: NotiButtonProps) => {
-    const { userInfo } = props
-
-    const navigate = useNavigate()
+const NotiButton = () => {
     const [open, setOpen] = useState(false)
 
     const handleClick = () => {
@@ -25,6 +19,12 @@ const NotiButton = (props: NotiButtonProps) => {
     const handleClose = () => {
         setOpen(false)
     }
+
+    const notificationQuery = useQuery<Array<Notification>, AxiosError>(['notifications'], async () =>
+        getNotifications(),
+    )
+
+    const notificationCount = notificationQuery.data ? Number(notificationQuery.data.length) : 0
 
     return (
         <>
@@ -37,12 +37,12 @@ const NotiButton = (props: NotiButtonProps) => {
                         title="Powiadomienia"
                         sx={{ ml: '10px', width: 40, height: 40, border: '2px solid white' }}
                     >
-                        <Badge badgeContent={userInfo.notifications.length} color="error" sx={{ p: '3px' }}>
+                        <Badge badgeContent={notificationCount} color="error" sx={{ p: '3px' }}>
                             <NotificationsIcon />
                         </Badge>
                     </IconButton>
 
-                    <NotiMenu notifications={userInfo.notifications} onClose={handleClose} open={open} />
+                    <NotiMenu onClose={handleClose} open={open} />
                 </Box>
             </ClickAwayListener>
         </>

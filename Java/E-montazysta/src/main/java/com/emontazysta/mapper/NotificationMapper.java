@@ -9,6 +9,7 @@ import com.emontazysta.repository.OrderStageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +34,7 @@ public class NotificationMapper {
                 .notifiedEmployeeId(notification.getNotifiedEmployee().getId())
                 .orderStageId(notification.getOrderStage() == null ? null : notification.getOrderStage().getId())
                 .orderId(notification.getOrder() == null ? null : notification.getOrder().getId())
+                .deleted(notification.isDeleted())
                 .build();
     }
 
@@ -48,6 +50,7 @@ public class NotificationMapper {
                 .notifiedEmployee(notificationDto.getNotifiedEmployeeId() == null ? null : appUserRepository.getReferenceById(notificationDto.getNotifiedEmployeeId()))
                 .orderStage(notificationDto.getOrderStageId() == null ? null : orderStageRepository.getReferenceById(notificationDto.getOrderStageId()))
                 .order(notificationDto.getOrderId() == null ? null : orderRepository.getReferenceById(notificationDto.getOrderId()))
+                .deleted(notificationDto.isDeleted())
                 .build();
     }
 }

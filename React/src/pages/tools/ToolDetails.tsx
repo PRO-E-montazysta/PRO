@@ -13,6 +13,7 @@ import QueryBoxStatus from '../../components/base/QueryStatusBox'
 import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
+import DisplayToolHistory from '../../components/toolHistory/DisplayToolHistory'
 
 const ToolDetails = () => {
     const params = useParams()
@@ -30,8 +31,8 @@ const ToolDetails = () => {
     const queriesStatus = useQueriesStatus([toolData], [addToolMutation, editToolMutation, deleteToolMutation])
 
     const handleSubmit = (values: any) => {
-        if (pageMode == 'new') addToolMutation.mutate(values)
-        else if (pageMode == 'edit') editToolMutation.mutate(values)
+        if (pageMode === 'new') addToolMutation.mutate(values)
+        else if (pageMode === 'edit') editToolMutation.mutate(values)
         else console.warn('Try to submit while read mode')
     }
 
@@ -43,7 +44,7 @@ const ToolDetails = () => {
                 { text: 'Anuluj', value: 0, variant: 'outlined' },
             ],
             callback: (result: number) => {
-                if (result == 1 && params.id && Number.isInteger(params.id)) deleteToolMutation.mutate(params.id)
+                if (result === 1 && params.id && Number.isInteger(params.id)) deleteToolMutation.mutate(params.id)
             },
         })
     }
@@ -79,7 +80,7 @@ const ToolDetails = () => {
     }, [toolData.data])
 
     useEffect(() => {
-        if (params.id == 'new') {
+        if (params.id === 'new') {
             setPageMode('new')
             formik.setValues(getInitValues(formStructure))
             setInitData(getInitValues(formStructure))
@@ -95,11 +96,12 @@ const ToolDetails = () => {
                 subTitle={pageMode == 'new' ? '' : String(formik.values['name'] + ' - ' + formik.values['code'])}
             />
             <FormPaper>
-                {queriesStatus.result != 'isSuccess' ? (
+                {queriesStatus.result !== 'isSuccess' ? (
                     <QueryBoxStatus queriesStatus={queriesStatus} />
                 ) : (
                     <>
                         <FormStructure formStructure={formStructure} formik={formik} pageMode={pageMode} />
+                        {pageMode !== 'new' ? <DisplayToolHistory toolId={params.id}></DisplayToolHistory> : ''}
                         <FormButtons
                             id={params.id}
                             onCancel={handleCancel}
@@ -107,7 +109,7 @@ const ToolDetails = () => {
                             onEdit={() => setPageMode('edit')}
                             onReset={handleReset}
                             onSubmit={formik.submitForm}
-                            readonlyMode={pageMode == 'read'}
+                            readonlyMode={pageMode === 'read'}
                             printLabel={[toolData.data?.name as string, toolData.data?.code as string]}
                         />
                     </>

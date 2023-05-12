@@ -44,4 +44,5 @@ public class OrderStageDto {
     private List<Long> listOfToolsPlannedNumber;
     private List<Long> listOfElementsPlannedNumber;
     private List<Long> demandAdHocs;
+    private boolean deleted;
 }

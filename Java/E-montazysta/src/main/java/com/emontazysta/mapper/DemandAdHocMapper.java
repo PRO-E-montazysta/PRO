@@ -7,6 +7,8 @@ import com.emontazysta.model.dto.filterDto.DemandAdHocWithToolsAndElementsDto;
 import com.emontazysta.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,24 +35,29 @@ public class DemandAdHocMapper {
                 .id(demandAdHoc.getId())
                 .description(demandAdHoc.getDescription())
                 .createdAt(demandAdHoc.getCreatedAt())
-                .toolReleases(demandAdHoc.getToolReleases().stream().map(ToolRelease::getId).collect(Collectors.toList()))
-                .elementReturnReleases(demandAdHoc.getElementReturnReleases().stream().map(ElementReturnRelease::getId).collect(Collectors.toList()))
+                .toolReleases(demandAdHoc.getToolReleases().stream()
+                        .map(ToolRelease::getId)
+                        .collect(Collectors.toList()))
+                .elementReturnReleases(demandAdHoc.getElementReturnReleases().stream()
+                        .map(ElementReturnRelease::getId)
+                        .collect(Collectors.toList()))
                 .warehouseManagerId(demandAdHoc.getWarehouseManager() == null ? null : demandAdHoc.getWarehouseManager().getId())
                 .specialistId(demandAdHoc.getSpecialist() == null ? null : demandAdHoc.getSpecialist().getId())
                 .createdById(demandAdHoc.getCreatedBy() == null ? null : demandAdHoc.getCreatedBy().getId())
                 .orderStageId(demandAdHoc.getOrderStage() == null ? null : demandAdHoc.getOrderStage().getId())
                 .listOfToolsPlannedNumber(demandAdHoc.getListOfToolsPlannedNumber().stream().map(ToolsPlannedNumber::getId).collect(Collectors.toList()))
                 .listOfElementsPlannedNumber(demandAdHoc.getListOfElementsPlannedNumber().stream().map(ElementsPlannedNumber::getId).collect(Collectors.toList()))
+                .deleted(demandAdHoc.isDeleted())
                 .build();
     }
 
     public DemandAdHoc toEntity(DemandAdHocDto demandAdHocDto) {
 
         List<ToolRelease> toolReleaseList = new ArrayList<>();
-        demandAdHocDto.getToolReleases().forEach(toolReleaseId -> toolReleaseList.add(toolReleaseRepository.getReferenceById(toolReleaseId)));
+        demandAdHocDto.getToolReleases().forEach(toolReleaseId -> toolReleaseList.add(toolReleaseRepository.findById(toolReleaseId).orElseThrow(EntityNotFoundException::new)));
 
         List<ElementReturnRelease> elementReturnReleaseList = new ArrayList<>();
-        demandAdHocDto.getElementReturnReleases().forEach(elementReturnReleaseId -> elementReturnReleaseList.add(elementReturnReleaseRepository.getReferenceById(elementReturnReleaseId)));
+        demandAdHocDto.getElementReturnReleases().forEach(elementReturnReleaseId -> elementReturnReleaseList.add(elementReturnReleaseRepository.findById(elementReturnReleaseId).orElseThrow(EntityNotFoundException::new)));
 
         List<ToolsPlannedNumber> toolTypeList = new ArrayList<>();
         demandAdHocDto.getListOfToolsPlannedNumber().forEach(toolsPlannedNumberId -> toolTypeList.add(toolsPlannedNumberRepository.getReferenceById(toolsPlannedNumberId)));

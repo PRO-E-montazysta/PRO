@@ -3,6 +3,7 @@ package com.emontazysta.service.impl;
 import com.emontazysta.mapper.WarehouseMapper;
 import com.emontazysta.model.Company;
 import com.emontazysta.model.Location;
+import com.emontazysta.model.Tool;
 import com.emontazysta.model.Warehouse;
 import com.emontazysta.model.dto.*;
 import com.emontazysta.model.searchcriteria.ElementSearchCriteria;
@@ -13,14 +14,12 @@ import com.emontazysta.repository.WarehouseRepository;
 import com.emontazysta.repository.criteria.ElementCriteriaRepository;
 import com.emontazysta.repository.criteria.WarehouseCriteriaRepository;
 import com.emontazysta.service.ElementInWarehouseService;
-import com.emontazysta.service.ElementService;
 import com.emontazysta.service.WarehouseService;
 import com.emontazysta.util.AuthUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +73,11 @@ public class WarehouseServiceImpl implements WarehouseService {
         //Check if Warehouse is from user company
         if(!Objects.equals(warehouse.getCompany().getId(), authUtils.getLoggedUserCompanyId())){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        //Set deleted flag for Tools from warehouse
+        for(Tool tool : warehouse.getTools()) {
+            tool.setDeleted(true);
         }
 
         repository.deleteById(id);

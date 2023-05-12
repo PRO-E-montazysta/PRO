@@ -34,4 +34,5 @@ public class AppUserDto {
     @Length(min = 3, message = "Username must contain at least 3 characters" )
     private String username;
     private Set<Role> roles;
+    private boolean deleted;
 }

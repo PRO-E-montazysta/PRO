@@ -17,6 +17,7 @@ import { useQuery } from 'react-query'
 import { Tool } from '../../types/model/Tool'
 import { AxiosError } from 'axios'
 import { getAllTools } from '../../api/tool.api'
+import DisplayToolHistory from '../../components/toolHistory/DisplayToolHistory'
 
 const ToolEventDetails = () => {
     const params = useParams()
@@ -37,8 +38,8 @@ const ToolEventDetails = () => {
     )
 
     const handleSubmit = (values: any) => {
-        if (pageMode == 'new') addToolEventMutation.mutate(values)
-        else if (pageMode == 'edit') editToolEventMutation.mutate(values)
+        if (pageMode === 'new') addToolEventMutation.mutate(values)
+        else if (pageMode === 'edit') editToolEventMutation.mutate(values)
         else console.warn('Try to submit while read mode')
     }
 
@@ -50,7 +51,7 @@ const ToolEventDetails = () => {
                 { text: 'Anuluj', value: 0, variant: 'outlined' },
             ],
             callback: (result: number) => {
-                if (result == 1 && params.id && Number.isInteger(params.id)) deleteToolEventMutation.mutate(params.id)
+                if (result === 1 && params.id && Number.isInteger(params.id)) deleteToolEventMutation.mutate(params.id)
             },
         })
     }
@@ -86,7 +87,7 @@ const ToolEventDetails = () => {
     }, [toolEventData.data])
 
     useEffect(() => {
-        if (params.id == 'new') {
+        if (params.id === 'new') {
             setPageMode('new')
             formik.setValues(getInitValues(toolEventFormStructure))
             setInitData(getInitValues(toolEventFormStructure))
@@ -116,11 +117,16 @@ const ToolEventDetails = () => {
                     }
                 />
                 <FormPaper>
-                    {queriesStatus.result != 'isSuccess' ? (
+                    {queriesStatus.result !== 'isSuccess' ? (
                         <QueryBoxStatus queriesStatus={queriesStatus} />
                     ) : (
                         <>
                             <FormStructure formStructure={toolEventFormStructure} formik={formik} pageMode={pageMode} />
+                            {pageMode !== 'new' ? (
+                                <DisplayToolHistory toolId={formik.values['toolId']}></DisplayToolHistory>
+                            ) : (
+                                ''
+                            )}
                             <FormButtons
                                 id={params.id}
                                 onCancel={handleCancel}
@@ -128,7 +134,7 @@ const ToolEventDetails = () => {
                                 onEdit={() => setPageMode('edit')}
                                 onReset={handleReset}
                                 onSubmit={formik.submitForm}
-                                readonlyMode={pageMode == 'read'}
+                                readonlyMode={pageMode === 'read'}
                             />
                         </>
                     )}

@@ -27,4 +27,5 @@ public class DemandAdHocDto {
     private Long orderStageId;
     private List<Long> listOfToolsPlannedNumber;
     private List<Long> listOfElementsPlannedNumber;
+    private boolean deleted;
 }
