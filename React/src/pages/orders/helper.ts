@@ -158,7 +158,7 @@ export const useFormStructure = (): Array<FormInputProps> => {
         {
             label: 'Status',
             id: 'status',
-            initValue: '',
+            initValue: 'CREATED',
             type: 'select',
             options: statusOptions(),
             addNewPermissionRoles: [Role.NOBODY],

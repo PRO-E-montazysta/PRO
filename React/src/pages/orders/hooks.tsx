@@ -7,7 +7,7 @@ import { deleteOrder, getOrderDetails, postOrder, updateOrder } from '../../api/
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { Order } from '../../types/model/Order'
 import useError from '../../hooks/useError'
-import { getLocationById, postLocation } from '../../api/location.api'
+import { getLocationById, postLocation, updateLocation } from '../../api/location.api'
 
 export const useAddOrder = (onSuccessCallback: (data: any) => void) => {
     const showError = useError()
@@ -18,28 +18,15 @@ export const useAddOrder = (onSuccessCallback: (data: any) => void) => {
     })
 }
 
-export const useEditOrder = (onSuccess: (data: any) => void) => {
-    const { showDialog } = useContext(DialogGlobalContext)
+export const useEditOrder = (onSuccessCallback: (data: any) => void) => {
     const showError = useError()
     return useMutation({
         mutationFn: updateOrder,
-        onSuccess(data) {
-            showDialog({
-                btnOptions: [
-                    {
-                        text: 'OK',
-                        value: 0,
-                    },
-                ],
-                title: 'Sukces!',
-                content: <Box>Zmiany w zleceniu zostały zapisane</Box>,
-                callback: () => onSuccess(data),
-            })
-        },
+        onSuccess: onSuccessCallback,
         onError: showError,
     })
 }
-export const useDeleteOrder = (onSuccess: () => void) => {
+export const useDeleteOrder = (onSuccessCallback: () => void) => {
     const navigate = useNavigate()
     const { showDialog } = useContext(DialogGlobalContext)
     const showError = useError()
@@ -56,7 +43,7 @@ export const useDeleteOrder = (onSuccess: () => void) => {
                 title: 'Sukces!',
                 content: <Box>Zlecenie zostało usunięte</Box>,
                 callback: () => () => {
-                    onSuccess()
+                    onSuccessCallback()
                     navigate('/orders')
                 },
             })
@@ -105,6 +92,29 @@ export const useAddLocation = () => {
                     if (data.id) navigate(`/orders/${data.id}`)
                     else navigate(`/orders`)
                 },
+            })
+        },
+        onError: showError,
+    })
+}
+
+export const useEditLocation = (onSuccessCallback: (data: any) => void) => {
+    const showError = useError()
+    const navigate = useNavigate()
+    const { showDialog } = useContext(DialogGlobalContext)
+    return useMutation({
+        mutationFn: updateLocation,
+        onSuccess(data) {
+            showDialog({
+                btnOptions: [
+                    {
+                        text: 'OK',
+                        value: 0,
+                    },
+                ],
+                title: 'Sukces!',
+                content: <Box>Zmiany w zleceniu zostały zapisane</Box>,
+                callback: () => onSuccessCallback(data),
             })
         },
         onError: showError,

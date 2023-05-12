@@ -7,7 +7,15 @@ import { useParams } from 'react-router-dom'
 import { theme } from '../../themes/baseTheme'
 
 import { useFormStructure, useFormStructureLocation } from './helper'
-import { useAddLocation, useAddOrder, useDeleteOrder, useEditOrder, useLocationData, useOrderData } from './hooks'
+import {
+    useAddLocation,
+    useAddOrder,
+    useDeleteOrder,
+    useEditLocation,
+    useEditOrder,
+    useLocationData,
+    useOrderData,
+} from './hooks'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { FormButtons } from '../../components/form/FormButtons'
 import { FormStructure } from '../../components/form/FormStructure'
@@ -19,7 +27,6 @@ import FormPaper from '../../components/form/FormPaper'
 import FormTitle from '../../components/form/FormTitle'
 import FormBox from '../../components/form/FormBox'
 import { PageMode } from '../../types/form'
-import MapContainer from '../../components/map/MapContainer'
 import Localization from '../../components/map/Localization'
 import { Location } from '../../types/model/Location'
 import { Order } from '../../types/model/Order'
@@ -39,8 +46,8 @@ const OrderDetails = () => {
     const [initData, setInitData] = useState(getInitValues(formStructure))
 
     //mutations and queries
-    const addOrderMutation = useAddOrder((data) => handleOnAddSuccess(data))
-    const editOrderMutation = useEditOrder((data) => handleOnEditSuccess(data))
+    const addOrderMutation = useAddOrder((data) => submitLocation(data))
+    const editOrderMutation = useEditOrder((data) => submitLocation(data))
     const deleteOrderMutation = useDeleteOrder(() => orderData.remove())
     const orderData = useOrderData(params.id)
     //status for all mutations and queries
@@ -48,21 +55,30 @@ const OrderDetails = () => {
 
     const appSize = useBreakpoints()
     const handleSubmit = async (values: any) => {
-        if (pageMode == 'new') {
-            formikLocation.submitForm()
-            if (Object.keys(formikLocation.errors).length == 0) {
-                addOrderMutation.mutate(values)
-            }
+        console.log(values)
+        console.log(JSON.stringify(values))
+        //show formik location errors to user
+        formikLocation.submitForm()
+        //check if there are any error
+        if (Object.keys(formikLocation.errors).length == 0) {
+            if (pageMode == 'new') addOrderMutation.mutate(values)
+            else if (pageMode == 'edit') editOrderMutation.mutate(values)
+            else console.warn('Try to submit while read mode')
         }
-        else if (pageMode == 'edit') editOrderMutation.mutate(values)
-        else console.warn('Try to submit while read mode')
     }
 
-    const handleOnAddSuccess = (data: Order) => {
+    const submitLocation = (data: Order) => {
         if (data && data.id) {
             console.log(formikLocation.values)
             console.log(data)
-            addLocationMutation.mutate({ ...formikLocation.values, orderId: data.id })
+            const body = {
+                ...formikLocation.values,
+                orderId: data.id,
+            }
+            console.log(body)
+            console.log(JSON.stringify(body))
+            if (pageMode == 'new') addLocationMutation.mutate(body)
+            else if (pageMode == 'edit') editLocationMutation.mutate(body)
         }
     }
 
@@ -123,16 +139,19 @@ const OrderDetails = () => {
         } else setPageMode('read')
     }, [params.id])
 
+    //--------------- Location functionality --------------------
     const formStructureLocation = useFormStructureLocation()
     const [initDataLocation, setInitDataLocation] = useState(getInitValues(formStructureLocation))
     const formikLocation = useFormik({
         initialValues: initDataLocation,
         validationSchema: getValidatinSchema(formStructureLocation, pageMode),
-        validateOnChange: true,
         onSubmit: () => {},
     })
-    const queryLocationData = useLocationData(orderData.data ? orderData.data.locationId.toString() : '')
+    const queryLocationData = useLocationData(
+        orderData.data && orderData.data.locationId ? orderData.data.locationId.toString() : '',
+    )
     const addLocationMutation = useAddLocation()
+    const editLocationMutation = useEditLocation((data) => handleOnEditSuccess(data))
 
     useEffect(() => {
         console.log(queryLocationData.data)

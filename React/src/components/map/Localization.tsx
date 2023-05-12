@@ -54,8 +54,8 @@ const Localization = (props: LocalizationProps) => {
             const location = await getLocationFromAddress(formik.values)
             formik.setValues(location)
             setCoordinates({
-                lat: location.xcoordinate,
-                lon: location.ycoordinate,
+                lat: location.xcoordinate!,
+                lon: location.ycoordinate!,
             })
         }
     }

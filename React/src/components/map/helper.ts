@@ -19,11 +19,10 @@ export const getPositionError = (err: any) => {
     }
 }
 
-export const getLocationFromCoordinates = async (coords: Coordinates): Promise<Location> => {
+export const getLocationFromCoordinates = async (coords: Coordinates): Promise<Partial<Location>> => {
     const url =
         'https://nominatim.openstreetmap.org/reverse?format=jsonv2' + '&lat=' + coords.lat + '&lon=' + coords.lon
-    let localization: Location = {
-        id: 0,
+    let localization: Partial<Location> = {
         city: '',
         street: '',
         propertyNumber: '',
@@ -39,7 +38,6 @@ export const getLocationFromCoordinates = async (coords: Coordinates): Promise<L
             'Access-Control-Allow-Origin': 'https://o2cj2q.csb.app',
         },
     })
-    console.log(reposnose)
     if (reposnose && reposnose.data && reposnose.data.address) {
         const address = reposnose.data.address
         localization.city = address.city
@@ -53,11 +51,10 @@ export const getLocationFromCoordinates = async (coords: Coordinates): Promise<L
         localization.propertyNumber = address.house_number ? address.house_number : ''
         localization.zipCode = address.postcode ? address.postcode : ''
     }
-    console.log(localization)
     return localization
 }
 
-export const getLocationFromAddress = async (location: Location): Promise<Location> => {
+export const getLocationFromAddress = async (location: Location): Promise<Partial<Location>> => {
     const COUNTRY = 'Polska'
     const url = `https://nominatim.openstreetmap.org/search?
     street=${location.street + ' ' + location.propertyNumber}
@@ -65,10 +62,7 @@ export const getLocationFromAddress = async (location: Location): Promise<Locati
     &country=${COUNTRY}
     &postalcode=${location.zipCode}&format=json`
 
-    console.log(url)
-
-    let localization: Location = {
-        id: location.id,
+    let localization: Partial<Location> = {
         city: location.city,
         street: location.street,
         propertyNumber: location.propertyNumber,
@@ -84,7 +78,6 @@ export const getLocationFromAddress = async (location: Location): Promise<Locati
             'Access-Control-Allow-Origin': 'https://o2cj2q.csb.app',
         },
     })
-    console.log(response)
     if (response && response.data && response.data.length > 0) {
         localization.xcoordinate = response.data[0].lat
         localization.ycoordinate = response.data[0].lon
