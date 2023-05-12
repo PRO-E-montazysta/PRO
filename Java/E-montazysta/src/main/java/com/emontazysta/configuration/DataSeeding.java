@@ -8,6 +8,7 @@ import com.emontazysta.model.dto.ToolsPlannedNumberDto;
 import com.emontazysta.model.dto.UnavailabilityWithLocalDateDto;
 import com.emontazysta.repository.EmploymentRepository;
 import com.emontazysta.repository.ElementEventRepository;
+import com.emontazysta.repository.OrderRepository;
 import com.emontazysta.repository.ToolEventRepository;
 import com.emontazysta.service.*;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +39,7 @@ public class DataSeeding {
     private final CompanyService companyService;
     private final ClientService clientService;
     private final LocationService locationService;
-    private final OrdersService ordersService;
+    private final OrderRepository orderRepository;
     private final WarehouseService warehouseService;
     private final ToolService toolService;
     private final AttachmentService attachmentService;
@@ -96,7 +97,7 @@ public class DataSeeding {
     }
 
     private Orders addOrdersFromModel(Orders orders) {
-        return ordersMapper.toEntity(ordersService.add(ordersMapper.toDto(orders)));
+        return orderRepository.save(orders);
     }
 
     private OrderStage addOrderStageFromModel(OrderStage orderStage) {

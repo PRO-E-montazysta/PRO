@@ -67,6 +67,7 @@ public class OrdersServiceImpl implements OrdersService {
         ordersDto.setStatus(OrderStatus.CREATED);
         ordersDto.setOrderStages(new ArrayList<>());
         ordersDto.setAttachments(new ArrayList<>());
+        ordersDto.setSalesRepresentativeId(authUtils.getLoggedUser().getId());
 
         Orders order = ordersMapper.toEntity(ordersDto);
         return ordersMapper.toDto(repository.save(order));
