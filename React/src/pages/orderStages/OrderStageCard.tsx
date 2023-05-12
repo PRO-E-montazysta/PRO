@@ -4,7 +4,7 @@ import dayjs, { Dayjs } from 'dayjs'
 import * as yup from 'yup'
 import { useFormik } from 'formik'
 import { useNavigate, useParams } from 'react-router-dom'
-import { MouseEvent, useEffect, useRef, useState } from 'react'
+import { MouseEvent, useCallback, useEffect, useRef, useState } from 'react'
 import { DatePicker, TimePicker } from '@mui/x-date-pickers'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -46,7 +46,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
     const [preparedPlannedEndDate, setPreparedPlannedEndDate] = useState('')
     const [userRole, setUserRole] = useState('')
     const addOrderStage = useAddOrderStage()
-    let preparedPlannedData;
+    let preparedPlannedData: { numberOfElements: number; elementId: string }[] = []
 
     const [plannedToolTypes, setPlannedToolTypes] = useState<{ numberOfTools: number; toolTypeId: string }[]>()
     const [plannedElements, setPlannedElements] = useState<{ numberOfElements: number; elementId: string }[]>()
@@ -54,6 +54,14 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
     const dummyScrollDiv = useRef<any>(null)
 
     const params = useParams()
+
+    //new
+    const ref = useRef<{ numberOfElements: number; elementId: string }[]>([])
+    const handleChange = (value: { numberOfElements: number; elementId: string }[]) => {
+        // console.log('here', ref.current)
+        ref!.current! = value
+        console.log('here2', ref.current)
+    }
 
     const queryToolTypes = useQuery<Array<OrderStage>, AxiosError>(
         ['toolType-list'],
@@ -120,7 +128,8 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
 
         // validationSchema: validationSchema,
         onSubmit: async (values) => {
-            values.listOfElementsPlannedNumber = plannedElements!
+            console.log('co jest', ref.current)
+            values.listOfElementsPlannedNumber = ref.current!
             values.listOfToolsPlannedNumber = plannedToolTypes!
             values.plannedStartDate = preparedPlannedStartDate
             values.plannedEndDate = preparedPlannedEndDate
@@ -128,7 +137,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
             await addOrderStage.mutate(values)
         },
     })
-
     const getDateInformations = (stage?: OrderStage) => {
         return (
             <Grid container spacing={{ xs: 2, md: 2 }} columns={{ xs: 2, sm: 4, md: 12 }}>
@@ -340,19 +348,19 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                 {getDateInformations(stage)}
                             </TabPanel>
                             <TabPanel key={uuidv4()} value={tabValue} index={1}>
-                                    <OrderStageToolTypesTable
-                                        itemsArray={queryToolTypes.data}
-                                        plannedData={plannedToolTypes!}
-                                        setPlannedData={setPlannedToolTypes}
-                                        isDisplayingMode={isDisplayingMode!}
-                                        toolTypesListIds={stage?.listOfToolsPlannedNumber as any}
-                                    />
+                                <OrderStageToolTypesTable
+                                    itemsArray={queryToolTypes.data}
+                                    plannedData={plannedToolTypes!}
+                                    setPlannedData={setPlannedToolTypes}
+                                    isDisplayingMode={isDisplayingMode!}
+                                    toolTypesListIds={stage?.listOfToolsPlannedNumber as any}
+                                />
                             </TabPanel>
                             <TabPanel key={uuidv4()} value={tabValue} index={2}>
                                 {/* <Paper component="div">
                                     <Typography component="span">Zalaczniki.2..</Typography>
                                 </Paper> */}
-                                   {/* <OrderStageDetailsElementsTable
+                                {/* <OrderStageDetailsElementsTable
                                        itemsArray={queryToolTypes.data}
                                        plannedData={plannedElements!}
                                        setPlannedData={setPlannedElements}
@@ -362,10 +370,11 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                 <TestTestTest
                                     itemsArray={queryElements.data!}
                                     // plannedData={plannedElements!}
-                                    preparedPlannedData={preparedPlannedData}
                                     // setPlannedData={setPlannedElements}
                                     isDisplayingMode={isDisplayingMode!}
                                     elementsListIds={stage?.listOfElementsPlannedNumber as any}
+                                    handleChange={handleChange}
+                                    refValue={ref}
                                 />
                             </TabPanel>
 

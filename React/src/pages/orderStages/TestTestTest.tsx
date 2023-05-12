@@ -16,12 +16,12 @@ import { AxiosError } from 'axios'
 import { useQuery } from 'react-query'
 import { PlannedToolType } from '../../types/model/ToolType'
 import { number } from 'yup'
-import { useEffect, useState } from 'react'
+import { Ref, forwardRef, useEffect, useState } from 'react'
 import { PlannedElements } from '../../types/model/Element'
 import { getPlannedElementById } from '../../api/element.api'
 import { v4 as uuidv4 } from 'uuid'
 
-type TestTestTest = {
+type TestTestTestType = {
     itemsArray: Array<any> | undefined
     // plannedData: Array<{ numberOfElements: number; elementId: string }>
     // setPlannedData: React.Dispatch<
@@ -33,213 +33,214 @@ type TestTestTest = {
     //         | undefined
     //     >
     // >
-    preparedPlannedData: any
     isDisplayingMode: boolean
     elementsListIds: Array<number> | []
+    handleChange: (array: { numberOfElements: number; elementId: string }[]) => void
+    refValue: Ref<{ numberOfElements: number; elementId: string }[]>
 }
 
-const TestTestTest = ({ itemsArray, preparedPlannedData, isDisplayingMode, elementsListIds }: TestTestTest) => {
-    const [tableRowIndex, setTableRowIndex] = useState(0)
-    const [selectedItemId, setSelectedItemId] = useState('')
-    const [selectedItemNumber, setSelectedItemNumber] = useState(0)
-    // const queryElements = useQuery<Array<PlannedElements>, AxiosError>(['planned-elements-list'], async () => {
-    //     return await Promise.all(
-    //         elementsListIds.map(async (element) => {
-    //             return await getPlannedElementById(element)
-    //         }),
-    //     )
-    // })
+const TestTestTest = forwardRef(
+    ({ itemsArray, isDisplayingMode, elementsListIds, handleChange, refValue }: TestTestTestType, ref) => {
+        const [tableRowIndex, setTableRowIndex] = useState(0)
+        const [selectedItemId, setSelectedItemId] = useState('')
+        const [selectedItemNumber, setSelectedItemNumber] = useState(0)
+        // const [isInitialRender, setIsInitialRender] = useState(true)
+        // const queryElements = useQuery<Array<PlannedElements>, AxiosError>(['planned-elements-list'], async () => {
+        //     return await Promise.all(
+        //         elementsListIds.map(async (element) => {
+        //             return await getPlannedElementById(element)
+        //         }),
+        //     )
+        // })
 
-    //new2
-    const [tableData, setTableData] = useState<{ numberOfElements: number; elementId: string }[]>([
-        { numberOfElements: 0, elementId: 'toChange' },
-    ])
+        //new2
+        const [tableData, setTableData] = useState<{ numberOfElements: number; elementId: string }[]>([
+            { numberOfElements: 0, elementId: 'toChange' },
+        ])
 
-    useEffect(() => {
-        // setPlannedData(tableData)
-        //przekazać funkcję ktora zmienia stan komponentu
-        preparedPlannedData = [...tableData]
-        console.log('gowno', preparedPlannedData)
-    }, [tableData])
+        // useEffect(() => {
+        //     console.log('initial', preparedPlannedData)
+        //     setIsInitialRender(false)
+        // }, [])
 
-    const getElementsData = async () => {
-        if (!!elementsListIds) {
-            const check = await Promise.all(
-                elementsListIds.map(async (element) => {
-                    return await getPlannedElementById(element)
-                }),
-            )
-            if (!!check && check.length > 0) {
-                const filteredData = check.map((element) => {
-                    const data = {
-                        numberOfElements: element.numberOfElements,
-                        elementId: element.element.id.toString(),
-                    }
-                    return data
-                })
-                setTableData([...filteredData])
+        // useEffect(() => {
+        //     // setPlannedData(tableData)
+        //     //przekazać funkcję ktora zmienia stan komponentu
+        //     // preparedPlannedData = [...tableData]
+        //     // console.log('gowno', tableData)
+        //     // ref!.current! = tableData
+        //     // if (!isInitialRender) {
+        //     handleChange(tableData)
+        //     // setIsInitialRender(true)
+        //     // }
+        // }, [tableData])
+
+        const getElementsData = async () => {
+            if (!!elementsListIds) {
+                const check = await Promise.all(
+                    elementsListIds.map(async (element) => {
+                        return await getPlannedElementById(element)
+                    }),
+                )
+                if (!!check && check.length > 0) {
+                    const filteredData = check.map((element) => {
+                        const data = {
+                            numberOfElements: element.numberOfElements,
+                            elementId: element.element.id.toString(),
+                        }
+                        return data
+                    })
+                    setTableData([...filteredData])
+                }
             }
         }
-    }
 
-    useEffect(() => {
-        // console.log('idki ktore musze pobrac', elementsListIds)
-        getElementsData()
-        // getElementsData().then((data) => {
-        //     console.log('dane tabeli222', data)
-        //     if (!!data && data.length > 0) {
-        //         const filteredData = data.map((element) => {
-        //             const preparedData = {
-        //                 numberOfElements: element.numberOfElements,
-        //                 elementId: element.element.id.toString(),
-        //             }
-        //             return preparedData
-        //         })
-        //         setPlannedData([...filteredData])
-        //     }
-        // })
-    }, [])
+        useEffect(() => {
+            getElementsData()
+        }, [])
 
-    const handleItemNumberChange = (event: any) => {
-        const { value: newValue } = event.target
-        setSelectedItemNumber(event.target.value)
-        const regExp = /^\d*$/ // regular expression to match only digits
-        if (regExp.test(newValue)) {
-            setSelectedItemNumber(Number(newValue))
+        const handleItemNumberChange = (event: any) => {
+            const { value: newValue } = event.target
+            setSelectedItemNumber(event.target.value)
+            const regExp = /^\d*$/ // regular expression to match only digits
+            if (regExp.test(newValue)) {
+                setSelectedItemNumber(Number(newValue))
+            }
         }
-    }
 
-    // useEffect(() => {
-    //     if (!plannedData || plannedData.length === 0) {
-    //         setPlannedData([{ numberOfElements: 0, elementId: 'toChange' }])
-    //     }
-    // }, [])
+        // useEffect(() => {
+        //     if (!plannedData || plannedData.length === 0) {
+        //         setPlannedData([{ numberOfElements: 0, elementId: 'toChange' }])
+        //     }
+        // }, [])
 
-    // useEffect(()=>{
-    //     if (!!tableData) {
-    //         const filteredData = tableData!.map((element) => {
-    //             const data = { numberOfElements: element.numberOfElements, elementId: element.id.toString() }
-    //             return data
-    //         })
-    //         setPlannedData(filteredData)
-    //     }
-    // },[])
+        // useEffect(()=>{
+        //     if (!!tableData) {
+        //         const filteredData = tableData!.map((element) => {
+        //             const data = { numberOfElements: element.numberOfElements, elementId: element.id.toString() }
+        //             return data
+        //         })
+        //         setPlannedData(filteredData)
+        //     }
+        // },[])
 
-    useEffect(() => {
-        // if (!plannedData) {
+        useEffect(() => {
+            // if (!plannedData) {
 
-        //     return setPlannedData([{ numberOfTools: selectedItemNumber, toolTypeId: selectedItemId }])
-        // }
-        // if (!!plannedData && plannedData.length === 0) {
-        //     return setPlannedData([{ numberOfTools: selectedItemNumber, toolTypeId: selectedItemId }])
-        // }
-        // if (!!plannedData && !!selectedItemId) {
-        //     const tempArray = [...plannedData]
-        //     tempArray[tableRowIndex] = { numberOfElements: selectedItemNumber, elementId: selectedItemId }
-        //     setPlannedData(tempArray)
-        // }
-        if (!!tableData && !!selectedItemId) {
+            //     return setPlannedData([{ numberOfTools: selectedItemNumber, toolTypeId: selectedItemId }])
+            // }
+            // if (!!plannedData && plannedData.length === 0) {
+            //     return setPlannedData([{ numberOfTools: selectedItemNumber, toolTypeId: selectedItemId }])
+            // }
+            // if (!!plannedData && !!selectedItemId) {
+            //     const tempArray = [...plannedData]
+            //     tempArray[tableRowIndex] = { numberOfElements: selectedItemNumber, elementId: selectedItemId }
+            //     setPlannedData(tempArray)
+            // }
+            if (!!tableData && !!selectedItemId) {
+                const tempArray = [...tableData]
+                tempArray[tableRowIndex] = { numberOfElements: selectedItemNumber, elementId: selectedItemId }
+                setTableData(tempArray)
+                handleChange(tableData)
+            }
+        }, [selectedItemId, selectedItemNumber])
+
+        const handleDeleteItem = (rowIndex: number) => {
             const tempArray = [...tableData]
-            tempArray[tableRowIndex] = { numberOfElements: selectedItemNumber, elementId: selectedItemId }
+            tempArray.splice(rowIndex, 1)
             setTableData(tempArray)
         }
-    }, [selectedItemId, selectedItemNumber])
 
-    const handleDeleteItem = (rowIndex: number) => {
-        const tempArray = [...tableData]
-        tempArray.splice(rowIndex, 1)
-        setTableData(tempArray)
-    }
-
-    return (
-        <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Element</TableCell>
-                        <TableCell align="right">Planowana potrzebna ilosc</TableCell>
-                        {isDisplayingMode && <TableCell align="right">Wydana ilosć elementy</TableCell>}
-                        {!isDisplayingMode && <TableCell align="right">Akcja</TableCell>}
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {!!tableData &&
-                        tableData.map((rowData, rowIndex) => (
-                            <TableRow key={rowIndex} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                <TableCell component="th" scope="row">
-                                    <Box sx={{ minWidth: 120 }}>
-                                        <FormControl fullWidth>
-                                            <InputLabel id="demo-simple-select-label">Element</InputLabel>
-                                            <TableItemSelect
-                                                label={'Typ narzedzia'}
-                                                itemsArray={itemsArray}
-                                                rowData={rowData}
-                                                rowIndex={rowIndex}
-                                                setSelectedItemId={setSelectedItemId}
-                                                setTableRowIndex={setTableRowIndex}
-                                            />
-                                        </FormControl>
-                                    </Box>
-                                </TableCell>
-                                <TableCell align="right">
-                                    <Box sx={{ minWidth: 120 }}>
-                                        <FormControl fullWidth>
-                                            <TableItemNumber
-                                                selectedItemNumber={rowData.numberOfElements}
-                                                setTableRowIndex={setTableRowIndex}
-                                                handleItemNumberChange={handleItemNumberChange}
-                                                rowIndex={rowIndex}
-                                            />
-                                        </FormControl>
-                                    </Box>
-                                </TableCell>
-                                {isDisplayingMode && <TableCell align="right">bla</TableCell>}
-                                {!isDisplayingMode && (
+        return (
+            <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Element</TableCell>
+                            <TableCell align="right">Planowana potrzebna ilosc</TableCell>
+                            {isDisplayingMode && <TableCell align="right">Wydana ilosć elementy</TableCell>}
+                            {!isDisplayingMode && <TableCell align="right">Akcja</TableCell>}
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {!!tableData &&
+                            tableData.map((rowData, rowIndex) => (
+                                <TableRow key={rowIndex} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                    <TableCell component="th" scope="row">
+                                        <Box sx={{ minWidth: 120 }}>
+                                            <FormControl fullWidth>
+                                                <InputLabel id="demo-simple-select-label">Element</InputLabel>
+                                                <TableItemSelect
+                                                    label={'Typ narzedzia'}
+                                                    itemsArray={itemsArray}
+                                                    rowData={rowData}
+                                                    rowIndex={rowIndex}
+                                                    setSelectedItemId={setSelectedItemId}
+                                                    setTableRowIndex={setTableRowIndex}
+                                                />
+                                            </FormControl>
+                                        </Box>
+                                    </TableCell>
                                     <TableCell align="right">
-                                        {rowIndex === tableData.length - 1 && (
+                                        <Box sx={{ minWidth: 120 }}>
+                                            <FormControl fullWidth>
+                                                <TableItemNumber
+                                                    selectedItemNumber={rowData.numberOfElements}
+                                                    setTableRowIndex={setTableRowIndex}
+                                                    handleItemNumberChange={handleItemNumberChange}
+                                                    rowIndex={rowIndex}
+                                                />
+                                            </FormControl>
+                                        </Box>
+                                    </TableCell>
+                                    {isDisplayingMode && <TableCell align="right">bla</TableCell>}
+                                    {!isDisplayingMode && (
+                                        <TableCell align="right">
+                                            {rowIndex === tableData.length - 1 && (
+                                                <Button
+                                                    color="primary"
+                                                    variant="contained"
+                                                    onClick={() => {
+                                                        setTableData((tableData) => [
+                                                            ...tableData!,
+                                                            { numberOfElements: 0, elementId: 'toChange' },
+                                                        ])
+                                                    }}
+                                                >
+                                                    Dodaj następne
+                                                </Button>
+                                            )}
                                             <Button
-                                                color="primary"
+                                                color="error"
                                                 variant="contained"
                                                 onClick={() => {
-                                                    setTableData((tableData) => [
-                                                        ...tableData!,
-                                                        { numberOfElements: 0, elementId: 'toChange' },
-                                                    ])
+                                                    handleDeleteItem(rowIndex)
                                                 }}
                                             >
-                                                Dodaj następne
+                                                Usuń
                                             </Button>
-                                        )}
-                                        <Button
-                                            color="error"
-                                            variant="contained"
-                                            onClick={() => {
-                                                handleDeleteItem(rowIndex)
-                                            }}
-                                        >
-                                            Usuń
-                                        </Button>
-                                    </TableCell>
-                                )}
-                            </TableRow>
-                        ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
-    )
-}
+                                        </TableCell>
+                                    )}
+                                </TableRow>
+                            ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        )
+    },
+)
 
 export default TestTestTest
 
 //select for table - so i can manage state for every row
 const chooseSelectItemId = (
-    defaultValue: string,
     itemsArray: Array<any> | undefined,
     setSelectedItemId: React.Dispatch<React.SetStateAction<string>>,
 ) => {
     if (itemsArray) {
         return itemsArray.map((item: any) => (
             <MenuItem
+                key={uuidv4()}
                 id={uuidv4()}
                 value={item.id}
                 onClick={() => {
@@ -275,7 +276,7 @@ const TableItemSelect = ({
     return (
         <Select
             labelId="demo-simple-select-label"
-            id={uuidv4()}
+            key={uuidv4()}
             defaultValue=""
             value={rowData.elementId}
             label={label}
@@ -284,7 +285,7 @@ const TableItemSelect = ({
                 setTableRowIndex(rowIndex)
             }}
         >
-            {chooseSelectItemId(rowData.elementId, itemsArray, setSelectedItemId)}
+            {chooseSelectItemId(itemsArray, setSelectedItemId)}
         </Select>
     )
 }
