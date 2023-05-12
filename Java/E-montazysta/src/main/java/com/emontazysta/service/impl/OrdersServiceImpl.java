@@ -1,5 +1,6 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.enums.OrderStatus;
 import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.OrdersMapper;
 import com.emontazysta.model.AppUser;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -46,10 +48,13 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public OrdersDto add(OrdersDto ordersDto) {
+        ordersDto.setCreatedAt(LocalDateTime.now());
+        ordersDto.setEditedAt(null);
+        ordersDto.setStatus(OrderStatus.CREATED);
+        ordersDto.setOrderStages(new ArrayList<>());
+        ordersDto.setAttachments(new ArrayList<>());
 
         Orders order = ordersMapper.toEntity(ordersDto);
-        order.setCreatedAt(LocalDateTime.now());
-        order.setEditedAt(null);
         return ordersMapper.toDto(repository.save(order));
     }
 
