@@ -31,9 +31,7 @@ public class NotificationMapper {
                 .createdAt(notification.getCreatedAt())
                 .readAt(notification.getReadAt())
                 .createdById(notification.getCreatedBy() == null ? null : notification.getCreatedBy().getId())
-                .notifiedEmployees(notification.getNotifiedEmployees().stream()
-                        .map(AppUser::getId)
-                        .collect(Collectors.toList()))
+                .notifiedEmployeeId(notification.getNotifiedEmployee().getId())
                 .orderStageId(notification.getOrderStage() == null ? null : notification.getOrderStage().getId())
                 .orderId(notification.getOrder() == null ? null : notification.getOrder().getId())
                 .deleted(notification.isDeleted())
@@ -41,10 +39,6 @@ public class NotificationMapper {
     }
 
     public Notification toEntity(NotificationDto notificationDto) {
-
-        List<AppUser> appUserList = new ArrayList<>();
-        notificationDto.getNotifiedEmployees().forEach(appUserId -> appUserList.add(appUserRepository.findById(appUserId).orElseThrow(EntityNotFoundException::new)));
-
         return Notification.builder()
                 .id(notificationDto.getId())
                 .notificationType(notificationDto.getNotificationType())
@@ -52,9 +46,9 @@ public class NotificationMapper {
                 .subContent(notificationDto.getSubContent())
                 .createdAt(notificationDto.getCreatedAt())
                 .readAt(notificationDto.getReadAt())
-                .createdBy(notificationDto.getCreatedById() == null ? null : appUserRepository.findById(notificationDto.getCreatedById()).orElseThrow(EntityNotFoundException::new))
-                .notifiedEmployees(appUserList)
-                .orderStage(notificationDto.getOrderStageId() == null ? null : orderStageRepository.findById(notificationDto.getOrderStageId()).orElseThrow(EntityNotFoundException::new))
+                .createdBy(notificationDto.getCreatedById() == null ? null : appUserRepository.getReferenceById(notificationDto.getCreatedById()))
+                .notifiedEmployee(notificationDto.getNotifiedEmployeeId() == null ? null : appUserRepository.getReferenceById(notificationDto.getNotifiedEmployeeId()))
+                .orderStage(notificationDto.getOrderStageId() == null ? null : orderStageRepository.getReferenceById(notificationDto.getOrderStageId()))
                 .order(notificationDto.getOrderId() == null ? null : orderRepository.getReferenceById(notificationDto.getOrderId()))
                 .deleted(notificationDto.isDeleted())
                 .build();

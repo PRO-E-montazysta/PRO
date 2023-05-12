@@ -9,7 +9,5 @@ import java.util.Optional;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
-    Optional<Notification> findByIdAndDeletedIsFalse(Long id);
-    List<Notification> findAllByDeletedIsFalse();
-    List<Notification> getAllByNotifiedEmployeesContaining(AppUser notifiedEmployee);
+    List<Notification> getAllByNotifiedEmployee(AppUser notifiedEmployee);
 }
