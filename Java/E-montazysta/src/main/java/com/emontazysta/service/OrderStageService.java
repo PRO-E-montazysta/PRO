@@ -29,7 +29,7 @@ public interface OrderStageService {
 
     OrderStageDto releaseTools(Long id, List<ToolSimpleReturnReleaseDto> toolCodes);
     OrderStageDto returnTools(Long id, List<ToolSimpleReturnReleaseDto> toolCodes);
-    OrderStageDto releaseElements(Long id, List<ElementSimpleReturnReleaseDto> elements);
+    OrderStageDto releaseElements(Long orderStageId, Long warehouseId, List<ElementSimpleReturnReleaseDto> elements);
     OrderStageDto returnElements(Long id, List<ElementSimpleReturnReleaseDto> elements);
     OrderStageDto nextStatus(Long id);
     OrderStageDto previousStatus(Long id);

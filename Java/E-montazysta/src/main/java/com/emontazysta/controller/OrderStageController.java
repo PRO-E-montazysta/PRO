@@ -81,10 +81,10 @@ public class OrderStageController {
         return orderStageService.returnTools(id, toolCodes);
     }
 
-    @PutMapping("/releaseElements/{id}")
+    @PutMapping("/releaseElements/{orderStageId}/{warehouseId}")
     @Operation(description = "Allows to release given elements.", security = @SecurityRequirement(name = "bearer-key"))
-    public OrderStageDto releaseElements(@PathVariable Long id, @RequestBody List<ElementSimpleReturnReleaseDto> elements) {
-        return orderStageService.releaseElements(id, elements);
+    public OrderStageDto releaseElements(@PathVariable Long orderStageId, @PathVariable Long warehouseId, @RequestBody List<ElementSimpleReturnReleaseDto> elements) {
+        return orderStageService.releaseElements(orderStageId, warehouseId, elements);
     }
 
     @PutMapping("/returnElements/{id}")

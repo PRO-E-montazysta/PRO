@@ -328,14 +328,18 @@ public class OrderStageImpl implements OrderStageService {
 
     @Override
     @Transactional
-    public OrderStageDto releaseElements(Long id, List<ElementSimpleReturnReleaseDto> elements) {
-        OrderStage orderStage = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+    public OrderStageDto releaseElements(Long orderStageId, Long warehouseId, List<ElementSimpleReturnReleaseDto> elements) {
+        OrderStage orderStage = repository.findById(orderStageId).orElseThrow(EntityNotFoundException::new);
         //Sprawdzenie, czy etap jest z firmy użytkownika
         if(!orderStage.getOrders().getCompany().getId().equals(authUtils.getLoggedUserCompanyId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        
-        Warehouse warehouse = warehouseMapper.toEntity(warehouseService.getById(1L));//TODO:PASS WAREHOUSE ID
+
+        //Sprawdzenie czy magazyn jest z firmy użytkownika
+        Warehouse warehouse = warehouseMapper.toEntity(warehouseService.getById(warehouseId));
+        if(!warehouse.getCompany().getId().equals(authUtils.getLoggedUserCompanyId())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
 
         //Sprawdzenie czy można wydać elementy- Status etapu na PICK_UP i zapytanie wysłane przez WAREHOUSE_MAN lub WAREHOUSE_MANAGER
         if(orderStage.getStatus().equals(OrderStageStatus.PICK_UP) && (
