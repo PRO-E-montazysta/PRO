@@ -118,6 +118,9 @@ public class EventCriteriaRepository {
                     authUtils.getLoggedUserCompanyId()));
         }
 
+        //Get not-deleted
+        predicates.add(criteriaBuilder.equal(toolEventRoot.get("deleted"), false));
+
         return  criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 

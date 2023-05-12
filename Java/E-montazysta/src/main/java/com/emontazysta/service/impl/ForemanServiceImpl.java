@@ -38,7 +38,17 @@ public class ForemanServiceImpl implements ForemanService {
     @Override
     public ForemanDto getById(Long id) {
         Foreman foreman = repository.findById(id).orElseThrow(EntityNotFoundException::new);
-        return foremanMapper.toDto(foreman);
+        ForemanDto result = foremanMapper.toDto(foreman);
+
+        if(!authUtils.getLoggedUser().getRoles().contains(Role.ADMIN)) {
+            result.setUsername(null);
+        }
+        if(!authUtils.getLoggedUser().getRoles().contains(Role.ADMIN) ||
+                !authUtils.getLoggedUser().getRoles().contains(Role.MANAGER)) {
+            result.setPesel(null);
+        }
+
+        return result;
     }
 
     @Override
@@ -92,7 +102,7 @@ public class ForemanServiceImpl implements ForemanService {
         foreman.setAttachments(updatedForeman.getAttachments());
         foreman.setToolEvents(updatedForeman.getToolEvents());
         foreman.setWorkingOn(updatedForeman.getWorkingOn());
-        foreman.setOrdersStagesList(updatedForeman.getOrdersStagesList());
+        foreman.setReceivedTools(updatedForeman.getReceivedTools());
         foreman.setAssignedOrders(updatedForeman.getAssignedOrders());
         foreman.setDemandsAdHocs(updatedForeman.getDemandsAdHocs());
         return foremanMapper.toDto(repository.save(foreman));

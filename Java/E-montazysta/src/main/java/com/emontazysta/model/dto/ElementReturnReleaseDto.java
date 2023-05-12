@@ -29,4 +29,5 @@ public class ElementReturnReleaseDto {
     private Long elementId;
     private Long demandAdHocId;
     private Long orderStageId;
+    private boolean deleted;
 }

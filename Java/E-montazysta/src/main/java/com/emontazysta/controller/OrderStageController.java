@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,6 +48,7 @@ public class OrderStageController {
         return orderStageService.getById(id);
     }
 
+    @PreAuthorize("hasAnyAuthority('SCOPE_SPECIALIST')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Order Stage.", security = @SecurityRequirement(name = "bearer-key"))
@@ -60,6 +62,7 @@ public class OrderStageController {
         orderStageService.delete(id);
     }
 
+    @PreAuthorize("hasAnyAuthority('SCOPE_SPECIALIST','FOREMAN')")
     @PutMapping("/{id}")
     @Operation(description = "Allows to update Order Stage by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public OrderStageDto updateOrderStage(@PathVariable Long id, @Valid @RequestBody OrderStageWithToolsAndElementsDto orderStage) {

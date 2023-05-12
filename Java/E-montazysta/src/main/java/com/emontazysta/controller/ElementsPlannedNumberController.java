@@ -1,5 +1,6 @@
 package com.emontazysta.controller;
 
+import com.emontazysta.model.dto.ElementsDtoPlannedNumberDto;
 import com.emontazysta.model.dto.ElementsPlannedNumberDto;
 import com.emontazysta.service.ElementsPlannedNumberService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,7 +31,7 @@ public class ElementsPlannedNumberController {
 
     @GetMapping("{id}")
     @Operation(description = "Allows to get planed number of tools by id.", security = @SecurityRequirement(name = "bearer-key"))
-    public ElementsPlannedNumberDto getElemwntsPlannedNumberById(@PathVariable Long id) {
+    public ElementsDtoPlannedNumberDto getElemwntsPlannedNumberById(@PathVariable Long id) {
         return elementsPlannedNumberService.getById(id);
     }
 }

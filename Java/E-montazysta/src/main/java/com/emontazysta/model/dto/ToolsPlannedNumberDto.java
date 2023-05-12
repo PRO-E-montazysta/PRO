@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -18,10 +17,8 @@ public class ToolsPlannedNumberDto {
     @Min(value = 1, message = "Number of tools should not be less than 1")
     private int numberOfTools;
     @NotNull(message = "Tool type cannot be empty")
-    @ManyToOne
     private Long toolTypeId;
-    @NotNull(message = "Order Stage cannot be empty")
-    @ManyToOne
     private Long orderStageId;
-
+    private Long demandAdHocId;
+    private boolean deleted;
 }

@@ -70,6 +70,9 @@ public class WarehouseCriteriaRepository {
         predicates.add(criteriaBuilder.equal(warehouseRoot.get("company").get("id"),
                 authUtils.getLoggedUserCompanyId()));
 
+        //Get not-deleted
+        predicates.add(criteriaBuilder.equal(warehouseRoot.get("deleted"), false));
+
         return  criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 }

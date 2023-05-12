@@ -14,6 +14,7 @@ import com.emontazysta.repository.ToolsPlannedNumberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,23 +40,30 @@ public class ToolTypeMapper {
                 .inServiceCount(toolType.getTools().size())
                 .criticalNumber(toolType.getCriticalNumber())
                 .availableCount(availableCount)
-                .attachments(toolType.getAttachments().stream().map(Attachment::getId).collect(Collectors.toList()))
-                .ListOfToolsPlannedNumber(toolType.getListOfToolsPlannedNumber().stream().map(ToolsPlannedNumber::getId).collect(Collectors.toList()))
-                .tools(toolType.getTools().stream().map(Tool::getId).collect(Collectors.toList()))
+                .attachments(toolType.getAttachments().stream()
+                        .map(Attachment::getId)
+                        .collect(Collectors.toList()))
+                .ListOfToolsPlannedNumber(toolType.getListOfToolsPlannedNumber().stream()
+                        .map(ToolsPlannedNumber::getId)
+                        .collect(Collectors.toList()))
+                .tools(toolType.getTools().stream()
+                        .map(Tool::getId)
+                        .collect(Collectors.toList()))
                 .companyId(toolType.getCompany().getId())
+                .deleted(toolType.isDeleted())
                 .build();
     }
 
     public ToolType toEntity(ToolTypeDto toolTypeDto) {
 
         List<Attachment> attachmentList = new ArrayList<>();
-        toolTypeDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.getReferenceById(attachmentId)));
+        toolTypeDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.findById(attachmentId).orElseThrow(EntityNotFoundException::new)));
 
         List<ToolsPlannedNumber> toolsPlannedNumberList = new ArrayList<>();
-        toolTypeDto.getListOfToolsPlannedNumber().forEach(toolsPlanedNumberId -> toolsPlannedNumberList.add(toolsPlannedNumberRepository.getReferenceById(toolsPlanedNumberId)));
+        toolTypeDto.getListOfToolsPlannedNumber().forEach(toolsPlanedNumberId -> toolsPlannedNumberList.add(toolsPlannedNumberRepository.findById(toolsPlanedNumberId).orElseThrow(EntityNotFoundException::new)));
 
         List<Tool> toolList = new ArrayList<>();
-        toolTypeDto.getTools().forEach(toolId -> toolList.add(toolRepository.getReferenceById(toolId)));
+        toolTypeDto.getTools().forEach(toolId -> toolList.add(toolRepository.findById(toolId).orElseThrow(EntityNotFoundException::new)));
 
         return ToolType.builder()
                 .id(toolTypeDto.getId())
@@ -64,7 +72,7 @@ public class ToolTypeMapper {
                 .attachments(attachmentList)
                 .listOfToolsPlannedNumber(toolsPlannedNumberList)
                 .tools(toolList)
-                .company(toolTypeDto.getCompanyId() == null ? null : companyRepository.getReferenceById(toolTypeDto.getCompanyId()))
+                .company(toolTypeDto.getCompanyId() == null ? null : companyRepository.findById(toolTypeDto.getCompanyId()).orElseThrow(EntityNotFoundException::new))
                 .build();
     }
 }

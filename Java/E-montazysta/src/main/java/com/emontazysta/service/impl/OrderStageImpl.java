@@ -1,6 +1,8 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.enums.NotificationType;
 import com.emontazysta.enums.OrderStageStatus;
+import com.emontazysta.enums.OrderStatus;
 import com.emontazysta.enums.Role;
 import com.emontazysta.enums.ToolStatus;
 import com.emontazysta.mapper.*;
@@ -10,6 +12,19 @@ import com.emontazysta.model.searchcriteria.OrdersStageSearchCriteria;
 import com.emontazysta.repository.*;
 import com.emontazysta.repository.criteria.OrdersStageCriteriaRepository;
 import com.emontazysta.service.ElementService;
+import com.emontazysta.mapper.ElementsPlannedNumberMapper;
+import com.emontazysta.mapper.OrderStageMapper;
+import com.emontazysta.mapper.ToolsPlannedNumberMapper;
+import com.emontazysta.model.*;
+import com.emontazysta.model.dto.ElementsPlannedNumberDto;
+import com.emontazysta.model.dto.OrderStageDto;
+import com.emontazysta.model.dto.OrderStageWithToolsAndElementsDto;
+import com.emontazysta.model.dto.ToolsPlannedNumberDto;
+import com.emontazysta.model.searchcriteria.OrdersStageSearchCriteria;
+import com.emontazysta.repository.*;
+import com.emontazysta.repository.criteria.OrdersStageCriteriaRepository;
+import com.emontazysta.service.AppUserService;
+import com.emontazysta.service.NotificationService;
 import com.emontazysta.service.OrderStageService;
 import com.emontazysta.service.ToolService;
 import com.emontazysta.service.WarehouseService;
@@ -50,6 +65,9 @@ public class OrderStageImpl implements OrderStageService {
     private final WarehouseService warehouseService;
     private final WarehouseMapper warehouseMapper;
     private final AuthUtils authUtils;
+    private final NotificationService notificationService;
+    private final AppUserService userService;
+    private final OrderRepository orderRepository;
 
     @Override
     public List<OrderStageDto> getAll() {
@@ -86,6 +104,7 @@ public class OrderStageImpl implements OrderStageService {
     @Override
     @Transactional
     public OrderStageDto addWithToolsAndElements(OrderStageWithToolsAndElementsDto orderStageDto) {
+       //Ustawienie statusu początkowego dla etapu zlecenia
         orderStageDto.setStatus(OrderStageStatus.PLANNING);
 
         OrderStageWithToolsAndElementsDto modiffiedOrderStageDto = completeEmptyAttributes(orderStageDto);
@@ -136,12 +155,11 @@ public class OrderStageImpl implements OrderStageService {
     @Override
     @Transactional
     public OrderStageDto update(Long id, OrderStageWithToolsAndElementsDto orderStageDto) {
-
         OrderStageWithToolsAndElementsDto modiffiedOrderStageDto = completeEmptyAttributes(orderStageDto);
-
         OrderStage updatedOrderStage = orderStageMapper.toEntity(modiffiedOrderStageDto);
-
         OrderStage orderStageDb = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+
+        //TODO: Send notification on status change
 
         List<ToolsPlannedNumber> updatedToolsList = new ArrayList<>();
         List<ElementsPlannedNumber> updatedElementsList = new ArrayList<>();
@@ -187,7 +205,6 @@ public class OrderStageImpl implements OrderStageService {
         orderStageDb.setPlannedFittersNumber(updatedOrderStage.getPlannedFittersNumber());
         orderStageDb.setMinimumImagesNumber(updatedOrderStage.getMinimumImagesNumber());
         orderStageDb.setAssignedTo(updatedOrderStage.getAssignedTo());
-        orderStageDb.setManagedBy(updatedOrderStage.getManagedBy());
         orderStageDb.setComments(updatedOrderStage.getComments());
         orderStageDb.setAttachments(updatedOrderStage.getAttachments());
         orderStageDb.setNotifications(updatedOrderStage.getNotifications());

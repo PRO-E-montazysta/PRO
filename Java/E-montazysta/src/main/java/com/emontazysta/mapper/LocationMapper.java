@@ -9,6 +9,7 @@ import com.emontazysta.repository.WarehouseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,6 +33,7 @@ public class LocationMapper {
                 .zipCode(location.getZipCode())
                 .orderId(location.getOrder() == null ? null : location.getOrder().getId())
                 .warehouseId(location.getWarehouse() == null ? null : location.getWarehouse().getId())
+                .deleted(location.isDeleted())
                 .build();
     }
 
@@ -45,8 +47,8 @@ public class LocationMapper {
                 .propertyNumber(locationDto.getPropertyNumber())
                 .apartmentNumber(locationDto.getApartmentNumber())
                 .zipCode(locationDto.getZipCode())
-                .order(locationDto.getOrderId() == null ? null : orderRepository.getReferenceById(locationDto.getOrderId()))
-                .warehouse(locationDto.getWarehouseId() == null ? null : warehouseRepository.getReferenceById(locationDto.getWarehouseId()))
+                .order(locationDto.getOrderId() == null ? null : orderRepository.findById(locationDto.getOrderId()).orElseThrow(EntityNotFoundException::new))
+                .warehouse(locationDto.getWarehouseId() == null ? null : warehouseRepository.findById(locationDto.getWarehouseId()).orElseThrow(EntityNotFoundException::new))
                 .build();
     }
 }

@@ -20,8 +20,8 @@ public class EmploymentDto {
     @NotNull(message = "Date of employment cannot be empty")
     private LocalDateTime dateOfEmployment;
     private LocalDateTime dateOfDismiss;
-    @NotNull(message = "Company id cannot be empty")
     private Long companyId;
     @NotNull(message = "Employee id cannot be empty")
     private Long employeeId;
+    private boolean deleted;
 }
