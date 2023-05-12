@@ -192,6 +192,13 @@ export const useFormStructure = (): Array<FormInputProps> => {
             options: formatArrayToOptions('id', (x: AppUser) => x.firstName + ' ' + x.lastName, queryForeman.data),
         },
         {
+            label: 'Lokalizacja',
+            id: 'locationId',
+            initValue: null,
+            type: 'number',
+            dontIncludeInFormStructure: true,
+        },
+        {
             label: 'Manager',
             id: 'managerId',
             initValue: null,

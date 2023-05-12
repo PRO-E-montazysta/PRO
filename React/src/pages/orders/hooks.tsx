@@ -9,28 +9,11 @@ import { Order } from '../../types/model/Order'
 import useError from '../../hooks/useError'
 import { getLocationById, postLocation } from '../../api/location.api'
 
-export const useAddOrder = () => {
-    const navigate = useNavigate()
-    const { showDialog } = useContext(DialogGlobalContext)
+export const useAddOrder = (onSuccessCallback: (data: any) => void) => {
     const showError = useError()
     return useMutation({
         mutationFn: postOrder,
-        onSuccess(data) {
-            showDialog({
-                btnOptions: [
-                    {
-                        text: 'OK',
-                        value: 0,
-                    },
-                ],
-                title: 'Sukces',
-                content: <Box>Nowe zlecenie utworzono pomyślnie</Box>,
-                callback: () => {
-                    if (data.id) navigate(`/orders/${data.id}`)
-                    else navigate(`/orders`)
-                },
-            })
-        },
+        onSuccess: onSuccessCallback,
         onError: showError,
     })
 }
@@ -102,11 +85,28 @@ export const useLocationData = (id: string | undefined) => {
     )
 }
 
-export const useAddLocation = (onSuccessCallback: (data: any) => void) => {
+export const useAddLocation = () => {
     const showError = useError()
+    const navigate = useNavigate()
+    const { showDialog } = useContext(DialogGlobalContext)
     return useMutation({
         mutationFn: postLocation,
-        onSuccess: onSuccessCallback,
+        onSuccess(data) {
+            showDialog({
+                btnOptions: [
+                    {
+                        text: 'OK',
+                        value: 0,
+                    },
+                ],
+                title: 'Sukces',
+                content: <Box>Nowe zlecenie utworzono pomyślnie</Box>,
+                callback: () => {
+                    if (data.id) navigate(`/orders/${data.id}`)
+                    else navigate(`/orders`)
+                },
+            })
+        },
         onError: showError,
     })
 }

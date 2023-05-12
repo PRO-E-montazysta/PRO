@@ -22,6 +22,7 @@ import { PageMode } from '../../types/form'
 import MapContainer from '../../components/map/MapContainer'
 import Localization from '../../components/map/Localization'
 import { Location } from '../../types/model/Location'
+import { Order } from '../../types/model/Order'
 
 const OrderDetails = () => {
     //parameters from url
@@ -38,7 +39,7 @@ const OrderDetails = () => {
     const [initData, setInitData] = useState(getInitValues(formStructure))
 
     //mutations and queries
-    const addOrderMutation = useAddOrder()
+    const addOrderMutation = useAddOrder((data) => handleOnAddSuccess(data))
     const editOrderMutation = useEditOrder((data) => handleOnEditSuccess(data))
     const deleteOrderMutation = useDeleteOrder(() => orderData.remove())
     const orderData = useOrderData(params.id)
@@ -49,14 +50,19 @@ const OrderDetails = () => {
     const handleSubmit = async (values: any) => {
         if (pageMode == 'new') {
             formikLocation.submitForm()
-        } else if (pageMode == 'edit') editOrderMutation.mutate(values)
+            if (Object.keys(formikLocation.errors).length == 0) {
+                addOrderMutation.mutate(values)
+            }
+        }
+        else if (pageMode == 'edit') editOrderMutation.mutate(values)
         else console.warn('Try to submit while read mode')
     }
 
-    const addLocationCallback = (data: Location) => {
+    const handleOnAddSuccess = (data: Order) => {
         if (data && data.id) {
-            formik.setFieldValue('locationId', data.id)
-            addOrderMutation.mutate(formik.values)
+            console.log(formikLocation.values)
+            console.log(data)
+            addLocationMutation.mutate({ ...formikLocation.values, orderId: data.id })
         }
     }
 
@@ -122,14 +128,11 @@ const OrderDetails = () => {
     const formikLocation = useFormik({
         initialValues: initDataLocation,
         validationSchema: getValidatinSchema(formStructureLocation, pageMode),
-        onSubmit: () => {
-            if (pageMode == 'new') {
-                addLocationMutation.mutate(formikLocation.values)
-            }
-        },
+        validateOnChange: true,
+        onSubmit: () => {},
     })
     const queryLocationData = useLocationData(orderData.data ? orderData.data.locationId.toString() : '')
-    const addLocationMutation = useAddLocation(addLocationCallback)
+    const addLocationMutation = useAddLocation()
 
     useEffect(() => {
         console.log(queryLocationData.data)
