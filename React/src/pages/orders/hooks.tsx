@@ -89,7 +89,7 @@ export const useAddLocation = () => {
                 title: 'Sukces',
                 content: <Box>Nowe zlecenie utworzono pomyślnie</Box>,
                 callback: () => {
-                    if (data.id) navigate(`/orders/${data.id}`)
+                    if (data.orderId) navigate(`/orders/${data.orderId}`)
                     else navigate(`/orders`)
                 },
             })
@@ -100,7 +100,6 @@ export const useAddLocation = () => {
 
 export const useEditLocation = (onSuccessCallback: (data: any) => void) => {
     const showError = useError()
-    const navigate = useNavigate()
     const { showDialog } = useContext(DialogGlobalContext)
     return useMutation({
         mutationFn: updateLocation,

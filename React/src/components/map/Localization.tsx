@@ -46,13 +46,16 @@ const Localization = (props: LocalizationProps) => {
                 lat: formik.values.xcoordinate,
                 lon: formik.values.ycoordinate,
             })
-        }
+        } else setCoordinates(null)
     }, [formik.values])
 
     const search = async () => {
         if (pageMode != 'read') {
             const location = await getLocationFromAddress(formik.values)
-            formik.setValues(location)
+            for (const [key, value] of Object.entries(location)) {
+                formik.setFieldValue(key, value)
+            }
+
             setCoordinates({
                 lat: location.xcoordinate!,
                 lon: location.ycoordinate!,
@@ -62,7 +65,9 @@ const Localization = (props: LocalizationProps) => {
 
     const setLocationByCoordinates = async (coords: Coordinates) => {
         const location = await getLocationFromCoordinates(coords)
-        formik.setValues(location)
+        for (const [key, value] of Object.entries(location)) {
+            formik.setFieldValue(key, value)
+        }
         setCoordinates({
             lat: coords.lat,
             lon: coords.lon,
@@ -97,7 +102,7 @@ const Localization = (props: LocalizationProps) => {
                     </Button>
                 )}
                 <Map
-                    coords={coordinates ? coordinates : userCoordintates}
+                    coords={coordinates?.lat && coordinates?.lon ? coordinates : userCoordintates}
                     popupText={'lel'}
                     handleCoordinatesChange={onCoordinatesChange}
                     pageMode={pageMode}

@@ -56,7 +56,6 @@ const OrderDetails = () => {
     const appSize = useBreakpoints()
     const handleSubmit = async (values: any) => {
         console.log(values)
-        console.log(JSON.stringify(values))
         //show formik location errors to user
         formikLocation.submitForm()
         //check if there are any error
@@ -69,14 +68,11 @@ const OrderDetails = () => {
 
     const submitLocation = (data: Order) => {
         if (data && data.id) {
-            console.log(formikLocation.values)
-            console.log(data)
             const body = {
                 ...formikLocation.values,
                 orderId: data.id,
             }
             console.log(body)
-            console.log(JSON.stringify(body))
             if (pageMode == 'new') addLocationMutation.mutate(body)
             else if (pageMode == 'edit') editLocationMutation.mutate(body)
         }
@@ -115,7 +111,10 @@ const OrderDetails = () => {
 
     const handleOnEditSuccess = (data: any) => {
         orderData.refetch({
-            queryKey: ['order', { id: data.id }],
+            queryKey: ['order', { id: data.orderId }],
+        })
+        queryLocationData.refetch({
+            queryKey: ['location', { id: data.id }],
         })
         setPageMode('read')
     }
@@ -135,7 +134,11 @@ const OrderDetails = () => {
         if (params.id == 'new') {
             setPageMode('new')
             formik.setValues(getInitValues(formStructure))
+            formik.resetForm()
             setInitData(getInitValues(formStructure))
+            formikLocation.setValues(getInitValues(formStructureLocation))
+            formikLocation.resetForm()
+            setInitDataLocation(getInitValues(formStructureLocation))
         } else setPageMode('read')
     }, [params.id])
 
@@ -154,7 +157,6 @@ const OrderDetails = () => {
     const editLocationMutation = useEditLocation((data) => handleOnEditSuccess(data))
 
     useEffect(() => {
-        console.log(queryLocationData.data)
         if (queryLocationData.data) {
             formikLocation.setValues(queryLocationData.data)
             setInitDataLocation(queryLocationData.data)
