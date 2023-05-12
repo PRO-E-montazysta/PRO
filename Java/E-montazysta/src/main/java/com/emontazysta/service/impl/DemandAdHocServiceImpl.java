@@ -102,6 +102,17 @@ public class DemandAdHocServiceImpl implements DemandAdHocService {
 
     @Override
     public void delete(Long id) {
+
+//        DemandAdHoc demandAdHoc = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+//        demandAdHoc.setDeleted(true);
+//        demandAdHoc.getToolReleases().forEach(toolRelease -> toolRelease.setDemandAdHoc(null));
+//        demandAdHoc.getElementReturnReleases().forEach(elementReturnRelease -> elementReturnRelease.setDemandAdHoc(null));
+//        demandAdHoc.setWarehouseManager(null);
+//        demandAdHoc.setSpecialist(null);
+//        demandAdHoc.setManager(null);
+//        demandAdHoc.setForeman(null);
+//        demandAdHoc.getOrdersStages().forEach(orderStage -> orderStage.setDemandsAdHoc(null));
+//        repository.save(demandAdHoc);
         repository.deleteById(id);
     }
 

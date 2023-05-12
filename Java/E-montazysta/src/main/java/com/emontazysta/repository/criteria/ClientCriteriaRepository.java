@@ -63,6 +63,9 @@ public class ClientCriteriaRepository {
         //Get clients from company
         predicates.add(criteriaBuilder.equal(clientRoot.get("company").get("id"), authUtils.getLoggedUserCompanyId()));
 
+        //Get not-deleted
+        predicates.add(criteriaBuilder.equal(clientRoot.get("deleted"), false));
+
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 }

@@ -25,4 +25,5 @@ public class ToolReleaseDto {
     private Long toolId;
     private Long demandAdHocId;
     private Long orderStageId;
+    private boolean deleted;
 }

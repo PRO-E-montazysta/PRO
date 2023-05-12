@@ -22,6 +22,7 @@ import com.emontazysta.service.StatusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,47 +52,64 @@ public class SalesRepresentativeMapper {
                 .email(salesRepresentative.getEmail())
                 .phone(salesRepresentative.getPhone())
                 .pesel(salesRepresentative.getPesel())
-                .unavailabilities(salesRepresentative.getUnavailabilities().stream().map(Unavailability::getId).collect(Collectors.toList()))
-                .notifications(salesRepresentative.getNotifications().stream().map(Notification::getId).collect(Collectors.toList()))
-                .employeeComments(salesRepresentative.getEmployeeComments().stream().map(Comment::getId).collect(Collectors.toList()))
-                .elementEvents(salesRepresentative.getElementEvents().stream().map(ElementEvent::getId).collect(Collectors.toList()))
-                .employments(salesRepresentative.getEmployments().stream().map(Employment::getId).collect(Collectors.toList()))
-                .attachments(salesRepresentative.getAttachments().stream().map(Attachment::getId).collect(Collectors.toList()))
-                .toolEvents(salesRepresentative.getToolEvents().stream().map(ToolEvent::getId).collect(Collectors.toList()))
-                .orders(salesRepresentative.getOrders().stream().map(Orders::getId).collect(Collectors.toList()))
+                .unavailabilities(salesRepresentative.getUnavailabilities().stream()
+                        .map(Unavailability::getId)
+                        .collect(Collectors.toList()))
+                .notifications(salesRepresentative.getNotifications().stream()
+                        .map(Notification::getId)
+                        .collect(Collectors.toList()))
+                .employeeComments(salesRepresentative.getEmployeeComments().stream()
+                        .map(Comment::getId)
+                        .collect(Collectors.toList()))
+                .elementEvents(salesRepresentative.getElementEvents().stream()
+                        .map(ElementEvent::getId)
+                        .collect(Collectors.toList()))
+                .employments(salesRepresentative.getEmployments().stream()
+                        .map(Employment::getId)
+                        .collect(Collectors.toList()))
+                .attachments(salesRepresentative.getAttachments().stream()
+                        .map(Attachment::getId)
+                        .collect(Collectors.toList()))
+                .toolEvents(salesRepresentative.getToolEvents().stream()
+                        .map(ToolEvent::getId)
+                        .collect(Collectors.toList()))
+                .orders(salesRepresentative.getOrders().stream()
+                        .map(Orders::getId)
+                        .collect(Collectors.toList()))
                 .status(statusService.checkUnavailability(salesRepresentative) == null ? "AVAILABLE" : String.valueOf(statusService.checkUnavailability(salesRepresentative).getTypeOfUnavailability()))
                 .unavailableFrom(statusService.checkUnavailability(salesRepresentative) == null ? null : statusService.checkUnavailability(salesRepresentative).getUnavailableFrom())
                 .unavailableTo(statusService.checkUnavailability(salesRepresentative) == null ? null : statusService.checkUnavailability(salesRepresentative).getUnavailableTo())
                 .unavailbilityDescription(statusService.checkUnavailability(salesRepresentative) == null ? null : statusService.checkUnavailability(salesRepresentative).getDescription())
+                .deleted(salesRepresentative.isDeleted())
                 .build();
     }
 
     public SalesRepresentative toEntity(SalesRepresentativeDto salesRepresentativeDto) {
 
         List<Unavailability> unavailabilityList = new ArrayList<>();
-        salesRepresentativeDto.getUnavailabilities().forEach(unavailabilityId -> unavailabilityList.add(unavailabilityRepository.getReferenceById(unavailabilityId)));
+        salesRepresentativeDto.getUnavailabilities().forEach(unavailabilityId -> unavailabilityList.add(unavailabilityRepository.findById(unavailabilityId).orElseThrow(EntityNotFoundException::new)));
 
         List<Notification> notificationList = new ArrayList<>();
-        salesRepresentativeDto.getNotifications().forEach(notificationId -> notificationList.add(notificationRepository.getReferenceById(notificationId)));
+        salesRepresentativeDto.getNotifications().forEach(notificationId -> notificationList.add(notificationRepository.findById(notificationId).orElseThrow(EntityNotFoundException::new)));
 
         List<Comment> employeeCommentsList = new ArrayList<>();
-        salesRepresentativeDto.getEmployeeComments().forEach(commentId -> employeeCommentsList.add(commentRepository.getReferenceById(commentId)));
+        salesRepresentativeDto.getEmployeeComments().forEach(commentId -> employeeCommentsList.add(commentRepository.findById(commentId).orElseThrow(EntityNotFoundException::new)));
 
         List<ElementEvent> elementEventList = new ArrayList<>();
-        salesRepresentativeDto.getElementEvents().forEach(elementEventId -> elementEventList.add(elementEventRepository.getReferenceById(elementEventId)));
+        salesRepresentativeDto.getElementEvents().forEach(elementEventId -> elementEventList.add(elementEventRepository.findById(elementEventId).orElseThrow(EntityNotFoundException::new)));
 
         List<Employment> employmentList = new ArrayList<>();
-        salesRepresentativeDto.getEmployments().forEach(employmentId -> employmentList.add(employmentRepository.getReferenceById(employmentId)));
+        salesRepresentativeDto.getEmployments().forEach(employmentId -> employmentList.add(employmentRepository.findById(employmentId).orElseThrow(EntityNotFoundException::new)));
 
         List<Attachment> attachmentList = new ArrayList<>();
-        salesRepresentativeDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.getReferenceById(attachmentId)));
+        salesRepresentativeDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.findById(attachmentId).orElseThrow(EntityNotFoundException::new)));
 
         List<ToolEvent> toolEventList = new ArrayList<>();
-        salesRepresentativeDto.getToolEvents().forEach(toolEventId -> toolEventList.add(toolEventRepository.getReferenceById(toolEventId)));
+        salesRepresentativeDto.getToolEvents().forEach(toolEventId -> toolEventList.add(toolEventRepository.findById(toolEventId).orElseThrow(EntityNotFoundException::new)));
 
 
         List<Orders> ordersList = new ArrayList<>();
-        salesRepresentativeDto.getOrders().forEach(orderId -> ordersList.add(orderRepository.getReferenceById(orderId)));
+        salesRepresentativeDto.getOrders().forEach(orderId -> ordersList.add(orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new)));
 
         SalesRepresentative salesRepresentative = new SalesRepresentative();
         salesRepresentative.setId(salesRepresentativeDto.getId());

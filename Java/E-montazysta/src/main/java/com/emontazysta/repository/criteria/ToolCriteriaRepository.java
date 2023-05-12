@@ -83,6 +83,9 @@ public class ToolCriteriaRepository {
         predicates.add(criteriaBuilder.equal(toolRoot.get("warehouse").get("company").get("id"),
                 authUtils.getLoggedUserCompanyId()));
 
+        //Get not-deleted
+        predicates.add(criteriaBuilder.equal(toolRoot.get("deleted"), false));
+
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 }

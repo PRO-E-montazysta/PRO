@@ -14,9 +14,11 @@ import java.util.Comparator;
 public class ToolHistoryDto implements Comparable<ToolHistoryDto> {
 
     private String orderStageName;
+    private Long orderStageId;
     private LocalDateTime orderStageStartDate;
     private LocalDateTime orderStageEndDate;
     private String foremanName;
+    private Long foremanId;
 
     @Override
     public int compareTo(ToolHistoryDto o) {

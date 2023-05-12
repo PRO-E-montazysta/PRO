@@ -62,6 +62,9 @@ public class ElementCriteriaRepository {
         predicates.add(criteriaBuilder.equal(elementRoot.join("elementInWarehouses").get("warehouse").get("company")
                 .get("id"), authUtils.getLoggedUserCompanyId()));
 
+        //Get not-deleted
+        predicates.add(criteriaBuilder.equal(elementRoot.get("deleted"), false));
+
         return  criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 }

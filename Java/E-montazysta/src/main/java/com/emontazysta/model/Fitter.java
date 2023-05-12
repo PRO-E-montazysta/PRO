@@ -7,8 +7,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
-import net.bytebuddy.implementation.bind.annotation.Super;
+import org.hibernate.annotations.SQLDelete;
 
 
 import javax.persistence.Entity;
@@ -20,6 +19,7 @@ import java.util.Set;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@SQLDelete(sql = "UPDATE app_user SET deleted = true WHERE id=?")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Fitter extends Employee {
 

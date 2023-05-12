@@ -30,4 +30,5 @@ public class ElementReturnReleaseDto {
     private Long demandAdHocId;
     private Long foremanId;
     private Long orderStageId;
+    private boolean deleted;
 }

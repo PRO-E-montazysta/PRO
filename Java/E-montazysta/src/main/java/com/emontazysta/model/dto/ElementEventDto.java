@@ -32,4 +32,5 @@ public class ElementEventDto {
     @NotNull(message = "Element id cannot be empty")
     private Long elementId;
     private List<Long> attachments;
+    private boolean deleted;
 }
