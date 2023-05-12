@@ -65,7 +65,7 @@ export const headCells: Array<HeadCell<Order>> = [
     },
     {
         type: 'string',
-        id: 'typeOfStatus',
+        id: 'status',
         label: 'Status',
         numeric: false,
         formatFn: (status: string) => statusName(status),
@@ -83,8 +83,8 @@ export const headCells: Array<HeadCell<Order>> = [
 
 export const filterInitStructure: Array<FilterInputType> = [
     {
-        id: 'typeOfStatus',
-        value: ['PLANNED', 'IN_PROGRESS'],
+        id: 'status',
+        value: '',
         label: 'Status',
         inputType: 'multiselect',
         typeValue: 'Array',
@@ -160,8 +160,10 @@ export const useFormStructure = (): Array<FormInputProps> => {
             id: 'status',
             initValue: '',
             type: 'select',
-            validation: yup.string().required('Wybierz status'),
             options: statusOptions(),
+            addNewPermissionRoles: [Role.NOBODY],
+            editPermissionRoles: [Role.NOBODY],
+            viewPermissionRoles: [Role['*']],
         },
         {
             label: 'Planowany czas rozpoczęcia',

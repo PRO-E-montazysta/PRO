@@ -1,7 +1,7 @@
 export type Order = {
     id: number
     name: string
-    typeOfStatus: string
+    status: string
     plannedStart: Date
     plannedEnd: Date
     createdAt: Date
