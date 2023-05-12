@@ -185,6 +185,9 @@ export const useFormStructure = (): Array<FormInputProps> => {
             initValue: null,
             type: 'select',
             options: formatArrayToOptions('id', (x: Client) => x.name, queryClient.data),
+            addNewPermissionRoles: [Role.SALES_REPRESENTATIVE],
+            editPermissionRoles: [Role.SALES_REPRESENTATIVE],
+            viewPermissionRoles: [Role['*']],
         },
         {
             label: 'Brygadzista',
@@ -192,6 +195,13 @@ export const useFormStructure = (): Array<FormInputProps> => {
             initValue: null,
             type: 'select',
             options: formatArrayToOptions('id', (x: AppUser) => x.firstName + ' ' + x.lastName, queryForeman.data),
+            addNewPermissionRoles: [Role.NOBODY],
+            editPermissionRoles: [Role.MANAGER],
+            viewPermissionRoles: [Role['*']],
+            customPermission: (e) => {
+                if (e == null) return 'hidden'
+                else return null
+            },
         },
         {
             label: 'Lokalizacja',
@@ -224,6 +234,9 @@ export const useFormStructure = (): Array<FormInputProps> => {
                 (x: AppUser) => x.firstName + ' ' + x.lastName,
                 querySalesRepresentative.data,
             ),
+            addNewPermissionRoles: [Role.NOBODY],
+            editPermissionRoles: [Role.NOBODY],
+            viewPermissionRoles: [Role['*']],
         },
         {
             label: 'Czas utworzenia',
@@ -244,6 +257,10 @@ export const useFormStructure = (): Array<FormInputProps> => {
             addNewPermissionRoles: [Role.NOBODY],
             editPermissionRoles: [Role.NOBODY],
             viewPermissionRoles: [Role['*']],
+            customPermission: (e) => {
+                if (e == null) return 'hidden'
+                else return null
+            },
         },
     ]
 }
