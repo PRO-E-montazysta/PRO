@@ -11,7 +11,8 @@ public interface AppUserRepository extends JpaRepository<AppUser,Long> {
 
     AppUser findByUsername(String username);
     AppUser findByResetPasswordToken(String resetPasswordToken);
-
     List<AppUser> findAllByRolesNotContaining(Role role);
+    List<AppUser> findAllByIdIn(List<Long> listOfIds);
+    List<AppUser> findAllByRolesContaining(Role role);
 
 }
