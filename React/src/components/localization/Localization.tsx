@@ -89,6 +89,7 @@ const Localization = (props: LocalizationProps) => {
                 <FormStructure formStructure={formStructure} formik={formik} pageMode={pageMode} />
                 {pageMode != 'read' && (
                     <Button
+                        id="confirmLocation"
                         onClick={search}
                         variant="contained"
                         sx={{
