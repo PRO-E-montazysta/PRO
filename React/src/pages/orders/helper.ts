@@ -122,10 +122,6 @@ export const useFormStructure = (): Array<FormInputProps> => {
         cacheTime: 15 * 60 * 1000,
         staleTime: 10 * 60 * 1000,
     })
-    const queryLocation = useQuery<Array<Location>, AxiosError>(['location-list'], getAllLocations, {
-        cacheTime: 15 * 60 * 1000,
-        staleTime: 10 * 60 * 1000,
-    })
     const queryManager = useQuery<Array<AppUser>, AxiosError>(['manager-list'], getAllManagers, {
         cacheTime: 15 * 60 * 1000,
         staleTime: 10 * 60 * 1000,
@@ -194,13 +190,6 @@ export const useFormStructure = (): Array<FormInputProps> => {
             initValue: null,
             type: 'select',
             options: formatArrayToOptions('id', (x: AppUser) => x.firstName + ' ' + x.lastName, queryForeman.data),
-        },
-        {
-            label: 'Lokalizacja',
-            id: 'locationId',
-            initValue: null,
-            type: 'select',
-            options: formatArrayToOptions('id', formatLocation, queryLocation.data),
         },
         {
             label: 'Manager',
