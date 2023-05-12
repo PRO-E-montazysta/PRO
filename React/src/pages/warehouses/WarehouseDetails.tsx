@@ -44,7 +44,6 @@ const WarehouseDetails = () => {
     )
 
     const handleSubmit = (values: any) => {
-        console.log(values)
         //show formik location errors to user
         formikLocation.submitForm()
         //check if there are any error
@@ -61,7 +60,6 @@ const WarehouseDetails = () => {
                 ...formikLocation.values,
                 warehouseId: data.id,
             }
-            console.log(body)
             if (pageMode == 'new') addLocationMutation.mutate(body)
             else if (pageMode == 'edit') editLocationMutation.mutate(body)
         }
