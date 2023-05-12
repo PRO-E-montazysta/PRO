@@ -1,6 +1,7 @@
 package com.emontazysta.mapper;
 
 import com.emontazysta.model.ElementsPlannedNumber;
+import com.emontazysta.model.dto.ElementsDtoPlannedNumberDto;
 import com.emontazysta.model.dto.ElementsPlannedNumberDto;
 import com.emontazysta.repository.DemandAdHocRepository;
 import com.emontazysta.repository.ElementRepository;
@@ -17,6 +18,7 @@ public class ElementsPlannedNumberMapper {
     private final ElementRepository elementRepository;
     private final OrderStageRepository orderStageRepository;
     private final DemandAdHocRepository demandAdHocRepository;
+    private final ElementMapper elementMapper;
 
     public ElementsPlannedNumberDto toDto (ElementsPlannedNumber elementsPlannedNumber) {
         return ElementsPlannedNumberDto.builder()
@@ -26,6 +28,16 @@ public class ElementsPlannedNumberMapper {
                 .orderStageId(elementsPlannedNumber.getOrderStage() == null ? null : elementsPlannedNumber.getOrderStage().getId())
                 .demandAdHocId(elementsPlannedNumber.getDemandAdHoc() == null ? null : elementsPlannedNumber.getDemandAdHoc().getId())
                 .deleted(elementsPlannedNumber.isDeleted())
+                .build();
+    }
+
+    public ElementsDtoPlannedNumberDto toDtoWithElementDto (ElementsPlannedNumber elementsPlannedNumber) {
+        return ElementsDtoPlannedNumberDto.builder()
+                .id(elementsPlannedNumber.getId())
+                .numberOfElements(elementsPlannedNumber.getNumberOfElements())
+                .element(elementsPlannedNumber.getElement() == null ? null : elementMapper.toDto(elementsPlannedNumber.getElement()))
+                .orderStageId(elementsPlannedNumber.getOrderStage() == null ? null : elementsPlannedNumber.getOrderStage().getId())
+                .demandAdHocId(elementsPlannedNumber.getDemandAdHoc() == null ? null : elementsPlannedNumber.getDemandAdHoc().getId())
                 .build();
     }
 

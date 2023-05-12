@@ -36,7 +36,6 @@ public class OrderStageWithToolsAndElementsDto {
     @PositiveOrZero(message = "Minimum images number cannot be negative")
     private int minimumImagesNumber;
     private List<Long> fitters;
-    private Long foremanId;
     private List<Long> comments;
     private List<Long> toolReleases;
     private List<Long> elementReturnReleases;

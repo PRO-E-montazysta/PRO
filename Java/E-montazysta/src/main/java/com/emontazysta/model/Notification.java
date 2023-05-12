@@ -1,5 +1,6 @@
 package com.emontazysta.model;
 
+import com.emontazysta.enums.NotificationType;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
@@ -36,7 +37,11 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private NotificationType notificationType;
+
     private String content;
+
+    private String subContent;
 
     private LocalDateTime createdAt;
 
@@ -47,14 +52,13 @@ public class Notification {
     @ManyToOne
     private AppUser createdBy;
 
-    @OneToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<AppUser> notifiedEmployees;
 
     @ManyToOne
     private OrderStage orderStage;
 
-    // ToDo topic Enum
-
-
+    @ManyToOne
+    private Orders order;
 
 }

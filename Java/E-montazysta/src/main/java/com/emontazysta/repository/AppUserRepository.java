@@ -16,5 +16,7 @@ public interface AppUserRepository extends JpaRepository<AppUser,Long> {
 
     List<AppUser> findAllByDeletedIsFalse();
     List<AppUser> findAllByRolesNotContaining(Role role);
+    List<AppUser> findAllByIdIn(List<Long> listOfIds);
+    List<AppUser> findAllByRolesContaining(Role role);
 
 }

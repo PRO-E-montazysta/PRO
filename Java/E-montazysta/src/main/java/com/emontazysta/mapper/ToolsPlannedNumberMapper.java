@@ -2,6 +2,7 @@ package com.emontazysta.mapper;
 
 import com.emontazysta.model.ToolsPlannedNumber;
 import com.emontazysta.model.dto.ToolsPlannedNumberDto;
+import com.emontazysta.model.dto.ToolsDtoPlannedNumberDto;
 import com.emontazysta.repository.DemandAdHocRepository;
 import com.emontazysta.repository.OrderStageRepository;
 import com.emontazysta.repository.ToolTypeRepository;
@@ -17,6 +18,7 @@ public class ToolsPlannedNumberMapper {
     private final ToolTypeRepository toolTypeRepository;
     private final OrderStageRepository orderStageRepository;
     private final DemandAdHocRepository demandAdHocRepository;
+    private final ToolTypeMapper toolTypeMapper;
 
     public ToolsPlannedNumberDto toDto (ToolsPlannedNumber toolsPlannedNumber) {
         return ToolsPlannedNumberDto.builder()
@@ -26,6 +28,16 @@ public class ToolsPlannedNumberMapper {
                 .orderStageId(toolsPlannedNumber.getOrderStage() == null ? null : toolsPlannedNumber.getOrderStage().getId())
                 .demandAdHocId(toolsPlannedNumber.getDemandAdHoc() == null ? null : toolsPlannedNumber.getDemandAdHoc().getId())
                 .deleted(toolsPlannedNumber.isDeleted())
+                .build();
+    }
+
+    public ToolsDtoPlannedNumberDto toDtoWithToolTypeDto (ToolsPlannedNumber toolsPlannedNumber) {
+        return ToolsDtoPlannedNumberDto.builder()
+                .id(toolsPlannedNumber.getId())
+                .numberOfTools(toolsPlannedNumber.getNumberOfTools())
+                .toolType(toolsPlannedNumber.getToolType() == null ? null : toolTypeMapper.toDto(toolsPlannedNumber.getToolType()))
+                .orderStageId(toolsPlannedNumber.getOrderStage() == null ? null : toolsPlannedNumber.getOrderStage().getId())
+                .demandAdHocId(toolsPlannedNumber.getDemandAdHoc() == null ? null : toolsPlannedNumber.getDemandAdHoc().getId())
                 .build();
     }
 

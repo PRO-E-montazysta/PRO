@@ -1,6 +1,8 @@
 package com.emontazysta.model;
 
 import com.emontazysta.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,6 +18,7 @@ import java.util.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @SQLDelete(sql = "UPDATE app_user SET deleted = true WHERE id=?")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class AppUser implements UserDetails {
 
     public AppUser(Long id, String firstName, String lastName, String email, String password, String username, String resetPasswordToken, Set<Role> roles) {

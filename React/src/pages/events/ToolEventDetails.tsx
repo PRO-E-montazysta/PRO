@@ -100,19 +100,19 @@ const ToolEventDetails = () => {
         staleTime: 10 * 60 * 1000,
     })
 
-
     return (
         <>
             <FormBox>
-                {/* TODO check if this return nice result  */}
                 <FormTitle
-                    text={
+                    mainTitle={pageMode == 'new' ? 'Nowa usterka narzędzia' : 'Usterka narzędzia'}
+                    subTitle={
                         pageMode == 'new'
-                            ? 'Nowa usterka narzędzia'
-                            : 'Usterka ' +
-                              queryTools.data
-                                  ?.filter((f) => f.id == formik.values['elementId'])
-                                  .map((x) => x.name + ' - ' + x.code)
+                            ? ''
+                            : String(
+                                  queryTools.data
+                                      ?.filter((f) => f.id == formik.values['toolId'])
+                                      .map((x) => x.name + ' - ' + x.code),
+                              )
                     }
                 />
                 <FormPaper>
