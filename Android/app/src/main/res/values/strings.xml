@@ -29,4 +29,8 @@
     <string name="tool_warehouse_button">Przejdź do magazynu</string>
     <string name="no_tools_found">Nie znaleziono żadnych narzędzi.</string>
     <string name="title_releases">Wydania</string>
+    <string name="stage_title">Etap</string>
+    <string name="orderPrice">Cena</string>
+    <string name="order_list_tile">Lista zleceń</string>
+    <string name="title_orders">Zlecenia</string>
 </resources>

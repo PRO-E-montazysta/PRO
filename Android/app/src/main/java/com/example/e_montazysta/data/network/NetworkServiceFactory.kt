@@ -13,5 +13,6 @@ class NetworkServiceFactory(
 
     override fun interceptors(): List<Interceptor> {
         return arrayListOf(NetworkRequestInterceptor(listOf()))
+
     }
 }

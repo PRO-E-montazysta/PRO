@@ -40,6 +40,12 @@ class DashboardFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+        val orders = binding.orders
+        orders.setOnClickListener{
+            val action = DashboardFragmentDirections.actionNavigationDashboardToOrderListFragment()
+            findNavController().navigate(action)
+        }
+
         return root
     }
 

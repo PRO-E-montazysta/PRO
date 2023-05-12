@@ -9,5 +9,11 @@ class ServiceProvider (private val serviceFactory: ServiceFactory) : IServicePro
     override fun getReleaseService(): ReleaseService {
         return serviceFactory.create(ReleaseService::class.java)
     }
+    override fun getOrderService(): OrderService {
+        return serviceFactory.create(OrderService::class.java)
+    }
 
+    override fun getUserService(): UserService {
+        return serviceFactory.create(UserService::class.java)
+    }
 }
