@@ -27,4 +27,5 @@ public class NotificationDto {
     private List<Long> notifiedEmployees;
     private Long orderStageId;
     private Long orderId;
+    private boolean deleted;
 }

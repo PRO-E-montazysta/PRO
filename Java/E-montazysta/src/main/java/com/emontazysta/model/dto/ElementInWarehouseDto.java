@@ -28,4 +28,5 @@ public class ElementInWarehouseDto {
     private Long elementId;
     @NotNull(message = "Warehouse id cannot be empty")
     private Long warehouseId;
+    private boolean deleted;
 }

@@ -26,4 +26,5 @@ public class ToolTypeDto {
     private List<Long> ListOfToolsPlannedNumber;
     private List<Long> tools;
     private Long companyId;
+    private boolean deleted;
 }

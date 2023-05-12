@@ -8,6 +8,7 @@ import com.emontazysta.service.ElementInWarehouseService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +28,7 @@ public class ElementInWarehouseServiceImpl implements ElementInWarehouseService 
 
     @Override
     public ElementInWarehouseDto getById(Long id) {
-        ElementInWarehouse elementInWarehouse = elementInWarehouseRepository.findById(id).orElseThrow(() -> new RuntimeException("Element with id " + id + " not found in warehouse!"));
+        ElementInWarehouse elementInWarehouse = elementInWarehouseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Element with id " + id + " not found in warehouse!"));
         return elementInWarehouseMapper.toDto(elementInWarehouse);
 
     }
@@ -46,7 +47,7 @@ public class ElementInWarehouseServiceImpl implements ElementInWarehouseService 
     @Override
     public ElementInWarehouseDto update(Long id, ElementInWarehouseDto elementInWarehouseDto) {
         ElementInWarehouse updatedElementInWarehouse = elementInWarehouseMapper.toEntity(elementInWarehouseDto);
-        ElementInWarehouse elementInWarehouse = elementInWarehouseRepository.findById(id).orElseThrow(() -> new RuntimeException("Element with id " + id + " not found in warehouse!"));
+        ElementInWarehouse elementInWarehouse = elementInWarehouseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Element with id " + id + " not found in warehouse!"));
         elementInWarehouse.setInWarehouseCount(updatedElementInWarehouse.getInWarehouseCount());
         elementInWarehouse.setInUnitCount(updatedElementInWarehouse.getInUnitCount());
         elementInWarehouse.setRack(updatedElementInWarehouse.getRack());

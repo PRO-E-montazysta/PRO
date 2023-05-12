@@ -31,4 +31,5 @@ public class CompanyDto {
     private List<Long> clients;
     private List<Long> employments;
     private List<Long> toolTypes;
+    private boolean deleted;
 }

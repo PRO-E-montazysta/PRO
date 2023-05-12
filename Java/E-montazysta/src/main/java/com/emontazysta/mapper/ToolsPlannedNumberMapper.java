@@ -9,6 +9,8 @@ import com.emontazysta.repository.ToolTypeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
+
 @Component
 @RequiredArgsConstructor
 public class ToolsPlannedNumberMapper {
@@ -25,6 +27,7 @@ public class ToolsPlannedNumberMapper {
                 .toolTypeId(toolsPlannedNumber.getToolType() == null ? null : toolsPlannedNumber.getToolType().getId())
                 .orderStageId(toolsPlannedNumber.getOrderStage() == null ? null : toolsPlannedNumber.getOrderStage().getId())
                 .demandAdHocId(toolsPlannedNumber.getDemandAdHoc() == null ? null : toolsPlannedNumber.getDemandAdHoc().getId())
+                .deleted(toolsPlannedNumber.isDeleted())
                 .build();
     }
 

@@ -25,4 +25,5 @@ public class WarehouseDto {
     private Long locationId;
     private List<Long> elementInWarehouses;
     private List<Long> tools;
+    private boolean deleted;
 }
