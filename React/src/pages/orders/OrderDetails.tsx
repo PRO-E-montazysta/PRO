@@ -6,14 +6,13 @@ import { useParams } from 'react-router-dom'
 
 import { theme } from '../../themes/baseTheme'
 
-import { useFormStructure, useFormStructureLocation } from './helper'
+import { useFormStructure } from './helper'
 import {
-    useAddLocation,
+    useAddOrderLocation,
     useAddOrder,
     useDeleteOrder,
-    useEditLocation,
+    useEditOrderLocation,
     useEditOrder,
-    useLocationData,
     useOrderData,
 } from './hooks'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
@@ -27,9 +26,9 @@ import FormPaper from '../../components/form/FormPaper'
 import FormTitle from '../../components/form/FormTitle'
 import FormBox from '../../components/form/FormBox'
 import { PageMode } from '../../types/form'
-import Localization from '../../components/map/Localization'
-import { Location } from '../../types/model/Location'
+import Localization from '../../components/localization/Localization'
 import { Order } from '../../types/model/Order'
+import { useAddLocation, useFormStructureLocation, useLocationData } from '../../components/localization/hooks'
 
 const OrderDetails = () => {
     //parameters from url
@@ -153,8 +152,8 @@ const OrderDetails = () => {
     const queryLocationData = useLocationData(
         orderData.data && orderData.data.locationId ? orderData.data.locationId.toString() : '',
     )
-    const addLocationMutation = useAddLocation()
-    const editLocationMutation = useEditLocation((data) => handleOnEditSuccess(data))
+    const addLocationMutation = useAddOrderLocation()
+    const editLocationMutation = useEditOrderLocation((data) => handleOnEditSuccess(data))
 
     useEffect(() => {
         if (queryLocationData.data) {
@@ -177,14 +176,12 @@ const OrderDetails = () => {
                         <>
                             <FormStructure formStructure={formStructure} formik={formik} pageMode={pageMode} />
 
-                            <Box sx={{ ml: 'auto', mr: 0 }}>
-                                <Localization
-                                    title="Lokalizacja"
-                                    formik={formikLocation}
-                                    formStructure={formStructureLocation}
-                                    pageMode={pageMode}
-                                />
-                            </Box>
+                            <Localization
+                                title="Lokalizacja"
+                                formik={formikLocation}
+                                formStructure={formStructureLocation}
+                                pageMode={pageMode}
+                            />
                             <FormButtons
                                 id={params.id}
                                 onCancel={handleCancel}
