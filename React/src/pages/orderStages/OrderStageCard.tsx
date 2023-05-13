@@ -1,15 +1,13 @@
-import { Grid, Paper, Box, Button, Tabs, Tab, CircularProgress, Typography, CardActions, styled } from '@mui/material'
-import TextField from '@mui/material/TextField'
+import { Grid, Paper, Box, Button, Tabs, Tab, Typography, CardActions } from '@mui/material'
 import dayjs, { Dayjs } from 'dayjs'
-import * as yup from 'yup'
 import { useFormik } from 'formik'
-import { useNavigate, useParams } from 'react-router-dom'
-import { MouseEvent, useCallback, useEffect, useRef, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
 import { DatePicker, TimePicker } from '@mui/x-date-pickers'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { OrderStage } from '../../types/model/OrderStage'
-import IconButton, { IconButtonProps } from '@mui/material/IconButton'
+import IconButton from '@mui/material/IconButton'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Card from '@mui/material/Card'
 import AssignmentIcon from '@mui/icons-material/Assignment'
@@ -17,7 +15,7 @@ import Collapse from '@mui/material/Collapse'
 import { ExpandMore, TabPanel } from './helper'
 import { getRolesFromToken } from '../../utils/token'
 import { Role } from '../../types/roleEnum'
-import { useMutation, useQuery } from 'react-query'
+import { useQuery } from 'react-query'
 import { AxiosError } from 'axios'
 import { getAllToolTypes } from '../../api/toolType.api'
 import { getAllElements } from '../../api/element.api'
@@ -25,9 +23,11 @@ import OrderStageToolTypesTable from './OrderStageToolTypesTable'
 import OrderStageDetailsElementsTable from './ElementsTable'
 import { useAddOrderStage } from './hooks'
 import { CustomTextField } from '../../components/form/FormInput'
-import TestE from './Test'
 import { v4 as uuidv4 } from 'uuid'
 import TestTestTest from './TestTestTest'
+import TestTestTestTools from './TestTestTestTools'
+import TestTestTestToolsTwo from './TestTestTestToolsTwo'
+import { ToolType } from '../../types/model/ToolType'
 
 type OrderStageCardProps = {
     index?: string
@@ -46,29 +46,32 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
     const [preparedPlannedEndDate, setPreparedPlannedEndDate] = useState('')
     const [userRole, setUserRole] = useState('')
     const addOrderStage = useAddOrderStage()
-    let preparedPlannedData: { numberOfElements: number; elementId: string }[] = []
 
     const [plannedToolTypes, setPlannedToolTypes] = useState<{ numberOfTools: number; toolTypeId: string }[]>()
-    const [plannedElements, setPlannedElements] = useState<{ numberOfElements: number; elementId: string }[]>()
-
+    // const [plannedElements, setPlannedElements] = useState<{ numberOfElements: number; elementId: string }[]>()
     const dummyScrollDiv = useRef<any>(null)
-
     const params = useParams()
-
     //new
-    const ref = useRef<{ numberOfElements: number; elementId: string }[]>([])
-    const handleChange = (value: { numberOfElements: number; elementId: string }[]) => {
-        // console.log('here', ref.current)
-        ref!.current! = value
-        console.log('here2', ref.current)
+    const plannedElementsRef = useRef<{ numberOfElements: number; elementId: string }[]>([])
+    const plannedToolsTypesRef = useRef<{ numberOfTools: number; toolTypeId: string }[]>([])
+
+    const handleSetPlannedElements = (value: { numberOfElements: number; elementId: string }[]) => {
+        console.log('value', value)
+        plannedElementsRef!.current! = value
+        console.log('here2', plannedElementsRef.current)
+    }
+    const handleSetPlannedToolsTypes = (value: { numberOfTools: number; toolTypeId: string }[]) => {
+        console.log('value', value)
+        plannedToolsTypesRef!.current! = value
+        console.log('here3', plannedToolsTypesRef.current)
     }
 
-    const queryToolTypes = useQuery<Array<OrderStage>, AxiosError>(
+    const queryAllToolTypes = useQuery<Array<ToolType>, AxiosError>(
         ['toolType-list'],
         async () => await getAllToolTypes(),
     )
 
-    const queryElements = useQuery<Array<OrderStage>, AxiosError>(['elements-list'], async () => await getAllElements())
+    const queryAllElements = useQuery<Array<OrderStage>, AxiosError>(['elements-list'], async () => await getAllElements())
 
     useEffect(() => {
         const role = getRolesFromToken()
@@ -128,9 +131,10 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
 
         // validationSchema: validationSchema,
         onSubmit: async (values) => {
-            console.log('co jest', ref.current)
-            values.listOfElementsPlannedNumber = ref.current!
-            values.listOfToolsPlannedNumber = plannedToolTypes!
+            console.log('co jest element', plannedElementsRef.current)
+            console.log('co jest tools', plannedToolsTypesRef.current)
+            values.listOfElementsPlannedNumber = plannedElementsRef.current!
+            values.listOfToolsPlannedNumber = plannedToolsTypesRef.current!
             values.plannedStartDate = preparedPlannedStartDate
             values.plannedEndDate = preparedPlannedEndDate
 
@@ -147,7 +151,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                             label="Planowana data rozpoczęcia"
                             value={plannedStartDate}
                             onChange={(data) => {
-                                // const formattedDate = dayjs(data!).format('YYYY-MM-DDTHH:mm:ss.SSS')
                                 setPlannedStartDate(data)
                             }}
                         />
@@ -173,7 +176,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                             format={'HH:mm:ss'}
                             value={plannedStartHour}
                             onChange={(data) => {
-                                // const formattedDate = dayjs(data).format('YYYY-MM-DDTHH:mm:ss.SSS')
                                 setPlannedStartHour(data)
                             }}
                         />
@@ -272,7 +274,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                 variant="outlined"
                                 label="Cena"
                                 name="price"
-                                // defaultValue={isDisplayingMode ? stage!.price : null}
                                 value={formik.values.price}
                                 onChange={formik.handleChange}
                                 error={formik.touched.price && Boolean(formik.errors.price)}
@@ -283,7 +284,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                         <Grid item xs={4}>
                             <CustomTextField
                                 readOnly={isDisplayingMode!}
-                                // defaultValue={isDisplayingMode ? stage!.plannedFittersNumber : null}
                                 sx={{ width: '100%' }}
                                 id="standard-basic"
                                 variant="outlined"
@@ -303,7 +303,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                 id="standard-basic"
                                 label="Minimalna liczba zdjęć"
                                 variant="outlined"
-                                // defaultValue={isDisplayingMode ? stage!.minimumImagesNumber : null}
                                 name="minimumImagesNumber"
                                 value={formik.values.minimumImagesNumber}
                                 onChange={formik.handleChange}
@@ -348,12 +347,18 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                 {getDateInformations(stage)}
                             </TabPanel>
                             <TabPanel key={uuidv4()} value={tabValue} index={1}>
-                                <OrderStageToolTypesTable
+                                {/* <OrderStageToolTypesTable
                                     itemsArray={queryToolTypes.data}
                                     plannedData={plannedToolTypes!}
                                     setPlannedData={setPlannedToolTypes}
                                     isDisplayingMode={isDisplayingMode!}
                                     toolTypesListIds={stage?.listOfToolsPlannedNumber as any}
+                                /> */}
+                                <TestTestTestToolsTwo
+                                    itemsArray={queryAllToolTypes.data!}
+                                    isDisplayingMode={isDisplayingMode!}
+                                    elementsListIds={stage?.listOfToolsPlannedNumber as any}
+                                    handleChange={handleSetPlannedToolsTypes}
                                 />
                             </TabPanel>
                             <TabPanel key={uuidv4()} value={tabValue} index={2}>
@@ -368,13 +373,10 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                        elementsListIds={stage?.listOfElementsPlannedNumber as any}
                                     /> */}
                                 <TestTestTest
-                                    itemsArray={queryElements.data!}
-                                    // plannedData={plannedElements!}
-                                    // setPlannedData={setPlannedElements}
+                                    itemsArray={queryAllElements.data!}
                                     isDisplayingMode={isDisplayingMode!}
                                     elementsListIds={stage?.listOfElementsPlannedNumber as any}
-                                    handleChange={handleChange}
-                                    refValue={ref}
+                                    handleChange={handleSetPlannedElements}
                                 />
                             </TabPanel>
 

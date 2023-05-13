@@ -14,12 +14,13 @@ import Select, { SelectChangeEvent } from '@mui/material/Select'
 import { forwardRef, useEffect, useState } from 'react'
 import { getPlannedElementById } from '../../api/element.api'
 import { v4 as uuidv4 } from 'uuid'
+import { getPlannedToolTypesById } from '../../api/toolType.api'
 
 type TestTestTestType = {
     itemsArray: Array<any> | undefined
     isDisplayingMode: boolean
     elementsListIds: Array<number> | []
-    handleChange: (array: { numberOfElements: number; elementId: string }[]) => void
+    handleChange: (array: { numberOfTools: number; toolTypeId: string }[]) => void
 }
 
 const TestTestTest = forwardRef(
@@ -27,22 +28,24 @@ const TestTestTest = forwardRef(
         const [tableRowIndex, setTableRowIndex] = useState(0)
         const [selectedItemId, setSelectedItemId] = useState('')
         const [selectedItemNumber, setSelectedItemNumber] = useState(0)
-        const [tableData, setTableData] = useState<{ numberOfElements: number; elementId: string }[]>([
-            { numberOfElements: 0, elementId: 'toChange' },
+        const [tableData, setTableData] = useState<{ numberOfTools: number; toolTypeId: string }[]>([
+            { numberOfTools: 0, toolTypeId: 'toChange' },
         ])
 
         const getElementsData = async () => {
             if (!!elementsListIds) {
                 const check = await Promise.all(
                     elementsListIds.map(async (element) => {
-                        return await getPlannedElementById(element)
+                        return await getPlannedToolTypesById(element)
                     }),
                 )
+                console.log('what the f', check)
                 if (!!check && check.length > 0) {
+                    console.log('here1')
                     const filteredData = check.map((element) => {
                         const data = {
-                            numberOfElements: element.numberOfElements,
-                            elementId: element.element.id.toString(),
+                            numberOfTools: element.numberOfTools,
+                            toolTypeId: element.toolType.id.toString(),
                         }
                         return data
                     })
@@ -67,7 +70,7 @@ const TestTestTest = forwardRef(
         useEffect(() => {
             if (!!tableData && !!selectedItemId) {
                 const tempArray = [...tableData]
-                tempArray[tableRowIndex] = { numberOfElements: selectedItemNumber, elementId: selectedItemId }
+                tempArray[tableRowIndex] = { numberOfTools: selectedItemNumber, toolTypeId: selectedItemId }
                 setTableData(tempArray)
                 handleChange(tempArray)
             }
@@ -77,6 +80,7 @@ const TestTestTest = forwardRef(
             const tempArray = [...tableData]
             tempArray.splice(rowIndex, 1)
             setTableData(tempArray)
+            handleChange(tempArray)
         }
 
         return (
@@ -84,9 +88,9 @@ const TestTestTest = forwardRef(
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Element</TableCell>
+                            <TableCell>Typ narzędzia</TableCell>
                             <TableCell align="right">Planowana potrzebna ilość</TableCell>
-                            {isDisplayingMode && <TableCell align="right">Wydana ilosć elementy</TableCell>}
+                            {isDisplayingMode && <TableCell align="right">Wydane narzędzia - kody</TableCell>}
                             {!isDisplayingMode && <TableCell align="right">Akcja</TableCell>}
                         </TableRow>
                     </TableHead>
@@ -97,9 +101,9 @@ const TestTestTest = forwardRef(
                                     <TableCell component="th" scope="row">
                                         <Box sx={{ minWidth: 120 }}>
                                             <FormControl fullWidth>
-                                                <InputLabel id="demo-simple-select-label">Element</InputLabel>
+                                                <InputLabel id="demo-simple-select-label">Typ narzędzia</InputLabel>
                                                 <TableItemSelect
-                                                    label={'Typ narzedzia'}
+                                                    label={'Typ narzędzia'}
                                                     itemsArray={itemsArray}
                                                     rowData={rowData}
                                                     rowIndex={rowIndex}
@@ -113,7 +117,7 @@ const TestTestTest = forwardRef(
                                         <Box sx={{ minWidth: 120 }}>
                                             <FormControl fullWidth>
                                                 <TableItemNumber
-                                                    selectedItemNumber={rowData.numberOfElements}
+                                                    selectedItemNumber={rowData.numberOfTools}
                                                     setTableRowIndex={setTableRowIndex}
                                                     handleItemNumberChange={handleItemNumberChange}
                                                     rowIndex={rowIndex}
@@ -131,7 +135,7 @@ const TestTestTest = forwardRef(
                                                     onClick={() => {
                                                         setTableData((tableData) => [
                                                             ...tableData!,
-                                                            { numberOfElements: 0, elementId: 'toChange' },
+                                                            { numberOfTools: 0, toolTypeId: 'toChange' },
                                                         ])
                                                     }}
                                                 >
@@ -185,7 +189,7 @@ const chooseSelectItemId = (
 type TableItemSelectTypes = {
     label: string
     itemsArray: Array<any> | undefined
-    rowData: { numberOfElements: number; elementId: string }
+    rowData: { numberOfTools: number; toolTypeId: string }
     rowIndex: number
     setTableRowIndex: React.Dispatch<React.SetStateAction<number>>
     setSelectedItemId: React.Dispatch<React.SetStateAction<string>>
@@ -204,7 +208,7 @@ const TableItemSelect = ({
             labelId="demo-simple-select-label"
             key={uuidv4()}
             defaultValue=""
-            value={rowData.elementId}
+            value={rowData.toolTypeId}
             label={label}
             onChange={(event: SelectChangeEvent) => {
                 setTableRowIndex(rowIndex)

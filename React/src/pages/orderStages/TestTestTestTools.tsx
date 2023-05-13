@@ -19,17 +19,32 @@ type TestTestTestType = {
     itemsArray: Array<any> | undefined
     isDisplayingMode: boolean
     elementsListIds: Array<number> | []
-    handleChange: (array: { numberOfElements: number; elementId: string }[]) => void
+    handleSetElement?: (array: { numberOfElements: number; elementId: string }[]) => void
+    isAddingTools?: boolean
+    handleSetTools?: (array: { numberOfTools: number; toolTypeId: string }[]) => void
 }
 
 const TestTestTest = forwardRef(
-    ({ itemsArray, isDisplayingMode, elementsListIds, handleChange }: TestTestTestType, ref) => {
+    (
+        {
+            itemsArray,
+            isDisplayingMode,
+            elementsListIds,
+            handleSetElement,
+            isAddingTools,
+            handleSetTools,
+        }: TestTestTestType,
+        ref,
+    ) => {
         const [tableRowIndex, setTableRowIndex] = useState(0)
         const [selectedItemId, setSelectedItemId] = useState('')
         const [selectedItemNumber, setSelectedItemNumber] = useState(0)
         const [tableData, setTableData] = useState<{ numberOfElements: number; elementId: string }[]>([
             { numberOfElements: 0, elementId: 'toChange' },
         ])
+
+        //zrobić opcjonalnego propsa isToolType i handleChange zrobić różne typy i potem w useEffectcie wywołać inną metodę
+        //try
 
         const getElementsData = async () => {
             if (!!elementsListIds) {
@@ -52,6 +67,7 @@ const TestTestTest = forwardRef(
         }
 
         useEffect(() => {
+            console.log('get', elementsListIds)
             getElementsData()
         }, [])
 
@@ -66,10 +82,30 @@ const TestTestTest = forwardRef(
 
         useEffect(() => {
             if (!!tableData && !!selectedItemId) {
-                const tempArray = [...tableData]
-                tempArray[tableRowIndex] = { numberOfElements: selectedItemNumber, elementId: selectedItemId }
-                setTableData(tempArray)
-                handleChange(tempArray)
+                if (isAddingTools) {
+                    const tableArray = [...tableData]
+                    tableArray[tableRowIndex] = { numberOfElements: selectedItemNumber, elementId: selectedItemId }
+                    setTableData(tableArray)
+
+                    const tempArrayMappedForTools = tableData.map((data) => {
+                        const toolElement: { numberOfTools: number; toolTypeId: string } = {
+                            numberOfTools: data.numberOfElements,
+                            toolTypeId: data.elementId,
+                        }
+                        return toolElement
+                    })
+                    tempArrayMappedForTools[tableRowIndex] = {
+                        numberOfTools: selectedItemNumber,
+                        toolTypeId: selectedItemId,
+                    }
+                    console.log('hej', tempArrayMappedForTools)
+                    !!handleSetTools && handleSetTools(tempArrayMappedForTools)
+                } else {
+                    const tempArray = [...tableData]
+                    tempArray[tableRowIndex] = { numberOfElements: selectedItemNumber, elementId: selectedItemId }
+                    setTableData(tempArray)
+                    !!handleSetElement && handleSetElement(tableData)
+                }
             }
         }, [selectedItemId, selectedItemNumber])
 
@@ -85,7 +121,7 @@ const TestTestTest = forwardRef(
                     <TableHead>
                         <TableRow>
                             <TableCell>Element</TableCell>
-                            <TableCell align="right">Planowana potrzebna ilość</TableCell>
+                            <TableCell align="right">Planowana potrzebna ilosc</TableCell>
                             {isDisplayingMode && <TableCell align="right">Wydana ilosć elementy</TableCell>}
                             {!isDisplayingMode && <TableCell align="right">Akcja</TableCell>}
                         </TableRow>
