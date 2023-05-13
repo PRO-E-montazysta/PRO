@@ -104,7 +104,7 @@ const Localization = (props: LocalizationProps) => {
                 )}
                 <Map
                     coords={coordinates?.lat && coordinates?.lon ? coordinates : userCoordintates}
-                    popupText={'lel'}
+                    popupText={'Wskazana lokalizacja'}
                     handleCoordinatesChange={onCoordinatesChange}
                     pageMode={pageMode}
                     style={{
