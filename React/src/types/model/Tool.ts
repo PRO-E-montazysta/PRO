@@ -4,6 +4,7 @@ export type Tool = {
     code: string
     warehouse: string
     toolType: string
+    deleted: boolean
 }
 
 export type ToolHistory = {

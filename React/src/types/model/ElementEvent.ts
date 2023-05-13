@@ -10,4 +10,5 @@ export type ElementEvent = {
     acceptedById: number
     toolId: number
     attachments: Array<number>
+    deleted: boolean
 }
