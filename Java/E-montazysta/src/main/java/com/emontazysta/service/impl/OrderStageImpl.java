@@ -427,6 +427,7 @@ public class OrderStageImpl implements OrderStageService {
         Set<Role> loggedUserRoles = authUtils.getLoggedUser().getRoles();
 
         if(orderStage.getStatus().equals(OrderStageStatus.PLANNING) && loggedUserRoles.contains(Role.SPECIALIST)) {
+            //czy jest podzielone
             orderStage.setStatus(OrderStageStatus.ADDING_FITTERS);
         }else if(orderStage.getStatus().equals(OrderStageStatus.ADDING_FITTERS) && loggedUserRoles.contains(Role.FOREMAN)) {
             //Check if fitters are assigned
