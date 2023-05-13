@@ -8,8 +8,8 @@
          click handlers, and state variables. -->
     <data>
         <variable
-            name="ToolsListViewModel"
-            type="com.example.e_montazysta.ui.toollist.ToolsListViewModel" />
+            name="ElementsListViewModel"
+            type="com.example.e_montazysta.ui.elementlist.ElementsListViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

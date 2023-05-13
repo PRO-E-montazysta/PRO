@@ -9,6 +9,7 @@ import com.example.e_montazysta.data.repository.ReleaseRepository
 import com.example.e_montazysta.data.repository.ToolRepository
 import com.example.e_montazysta.data.services.IServiceProvider
 import com.example.e_montazysta.data.services.ServiceProvider
+import com.example.e_montazysta.ui.elementlist.ElementsListViewModel
 import com.example.e_montazysta.ui.release.ReleaseDetailViewModel
 import com.example.e_montazysta.ui.release.ReleaseListViewModel
 import com.example.e_montazysta.ui.toollist.ToolsListViewModel
@@ -73,5 +74,8 @@ val dataModule = module {
     }
     viewModel {
         ReleaseDetailViewModel(get())
+    }
+    viewModel {
+        ElementsListViewModel(get())
     }
 }

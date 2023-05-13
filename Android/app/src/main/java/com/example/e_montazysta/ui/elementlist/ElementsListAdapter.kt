@@ -3,7 +3,7 @@ package com.example.e_montazysta.ui.elementlist
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.e_montazysta.databinding.ListItemToolBinding
+import com.example.e_montazysta.databinding.ListItemElementBinding
 
 class ElementsListAdapter : RecyclerView.Adapter<ElementsListAdapter.ViewHolder>() {
 
@@ -35,7 +35,7 @@ class ElementsListAdapter : RecyclerView.Adapter<ElementsListAdapter.ViewHolder>
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ListItemToolBinding.inflate(layoutInflater, parent, false)
+                val binding = ListItemElementBinding.inflate(layoutInflater, parent, false)
                 return ViewHolder(binding)
             }
         }
