@@ -5,7 +5,14 @@ import { useParams } from 'react-router-dom'
 import { useFormStructure } from './helper'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { getInitValues, getValidatinSchema } from '../../helpers/form.helper'
-import { useAddWarehouse, useWarehouseData, useDeleteWarehouse, useEditWarehouse } from './hooks'
+import {
+    useAddWarehouse,
+    useWarehouseData,
+    useDeleteWarehouse,
+    useEditWarehouse,
+    useAddWarehouseLocation,
+    useEditWarehouseLocation,
+} from './hooks'
 import { useQueriesStatus } from '../../hooks/useQueriesStatus'
 import FormBox from '../../components/form/FormBox'
 import FormTitle from '../../components/form/FormTitle'
@@ -14,6 +21,9 @@ import QueryBoxStatus from '../../components/base/QueryStatusBox'
 import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
+import { useFormStructureLocation, useLocationData } from '../../components/localization/hooks'
+import { Warehouse } from '../../types/model/Warehouse'
+import Localization from '../../components/localization/Localization'
 
 const WarehouseDetails = () => {
     const params = useParams()
@@ -23,8 +33,8 @@ const WarehouseDetails = () => {
     const [initData, setInitData] = useState(getInitValues(formStructure))
 
     //mutations and queries
-    const addWarehouseMutation = useAddWarehouse()
-    const editWarehouseMutation = useEditWarehouse((data) => handleOnEditSuccess(data))
+    const addWarehouseMutation = useAddWarehouse((data) => submitLocation(data))
+    const editWarehouseMutation = useEditWarehouse((data) => submitLocation(data))
     const deleteWarehouseMutation = useDeleteWarehouse(() => warehouseData.remove())
     const warehouseData = useWarehouseData(params.id)
     //status for all mutations and queries
@@ -34,9 +44,25 @@ const WarehouseDetails = () => {
     )
 
     const handleSubmit = (values: any) => {
-        if (pageMode == 'new') addWarehouseMutation.mutate(values)
-        else if (pageMode == 'edit') editWarehouseMutation.mutate(values)
-        else console.warn('Try to submit while read mode')
+        //show formik location errors to user
+        formikLocation.submitForm()
+        //check if there are any error
+        if (Object.keys(formikLocation.errors).length == 0) {
+            if (pageMode == 'new') addWarehouseMutation.mutate(values)
+            else if (pageMode == 'edit') editWarehouseMutation.mutate(values)
+            else console.warn('Try to submit while read mode')
+        }
+    }
+
+    const submitLocation = (data: Warehouse) => {
+        if (data && data.id) {
+            const body = {
+                ...formikLocation.values,
+                warehouseId: data.id,
+            }
+            if (pageMode == 'new') addLocationMutation.mutate(body)
+            else if (pageMode == 'edit') editLocationMutation.mutate(body)
+        }
     }
 
     const handleDelete = () => {
@@ -61,6 +87,8 @@ const WarehouseDetails = () => {
     const handleReset = () => {
         formik.resetForm()
         formik.setValues(initData)
+        formikLocation.resetForm()
+        formikLocation.setValues(initDataLocation)
     }
 
     const handleCancel = () => {
@@ -70,7 +98,10 @@ const WarehouseDetails = () => {
 
     const handleOnEditSuccess = (data: any) => {
         warehouseData.refetch({
-            queryKey: ['warehouse', { id: data.id }],
+            queryKey: ['warehouse', { id: data.warehouseId }],
+        })
+        queryLocationData.refetch({
+            queryKey: ['location', { id: data.id }],
         })
         setPageMode('read')
     }
@@ -86,11 +117,34 @@ const WarehouseDetails = () => {
         if (params.id == 'new') {
             setPageMode('new')
             formik.setValues(getInitValues(formStructure))
+            formik.resetForm()
             setInitData(getInitValues(formStructure))
-        } else {
-            setPageMode('read')
-        }
+            formikLocation.setValues(getInitValues(formStructureLocation))
+            formikLocation.resetForm()
+            setInitDataLocation(getInitValues(formStructureLocation))
+        } else setPageMode('read')
     }, [params.id])
+
+    //--------------- Location functionality --------------------
+    const formStructureLocation = useFormStructureLocation()
+    const [initDataLocation, setInitDataLocation] = useState(getInitValues(formStructureLocation))
+    const formikLocation = useFormik({
+        initialValues: initDataLocation,
+        validationSchema: getValidatinSchema(formStructureLocation, pageMode),
+        onSubmit: () => {},
+    })
+    const queryLocationData = useLocationData(
+        warehouseData.data && warehouseData.data.locationId ? warehouseData.data.locationId.toString() : '',
+    )
+    const addLocationMutation = useAddWarehouseLocation()
+    const editLocationMutation = useEditWarehouseLocation((data) => handleOnEditSuccess(data))
+
+    useEffect(() => {
+        if (queryLocationData.data) {
+            formikLocation.setValues(queryLocationData.data)
+            setInitDataLocation(queryLocationData.data)
+        }
+    }, [queryLocationData.data])
 
     return (
         <FormBox>
@@ -104,6 +158,12 @@ const WarehouseDetails = () => {
                 ) : (
                     <>
                         <FormStructure formStructure={formStructure} formik={formik} pageMode={pageMode} />
+                        <Localization
+                            title="Lokalizacja"
+                            formik={formikLocation}
+                            formStructure={formStructureLocation}
+                            pageMode={pageMode}
+                        />
                         <FormButtons
                             id={params.id}
                             onCancel={handleCancel}

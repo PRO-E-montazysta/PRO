@@ -83,11 +83,5 @@ export const useFormStructure = (): Array<FormInputProps> => {
             type: 'input',
             validation: yup.string().required('Wprowadź godziny otwarcia'),
         },
-        {
-            label: 'Lokalizacja',
-            id: 'locationId',
-            initValue: '',
-            type: 'input',
-        },
     ]
 }

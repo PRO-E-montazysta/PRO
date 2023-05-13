@@ -2,8 +2,10 @@ package com.emontazysta.service.impl;
 
 import com.emontazysta.mapper.LocationMapper;
 import com.emontazysta.model.Location;
+import com.emontazysta.model.Orders;
 import com.emontazysta.model.dto.LocationDto;
 import com.emontazysta.repository.LocationRepository;
+import com.emontazysta.repository.OrderRepository;
 import com.emontazysta.service.LocationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ public class LocationServiceImpl implements LocationService {
 
     private final LocationRepository repository;
     private final LocationMapper locationMapper;
+    private final OrderRepository orderRepository;
 
     @Override
     public List<LocationDto> getAll() {
@@ -34,8 +37,15 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public LocationDto add(LocationDto locationDto) {
-        Location location = locationMapper.toEntity(locationDto);
-        return locationMapper.toDto(repository.save(location));
+        Location location = repository.save(locationMapper.toEntity(locationDto));
+
+        if(locationDto.getOrderId()!=null){
+            Orders order = location.getOrder();
+            order.setLocation(location);
+            orderRepository.save(order);
+        }
+
+        return locationMapper.toDto(location);
     }
 
     @Override
