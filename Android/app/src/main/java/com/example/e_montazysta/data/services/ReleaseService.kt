@@ -11,5 +11,5 @@ interface ReleaseService {
     ): List<ReleaseDAO>
 
     @GET("/api/v1/tool-releases/{id}")
-    suspend fun getReleaseDetail(@Header("Authorization") token: String, @Path("id") id: String): ReleaseDAO
+    suspend fun getReleaseDetail(@Header("Authorization") token: String, @Path("id") id: Int): ReleaseDAO
 }

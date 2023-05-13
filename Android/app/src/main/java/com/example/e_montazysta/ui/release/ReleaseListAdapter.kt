@@ -43,7 +43,7 @@ class ReleaseListAdapter(val clickListener: CustomClickListener) : RecyclerView.
         }
     }
 }
-class CustomClickListener(val clickListener: (releaseId: String) -> Unit) {
+class CustomClickListener(val clickListener: (releaseId: Int) -> Unit) {
 
     fun cardClicked(release: ReleaseListItem) = clickListener(release.id)
 }

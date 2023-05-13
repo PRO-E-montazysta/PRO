@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.example.e_montazysta.databinding.FragmentDashboardBinding
+import com.google.android.material.card.MaterialCardView
 
 class DashboardFragment : Fragment() {
 
@@ -30,20 +33,28 @@ class DashboardFragment : Fragment() {
 
         val tools = binding.tools
         tools.setOnClickListener{
-            val action = DashboardFragmentDirections.actionNavigationDashboardToToolsFragment2()
-            findNavController().navigate(action)
+            val direction = DashboardFragmentDirections.actionNavigationDashboardToToolsFragment2()
+            findNavController().navigate(direction)
         }
 
         val releases = binding.releases
         releases.setOnClickListener{
-            val action = DashboardFragmentDirections.actionNavigationDashboardToReleaseListFragment()
-            findNavController().navigate(action)
+            val direction = DashboardFragmentDirections.actionNavigationDashboardToReleaseListFragment()
+            findNavController().navigate(direction)
         }
 
         val orders = binding.orders
         orders.setOnClickListener{
-            val action = DashboardFragmentDirections.actionNavigationDashboardToOrderListFragment()
-            findNavController().navigate(action)
+            val direction = DashboardFragmentDirections.actionNavigationDashboardToOrderListFragment()
+            findNavController().navigate(direction)
+
+        }
+
+        val stages = binding.stages
+        stages.setOnClickListener{
+            val direction = DashboardFragmentDirections.actionNavigationDashboardToStageListFragment()
+            findNavController().navigate(direction)
+
         }
 
         return root

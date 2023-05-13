@@ -24,13 +24,13 @@ class ReleaseDetailViewModel(private val repository: IReleaseRepository) : ViewM
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
-    fun getReleaseDetail(id: String) {
+    fun getReleaseDetail(id: Int) {
         job = launch {
             getReleaseDetailAsync(id)
         }
     }
 
-    private suspend fun getReleaseDetailAsync(id: String) {
+    private suspend fun getReleaseDetailAsync(id: Int) {
         _isLoadingLiveData.postValue(true)
         val result = repository.getReleaseDetail(id)
         when (result) {

@@ -5,7 +5,7 @@ interface IServiceProvider {
     fun getReleaseService(): ReleaseService
     fun getOrderService(): OrderService
     fun getUserService(): UserService
-
     fun getStageService(): StageService
+    fun getCommentService(): CommentService
 
 }

@@ -1,7 +1,12 @@
 package com.example.e_montazysta.ui.stage
 
 import com.example.e_montazysta.data.model.*
+import com.example.e_montazysta.data.repository.Interfaces.ICommentRepository
+import com.example.e_montazysta.data.repository.Interfaces.IReleaseRepository
+import com.example.e_montazysta.data.repository.Interfaces.IUserRepository
 import com.squareup.moshi.Json
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.util.*
 
 data class StageDAO(
@@ -9,14 +14,12 @@ data class StageDAO(
     val id: Int,
     @Json(name = "name")
     val name: String,
-    @Json(name = "priority")
-    val priority: String,
     @Json(name = "status")
     val status: String,
     @Json(name = "plannedStart")
-    val plannedStart: Date,
+    val plannedStart: Date?,
     @Json(name = "plannedEnd")
-    val plannedEnd: Date,
+    val plannedEnd: Date?,
     @Json(name = "startDate")
     val startDate: Date?,
     @Json(name = "plannedDurationTime")
@@ -26,21 +29,53 @@ data class StageDAO(
     @Json(name = "minimumImagesNumber")
     val minimumImagesNumber: Int,
     @Json(name = "fitters")
-    val fitters: List<User>,
+    val fitters: List<Int>,
     @Json(name = "comments")
     val comments: List<Int>,
     @Json(name = "toolReleases")
-    val toolReleases: List<Release>,
+    val toolReleases: List<Int>,
     @Json(name = "elementReturnReleases")
-    val elementReturnReleases: List<Release>,
+    val elementReturnReleases: List<Int>,
     @Json(name = "orderId")
     val orderId: Int,
     @Json(name = "listOfToolsPlannedNumber")
-    val listOfToolsPlannedNumber: List<ToolsType>,
+    val listOfToolsPlannedNumber: List<Int>,
     @Json(name = "listOfElementsPlannedNumber")
-    val listOfElementsPlannedNumber: List<Element>
-)  {
+    val listOfElementsPlannedNumber: List<Int>
+) : KoinComponent {
+    private val userRepository: IUserRepository by inject()
+    private val commentRepository: ICommentRepository by inject()
+    private val releaseRepository: IReleaseRepository by inject()
+
     suspend fun mapToStage(): Stage {
-        return Stage(id, name, fitters)
+        val fittersList: List<User?> = fitters.map {id -> getUserDetails(id)}
+        val commentsList: List<Comment?> = comments.map {id -> getCommentDetails(id)}
+        val releasesList: List<Release?> = toolReleases.map {id -> getReleaseDetails(id)}
+        return Stage(id, name, status, plannedStart, plannedEnd, startDate, plannedDurationTime,
+            plannedFittersNumber, minimumImagesNumber, fittersList, commentsList, releasesList,
+            elementReturnReleases, orderId, listOfToolsPlannedNumber, listOfElementsPlannedNumber)
+    }
+
+    private suspend fun getUserDetails(userId: Int): User? {
+        val result = userRepository.getUserDetails(userId)
+        return when (result) {
+            is Result.Success -> result.data
+            is Result.Error -> null
+        }
+    }
+
+    private suspend fun getCommentDetails(commentId: Int): Comment? {
+        val result = commentRepository.getCommentDetails(commentId)
+        return when (result) {
+            is Result.Success -> result.data
+            is Result.Error -> null
+        }
+    }
+    private suspend fun getReleaseDetails(releaseId: Int): Release? {
+        val result = releaseRepository.getReleaseDetail(releaseId)
+        return when (result) {
+            is Result.Success -> result.data
+            is Result.Error -> null
+        }
     }
 }

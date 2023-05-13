@@ -71,7 +71,7 @@
         android:label="ReleaseDetailFragment" >
         <argument
             android:name="releaseId"
-            app:argType="string" />
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/orderListFragment"

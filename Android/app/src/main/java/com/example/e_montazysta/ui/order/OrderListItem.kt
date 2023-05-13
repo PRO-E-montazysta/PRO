@@ -9,9 +9,9 @@ data class OrderListItem(
     var name: String,
     var priority: String,
     var status: String,
-    var createdAt: String
+//    var createdAt: String? = ""
 )
 
 fun Order.mapToOrderItem(): OrderListItem {
-    return OrderListItem(id, name, priority, status, DateFormat.getDateTimeInstance().format(createdAt))
+    return OrderListItem(id, name, priority, status)
 }

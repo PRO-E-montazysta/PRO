@@ -24,7 +24,7 @@ class ReleaseRepository (
         }
     }
 
-    override suspend fun getReleaseDetail(id: String): Result<Release> {
+    override suspend fun getReleaseDetail(id: Int): Result<Release> {
         return try {
             val releaseService = serviceProvider.getReleaseService()
             val releaseDAO = releaseService.getReleaseDetail(token, id)

@@ -34,14 +34,22 @@ class OrderDetailFragment : Fragment() {
                 binding.nameValue.text = it.name
                 binding.priorityValue.text = it.priority
                 binding.statusValue.text = it.status
-                binding.plannedStartValue.text = DateFormat.getDateTimeInstance().format(it.plannedStart)
-                binding.plannedEndValue.text = DateFormat.getDateTimeInstance().format(it.plannedEnd)
+                it.editedAt?.let {
+                    binding.plannedStartValue.text =
+                        DateFormat.getDateTimeInstance().format(it)
+                }
+                it.editedAt?.let {
+                    binding.plannedEndValue.text = DateFormat.getDateTimeInstance().format(it)
+                }
                 binding.clientIdValue.text = it.client.toString()
                 binding.foremanIdValue.text = it.foreman.toString()
                 binding.managerIdValue.text = it.manager.toString()
                 binding.specialistIdValue.text = it.specialistId.toString()
                 binding.salesRepresentativeIdValue.text = it.salesRepresentativeId.toString()
-                binding.createdAtValue.text = DateFormat.getDateTimeInstance().format(it.createdAt)
+                it.editedAt?.let {
+                    binding.createdAtValue.text =
+                        DateFormat.getDateTimeInstance().format(it)
+                }
                 it.editedAt?.let {
                     binding.editedAtValue.text = DateFormat.getDateTimeInstance().format(it)
                 }

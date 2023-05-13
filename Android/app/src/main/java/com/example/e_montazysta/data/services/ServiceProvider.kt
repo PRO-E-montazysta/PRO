@@ -18,4 +18,7 @@ class ServiceProvider (private val serviceFactory: ServiceFactory) : IServicePro
     override fun getStageService(): StageService {
         return serviceFactory.create(StageService::class.java)
     }
+    override fun getCommentService(): CommentService {
+        return serviceFactory.create(CommentService::class.java)
+    }
 }

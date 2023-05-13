@@ -15,7 +15,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="?android:attr/actionBarSize"
+        android:transitionName="shared_element_container"
         >
 
         <TextView
@@ -36,7 +36,7 @@
             app:layout_constraintEnd_toEndOf="@+id/title"
             app:layout_constraintStart_toStartOf="@+id/title"
             app:layout_constraintTop_toBottomOf="@+id/title"
-            android:layout_marginTop="15dp"
+            android:paddingBottom="?attr/actionBarSize"
             />
 
         <ProgressBar

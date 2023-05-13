@@ -7,14 +7,14 @@ data class Order(
     val name: String,
     val priority: String,
     val status: String,
-    val plannedStart: Date,
-    val plannedEnd: Date,
+    val plannedStart: Date?,
+    val plannedEnd: Date?,
     val client: User?,
     val foreman: User?,
     val manager: User?,
     val specialistId: User?,
     val salesRepresentativeId: User?,
-    val locationId: Int,
-    val createdAt: Date,
+    val locationId: Int?,
+    val createdAt: Date?,
     val editedAt: Date?
 )

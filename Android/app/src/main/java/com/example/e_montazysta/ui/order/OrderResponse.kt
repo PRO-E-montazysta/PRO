@@ -21,23 +21,23 @@ data class OrderDAO (
     @Json(name = "status")
     val status: String,
     @Json(name = "plannedStart")
-    val plannedStart: Date,
+    val plannedStart: Date?,
     @Json(name = "plannedEnd")
-    val plannedEnd: Date,
+    val plannedEnd: Date?,
     @Json(name = "clientId")
-    val clientId: Int,
+    val clientId: Int?,
     @Json(name = "foremanId")
-    val foremanId: Int,
+    val foremanId: Int?,
     @Json(name = "locationId")
-    val locationId: Int,
+    val locationId: Int?,
     @Json(name = "managerId")
-    val managerId: Int,
+    val managerId: Int?,
     @Json(name = "specialistId")
-    val specialistId: Int,
+    val specialistId: Int?,
     @Json(name = "salesRepresentativeId")
-    val salesRepresentativeId: Int,
+    val salesRepresentativeId: Int?,
     @Json(name = "createdAt")
-    val createdAt: Date,
+    val createdAt: Date?,
     @Json(name = "editedAt")
     val editedAt: Date?
 ) : KoinComponent {
@@ -51,9 +51,11 @@ data class OrderDAO (
         return Order(id, name, priority, status, plannedStart, plannedEnd, client, foreman, manager, specialist, salesRepresentative, locationId, createdAt, editedAt)
     }
 
-    private suspend fun getUserDetails(userId: Int): User? {
-        val result = userRepository.getUserDetails(userId)
-        return when (result) {
+    private suspend fun getUserDetails(userId: Int?): User? {
+        if (userId == null) {
+            return null
+        }
+        return when (val result = userRepository.getUserDetails(userId)) {
             is Result.Success -> result.data
             is Result.Error -> null
         }

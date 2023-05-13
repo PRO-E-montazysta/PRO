@@ -3,14 +3,8 @@ package com.example.e_montazysta.data
 import com.example.e_montazysta.data.environments.Environment
 import com.example.e_montazysta.data.network.NetworkServiceFactory
 import com.example.e_montazysta.data.network.ServiceFactory
-import com.example.e_montazysta.data.repository.Interfaces.IOrderRepository
-import com.example.e_montazysta.data.repository.Interfaces.IReleaseRepository
-import com.example.e_montazysta.data.repository.Interfaces.IToolRepository
-import com.example.e_montazysta.data.repository.Interfaces.IUserRepository
-import com.example.e_montazysta.data.repository.OrderRepository
-import com.example.e_montazysta.data.repository.ReleaseRepository
-import com.example.e_montazysta.data.repository.ToolRepository
-import com.example.e_montazysta.data.repository.UserRepository
+import com.example.e_montazysta.data.repository.*
+import com.example.e_montazysta.data.repository.Interfaces.*
 import com.example.e_montazysta.data.services.IServiceProvider
 import com.example.e_montazysta.data.services.ServiceProvider
 import com.example.e_montazysta.helpers.CustomDateAdapter
@@ -86,6 +80,18 @@ val dataModule = module {
         val userRepository: IUserRepository =
             UserRepository(get())
         userRepository
+    }
+
+    factory {
+        val stageRepository: IStageRepository =
+            StageRepository(get())
+        stageRepository
+    }
+
+    factory {
+        val commentRepository: ICommentRepository =
+            CommentRepository(get())
+        commentRepository
     }
 
     viewModel {

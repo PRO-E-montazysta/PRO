@@ -50,12 +50,12 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 tools:text="@{order.priority}" />
-            <TextView
-                android:id="@+id/createdAt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                tools:text="@{order.createdAt}" />
+<!--            <TextView-->
+<!--                android:id="@+id/createdAt"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textSize="14sp"-->
+<!--                tools:text="@{order.createdAt}" />-->
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
