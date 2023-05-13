@@ -24,13 +24,13 @@ class OrderDetailViewModel(private val repository: IOrderRepository) : ViewModel
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
-    fun getOrderDetail(id: String) {
+    fun getOrderDetail(id: Int) {
         job = launch {
             getOrderDetailAsync(id)
         }
     }
 
-    private suspend fun getOrderDetailAsync(id: String) {
+    private suspend fun getOrderDetailAsync(id: Int) {
         _isLoadingLiveData.postValue(true)
         val result = repository.getOrderDetails(id)
         when (result) {

@@ -1,14 +1,17 @@
 package com.example.e_montazysta.ui.order
 
 import com.example.e_montazysta.data.model.Order
+import java.text.DateFormat
+import java.util.*
 
 data class OrderListItem(
-    var id: String,
+    var id: Int,
     var name: String,
     var priority: String,
     var status: String,
-    var createdAt: String)
+    var createdAt: String
+)
 
 fun Order.mapToOrderItem(): OrderListItem {
-    return OrderListItem(id, name, priority, status, createdAt)
+    return OrderListItem(id, name, priority, status, DateFormat.getDateTimeInstance().format(createdAt))
 }

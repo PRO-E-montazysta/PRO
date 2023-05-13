@@ -11,5 +11,5 @@ interface OrderService {
     ): List<OrderDAO>
 
     @GET("/api/v1/orders/{id}")
-    suspend fun getOrderDetail(@Header("Authorization") token: String, @Path("id") id: String): OrderDAO
+    suspend fun getOrderDetail(@Header("Authorization") token: String, @Path("id") id: Int): OrderDAO
 }

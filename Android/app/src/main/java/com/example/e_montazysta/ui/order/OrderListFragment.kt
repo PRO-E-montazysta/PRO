@@ -24,9 +24,7 @@ class OrderListFragment : Fragment() {
         // give the binding object a reference to it.
         binding.orderListViewModel = orderListViewModel
         val adapter = OrderListAdapter( CustomClickListener{
-            orderId -> Toast.makeText(context, orderId, Toast.LENGTH_SHORT).show()
-            val action = OrderListFragmentDirections.actionOrderListFragmentToOrderDetailFragment(orderId)
-            findNavController().navigate(action)
+                orderId -> findNavController().navigate( OrderListFragmentDirections.actionOrderListFragmentToOrderDetailFragment(orderId))
         })
 
         binding.orderList.adapter = adapter

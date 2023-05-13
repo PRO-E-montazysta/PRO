@@ -5,5 +5,5 @@ import com.example.e_montazysta.data.model.Result
 
 interface IOrderRepository {
     suspend fun getListOfOrders() : Result<List<Order>>
-    suspend fun getOrderDetails(id: String): Result<Order>
+    suspend fun getOrderDetails(id: Int): Result<Order>
 }

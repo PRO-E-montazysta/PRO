@@ -43,7 +43,7 @@ class OrderListAdapter(val clickListener: CustomClickListener) : RecyclerView.Ad
         }
     }
 }
-class CustomClickListener(val clickListener: (orderId: String) -> Unit) {
+class CustomClickListener(val clickListener: (orderId: Int) -> Unit) {
 
     fun cardClicked(order: OrderListItem) = clickListener(order.id)
 }

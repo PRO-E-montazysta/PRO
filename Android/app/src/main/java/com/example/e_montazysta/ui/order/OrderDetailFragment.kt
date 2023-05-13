@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.example.e_montazysta.databinding.FragmentOrderDetailBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.text.DateFormat
 
 class OrderDetailFragment : Fragment() {
     private val orderDetailViewModel: OrderDetailViewModel by viewModel()
@@ -33,15 +34,18 @@ class OrderDetailFragment : Fragment() {
                 binding.nameValue.text = it.name
                 binding.priorityValue.text = it.priority
                 binding.statusValue.text = it.status
-                binding.plannedStartValue.text = it.plannedStart
-                binding.plannedEndValue.text = it.plannedEnd
+                binding.plannedStartValue.text = DateFormat.getDateTimeInstance().format(it.plannedStart)
+                binding.plannedEndValue.text = DateFormat.getDateTimeInstance().format(it.plannedEnd)
                 binding.clientIdValue.text = it.client.toString()
                 binding.foremanIdValue.text = it.foreman.toString()
                 binding.managerIdValue.text = it.manager.toString()
                 binding.specialistIdValue.text = it.specialistId.toString()
                 binding.salesRepresentativeIdValue.text = it.salesRepresentativeId.toString()
-                binding.createdAtValue.text = it.createdAt
-                binding.editedAtValue.text = it.editedAt
+                binding.createdAtValue.text = DateFormat.getDateTimeInstance().format(it.createdAt)
+                it.editedAt?.let {
+                    binding.editedAtValue.text = DateFormat.getDateTimeInstance().format(it)
+                }
+
             }
         })
         // Specify the current activity as the lifecycle owner of the binding.

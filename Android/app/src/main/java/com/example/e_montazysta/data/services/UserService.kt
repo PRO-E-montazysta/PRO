@@ -10,6 +10,6 @@ interface UserService {
     @GET("/api/v1/users/filter")
     suspend fun getListOfUsers(@Header("Authorization") token: String
     ): List<User>
-    @GET("/api/v1/orders/{id}")
-    suspend fun getUserDetail(@Header("Authorization") token: String, @Path("id") id: Int): User
+    @GET("/api/v1/users/{id}")
+    fun getUserDetail(@Header("Authorization") token: String, @Path("id") id: Int): User
 }

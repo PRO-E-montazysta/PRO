@@ -15,8 +15,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="19dp"
-        android:layout_marginVertical="33dp">
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginBottom="?android:attr/actionBarSize"
+        >
 
         <TextView
             android:id="@+id/title"
@@ -197,7 +198,7 @@
                 android:id="@+id/editedAtValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="editedAtValue"
+                android:text="Brak"
                 android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
         </LinearLayout>
 

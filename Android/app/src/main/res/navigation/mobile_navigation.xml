@@ -85,7 +85,7 @@
         >
         <argument
             android:name="orderId"
-            app:argType="string" />
+            app:argType="integer" />
         <action
             android:id="@+id/action_orderDetailFragment_to_releaseDetailFragment"
             app:destination="@id/releaseDetailFragment" />

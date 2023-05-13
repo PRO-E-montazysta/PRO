@@ -7,11 +7,13 @@ import com.example.e_montazysta.data.repository.Interfaces.IOrderRepository
 import com.example.e_montazysta.data.repository.Interfaces.IUserRepository
 import com.squareup.moshi.Json
 import com.example.e_montazysta.data.repository.UserRepository
-import org.koin.java.KoinJavaComponent.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import java.util.*
 
-data class OrderDAO(
+data class OrderDAO (
     @Json(name = "id")
-    val id: String,
+    val id: Int,
     @Json(name = "name")
     val name: String,
     @Json(name = "typeOfPriority")
@@ -19,9 +21,9 @@ data class OrderDAO(
     @Json(name = "status")
     val status: String,
     @Json(name = "plannedStart")
-    val plannedStart: String,
+    val plannedStart: Date,
     @Json(name = "plannedEnd")
-    val plannedEnd: String,
+    val plannedEnd: Date,
     @Json(name = "clientId")
     val clientId: Int,
     @Json(name = "foremanId")
@@ -35,11 +37,11 @@ data class OrderDAO(
     @Json(name = "salesRepresentativeId")
     val salesRepresentativeId: Int,
     @Json(name = "createdAt")
-    val createdAt: String,
+    val createdAt: Date,
     @Json(name = "editedAt")
-    val editedAt: String?,
-    private val userRepository: IUserRepository
-){
+    val editedAt: Date?
+) : KoinComponent {
+    val userRepository: IUserRepository by inject()
     suspend fun mapToOrder(): Order {
         val client = getUserDetails(clientId)
         val manager = getUserDetails(managerId)
@@ -51,9 +53,9 @@ data class OrderDAO(
 
     private suspend fun getUserDetails(userId: Int): User? {
         val result = userRepository.getUserDetails(userId)
-        when (result) {
-            is Result.Success -> return result.data
-            is Result.Error -> return null
+        return when (result) {
+            is Result.Success -> result.data
+            is Result.Error -> null
         }
     }
 }

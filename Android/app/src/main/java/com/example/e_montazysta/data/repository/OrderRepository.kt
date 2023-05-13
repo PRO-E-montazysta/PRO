@@ -16,16 +16,14 @@ class OrderRepository (private val serviceProvider: IServiceProvider): IOrderRep
         return try {
             val orderService = serviceProvider.getOrderService()
             val orderDAOs = orderService.getListOfOrders(token)
-            println(orderDAOs)
             val orders = orderDAOs.map { it.mapToOrder() }
-
             Result.Success(orders)
         } catch (e: Exception) {
             Result.Error(e)
         }
     }
 
-    override suspend fun getOrderDetails(id: String): Result<Order> {
+    override suspend fun getOrderDetails(id: Int): Result<Order> {
         return try {
             val orderService = serviceProvider.getOrderService()
             val orderDAO = orderService.getOrderDetail(token, id)

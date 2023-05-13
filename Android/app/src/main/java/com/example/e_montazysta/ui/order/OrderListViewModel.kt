@@ -32,13 +32,13 @@ class OrderListViewModel(private val repository: IOrderRepository) : ViewModel()
     }
 
     private suspend fun getOrderAsync() {
-      //  _isLoadingLiveData.postValue(true)
+        _isLoadingLiveData.postValue(true)
             val result = repository.getListOfOrders()
             when (result) {
                 is Result.Success -> _orderLiveData.postValue(result.data.map { it.mapToOrderItem() })
                 is Result.Error -> result.exception.message?.let { _messageLiveData.postValue(it) }
             }
-       // _isLoadingLiveData.postValue(false)
+        _isLoadingLiveData.postValue(false)
     }
 
     override fun onCleared() {

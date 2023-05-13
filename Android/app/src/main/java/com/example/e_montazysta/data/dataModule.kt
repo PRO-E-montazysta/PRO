@@ -13,6 +13,7 @@ import com.example.e_montazysta.data.repository.ToolRepository
 import com.example.e_montazysta.data.repository.UserRepository
 import com.example.e_montazysta.data.services.IServiceProvider
 import com.example.e_montazysta.data.services.ServiceProvider
+import com.example.e_montazysta.helpers.CustomDateAdapter
 import com.example.e_montazysta.ui.order.OrderDetailViewModel
 import com.example.e_montazysta.ui.order.OrderListViewModel
 import com.example.e_montazysta.ui.release.ReleaseDetailViewModel
@@ -25,12 +26,14 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Converter
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.*
 
 val dataModule = module {
     factory {
         val moshi =
             Moshi.Builder()
                 .add(KotlinJsonAdapterFactory())
+                .add(Date::class.java, CustomDateAdapter().nullSafe())
                 .build()
         moshi
     }
