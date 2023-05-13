@@ -71,11 +71,8 @@ export const useDeleteTool = (onSuccess: () => void) => {
                 ],
                 title: 'Sukces!',
                 content: <Box>Narzędzie zostało usunięte</Box>,
-                callback: () => () => {
-                    onSuccess()
-                    navigate('/tools')
-                },
             })
+            navigate('/tools')
         },
         onError: showError,
     })

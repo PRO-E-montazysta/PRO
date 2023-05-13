@@ -72,11 +72,8 @@ export const useDeleteElement = (onSuccess: () => void) => {
                 ],
                 title: 'Sukces!',
                 content: <Box>Element został usunięty</Box>,
-                callback: () => () => {
-                    onSuccess()
-                    navigate('/elements')
-                },
             })
+            navigate('/elements')
         },
         onError: showError,
     })
