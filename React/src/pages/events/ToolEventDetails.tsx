@@ -51,7 +51,7 @@ const ToolEventDetails = () => {
                 { text: 'Anuluj', value: 0, variant: 'outlined' },
             ],
             callback: (result: number) => {
-                if (result === 1 && params.id && Number.isInteger(params.id)) deleteToolEventMutation.mutate(params.id)
+                if (result === 1 && params.id) deleteToolEventMutation.mutate(params.id)
             },
         })
     }
