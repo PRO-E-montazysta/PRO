@@ -9,14 +9,15 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent">
-
+        android:layout_height="wrap_content">
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:title="tutaj będzie appbar"
+            app:navigationIcon="@android:drawable/arrow_down_float"
+            app:title="E-montażownia"
+            app:menu="@menu/top_app_bar_menu"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
             />
     </com.google.android.material.appbar.AppBarLayout>
 

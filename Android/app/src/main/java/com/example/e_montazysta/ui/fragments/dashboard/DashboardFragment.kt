@@ -40,6 +40,10 @@ class DashboardFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+        val elements = binding.elements
+        elements.setOnClickListener{
+            val action = DashboardFragmentDirections.actionNavigationDashboardToElementsListFragment()
+        }
         return root
     }
 
