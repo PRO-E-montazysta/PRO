@@ -5,8 +5,8 @@
 
     <data>
     <variable
-        name="orderDetailViewModel"
-        type="com.example.e_montazysta.ui.order.OrderDetailViewModel" />
+        name="stageDetailViewModel"
+        type="com.example.e_montazysta.ui.stage.StageDetailViewModel" />
     </data>
     <ScrollView
         android:layout_width="match_parent"

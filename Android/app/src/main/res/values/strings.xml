@@ -33,4 +33,5 @@
     <string name="orderPrice">Cena</string>
     <string name="order_list_tile">Lista zleceń</string>
     <string name="title_orders">Zlecenia</string>
+    <string name="stages_list_tile">Lista etapów</string>
 </resources>

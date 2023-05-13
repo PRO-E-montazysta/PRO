@@ -26,6 +26,9 @@
         <action
             android:id="@+id/action_navigation_dashboard_to_releaseListFragment2"
             app:destination="@id/releaseListFragment" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_stageListFragment"
+            app:destination="@id/stageListFragment" />
     </fragment>
 
     <fragment
@@ -86,8 +89,22 @@
         <argument
             android:name="orderId"
             app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/stageDetailFragment"
+        android:name="com.example.e_montazysta.ui.stage.StageDetailFragment"
+        android:label="StageDetailFragment">
+        <argument
+            android:name="stageId"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/stageListFragment"
+        android:name="com.example.e_montazysta.ui.stage.StageListFragment"
+        android:label="StageListFragment" >
         <action
-            android:id="@+id/action_orderDetailFragment_to_releaseDetailFragment"
-            app:destination="@id/releaseDetailFragment" />
+            android:id="@+id/action_stageListFragment_to_stageDetailFragment"
+            app:destination="@id/stageDetailFragment" />
     </fragment>
 </navigation>

@@ -18,6 +18,8 @@ import com.example.e_montazysta.ui.order.OrderDetailViewModel
 import com.example.e_montazysta.ui.order.OrderListViewModel
 import com.example.e_montazysta.ui.release.ReleaseDetailViewModel
 import com.example.e_montazysta.ui.release.ReleaseListViewModel
+import com.example.e_montazysta.ui.stage.StageDetailViewModel
+import com.example.e_montazysta.ui.stage.StageListViewModel
 import com.example.e_montazysta.ui.toollist.ToolsListViewModel
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -100,5 +102,11 @@ val dataModule = module {
     }
     viewModel {
         OrderDetailViewModel(get())
+    }
+    viewModel {
+        StageListViewModel(get())
+    }
+    viewModel {
+        StageDetailViewModel(get())
     }
 }
