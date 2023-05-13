@@ -185,6 +185,9 @@ public class EventCriteriaRepository {
                             .get("warehouse").get("company").get("id"), authUtils.getLoggedUserCompanyId()));
         }
 
+        //Get not-deleted
+        predicates.add(criteriaBuilder.equal(elementEventRoot.get("deleted"), false));
+
         return  criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 }
