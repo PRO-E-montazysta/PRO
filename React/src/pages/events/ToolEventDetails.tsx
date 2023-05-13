@@ -18,6 +18,7 @@ import { Tool } from '../../types/model/Tool'
 import { AxiosError } from 'axios'
 import { getAllTools } from '../../api/tool.api'
 import DisplayToolHistory from '../../components/toolHistory/DisplayToolHistory'
+import Error from '../../components/error/Error'
 
 const ToolEventDetails = () => {
     const params = useParams()
@@ -101,7 +102,11 @@ const ToolEventDetails = () => {
         staleTime: 10 * 60 * 1000,
     })
 
-    return (
+    return toolEventData.data?.deleted ? (
+        <>
+            <Error code={404} message={'Ten obiekt został usunięty'} />
+        </>
+    ) : (
         <>
             <FormBox>
                 <FormTitle

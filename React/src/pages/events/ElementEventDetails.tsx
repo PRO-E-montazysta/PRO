@@ -15,11 +15,9 @@ import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
 import { useQuery } from 'react-query'
 import { AxiosError } from 'axios'
-import { getFilteredEvents } from '../../api/event.api'
-import { Tool } from '../../types/model/Tool'
-import { getAllTools } from '../../api/tool.api'
 import { getAllElements } from '../../api/element.api'
 import { Element } from '../../types/model/Element'
+import Error from '../../components/error/Error'
 
 const ElementEventDetails = () => {
     const params = useParams()
@@ -102,7 +100,11 @@ const ElementEventDetails = () => {
         cacheTime: 15 * 60 * 1000,
         staleTime: 10 * 60 * 1000,
     })
-    return (
+    return elementEventData.data?.deleted ? (
+        <>
+            <Error code={404} message={'Ten obiekt został usunięty'} />
+        </>
+    ) : (
         <>
             <FormBox>
                 <FormTitle

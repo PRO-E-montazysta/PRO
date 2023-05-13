@@ -13,6 +13,7 @@ import QueryBoxStatus from '../../components/base/QueryStatusBox'
 import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
+import Error from '../../components/error/Error'
 
 const ToolTypeDetails = () => {
     const params = useParams()
@@ -91,7 +92,11 @@ const ToolTypeDetails = () => {
         }
     }, [params.id])
 
-    return (
+    return toolTypeData.data?.deleted ? (
+        <>
+            <Error code={404} message={'Ten obiekt został usunięty'} />
+        </>
+    ) : (
         <FormBox>
             <FormTitle
                 mainTitle={pageMode == 'new' ? 'Nowy typ narzędzia' : 'Typ narzędzia'}

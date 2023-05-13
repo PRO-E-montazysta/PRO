@@ -1,7 +1,6 @@
 import { useFormik } from 'formik'
 import { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-
 import { useFormStructure } from './helper'
 import FormBox from '../../components/form/FormBox'
 import FormTitle from '../../components/form/FormTitle'
@@ -14,6 +13,7 @@ import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { getInitValues, getValidatinSchema } from '../../helpers/form.helper'
 import { useAddElement, useDeleteElement, useEditElement, useElementData } from './hooks'
 import { useQueriesStatus } from '../../hooks/useQueriesStatus'
+import Error from '../../components/error/Error'
 
 const ElementDetails = () => {
     const params = useParams()
@@ -92,7 +92,11 @@ const ElementDetails = () => {
         }
     }, [params.id])
 
-    return (
+    return elementData.data?.deleted ? (
+        <>
+            <Error code={404} message={'Ten obiekt został usunięty'} />
+        </>
+    ) : (
         <>
             <FormBox>
                 <FormTitle

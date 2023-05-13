@@ -1,11 +1,6 @@
-import { Paper, Typography } from '@mui/material'
-import { Box } from '@mui/system'
 import { useFormik } from 'formik'
 import { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-
-import { theme } from '../../themes/baseTheme'
-
 import { useFormStructure } from './helper'
 import {
     useAddOrderLocation,
@@ -28,7 +23,8 @@ import FormBox from '../../components/form/FormBox'
 import { PageMode } from '../../types/form'
 import Localization from '../../components/localization/Localization'
 import { Order } from '../../types/model/Order'
-import { useAddLocation, useFormStructureLocation, useLocationData } from '../../components/localization/hooks'
+import { useFormStructureLocation, useLocationData } from '../../components/localization/hooks'
+import Error from '../../components/error/Error'
 
 const OrderDetails = () => {
     //parameters from url
@@ -162,7 +158,11 @@ const OrderDetails = () => {
         }
     }, [queryLocationData.data])
 
-    return (
+    return orderData.data?.deleted ? (
+        <>
+            <Error code={404} message={'Ten obiekt został usunięty'} />
+        </>
+    ) : (
         <>
             <FormBox>
                 <FormTitle

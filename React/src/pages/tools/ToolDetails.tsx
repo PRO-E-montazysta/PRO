@@ -14,6 +14,7 @@ import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
 import DisplayToolHistory from '../../components/toolHistory/DisplayToolHistory'
+import Error from '../../components/error/Error'
 
 const ToolDetails = () => {
     const params = useParams()
@@ -89,7 +90,11 @@ const ToolDetails = () => {
         }
     }, [params.id])
 
-    return (
+    return toolData.data?.deleted ? (
+        <>
+            <Error code={404} message={'Ten obiekt został usunięty'} />
+        </>
+    ) : (
         <FormBox>
             <FormTitle
                 mainTitle={pageMode == 'new' ? 'Nowe narzędzie' : 'Narzędzie'}

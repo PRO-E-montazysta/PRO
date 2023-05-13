@@ -14,6 +14,7 @@ import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
 import { typeOfUnavailabilityName } from '../../helpers/enum.helper'
+import Error from '../../components/error/Error'
 
 const UnavailabilityDetails = () => {
     const params = useParams()
@@ -92,7 +93,11 @@ const UnavailabilityDetails = () => {
         }
     }, [params.id])
 
-    return (
+    return unavailabilityData.data?.deleted ? (
+        <>
+            <Error code={404} message={'Ten obiekt został usunięty'} />
+        </>
+    ) : (
         <FormBox>
             <FormTitle
                 mainTitle={pageMode == 'new' ? 'Nowa nieobecność' : 'Nieobecność'}

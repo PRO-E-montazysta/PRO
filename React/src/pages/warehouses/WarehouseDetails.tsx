@@ -1,6 +1,5 @@
 import { useFormik } from 'formik'
 import { useContext, useEffect, useState } from 'react'
-
 import { useParams } from 'react-router-dom'
 import { useFormStructure } from './helper'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
@@ -24,6 +23,7 @@ import { PageMode } from '../../types/form'
 import { useFormStructureLocation, useLocationData } from '../../components/localization/hooks'
 import { Warehouse } from '../../types/model/Warehouse'
 import Localization from '../../components/localization/Localization'
+import Error from '../../components/error/Error'
 
 const WarehouseDetails = () => {
     const params = useParams()
@@ -146,7 +146,11 @@ const WarehouseDetails = () => {
         }
     }, [queryLocationData.data])
 
-    return (
+    return warehouseData.data?.deleted ? (
+        <>
+            <Error code={404} message={'Ten obiekt został usunięty'} />
+        </>
+    ) : (
         <FormBox>
             <FormTitle
                 mainTitle={pageMode == 'new' ? 'Nowy magazyn' : 'Magazyn'}

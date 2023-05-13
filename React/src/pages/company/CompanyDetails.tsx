@@ -19,6 +19,7 @@ import QueryBoxStatus from '../../components/base/QueryStatusBox'
 import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { useInputWidth } from '../../hooks/useInputWidth'
+import Error from '../../components/error/Error'
 
 const CompanyDetails = () => {
     const params = useParams()
@@ -100,7 +101,11 @@ const CompanyDetails = () => {
     const inputWidth = useInputWidth()
 
     const addAdminCardContent = () => {
-        return (
+        return companyData.data?.deleted ? (
+            <>
+                <Error code={404} message={'Ten obiekt został usunięty'} />
+            </>
+        ) : (
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '15px' }}>
                 <FormInput
                     style={{ width: inputWidth }}

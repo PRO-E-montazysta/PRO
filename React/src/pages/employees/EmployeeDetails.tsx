@@ -14,6 +14,7 @@ import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
 import { roleName } from '../../helpers/enum.helper'
+import Error from '../../components/error/Error'
 
 const EmployeeDetails = () => {
     const params = useParams()
@@ -92,7 +93,11 @@ const EmployeeDetails = () => {
         }
     }, [params.id])
 
-    return (
+    return employeeData.data?.deleted ? (
+        <>
+            <Error code={404} message={'Ten obiekt został usunięty'} />
+        </>
+    ) : (
         <FormBox>
             <FormTitle
                 mainTitle={pageMode == 'new' ? 'Nowy pracownik' : 'Pracownik'}
