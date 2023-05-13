@@ -17,5 +17,4 @@ data class Order(
     val locationId: Int,
     val createdAt: Date,
     val editedAt: Date?
-) {
-}
+)

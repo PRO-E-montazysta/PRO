@@ -1,5 +1,3 @@
 package com.example.e_montazysta.data.model
 
-class Element {
-
-}
+class Element

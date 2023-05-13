@@ -1,7 +1,5 @@
 package com.example.e_montazysta.data.model
 
-import java.util.*
-
 data class Stage(
     val id: Int,
     val name: String,
@@ -20,5 +18,4 @@ data class Stage(
 //    val orderId: Int,
 //    val listOfToolsPlannedNumber: List<ToolsType>,
 //    val listOfElementsPlannedNumber: List<Element>
-) {
-}
+)

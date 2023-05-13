@@ -1,7 +1,7 @@
 package com.example.e_montazysta.data.model
 
 class TokenResponse {
-    private var token: String?;
+    private var token: String?
 
     constructor(token: String?) {
         this.token = token

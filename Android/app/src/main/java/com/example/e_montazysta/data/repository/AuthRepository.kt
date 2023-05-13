@@ -17,7 +17,7 @@ class AuthRepository : IAuthRepository, KoinComponent {
 
     override fun login(login: String, password: String) : Result<LoggedInUser> {
         val creds = LoginCredentials(login, password)
-        var rsp : String? = null;
+        var rsp : String? = null
         try {
              var token  = HttpRequestHelper.sendHttpToolRequest<LoginCredentials, TokenResponse>(
                 "https://dev.emontazysta.pl/api/v1/gettoken",

@@ -9,5 +9,4 @@ data class Release(
     val toolId: String,
     val demandAdHocId: String?,
     val orderStageId: String,
-) {
-}
+)
