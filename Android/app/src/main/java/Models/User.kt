@@ -1,5 +1,0 @@
-package Models
-
-class User {
-
-}
