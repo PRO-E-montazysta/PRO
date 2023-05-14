@@ -5,10 +5,11 @@ export type FormInputParams = {
     label?: string
     id: string
     formik: any
-    firstChild?: boolean//deprecated
+    firstChild?: boolean //deprecated
     options?: Array<SelectMenuItemProps>
     style?: CSSProperties
     type?: HTMLInputTypeAttribute
+    formatFn?: (value: any) => string
 }
 
 export type FormLabelProps = {

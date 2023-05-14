@@ -7,9 +7,10 @@ export type FormInputProps = {
     label: string
     id: string
     initValue: any
-    type: 'input' | 'select' | 'date' | 'password' | 'date-time' | 'number'
+    type: 'input' | 'select' | 'date' | 'password' | 'date-time' | 'number' | 'can-be-deleted'
     options?: Array<SelectMenuItemProps>
     validation?: yup.AnySchema
+    formatFn?: (value: any) => string
 
     //always readonly
     readonly?: boolean //deprecated
@@ -21,7 +22,6 @@ export type FormInputProps = {
     viewPermissionRoles?: Array<Role>
     addNewPermissionRoles?: Array<Role>
 
-    
     customPermission?: (inputValue: any) => InputDisplayMode | null
 
     //if not provided then validation on update is take from validation property

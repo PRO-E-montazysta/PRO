@@ -13,6 +13,7 @@ import { Element } from '../../types/model/Element'
 import { Role } from '../../types/roleEnum'
 import { getAllTools } from '../../api/tool.api'
 import { Tool } from '../../types/model/Tool'
+import { DeletedToolName } from '../../helpers/Delted.helper'
 
 export const headCells: Array<HeadCell<Event>> = [
     {
@@ -180,12 +181,24 @@ export const useToolEventFormStructure = (): Array<FormInputProps> => {
             type: 'select',
             options: formatArrayToOptions('id', (x: Tool) => x.name + ' - ' + x.code, queryTools.data),
             validation: yup.string().required('Wybierz narzędzie!'),
+            addNewPermissionRoles: [Role['*']],
+            viewPermissionRoles: [Role.NOBODY],
+        },
+        {
+            label: 'Zgłaszane narzędzie',
+            id: 'toolId',
+            initValue: '',
+            type: 'can-be-deleted',
+            formatFn: (id: string) => DeletedToolName(id),
+            addNewPermissionRoles: [Role.NOBODY],
+            editPermissionRoles: [Role.NOBODY],
         },
         {
             label: 'Opis',
             id: 'description',
             initValue: '',
             type: 'input',
+            formatFn: (status: string) => eventTypeName(status),
         },
         {
             label: 'Status',
