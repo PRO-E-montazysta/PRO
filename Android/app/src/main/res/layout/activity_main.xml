@@ -7,15 +7,13 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:elevation="4dp"
-    tools:context=".MainActivity">
+    tools:context=".ui.activities.MainActivity">
 
     <LinearLayout
-        android:background="@drawable/backdrop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="0dp"
+        android:layout_centerVertical="true"
+        android:background="@drawable/backdrop"
         android:elevation="4dp"
         android:orientation="vertical"
         android:padding="30dp">
