@@ -3,9 +3,12 @@ package com.emontazysta.service.impl;
 import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.ManagerMapper;
 import com.emontazysta.model.Manager;
+import com.emontazysta.model.dto.EmployeeDto;
 import com.emontazysta.model.dto.EmploymentDto;
 import com.emontazysta.model.dto.ManagerDto;
+import com.emontazysta.model.searchcriteria.AppUserSearchCriteria;
 import com.emontazysta.repository.ManagerRepository;
+import com.emontazysta.repository.criteria.AppUserCriteriaRepository;
 import com.emontazysta.service.EmploymentService;
 import com.emontazysta.service.ManagerService;
 import com.emontazysta.util.AuthUtils;
@@ -13,11 +16,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,12 +30,20 @@ public class ManagerServiceImpl implements ManagerService {
     private final ManagerMapper managerMapper;
     private final EmploymentService employmentService;
     private final AuthUtils authUtils;
+    private final AppUserCriteriaRepository appUserCriteriaRepository;
 
     @Override
-    public List<ManagerDto> getAll() {
-        return repository.findAll().stream()
-                .map(managerMapper::toDto)
-                .collect(Collectors.toList());
+    public List<ManagerDto> getAll(Principal principal) {
+        List<EmployeeDto> appUsers = appUserCriteriaRepository.findAllWithFilters(new AppUserSearchCriteria(), principal);
+        List<ManagerDto> result = new ArrayList<>();
+
+        for(EmployeeDto employeeDto : appUsers) {
+            if(employeeDto.getRoles().contains(Role.MANAGER)) {
+                result.add(managerMapper.toDto(repository.getReferenceById(employeeDto.getId())));
+            }
+        }
+
+        return result;
     }
 
     @Override

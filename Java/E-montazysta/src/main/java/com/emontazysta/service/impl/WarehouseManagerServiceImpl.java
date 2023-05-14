@@ -3,9 +3,12 @@ package com.emontazysta.service.impl;
 import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.WarehouseManagerMapper;
 import com.emontazysta.model.WarehouseManager;
+import com.emontazysta.model.dto.EmployeeDto;
 import com.emontazysta.model.dto.EmploymentDto;
 import com.emontazysta.model.dto.WarehouseManagerDto;
+import com.emontazysta.model.searchcriteria.AppUserSearchCriteria;
 import com.emontazysta.repository.WarehouseManagerRepository;
+import com.emontazysta.repository.criteria.AppUserCriteriaRepository;
 import com.emontazysta.service.EmploymentService;
 import com.emontazysta.service.WarehouseManagerService;
 import com.emontazysta.util.AuthUtils;
@@ -13,11 +16,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,12 +30,20 @@ public class WarehouseManagerServiceImpl implements WarehouseManagerService {
     private final WarehouseManagerMapper warehouseManagerMapper;
     private final EmploymentService employmentService;
     private final AuthUtils authUtils;
+    private final AppUserCriteriaRepository appUserCriteriaRepository;
 
     @Override
-    public List<WarehouseManagerDto> getAll() {
-        return repository.findAll().stream()
-                .map(warehouseManagerMapper::toDto)
-                .collect(Collectors.toList());
+    public List<WarehouseManagerDto> getAll(Principal principal) {
+        List<EmployeeDto> appUsers = appUserCriteriaRepository.findAllWithFilters(new AppUserSearchCriteria(), principal);
+        List<WarehouseManagerDto> result = new ArrayList<>();
+
+        for(EmployeeDto employeeDto : appUsers) {
+            if(employeeDto.getRoles().contains(Role.WAREHOUSE_MANAGER)) {
+                result.add(warehouseManagerMapper.toDto(repository.getReferenceById(employeeDto.getId())));
+            }
+        }
+
+        return result;
     }
 
     @Override
