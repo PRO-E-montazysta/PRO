@@ -19,7 +19,8 @@ import { postWarehouseManager, updateWarehouseManager } from '../../api/warehous
 import { Role } from '../../types/roleEnum'
 
 const sendRoleBasedPost = (data: Employee) => {
-    const role = data.roles[0]
+    const role = data.roles && data.roles
+    data.roles = null
 
     switch (role) {
         case Role.ADMIN:
@@ -70,7 +71,7 @@ export const useAddEmployee = () => {
 }
 
 const sendRoleBasedUpdate = (data: Employee) => {
-    const role = data.roles[0]
+    const role = data.roles && data.roles[0]
 
     switch (role) {
         case Role.ADMIN:
