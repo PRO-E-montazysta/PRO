@@ -1,12 +1,13 @@
 package com.emontazysta.service.impl;
 
 import com.emontazysta.enums.Role;
+import com.emontazysta.mapper.EmploymentMapper;
 import com.emontazysta.mapper.WarehouseManagerMapper;
 import com.emontazysta.model.WarehouseManager;
 import com.emontazysta.model.dto.EmploymentDto;
 import com.emontazysta.model.dto.WarehouseManagerDto;
+import com.emontazysta.repository.EmploymentRepository;
 import com.emontazysta.repository.WarehouseManagerRepository;
-import com.emontazysta.service.EmploymentService;
 import com.emontazysta.service.WarehouseManagerService;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,8 @@ public class WarehouseManagerServiceImpl implements WarehouseManagerService {
 
     private final WarehouseManagerRepository repository;
     private final WarehouseManagerMapper warehouseManagerMapper;
-    private final EmploymentService employmentService;
+    private final EmploymentRepository employmentRepository;
+    private final EmploymentMapper employmentMapper;
     private final AuthUtils authUtils;
 
     @Override
@@ -73,7 +75,7 @@ public class WarehouseManagerServiceImpl implements WarehouseManagerService {
                 .companyId(authUtils.getLoggedUserCompanyId())
                 .employeeId(warehouseManager.getId())
                 .build();
-        employmentService.add(employmentDto);
+        employmentRepository.save(employmentMapper.toEntity(employmentDto));
 
         return warehouseManagerMapper.toDto(warehouseManager);
     }

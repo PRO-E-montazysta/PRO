@@ -2,13 +2,9 @@ package com.emontazysta.service.impl;
 
 import com.emontazysta.mail.MailTemplates;
 import com.emontazysta.mapper.CompanyAdminMapper;
-import com.emontazysta.mapper.CompanyWithAdminMapper;
 import com.emontazysta.mapper.EmploymentMapper;
 import com.emontazysta.model.EmailData;
-import com.emontazysta.model.Employment;
 import com.emontazysta.enums.Role;
-import com.emontazysta.mapper.CompanyAdminMapper;
-import com.emontazysta.model.Fitter;
 import com.emontazysta.model.dto.CompanyAdminDto;
 import com.emontazysta.model.CompanyAdmin;
 import com.emontazysta.model.dto.EmploymentDto;
@@ -17,7 +13,6 @@ import com.emontazysta.repository.EmploymentRepository;
 import com.emontazysta.service.CompanyAdminService;
 import com.emontazysta.service.CompanyService;
 import com.emontazysta.service.EmailService;
-import com.emontazysta.service.EmploymentService;
 import com.emontazysta.util.AuthUtils;
 import com.emontazysta.util.PasswordGenerator;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +31,8 @@ public class CompanyAdminServiceImpl implements CompanyAdminService {
     private final CompanyAdminRepository repository;
     private final CompanyAdminMapper mapper;
     private final EmailService emailService;
-    private final EmploymentService employmentService;
+    private final EmploymentRepository employmentRepository;
+    private final EmploymentMapper employmentMapper;
     private final CompanyService companyService;
     private final AuthUtils authUtils;
 
@@ -66,7 +62,7 @@ public class CompanyAdminServiceImpl implements CompanyAdminService {
     @Override
     public CompanyAdminDto add(CompanyAdminDto companyAdminDto) {
         companyAdminDto.setUsername(companyAdminDto.getUsername().toLowerCase());
-        //companyAdminDto.setPassword(PasswordGenerator.generatePassword(10));  TODO: uncomment to generate password
+        //companyAdminDto.setPassword(PasswordGenerator.generatePassword(10));  //TODO: uncomment to generate password
         companyAdminDto.setRoles(Set.of(Role.ADMIN));
         companyAdminDto.setUnavailabilities(new ArrayList<>());
         companyAdminDto.setNotifications(new ArrayList<>());
@@ -78,17 +74,17 @@ public class CompanyAdminServiceImpl implements CompanyAdminService {
 
         CompanyAdmin companyAdmin = repository.save(mapper.toEntity(companyAdminDto));
 
-        employmentService.add(
-                EmploymentDto.builder()
-                        .dateOfEmployment(LocalDateTime.now())
-                        .companyId(authUtils.getLoggedUserCompanyId())
-                        .employeeId(companyAdmin.getId())
-                        .build()
-        );
+        EmploymentDto employmentDto = EmploymentDto.builder()
+                .dateOfEmployment(LocalDateTime.now())
+                .dateOfDismiss(null)
+                .companyId(authUtils.getLoggedUserCompanyId())
+                .employeeId(companyAdmin.getId())
+                .build();
+        employmentRepository.save(employmentMapper.toEntity(employmentDto));
 
 
-        /* TODO: uncomment to send email on company admin create
-        emailService.sendEmail(
+        //TODO: uncomment to send email on company admin create
+        /*emailService.sendEmail(
                 EmailData.builder()
                         .to(companyAdminDto.getEmail())
                         .message(MailTemplates.employeeCreate(companyAdminDto.getUsername(),

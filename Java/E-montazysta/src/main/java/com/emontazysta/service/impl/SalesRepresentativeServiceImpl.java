@@ -1,12 +1,13 @@
 package com.emontazysta.service.impl;
 
 import com.emontazysta.enums.Role;
+import com.emontazysta.mapper.EmploymentMapper;
 import com.emontazysta.mapper.SalesRepresentativeMapper;
 import com.emontazysta.model.SalesRepresentative;
 import com.emontazysta.model.dto.EmploymentDto;
 import com.emontazysta.model.dto.SalesRepresentativeDto;
+import com.emontazysta.repository.EmploymentRepository;
 import com.emontazysta.repository.SalesRepresentativeRepository;
-import com.emontazysta.service.EmploymentService;
 import com.emontazysta.service.SalesRepresentativeService;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,8 @@ public class SalesRepresentativeServiceImpl implements SalesRepresentativeServic
 
     private final SalesRepresentativeRepository repository;
     private final SalesRepresentativeMapper salesRepresentativeMapper;
-    private final EmploymentService employmentService;
+    private final EmploymentRepository employmentRepository;
+    private final EmploymentMapper employmentMapper;
     private final AuthUtils authUtils;
 
     @Override
@@ -72,7 +74,7 @@ public class SalesRepresentativeServiceImpl implements SalesRepresentativeServic
                 .companyId(authUtils.getLoggedUserCompanyId())
                 .employeeId(salesRepresentative.getId())
                 .build();
-        employmentService.add(employmentDto);
+        employmentRepository.save(employmentMapper.toEntity(employmentDto));
 
         return salesRepresentativeMapper.toDto(salesRepresentative);
     }

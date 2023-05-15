@@ -1,12 +1,13 @@
 package com.emontazysta.service.impl;
 
 import com.emontazysta.enums.Role;
+import com.emontazysta.mapper.EmploymentMapper;
 import com.emontazysta.mapper.FitterMapper;
 import com.emontazysta.model.Fitter;
 import com.emontazysta.model.dto.EmploymentDto;
 import com.emontazysta.model.dto.FitterDto;
+import com.emontazysta.repository.EmploymentRepository;
 import com.emontazysta.repository.FitterRepository;
-import com.emontazysta.service.EmploymentService;
 import com.emontazysta.service.FitterService;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,8 @@ public class FitterServiceImpl implements FitterService {
 
     private final FitterRepository repository;
     private final FitterMapper fitterMapper;
-    private final EmploymentService employmentService;
+    private final EmploymentRepository employmentRepository;
+    private final EmploymentMapper employmentMapper;
     private final AuthUtils authUtils;
 
     @Override
@@ -73,7 +75,7 @@ public class FitterServiceImpl implements FitterService {
                 .companyId(authUtils.getLoggedUserCompanyId())
                 .employeeId(fitter.getId())
                 .build();
-        employmentService.add(employmentDto);
+        employmentRepository.save(employmentMapper.toEntity(employmentDto));
 
         return fitterMapper.toDto(fitter);
     }

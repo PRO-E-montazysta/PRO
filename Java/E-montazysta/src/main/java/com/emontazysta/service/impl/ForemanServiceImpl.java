@@ -1,12 +1,13 @@
 package com.emontazysta.service.impl;
 
 import com.emontazysta.enums.Role;
+import com.emontazysta.mapper.EmploymentMapper;
 import com.emontazysta.mapper.ForemanMapper;
 import com.emontazysta.model.Foreman;
 import com.emontazysta.model.dto.EmploymentDto;
 import com.emontazysta.model.dto.ForemanDto;
+import com.emontazysta.repository.EmploymentRepository;
 import com.emontazysta.repository.ForemanRepository;
-import com.emontazysta.service.EmploymentService;
 import com.emontazysta.service.ForemanService;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,8 @@ public class ForemanServiceImpl implements ForemanService {
 
     private final ForemanRepository repository;
     private final ForemanMapper foremanMapper;
-    private final EmploymentService employmentService;
+    private final EmploymentRepository employmentRepository;
+    private final EmploymentMapper employmentMapper;
     private final AuthUtils authUtils;
 
     @Override
@@ -77,7 +79,7 @@ public class ForemanServiceImpl implements ForemanService {
                 .companyId(authUtils.getLoggedUserCompanyId())
                 .employeeId(foreman.getId())
                 .build();
-        employmentService.add(employmentDto);
+        employmentRepository.save(employmentMapper.toEntity(employmentDto));
 
         return foremanMapper.toDto(foreman);
     }
