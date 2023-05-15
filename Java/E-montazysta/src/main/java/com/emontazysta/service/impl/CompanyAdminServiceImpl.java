@@ -55,8 +55,8 @@ public class CompanyAdminServiceImpl implements CompanyAdminService {
         if(!authUtils.getLoggedUser().getRoles().contains(Role.ADMIN)) {
             result.setUsername(null);
         }
-        if(!authUtils.getLoggedUser().getRoles().contains(Role.ADMIN) ||
-                !authUtils.getLoggedUser().getRoles().contains(Role.MANAGER)) {
+        if(!(authUtils.getLoggedUser().getRoles().contains(Role.ADMIN) ||
+                authUtils.getLoggedUser().getRoles().contains(Role.MANAGER))) {
             result.setPesel(null);
         }
 
