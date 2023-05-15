@@ -21,10 +21,16 @@ type TestTestTestType = {
     isDisplayingMode: boolean
     elementsListIds: Array<number> | []
     handleChange: (array: { numberOfTools: number; toolTypeId: string }[]) => void
+    toolsRef: React.MutableRefObject<
+        {
+            numberOfTools: number
+            toolTypeId: string
+        }[]
+    >
 }
 
 const TestTestTest = forwardRef(
-    ({ itemsArray, isDisplayingMode, elementsListIds, handleChange }: TestTestTestType, ref) => {
+    ({ itemsArray, isDisplayingMode, elementsListIds, handleChange, toolsRef }: TestTestTestType, ref) => {
         const [tableRowIndex, setTableRowIndex] = useState(0)
         const [selectedItemId, setSelectedItemId] = useState('')
         const [selectedItemNumber, setSelectedItemNumber] = useState(0)
@@ -55,6 +61,9 @@ const TestTestTest = forwardRef(
         }
 
         useEffect(() => {
+            if (toolsRef.current.length > 0) {
+                return setTableData([...toolsRef.current])
+            }
             getElementsData()
         }, [])
 
@@ -109,6 +118,7 @@ const TestTestTest = forwardRef(
                                                     rowIndex={rowIndex}
                                                     setSelectedItemId={setSelectedItemId}
                                                     setTableRowIndex={setTableRowIndex}
+                                                    isDisplayingMode={isDisplayingMode}
                                                 />
                                             </FormControl>
                                         </Box>
@@ -121,6 +131,7 @@ const TestTestTest = forwardRef(
                                                     setTableRowIndex={setTableRowIndex}
                                                     handleItemNumberChange={handleItemNumberChange}
                                                     rowIndex={rowIndex}
+                                                    isDisplayingMode={isDisplayingMode}
                                                 />
                                             </FormControl>
                                         </Box>
@@ -193,6 +204,7 @@ type TableItemSelectTypes = {
     rowIndex: number
     setTableRowIndex: React.Dispatch<React.SetStateAction<number>>
     setSelectedItemId: React.Dispatch<React.SetStateAction<string>>
+    isDisplayingMode: boolean
 }
 
 const TableItemSelect = ({
@@ -202,15 +214,22 @@ const TableItemSelect = ({
     rowIndex,
     setSelectedItemId,
     setTableRowIndex,
+    isDisplayingMode,
 }: TableItemSelectTypes) => {
     return (
         <Select
+            sx={{
+                '& .MuiInputBase-input.Mui-disabled': {
+                    WebkitTextFillColor: '#000000',
+                },
+            }}
             labelId="demo-simple-select-label"
             key={uuidv4()}
             defaultValue=""
             value={rowData.toolTypeId}
+            disabled={isDisplayingMode}
             label={label}
-            onChange={(event: SelectChangeEvent) => {
+            onChange={() => {
                 setTableRowIndex(rowIndex)
             }}
         >
@@ -224,17 +243,25 @@ type TableItemNumberType = {
     setTableRowIndex: React.Dispatch<React.SetStateAction<number>>
     handleItemNumberChange: (event: any) => void
     rowIndex: number
+    isDisplayingMode: boolean
 }
 const TableItemNumber = ({
     selectedItemNumber,
     setTableRowIndex,
     handleItemNumberChange,
     rowIndex,
+    isDisplayingMode,
 }: TableItemNumberType) => {
     return (
         <TextField
+            sx={{
+                '& .MuiInputBase-input.Mui-disabled': {
+                    WebkitTextFillColor: '#000000',
+                },
+            }}
             type="number"
             value={selectedItemNumber}
+            disabled={isDisplayingMode}
             id={uuidv4()}
             label="Ilość"
             variant="outlined"

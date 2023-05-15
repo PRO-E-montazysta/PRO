@@ -20,10 +20,18 @@ type TestTestTestType = {
     isDisplayingMode: boolean
     elementsListIds: Array<number> | []
     handleChange: (array: { numberOfElements: number; elementId: string }[]) => void
+    elementsRef: React.MutableRefObject<
+        {
+            numberOfElements: number
+            elementId: string
+        }[]
+    >
 }
 
+//new test
+
 const TestTestTest = forwardRef(
-    ({ itemsArray, isDisplayingMode, elementsListIds, handleChange }: TestTestTestType, ref) => {
+    ({ itemsArray, isDisplayingMode, elementsListIds, handleChange, elementsRef }: TestTestTestType, ref) => {
         const [tableRowIndex, setTableRowIndex] = useState(0)
         const [selectedItemId, setSelectedItemId] = useState('')
         const [selectedItemNumber, setSelectedItemNumber] = useState(0)
@@ -52,6 +60,12 @@ const TestTestTest = forwardRef(
         }
 
         useEffect(() => {
+            //DZIA ŁA HAHA
+            console.log('ref', elementsRef)
+            if (elementsRef.current.length > 0) {
+                return setTableData([...elementsRef.current])
+            }
+            console.log('am i here')
             getElementsData()
         }, [])
 
@@ -77,6 +91,7 @@ const TestTestTest = forwardRef(
             const tempArray = [...tableData]
             tempArray.splice(rowIndex, 1)
             setTableData(tempArray)
+            handleChange(tempArray)
         }
 
         return (
@@ -105,6 +120,7 @@ const TestTestTest = forwardRef(
                                                     rowIndex={rowIndex}
                                                     setSelectedItemId={setSelectedItemId}
                                                     setTableRowIndex={setTableRowIndex}
+                                                    isDisplayingMode={isDisplayingMode}
                                                 />
                                             </FormControl>
                                         </Box>
@@ -117,6 +133,7 @@ const TestTestTest = forwardRef(
                                                     setTableRowIndex={setTableRowIndex}
                                                     handleItemNumberChange={handleItemNumberChange}
                                                     rowIndex={rowIndex}
+                                                    isDisplayingMode={isDisplayingMode}
                                                 />
                                             </FormControl>
                                         </Box>
@@ -189,6 +206,7 @@ type TableItemSelectTypes = {
     rowIndex: number
     setTableRowIndex: React.Dispatch<React.SetStateAction<number>>
     setSelectedItemId: React.Dispatch<React.SetStateAction<string>>
+    isDisplayingMode: boolean
 }
 
 const TableItemSelect = ({
@@ -198,11 +216,18 @@ const TableItemSelect = ({
     rowIndex,
     setSelectedItemId,
     setTableRowIndex,
+    isDisplayingMode,
 }: TableItemSelectTypes) => {
     return (
         <Select
+            sx={{
+                '& .MuiInputBase-input.Mui-disabled': {
+                    WebkitTextFillColor: '#000000',
+                },
+            }}
             labelId="demo-simple-select-label"
             key={uuidv4()}
+            disabled={isDisplayingMode}
             defaultValue=""
             value={rowData.elementId}
             label={label}
@@ -220,17 +245,25 @@ type TableItemNumberType = {
     setTableRowIndex: React.Dispatch<React.SetStateAction<number>>
     handleItemNumberChange: (event: any) => void
     rowIndex: number
+    isDisplayingMode: boolean
 }
 const TableItemNumber = ({
     selectedItemNumber,
     setTableRowIndex,
     handleItemNumberChange,
     rowIndex,
+    isDisplayingMode,
 }: TableItemNumberType) => {
     return (
         <TextField
+            sx={{
+                '& .MuiInputBase-input.Mui-disabled': {
+                    WebkitTextFillColor: '#000000',
+                },
+            }}
             type="number"
             value={selectedItemNumber}
+            disabled={isDisplayingMode}
             id={uuidv4()}
             label="Ilość"
             variant="outlined"

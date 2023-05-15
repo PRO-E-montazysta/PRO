@@ -2,17 +2,18 @@ import { Grid, Paper, Box, Button, Tabs, Tab, Typography, CardActions } from '@m
 import dayjs, { Dayjs } from 'dayjs'
 import { useFormik } from 'formik'
 import { useParams } from 'react-router-dom'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { DatePicker, TimePicker } from '@mui/x-date-pickers'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { DateValidationError } from '@mui/x-date-pickers/models'
 import { OrderStage } from '../../types/model/OrderStage'
 import IconButton from '@mui/material/IconButton'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Card from '@mui/material/Card'
 import AssignmentIcon from '@mui/icons-material/Assignment'
 import Collapse from '@mui/material/Collapse'
-import { ExpandMore, TabPanel } from './helper'
+import { ExpandMore, TabPanel, validationSchema } from './helper'
 import { getRolesFromToken } from '../../utils/token'
 import { Role } from '../../types/roleEnum'
 import { useQuery } from 'react-query'
@@ -28,6 +29,7 @@ import TestTestTest from './TestTestTest'
 import TestTestTestTools from './TestTestTestTools'
 import TestTestTestToolsTwo from './TestTestTestToolsTwo'
 import { ToolType } from '../../types/model/ToolType'
+import * as yup from 'yup'
 
 type OrderStageCardProps = {
     index?: string
@@ -54,14 +56,15 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
     //new
     const plannedElementsRef = useRef<{ numberOfElements: number; elementId: string }[]>([])
     const plannedToolsTypesRef = useRef<{ numberOfTools: number; toolTypeId: string }[]>([])
+    const [error, setError] = useState<DateValidationError | null>(null)
 
     const handleSetPlannedElements = (value: { numberOfElements: number; elementId: string }[]) => {
-        console.log('value', value)
+        // console.log('value', value)
         plannedElementsRef!.current! = value
         console.log('here2', plannedElementsRef.current)
     }
     const handleSetPlannedToolsTypes = (value: { numberOfTools: number; toolTypeId: string }[]) => {
-        console.log('value', value)
+        // console.log('value', value)
         plannedToolsTypesRef!.current! = value
         console.log('here3', plannedToolsTypesRef.current)
     }
@@ -71,7 +74,10 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
         async () => await getAllToolTypes(),
     )
 
-    const queryAllElements = useQuery<Array<OrderStage>, AxiosError>(['elements-list'], async () => await getAllElements())
+    const queryAllElements = useQuery<Array<OrderStage>, AxiosError>(
+        ['elements-list'],
+        async () => await getAllElements(),
+    )
 
     useEffect(() => {
         const role = getRolesFromToken()
@@ -89,14 +95,14 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
         const hours = dayjs(plannedStartHour).format('HH:mm:ss.SSS')
         const preparedDate = date.substring(0, date.indexOf('T') + 1).replace('T', 'T' + hours)
         setPreparedPlannedStartDate(preparedDate)
-    }, [plannedStartHour])
+    }, [plannedStartHour, plannedStartDate])
 
     useEffect(() => {
         const date = dayjs(plannedStartDate).format('YYYY-MM-DDTHH:mm:ss.SSS')
         const hours = dayjs(plannedFinishHour).format('HH:mm:ss.SSS')
         const preparedDate = date.substring(0, date.indexOf('T') + 1).replace('T', 'T' + hours)
         setPreparedPlannedEndDate(preparedDate)
-    }, [plannedFinishHour])
+    }, [plannedFinishHour, plannedStartDate])
 
     const tabProps = (index: number) => {
         return {
@@ -113,6 +119,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
         setExpandedInformation(!expandedInformation)
     }
 
+    //ZROBIENIE WALIDACJI
     const formik = useFormik({
         initialValues: {
             orderId: params.id!,
@@ -129,7 +136,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
             test: '',
         },
 
-        // validationSchema: validationSchema,
+        validationSchema: validationSchema,
         onSubmit: async (values) => {
             console.log('co jest element', plannedElementsRef.current)
             console.log('co jest tools', plannedToolsTypesRef.current)
@@ -141,18 +148,53 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
             await addOrderStage.mutate(values)
         },
     })
+
+    const errorMessage = useMemo(() => {
+        switch (error) {
+            case 'maxDate':
+            case 'minDate': {
+                return 'Please select a date in the first quarter of 2022'
+            }
+
+            case 'invalidDate': {
+                return 'Wprowadź poprawną datę'
+            }
+
+            default: {
+                return ''
+            }
+        }
+    }, [error])
+
     const getDateInformations = (stage?: OrderStage) => {
         return (
             <Grid container spacing={{ xs: 2, md: 2 }} columns={{ xs: 2, sm: 4, md: 12 }}>
                 <Grid item xs={6}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
-                            sx={{ width: '100%' }}
+                            sx={{
+                                width: '100%',
+                                '& .MuiInputBase-input.Mui-disabled': {
+                                    WebkitTextFillColor: '#000000',
+                                },
+                            }}
                             label="Planowana data rozpoczęcia"
+                            disabled={isDisplayingMode}
+                            format="DD/MM/YYYY"
                             value={plannedStartDate}
                             onChange={(data) => {
+                                setError(null)
                                 setPlannedStartDate(data)
                             }}
+                            //tutaj
+                            onError={(error) => setError(error)}
+                            slotProps={{
+                                textField: {
+                                    helperText: errorMessage || '',
+                                },
+                            }}
+                            minDate={dayjs('2022-01-01T00:00:00.000')}
+                            maxDate={dayjs('2023-06-01T00:00:00.000')}
                         />
                     </LocalizationProvider>
                 </Grid>
@@ -161,9 +203,15 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                     <Grid item xs={6}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
-                                sx={{ width: '100%' }}
+                                sx={{
+                                    width: '100%',
+                                    '& .MuiInputBase-input.Mui-disabled': {
+                                        WebkitTextFillColor: '#000000',
+                                    },
+                                }}
                                 label="Data rozpoczęcia"
                                 value={isDisplayingMode ? stage!.startDate : ''}
+                                disabled={isDisplayingMode}
                             />
                         </LocalizationProvider>
                     </Grid>
@@ -171,10 +219,16 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                 <Grid item xs={6}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <TimePicker
-                            sx={{ width: '100%' }}
+                            sx={{
+                                width: '100%',
+                                '& .MuiInputBase-input.Mui-disabled': {
+                                    WebkitTextFillColor: '#000000',
+                                },
+                            }}
                             label="Planowana godzina rozpoczęcia"
                             format={'HH:mm:ss'}
                             value={plannedStartHour}
+                            disabled={isDisplayingMode}
                             onChange={(data) => {
                                 setPlannedStartHour(data)
                             }}
@@ -186,8 +240,14 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                     <Grid item xs={6}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
-                                sx={{ width: '100%' }}
+                                sx={{
+                                    width: '100%',
+                                    '& .MuiInputBase-input.Mui-disabled': {
+                                        WebkitTextFillColor: '#000000',
+                                    },
+                                }}
                                 label="Data zakończenia"
+                                disabled={isDisplayingMode}
                                 onChange={(data) => {
                                     // const formattedDate = dayjs(data).format('YYYY-MM-DDTHH:mm:ss.SSS')
                                 }}
@@ -198,13 +258,28 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                 <Grid item xs={6}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <TimePicker
-                            sx={{ width: '100%' }}
+                            sx={{
+                                width: '100%',
+                                '& .MuiInputBase-input.Mui-disabled': {
+                                    WebkitTextFillColor: '#000000',
+                                },
+                            }}
+                            disabled={isDisplayingMode}
                             label="Planowana godzina zakończenia"
                             format={'HH:mm:ss'}
                             value={plannedFinishHour}
                             onChange={(data) => {
                                 setPlannedFinishHour(data)
                             }}
+
+                            // slotProps={{
+                            //     textField: {
+                            //     //   fullWidth: fullWidth,
+                            //     //   variant: 'outlined',
+                            //       error={formik.touched.name && Boolean(formik.errors.plannedEndDate)}
+                            //       helperText={formik.touched.plannedEndDate && formik.errors.plannedEndDate}
+                            //     },
+                            //   }}
                         />
                     </LocalizationProvider>
                 </Grid>
@@ -239,13 +314,14 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                         spacing={{ xs: 2, md: 2 }}
                         columns={{ xs: 2, sm: 4, md: 12 }}
                     >
-                        <Grid item xs={3}>
+                        <Grid item xs={4} md={3}>
                             <CustomTextField
                                 readOnly={isDisplayingMode!}
+                                disabled={isDisplayingMode}
                                 sx={{ width: '100%' }}
                                 id="standard-basic"
                                 variant="outlined"
-                                label="Nazwaaaaaa"
+                                label="Nazwa etapu"
                                 name="name"
                                 value={formik.values.name}
                                 onChange={formik.handleChange}
@@ -254,9 +330,10 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                             />
                         </Grid>
                         {isDisplayingMode ? (
-                            <Grid item xs={3}>
+                            <Grid item xs={4} md={3}>
                                 <CustomTextField
                                     readOnly={isDisplayingMode!}
+                                    disabled={isDisplayingMode}
                                     sx={{ width: '100%' }}
                                     id="standard-basic"
                                     variant="outlined"
@@ -266,9 +343,10 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                 />
                             </Grid>
                         ) : null}
-                        <Grid item xs={3}>
+                        <Grid item xs={4} md={3}>
                             <CustomTextField
                                 readOnly={isDisplayingMode!}
+                                disabled={isDisplayingMode}
                                 sx={{ width: '100%' }}
                                 id="standard-basic"
                                 variant="outlined"
@@ -281,10 +359,13 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                             />
                         </Grid>
 
-                        <Grid item xs={4}>
+                        <Grid item xs={4} md={3}>
                             <CustomTextField
                                 readOnly={isDisplayingMode!}
-                                sx={{ width: '100%' }}
+                                disabled={isDisplayingMode}
+                                sx={{
+                                    width: '100%',
+                                }}
                                 id="standard-basic"
                                 variant="outlined"
                                 label="Planowana liczba montażystów"
@@ -297,9 +378,11 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                 helperText={formik.touched.plannedFittersNumber && formik.errors.plannedFittersNumber}
                             />
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item xs={4} md={3}>
                             <CustomTextField
                                 readOnly={isDisplayingMode!}
+                                disabled={isDisplayingMode}
+                                sx={{ width: '100%' }}
                                 id="standard-basic"
                                 label="Minimalna liczba zdjęć"
                                 variant="outlined"
@@ -310,8 +393,8 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                 helperText={formik.touched.minimumImagesNumber && formik.errors.minimumImagesNumber}
                             />
                         </Grid>
-                        {isDisplayingMode || (!isDisplayingMode && userRole === Role.MANAGER) ? (
-                            <Grid item xs={4}>
+                        {/* {isDisplayingMode || (!isDisplayingMode && userRole === Role.MANAGER) ? (
+                            <Grid item xs={4} md={3}>
                                 <CustomTextField
                                     readOnly={isDisplayingMode!}
                                     id="standard-basic"
@@ -320,7 +403,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                     defaultValue={isDisplayingMode ? stage!.foremanId : null}
                                 />
                             </Grid>
-                        ) : null}
+                        ) : null} */}
                         <Box sx={{ marginTop: '20px', width: '100%' }}>
                             <Box
                                 sx={{
@@ -337,7 +420,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                     aria-label="basic tabs example"
                                 >
                                     <Tab label="Informacje o datach" {...tabProps(0)} />
-                                    <Tab label="Planowane narzędzia" {...tabProps(1)} />
+                                    <Tab label="Narzędzia" {...tabProps(1)} />
                                     <Tab label="Elementy" {...tabProps(2)} />
                                     {isDisplayingMode ? <Tab label="Montażyści..." {...tabProps(2)} /> : null}
                                     <Tab label="Szczegóły etapu/Zalaczniki" {...tabProps(1)} />
@@ -359,6 +442,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                     isDisplayingMode={isDisplayingMode!}
                                     elementsListIds={stage?.listOfToolsPlannedNumber as any}
                                     handleChange={handleSetPlannedToolsTypes}
+                                    toolsRef={plannedToolsTypesRef}
                                 />
                             </TabPanel>
                             <TabPanel key={uuidv4()} value={tabValue} index={2}>
@@ -377,6 +461,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                     isDisplayingMode={isDisplayingMode!}
                                     elementsListIds={stage?.listOfElementsPlannedNumber as any}
                                     handleChange={handleSetPlannedElements}
+                                    elementsRef={plannedElementsRef}
                                 />
                             </TabPanel>
 

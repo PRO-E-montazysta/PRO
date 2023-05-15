@@ -11,6 +11,9 @@ export const CustomTextField = styled(TextField)((props: CustomTextFieldProps) =
     '& fieldset': {
         border: props.readOnly ? 'none' : '',
     },
+    '& .MuiInputBase-input.Mui-disabled': {
+        WebkitTextFillColor: '#000000',
+    },
 }))
 
 const FormInput = (params: FormInputParams) => {
