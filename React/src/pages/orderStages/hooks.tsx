@@ -1,7 +1,6 @@
 import { Box } from '@mui/material'
-import { AxiosError } from 'axios'
 import { useContext } from 'react'
-import { useMutation, useQuery } from 'react-query'
+import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import useError from '../../hooks/useError'

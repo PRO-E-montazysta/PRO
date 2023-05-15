@@ -10,16 +10,15 @@ import Paper from '@mui/material/Paper'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
-import Select, { SelectChangeEvent } from '@mui/material/Select'
+import Select from '@mui/material/Select'
 import { forwardRef, useEffect, useState } from 'react'
-import { getPlannedElementById } from '../../api/element.api'
 import { v4 as uuidv4 } from 'uuid'
 import { getPlannedToolTypesById } from '../../api/toolType.api'
 
-type TestTestTestType = {
+type OrderStageToolsTableType = {
     itemsArray: Array<any> | undefined
     isDisplayingMode: boolean
-    elementsListIds: Array<number> | []
+    toolsTypeListIds: Array<number> | []
     handleChange: (array: { numberOfTools: number; toolTypeId: string }[]) => void
     toolsRef: React.MutableRefObject<
         {
@@ -29,8 +28,8 @@ type TestTestTestType = {
     >
 }
 
-const TestTestTest = forwardRef(
-    ({ itemsArray, isDisplayingMode, elementsListIds, handleChange, toolsRef }: TestTestTestType, ref) => {
+const OrderStageToolsTable = forwardRef(
+    ({ itemsArray, isDisplayingMode, toolsTypeListIds, handleChange, toolsRef }: OrderStageToolsTableType, ref) => {
         const [tableRowIndex, setTableRowIndex] = useState(0)
         const [selectedItemId, setSelectedItemId] = useState('')
         const [selectedItemNumber, setSelectedItemNumber] = useState(0)
@@ -39,19 +38,18 @@ const TestTestTest = forwardRef(
         ])
 
         const getElementsData = async () => {
-            if (!!elementsListIds) {
+            if (!!toolsTypeListIds) {
                 const check = await Promise.all(
-                    elementsListIds.map(async (element) => {
-                        return await getPlannedToolTypesById(element)
+                    toolsTypeListIds.map(async (tool) => {
+                        return await getPlannedToolTypesById(tool)
                     }),
                 )
-                console.log('what the f', check)
                 if (!!check && check.length > 0) {
                     console.log('here1')
-                    const filteredData = check.map((element) => {
+                    const filteredData = check.map((tool) => {
                         const data = {
-                            numberOfTools: element.numberOfTools,
-                            toolTypeId: element.toolType.id.toString(),
+                            numberOfTools: tool.numberOfTools,
+                            toolTypeId: tool.toolType.id.toString(),
                         }
                         return data
                     })
@@ -173,9 +171,8 @@ const TestTestTest = forwardRef(
     },
 )
 
-export default TestTestTest
+export default OrderStageToolsTable
 
-//select for table - so i can manage state for every row
 const chooseSelectItemId = (
     itemsArray: Array<any> | undefined,
     setSelectedItemId: React.Dispatch<React.SetStateAction<string>>,

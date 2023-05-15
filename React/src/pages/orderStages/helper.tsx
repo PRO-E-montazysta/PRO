@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import IconButton, { IconButtonProps } from '@mui/material/IconButton'
 import { styled } from '@mui/material/styles'
 import * as React from 'react'
@@ -50,5 +50,4 @@ export const validationSchema = yup.object({
     price: yup.string().required('Podaj cenę etapu'),
     plannedFittersNumber: yup.string().required('Podaj planowaną liczbę montażystów'),
     minimumImagesNumber: yup.string().required('Podaj planowaną liczbę montażystów'),
-    // plannedStartDate: yup.string().required('Data'),
 })

@@ -15,7 +15,7 @@ import { forwardRef, useEffect, useState } from 'react'
 import { getPlannedElementById } from '../../api/element.api'
 import { v4 as uuidv4 } from 'uuid'
 
-type TestTestTestType = {
+type OrderStageElementsTableType = {
     itemsArray: Array<any> | undefined
     isDisplayingMode: boolean
     elementsListIds: Array<number> | []
@@ -28,10 +28,8 @@ type TestTestTestType = {
     >
 }
 
-//new test
-
-const TestTestTest = forwardRef(
-    ({ itemsArray, isDisplayingMode, elementsListIds, handleChange, elementsRef }: TestTestTestType, ref) => {
+const OrderStageElementsTable = forwardRef(
+    ({ itemsArray, isDisplayingMode, elementsListIds, handleChange, elementsRef }: OrderStageElementsTableType, ref) => {
         const [tableRowIndex, setTableRowIndex] = useState(0)
         const [selectedItemId, setSelectedItemId] = useState('')
         const [selectedItemNumber, setSelectedItemNumber] = useState(0)
@@ -60,12 +58,9 @@ const TestTestTest = forwardRef(
         }
 
         useEffect(() => {
-            //DZIA ŁA HAHA
-            console.log('ref', elementsRef)
             if (elementsRef.current.length > 0) {
                 return setTableData([...elementsRef.current])
             }
-            console.log('am i here')
             getElementsData()
         }, [])
 
@@ -175,9 +170,8 @@ const TestTestTest = forwardRef(
     },
 )
 
-export default TestTestTest
+export default OrderStageElementsTable
 
-//select for table - so i can manage state for every row
 const chooseSelectItemId = (
     itemsArray: Array<any> | undefined,
     setSelectedItemId: React.Dispatch<React.SetStateAction<string>>,

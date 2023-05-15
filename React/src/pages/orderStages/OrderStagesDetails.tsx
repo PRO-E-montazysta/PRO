@@ -1,6 +1,6 @@
 import { Box, CircularProgress, Typography } from '@mui/material'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { OrderStage } from '../../types/model/OrderStage'
 import { useMutation, useQuery } from 'react-query'
 import { AxiosError } from 'axios'
@@ -38,7 +38,6 @@ const OrderStagesDetails = ({ isAddOrderStageVisible }: OrderStagesDetailsProps)
     }
 
     const { isLoading, isError, error, mutate } = useMutation({
-        // mutationFn: (variables: any) => console.log(variables),
         mutationFn: createOrderStage,
         onSuccess(data) {
             navigation('/', { replace: true })

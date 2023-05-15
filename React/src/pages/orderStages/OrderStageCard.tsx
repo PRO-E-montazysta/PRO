@@ -15,21 +15,16 @@ import AssignmentIcon from '@mui/icons-material/Assignment'
 import Collapse from '@mui/material/Collapse'
 import { ExpandMore, TabPanel, validationSchema } from './helper'
 import { getRolesFromToken } from '../../utils/token'
-import { Role } from '../../types/roleEnum'
 import { useQuery } from 'react-query'
 import { AxiosError } from 'axios'
 import { getAllToolTypes } from '../../api/toolType.api'
 import { getAllElements } from '../../api/element.api'
-import OrderStageToolTypesTable from './OrderStageToolTypesTable'
-import OrderStageDetailsElementsTable from './ElementsTable'
 import { useAddOrderStage } from './hooks'
 import { CustomTextField } from '../../components/form/FormInput'
 import { v4 as uuidv4 } from 'uuid'
-import TestTestTest from './TestTestTest'
-import TestTestTestTools from './TestTestTestTools'
-import TestTestTestToolsTwo from './TestTestTestToolsTwo'
 import { ToolType } from '../../types/model/ToolType'
-import * as yup from 'yup'
+import OrderStageToolsTable from './OrderStageToolsTable'
+import OrderStageElementsTable from './OrderStageElementsTable'
 
 type OrderStageCardProps = {
     index?: string
@@ -49,24 +44,17 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
     const [userRole, setUserRole] = useState('')
     const addOrderStage = useAddOrderStage()
 
-    const [plannedToolTypes, setPlannedToolTypes] = useState<{ numberOfTools: number; toolTypeId: string }[]>()
-    // const [plannedElements, setPlannedElements] = useState<{ numberOfElements: number; elementId: string }[]>()
     const dummyScrollDiv = useRef<any>(null)
     const params = useParams()
-    //new
     const plannedElementsRef = useRef<{ numberOfElements: number; elementId: string }[]>([])
     const plannedToolsTypesRef = useRef<{ numberOfTools: number; toolTypeId: string }[]>([])
     const [error, setError] = useState<DateValidationError | null>(null)
 
     const handleSetPlannedElements = (value: { numberOfElements: number; elementId: string }[]) => {
-        // console.log('value', value)
         plannedElementsRef!.current! = value
-        console.log('here2', plannedElementsRef.current)
     }
     const handleSetPlannedToolsTypes = (value: { numberOfTools: number; toolTypeId: string }[]) => {
-        // console.log('value', value)
         plannedToolsTypesRef!.current! = value
-        console.log('here3', plannedToolsTypesRef.current)
     }
 
     const queryAllToolTypes = useQuery<Array<ToolType>, AxiosError>(
@@ -119,7 +107,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
         setExpandedInformation(!expandedInformation)
     }
 
-    //ZROBIENIE WALIDACJI
     const formik = useFormik({
         initialValues: {
             orderId: params.id!,
@@ -138,8 +125,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
 
         validationSchema: validationSchema,
         onSubmit: async (values) => {
-            console.log('co jest element', plannedElementsRef.current)
-            console.log('co jest tools', plannedToolsTypesRef.current)
             values.listOfElementsPlannedNumber = plannedElementsRef.current!
             values.listOfToolsPlannedNumber = plannedToolsTypesRef.current!
             values.plannedStartDate = preparedPlannedStartDate
@@ -186,7 +171,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                 setError(null)
                                 setPlannedStartDate(data)
                             }}
-                            //tutaj
                             onError={(error) => setError(error)}
                             slotProps={{
                                 textField: {
@@ -393,17 +377,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                 helperText={formik.touched.minimumImagesNumber && formik.errors.minimumImagesNumber}
                             />
                         </Grid>
-                        {/* {isDisplayingMode || (!isDisplayingMode && userRole === Role.MANAGER) ? (
-                            <Grid item xs={4} md={3}>
-                                <CustomTextField
-                                    readOnly={isDisplayingMode!}
-                                    id="standard-basic"
-                                    label="Brygadzista"
-                                    variant="outlined"
-                                    defaultValue={isDisplayingMode ? stage!.foremanId : null}
-                                />
-                            </Grid>
-                        ) : null} */}
                         <Box sx={{ marginTop: '20px', width: '100%' }}>
                             <Box
                                 sx={{
@@ -430,33 +403,16 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
                                 {getDateInformations(stage)}
                             </TabPanel>
                             <TabPanel key={uuidv4()} value={tabValue} index={1}>
-                                {/* <OrderStageToolTypesTable
-                                    itemsArray={queryToolTypes.data}
-                                    plannedData={plannedToolTypes!}
-                                    setPlannedData={setPlannedToolTypes}
-                                    isDisplayingMode={isDisplayingMode!}
-                                    toolTypesListIds={stage?.listOfToolsPlannedNumber as any}
-                                /> */}
-                                <TestTestTestToolsTwo
+                                <OrderStageToolsTable
                                     itemsArray={queryAllToolTypes.data!}
                                     isDisplayingMode={isDisplayingMode!}
-                                    elementsListIds={stage?.listOfToolsPlannedNumber as any}
+                                    toolsTypeListIds={stage?.listOfToolsPlannedNumber as any}
                                     handleChange={handleSetPlannedToolsTypes}
                                     toolsRef={plannedToolsTypesRef}
                                 />
                             </TabPanel>
                             <TabPanel key={uuidv4()} value={tabValue} index={2}>
-                                {/* <Paper component="div">
-                                    <Typography component="span">Zalaczniki.2..</Typography>
-                                </Paper> */}
-                                {/* <OrderStageDetailsElementsTable
-                                       itemsArray={queryToolTypes.data}
-                                       plannedData={plannedElements!}
-                                       setPlannedData={setPlannedElements}
-                                       isDisplayingMode={isDisplayingMode!}
-                                       elementsListIds={stage?.listOfElementsPlannedNumber as any}
-                                    /> */}
-                                <TestTestTest
+                                <OrderStageElementsTable
                                     itemsArray={queryAllElements.data!}
                                     isDisplayingMode={isDisplayingMode!}
                                     elementsListIds={stage?.listOfElementsPlannedNumber as any}
