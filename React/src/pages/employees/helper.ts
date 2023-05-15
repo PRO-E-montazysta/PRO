@@ -187,6 +187,7 @@ export const useFormStructure = (): Array<FormInputProps> => {
             options: userRoleOptions(),
             editPermissionRoles: [Role.NOBODY],
             viewPermissionRoles: [Role['*']],
+            validationOnUpdate: 'NO_VALIDATION_ON_UPDATE',
         },
         {
             label: 'Telefon',
@@ -206,6 +207,7 @@ export const useFormStructure = (): Array<FormInputProps> => {
             validation: yup.string().length(11, 'Wymagany jest poprawny pesel').required('Wprowadź pesel'),
             editPermissionRoles: [Role.ADMIN],
             viewPermissionRoles: [Role.ADMIN, Role.MANAGER],
+            validationOnUpdate: yup.string().nullable(),
         },
         {
             label: 'Hasło',
@@ -215,6 +217,7 @@ export const useFormStructure = (): Array<FormInputProps> => {
             validation: yup.string().min(8, 'Hasło musi zawierać co najmniej 8 znaków').required('Wprowadź hasło'),
             editPermissionRoles: [Role.NOBODY],
             viewPermissionRoles: [Role.NOBODY],
+            validationOnUpdate: 'NO_VALIDATION_ON_UPDATE',
         },
     ]
 }
