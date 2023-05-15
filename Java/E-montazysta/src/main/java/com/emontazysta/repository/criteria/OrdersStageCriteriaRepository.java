@@ -58,6 +58,9 @@ public class OrdersStageCriteriaRepository {
         List<Long> orderStagesIds = new ArrayList<>();
         Long orderCompanyId = null;
 
+        //Get not-deleted
+        predicates.add(criteriaBuilder.equal(ordersStageRoot.get("deleted"), false));
+
         if (Objects.nonNull(ordersStageSearchCriteria.getOrder_Id())) {
             List<Predicate> ordersStageIdspredicates = new ArrayList<>();
             OrdersDto order = ordersService.getById(Long.valueOf(ordersStageSearchCriteria.getOrder_Id()));

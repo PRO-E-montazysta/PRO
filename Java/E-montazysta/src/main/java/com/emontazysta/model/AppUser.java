@@ -1,7 +1,10 @@
 package com.emontazysta.model;
 
 import com.emontazysta.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,12 +12,25 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.*;
 
+@Data
 @Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-@Builder
+@SQLDelete(sql = "UPDATE app_user SET deleted = true WHERE id=?")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class AppUser implements UserDetails {
+
+    public AppUser(Long id, String firstName, String lastName, String email, String password, String username, String resetPasswordToken, Set<Role> roles) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.username = username;
+        this.resetPasswordToken = resetPasswordToken;
+        this.roles = roles;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +42,7 @@ public class AppUser implements UserDetails {
     private String password;
     @Column(unique = true)
     private String username;
+    private boolean deleted = Boolean.FALSE;
 
     private String resetPasswordToken;
 

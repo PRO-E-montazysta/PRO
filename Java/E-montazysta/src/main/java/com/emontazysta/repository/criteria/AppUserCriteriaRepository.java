@@ -75,6 +75,9 @@ public class AppUserCriteriaRepository {
             predicates.add(appUserRoot.get("id").in(findAvailableUsers(appUserSearchCriteria)));
         }
 
+        //Get not-deleted
+        predicates.add(criteriaBuilder.equal(appUserRoot.get("deleted"), false));
+
         return  criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 

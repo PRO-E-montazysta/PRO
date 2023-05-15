@@ -7,6 +7,8 @@ import com.emontazysta.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
+
 @Component
 @RequiredArgsConstructor
 public class EmploymentMapper {
@@ -21,6 +23,7 @@ public class EmploymentMapper {
                 .dateOfDismiss(employment.getDateOfDismiss())
                 .companyId(employment.getCompany() == null ? null : employment.getCompany().getId())
                 .employeeId(employment.getEmployee() == null ? null : employment.getEmployee().getId())
+                .deleted(employment.isDeleted())
                 .build();
     }
 
@@ -29,8 +32,8 @@ public class EmploymentMapper {
                 .id(employmentDto.getId())
                 .dateOfEmployment(employmentDto.getDateOfEmployment())
                 .dateOfDismiss(employmentDto.getDateOfDismiss())
-                .company(employmentDto.getCompanyId() == null ? null : companyRepository.getReferenceById(employmentDto.getCompanyId()))
-                .employee(employmentDto.getEmployeeId() == null ? null : appUserRepository.getReferenceById(employmentDto.getEmployeeId()))
+                .company(employmentDto.getCompanyId() == null ? null : companyRepository.findById(employmentDto.getCompanyId()).orElseThrow(EntityNotFoundException::new))
+                .employee(employmentDto.getEmployeeId() == null ? null : appUserRepository.findById(employmentDto.getEmployeeId()).orElseThrow(EntityNotFoundException::new))
                 .build();
     }
 }

@@ -15,7 +15,6 @@ export const formatLocation = (location: Location) => {
     if (!location) return ''
     else {
         let result = ''
-        result += location.name ? location.name + ' - ' : ''
         result += location.street
             ? 'ul. ' +
               location.street +

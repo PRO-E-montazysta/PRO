@@ -49,11 +49,8 @@ public class ElementServiceImpl implements ElementService {
 
     @Override
     public ElementDto getByCode(String code) {
-        Element response = repository.findByCode(code);
-        if(response == null)
-            throw new EntityNotFoundException();
-        else
-            return elementMapper.toDto(response);
+        Element response = repository.findByCode(code).orElseThrow(EntityNotFoundException::new);
+        return elementMapper.toDto(response);
     }
 
     @Override

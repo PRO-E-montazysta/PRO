@@ -6,16 +6,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 
 @Data
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE elements_planned_number SET deleted = true WHERE id=?")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class ElementsPlannedNumber {
     @Id
@@ -23,6 +23,8 @@ public class ElementsPlannedNumber {
     private Long id;
 
     private int numberOfElements;
+    
+    private boolean deleted = Boolean.FALSE;
 
     @ManyToOne
     private Element element;

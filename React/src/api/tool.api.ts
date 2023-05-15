@@ -28,3 +28,7 @@ export const postTool = (data: Tool) => {
 export const deleteTool = (id: string | number) => {
     return makeServiceCall(`/tools/${id}`, 'DELETE', {})
 }
+
+export const getToolHistory = (id?: string) => {
+    return makeServiceCall(`/tool-history/${id}`, 'GET', {})
+}

@@ -58,6 +58,9 @@ public class CompanyCriteriaRepository {
             predicates.add(criteriaBuilder.or(statusPredicates.toArray(new Predicate[0])));
         }
 
+        //Get not-deleted
+        predicates.add(criteriaBuilder.equal(companyRoot.get("deleted"), false));
+
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 }

@@ -20,7 +20,6 @@ public class OrdersDto {
     private Long id;
     @NotBlank(message = "Name cannot be empty")
     private String name;
-    @NotNull(message = "Type of status cannot be empty")
     private OrderStatus status;
     @NotNull(message = "Planned start cannot be empty")
     private LocalDateTime plannedStart;
@@ -39,4 +38,5 @@ public class OrdersDto {
     private Long clientId;
     private List<Long> orderStages;
     private List<Long> attachments;
+    private boolean deleted;
 }

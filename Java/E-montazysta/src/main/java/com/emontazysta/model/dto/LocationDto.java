@@ -26,10 +26,10 @@ public class LocationDto {
     private String street;
     @NotBlank(message = "Property number cannot be empty")
     private String propertyNumber;
-    @NotBlank(message = "Apartment number cannot be empty")
     private String apartmentNumber;
     @NotBlank(message = "Zip code cannot be empty")
     private String zipCode;
     private Long orderId;
     private Long warehouseId;
+    private boolean deleted;
 }

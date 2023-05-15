@@ -12,7 +12,8 @@ import java.util.Set;
 
 public interface AppUserService extends UserDetailsService {
      AppUser findByUsername(String username);
-
+    List<AppUser> findAllByIds(List<Long> listOfIds);
+    List<AppUser> findAllByRole(Role role);
     List<AppUser> getAll();
     AppUser getById(Long id);
     AppUser add(AppUser user);

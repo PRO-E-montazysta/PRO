@@ -30,6 +30,7 @@ import com.emontazysta.service.StatusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -70,7 +71,6 @@ public class ForemanMapper {
                 .attachments(foreman.getAttachments().stream().map(Attachment::getId).collect(Collectors.toList()))
                 .toolEvents(foreman.getToolEvents().stream().map(ToolEvent::getId).collect(Collectors.toList()))
                 .workingOn(foreman.getWorkingOn().stream().map(OrderStage::getId).collect(Collectors.toList()))
-                .ordersStagesList(foreman.getOrdersStagesList().stream().map(OrderStage::getId).collect(Collectors.toList()))
                 .receivedTools(foreman.getReceivedTools().stream().map(ToolRelease::getId).collect(Collectors.toList()))
                 .assignedOrders(foreman.getAssignedOrders().stream().map(Orders::getId).collect(Collectors.toList()))
                 .elementReturnReleases(foreman.getElementReturnReleases().stream().map(ElementReturnRelease::getId).collect(Collectors.toList()))
@@ -79,49 +79,50 @@ public class ForemanMapper {
                 .unavailableFrom(statusService.checkUnavailability(foreman) == null ? null : statusService.checkUnavailability(foreman).getUnavailableFrom())
                 .unavailableTo(statusService.checkUnavailability(foreman) == null ? null : statusService.checkUnavailability(foreman).getUnavailableTo())
                 .unavailbilityDescription(statusService.checkUnavailability(foreman) == null ? null : statusService.checkUnavailability(foreman).getDescription())
+                .deleted(foreman.isDeleted())
                 .build();
     }
 
     public Foreman toEntity(ForemanDto foremanDto) {
 
         List<Unavailability> unavailabilityList = new ArrayList<>();
-        foremanDto.getUnavailabilities().forEach(unavailabilityId -> unavailabilityList.add(unavailabilityRepository.getReferenceById(unavailabilityId)));
+        foremanDto.getUnavailabilities().forEach(unavailabilityId -> unavailabilityList.add(unavailabilityRepository.findById(unavailabilityId).orElseThrow(EntityNotFoundException::new)));
 
         List<Notification> notificationList = new ArrayList<>();
-        foremanDto.getNotifications().forEach(notificationId -> notificationList.add(notificationRepository.getReferenceById(notificationId)));
+        foremanDto.getNotifications().forEach(notificationId -> notificationList.add(notificationRepository.findById(notificationId).orElseThrow(EntityNotFoundException::new)));
 
         List<Comment> employeeCommentsList = new ArrayList<>();
-        foremanDto.getEmployeeComments().forEach(commentId -> employeeCommentsList.add(commentRepository.getReferenceById(commentId)));
+        foremanDto.getEmployeeComments().forEach(commentId -> employeeCommentsList.add(commentRepository.findById(commentId).orElseThrow(EntityNotFoundException::new)));
 
         List<ElementEvent> elementEventList = new ArrayList<>();
-        foremanDto.getElementEvents().forEach(elementEventId -> elementEventList.add(elementEventRepository.getReferenceById(elementEventId)));
+        foremanDto.getElementEvents().forEach(elementEventId -> elementEventList.add(elementEventRepository.findById(elementEventId).orElseThrow(EntityNotFoundException::new)));
 
         List<Employment> employmentList = new ArrayList<>();
-        foremanDto.getEmployments().forEach(employmentId -> employmentList.add(employmentRepository.getReferenceById(employmentId)));
+        foremanDto.getEmployments().forEach(employmentId -> employmentList.add(employmentRepository.findById(employmentId).orElseThrow(EntityNotFoundException::new)));
 
         List<Attachment> attachmentList = new ArrayList<>();
-        foremanDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.getReferenceById(attachmentId)));
+        foremanDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.findById(attachmentId).orElseThrow(EntityNotFoundException::new)));
 
         List<ToolEvent> toolEventList = new ArrayList<>();
-        foremanDto.getToolEvents().forEach(toolEventId -> toolEventList.add(toolEventRepository.getReferenceById(toolEventId)));
+        foremanDto.getToolEvents().forEach(toolEventId -> toolEventList.add(toolEventRepository.findById(toolEventId).orElseThrow(EntityNotFoundException::new)));
 
         List<OrderStage> workingOnList = new ArrayList<>();
-        foremanDto.getWorkingOn().forEach(workingOnId -> workingOnList.add(orderStageRepository.getReferenceById(workingOnId)));
+        foremanDto.getWorkingOn().forEach(workingOnId -> workingOnList.add(orderStageRepository.findById(workingOnId).orElseThrow(EntityNotFoundException::new)));
 
         List<OrderStage> orderStageList = new ArrayList<>();
-        foremanDto.getOrdersStagesList().forEach(orderStageId -> orderStageList.add(orderStageRepository.getReferenceById(orderStageId)));
+        foremanDto.getOrdersStagesList().forEach(orderStageId -> orderStageList.add(orderStageRepository.findById(orderStageId).orElseThrow(EntityNotFoundException::new)));
 
         List<ToolRelease> toolReleaseList = new ArrayList<>();
-        foremanDto.getReceivedTools().forEach(toolReleaseId -> toolReleaseList.add(toolReleaseRepository.getReferenceById(toolReleaseId)));
+        foremanDto.getReceivedTools().forEach(toolReleaseId -> toolReleaseList.add(toolReleaseRepository.findById(toolReleaseId).orElseThrow(EntityNotFoundException::new)));
 
         List<Orders> ordersList = new ArrayList<>();
-        foremanDto.getOrdersStagesList().forEach(orderStageId -> ordersList.add(orderRepository.getReferenceById(orderStageId)));
+        foremanDto.getOrdersStagesList().forEach(orderStageId -> ordersList.add(orderRepository.findById(orderStageId).orElseThrow(EntityNotFoundException::new)));
 
         List<ElementReturnRelease> elementReturnReleasesList = new ArrayList<>();
-        foremanDto.getElementReturnReleases().forEach(elementReturnReleaseId -> elementReturnReleasesList.add(elementReturnReleaseRepository.getReferenceById(elementReturnReleaseId)));
+        foremanDto.getElementReturnReleases().forEach(elementReturnReleaseId -> elementReturnReleasesList.add(elementReturnReleaseRepository.findById(elementReturnReleaseId).orElseThrow(EntityNotFoundException::new)));
 
         List<DemandAdHoc> demandAdHocsList = new ArrayList<>();
-        foremanDto.getDemandsAdHocs().forEach(demandAdHocId -> demandAdHocsList.add(demandAdHocRepository.getReferenceById(demandAdHocId)));
+        foremanDto.getDemandsAdHocs().forEach(demandAdHocId -> demandAdHocsList.add(demandAdHocRepository.findById(demandAdHocId).orElseThrow(EntityNotFoundException::new)));
 
         Foreman foreman = new Foreman();
         foreman.setId(foremanDto.getId());
@@ -141,7 +142,6 @@ public class ForemanMapper {
         foreman.setAttachments(attachmentList);
         foreman.setToolEvents(toolEventList);
         foreman.setWorkingOn(workingOnList);
-        foreman.setOrdersStagesList(orderStageList);
         foreman.setReceivedTools(toolReleaseList);
         foreman.setAssignedOrders(ordersList);
         foreman.setElementReturnReleases(elementReturnReleasesList);

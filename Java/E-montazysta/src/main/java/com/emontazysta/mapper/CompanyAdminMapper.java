@@ -6,6 +6,8 @@ import com.emontazysta.model.CompanyAdmin;
 import com.emontazysta.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,38 +36,53 @@ public class CompanyAdminMapper {
                 .email(companyAdmin.getEmail())
                 .phone(companyAdmin.getPhone())
                 .pesel(companyAdmin.getPesel())
-                .unavailabilities(companyAdmin.getUnavailabilities().stream().map(Unavailability::getId).collect(Collectors.toList()))
-                .notifications(companyAdmin.getNotifications().stream().map(Notification::getId).collect(Collectors.toList()))
-                .employeeComments(companyAdmin.getEmployeeComments().stream().map(Comment::getId).collect(Collectors.toList()))
-                .elementEvents(companyAdmin.getElementEvents().stream().map(ElementEvent::getId).collect(Collectors.toList()))
-                .employments(companyAdmin.getEmployments().stream().map(Employment::getId).collect(Collectors.toList()))
-                .attachments(companyAdmin.getAttachments().stream().map(Attachment::getId).collect(Collectors.toList()))
-                .toolEvents(companyAdmin.getToolEvents().stream().map(ToolEvent::getId).collect(Collectors.toList()))
+                .unavailabilities(companyAdmin.getUnavailabilities().stream()
+                        .map(Unavailability::getId)
+                        .collect(Collectors.toList()))
+                .notifications(companyAdmin.getNotifications().stream()
+                        .map(Notification::getId)
+                        .collect(Collectors.toList()))
+                .employeeComments(companyAdmin.getEmployeeComments().stream()
+                        .map(Comment::getId)
+                        .collect(Collectors.toList()))
+                .elementEvents(companyAdmin.getElementEvents().stream()
+                        .map(ElementEvent::getId)
+                        .collect(Collectors.toList()))
+                .employments(companyAdmin.getEmployments().stream()
+                        .map(Employment::getId)
+                        .collect(Collectors.toList()))
+                .attachments(companyAdmin.getAttachments().stream()
+                        .map(Attachment::getId)
+                        .collect(Collectors.toList()))
+                .toolEvents(companyAdmin.getToolEvents().stream()
+                        .map(ToolEvent::getId)
+                        .collect(Collectors.toList()))
+                .deleted(companyAdmin.isDeleted())
                 .build();
     }
 
     public CompanyAdmin toEntity(CompanyAdminDto companyAdminDto) {
 
         List<Unavailability> unavailabilityList = new ArrayList<>();
-        companyAdminDto.getUnavailabilities().forEach(unavailabilityId -> unavailabilityList.add(unavailabilityRepository.getReferenceById(unavailabilityId)));
+        companyAdminDto.getUnavailabilities().forEach(unavailabilityId -> unavailabilityList.add(unavailabilityRepository.findById(unavailabilityId).orElseThrow(EntityNotFoundException::new)));
 
         List<Notification> notificationList = new ArrayList<>();
-        companyAdminDto.getNotifications().forEach(notificationId -> notificationList.add(notificationRepository.getReferenceById(notificationId)));
+        companyAdminDto.getNotifications().forEach(notificationId -> notificationList.add(notificationRepository.findById(notificationId).orElseThrow(EntityNotFoundException::new)));
 
         List<Comment> employeeCommentsList = new ArrayList<>();
-        companyAdminDto.getEmployeeComments().forEach(commentId -> employeeCommentsList.add(commentRepository.getReferenceById(commentId)));
+        companyAdminDto.getEmployeeComments().forEach(commentId -> employeeCommentsList.add(commentRepository.findById(commentId).orElseThrow(EntityNotFoundException::new)));
 
         List<ElementEvent> elementEventList = new ArrayList<>();
-        companyAdminDto.getElementEvents().forEach(elementEventId -> elementEventList.add(elementEventRepository.getReferenceById(elementEventId)));
+        companyAdminDto.getElementEvents().forEach(elementEventId -> elementEventList.add(elementEventRepository.findById(elementEventId).orElseThrow(EntityNotFoundException::new)));
 
         List<Employment> employmentList = new ArrayList<>();
-        companyAdminDto.getEmployments().forEach(employmentId -> employmentList.add(employmentRepository.getReferenceById(employmentId)));
+        companyAdminDto.getEmployments().forEach(employmentId -> employmentList.add(employmentRepository.findById(employmentId).orElseThrow(EntityNotFoundException::new)));
 
         List<Attachment> attachmentList = new ArrayList<>();
-        companyAdminDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.getReferenceById(attachmentId)));
+        companyAdminDto.getAttachments().forEach(attachmentId -> attachmentList.add(attachmentRepository.findById(attachmentId).orElseThrow(EntityNotFoundException::new)));
 
         List<ToolEvent> toolEventList = new ArrayList<>();
-        companyAdminDto.getToolEvents().forEach(toolEventId -> toolEventList.add(toolEventRepository.getReferenceById(toolEventId)));
+        companyAdminDto.getToolEvents().forEach(toolEventId -> toolEventList.add(toolEventRepository.findById(toolEventId).orElseThrow(EntityNotFoundException::new)));
 
         CompanyAdmin companyAdmin = new CompanyAdmin();
         companyAdmin.setId(companyAdminDto.getId());

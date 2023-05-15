@@ -13,6 +13,7 @@ import QueryBoxStatus from '../../components/base/QueryStatusBox'
 import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
+import { roleName } from '../../helpers/enum.helper'
 
 const EmployeeDetails = () => {
     const params = useParams()
@@ -93,7 +94,20 @@ const EmployeeDetails = () => {
 
     return (
         <FormBox>
-            <FormTitle text={pageMode == 'new' ? 'Nowy pracownik' : formik.values['firstName']} />
+            <FormTitle
+                mainTitle={pageMode == 'new' ? 'Nowy pracownik' : 'Pracownik'}
+                subTitle={
+                    pageMode == 'new'
+                        ? ''
+                        : String(
+                              roleName(formik.values['roles'][0]) +
+                                  ' - ' +
+                                  formik.values['firstName'] +
+                                  ' ' +
+                                  formik.values['lastName'],
+                          )
+                }
+            />
             <FormPaper>
                 {queriesStatus.result != 'isSuccess' ? (
                     <QueryBoxStatus queriesStatus={queriesStatus} />

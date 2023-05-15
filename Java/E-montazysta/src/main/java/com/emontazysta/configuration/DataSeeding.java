@@ -8,6 +8,7 @@ import com.emontazysta.model.dto.ToolsPlannedNumberDto;
 import com.emontazysta.model.dto.UnavailabilityWithLocalDateDto;
 import com.emontazysta.repository.EmploymentRepository;
 import com.emontazysta.repository.ElementEventRepository;
+import com.emontazysta.repository.OrderRepository;
 import com.emontazysta.repository.ToolEventRepository;
 import com.emontazysta.service.*;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +39,7 @@ public class DataSeeding {
     private final CompanyService companyService;
     private final ClientService clientService;
     private final LocationService locationService;
-    private final OrdersService ordersService;
+    private final OrderRepository orderRepository;
     private final WarehouseService warehouseService;
     private final ToolService toolService;
     private final AttachmentService attachmentService;
@@ -96,7 +97,7 @@ public class DataSeeding {
     }
 
     private Orders addOrdersFromModel(Orders orders) {
-        return ordersMapper.toEntity(ordersService.add(ordersMapper.toDto(orders)));
+        return orderRepository.save(orders);
     }
 
     private OrderStage addOrderStageFromModel(OrderStage orderStage) {
@@ -177,12 +178,12 @@ public class DataSeeding {
         Foreman foreman1 = new Foreman(null, "Test Foreman 1", "Test Foreman 1", "foreman1@ema.il",
                 "password", "foreman1", null, Set.of(Role.FOREMAN), "foreman1Phone",
                 "foreman1Pesel", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         Foreman foreman2 = new Foreman(null, "Test Foreman 2", "Test Foreman 2", "foreman2@ema.il",
                 "password", "foreman2", null, Set.of(Role.FOREMAN), "foreman2Phone",
                 "foreman2Pesel", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         Warehouseman warehouseman1 = new Warehouseman(null, "Test Warehouseman 1", "Test Warehouseman 1",
@@ -269,9 +270,9 @@ public class DataSeeding {
         Employment employment7 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, warehouseManager1));
         Employment employment8 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, warehouseManager2));
         Employment employment9 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, specialist1));
-        Employment employment10 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, specialist2));
+        Employment employment10 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company2, specialist2));
         Employment employment11 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, salesRepresentative1));
-        Employment employment12 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, salesRepresentative2));
+        Employment employment12 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company2, salesRepresentative2));
         Employment employment13 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, manager1));
         Employment employment14 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company3, manager2));
         Employment employment15 = employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company1, companyAdmin1));
@@ -329,22 +330,22 @@ public class DataSeeding {
 
         OrderStage orderStage1 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 1",
                 OrderStageStatus.PLANNING, new BigDecimal(1), LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(),
-                1, 1, 1, new ArrayList<>(), foreman1,
+                1, 1, 1, new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         OrderStage orderStage2 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 2",
                 OrderStageStatus.PLANNING, new BigDecimal(2), LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), null,
-                1, 1, 1, new ArrayList<>(), foreman1,
+                1, 1, 1, new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         OrderStage orderStage3 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 3",
                 OrderStageStatus.PLANNING, new BigDecimal(3), LocalDateTime.now(), LocalDateTime.now(), null, null,
-                1, 1, 1, new ArrayList<>(), foreman1,
+                1, 1, 1, new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         OrderStage orderStage4 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 4",
                 OrderStageStatus.PLANNING, new BigDecimal(4), LocalDateTime.now(), LocalDateTime.now(), null, null,
-                1, 1, 1, new ArrayList<>(), foreman2,
+                1, 1, 1, new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), order2, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
