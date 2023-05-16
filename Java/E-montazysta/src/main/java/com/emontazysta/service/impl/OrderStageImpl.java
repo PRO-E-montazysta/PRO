@@ -1,10 +1,6 @@
 package com.emontazysta.service.impl;
 
-import com.emontazysta.enums.NotificationType;
-import com.emontazysta.enums.OrderStageStatus;
-import com.emontazysta.enums.OrderStatus;
-import com.emontazysta.enums.Role;
-import com.emontazysta.enums.ToolStatus;
+import com.emontazysta.enums.*;
 import com.emontazysta.mapper.*;
 import com.emontazysta.model.*;
 import com.emontazysta.model.dto.*;
@@ -459,7 +455,21 @@ public class OrderStageImpl implements OrderStageService {
                 orderStage.setStatus(OrderStageStatus.RETURNED);
             }
         }else if(orderStage.getStatus().equals(OrderStageStatus.RETURNED) && loggedUserRoles.contains(Role.FOREMAN)) {
+            List<Attachment> orderStageAttachments = orderStage.getAttachments();
+            int orderStageImageNumber = 0;
+
+            for(Attachment attachment : orderStageAttachments) {
+                if(attachment.getTypeOfAttachment().equals(TypeOfAttachment.ORDER_STAGE_PHOTO)) {
+                    orderStageImageNumber++;
+                }
+            }
+
+            if(orderStageImageNumber < orderStage.getMinimumImagesNumber()) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Wykonaj odpowiednią ilość zdjęć etapu!");
+            }
+
             orderStage.setStatus(OrderStageStatus.FINISHED);
+
         }else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Brak możliwości zmiany!");
         }
