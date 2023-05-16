@@ -15,7 +15,6 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@SQLDelete(sql = "UPDATE tools_planned_number SET deleted = true WHERE id=?")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class ToolsPlannedNumber {
 
@@ -24,8 +23,6 @@ public class ToolsPlannedNumber {
     private Long id;
 
     private int numberOfTools;
-    
-    private boolean deleted = Boolean.FALSE;
 
     @ManyToOne
     private ToolType toolType;

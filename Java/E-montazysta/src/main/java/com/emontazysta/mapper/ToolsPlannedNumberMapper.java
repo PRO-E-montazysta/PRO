@@ -27,7 +27,6 @@ public class ToolsPlannedNumberMapper {
                 .toolTypeId(toolsPlannedNumber.getToolType() == null ? null : toolsPlannedNumber.getToolType().getId())
                 .orderStageId(toolsPlannedNumber.getOrderStage() == null ? null : toolsPlannedNumber.getOrderStage().getId())
                 .demandAdHocId(toolsPlannedNumber.getDemandAdHoc() == null ? null : toolsPlannedNumber.getDemandAdHoc().getId())
-                .deleted(toolsPlannedNumber.isDeleted())
                 .build();
     }
 
