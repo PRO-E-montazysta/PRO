@@ -381,14 +381,14 @@ public class OrderStageImpl implements OrderStageService {
 
     @Override
     @Transactional
-    public OrderStageDto returnElements(Long id, List<ElementSimpleReturnReleaseDto> elements) {
-        OrderStage orderStage = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+    public OrderStageDto returnElements(Long orderStageId, Long warehouseId, List<ElementSimpleReturnReleaseDto> elements) {
+        OrderStage orderStage = repository.findById(orderStageId).orElseThrow(EntityNotFoundException::new);
         //Sprawdzenie, czy etap jest z firmy użytkownika
         if(!orderStage.getOrders().getCompany().getId().equals(authUtils.getLoggedUserCompanyId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        Warehouse warehouse = warehouseMapper.toEntity(warehouseService.getById(1L));//TODO:PASS WAREHOUSE ID
+        Warehouse warehouse = warehouseMapper.toEntity(warehouseService.getById(warehouseId));
 
         //Sprawdzenie czy można zwrócić elementy- Status etapu na RETURN i zapytanie wysłane przez WAREHOUSE_MAN lub WAREHOUSE_MANAGER
         if(orderStage.getStatus().equals(OrderStageStatus.RETURN) && (
@@ -397,6 +397,7 @@ public class OrderStageImpl implements OrderStageService {
             //Zmienna przechowująca błędne kody
             StringBuilder errorCodes = new StringBuilder();
 
+            //TODO: RETURN ELEMENTS TO GIVEN WAREHOUSE
             for(ElementSimpleReturnReleaseDto elementSimpleReturnReleaseDto : elements) {
                 String elementCode = elementSimpleReturnReleaseDto.getElementCode();
 
