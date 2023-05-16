@@ -1,6 +1,6 @@
 import { Box, CircularProgress, Typography } from '@mui/material'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { OrderStage } from '../../types/model/OrderStage'
 import { useMutation, useQuery } from 'react-query'
 import { AxiosError } from 'axios'
@@ -57,12 +57,16 @@ const OrderStagesDetails = ({ isAddOrderStageVisible }: OrderStagesDetailsProps)
                         index={index.toString()}
                         stage={stage}
                         isLoading={isLoading}
-                        isDisplayingMode={true}
+                        isDisplaying={true}
                     />
                 ))}
                 {isAddOrderStageVisible ? (
                     <>
-                        <OrderStageCard key={uuidv4()} isLoading={isLoading} isDisplayingMode={false} />
+                        <OrderStageCard
+                            key={uuidv4()}
+                            isLoading={isLoading}
+                            isDisplaying={false}
+                        />
                         <div ref={scrollerRef}></div>
                     </>
                 ) : null}

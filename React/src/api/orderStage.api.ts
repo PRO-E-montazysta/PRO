@@ -1,10 +1,16 @@
-import { CreateOrderStage, OrderStage } from '../types/model/OrderStage'
+import { CreateOrderStage, OrderStage, UpdateOrderStage, UpdateOrderStage2 } from '../types/model/OrderStage'
 import { makeServiceCall } from './utils.api'
 
 export const createOrderStage = (data: CreateOrderStage) => {
     console.log('json', data)
 
     return makeServiceCall(`/order-stages`, 'POST', { body: data })
+}
+
+export const updateOrderStage = (data: UpdateOrderStage) => {
+    // const id = data.orderStageId
+    // const {orderStageId, ...restData} = data
+    return makeServiceCall(`/order-stages/${data.orderStageId}`, 'PUT', { body: data });
 }
 
 export const getAllOrderStages = (orderId: string) => {

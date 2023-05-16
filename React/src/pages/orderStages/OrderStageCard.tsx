@@ -1,4 +1,4 @@
-import { Grid, Paper, Box, Button, Tabs, Tab, Typography, CardActions } from '@mui/material'
+import { Grid, Paper, Box, Button, Tabs, Tab, Typography, CardActions, fabClasses } from '@mui/material'
 import dayjs, { Dayjs } from 'dayjs'
 import { useFormik } from 'formik'
 import { useParams } from 'react-router-dom'
@@ -17,23 +17,25 @@ import { ExpandMore, TabPanel, validationSchema } from './helper'
 import { getRolesFromToken } from '../../utils/token'
 import { useQuery } from 'react-query'
 import { AxiosError } from 'axios'
-import { getAllToolTypes } from '../../api/toolType.api'
+import { getAllToolTypes, getPlannedToolTypesById } from '../../api/toolType.api'
 import { getAllElements } from '../../api/element.api'
-import { useAddOrderStage } from './hooks'
+import { useAddOrderStage, useUpdateOrderStage } from './hooks'
 import { CustomTextField } from '../../components/form/FormInput'
 import { v4 as uuidv4 } from 'uuid'
 import { ToolType } from '../../types/model/ToolType'
 import OrderStageToolsTable from './OrderStageToolsTable'
 import OrderStageElementsTable from './OrderStageElementsTable'
+import { roleName } from '../../helpers/enum.helper'
+import { Role } from '../../types/roleEnum'
 
 type OrderStageCardProps = {
     index?: string
     stage?: OrderStage
     isLoading: boolean
-    isDisplayingMode?: boolean
+    isDisplaying: boolean
 }
 
-const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStageCardProps) => {
+const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCardProps) => {
     const [tabValue, setTabValue] = useState(0)
     const [expandedInformation, setExpandedInformation] = useState(false)
     const [plannedStartDate, setPlannedStartDate] = useState<Dayjs | null>(dayjs(stage?.plannedStartDate))
@@ -43,18 +45,22 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
     const [preparedPlannedEndDate, setPreparedPlannedEndDate] = useState('')
     const [userRole, setUserRole] = useState('')
     const addOrderStage = useAddOrderStage()
+    const updateOrderStage = useUpdateOrderStage()
 
     const dummyScrollDiv = useRef<any>(null)
     const params = useParams()
     const plannedElementsRef = useRef<{ numberOfElements: number; elementId: string }[]>([])
     const plannedToolsTypesRef = useRef<{ numberOfTools: number; toolTypeId: string }[]>([])
     const [error, setError] = useState<DateValidationError | null>(null)
+    const [isEditing, setIsEditing] = useState(false)
+    const [isDisplayingMode, setIsDisplayingMode] = useState(isDisplaying)
 
     const handleSetPlannedElements = (value: { numberOfElements: number; elementId: string }[]) => {
         plannedElementsRef!.current! = value
     }
     const handleSetPlannedToolsTypes = (value: { numberOfTools: number; toolTypeId: string }[]) => {
         plannedToolsTypesRef!.current! = value
+        console.log('how is it',plannedToolsTypesRef!.current! )
     }
 
     const queryAllToolTypes = useQuery<Array<ToolType>, AxiosError>(
@@ -107,9 +113,30 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
         setExpandedInformation(!expandedInformation)
     }
 
+    const handleEditButtonAction = async() => {
+        setIsEditing(true)
+        setIsDisplayingMode(false)
+        const listOfToolsIds: number[] = stage?.listOfToolsPlannedNumber as any
+        const toolsTypeData = await Promise.all(
+            listOfToolsIds.map(async (tool) => {
+                return await getPlannedToolTypesById(tool)
+            }),
+        )
+        const filteredData = toolsTypeData.map((tool) => {
+            const data = {
+                numberOfTools: tool.numberOfTools,
+                toolTypeId: tool.toolType.id.toString(),
+            }
+            return data
+        })
+        console.log("here")
+        handleSetPlannedToolsTypes(filteredData)
+    }
+
     const formik = useFormik({
         initialValues: {
             orderId: params.id!,
+            orderStageId: stage!.id ? stage!.id.toString() : '',
             name: isDisplayingMode ? stage!.name : '',
             status: isDisplayingMode ? stage!.status : null,
             price: isDisplayingMode ? stage!.price : '',
@@ -130,6 +157,12 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
             values.plannedStartDate = preparedPlannedStartDate
             values.plannedEndDate = preparedPlannedEndDate
 
+            //zaczynam - chyba musze ustawić useState isEditting i jeśli tak to update
+            if (isEditing) {
+                console.log('edytujemy', values)
+                return updateOrderStage.mutate(values)
+            }
+            console.log('dodajemy')
             await addOrderStage.mutate(values)
         },
     })
@@ -438,9 +471,21 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplayingMode }: OrderStag
 
                         <Grid spacing={2} container justifyContent="flex-end" sx={{ marginTop: '20px' }}>
                             <Grid item>
-                                <Button type="submit" color="primary" variant="contained" disabled={isLoading}>
-                                    {isDisplayingMode ? 'Edytuj etap' : 'Zapisz etap'}
-                                </Button>
+                                {isDisplayingMode && userRole === Role.SPECIALIST && (
+                                    <Button
+                                        color="primary"
+                                        variant="contained"
+                                        disabled={isLoading}
+                                        onClick={handleEditButtonAction}
+                                    >
+                                        Edytuj etap
+                                    </Button>
+                                )}
+                                {(!isDisplayingMode || isEditing) && (
+                                    <Button type="submit" color="primary" variant="contained" disabled={isLoading}>
+                                        Zapisz etap
+                                    </Button>
+                                )}
                                 <div ref={dummyScrollDiv} />
                             </Grid>
                         </Grid>

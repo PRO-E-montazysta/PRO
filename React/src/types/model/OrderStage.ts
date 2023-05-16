@@ -51,3 +51,44 @@ export type CreateOrderStage = {
     }>
     attachments: Array<number>
 }
+
+export type UpdateOrderStage = {
+    orderId: string
+    orderStageId: string | null
+    name: string
+    status: string | null
+    price: string
+    plannedStartDate: string
+    plannedEndDate: string
+    plannedFittersNumber: string
+    minimumImagesNumber: string
+    listOfToolsPlannedNumber: Array<{
+        numberOfTools: number
+        toolTypeId: string
+    }>
+    listOfElementsPlannedNumber: Array<{
+        numberOfElements: number
+        elementId: string
+    }>
+    attachments: Array<number>
+}
+
+export type UpdateOrderStage2 = {
+    orderId: string
+    name: string
+    status: string | null
+    price: string
+    plannedStartDate: string
+    plannedEndDate: string
+    plannedFittersNumber: string
+    minimumImagesNumber: string
+    listOfToolsPlannedNumber: Array<{
+        numberOfTools: number
+        toolTypeId: string
+    }>
+    listOfElementsPlannedNumber: Array<{
+        numberOfElements: number
+        elementId: string
+    }>
+    attachments: Array<number>
+}
