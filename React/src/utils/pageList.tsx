@@ -26,6 +26,7 @@ import ToolEventDetails from '../pages/events/ToolEventDetails'
 import ElementEventDetails from '../pages/events/ElementEventDetails'
 import Unavailabilities from '../pages/unavailabilities'
 import UnavailabilityDetails from '../pages/unavailabilities/UnavailabilityDetails'
+import Home from '../pages/home/Home'
 
 export type PageProps = {
     name: string
@@ -62,6 +63,13 @@ export const pageList: Array<PageProps> = [
         allowedRoles: [Role['*']],
         component: <Root />,
         children: [
+            {
+                inNav: false,
+                name: '',
+                path: '',
+                allowedRoles: [Role['*']],
+                component: <Home />,
+            },
             {
                 inNav: true,
                 name: 'Firmy',
