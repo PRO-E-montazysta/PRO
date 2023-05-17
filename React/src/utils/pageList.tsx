@@ -26,6 +26,7 @@ import ToolEventDetails from '../pages/events/ToolEventDetails'
 import ElementEventDetails from '../pages/events/ElementEventDetails'
 import Unavailabilities from '../pages/unavailabilities'
 import UnavailabilityDetails from '../pages/unavailabilities/UnavailabilityDetails'
+import Notifications from '../pages/notifications'
 
 export type PageProps = {
     name: string
@@ -382,6 +383,13 @@ export const pageList: Array<PageProps> = [
                 path: '/unavailabilities/:id',
                 allowedRoles: [Role.MANAGER],
                 component: <UnavailabilityDetails />,
+            },
+            {
+                inNav: false,
+                name: '',
+                path: '/notifications',
+                allowedRoles: [Role['*']],
+                component: <Notifications />,
             },
         ],
     },
