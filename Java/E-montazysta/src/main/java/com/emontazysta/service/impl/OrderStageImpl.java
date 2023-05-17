@@ -347,6 +347,7 @@ public class OrderStageImpl implements OrderStageService {
                     Element element = elementMapper.toEntity(elementService.getByCode(elementCode));
                     //Sprawdzenie, czy można wydać element
                     if(element.getInWarehouseCount(warehouseId) - elementSimpleReturnReleaseDto.getQuantity() >= 0) {
+                        //Wydaj element
                         ElementReturnRelease elementReturnRelease = elementReturnReleaseRepository.save(ElementReturnRelease.builder()
                                 .releaseTime(LocalDateTime.now())
                                 .releasedBy((Warehouseman) authUtils.getLoggedUser())
@@ -354,6 +355,8 @@ public class OrderStageImpl implements OrderStageService {
                                 .orderStage(orderStage)
                                 .build());
                         orderStage.getElementReturnReleases().add(elementReturnRelease);
+
+                        //Zmien stan magazynowy
                         elementInWarehouseService.changeInWarehouseCountByQuantity(element, warehouseId, -elementSimpleReturnReleaseDto.getQuantity());
                     }else {
                         //Kody elementów, które nie są aktualnie dostępne
@@ -393,10 +396,34 @@ public class OrderStageImpl implements OrderStageService {
             //Zmienna przechowująca błędne kody
             StringBuilder errorCodes = new StringBuilder();
 
-            //TODO: RETURN ELEMENTS TO GIVEN WAREHOUSE
             for(ElementSimpleReturnReleaseDto elementSimpleReturnReleaseDto : elements) {
                 String elementCode = elementSimpleReturnReleaseDto.getElementCode();
 
+                try {
+                    Element element = elementMapper.toEntity(elementService.getByCode(elementCode));
+                    //Sprawdzenie, czy element był wydany
+                    Optional<ElementReturnRelease> optionalElementReturnRelease = orderStage.getElementReturnReleases()
+                            .stream()
+                            .filter(o -> o.getElement().getCode().equals(elementCode))
+                            .findFirst();
+
+                    if(optionalElementReturnRelease.isPresent()) {
+                        //Dopisz zwrot
+                        ElementReturnRelease elementReturnRelease = optionalElementReturnRelease.get();
+                        elementReturnRelease.setReturnTime(LocalDateTime.now());
+                        elementReturnRelease.setReturnedQuantity(elementReturnRelease.getReturnedQuantity() + elementSimpleReturnReleaseDto.getQuantity());
+                        elementReturnReleaseRepository.save(elementReturnRelease);
+
+                        //Zmien stan magazynowy
+                        elementInWarehouseService.changeInWarehouseCountByQuantity(element, warehouseId, elementSimpleReturnReleaseDto.getQuantity());
+                    }else {
+                        //Kody elementów, które nie są aktualnie dostępne
+                        errorCodes.append(elementCode + "- nie wydano ");
+                    }
+                }catch (EntityNotFoundException e) {
+                    //Kody elementów, które nie istnieją, bądź są z innej firmy
+                    errorCodes.append(elementCode + "- nie znaleziono ");
+                }
             }
 
             if(errorCodes.isEmpty()){
