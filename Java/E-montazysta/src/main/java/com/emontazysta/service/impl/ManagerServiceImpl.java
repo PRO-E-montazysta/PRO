@@ -1,12 +1,13 @@
 package com.emontazysta.service.impl;
 
 import com.emontazysta.enums.Role;
+import com.emontazysta.mapper.EmploymentMapper;
 import com.emontazysta.mapper.ManagerMapper;
 import com.emontazysta.model.Manager;
 import com.emontazysta.model.dto.EmploymentDto;
 import com.emontazysta.model.dto.ManagerDto;
+import com.emontazysta.repository.EmploymentRepository;
 import com.emontazysta.repository.ManagerRepository;
-import com.emontazysta.service.EmploymentService;
 import com.emontazysta.service.ManagerService;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,8 @@ public class ManagerServiceImpl implements ManagerService {
 
     private final ManagerRepository repository;
     private final ManagerMapper managerMapper;
-    private final EmploymentService employmentService;
+    private final EmploymentRepository employmentRepository;
+    private final EmploymentMapper employmentMapper;
     private final AuthUtils authUtils;
 
     @Override
@@ -43,8 +45,8 @@ public class ManagerServiceImpl implements ManagerService {
         if(!authUtils.getLoggedUser().getRoles().contains(Role.ADMIN)) {
             result.setUsername(null);
         }
-        if(!authUtils.getLoggedUser().getRoles().contains(Role.ADMIN) ||
-                !authUtils.getLoggedUser().getRoles().contains(Role.MANAGER)) {
+        if(!(authUtils.getLoggedUser().getRoles().contains(Role.ADMIN) ||
+                authUtils.getLoggedUser().getRoles().contains(Role.MANAGER))) {
             result.setPesel(null);
         }
 
@@ -75,7 +77,7 @@ public class ManagerServiceImpl implements ManagerService {
                 .companyId(authUtils.getLoggedUserCompanyId())
                 .employeeId(manager.getId())
                 .build();
-        employmentService.add(employmentDto);
+        employmentRepository.save(employmentMapper.toEntity(employmentDto));
 
         return managerMapper.toDto(manager);
     }

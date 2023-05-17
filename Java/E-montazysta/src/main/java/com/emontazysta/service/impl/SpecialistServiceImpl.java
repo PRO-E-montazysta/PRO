@@ -1,12 +1,13 @@
 package com.emontazysta.service.impl;
 
 import com.emontazysta.enums.Role;
+import com.emontazysta.mapper.EmploymentMapper;
 import com.emontazysta.mapper.SpecialistMapper;
 import com.emontazysta.model.Specialist;
 import com.emontazysta.model.dto.EmploymentDto;
 import com.emontazysta.model.dto.SpecialistDto;
+import com.emontazysta.repository.EmploymentRepository;
 import com.emontazysta.repository.SpecialistRepository;
-import com.emontazysta.service.EmploymentService;
 import com.emontazysta.service.SpecialistService;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,8 @@ public class SpecialistServiceImpl implements SpecialistService {
 
     private final SpecialistRepository repository;
     private final SpecialistMapper specialistMapper;
-    private final EmploymentService employmentService;
+    private final EmploymentRepository employmentRepository;
+    private final EmploymentMapper employmentMapper;
     private final AuthUtils authUtils;
 
     @Override
@@ -43,8 +45,8 @@ public class SpecialistServiceImpl implements SpecialistService {
         if(!authUtils.getLoggedUser().getRoles().contains(Role.ADMIN)) {
             result.setUsername(null);
         }
-        if(!authUtils.getLoggedUser().getRoles().contains(Role.ADMIN) ||
-                !authUtils.getLoggedUser().getRoles().contains(Role.MANAGER)) {
+        if(!(authUtils.getLoggedUser().getRoles().contains(Role.ADMIN) ||
+                authUtils.getLoggedUser().getRoles().contains(Role.MANAGER))) {
             result.setPesel(null);
         }
 
@@ -73,7 +75,7 @@ public class SpecialistServiceImpl implements SpecialistService {
                 .companyId(authUtils.getLoggedUserCompanyId())
                 .employeeId(specialist.getId())
                 .build();
-        employmentService.add(employmentDto);
+        employmentRepository.save(employmentMapper.toEntity(employmentDto));
 
         return specialistMapper.toDto(specialist);
     }
