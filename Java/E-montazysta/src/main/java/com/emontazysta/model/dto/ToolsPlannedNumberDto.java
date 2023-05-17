@@ -20,5 +20,4 @@ public class ToolsPlannedNumberDto {
     private Long toolTypeId;
     private Long orderStageId;
     private Long demandAdHocId;
-    private boolean deleted;
 }
