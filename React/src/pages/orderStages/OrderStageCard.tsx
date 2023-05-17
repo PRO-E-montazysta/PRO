@@ -136,7 +136,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
     const formik = useFormik({
         initialValues: {
             orderId: params.id!,
-            orderStageId: stage!.id ? stage!.id.toString() : '',
+            orderStageId: !!stage && stage.id ? stage!.id.toString() : '',
             name: isDisplayingMode ? stage!.name : '',
             status: isDisplayingMode ? stage!.status : null,
             price: isDisplayingMode ? stage!.price : '',
@@ -244,6 +244,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                             }}
                             label="Planowana godzina rozpoczęcia"
                             format={'HH:mm:ss'}
+                            ampm={false}
                             value={plannedStartHour}
                             disabled={isDisplayingMode}
                             onChange={(data) => {
@@ -283,6 +284,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                             }}
                             disabled={isDisplayingMode}
                             label="Planowana godzina zakończenia"
+                            ampm={false}
                             format={'HH:mm:ss'}
                             value={plannedFinishHour}
                             onChange={(data) => {
@@ -311,7 +313,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                     <AssignmentIcon />
                 </IconButton>
                 <Typography variant="h5" color="text.secondary">
-                    {stage ? <Typography>Etap stage.order zlecenia</Typography> : <Typography>Dodaj etap</Typography>}
+                    {stage ? <Typography>Etap {stage.name}</Typography> : <Typography>Dodaj etap</Typography>}
                 </Typography>
                 <ExpandMore
                     expand={expandedInformation}

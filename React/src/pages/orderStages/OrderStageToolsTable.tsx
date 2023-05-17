@@ -61,7 +61,7 @@ const OrderStageToolsTable = forwardRef(
         useEffect(() => {
             if (toolsRef.current.length > 0) {
                 return setTableData([...toolsRef.current])
-            }
+            } 
             getElementsData()
         }, [])
 
@@ -77,11 +77,26 @@ const OrderStageToolsTable = forwardRef(
         useEffect(() => {
             if (!!tableData && !!selectedItemId) {
                 const tempArray = [...tableData]
-                tempArray[tableRowIndex] = { numberOfTools: selectedItemNumber, toolTypeId: selectedItemId }
+                tempArray[tableRowIndex] = {
+                    numberOfTools: tableData[tableRowIndex].numberOfTools,
+                    toolTypeId: selectedItemId,
+                }
                 setTableData(tempArray)
                 handleChange(tempArray)
             }
-        }, [selectedItemId, selectedItemNumber])
+        }, [selectedItemId])
+
+        useEffect(() => {
+            if (!!tableData && !!selectedItemId) {
+                const tempArray = [...tableData]
+                tempArray[tableRowIndex] = {
+                    numberOfTools: selectedItemNumber,
+                    toolTypeId: tableData[tableRowIndex].toolTypeId,
+                }
+                setTableData(tempArray)
+                handleChange(tempArray)
+            }
+        }, [selectedItemNumber])
 
         const handleDeleteItem = (rowIndex: number) => {
             const tempArray = [...tableData]
@@ -249,6 +264,9 @@ const TableItemNumber = ({
     rowIndex,
     isDisplayingMode,
 }: TableItemNumberType) => {
+    useEffect(() => {
+        console.log(selectedItemNumber)
+    }, [])
     return (
         <TextField
             sx={{
@@ -257,6 +275,7 @@ const TableItemNumber = ({
                 },
             }}
             type="number"
+            defaultValue={0}
             value={selectedItemNumber}
             disabled={isDisplayingMode}
             id={uuidv4()}
