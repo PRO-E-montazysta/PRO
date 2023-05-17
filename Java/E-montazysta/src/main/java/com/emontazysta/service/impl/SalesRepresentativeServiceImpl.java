@@ -10,12 +10,11 @@ import com.emontazysta.model.dto.SalesRepresentativeDto;
 import com.emontazysta.model.searchcriteria.AppUserSearchCriteria;
 import com.emontazysta.repository.SalesRepresentativeRepository;
 import com.emontazysta.repository.criteria.AppUserCriteriaRepository;
-import com.emontazysta.service.EmploymentService;
 import com.emontazysta.repository.EmploymentRepository;
+import com.emontazysta.service.SalesRepresentativeService;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import javax.persistence.EntityNotFoundException;
 import java.security.Principal;
 import java.time.LocalDateTime;
