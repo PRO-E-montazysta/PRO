@@ -343,28 +343,33 @@ public class OrderStageImpl implements OrderStageService {
             for(ElementSimpleReturnReleaseDto elementSimpleReturnReleaseDto : elements) {
                 String elementCode = elementSimpleReturnReleaseDto.getElementCode();
 
-                try {
-                    Element element = elementMapper.toEntity(elementService.getByCode(elementCode));
-                    //Sprawdzenie, czy można wydać element
-                    if(element.getInWarehouseCount(warehouseId) - elementSimpleReturnReleaseDto.getQuantity() >= 0) {
-                        //Wydaj element
-                        ElementReturnRelease elementReturnRelease = elementReturnReleaseRepository.save(ElementReturnRelease.builder()
-                                .releaseTime(LocalDateTime.now())
-                                .releasedBy((Warehouseman) authUtils.getLoggedUser())
-                                .element(element)
-                                .orderStage(orderStage)
-                                .build());
-                        orderStage.getElementReturnReleases().add(elementReturnRelease);
+                if(elementSimpleReturnReleaseDto.getQuantity() > 0 ) {
+                    try {
+                        Element element = elementMapper.toEntity(elementService.getByCode(elementCode));
+                        //Sprawdzenie, czy można wydać element
+                        if(element.getInWarehouseCount(warehouseId) - elementSimpleReturnReleaseDto.getQuantity() >= 0) {
+                            //Wydaj element
+                            ElementReturnRelease elementReturnRelease = elementReturnReleaseRepository.save(ElementReturnRelease.builder()
+                                    .releaseTime(LocalDateTime.now())
+                                    .releasedBy((Warehouseman) authUtils.getLoggedUser())
+                                    .element(element)
+                                    .orderStage(orderStage)
+                                    .build());
+                            orderStage.getElementReturnReleases().add(elementReturnRelease);
 
-                        //Zmien stan magazynowy
-                        elementInWarehouseService.changeInWarehouseCountByQuantity(element, warehouseId, -elementSimpleReturnReleaseDto.getQuantity());
-                    }else {
-                        //Kody elementów, które nie są aktualnie dostępne
-                        errorCodes.append(elementCode + "- niedostępne ");
+                            //Zmien stan magazynowy
+                            elementInWarehouseService.changeInWarehouseCountByQuantity(element, warehouseId, -elementSimpleReturnReleaseDto.getQuantity());
+                        }else {
+                            //Kody elementów, które nie są aktualnie dostępne
+                            errorCodes.append(elementCode + "- niedostępne ");
+                        }
+                    }catch (EntityNotFoundException e) {
+                        //Kody elementów, które nie istnieją, bądź są z innej firmy
+                        errorCodes.append(elementCode + "- nie znaleziono ");
                     }
-                }catch (EntityNotFoundException e) {
-                    //Kody elementów, które nie istnieją, bądź są z innej firmy
-                    errorCodes.append(elementCode + "- nie znaleziono ");
+                }else {
+                    //Kody elementów, których wskazana ilość wydania to <=0
+                    errorCodes.append(elementCode + "- zła ilośc ");
                 }
             }
 
@@ -399,30 +404,35 @@ public class OrderStageImpl implements OrderStageService {
             for(ElementSimpleReturnReleaseDto elementSimpleReturnReleaseDto : elements) {
                 String elementCode = elementSimpleReturnReleaseDto.getElementCode();
 
-                try {
-                    Element element = elementMapper.toEntity(elementService.getByCode(elementCode));
-                    //Sprawdzenie, czy element był wydany
-                    Optional<ElementReturnRelease> optionalElementReturnRelease = orderStage.getElementReturnReleases()
-                            .stream()
-                            .filter(o -> o.getElement().getCode().equals(elementCode))
-                            .findFirst();
+                if(elementSimpleReturnReleaseDto.getQuantity() > 0) {
+                    try {
+                        Element element = elementMapper.toEntity(elementService.getByCode(elementCode));
+                        //Sprawdzenie, czy element był wydany
+                        Optional<ElementReturnRelease> optionalElementReturnRelease = orderStage.getElementReturnReleases()
+                                .stream()
+                                .filter(o -> o.getElement().getCode().equals(elementCode))
+                                .findFirst();
 
-                    if(optionalElementReturnRelease.isPresent()) {
-                        //Dopisz zwrot
-                        ElementReturnRelease elementReturnRelease = optionalElementReturnRelease.get();
-                        elementReturnRelease.setReturnTime(LocalDateTime.now());
-                        elementReturnRelease.setReturnedQuantity(elementReturnRelease.getReturnedQuantity() + elementSimpleReturnReleaseDto.getQuantity());
-                        elementReturnReleaseRepository.save(elementReturnRelease);
+                        if(optionalElementReturnRelease.isPresent()) {
+                            //Dopisz zwrot
+                            ElementReturnRelease elementReturnRelease = optionalElementReturnRelease.get();
+                            elementReturnRelease.setReturnTime(LocalDateTime.now());
+                            elementReturnRelease.setReturnedQuantity(elementReturnRelease.getReturnedQuantity() + elementSimpleReturnReleaseDto.getQuantity());
+                            elementReturnReleaseRepository.save(elementReturnRelease);
 
-                        //Zmien stan magazynowy
-                        elementInWarehouseService.changeInWarehouseCountByQuantity(element, warehouseId, elementSimpleReturnReleaseDto.getQuantity());
-                    }else {
-                        //Kody elementów, które nie są aktualnie dostępne
-                        errorCodes.append(elementCode + "- nie wydano ");
+                            //Zmien stan magazynowy
+                            elementInWarehouseService.changeInWarehouseCountByQuantity(element, warehouseId, elementSimpleReturnReleaseDto.getQuantity());
+                        }else {
+                            //Kody elementów, które nie są aktualnie dostępne
+                            errorCodes.append(elementCode + "- nie wydano ");
+                        }
+                    }catch (EntityNotFoundException e) {
+                        //Kody elementów, które nie istnieją, bądź są z innej firmy
+                        errorCodes.append(elementCode + "- nie znaleziono ");
                     }
-                }catch (EntityNotFoundException e) {
-                    //Kody elementów, które nie istnieją, bądź są z innej firmy
-                    errorCodes.append(elementCode + "- nie znaleziono ");
+                }else {
+                    //Kody elementów, których wskazana ilość zwrotu to <=0
+                    errorCodes.append(elementCode + "- zła ilośc ");
                 }
             }
 
