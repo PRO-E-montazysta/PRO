@@ -348,14 +348,28 @@ public class OrderStageImpl implements OrderStageService {
                         Element element = elementMapper.toEntity(elementService.getByCode(elementCode));
                         //Sprawdzenie, czy można wydać element
                         if(element.getInWarehouseCount(warehouseId) - elementSimpleReturnReleaseDto.getQuantity() >= 0) {
-                            //Wydaj element
-                            ElementReturnRelease elementReturnRelease = elementReturnReleaseRepository.save(ElementReturnRelease.builder()
-                                    .releaseTime(LocalDateTime.now())
-                                    .releasedBy((Warehouseman) authUtils.getLoggedUser())
-                                    .element(element)
-                                    .orderStage(orderStage)
-                                    .build());
-                            orderStage.getElementReturnReleases().add(elementReturnRelease);
+                            //Sprawdzenie czy element był już wydawany
+                            Optional<ElementReturnRelease> optionalElementReturnRelease = orderStage.getElementReturnReleases()
+                                    .stream().filter(o -> o.getElement().equals(element)).findFirst();
+
+                            if(optionalElementReturnRelease.isPresent()) {
+                                //Dopisanie wywadania elementu
+                                ElementReturnRelease existingElementReturnRelease = optionalElementReturnRelease.get();
+                                existingElementReturnRelease.setReleasedQuantity(
+                                        existingElementReturnRelease.getReleasedQuantity() + elementSimpleReturnReleaseDto.getQuantity());
+                                elementReturnReleaseRepository.save(existingElementReturnRelease);
+                            }else {
+                                //Wydanie elementu po raz pierwszy
+                                ElementReturnRelease elementReturnRelease = elementReturnReleaseRepository.save(ElementReturnRelease.builder()
+                                        .releaseTime(LocalDateTime.now())
+                                        .releasedBy((Warehouseman) authUtils.getLoggedUser())
+                                        .element(element)
+                                        .orderStage(orderStage)
+                                        .releasedQuantity(elementSimpleReturnReleaseDto.getQuantity())
+                                        .returnedQuantity(0)
+                                        .build());
+                                orderStage.getElementReturnReleases().add(elementReturnRelease);
+                            }
 
                             //Zmien stan magazynowy
                             elementInWarehouseService.changeInWarehouseCountByQuantity(element, warehouseId, -elementSimpleReturnReleaseDto.getQuantity());
@@ -392,7 +406,11 @@ public class OrderStageImpl implements OrderStageService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
+        //Sprawdzenie czy magazyn jest z firmy użytkownika
         Warehouse warehouse = warehouseMapper.toEntity(warehouseService.getById(warehouseId));
+        if(!warehouse.getCompany().getId().equals(authUtils.getLoggedUserCompanyId())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
 
         //Sprawdzenie czy można zwrócić elementy- Status etapu na RETURN i zapytanie wysłane przez WAREHOUSE_MAN lub WAREHOUSE_MANAGER
         if(orderStage.getStatus().equals(OrderStageStatus.RETURN) && (
