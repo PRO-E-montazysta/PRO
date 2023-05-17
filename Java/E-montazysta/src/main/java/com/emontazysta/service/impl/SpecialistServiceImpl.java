@@ -4,21 +4,23 @@ import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.EmploymentMapper;
 import com.emontazysta.mapper.SpecialistMapper;
 import com.emontazysta.model.Specialist;
+import com.emontazysta.model.dto.EmployeeDto;
 import com.emontazysta.model.dto.EmploymentDto;
 import com.emontazysta.model.dto.SpecialistDto;
-import com.emontazysta.repository.EmploymentRepository;
+import com.emontazysta.model.searchcriteria.AppUserSearchCriteria;
 import com.emontazysta.repository.SpecialistRepository;
+import com.emontazysta.repository.criteria.AppUserCriteriaRepository;
+import com.emontazysta.repository.EmploymentRepository;
 import com.emontazysta.service.SpecialistService;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import javax.persistence.EntityNotFoundException;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,12 +31,20 @@ public class SpecialistServiceImpl implements SpecialistService {
     private final EmploymentRepository employmentRepository;
     private final EmploymentMapper employmentMapper;
     private final AuthUtils authUtils;
+    private final AppUserCriteriaRepository appUserCriteriaRepository;
 
     @Override
-    public List<SpecialistDto> getAll() {
-        return repository.findAll().stream()
-                .map(specialistMapper::toDto)
-                .collect(Collectors.toList());
+    public List<SpecialistDto> getAll(Principal principal) {
+        List<EmployeeDto> appUsers = appUserCriteriaRepository.findAllWithFilters(new AppUserSearchCriteria(), principal);
+        List<SpecialistDto> result = new ArrayList<>();
+
+        for(EmployeeDto employeeDto : appUsers) {
+            if(employeeDto.getRoles().contains(Role.SPECIALIST)) {
+                result.add(specialistMapper.toDto(repository.getReferenceById(employeeDto.getId())));
+            }
+        }
+
+        return result;
     }
 
     @Override

@@ -10,7 +10,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -31,10 +30,10 @@ public class ToolCriteriaRepository {
         this.authUtils = authUtils;
     }
 
-    public List<ToolFilterDto> finadAllWithFilter(ToolSearchCriteria toolSearchCriteria, Principal principal){
+    public List<ToolFilterDto> finadAllWithFilter(ToolSearchCriteria toolSearchCriteria){
         CriteriaQuery<Tool> criteriaQuery = criteriaBuilder.createQuery(Tool.class);
         Root<Tool> toolRoot = criteriaQuery.from(Tool.class);
-        Predicate predicate = getPredicate(toolSearchCriteria, toolRoot, principal);
+        Predicate predicate = getPredicate(toolSearchCriteria, toolRoot);
         criteriaQuery.where(predicate);
 
         TypedQuery<Tool> typedQuery = entityManager.createQuery(criteriaQuery);
@@ -43,7 +42,7 @@ public class ToolCriteriaRepository {
         return toolList.stream().map(toolFilterMapper::toDto).collect(Collectors.toList());
     }
 
-    private Predicate getPredicate(ToolSearchCriteria toolSearchCriteria, Root<Tool> toolRoot, Principal principal) {
+    private Predicate getPredicate(ToolSearchCriteria toolSearchCriteria, Root<Tool> toolRoot) {
         List<Predicate> predicates = new ArrayList<>();
 
         //Get tools by name
