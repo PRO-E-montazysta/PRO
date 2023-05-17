@@ -7,7 +7,7 @@ import com.emontazysta.model.dto.*;
 import com.emontazysta.model.searchcriteria.OrdersStageSearchCriteria;
 import com.emontazysta.repository.*;
 import com.emontazysta.repository.criteria.OrdersStageCriteriaRepository;
-import com.emontazysta.service.ElementService;
+import com.emontazysta.service.*;
 import com.emontazysta.mapper.ElementsPlannedNumberMapper;
 import com.emontazysta.mapper.OrderStageMapper;
 import com.emontazysta.mapper.ToolsPlannedNumberMapper;
@@ -19,11 +19,6 @@ import com.emontazysta.model.dto.ToolsPlannedNumberDto;
 import com.emontazysta.model.searchcriteria.OrdersStageSearchCriteria;
 import com.emontazysta.repository.*;
 import com.emontazysta.repository.criteria.OrdersStageCriteriaRepository;
-import com.emontazysta.service.AppUserService;
-import com.emontazysta.service.NotificationService;
-import com.emontazysta.service.OrderStageService;
-import com.emontazysta.service.ToolService;
-import com.emontazysta.service.WarehouseService;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -64,6 +59,7 @@ public class OrderStageImpl implements OrderStageService {
     private final NotificationService notificationService;
     private final AppUserService userService;
     private final OrderRepository orderRepository;
+    private final ElementInWarehouseService elementInWarehouseService;
 
     @Override
     public List<OrderStageDto> getAll() {
@@ -350,7 +346,7 @@ public class OrderStageImpl implements OrderStageService {
                 try {
                     Element element = elementMapper.toEntity(elementService.getByCode(elementCode));
                     //Sprawdzenie, czy można wydać element
-                    if(element.getInWarehouseCount(warehouse) - elementSimpleReturnReleaseDto.getQuantity() >= 0) {
+                    if(element.getInWarehouseCount(warehouseId) - elementSimpleReturnReleaseDto.getQuantity() >= 0) {
                         ElementReturnRelease elementReturnRelease = elementReturnReleaseRepository.save(ElementReturnRelease.builder()
                                 .releaseTime(LocalDateTime.now())
                                 .releasedBy((Warehouseman) authUtils.getLoggedUser())
@@ -358,7 +354,7 @@ public class OrderStageImpl implements OrderStageService {
                                 .orderStage(orderStage)
                                 .build());
                         orderStage.getElementReturnReleases().add(elementReturnRelease);
-                        element.changeInWarehouseCountByQuantity(warehouse, -elementSimpleReturnReleaseDto.getQuantity());
+                        elementInWarehouseService.changeInWarehouseCountByQuantity(element, warehouseId, -elementSimpleReturnReleaseDto.getQuantity());
                     }else {
                         //Kody elementów, które nie są aktualnie dostępne
                         errorCodes.append(elementCode + "- niedostępne ");

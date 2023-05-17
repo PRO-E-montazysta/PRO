@@ -62,20 +62,10 @@ public class Element {
     @OneToMany(mappedBy ="element" )
     private List<ElementsPlannedNumber> listOfElementsPlannedNumber;
 
-    public int getInWarehouseCount(Warehouse inWarehouse) {
-        Optional<ElementInWarehouse> elementInWarehouseOptional = elementInWarehouses.stream().filter(o -> o.getWarehouse().equals(inWarehouse)).findFirst();
+    public int getInWarehouseCount(Long warehouseId) {
+        Optional<ElementInWarehouse> elementInWarehouseOptional = elementInWarehouses.stream().filter(o -> o.getWarehouse().getId().equals(warehouseId)).findFirst();
         if(elementInWarehouseOptional.isPresent()) {
             return elementInWarehouseOptional.get().getInWarehouseCount();
-        }else {
-            throw new EntityNotFoundException();
-        }
-    }
-
-    public void changeInWarehouseCountByQuantity(Warehouse inWarehouse, int quantity) {
-        Optional<ElementInWarehouse> elementInWarehouseOptional = elementInWarehouses.stream().filter(o -> o.getWarehouse().equals(inWarehouse)).findFirst();
-        if(elementInWarehouseOptional.isPresent()) {
-            ElementInWarehouse elementInWarehouse = elementInWarehouseOptional.get();
-            elementInWarehouse.setInWarehouseCount(elementInWarehouse.getInWarehouseCount() + quantity);
         }else {
             throw new EntityNotFoundException();
         }
