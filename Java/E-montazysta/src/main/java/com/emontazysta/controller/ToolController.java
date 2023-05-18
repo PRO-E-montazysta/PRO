@@ -2,20 +2,17 @@ package com.emontazysta.controller;
 
 import com.emontazysta.model.dto.ToolDto;
 import com.emontazysta.model.dto.filterDto.ToolFilterDto;
-import com.emontazysta.model.searchcriteria.ToolReleaseSearchCriteria;
 import com.emontazysta.model.searchcriteria.ToolSearchCriteria;
 import com.emontazysta.service.ToolService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.List;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
@@ -66,16 +63,16 @@ public class ToolController {
 
     @GetMapping("/filter")
     @Operation(description = "Allows to get filtered tools data.", security = @SecurityRequirement(name = "bearer-key"))
-    public ResponseEntity<List<ToolFilterDto>> getfilteredTools(ToolSearchCriteria toolSearchCriteria, Principal principal){
-        return new ResponseEntity<>(toolService.getTools(toolSearchCriteria, principal),HttpStatus.OK);
+    public ResponseEntity<List<ToolFilterDto>> getfilteredTools(ToolSearchCriteria toolSearchCriteria){
+        return new ResponseEntity<>(toolService.getTools(toolSearchCriteria),HttpStatus.OK);
     }
 
     @GetMapping("/tools-from-warehouse/{id}")
     @Operation(description = "Allows to get filtered tools data.", security = @SecurityRequirement(name = "bearer-key"))
     public ResponseEntity<List<ToolFilterDto>> getfilteredToolsFromWarehouse(@PathVariable String id,
-                                     ToolSearchCriteria toolSearchCriteria, Principal principal){
+                                     ToolSearchCriteria toolSearchCriteria){
         toolSearchCriteria.setWarehouse_Id(List.of(id));
-        return new ResponseEntity<>(toolService.getTools(toolSearchCriteria, principal),HttpStatus.OK);
+        return new ResponseEntity<>(toolService.getTools(toolSearchCriteria),HttpStatus.OK);
     }
 
 }

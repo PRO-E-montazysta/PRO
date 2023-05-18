@@ -2,14 +2,12 @@ package com.emontazysta.service.impl;
 
 import com.emontazysta.mapper.WarehouseMapper;
 import com.emontazysta.model.Company;
-import com.emontazysta.model.Location;
 import com.emontazysta.model.Tool;
 import com.emontazysta.model.Warehouse;
 import com.emontazysta.model.dto.*;
 import com.emontazysta.model.searchcriteria.ElementSearchCriteria;
 import com.emontazysta.model.searchcriteria.WarehouseSearchCriteria;
 import com.emontazysta.repository.CompanyRepository;
-import com.emontazysta.repository.LocationRepository;
 import com.emontazysta.repository.WarehouseRepository;
 import com.emontazysta.repository.criteria.ElementCriteriaRepository;
 import com.emontazysta.repository.criteria.WarehouseCriteriaRepository;
@@ -37,7 +35,6 @@ public class WarehouseServiceImpl implements WarehouseService {
     private final AuthUtils authUtils;
     private final ElementCriteriaRepository elementCriteriaRepository;
     private final ElementInWarehouseService elementInWarehouseService;
-    private final LocationRepository locationRepository;
 
     @Override
     public List<WarehouseDto> getAll() {
@@ -84,7 +81,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     @Override
-    public WarehouseDto update(Long id, WarehouseWithLocationDto warehouseWithLocationDto) {
+    public WarehouseDto update(Long id, WarehouseDto warehouseDto) {
         Warehouse warehouse = repository.findById(id).orElseThrow(EntityNotFoundException::new);
 
         //Check if Warehouse is from user company
@@ -92,19 +89,9 @@ public class WarehouseServiceImpl implements WarehouseService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
-        warehouse.setName(warehouseWithLocationDto.getName());
-        warehouse.setDescription(warehouseWithLocationDto.getDescription());
-        warehouse.setOpeningHours(warehouseWithLocationDto.getOpeningHours());
-
-        Location location = warehouse.getLocation();
-        location.setXCoordinate(warehouseWithLocationDto.getXCoordinate());
-        location.setYCoordinate(warehouseWithLocationDto.getYCoordinate());
-        location.setCity(warehouseWithLocationDto.getCity());
-        location.setStreet(warehouseWithLocationDto.getStreet());
-        location.setPropertyNumber(warehouseWithLocationDto.getPropertyNumber());
-        location.setApartmentNumber(warehouseWithLocationDto.getApartmentNumber());
-        location.setZipCode(warehouseWithLocationDto.getZipCode());
-        locationRepository.save(location);
+        warehouse.setName(warehouseDto.getName());
+        warehouse.setDescription(warehouseDto.getDescription());
+        warehouse.setOpeningHours(warehouseDto.getOpeningHours());
 
         return warehouseMapper.toDto(repository.save(warehouse));
     }
@@ -137,30 +124,5 @@ public class WarehouseServiceImpl implements WarehouseService {
         });
 
         return warehouseMapper.toDto(warehouse);
-    }
-
-    @Override
-    public WarehouseDto addWarehouseWithLocation(WarehouseWithLocationDto warehouseWithLocationDto) {
-        warehouseWithLocationDto.setCompanyId(authUtils.getLoggedUserCompanyId());
-
-        Location location = locationRepository.save(
-                Location.builder()
-                        .xCoordinate(warehouseWithLocationDto.getXCoordinate())
-                        .yCoordinate(warehouseWithLocationDto.getYCoordinate())
-                        .city(warehouseWithLocationDto.getCity())
-                        .street(warehouseWithLocationDto.getStreet())
-                        .propertyNumber(warehouseWithLocationDto.getPropertyNumber())
-                        .apartmentNumber(warehouseWithLocationDto.getApartmentNumber())
-                        .zipCode(warehouseWithLocationDto.getZipCode())
-                        .build()
-        );
-
-        return addWithWarehouseCount(
-                WarehouseDto.builder()
-                        .name(warehouseWithLocationDto.getName())
-                        .description(warehouseWithLocationDto.getDescription())
-                        .openingHours(warehouseWithLocationDto.getOpeningHours())
-                        .locationId(location.getId())
-                        .build());
     }
 }
