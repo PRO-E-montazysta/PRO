@@ -6,6 +6,7 @@ import com.emontazysta.model.*;
 import com.emontazysta.model.dto.NotificationDto;
 import com.emontazysta.model.searchcriteria.NotificationSearchCriteria;
 import com.emontazysta.repository.*;
+import com.emontazysta.repository.criteria.NotificationCriteriaRepository;
 import com.emontazysta.service.NotificationService;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
