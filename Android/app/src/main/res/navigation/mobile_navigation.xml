@@ -97,6 +97,9 @@
         <argument
             android:name="stageId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_stageDetailFragment_to_releaseCreateFragment"
+            app:destination="@id/releaseCreateFragment" />
     </fragment>
 
     <fragment
@@ -106,5 +109,13 @@
         <action
             android:id="@+id/action_stageListFragment_to_stageDetailFragment"
             app:destination="@id/stageDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/releaseCreateFragment"
+        android:name="com.example.e_montazysta.ui.release.ReleaseCreateFragment"
+        android:label="ReleaseCreateFragment" >
+        <argument
+            android:name="stageId"
+            app:argType="integer" />
     </fragment>
 </navigation>

@@ -10,6 +10,7 @@ import com.example.e_montazysta.data.services.ServiceProvider
 import com.example.e_montazysta.helpers.CustomDateAdapter
 import com.example.e_montazysta.ui.order.OrderDetailViewModel
 import com.example.e_montazysta.ui.order.OrderListViewModel
+import com.example.e_montazysta.ui.release.ReleaseCreateViewModel
 import com.example.e_montazysta.ui.release.ReleaseDetailViewModel
 import com.example.e_montazysta.ui.release.ReleaseListViewModel
 import com.example.e_montazysta.ui.stage.StageDetailViewModel
@@ -114,5 +115,9 @@ val dataModule = module {
     }
     viewModel {
         StageDetailViewModel(get())
+    }
+
+    viewModel {
+        ReleaseCreateViewModel()
     }
 }

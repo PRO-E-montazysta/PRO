@@ -170,29 +170,63 @@
             app:layout_constraintTop_toBottomOf="@+id/details"
             />
         <LinearLayout
+            android:id="@+id/status_navigation_buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="@+id/separator"
             app:layout_constraintStart_toStartOf="@+id/separator"
             app:layout_constraintTop_toBottomOf="@+id/separator">
 
-<!--        <TextView-->
-<!--            android:id="@+id/stage_title"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Wydania"-->
-<!--            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall" />-->
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_gravity="left"/>
 
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/stage_release_list"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
-<!--            tools:listitem="@layout/list_item_release"-->
-
-<!--            />-->
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_gravity="right" />
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/release_navigation_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@+id/status_navigation_buttons"
+            app:layout_constraintStart_toStartOf="@+id/status_navigation_buttons"
+            app:layout_constraintTop_toBottomOf="@+id/status_navigation_buttons">
+
+            <Button
+                android:id="@+id/create_release"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_gravity="right"
+                android:text="Utwórz wydanie"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/return_navigation_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@+id/release_navigation_buttons"
+            app:layout_constraintStart_toStartOf="@+id/release_navigation_buttons"
+            app:layout_constraintTop_toBottomOf="@+id/release_navigation_buttons">
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_gravity="left"
+                android:text="Wydaj narzędzia"/>
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_gravity="right"
+                android:text="Wydaj elementy"/>
+        </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     </ScrollView>
 </layout>

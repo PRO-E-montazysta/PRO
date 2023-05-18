@@ -35,4 +35,7 @@
     <string name="title_orders">Zlecenia</string>
     <string name="stages_list_tile">Lista etapów</string>
     <string name="title_stages">Etapy</string>
+    <string name="add_objects_to_release_label">Dodaj elementy</string>
+    <string name="add_objects_to_release_desc">Dodaje obiekty do wydania</string>
+    <string name="element_quantity_label">Ilość</string>
 </resources>
