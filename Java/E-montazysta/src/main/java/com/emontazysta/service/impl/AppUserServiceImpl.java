@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -142,8 +143,8 @@ public class AppUserServiceImpl  implements AppUserService {
     }
 
     @Override
-    public List <EmployeeDto> getFilteredUsers(AppUserSearchCriteria appUserSearchCriteria){
-    return appUserCriteriaRepository.findAllWithFilters(appUserSearchCriteria);
+    public List <EmployeeDto> getFilteredUsers(AppUserSearchCriteria appUserSearchCriteria, Principal principal){
+    return appUserCriteriaRepository.findAllWithFilters(appUserSearchCriteria, principal);
     }
 
     public List<AppUser> findAllByRole(Role role){

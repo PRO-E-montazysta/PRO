@@ -156,8 +156,8 @@ public class AppUserController {
 
     @GetMapping("/filter")
     @Operation(description = "Return filtered Users by given parameters.", security = @SecurityRequirement(name = "bearer-key"))
-    public ResponseEntity<List<EmployeeDto>> filterUsers(AppUserSearchCriteria appUserSearchCriteria) {
-        return new ResponseEntity<>(userService.getFilteredUsers(appUserSearchCriteria), HttpStatus.OK);
+    public ResponseEntity<List<EmployeeDto>> filterUsers(AppUserSearchCriteria appUserSearchCriteria, Principal principal) {
+        return new ResponseEntity<>(userService.getFilteredUsers(appUserSearchCriteria, principal), HttpStatus.OK);
     }
 
 }

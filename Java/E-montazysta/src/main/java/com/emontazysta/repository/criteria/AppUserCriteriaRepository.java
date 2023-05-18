@@ -3,11 +3,15 @@ package com.emontazysta.repository.criteria;
 import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.EmployeeMapper;
 import com.emontazysta.model.AppUser;
+import com.emontazysta.model.Employment;
 import com.emontazysta.model.Unavailability;
 import com.emontazysta.model.dto.EmployeeDto;
+import com.emontazysta.model.dto.EmploymentDto;
 import com.emontazysta.model.searchcriteria.AppUserSearchCriteria;
 import com.emontazysta.repository.AppUserRepository;
+import com.emontazysta.repository.EmploymentRepository;
 import com.emontazysta.repository.UnavailabilityRepository;
+import com.emontazysta.service.EmploymentService;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -16,10 +20,12 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -40,7 +46,7 @@ public class AppUserCriteriaRepository {
         this.usersRepository = usersRepository;
     }
 
-    public List<EmployeeDto> findAllWithFilters(AppUserSearchCriteria appUserSearchCriteria) {
+    public List<EmployeeDto> findAllWithFilters(AppUserSearchCriteria appUserSearchCriteria, Principal principal) {
 
         CriteriaQuery<AppUser> criteriaQuery = criteriaBuilder.createQuery(AppUser.class);
         Root<AppUser> appUserRoot = criteriaQuery.from(AppUser.class);
@@ -49,9 +55,22 @@ public class AppUserCriteriaRepository {
         criteriaQuery.where(predicate);
 
         TypedQuery<AppUser> typedQuery = entityManager.createQuery(criteriaQuery);
-        List<AppUser> orders = typedQuery.getResultList();
+        List<AppUser> appUsers = typedQuery.getResultList();
+        List<AppUser> result = new ArrayList<>();
+        AppUser loggedUser = usersRepository.findByUsername(principal.getName());
+        Long loggedUserCompanyId = loggedUser.getEmployments().get(0).getCompany().getId();
 
-        return orders.stream().map(employeeMapper::toDto).collect(Collectors.toList());
+        for(AppUser appUser : appUsers) {
+            if(!appUser.getRoles().contains(Role.CLOUD_ADMIN)) {
+                if(appUser.getEmployments() != null && appUser.getEmployments().size() > 0) {
+                    if(loggedUserCompanyId.equals(appUser.getEmployments().get(0).getCompany().getId())) {
+                        result.add(appUser);
+                    }
+                }
+            }
+        }
+
+        return result.stream().map(employeeMapper::toDto).collect(Collectors.toList());
     }
 
     private Predicate getPredicate(AppUserSearchCriteria appUserSearchCriteria, Root<AppUser> appUserRoot) {
