@@ -1,7 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+        <variable
+            name="headline"
+            type="java.lang.String" />
+        <variable
+            name="supportText"
+            type="java.lang.String" />
+    </data>
+<merge
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?selectableItemBackground"
@@ -11,6 +22,7 @@
     android:minHeight="@dimen/list_item_min_height_two_line"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
     tools:theme="@style/Theme.Material3.DayNight">
+
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_start"
@@ -80,7 +92,7 @@
         app:layout_constraintStart_toEndOf="@id/barrier_text_start"
         app:layout_constraintTop_toTopOf="@id/guide_top"
         app:layout_constraintVertical_chainStyle="packed"
-        tools:text="Headline text" />
+        tools:text='@{headline ?? "Headline"}' />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/txt_support"
@@ -97,7 +109,7 @@
         app:layout_constraintStart_toStartOf="@id/txt_headline"
         app:layout_constraintTop_toBottomOf="@id/txt_headline"
         app:layout_constraintVertical_chainStyle="packed"
-        tools:text="Support text" />
+        tools:text='@{supportText ?? "Support text"}'  />
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="0dp"
@@ -107,22 +119,6 @@
         app:layout_constraintEnd_toEndOf="@id/guide_end"
         app:layout_constraintStart_toStartOf="@id/guide_start" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/quantity"
-        style="?attr/textInputOutlinedStyle"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/element_quantity_label"
-        app:layout_constraintEnd_toStartOf="@id/guide_end"
-        app:layout_constraintTop_toTopOf="@id/guide_top"
-        app:layout_constraintBottom_toBottomOf="@id/guide_bottom"
-        app:suffixText='@{element.getQuantityInWarehouse(selectedWarehouse.id)}'>
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="1" />
-    </com.google.android.material.textfield.TextInputLayout>
-
 
 </merge>
+</layout>
