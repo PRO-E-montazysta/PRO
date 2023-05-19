@@ -1,6 +1,8 @@
 package com.emontazysta.controller;
 
 import com.emontazysta.model.dto.ElementInWarehouseDto;
+import com.emontazysta.model.dto.filterDto.ElementInWarehouseFilterDto;
+import com.emontazysta.model.searchcriteria.ElementInWarehouseSearchCriteria;
 import com.emontazysta.service.ElementInWarehouseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -31,6 +33,12 @@ public class ElementInWarehouseController {
     @Operation(description = "Allows to get element in warehouse by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public ElementInWarehouseDto getElementInWarehouseById(@PathVariable Long id) {
         return service.getById(id);
+    }
+
+    @GetMapping("/element/{elementId}")
+    @Operation(description = "Allows to get element in warehouse by given Id.", security = @SecurityRequirement(name = "bearer-key"))
+    public List<ElementInWarehouseFilterDto> getFilteredWarehouseCount(ElementInWarehouseSearchCriteria elementInWarehouseSearchCriteria, @PathVariable Long elementId) {
+        return service.getFilteredWarehouseCount(elementId, elementInWarehouseSearchCriteria);
     }
 
     @PostMapping
