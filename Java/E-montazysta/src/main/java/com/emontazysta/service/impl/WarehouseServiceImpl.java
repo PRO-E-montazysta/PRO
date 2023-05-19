@@ -2,6 +2,7 @@ package com.emontazysta.service.impl;
 
 import com.emontazysta.mapper.WarehouseMapper;
 import com.emontazysta.model.Company;
+import com.emontazysta.model.ElementInWarehouse;
 import com.emontazysta.model.Tool;
 import com.emontazysta.model.Warehouse;
 import com.emontazysta.model.dto.*;
@@ -75,6 +76,11 @@ public class WarehouseServiceImpl implements WarehouseService {
         //Set deleted flag for Tools from warehouse
         for(Tool tool : warehouse.getTools()) {
             tool.setDeleted(true);
+        }
+
+        //Set deleted flag for ElementInWarehouse from warehouse
+        for(ElementInWarehouse elementInWarehouse : warehouse.getElementInWarehouses()) {
+            elementInWarehouse.setDeleted(true);
         }
 
         repository.deleteById(id);
