@@ -133,6 +133,7 @@ const CompanyDetails = () => {
                     readonly={pageMode == 'read'}
                     label="Hasło"
                     type="password"
+                    placeholder="POLE TYMCZASOWE"
                 />
                 <FormInput
                     style={{ width: inputWidth }}
@@ -149,6 +150,7 @@ const CompanyDetails = () => {
                     readonly={pageMode == 'read'}
                     label="Telefon"
                     type="text"
+                    placeholder="+48123456789"
                 />
                 <FormInput
                     style={{ width: inputWidth }}
@@ -180,7 +182,7 @@ const CompanyDetails = () => {
                                     <Card sx={{ width: '100%', left: '50%' }}>
                                         <ExpandMore
                                             titleIcon={<PermContactCalendarIcon />}
-                                            title="Dane dministratora firmy"
+                                            title="Dane administratora firmy"
                                             cardContent={addAdminCardContent()}
                                         />
                                     </Card>
