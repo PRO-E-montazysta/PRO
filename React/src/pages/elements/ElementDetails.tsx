@@ -1,8 +1,8 @@
 import { useFormik } from 'formik'
 import { useContext, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
-import { useFormStructure } from './helper'
+import { elementInWarehouseHeadCells, useFormStructure, elementInWarehouseFilterInitStructure } from './helper'
 import FormBox from '../../components/form/FormBox'
 import FormTitle from '../../components/form/FormTitle'
 import FormPaper from '../../components/form/FormPaper'
@@ -14,8 +14,26 @@ import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { getInitValues, getValidatinSchema } from '../../helpers/form.helper'
 import { useAddElement, useDeleteElement, useEditElement, useElementData } from './hooks'
 import { useQueriesStatus } from '../../hooks/useQueriesStatus'
+import Grid from '@mui/material/Grid'
+import Card from '@mui/material/Card'
+import ExpandMore from '../../components/expandMore/ExpandMore'
+import HistoryIcon from '@mui/icons-material/History'
+import FatTable from '../../components/table/FatTable'
+import { AxiosError } from 'axios'
+import { useQuery } from 'react-query'
+import { getFilteredElements } from '../../api/element.api'
+import { setNewFilterValues, getFilterParams, getInputs } from '../../helpers/filter.helper'
+import { Filter, FilterFormProps } from '../../components/table/filter/TableFilter'
+import { Element } from '../../types/model/Element'
+import { getElementInWarehouseCounts } from '../../api/elementInWarehouse.api'
+import { ElementInWarehouse, ElementInWarehouseFilterDto } from '../../types/model/ElementInWarehouse'
 
 const ElementDetails = () => {
+    const [filterStructure, setFilterStructure] = useState(elementInWarehouseFilterInitStructure)
+    const [filterParams, setFilterParams] = useState(getFilterParams(elementInWarehouseFilterInitStructure))
+    const { initialValues, inputs } = getInputs(elementInWarehouseFilterInitStructure)
+    const navigation = useNavigate()
+
     const params = useParams()
     const [pageMode, setPageMode] = useState<PageMode>('read')
     const { showDialog } = useContext(DialogGlobalContext)
@@ -92,6 +110,25 @@ const ElementDetails = () => {
         }
     }, [params.id])
 
+    console.log(filterParams)
+    const queryElementInWarehouse = useQuery<Array<ElementInWarehouseFilterDto>, AxiosError>(
+        ['element-in-warehouse', filterParams],
+        async () => getElementInWarehouseCounts(filterParams, Number(params.id)),
+    )
+
+    const filter: Filter = {
+        formik: useFormik({
+            initialValues: initialValues,
+            // validationSchema={{}}
+            onSubmit: () => {
+                setFilterStructure(setNewFilterValues(filter.formik.values, filterStructure))
+                setFilterParams(getFilterParams(filterStructure))
+            },
+            onReset: () => filter.formik.setValues(initialValues),
+        }),
+        inputs: inputs,
+    }
+
     return (
         <>
             <FormBox>
@@ -105,6 +142,28 @@ const ElementDetails = () => {
                     ) : (
                         <>
                             <FormStructure formStructure={formStructure} formik={formik} pageMode={pageMode} />
+
+                            <Grid container alignItems="center" justifyContent="center" marginTop={2}>
+                                <Card sx={{ width: '100%', left: '50%' }}>
+                                    <ExpandMore
+                                        titleIcon={<HistoryIcon />}
+                                        title="Stan magazynowy"
+                                        cardContent={
+                                            <FatTable
+                                                idPropName="id"
+                                                query={queryElementInWarehouse}
+                                                filterProps={filter}
+                                                headCells={elementInWarehouseHeadCells}
+                                                initOrderBy={'inWarehouseCount'}
+                                                onClickRow={(e, row) => {
+                                                    navigation(`/elements/${row.id}`)
+                                                }}
+                                            />
+                                        }
+                                    />
+                                </Card>
+                            </Grid>
+
                             <FormButtons
                                 id={params.id}
                                 onCancel={handleCancel}
