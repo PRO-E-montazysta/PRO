@@ -249,6 +249,7 @@ export const useFormStructure = (): Array<FormInputProps> => {
             editPermissionRoles: [Role.NOBODY],
             viewPermissionRoles: [Role.NOBODY],
             validationOnUpdate: 'NO_VALIDATION_ON_UPDATE',
+            placeholder: 'POLE TYMCZASOWE',
         },
     ]
 }
