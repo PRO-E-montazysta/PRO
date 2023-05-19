@@ -2,6 +2,9 @@ package com.emontazysta.service.impl;
 
 import com.emontazysta.mapper.ElementMapper;
 import com.emontazysta.model.Element;
+import com.emontazysta.model.ElementInWarehouse;
+import com.emontazysta.model.Tool;
+import com.emontazysta.model.Warehouse;
 import com.emontazysta.model.dto.ElementDto;
 import com.emontazysta.model.dto.ElementInWarehouseDto;
 import com.emontazysta.model.dto.WarehouseLocationDto;
@@ -21,6 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -68,6 +72,18 @@ public class ElementServiceImpl implements ElementService {
 
     @Override
     public void delete(Long id) {
+        Element element = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+
+        //Check if Element is from user company
+        if(!element.getElementInWarehouses().get(0).getWarehouse().getCompany().getId().equals(authUtils.getLoggedUserCompanyId())){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        //Set deleted flag for ElementInWarehouse from warehouse
+        for(ElementInWarehouse elementInWarehouse : element.getElementInWarehouses()) {
+            elementInWarehouse.setDeleted(true);
+        }
+
         repository.deleteById(id);
     }
 
