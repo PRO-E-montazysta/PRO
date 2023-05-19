@@ -2,6 +2,7 @@ package com.emontazysta.mapper;
 
 import com.emontazysta.model.ElementInWarehouse;
 import com.emontazysta.model.dto.ElementInWarehouseDto;
+import com.emontazysta.model.dto.filterDto.ElementInWarehouseFilterDto;
 import com.emontazysta.repository.ElementRepository;
 import com.emontazysta.repository.WarehouseRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,18 @@ public class ElementInWarehouseMapper {
                 .shelf(elementInWarehouse.getShelf())
                 .elementId(elementInWarehouse.getElement() == null ? null : elementInWarehouse.getElement().getId())
                 .warehouseId(elementInWarehouse.getWarehouse() == null ? null : elementInWarehouse.getWarehouse().getId())
+                .build();
+    }
+
+    public ElementInWarehouseFilterDto toFilterDto(ElementInWarehouse elementInWarehouse) {
+        return ElementInWarehouseFilterDto.builder()
+                .id(elementInWarehouse.getId())
+                .inWarehouseCount(elementInWarehouse.getInWarehouseCount())
+                .inUnitCount(elementInWarehouse.getInUnitCount())
+                .rack(elementInWarehouse.getRack())
+                .shelf(elementInWarehouse.getShelf())
+                .element(elementInWarehouse.getElement() == null ? null : elementInWarehouse.getElement().getName())
+                .warehouse(elementInWarehouse.getWarehouse() == null ? null : elementInWarehouse.getWarehouse().getName())
                 .build();
     }
 
