@@ -451,14 +451,30 @@ public class DataSeeding {
                 null, null, "Test ElementEvent 4", EventStatus.CREATED, 1,
                 null, warehouseman1, element3, new ArrayList<>()));
 
-        ElementInWarehouse elementInWarehouse1 = addElementInWarehouseFromModel(new ElementInWarehouse(null,
+        addElementInWarehouseFromModel(new ElementInWarehouse(null,
                 1, 1, "1", "1", element1, warehouse1));
-        ElementInWarehouse elementInWarehouse2 = addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                1, 1, "2", "1", element2, warehouse1));
-        ElementInWarehouse elementInWarehouse3 = addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                1, 1, "1", "2", element3, warehouse2));
-        ElementInWarehouse elementInWarehouse4 = addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                1, 1, "2", "2", element4, warehouse2));
+        addElementInWarehouseFromModel(new ElementInWarehouse(null,
+                2, 1, "2", "1", element2, warehouse1));
+        addElementInWarehouseFromModel(new ElementInWarehouse(null,
+                3, 1, "3", "1", element3, warehouse1));
+        addElementInWarehouseFromModel(new ElementInWarehouse(null,
+                4, 1, "4", "1", element4, warehouse1));
+        addElementInWarehouseFromModel(new ElementInWarehouse(null,
+                1, 1, "1", "2", element1, warehouse2));
+        addElementInWarehouseFromModel(new ElementInWarehouse(null,
+                2, 1, "2", "2", element2, warehouse2));
+        addElementInWarehouseFromModel(new ElementInWarehouse(null,
+                3, 1, "3", "2", element3, warehouse2));
+        addElementInWarehouseFromModel(new ElementInWarehouse(null,
+                4, 1, "4", "2", element4, warehouse2));
+        addElementInWarehouseFromModel(new ElementInWarehouse(null,
+                1, 1, "1", "3", element1, warehouse3));
+        addElementInWarehouseFromModel(new ElementInWarehouse(null,
+                2, 1, "2", "3", element2, warehouse3));
+        addElementInWarehouseFromModel(new ElementInWarehouse(null,
+                3, 1, "3", "3", element3, warehouse3));
+        addElementInWarehouseFromModel(new ElementInWarehouse(null,
+                4, 1, "4", "3", element4, warehouse3));
 
         ElementReturnRelease elementReturnRelease1 = addElementReturnReleaseFromModel(new ElementReturnRelease(null,
                 LocalDateTime.now(), 1, 1, LocalDateTime.now(), warehouseman1, element1,
