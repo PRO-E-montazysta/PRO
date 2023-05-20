@@ -26,6 +26,7 @@ import ToolEventDetails from '../pages/events/ToolEventDetails'
 import ElementEventDetails from '../pages/events/ElementEventDetails'
 import Unavailabilities from '../pages/unavailabilities'
 import UnavailabilityDetails from '../pages/unavailabilities/UnavailabilityDetails'
+import ElementInWarehouseDetails from '../pages/elementInWarehouse/ElementInWarehouseDetails'
 
 export type PageProps = {
     name: string
@@ -316,6 +317,13 @@ export const pageList: Array<PageProps> = [
                 path: '/elements/:id',
                 allowedRoles: [Role.SPECIALIST, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER],
                 component: <ElementDetails />,
+            },
+            {
+                inNav: false,
+                name: '',
+                path: '/element-in-warehouse/:id',
+                allowedRoles: [Role.SPECIALIST, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER],
+                component: <ElementInWarehouseDetails />,
             },
             {
                 inNav: true,
