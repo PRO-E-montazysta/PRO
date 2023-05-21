@@ -61,24 +61,33 @@ export const useFormStructure = (): Array<FormInputProps> => {
             id: 'inWarehouseCount',
             initValue: '',
             type: 'input',
+            validation: yup
+                .number()
+                .typeError('Podana wartość musi być liczbą')
+                .min(0, 'Podana wartość musi być większa lub równa 0'),
+            editPermissionRoles: [Role.WAREHOUSE_MANAGER, Role.WAREHOUSE_MAN],
         },
         {
             label: 'Ilość w jednostce',
             id: 'inUnitCount',
             initValue: '',
             type: 'input',
+            validation: yup.number().typeError('Podana wartość musi być liczbą'),
+            editPermissionRoles: [Role.WAREHOUSE_MANAGER],
         },
         {
             label: 'Regał',
             id: 'rack',
             initValue: '',
             type: 'input',
+            editPermissionRoles: [Role.WAREHOUSE_MANAGER],
         },
         {
             label: 'Półka',
             id: 'shelf',
             initValue: '',
             type: 'input',
+            editPermissionRoles: [Role.WAREHOUSE_MANAGER],
         },
     ]
 }
