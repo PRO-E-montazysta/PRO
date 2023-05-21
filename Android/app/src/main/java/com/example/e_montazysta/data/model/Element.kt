@@ -1,3 +1,5 @@
 package com.example.e_montazysta.data.model
 
-class Element
+data class Element(
+    val id: Int
+)

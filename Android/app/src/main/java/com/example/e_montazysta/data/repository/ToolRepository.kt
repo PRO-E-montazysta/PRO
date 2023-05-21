@@ -24,4 +24,15 @@ class ToolRepository(
             Result.Error(e)
         }
     }
+
+    override suspend fun getToolByCode(code: String?): Result<Tool> {
+        return try {
+            val toolService = serviceProvider.getToolService()
+            val toolDAO = toolService.getToolByCode(token, code)
+            Result.Success(toolDAO.mapToTool())
+        } catch (e: Exception) {
+            Result.Error(e)
+            throw e
+        }
+    }
 }

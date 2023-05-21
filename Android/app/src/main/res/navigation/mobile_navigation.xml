@@ -56,7 +56,11 @@
         android:id="@+id/toolFragment"
         android:name="com.example.e_montazysta.ui.fragments.tool.ToolFragment"
         android:label="fragment_tool"
-        tools:layout="@layout/fragment_tool" />
+        tools:layout="@layout/fragment_tool">
+        <argument
+            android:name="toolId"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/releaseListFragment"
         android:name="com.example.e_montazysta.ui.release.ReleaseListFragment"
@@ -117,5 +121,11 @@
         <argument
             android:name="stageId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_releaseCreateFragment_to_toolFragment"
+            app:destination="@id/toolFragment" >
+            <argument
+                android:name="toolId" />
+        </action>
     </fragment>
 </navigation>

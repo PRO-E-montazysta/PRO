@@ -3,12 +3,12 @@ package com.example.e_montazysta.ui.element
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.e_montazysta.databinding.ListItemReleaseBinding
+import com.example.e_montazysta.databinding.ListItemElementBinding
 
 
-class ReleaseListAdapter(val clickListener: CustomClickListener) : RecyclerView.Adapter<ReleaseListAdapter.ViewHolder>(){
+class ElementListAdapter(val clickListener: CustomClickListener) : RecyclerView.Adapter<ElementListAdapter.ViewHolder>(){
 
-    var elements = listOf<ReleaseListItem>()
+    var elements = listOf<ElementListItem>()
 
     set(value) {
         field = value
@@ -27,23 +27,23 @@ class ReleaseListAdapter(val clickListener: CustomClickListener) : RecyclerView.
         holder.bind(item, clickListener)
     }
 
-    class ViewHolder( val binding: ListItemReleaseBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder( val binding: ListItemElementBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(data: ReleaseListItem, clickListener: CustomClickListener) {
-            binding.release = data
+        fun bind(data: ElementListItem, clickListener: CustomClickListener) {
+            binding.item2 = data
             binding.itemClickListener = clickListener
             binding.executePendingBindings()
         }
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ListItemReleaseBinding.inflate(layoutInflater, parent, false)
+                val binding = ListItemElementBinding.inflate(layoutInflater, parent, false)
                 return ViewHolder(binding)
             }
         }
     }
 }
-class CustomClickListener(val clickListener: (releaseId: Int) -> Unit) {
+class CustomClickListener(val clickListener: (elementId: Int) -> Unit) {
 
-    fun cardClicked(release: ReleaseListItem) = clickListener(release.id)
+    fun cardClicked(element: ElementListItem) = clickListener(element.id)
 }

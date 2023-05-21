@@ -32,13 +32,13 @@ class ReleaseListViewModel(private val repository: IReleaseRepository) : ViewMod
     }
 
     private suspend fun getReleaseAsync() {
-      //  _isLoadingLiveData.postValue(true)
+        _isLoadingLiveData.postValue(true)
             val result = repository.getRelease()
             when (result) {
                 is Result.Success -> _releaseLiveData.postValue(result.data.map { it.mapToReleaseItem() })
                 is Result.Error -> result.exception.message?.let { _messageLiveData.postValue(it) }
             }
-       // _isLoadingLiveData.postValue(false)
+       _isLoadingLiveData.postValue(false)
     }
 
     override fun onCleared() {

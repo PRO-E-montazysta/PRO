@@ -5,14 +5,14 @@
 
     <data>
         <variable
-            name="element"
+            name="item2"
             type="com.example.e_montazysta.ui.element.ElementListItem" />
         <variable
             name="selectedWarehouse"
             type="com.example.e_montazysta.ui.warehouse.Warehouse" />
-<!--        <variable-->
-<!--            name="itemClickListener"-->
-<!--            type="com.example.e_montazysta.ui.element.CustomClickListener" />-->
+        <variable
+            name="itemClickListener"
+            type="com.example.e_montazysta.ui.element.CustomClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,8 +27,8 @@
 
         <include layout="@layout/list_item_template"
             android:id="@+id/item"
-            app:headline="@{element.name}"
-            app:supportText="@{element.code}"
+            app:headline="@{item2.name}"
+            app:supportText="@{item2.code}"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             >
@@ -43,7 +43,7 @@
             app:layout_constraintEnd_toStartOf="@id/guide_end"
             app:layout_constraintTop_toTopOf="@id/guide_top"
             app:layout_constraintBottom_toBottomOf="@id/guide_bottom"
-            app:suffixText='@{element.getQuantityInWarehouse(selectedWarehouse.id)}'>
+            app:suffixText='@{item2.getQuantityInWarehouse(selectedWarehouse.id)}'>
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
