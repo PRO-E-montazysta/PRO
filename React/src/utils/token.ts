@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import jwt_decode from 'jwt-decode'
-import { Navigate } from 'react-router-dom'
 
 export const getToken = (): string | undefined => {
     const tokenString = localStorage.getItem('token')
-    if (!!tokenString) {
-        checkTokenExpiration(tokenString)
+    if (!!tokenString && checkToken(tokenString)) {
         return tokenString
+    } else {
+        return undefined
     }
-    logout()
-    return undefined
 }
 
 export const setToken = (userToken: any) => {
@@ -37,21 +35,29 @@ export const getRolesFromToken = () => {
     return decodedUserRoles
 }
 
-const checkTokenExpiration = (token: string) => {
+export const isExpire = (token?: string) => {
     if (!token) {
-        logout()
-        return
+        return true
     }
     const decodedToken: DecodedTokenType = jwt_decode(token)
     const { exp } = decodedToken
 
     if (Date.now() >= exp * 1000) {
-        logout()
+        return true
     }
+    return false
 }
 
-const logout = () => {
-    console.warn('Token wygasł')
-    // removeToken()
-    // window.location.href = '/login'
+export const checkToken = (token: string) => {
+    if (isExpire(token)) {
+        logout()
+        return false
+    }
+    return true
+}
+
+export const logout = () => {
+    console.warn('logout')
+    removeToken()
+    if (window.location.pathname != '/login') window.location.href = '/login'
 }

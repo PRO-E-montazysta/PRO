@@ -7,23 +7,27 @@ import { filterInitStructure, headCells } from './helper'
 import { getFilterParams, getInputs, setNewFilterValues } from '../../helpers/filter.helper'
 import { Filter, FilterFormProps } from '../../components/table/filter/TableFilter'
 import { Employee } from '../../types/model/Employee'
-import { getFilteredUsers } from '../../api/user.api'
 import { useFormik } from 'formik'
+import { getFilteredEmployees } from '../../api/employee.api'
 
 const Employees = () => {
+    const [filterStructure, setFilterStructure] = useState(filterInitStructure)
     const [filterParams, setFilterParams] = useState(getFilterParams(filterInitStructure))
     const { initialValues, inputs } = getInputs(filterInitStructure)
     const navigation = useNavigate()
 
     const queryData = useQuery<Array<Employee>, AxiosError>(['users', filterParams], async () =>
-        getFilteredUsers({ queryParams: filterParams }),
+        getFilteredEmployees({ queryParams: filterParams }),
     )
 
     const filter: Filter = {
         formik: useFormik({
             initialValues: initialValues,
             // validationSchema={{}}
-            onSubmit: () => setFilterParams(filter.formik.values),
+            onSubmit: () => {
+                setFilterStructure(setNewFilterValues(filter.formik.values, filterStructure))
+                setFilterParams(getFilterParams(filterStructure))
+            },
             onReset: () => filter.formik.setValues(initialValues),
         }),
         inputs: inputs,
@@ -31,6 +35,7 @@ const Employees = () => {
 
     return (
         <FatTable
+            idPropName="id"
             query={queryData}
             filterProps={filter}
             headCells={headCells}

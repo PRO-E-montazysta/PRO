@@ -2,10 +2,13 @@ package com.emontazysta.mapper;
 
 import com.emontazysta.model.Unavailability;
 import com.emontazysta.model.dto.UnavailabilityDto;
+import com.emontazysta.model.dto.filterDto.UnavailabilityFilterDto;
 import com.emontazysta.repository.AppUserRepository;
 import com.emontazysta.repository.ManagerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import javax.persistence.EntityNotFoundException;
 
 @Component
 @RequiredArgsConstructor
@@ -23,6 +26,7 @@ public class UnavailabilityMapper {
                 .unavailableTo(unavailability.getUnavailableTo())
                 .assignedToId(unavailability.getAssignedTo() == null ? null : unavailability.getAssignedTo().getId())
                 .assignedById(unavailability.getAssignedBy() == null ? null : unavailability.getAssignedBy().getId())
+                .deleted(unavailability.isDeleted())
                 .build();
     }
 
@@ -33,8 +37,19 @@ public class UnavailabilityMapper {
                 .description(unavailabilityDto.getDescription())
                 .unavailableFrom(unavailabilityDto.getUnavailableFrom())
                 .unavailableTo(unavailabilityDto.getUnavailableTo())
-                .assignedTo(unavailabilityDto.getAssignedToId() == null ? null : appUserRepository.getReferenceById(unavailabilityDto.getAssignedToId()))
-                .assignedBy(unavailabilityDto.getAssignedById() == null ? null : managerRepository.getReferenceById(unavailabilityDto.getAssignedById()))
+                .assignedTo(unavailabilityDto.getAssignedToId() == null ? null : appUserRepository.findById(unavailabilityDto.getAssignedToId()).orElseThrow(EntityNotFoundException::new))
+                .assignedBy(unavailabilityDto.getAssignedById() == null ? null : managerRepository.findById(unavailabilityDto.getAssignedById()).orElseThrow(EntityNotFoundException::new))
+                .build();
+    }
+
+    public UnavailabilityFilterDto toFilterDto(Unavailability unavailability) {
+        return UnavailabilityFilterDto.builder()
+                .id(unavailability.getId())
+                .typeOfUnavailability(unavailability.getTypeOfUnavailability())
+                .unavailableFrom(unavailability.getUnavailableFrom())
+                .unavailableTo(unavailability.getUnavailableTo())
+                .assignedTo(unavailability.getAssignedTo().getFirstName() + " "
+                        + unavailability.getAssignedTo().getLastName())
                 .build();
     }
 }

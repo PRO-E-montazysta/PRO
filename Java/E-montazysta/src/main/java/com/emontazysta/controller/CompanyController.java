@@ -1,6 +1,7 @@
 package com.emontazysta.controller;
 
 import com.emontazysta.model.dto.CompanyDto;
+import com.emontazysta.model.dto.CompanyWithAdminDto;
 import com.emontazysta.model.searchcriteria.CompanySearchCriteria;
 import com.emontazysta.service.CompanyService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -40,8 +41,8 @@ public class CompanyController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Company.", security = @SecurityRequirement(name = "bearer-key"))
-    public CompanyDto add(@Valid @RequestBody CompanyDto company) {
-        return companyService.add(company);
+    public CompanyDto add(@Valid @RequestBody CompanyWithAdminDto companyWithAdminDto) {
+        return companyService.addCompanyWithAdmin(companyWithAdminDto);
     }
 
     @DeleteMapping("/{id}")

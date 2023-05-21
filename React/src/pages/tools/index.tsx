@@ -11,8 +11,10 @@ import { Tool } from '../../types/model/Tool'
 import { useFormik } from 'formik'
 
 const Tools = () => {
-    const [filterParams, setFilterParams] = useState(getFilterParams([]))
-    const { initialValues, inputs } = getInputs([])
+    const { filterStructure, setFilterStructure } = useFilterStructure()
+    const [filterParams, setFilterParams] = useState(getFilterParams(filterStructure))
+
+    const { initialValues, inputs } = getInputs(filterStructure)
     const navigation = useNavigate()
 
     const queryTools = useQuery<Array<Tool>, AxiosError>(['tools', filterParams], async () =>
@@ -23,7 +25,10 @@ const Tools = () => {
         formik: useFormik({
             initialValues: initialValues,
             // validationSchema={{}}
-            onSubmit: () => setFilterParams(filter.formik.values),
+            onSubmit: () => {
+                setFilterStructure(setNewFilterValues(filter.formik.values, filterStructure))
+                setFilterParams(getFilterParams(filterStructure))
+            },
             onReset: () => filter.formik.setValues(initialValues),
         }),
         inputs: inputs,
@@ -31,13 +36,13 @@ const Tools = () => {
 
     return (
         <FatTable
+            idPropName="id"
             query={queryTools}
             filterProps={filter}
             headCells={headCells}
             initOrderBy={'name'}
             onClickRow={(e, row) => {
                 navigation(`/tools/${row.id}`)
-                console.log(row)
             }}
             pageHeader="Lista narzędzi"
         />

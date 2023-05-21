@@ -6,9 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Data
@@ -16,8 +16,21 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE warehouse SET deleted = true WHERE id=?")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Warehouse {
+
+    public Warehouse(Long id, String name, String description, String openingHours, Company company, Location location,
+                     List<ElementInWarehouse> elementInWarehouses, List<Tool> tools) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.openingHours = openingHours;
+        this.company = company;
+        this.location = location;
+        this.elementInWarehouses = elementInWarehouses;
+        this.tools = tools;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,10 +42,12 @@ public class Warehouse {
 
     private String openingHours;
 
+    private boolean deleted = Boolean.FALSE;
+
     @ManyToOne
     private Company company;
 
-    @ManyToOne
+    @OneToOne
     private Location location;
 
     @OneToMany(mappedBy = "warehouse")

@@ -8,6 +8,7 @@ import com.emontazysta.model.Employment;
 import com.emontazysta.model.dto.ClientDto;
 import com.emontazysta.model.searchcriteria.ClientSearchCriteria;
 import com.emontazysta.service.AppUserService;
+import com.emontazysta.util.AuthUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -29,13 +30,13 @@ public class ClientCriteriaRepository {
     private final EntityManager entityManager;
     private final CriteriaBuilder criteriaBuilder;
     private final ClientMapper clientMapper;
-    private final AppUserService userService;
+    private final AuthUtils authUtils;
 
-    public ClientCriteriaRepository(EntityManager entityManager, ClientMapper clientMapper,  AppUserService userService) {
+    public ClientCriteriaRepository(EntityManager entityManager, ClientMapper clientMapper,  AuthUtils authUtils) {
         this.entityManager = entityManager;
         this.criteriaBuilder = entityManager.getCriteriaBuilder();
         this.clientMapper = clientMapper;
-        this.userService = userService;
+        this.authUtils = authUtils;
     }
 
     public List<ClientDto> findAllWithFilters(ClientSearchCriteria clientSearchCriteria, Principal principal) {
@@ -54,27 +55,17 @@ public class ClientCriteriaRepository {
     private Predicate getPredicate(ClientSearchCriteria clientSearchCriteria, Root<Client> clientRoot, Principal principal) {
         List<Predicate> predicates = new ArrayList<>();
 
+        //Get clients by name
         if (Objects.nonNull(clientSearchCriteria.getName())) {
             predicates.add(criteriaBuilder.like(clientRoot.get("name"), "%" + clientSearchCriteria.getName() + "%"));
         }
 
-        AppUser user = userService.findByUsername(principal.getName());
-        Boolean isCloudAdmin = user.getRoles().contains(Role.CLOUD_ADMIN);
+        //Get clients from company
+        predicates.add(criteriaBuilder.equal(clientRoot.get("company").get("id"), authUtils.getLoggedUserCompanyId()));
 
-        if (!isCloudAdmin) {
-            Optional<Employment> takingEmployment = user.getEmployments().stream()
-                    .filter(employment -> employment.getDateOfDismiss() == null)
-                    .findFirst();
+        //Get not-deleted
+        predicates.add(criteriaBuilder.equal(clientRoot.get("deleted"), false));
 
-            if (takingEmployment.isPresent()) {
-                Long companyId = takingEmployment.get().getCompany().getId();
-                predicates.add(criteriaBuilder.equal(clientRoot.get("company").get("id"), companyId));
-                return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-            } else {
-                throw new IllegalArgumentException("The logged user is not a registered employee");
-            }
-        } else {
-            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-        }
+        return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 }

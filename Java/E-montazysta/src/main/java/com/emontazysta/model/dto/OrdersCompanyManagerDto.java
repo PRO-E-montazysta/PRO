@@ -1,18 +1,18 @@
 package com.emontazysta.model.dto;
 
+import com.emontazysta.enums.OrderStatus;
 import com.emontazysta.enums.TypeOfPriority;
-import com.emontazysta.enums.TypeOfStatus;
 import lombok.Builder;
 import lombok.Data;
-
 import java.time.LocalDateTime;
 import java.util.List;
+
 @Data
 @Builder
 public class OrdersCompanyManagerDto {
     private Long id;
     private String name;
-    private TypeOfStatus typeOfStatus;
+    private OrderStatus status;
     private LocalDateTime plannedStart;
     private LocalDateTime plannedEnd;
     private LocalDateTime createdAt;

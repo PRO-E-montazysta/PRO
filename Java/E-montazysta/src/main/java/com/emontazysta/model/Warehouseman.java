@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -16,6 +17,7 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE app_user SET deleted = true WHERE id=?")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Warehouseman extends Employee {
 
@@ -24,13 +26,12 @@ public class Warehouseman extends Employee {
                         List<Unavailability> unavailabilities, List<Notification> notifications,
                         List<Comment> employeeComments, List<ElementEvent> elementEvents, List<Employment> employments,
                         List<Attachment> attachments, List<ToolEvent> toolEvents, List<ToolRelease> releasedTools,
-                        List<ElementReturnRelease> elementReturnReleases, List<DemandAdHoc> demandAdHocs) {
+                        List<ElementReturnRelease> elementReturnReleases) {
 
         super(id, firstName, lastName, email, password, username, resetPasswordToken, roles, phone, pesel,
                 unavailabilities, notifications, employeeComments, elementEvents, employments, attachments, toolEvents);
         this.releasedTools = releasedTools;
         this.elementReturnReleases = elementReturnReleases;
-        this.demandAdHocs = demandAdHocs;
     }
 
     @OneToMany(mappedBy = "releasedBy")
@@ -38,7 +39,4 @@ public class Warehouseman extends Employee {
 
     @OneToMany(mappedBy = "servedBy")
     private List<ElementReturnRelease> elementReturnReleases;
-
-    @OneToMany(mappedBy = "warehouseman")
-    private List<DemandAdHoc> demandAdHocs;
 }

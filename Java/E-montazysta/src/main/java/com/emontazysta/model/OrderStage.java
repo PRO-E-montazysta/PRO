@@ -1,15 +1,22 @@
 package com.emontazysta.model;
 
+import com.emontazysta.enums.OrderStageStatus;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,8 +25,39 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE order_stage SET deleted = true WHERE id=?")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class OrderStage {
+
+    public OrderStage(Long id, String name, OrderStageStatus status, BigDecimal price, LocalDateTime plannedStartDate,
+                      LocalDateTime plannedEndDate, LocalDateTime startDate, LocalDateTime endDate, long plannedDurationTime,
+                      int plannedFittersNumber, int minimumImagesNumber, List<Fitter> assignedTo,
+                      List<Comment> comments, List<ToolRelease> toolReleases, List<ElementReturnRelease> elementReturnReleases,
+                      Orders orders, List<Attachment> attachments, List<Notification> notifications,
+                      List<ToolsPlannedNumber> listOfToolsPlannedNumber, List<ElementsPlannedNumber> listOfElementsPlannedNumber,
+                      List<DemandAdHoc> demandsAdHoc) {
+        this.id = id;
+        this.name = name;
+        this.status = status;
+        this.price = price;
+        this.plannedStartDate = plannedStartDate;
+        this.plannedEndDate = plannedEndDate;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.plannedDurationTime = plannedDurationTime;
+        this.plannedFittersNumber = plannedFittersNumber;
+        this.minimumImagesNumber = minimumImagesNumber;
+        this.assignedTo = assignedTo;
+        this.comments = comments;
+        this.toolReleases = toolReleases;
+        this.elementReturnReleases = elementReturnReleases;
+        this.orders = orders;
+        this.attachments = attachments;
+        this.notifications = notifications;
+        this.listOfToolsPlannedNumber = listOfToolsPlannedNumber;
+        this.listOfElementsPlannedNumber = listOfElementsPlannedNumber;
+        this.demandsAdHoc = demandsAdHoc;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,13 +65,13 @@ public class OrderStage {
 
     private String name;
 
-    private OrderStatus status;
+    private OrderStageStatus status;
 
     private BigDecimal price;
 
-    private Integer order;
+    private LocalDateTime plannedStartDate;
 
-    private LocalDate plannedEndDate;
+    private LocalDateTime plannedEndDate;
 
     private LocalDateTime startDate;
 
@@ -45,11 +83,10 @@ public class OrderStage {
 
     private int minimumImagesNumber;
 
+    private boolean deleted = Boolean.FALSE;
+
     @ManyToMany(mappedBy = "workingOn")
     private List<Fitter> assignedTo;
-
-    @ManyToOne
-    private Foreman managedBy;
 
     @OneToMany(mappedBy = "orderStage")
     private List<Comment> comments;
@@ -69,17 +106,13 @@ public class OrderStage {
     @OneToMany(mappedBy = "orderStage")
     private List<Notification> notifications;
 
-    @ManyToMany
-    private List<ToolType> tools;
+    @OneToMany(mappedBy = "orderStage")
+    private List<ToolsPlannedNumber> listOfToolsPlannedNumber;
 
-    @ManyToMany
-    private List<Element> elements;
+    @OneToMany(mappedBy = "orderStage")
+    private List<ElementsPlannedNumber> listOfElementsPlannedNumber;
 
-    @ManyToMany
+    @OneToMany(mappedBy = "orderStage")
     private List<DemandAdHoc> demandsAdHoc;
-
-
-
-    //TODO: relationship to Element, ToolType, Fitter, DemandAdHoc  needed (many to many) should be replaced with association table in diagram
 }
 

@@ -11,6 +11,7 @@ import { Company } from '../../types/model/Company'
 import { useFormik } from 'formik'
 
 const Companies = () => {
+    const [filterStructure, setFilterStructure] = useState(filterInitStructure)
     const [filterParams, setFilterParams] = useState(getFilterParams(filterInitStructure))
     const { initialValues, inputs } = getInputs(filterInitStructure)
     const navigation = useNavigate()
@@ -23,7 +24,10 @@ const Companies = () => {
         formik: useFormik({
             initialValues: initialValues,
             // validationSchema={{}}
-            onSubmit: () => setFilterParams(filter.formik.values),
+            onSubmit: () => {
+                setFilterStructure(setNewFilterValues(filter.formik.values, filterStructure))
+                setFilterParams(getFilterParams(filterStructure))
+            },
             onReset: () => filter.formik.setValues(initialValues),
         }),
         inputs: inputs,
@@ -31,13 +35,13 @@ const Companies = () => {
 
     return (
         <FatTable
+            idPropName="id"
             query={queryCompanies}
             filterProps={filter}
             headCells={headCells}
             initOrderBy={'companyName'}
             onClickRow={(e, row) => {
                 navigation(`/companies/${row.id}`)
-                console.log(row)
             }}
             pageHeader="Lista firm"
         />

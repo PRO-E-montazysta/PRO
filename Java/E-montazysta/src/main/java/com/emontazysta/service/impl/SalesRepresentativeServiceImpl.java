@@ -1,15 +1,22 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.SalesRepresentativeMapper;
 import com.emontazysta.model.SalesRepresentative;
+import com.emontazysta.model.dto.EmploymentDto;
 import com.emontazysta.model.dto.SalesRepresentativeDto;
 import com.emontazysta.repository.SalesRepresentativeRepository;
+import com.emontazysta.service.EmploymentService;
 import com.emontazysta.service.SalesRepresentativeService;
+import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,6 +25,8 @@ public class SalesRepresentativeServiceImpl implements SalesRepresentativeServic
 
     private final SalesRepresentativeRepository repository;
     private final SalesRepresentativeMapper salesRepresentativeMapper;
+    private final EmploymentService employmentService;
+    private final AuthUtils authUtils;
 
     @Override
     public List<SalesRepresentativeDto> getAll() {
@@ -29,13 +38,43 @@ public class SalesRepresentativeServiceImpl implements SalesRepresentativeServic
     @Override
     public SalesRepresentativeDto getById(Long id) {
         SalesRepresentative salesRepresentative = repository.findById(id).orElseThrow(EntityNotFoundException::new);
-        return salesRepresentativeMapper.toDto(salesRepresentative);
+        SalesRepresentativeDto result = salesRepresentativeMapper.toDto(salesRepresentative);
+
+        if(!authUtils.getLoggedUser().getRoles().contains(Role.ADMIN)) {
+            result.setUsername(null);
+        }
+        if(!authUtils.getLoggedUser().getRoles().contains(Role.ADMIN) ||
+                !authUtils.getLoggedUser().getRoles().contains(Role.MANAGER)) {
+            result.setPesel(null);
+        }
+
+        return result;
     }
 
     @Override
     public SalesRepresentativeDto add(SalesRepresentativeDto salesRepresentativeDto) {
-        SalesRepresentative salesRepresentative = salesRepresentativeMapper.toEntity(salesRepresentativeDto);
-        return salesRepresentativeMapper.toDto(repository.save(salesRepresentative));
+        salesRepresentativeDto.setUsername(salesRepresentativeDto.getUsername().toLowerCase());
+        salesRepresentativeDto.setRoles(Set.of(Role.SALES_REPRESENTATIVE));
+        salesRepresentativeDto.setUnavailabilities(new ArrayList<>());
+        salesRepresentativeDto.setNotifications(new ArrayList<>());
+        salesRepresentativeDto.setEmployeeComments(new ArrayList<>());
+        salesRepresentativeDto.setElementEvents(new ArrayList<>());
+        salesRepresentativeDto.setEmployments(new ArrayList<>());
+        salesRepresentativeDto.setAttachments(new ArrayList<>());
+        salesRepresentativeDto.setToolEvents(new ArrayList<>());
+        salesRepresentativeDto.setOrders(new ArrayList<>());
+
+        SalesRepresentative salesRepresentative = repository.save(salesRepresentativeMapper.toEntity(salesRepresentativeDto));
+
+        EmploymentDto employmentDto = EmploymentDto.builder()
+                .dateOfEmployment(LocalDateTime.now())
+                .dateOfDismiss(null)
+                .companyId(authUtils.getLoggedUserCompanyId())
+                .employeeId(salesRepresentative.getId())
+                .build();
+        employmentService.add(employmentDto);
+
+        return salesRepresentativeMapper.toDto(salesRepresentative);
     }
 
     @Override
@@ -50,7 +89,6 @@ public class SalesRepresentativeServiceImpl implements SalesRepresentativeServic
         salesRepresentative.setFirstName(updatedSalesRepresentative.getFirstName());
         salesRepresentative.setLastName(updatedSalesRepresentative.getLastName());
         salesRepresentative.setEmail(updatedSalesRepresentative.getEmail());
-        salesRepresentative.setUsername(updatedSalesRepresentative.getUsername());
         salesRepresentative.setPhone(updatedSalesRepresentative.getPhone());
         salesRepresentative.setPesel(updatedSalesRepresentative.getPesel());
         salesRepresentative.setUnavailabilities(updatedSalesRepresentative.getUnavailabilities());

@@ -14,6 +14,7 @@
 
     <com.google.android.material.card.MaterialCardView
         style="@style/Widget.Material3.CardView.Elevated"
+        android:backgroundTint="?colorPrimaryContainer"
         android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,16 +44,6 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 tools:text="@{release.type}" />
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:alpha=".30"
-                android:background="?colorOnPrimaryContainer"
-                android:orientation="vertical"
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="3dp" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

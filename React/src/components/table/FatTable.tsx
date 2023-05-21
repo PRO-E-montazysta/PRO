@@ -7,6 +7,8 @@ import TableFilter, { Filter, FilterFormProps } from './filter/TableFilter'
 import SortedTable from './sort/SortedTable'
 import { HeadCell } from './sort/SortedTableHeader'
 
+import { theme } from '../../themes/baseTheme'
+
 type FatTableParams<T> = {
     query: UseQueryResult<T[], AxiosError>
     filterProps?: Filter
@@ -14,10 +16,11 @@ type FatTableParams<T> = {
     initOrderBy: keyof T
     onClickRow: (event: React.MouseEvent<unknown>, row: T) => void
     pageHeader: string
+    idPropName: keyof T
 }
 
 function FatTable<T>(props: FatTableParams<T>) {
-    const { query, filterProps, headCells, initOrderBy, onClickRow, pageHeader } = props
+    const { query, filterProps, headCells, initOrderBy, onClickRow, pageHeader, idPropName } = props
     const appSize = useBreakpoints()
 
     const headCellsFiltered = useMemo(() => {
@@ -36,12 +39,12 @@ function FatTable<T>(props: FatTableParams<T>) {
     }, [appSize])
 
     return (
-        <Box sx={{ p: appSize.isMobile || appSize.isTablet ? '10px 5px' : '20px', maxWidth: '1200px', m: 'auto' }}>
+        <Box sx={{ p: appSize.isMobile || appSize.isTablet ? '10px' : '20px', maxWidth: '1200px', m: 'auto' }}>
             <Typography
                 variant="h4"
                 fontWeight="bold"
                 padding="5px"
-                color={'white'}
+                color={theme.palette.primary.contrastText}
                 fontSize={appSize.isMobile || appSize.isTablet ? '22px' : '32px'}
             >
                 {pageHeader}
@@ -54,6 +57,7 @@ function FatTable<T>(props: FatTableParams<T>) {
 
             {
                 <SortedTable
+                    idPropName={idPropName}
                     query={query}
                     headCells={headCellsFiltered}
                     initOrderBy={initOrderBy}

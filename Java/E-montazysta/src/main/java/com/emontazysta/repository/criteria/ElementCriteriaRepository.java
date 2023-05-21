@@ -1,12 +1,12 @@
 package com.emontazysta.repository.criteria;
 
-import com.emontazysta.enums.TypeOfUnit;
+
 import com.emontazysta.mapper.ElementMapper;
 import com.emontazysta.model.Element;
 import com.emontazysta.model.dto.ElementDto;
 import com.emontazysta.model.searchcriteria.ElementSearchCriteria;
+import com.emontazysta.util.AuthUtils;
 import org.springframework.stereotype.Repository;
-
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -24,11 +24,13 @@ public class ElementCriteriaRepository {
     private final EntityManager entityManager;
     private final CriteriaBuilder criteriaBuilder;
     private final ElementMapper elementMapper;
+    private final AuthUtils authUtils;
 
-    public ElementCriteriaRepository(EntityManager entityManager, ElementMapper elementMapper) {
+    public ElementCriteriaRepository(EntityManager entityManager, ElementMapper elementMapper, AuthUtils authUtils) {
         this.entityManager = entityManager;
         this.criteriaBuilder = entityManager.getCriteriaBuilder();
         this.elementMapper = elementMapper;
+        this.authUtils = authUtils;
     }
 
     public List<ElementDto> findAllWithFilters(ElementSearchCriteria elementSearchCriteria ) {
@@ -36,7 +38,7 @@ public class ElementCriteriaRepository {
         CriteriaQuery<Element> criteriaQuery = criteriaBuilder.createQuery(Element.class);
         Root<Element> elementRoot = criteriaQuery.from(Element.class);
         Predicate predicate = getPredicate(elementSearchCriteria, elementRoot);
-        criteriaQuery.where(predicate);
+        criteriaQuery.where(predicate).distinct(true);
 
         TypedQuery<Element> typedQuery = entityManager.createQuery(criteriaQuery);
         List<Element> elements = typedQuery.getResultList();
@@ -46,13 +48,22 @@ public class ElementCriteriaRepository {
     private Predicate getPredicate(ElementSearchCriteria elementSearchCriteria, Root<Element> elementRoot) {
         List<Predicate> predicates = new ArrayList<>();
 
+        //Get elements by name
         if(Objects.nonNull(elementSearchCriteria.getName())){
             predicates.add(criteriaBuilder.like(elementRoot.get("name"), "%" + elementSearchCriteria.getName() + "%"));
         }
 
+        //Get elements by code
         if(Objects.nonNull(elementSearchCriteria.getCode())){
             predicates.add(criteriaBuilder.like(elementRoot.get("code"), "%" + elementSearchCriteria.getCode() + "%"));
         }
+
+        //Get elements from company
+        predicates.add(criteriaBuilder.equal(elementRoot.join("elementInWarehouses").get("warehouse").get("company")
+                .get("id"), authUtils.getLoggedUserCompanyId()));
+
+        //Get not-deleted
+        predicates.add(criteriaBuilder.equal(elementRoot.get("deleted"), false));
 
         return  criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }

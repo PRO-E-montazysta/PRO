@@ -3,7 +3,7 @@ package com.example.e_montazysta.data.controllers
 import com.example.e_montazysta.data.controllers.Interfaces.IAuthController
 import com.example.e_montazysta.data.model.LoggedInUser
 import com.example.e_montazysta.data.model.Result
-import com.example.e_montazysta.data.repository.Interfaces.IAuthRepository
+import com.example.e_montazysta.data.repository.interfaces.IAuthRepository
 
 class AuthController(private val repository: IAuthRepository) : IAuthController {
 

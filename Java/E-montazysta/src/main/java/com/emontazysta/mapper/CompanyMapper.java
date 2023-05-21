@@ -5,14 +5,17 @@ import com.emontazysta.model.Company;
 import com.emontazysta.model.Employment;
 import com.emontazysta.model.Orders;
 import com.emontazysta.model.Warehouse;
+import com.emontazysta.model.ToolType;
 import com.emontazysta.model.dto.CompanyDto;
 import com.emontazysta.repository.ClientRepository;
 import com.emontazysta.repository.EmploymentRepository;
 import com.emontazysta.repository.OrderRepository;
+import com.emontazysta.repository.ToolTypeRepository;
 import com.emontazysta.repository.WarehouseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +28,7 @@ public class CompanyMapper {
     private final OrderRepository orderRepository;
     private final ClientRepository clientRepository;
     private final EmploymentRepository employmentRepository;
+    private final ToolTypeRepository toolTypeRepository;
 
     public CompanyDto toDto(Company company) {
         return CompanyDto.builder()
@@ -33,26 +37,41 @@ public class CompanyMapper {
                 .createdAt(company.getCreatedAt())
                 .status(company.getStatus())
                 .statusReason(company.getStatusReason())
-                .warehouses(company.getWarehouses().stream().map(Warehouse::getId).collect(Collectors.toList()))
-                .orders(company.getOrders().stream().map(Orders::getId).collect(Collectors.toList()))
-                .clients(company.getClients().stream().map(Client::getId).collect(Collectors.toList()))
-                .employments(company.getEmployments().stream().map(Employment::getId).collect(Collectors.toList()))
+                .warehouses(company.getWarehouses().stream()
+                        .map(Warehouse::getId)
+                        .collect(Collectors.toList()))
+                .orders(company.getOrders().stream()
+                        .map(Orders::getId)
+                        .collect(Collectors.toList()))
+                .clients(company.getClients().stream()
+                        .map(Client::getId)
+                        .collect(Collectors.toList()))
+                .employments(company.getEmployments().stream()
+                        .map(Employment::getId)
+                        .collect(Collectors.toList()))
+                .toolTypes(company.getToolTypes().stream()
+                        .map(ToolType::getId)
+                        .collect(Collectors.toList()))
+                .deleted(company.isDeleted())
                 .build();
     }
 
     public Company toEntity(CompanyDto companyDto) {
 
         List<Warehouse> warehouseList = new ArrayList<>();
-        companyDto.getWarehouses().forEach(warehouseId -> warehouseList.add(warehouseRepository.getReferenceById(warehouseId)));
+        companyDto.getWarehouses().forEach(warehouseId -> warehouseList.add(warehouseRepository.findById(warehouseId).orElseThrow(EntityNotFoundException::new)));
 
         List<Orders> ordersList = new ArrayList<>();
-        companyDto.getOrders().forEach(orderId -> ordersList.add(orderRepository.getReferenceById(orderId)));
+        companyDto.getOrders().forEach(orderId -> ordersList.add(orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new)));
 
         List<Client> clientList = new ArrayList<>();
-        companyDto.getClients().forEach(clientId -> clientList.add(clientRepository.getReferenceById(clientId)));
+        companyDto.getClients().forEach(clientId -> clientList.add(clientRepository.findById(clientId).orElseThrow(EntityNotFoundException::new)));
 
         List<Employment> employmentList = new ArrayList<>();
-        companyDto.getEmployments().forEach(employmentId -> employmentList.add(employmentRepository.getReferenceById(employmentId)));
+        companyDto.getEmployments().forEach(employmentId -> employmentList.add(employmentRepository.findById(employmentId).orElseThrow(EntityNotFoundException::new)));
+
+        List<ToolType> toolTypeList = new ArrayList<>();
+        companyDto.getToolTypes().forEach(toolTypeId -> toolTypeList.add(toolTypeRepository.findById(toolTypeId).orElseThrow(EntityNotFoundException::new)));
 
         return Company.builder()
                 .id(companyDto.getId())
@@ -64,6 +83,7 @@ public class CompanyMapper {
                 .orders(ordersList)
                 .clients(clientList)
                 .employments(employmentList)
+                .toolTypes(toolTypeList)
                 .build();
     }
 }

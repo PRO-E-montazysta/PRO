@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -14,8 +16,17 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE employment SET deleted = true WHERE id=?")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Employment {
+
+    public Employment(Long id, LocalDateTime dateOfEmployment, LocalDateTime dateOfDismiss, Company company, AppUser employee) {
+        this.id = id;
+        this.dateOfEmployment = dateOfEmployment;
+        this.dateOfDismiss = dateOfDismiss;
+        this.company = company;
+        this.employee = employee;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +35,8 @@ public class Employment {
     private LocalDateTime dateOfEmployment;
 
     private LocalDateTime dateOfDismiss;
+
+    private boolean deleted = Boolean.FALSE;
 
     @ManyToOne
     private Company company;

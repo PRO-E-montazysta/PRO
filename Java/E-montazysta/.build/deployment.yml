@@ -20,6 +20,39 @@ spec:
         ports:
           - name: http
             containerPort: 8080
+        env:
+          - name: DB_URL
+            value: jdbc:postgresql://postgres:5432/emontazystadb
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: DB_USER
+          - name: SMTP_HOST
+            valueFrom:
+              secretKeyRef:
+                name: smtp-secret
+                key: SMTP_HOST
+          - name: SMTP_PORT
+            valueFrom:
+              secretKeyRef:
+                name: smtp-secret
+                key: SMTP_PORT
+          - name: SMTP_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: smtp-secret
+                key: SMTP_USERNAME
+          - name: SMTP_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: smtp-secret
+                key: SMTP_PASSWORD
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: DB_PASSWORD
         livenessProbe:
           httpGet:
             path: /actuator/health/liveness

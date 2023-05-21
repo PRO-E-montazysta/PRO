@@ -1,4 +1,4 @@
-import { Filter, FilterFormProps } from '../../components/table/filter/TableFilter'
+import { Filter } from '../../components/table/filter/TableFilter'
 import FatTable from '../../components/table/FatTable'
 import { useState } from 'react'
 import { useQuery } from 'react-query'
@@ -11,6 +11,7 @@ import { Client } from '../../types/model/Client'
 import { useFormik } from 'formik'
 
 const Clients = () => {
+    const [filterStructure, setFilterStructure] = useState(filterInitStructure)
     const [filterParams, setFilterParams] = useState(getFilterParams(filterInitStructure))
     const { initialValues, inputs } = getInputs(filterInitStructure)
     const navigation = useNavigate()
@@ -23,7 +24,10 @@ const Clients = () => {
         formik: useFormik({
             initialValues: initialValues,
             // validationSchema={{}}
-            onSubmit: () => setFilterParams(filter.formik.values),
+            onSubmit: () => {
+                setFilterStructure(setNewFilterValues(filter.formik.values, filterStructure))
+                setFilterParams(getFilterParams(filterStructure))
+            },
             onReset: () => filter.formik.setValues(initialValues),
         }),
         inputs: inputs,
@@ -31,6 +35,7 @@ const Clients = () => {
 
     return (
         <FatTable
+            idPropName="id"
             query={queryClients}
             filterProps={filter}
             headCells={headCells}

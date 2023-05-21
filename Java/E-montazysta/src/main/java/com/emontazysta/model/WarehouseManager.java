@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -16,6 +17,7 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE app_user SET deleted = true WHERE id=?")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class WarehouseManager extends Warehouseman {
 
@@ -24,15 +26,14 @@ public class WarehouseManager extends Warehouseman {
                             List<Unavailability> unavailabilities, List<Notification> notifications,
                             List<Comment> employeeComments, List<ElementEvent> elementEvents, List<Employment> employments,
                             List<Attachment> attachments, List<ToolEvent> toolEvents, List<ToolRelease> releasedTools,
-                            List<ElementReturnRelease> elementReturnReleases, List<DemandAdHoc> demandAdHocs,
-                            List<DemandAdHoc> mngDemandAdHocs) {
+                            List<ElementReturnRelease> elementReturnReleases, List<DemandAdHoc> acceptedDemandAdHocs) {
 
         super(id, firstName, lastName, email, password, username, resetPasswordToken, roles, phone, pesel,
                 unavailabilities, notifications, employeeComments, elementEvents, employments, attachments, toolEvents,
-                releasedTools, elementReturnReleases, demandAdHocs);
-        this.demandAdHocs = mngDemandAdHocs;
+                releasedTools, elementReturnReleases);
+        this.acceptedDemandAdHocs = acceptedDemandAdHocs;
     }
 
     @OneToMany(mappedBy = "warehouseManager")
-    private List<DemandAdHoc> demandAdHocs;
+    private List<DemandAdHoc> acceptedDemandAdHocs;
 }

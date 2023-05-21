@@ -1,7 +1,7 @@
 import { Button, Menu, MenuItem } from '@mui/material'
 import { useEffect, useLayoutEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { isAuthorized } from '../../utils/authorize'
+import { isAuthorizedToPage } from '../../utils/authorize'
 import { PageProps } from '../../utils/pageList'
 
 import { v4 as uuidv4 } from 'uuid'
@@ -15,7 +15,7 @@ const NavMenuButton = (props: PageProps) => {
     const [allowedChilds, setAllowedChilds] = useState<Array<PageProps>>([])
 
     useLayoutEffect(() => {
-        if (!!children) setAllowedChilds(children.filter((child) => child.inNav && isAuthorized(child)))
+        if (!!children) setAllowedChilds(children.filter((child) => child.inNav && isAuthorizedToPage(child)))
     }, [])
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -31,12 +31,12 @@ const NavMenuButton = (props: PageProps) => {
         handleClose()
     }
 
-    if (!inNav || !isAuthorized(props)) return null
+    if (!inNav || !isAuthorizedToPage(props)) return null
 
     return (
         <>
             <Button
-                style={{ minWidth: '200px' }}
+                style={{ minWidth: 'fit-content' }}
                 aria-controls={open ? 'basic-menu' : undefined}
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}

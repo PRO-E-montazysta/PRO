@@ -22,8 +22,8 @@ public class WarehouseDto {
     @NotBlank(message = "Opening hours cannot be empty")
     private String openingHours;
     private Long companyId;
-    @NotNull(message = "Location id cannot be empty")
     private Long locationId;
     private List<Long> elementInWarehouses;
     private List<Long> tools;
+    private boolean deleted;
 }

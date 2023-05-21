@@ -24,12 +24,21 @@
     <string name="title">title</string>
     <string name="title_warehouses">Magazyny</string>
     <string name="title_tools">Narzędzia</string>
-    <string name="title_element"><b>Element</b></string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tool_warehouse_button">Przejdź do magazynu</string>
     <string name="no_tools_found">Nie znaleziono żadnych narzędzi.</string>
     <string name="title_releases">Wydania</string>
+    <string name="stage_title">Etap</string>
+    <string name="orderPrice">Cena</string>
+    <string name="order_list_tile">Lista zleceń</string>
+    <string name="title_orders">Zlecenia</string>
+    <string name="stages_list_tile">Lista etapów</string>
+    <string name="title_stages">Etapy</string>
+    <string name="add_objects_to_release_label">Dodaj elementy</string>
+    <string name="add_objects_to_release_desc">Dodaje obiekty do wydania</string>
+    <string name="element_quantity_label">Ilość</string>
+    <string name="create_release_title">Utwórz wydanie</string>
     <string name="element_warehouse_button">Przejdź do magazynu</string>
     <string name="element_manage_button">Wydaj/zwróć element</string>
     <string name="element_order_button">Dodaj do etapu zlecenia</string>
@@ -39,4 +48,5 @@
     <string name="element_unit_text"><i>Jednostka</i></string>
     <string name="element_qty_of_unit_text"><i>Ilość w jednostce</i></string>
     <string name="element_warehouse_text"><i>Adres Magazynu</i></string>
+    <string name="title_element"><b>Element</b></string>
 </resources>

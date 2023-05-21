@@ -1,83 +1,42 @@
-import React from 'react';
-import { AppBar, Box, Button, IconButton, ImageList, ImageListItem, Toolbar } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import firstPicture from '../../assets/img/firstPicture.png';
-import secondPicture from '../../assets/img/secondPicture.png';
-import logo from '../../assets/img/logo.png';
-import { useNavigate } from 'react-router-dom';
-import { pageList } from '../../utils/pageList';
-import NavMenuButton from '../navMenuItem/NavMenuButton';
-import { removeToken } from '../../utils/token';
-import { v4 as uuidv4 } from 'uuid';
+import React, { useState } from 'react'
+import { AppBar, Avatar, Box, IconButton, Toolbar } from '@mui/material'
+import logo from '../../assets/img/logo.png'
+import { useNavigate } from 'react-router-dom'
 
-
-import LogoutIcon from '@mui/icons-material/Logout';
-
-
-const CustomizedToolbar = styled(Toolbar)(({ theme }) => ({
-  '@media (min-width: 600px)': {
-    minHeight: 32,
-  },
-}));
-
-const itemData = [
-  {
-    img: firstPicture,
-    title: 'pic1',
-  },
-  {
-    img: secondPicture,
-    title: 'pic2',
-  },
-];
+import NavBox from '../navbar/NavBox'
+import Hamburger from '../navbar/Hamburger'
+import useBreakpoints from '../../hooks/useBreakpoints'
+import NavActions from '../navbar/NavActions'
 
 const Header = () => {
-  const navigation = useNavigate();
-  const handleLogout = () => {
-    removeToken();
-    navigation('/login');
-  };
+    const appSize = useBreakpoints()
+    const navigate = useNavigate()
 
-  const rootPage = pageList.find(p => p.path === '/');
-  const rootPageChildrens = rootPage?.children;
-  return (
-    <AppBar position="static">
-      <Box sx={{ flexGrow: 1, backgroundColor: '#1A1C26' }}>
-        <ImageList
-          gap={0}
-          cols={2}
-          sx={{
-            margin: 0,
-            '@media (min-width: 600px)': {
-              padding: 0,
-              marginTop: 1,
-              color: 'red',
-            },
-          }}
-        >
-          {itemData.map((item) => (
-            <ImageListItem key={uuidv4()}>
-              <img src={`${item.img}`} srcSet={`${item.img}`} alt={item.title} loading="lazy" />
-            </ImageListItem>
-          ))}
-        </ImageList>
-        <CustomizedToolbar style={{ overflow: 'auto' }}>
-          <Box component="img" sx={{ mr: 5 }} alt="Your logo." src={logo}></Box>
-          {
-            rootPageChildrens ? rootPageChildrens.map(page => {
-              return <NavMenuButton {...page} key={uuidv4()} />
-            })
-              :
-              null
-          }
-          <IconButton sx={{ marginLeft: 'auto' }} color="inherit" onClick={handleLogout}>
-            <LogoutIcon />
-          </IconButton>
-          <Box></Box>
-        </CustomizedToolbar>
-      </Box>
-    </AppBar>
-  );
-};
+    return (
+        <AppBar position="static" sx={{ backgroundColor: '#1A1C26' }}>
+            <Toolbar
+                sx={{
+                    minHeight: '60px',
+                    display: appSize.isMobile || appSize.isTablet ? 'grid' : 'flex',
+                    gridTemplateColumns: '45% 10% 45%',
+                    p: appSize.isMobile || appSize.isTablet ? '0 10px !important' : 'unset',
+                }}
+            >
+                {appSize.isMobile || appSize.isTablet ? <Hamburger /> : null}
+                <Box
+                    id={`navBtn-goHHome`}
+                    component="img"
+                    alt="Logo"
+                    title="Strona główna"
+                    src={logo}
+                    sx={{ cursor: 'pointer', width: 40, height: 40, justifySelf: 'center' }}
+                    onClick={() => navigate('/')}
+                ></Box>
+                {appSize.isDesktop || appSize.isNotebook ? <NavBox /> : null}
+                <NavActions />
+            </Toolbar>
+        </AppBar>
+    )
+}
 
-export default Header;
+export default Header

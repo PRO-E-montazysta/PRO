@@ -4,15 +4,12 @@ import com.emontazysta.enums.Role;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.SQLDelete;
 
-import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Set;
 
@@ -20,6 +17,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @MappedSuperclass
+@SQLDelete(sql = "UPDATE app_user SET deleted = true WHERE id=?")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public abstract class Employee extends AppUser {
 
@@ -41,10 +39,8 @@ public abstract class Employee extends AppUser {
         this.toolEvents = toolEvents;
     }
 
-    @Column(unique = true)
     private String phone;
 
-    @Column(unique = true)
     private String pesel;
 
     @OneToMany(mappedBy = "assignedTo")
@@ -56,7 +52,7 @@ public abstract class Employee extends AppUser {
     @OneToMany(mappedBy = "messageCreator")
     private List<Comment> employeeComments;
 
-    @OneToMany(mappedBy = "updatedBy")
+    @OneToMany(mappedBy = "createdBy")
     private List<ElementEvent> elementEvents;
 
     @OneToMany(mappedBy = "employee")
@@ -65,7 +61,7 @@ public abstract class Employee extends AppUser {
     @OneToMany(mappedBy = "employee")
     private List<Attachment> attachments;
 
-    @OneToMany(mappedBy = "updatedBy")
+    @OneToMany(mappedBy = "createdBy")
     private List<ToolEvent> toolEvents;
 
 }

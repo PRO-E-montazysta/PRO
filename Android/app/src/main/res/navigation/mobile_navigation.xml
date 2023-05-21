@@ -21,6 +21,15 @@
             android:id="@+id/action_navigation_dashboard_to_releaseListFragment"
             app:destination="@id/releaseListFragment" />
         <action
+            android:id="@+id/action_navigation_dashboard_to_orderListFragment"
+            app:destination="@id/orderListFragment" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_releaseListFragment2"
+            app:destination="@id/releaseListFragment" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_stageListFragment"
+            app:destination="@id/stageListFragment" />
+        <action
             android:id="@+id/action_navigation_dashboard_to_elementsListFragment"
             app:destination="@id/elementsListFragment" />
     </fragment>
@@ -50,7 +59,11 @@
         android:id="@+id/toolFragment"
         android:name="com.example.e_montazysta.ui.fragments.tool.ToolFragment"
         android:label="fragment_tool"
-        tools:layout="@layout/fragment_tool" />
+        tools:layout="@layout/fragment_tool">
+        <argument
+            android:name="toolId"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/releaseListFragment"
         android:name="com.example.e_montazysta.ui.release.ReleaseListFragment"
@@ -65,7 +78,58 @@
         android:label="ReleaseDetailFragment" >
         <argument
             android:name="releaseId"
-            app:argType="string" />
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderListFragment"
+        android:name="com.example.e_montazysta.ui.order.OrderListFragment"
+        android:label="OrderListFragment" >
+        <action
+            android:id="@+id/action_orderListFragment_to_orderDetailFragment"
+            app:destination="@id/orderDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderDetailFragment"
+        android:name="com.example.e_montazysta.ui.order.OrderDetailFragment"
+        android:label="OrderDetailFragment"
+        >
+        <argument
+            android:name="orderId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/stageDetailFragment"
+        android:name="com.example.e_montazysta.ui.stage.StageDetailFragment"
+        android:label="StageDetailFragment">
+        <argument
+            android:name="stageId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_stageDetailFragment_to_releaseCreateFragment"
+            app:destination="@id/releaseCreateFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/stageListFragment"
+        android:name="com.example.e_montazysta.ui.stage.StageListFragment"
+        android:label="StageListFragment" >
+        <action
+            android:id="@+id/action_stageListFragment_to_stageDetailFragment"
+            app:destination="@id/stageDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/releaseCreateFragment"
+        android:name="com.example.e_montazysta.ui.release.ReleaseCreateFragment"
+        android:label="ReleaseCreateFragment" >
+        <argument
+            android:name="stageId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_releaseCreateFragment_to_toolFragment"
+            app:destination="@id/toolFragment" >
+            <argument
+                android:name="toolId" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/elementsListFragment"

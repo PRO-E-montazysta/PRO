@@ -23,4 +23,5 @@ public class ClientDto {
     private String contactDetails;
     private Long companyId;
     private List<Long> orders;
+    private boolean deleted;
 }

@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@IsAfter(message = "Return time must be after release time", startDateFieldName = "releaseTime", endDateFieldName = "returnTime")
+@IsAfter(startDateFieldName = "releaseTime", endDateFieldName = "returnTime")
 public class ToolReleaseDto {
 
     private Long id;
@@ -25,4 +25,5 @@ public class ToolReleaseDto {
     private Long toolId;
     private Long demandAdHocId;
     private Long orderStageId;
+    private boolean deleted;
 }

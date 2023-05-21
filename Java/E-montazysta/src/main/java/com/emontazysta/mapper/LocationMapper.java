@@ -9,6 +9,7 @@ import com.emontazysta.repository.WarehouseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,7 +24,6 @@ public class LocationMapper {
     public LocationDto toDto (Location location) {
         return LocationDto.builder()
                 .id(location.getId())
-                .name(location.getName())
                 .xCoordinate(location.getXCoordinate())
                 .yCoordinate(location.getYCoordinate())
                 .city(location.getCity())
@@ -31,22 +31,15 @@ public class LocationMapper {
                 .propertyNumber(location.getPropertyNumber())
                 .apartmentNumber(location.getApartmentNumber())
                 .zipCode(location.getZipCode())
-                .orders(location.getOrders().stream().map(Orders::getId).collect(Collectors.toList()))
-                .warehouses(location.getWarehouses().stream().map(Warehouse::getId).collect(Collectors.toList()))
+                .orderId(location.getOrder() == null ? null : location.getOrder().getId())
+                .warehouseId(location.getWarehouse() == null ? null : location.getWarehouse().getId())
+                .deleted(location.isDeleted())
                 .build();
     }
 
     public Location toEntity(LocationDto locationDto) {
-
-        List<Orders> ordersList = new ArrayList<>();
-        locationDto.getOrders().forEach(locationId -> ordersList.add(orderRepository.getReferenceById(locationId)));
-
-        List<Warehouse> warehouseList = new ArrayList<>();
-        locationDto.getWarehouses().forEach(warehouseId -> warehouseList.add(warehouseRepository.getReferenceById(warehouseId)));
-
         return Location.builder()
                 .id(locationDto.getId())
-                .name(locationDto.getName())
                 .xCoordinate(locationDto.getXCoordinate())
                 .yCoordinate(locationDto.getYCoordinate())
                 .city(locationDto.getCity())
@@ -54,8 +47,8 @@ public class LocationMapper {
                 .propertyNumber(locationDto.getPropertyNumber())
                 .apartmentNumber(locationDto.getApartmentNumber())
                 .zipCode(locationDto.getZipCode())
-                .orders(ordersList)
-                .warehouses(warehouseList)
+                .order(locationDto.getOrderId() == null ? null : orderRepository.findById(locationDto.getOrderId()).orElseThrow(EntityNotFoundException::new))
+                .warehouse(locationDto.getWarehouseId() == null ? null : warehouseRepository.findById(locationDto.getWarehouseId()).orElseThrow(EntityNotFoundException::new))
                 .build();
     }
 }

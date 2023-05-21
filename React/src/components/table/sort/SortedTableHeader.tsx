@@ -32,7 +32,7 @@ export interface SortedTableHeadProps<T> {
 
 const StyledTableCell = styled(TableCell)(() => ({
     [`&.${tableCellClasses.head}`]: {
-        backgroundColor: theme.palette.primary.light,
+        backgroundColor: theme.palette.primary.dark,
         color: theme.palette.primary.contrastText,
     },
 }))
@@ -58,6 +58,7 @@ function SortedTableHeader<T>(props: SortedTableHeadProps<T>) {
             <TableRow>
                 {headCells.map((headCell: HeadCell<T>, index: number) => (
                     <StyledTableCell
+                        id={`sortedTableHeader-${headCell.id.toString()}`}
                         key={uuidv4()}
                         align={headCell.numeric ? 'right' : 'left'}
                         sx={{

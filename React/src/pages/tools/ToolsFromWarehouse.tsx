@@ -32,13 +32,13 @@ const ToolsFromWarehouse = () => {
 
     return (
         <FatTable
+            idPropName="id"
             query={queryTools}
             filterProps={filter}
             headCells={selectedHeadCells}
             initOrderBy={'name'}
             onClickRow={(e, row) => {
                 navigation(`/tools/${row.id}`)
-                console.log(row)
             }}
             pageHeader="Lista narzędzi"
         />

@@ -5,11 +5,12 @@ import retrofit2.http.*
 
 interface ToolService {
     @GET("/api/v1/tools/filter")
-    @Headers("Cache-Control: no-cache")
     suspend fun getTools(@Header("Authorization") token: String,
                          @Query("name") name : String? = null,
                          @Query("code") code : String? = null,
                          @Query("warehouse_Id") warehouse: String? = null,
                          @Query("toolType_Id") toolTypeId : String? = null
     ): List<ToolDAO>
+    @GET("/api/v1/tools/bycode/{code}")
+    suspend fun getToolByCode(@Header("Authorization") token: String, @Path("code") code: String?): ToolDAO
 }

@@ -4,18 +4,21 @@
 
     <data>
         <variable
-            name="tool"
-            type="com.example.e_montazysta.ui.toollist.ToolListItemKt" />
+            name="item2"
+            type="com.example.e_montazysta.ui.toollist.ToolListItem" />
+        <variable
+            name="itemClickListener"
+            type="com.example.e_montazysta.ui.toollist.ToolsListAdapter.CustomClickListener" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
-        style="@style/Widget.Material3.CardView.Elevated"
-        android:clickable="true"
+        style="@style/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="5dp"
-        android:layout_marginVertical="5dp">
-
+        android:layout_marginVertical="5dp"
+        android:onClick="@{() -> itemClickListener.cardClicked(item2)}"
+        >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

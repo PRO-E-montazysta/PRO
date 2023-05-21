@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 
 data class ReleaseDAO(
     @Json(name = "id")
-    val id: String,
+    val id: Int,
     @Json(name = "releaseTime")
     val releaseTime: String,
     @Json(name = "returnTime")

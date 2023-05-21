@@ -12,6 +12,8 @@ import { useEffect, useState } from 'react'
 
 import * as yup from 'yup'
 import { AppSize } from '../../hooks/useBreakpoints'
+import { Role } from '../../types/roleEnum'
+import { FormInputProps } from '../../types/form'
 
 const filterInitStructure: Array<FilterInputType> = [
     {
@@ -89,14 +91,14 @@ export const headCells: Array<HeadCell<Tool>> = [
         type: 'string',
         id: 'code',
         label: 'Kod',
-        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
+        visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
     {
         type: 'string',
         id: 'warehouse',
         label: 'Magazyn',
-        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
+        visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
     {
@@ -162,19 +164,57 @@ export const selectedFilterInitStructure: Array<FilterInputType> = [
     },
 ]
 
-export const emptyForm = {
-    id: null,
-    name: '',
-    createdAt: '',
-    code: '',
-    toolReleases: [],
-    warehouseId: null,
-    toolEvents: [],
-    toolTypeId: null,
-}
+export const useFormStructure = (): Array<FormInputProps> => {
+    const queryWarehouse = useQuery<Array<Warehouse>, AxiosError>(['warehouse-list'], getAllWarehouses, {
+        cacheTime: 15 * 60 * 1000,
+        staleTime: 10 * 60 * 1000,
+    })
+    const queryToolType = useQuery<Array<ToolType>, AxiosError>(['toolType-list'], getAllToolTypes, {
+        cacheTime: 15 * 60 * 1000,
+        staleTime: 10 * 60 * 1000,
+    })
 
-export const validationSchema = yup.object({
-    name: yup.string().min(2, 'Nazwa musi zawierać co najmniej 2 znaki').required('Wprowadź nazwę'),
-    warehouseId: yup.number().typeError('Wybierz magazyn'),
-    toolTypeId: yup.number().typeError('Wybierz typ narzędzia'),
-})
+    return [
+        {
+            label: 'Nazwa narzędzia',
+            id: 'name',
+            initValue: '',
+            type: 'input',
+            validation: yup.string().min(3, 'Nazwa musi zaweirać co najmniej 3 znaki').required('Wprowadź nazwę'),
+        },
+        {
+            label: 'Kod',
+            id: 'code',
+            initValue: '',
+            type: 'input',
+            addNewPermissionRoles: [Role.NOBODY],
+            editPermissionRoles: [Role.NOBODY],
+            viewPermissionRoles: [Role['*']],
+        },
+        {
+            label: 'Typ narzędzia',
+            id: 'toolTypeId',
+            initValue: null,
+            type: 'select',
+            validation: yup.number().typeError('Wybierz typ narzędzia'),
+            options: formatArrayToOptions('id', (x: ToolType) => x.name, queryToolType.data),
+        },
+        {
+            label: 'Magazyn',
+            id: 'warehouseId',
+            initValue: null,
+            type: 'select',
+            validation: yup.number().typeError('Wybierz magazyn'),
+            options: formatArrayToOptions('id', (x: Warehouse) => x.name, queryWarehouse.data),
+        },
+        {
+            label: 'Data utworzenia',
+            id: 'createdAt',
+            initValue: '',
+            type: 'date',
+            addNewPermissionRoles: [Role.NOBODY],
+            editPermissionRoles: [Role.NOBODY],
+            viewPermissionRoles: [Role['*']],
+        },
+    ]
+}

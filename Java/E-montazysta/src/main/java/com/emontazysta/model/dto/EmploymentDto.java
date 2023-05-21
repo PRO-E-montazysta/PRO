@@ -13,15 +13,15 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@IsAfter(message = "Date of dismiss must be after date of employment", startDateFieldName = "dateOfEmployment", endDateFieldName = "dateOfDismiss")
+@IsAfter(startDateFieldName = "dateOfEmployment", endDateFieldName = "dateOfDismiss")
 public class EmploymentDto {
 
     private Long id;
     @NotNull(message = "Date of employment cannot be empty")
     private LocalDateTime dateOfEmployment;
     private LocalDateTime dateOfDismiss;
-    @NotNull(message = "Company id cannot be empty")
     private Long companyId;
     @NotNull(message = "Employee id cannot be empty")
     private Long employeeId;
+    private boolean deleted;
 }

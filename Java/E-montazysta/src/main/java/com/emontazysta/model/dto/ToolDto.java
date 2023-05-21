@@ -24,4 +24,5 @@ public class ToolDto {
     private Long warehouseId;
     private List<Long> toolEvents;
     private Long toolTypeId;
+    private boolean deleted;
 }

@@ -11,6 +11,7 @@ import { ToolType } from '../../types/model/ToolType'
 import { useFormik } from 'formik'
 
 const ToolTypes = () => {
+    const [filterStructure, setFilterStructure] = useState(filterInitStructure)
     const [filterParams, setFilterParams] = useState(getFilterParams(filterInitStructure))
     const { initialValues, inputs } = getInputs(filterInitStructure)
     const navigation = useNavigate()
@@ -23,7 +24,10 @@ const ToolTypes = () => {
         formik: useFormik({
             initialValues: initialValues,
             // validationSchema={{}}
-            onSubmit: () => setFilterParams(filter.formik.values),
+            onSubmit: () => {
+                setFilterStructure(setNewFilterValues(filter.formik.values, filterStructure))
+                setFilterParams(getFilterParams(filterStructure))
+            },
             onReset: () => filter.formik.setValues(initialValues),
         }),
         inputs: inputs,
@@ -31,6 +35,7 @@ const ToolTypes = () => {
 
     return (
         <FatTable
+            idPropName="id"
             query={queryToolTypes}
             filterProps={filter}
             headCells={headCells}

@@ -62,20 +62,9 @@ dependencies {
     implementation 'com.github.kittinunf.fuel:fuel:2.3.1'
     implementation 'com.github.kittinunf.fuel:fuel-android:2.3.1'
     implementation 'com.github.kittinunf.fuel:fuel-coroutines:2.3.1'
-    implementation 'com.google.code.gson:gson:2.8.9'
 
     implementation 'androidx.preference:preference:1.2.0'
     implementation 'com.auth0.android:jwtdecode:2.0.2'
 
-    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.7.21'
-
-    //Retrofit
-    implementation 'com.squareup.moshi:moshi:1.14.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
-    implementation 'com.squareup.moshi:moshi-kotlin:1.14.0'
-
-    implementation 'com.google.code.gson:gson:2.10.1'
-
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.21")
 }

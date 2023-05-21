@@ -1,17 +1,29 @@
-//Tutaj powinniśmy wrzucać Typy danych, jakie dostajemy z Backendu. Tutaj np. dla pracowników
-
 export type Employee = {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  status: string;
-  roles: string[];
-  phone: string;
-  unavailbilityDescription:string;
-};
+    id: string
+    firstName: string
+    lastName: string
+    email: string
+    password: string
+    username: string
+    status: string
+    roles: string[]
+    phone: string
+    unavailbilityDescription: string
+    pesel: string
+}
 
 export const EmployeeStatus = {
-  AKTYWNY: "AKTYWNY",
-  NIEAKTYWNY: "NIEAKTYWNY",
+    AVAILABLE: 'AKTYWNY',
+    NIEAKTYWNY: 'NIEAKTYWNY',
+}
+
+export const UserRole = {
+    ADMIN: 'Administrator',
+    MANAGER: 'Manager',
+    SALES_REPRESENTATIVE: 'Handlowiec',
+    SPECIALIST: ' Specjalista',
+    WAREHOUSE_MAN: 'Magazynier',
+    WAREHOUSE_MANAGER: 'Kierownik magazynu',
+    FITTER: 'Montażysta',
+    FOREMAN: 'Brygadzista',
 }

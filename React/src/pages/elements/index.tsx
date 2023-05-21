@@ -11,6 +11,7 @@ import { getFilteredElements } from '../../api/element.api'
 import { useFormik } from 'formik'
 
 const Elements = () => {
+    const [filterStructure, setFilterStructure] = useState(filterInitStructure)
     const [filterParams, setFilterParams] = useState(getFilterParams(filterInitStructure))
     const { initialValues, inputs } = getInputs(filterInitStructure)
     const navigation = useNavigate()
@@ -23,7 +24,10 @@ const Elements = () => {
         formik: useFormik({
             initialValues: initialValues,
             // validationSchema={{}}
-            onSubmit: () => setFilterParams(filter.formik.values),
+            onSubmit: () => {
+                setFilterStructure(setNewFilterValues(filter.formik.values, filterStructure))
+                setFilterParams(getFilterParams(filterStructure))
+            },
             onReset: () => filter.formik.setValues(initialValues),
         }),
         inputs: inputs,
@@ -31,6 +35,7 @@ const Elements = () => {
 
     return (
         <FatTable
+            idPropName="id"
             query={queryOrders}
             filterProps={filter}
             headCells={headCells}
