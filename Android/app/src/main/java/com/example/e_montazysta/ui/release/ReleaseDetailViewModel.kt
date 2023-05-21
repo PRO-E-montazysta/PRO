@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.e_montazysta.data.model.Release
 import com.example.e_montazysta.data.model.Result
-import com.example.e_montazysta.data.repository.Interfaces.IReleaseRepository
+import com.example.e_montazysta.data.repository.interfaces.IReleaseRepository
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 

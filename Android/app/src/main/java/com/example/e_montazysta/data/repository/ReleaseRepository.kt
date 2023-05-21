@@ -2,7 +2,7 @@ package com.example.e_montazysta.data.repository
 
 import com.example.e_montazysta.data.model.Release
 import com.example.e_montazysta.data.model.Result
-import com.example.e_montazysta.data.repository.Interfaces.IReleaseRepository
+import com.example.e_montazysta.data.repository.interfaces.IReleaseRepository
 import com.example.e_montazysta.data.services.IServiceProvider
 import com.example.e_montazysta.helpers.Interfaces.ISharedPreferencesHelper
 import org.koin.core.component.KoinComponent

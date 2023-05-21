@@ -1,4 +1,4 @@
-package com.example.e_montazysta.data.repository.Interfaces
+package com.example.e_montazysta.data.repository.interfaces
 
 interface IRepository<T> {
     fun getDetails(id: Long)

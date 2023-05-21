@@ -1,21 +1,20 @@
 package com.example.e_montazysta.ui.release
 
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.e_montazysta.data.repository.Interfaces.IReleaseRepository
-import com.example.e_montazysta.data.repository.Interfaces.IToolRepository
+import com.example.e_montazysta.data.model.Element
+import com.example.e_montazysta.data.model.Result
+import com.example.e_montazysta.data.model.Tool
+import com.example.e_montazysta.data.repository.interfaces.IElementRepository
+import com.example.e_montazysta.data.repository.interfaces.IToolRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
-import com.example.e_montazysta.data.model.Result
-import com.example.e_montazysta.ui.toollist.ToolListItem
-import com.example.e_montazysta.ui.toollist.mapToToolItem
 
 
 class ReleaseCreateViewModel() : ViewModel(), CoroutineScope, KoinComponent {
@@ -23,6 +22,8 @@ class ReleaseCreateViewModel() : ViewModel(), CoroutineScope, KoinComponent {
     private var job: Job? = null
 
     private val toolRepository: IToolRepository by inject()
+
+    private val elementRepository: IElementRepository by inject()
 
     private val _itemsLiveData = MutableLiveData<List<Any>>()
     val itemsLiveData: LiveData<List<Any>> = _itemsLiveData
@@ -41,14 +42,20 @@ class ReleaseCreateViewModel() : ViewModel(), CoroutineScope, KoinComponent {
 
     private suspend fun addToolToReleaseAsync(code: String?) {
         _isLoadingLiveData.postValue(true)
-        val result = toolRepository.getToolByCode(code)
-        when (result) {
-            is Result.Success -> {
-                val toolItem = result.data.mapToToolItem()
-                val currentItems = _itemsLiveData.value ?: emptyList()
-                _itemsLiveData.value = currentItems + toolItem
+        val currentItems = _itemsLiveData.value ?: emptyList()
+        val existingItem = currentItems.find { it is Tool && it.code == code }
+        if (existingItem != null) {
+            _messageLiveData.postValue("Item already added to list:\n$code")
+        } else {
+            val result = toolRepository.getToolByCode(code)
+            when (result) {
+                is Result.Success -> {
+                    val tool = result.data
+                    _itemsLiveData.value = currentItems + tool
+                }
+
+                is Result.Error -> result.exception.message?.let { _messageLiveData.postValue(it) }
             }
-            is Result.Error -> result.exception.message?.let { _messageLiveData.postValue(it) }
         }
         _isLoadingLiveData.postValue(false)
     }
@@ -59,8 +66,29 @@ class ReleaseCreateViewModel() : ViewModel(), CoroutineScope, KoinComponent {
         }
     }
 
-    private suspend fun addElementToReleaseAsync(code: String?) {
+    //TODO Ogarnąć ten kod bo jest 2x to samo co w narzędziu
+        private suspend fun addElementToReleaseAsync(code: String?) {
+        _isLoadingLiveData.postValue(true)
+        val currentItems = _itemsLiveData.value ?: emptyList()
+        val existingItem = currentItems.find { it is Element && it.code == code }
+        if (existingItem != null) {
+            _messageLiveData.postValue("Item already added to list:\n$code")
+        } else {
+            val result = elementRepository.getElementByCode(code)
+            when (result) {
+                is Result.Success -> {
+                    val element = result.data
+                    _itemsLiveData.value = currentItems + element
+                }
 
+                is Result.Error -> result.exception.message?.let { _messageLiveData.postValue(it) }
+            }
+        }
+        _isLoadingLiveData.postValue(false)
+    }
+
+    fun createRelease() {
+        TODO("Not yet implemented")
     }
 
     override val coroutineContext: CoroutineContext

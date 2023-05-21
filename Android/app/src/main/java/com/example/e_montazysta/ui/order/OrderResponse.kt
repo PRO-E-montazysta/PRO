@@ -3,10 +3,8 @@ package com.example.e_montazysta.ui.order
 import com.example.e_montazysta.data.model.Order
 import com.example.e_montazysta.data.model.Result
 import com.example.e_montazysta.data.model.User
-import com.example.e_montazysta.data.repository.Interfaces.IOrderRepository
-import com.example.e_montazysta.data.repository.Interfaces.IUserRepository
+import com.example.e_montazysta.data.repository.interfaces.IUserRepository
 import com.squareup.moshi.Json
-import com.example.e_montazysta.data.repository.UserRepository
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.util.*

@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.e_montazysta.R
+import com.example.e_montazysta.data.model.mapToReleaseItem
 import com.example.e_montazysta.databinding.FragmentCreateReleaseBinding
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
@@ -24,13 +26,14 @@ class ReleaseCreateFragment : Fragment() {
         val args: ReleaseCreateFragmentArgs by navArgs()
         val stageId = args.stageId
         val binding: FragmentCreateReleaseBinding = FragmentCreateReleaseBinding.inflate(inflater, container, false)
+
         binding.viewModel = releaseCreateViewModel
+
+
 
         val adapter = ReleaseCreateAdapter(
             ReleaseCreateAdapter.CustomClickListener {
-                itemId -> Toast.makeText(context, itemId, Toast.LENGTH_SHORT).show()
-                val direction = ReleaseCreateFragmentDirections.actionReleaseCreateFragmentToToolFragment(itemId.toString()
-                )
+                item -> val direction = ReleaseCreateFragmentDirections.actionReleaseCreateFragmentToToolFragment(item.toString())
                 findNavController().navigate(direction)
             }
         )
@@ -48,22 +51,30 @@ class ReleaseCreateFragment : Fragment() {
                 val code = barcode?.rawValue
                 when(code?.first()) {
                     'E' -> binding.viewModel?.let {
-                        it.addElementToRelease(code)
-                        Toast.makeText(activity, code, Toast.LENGTH_LONG).show() }
+                        it.addElementToRelease(code) }
                     'T' -> binding.viewModel?.let {
-                        it.addToolToRelease(code)
-                        Toast.makeText(activity, code, Toast.LENGTH_LONG).show()
-                    }
+                        it.addToolToRelease(code) }
                     else -> {
-                        Toast.makeText(activity, "Niepoprawny kod QR!\nWartość: $code", Toast.LENGTH_LONG ).show()
-                    }
+                        Toast.makeText(activity, "Niepoprawny kod QR!\nWartość: $code", Toast.LENGTH_LONG ).show() }
                 }
             }?.addOnCanceledListener {
 
             }?.addOnFailureListener { e ->
-                throw e
+                Toast.makeText(activity, "Failed to initialize a scanner.\nError: ${e.message}", Toast.LENGTH_LONG ).show()
             }
         }
+
+
+        binding.toolbar.setOnMenuItemClickListener {menuItem ->
+            when (menuItem.itemId) {
+                R.id.action_submit -> {
+                    binding.viewModel?.createRelease()
+                    true
+                }
+                else -> throw Exception("Błąd dzielenia przez ogórek")
+            }
+        }
+
 
         // Observe the error message LiveData
         releaseCreateViewModel.messageLiveData.observe(viewLifecycleOwner) {
@@ -71,9 +82,10 @@ class ReleaseCreateFragment : Fragment() {
         }
 
         releaseCreateViewModel.itemsLiveData.observe(viewLifecycleOwner) {
-            items -> adapter.elements = items.toMutableList()
+            items -> adapter.elements = items.map {mapToReleaseItem(it)}.toMutableList()
         }
 
         return binding.root
     }
+
 }

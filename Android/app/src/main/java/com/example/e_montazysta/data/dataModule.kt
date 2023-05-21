@@ -3,8 +3,20 @@ package com.example.e_montazysta.data
 import com.example.e_montazysta.data.environments.Environment
 import com.example.e_montazysta.data.network.NetworkServiceFactory
 import com.example.e_montazysta.data.network.ServiceFactory
-import com.example.e_montazysta.data.repository.*
-import com.example.e_montazysta.data.repository.Interfaces.*
+import com.example.e_montazysta.data.repository.CommentRepository
+import com.example.e_montazysta.data.repository.ElementRepository
+import com.example.e_montazysta.data.repository.OrderRepository
+import com.example.e_montazysta.data.repository.ReleaseRepository
+import com.example.e_montazysta.data.repository.StageRepository
+import com.example.e_montazysta.data.repository.ToolRepository
+import com.example.e_montazysta.data.repository.UserRepository
+import com.example.e_montazysta.data.repository.interfaces.ICommentRepository
+import com.example.e_montazysta.data.repository.interfaces.IElementRepository
+import com.example.e_montazysta.data.repository.interfaces.IOrderRepository
+import com.example.e_montazysta.data.repository.interfaces.IReleaseRepository
+import com.example.e_montazysta.data.repository.interfaces.IStageRepository
+import com.example.e_montazysta.data.repository.interfaces.IToolRepository
+import com.example.e_montazysta.data.repository.interfaces.IUserRepository
 import com.example.e_montazysta.data.services.IServiceProvider
 import com.example.e_montazysta.data.services.ServiceProvider
 import com.example.e_montazysta.helpers.CustomDateAdapter
@@ -23,7 +35,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Converter
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.util.*
+import java.util.Date
 
 val dataModule = module {
     factory {
@@ -93,6 +105,12 @@ val dataModule = module {
         val commentRepository: ICommentRepository =
             CommentRepository(get())
         commentRepository
+    }
+
+    factory {
+        val elementRepository: IElementRepository =
+            ElementRepository(get())
+        elementRepository
     }
 
     viewModel {

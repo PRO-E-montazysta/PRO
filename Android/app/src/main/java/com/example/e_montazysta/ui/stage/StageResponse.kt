@@ -1,13 +1,17 @@
 package com.example.e_montazysta.ui.stage
 
-import com.example.e_montazysta.data.model.*
-import com.example.e_montazysta.data.repository.Interfaces.ICommentRepository
-import com.example.e_montazysta.data.repository.Interfaces.IReleaseRepository
-import com.example.e_montazysta.data.repository.Interfaces.IUserRepository
+import com.example.e_montazysta.data.model.Comment
+import com.example.e_montazysta.data.model.Release
+import com.example.e_montazysta.data.model.Result
+import com.example.e_montazysta.data.model.Stage
+import com.example.e_montazysta.data.model.User
+import com.example.e_montazysta.data.repository.interfaces.ICommentRepository
+import com.example.e_montazysta.data.repository.interfaces.IReleaseRepository
+import com.example.e_montazysta.data.repository.interfaces.IUserRepository
 import com.squareup.moshi.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.util.*
+import java.util.Date
 
 data class StageDAO(
     @Json(name = "id")

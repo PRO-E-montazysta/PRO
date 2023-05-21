@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
     <variable
@@ -16,22 +16,18 @@
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                style="?collapsingToolbarLayoutMediumStyle"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/collapsingToolbarLayoutMediumSize"
-                app:layout_scrollFlags="scroll"
-                app:contentScrim="?colorPrimary">
+            android:fitsSystemWindows="true">
                 <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/collapsingToolbarLayoutMediumSize"
+                    android:layout_height="?attr/actionBarSize"
                     android:elevation="0dp"
+                    app:menu="@menu/menu_release"
+                    app:title="@string/create_release_title"
+                    app:navigationIcon="@drawable/baseline_arrow_back_24"
+                    app:layout_scrollFlags="scroll|enterAlways|snap"
+                    app:layout_scrollEffect="compress"
                     />
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -39,21 +35,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/topAppBar"
-            tools:listitem="@layout/list_item_element"
+            tools:listitem="@layout/list_item_create_release"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             />
-
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/submit_release"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="Powinno strzelać na /order-stages/releaseTools/{id-order-stage}, w body natomiast lista z tools_list"
-            android:text="Zatwierdź wydanie"
-            app:icon="@drawable/baseline_check_24"
-            app:layout_constraintStart_toStartOf="@+id/list"
-            app:layout_constraintTop_toBottomOf="@+id/list" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/add_objects_to_release"

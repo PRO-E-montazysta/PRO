@@ -2,21 +2,15 @@ package com.example.e_montazysta.ui.release
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
-import com.example.e_montazysta.BR
-import com.example.e_montazysta.data.model.Element
-import com.example.e_montazysta.data.model.Tool
-import com.example.e_montazysta.databinding.ListItemElementBinding
-import com.example.e_montazysta.databinding.ListItemToolBinding
-import com.example.e_montazysta.ui.element.ElementListItem
-import com.example.e_montazysta.ui.toollist.ToolListItem
+import com.example.e_montazysta.data.model.ReleaseItem
+import com.example.e_montazysta.databinding.ListItemCreateReleaseBinding
 
 
-class ReleaseCreateAdapter(val clickListener: CustomClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class ReleaseCreateAdapter(val clickListener: CustomClickListener) : RecyclerView.Adapter<ReleaseCreateAdapter.ViewHolder>(){
 
 
-    var elements = mutableListOf<Any>()
+    var elements = mutableListOf<ReleaseItem>()
 
     set(value) {
         field = value
@@ -27,55 +21,32 @@ class ReleaseCreateAdapter(val clickListener: CustomClickListener) : RecyclerVie
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = when (viewType) {
-            VIEW_TYPE_ELEMENT -> {
-                ListItemElementBinding.inflate(layoutInflater, parent, false)
-            }
-            VIEW_TYPE_TOOL -> {
-                ListItemToolBinding.inflate(layoutInflater, parent, false)
-            }
-            else -> {
-                throw IllegalArgumentException("Invalid view type: $viewType")
-            }
-        }
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = ListItemCreateReleaseBinding.inflate(inflater, parent, false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = elements[position]
-        val viewHolder = holder as ViewHolder
-        viewHolder.bind(item, clickListener)
+        holder.bind(item, clickListener)
     }
 
-    override fun getItemViewType(position: Int): Int {
-        val item = elements[position]
-        return when (item) {
-            is ElementListItem -> VIEW_TYPE_ELEMENT
-            is ToolListItem -> VIEW_TYPE_TOOL
-            else -> throw IllegalArgumentException("Invalid item type at position: $position")
-        }
-    }
+    inner class ViewHolder(private val binding: ListItemCreateReleaseBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-    class ViewHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(item: Any, clickListener: CustomClickListener) {
-            binding.setVariable(BR.item2, item)
-            binding.setVariable(BR.itemClickListener, clickListener)
-
+        fun bind(item: ReleaseItem, clickListener: CustomClickListener) {
+            binding.releaseItem = item
+            binding.clickListener = clickListener
             binding.executePendingBindings()
         }
-
     }
+
     private companion object {
         private const val VIEW_TYPE_ELEMENT = 0
         private const val VIEW_TYPE_TOOL = 1
     }
 
-    class CustomClickListener(val clickListener: (releaseId: Int) -> Unit) {
-
-        fun cardClicked(item: Tool) = clickListener(item.id)
-        fun cardClicked(item: Element) = clickListener(item.id)
-
+    class CustomClickListener(val clickListener: (item: Any) -> Unit) {
+        fun cardClicked(item: Any) = clickListener(item)
     }
 }
