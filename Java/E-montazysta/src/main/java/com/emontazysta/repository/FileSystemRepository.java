@@ -6,7 +6,6 @@ import java.io.IOException;
 
 public interface FileSystemRepository {
 
-//    String RESOURCES_DIR = FileSystemRepository.class.getResource("/").getPath();
     String RESOURCES_DIR = "files/";
 
     String save(byte[] content, String fileName) throws IOException;
