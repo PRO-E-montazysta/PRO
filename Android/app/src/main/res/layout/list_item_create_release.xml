@@ -137,8 +137,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="number"
-                    android:text="@={String.valueOf(release_item.quantity)}"/>
+                    android:inputType="number"/>
+<!--                    android:text="@={String.valueOf(release_item.quantity)}"/>-->
             </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
