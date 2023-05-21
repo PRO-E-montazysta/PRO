@@ -1,19 +1,18 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.mapper.ElementInWarehouseMapper;
 import com.emontazysta.mapper.ElementMapper;
 import com.emontazysta.model.Element;
 import com.emontazysta.model.ElementInWarehouse;
-import com.emontazysta.model.Tool;
-import com.emontazysta.model.Warehouse;
 import com.emontazysta.model.dto.ElementDto;
 import com.emontazysta.model.dto.ElementInWarehouseDto;
 import com.emontazysta.model.dto.WarehouseLocationDto;
 import com.emontazysta.model.searchcriteria.ElementSearchCriteria;
 import com.emontazysta.model.searchcriteria.WarehouseSearchCriteria;
+import com.emontazysta.repository.ElementInWarehouseRepository;
 import com.emontazysta.repository.ElementRepository;
 import com.emontazysta.repository.criteria.ElementCriteriaRepository;
 import com.emontazysta.repository.criteria.WarehouseCriteriaRepository;
-import com.emontazysta.service.ElementInWarehouseService;
 import com.emontazysta.service.ElementService;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,6 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -36,7 +34,8 @@ public class ElementServiceImpl implements ElementService {
     private final ElementMapper elementMapper;
     private final ElementCriteriaRepository elementCriteriaRepository;
     private final WarehouseCriteriaRepository warehouseCriteriaRepository;
-    private final ElementInWarehouseService elementInWarehouseService;
+    private final ElementInWarehouseRepository elementInWarehouseRepository;
+    private final ElementInWarehouseMapper elementInWarehouseMapper;
     private final AuthUtils authUtils;
 
 
@@ -131,7 +130,7 @@ public class ElementServiceImpl implements ElementService {
                     .warehouseId(warehouseLocationDto.getId())
                     .build();
 
-            elementInWarehouseService.add(elementInWarehouseDto);
+            elementInWarehouseRepository.save(elementInWarehouseMapper.toEntity(elementInWarehouseDto));
         });
 
         return elementMapper.toDto(element);

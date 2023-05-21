@@ -6,10 +6,7 @@ import com.emontazysta.model.*;
 import com.emontazysta.model.dto.OrderStageWithToolsAndElementsDto;
 import com.emontazysta.model.dto.ToolsPlannedNumberDto;
 import com.emontazysta.model.dto.UnavailabilityWithLocalDateDto;
-import com.emontazysta.repository.EmploymentRepository;
-import com.emontazysta.repository.ElementEventRepository;
-import com.emontazysta.repository.OrderRepository;
-import com.emontazysta.repository.ToolEventRepository;
+import com.emontazysta.repository.*;
 import com.emontazysta.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -51,7 +48,7 @@ public class DataSeeding {
     private final ElementService elementService;
     private final DemandAdHocService demandAdHocService;
     private final ElementEventRepository elementEventRepository;
-    private final ElementInWarehouseService elementInWarehouseService;
+    private final ElementInWarehouseRepository elementInWarehouseRepository;
     private final ElementReturnReleaseService elementReturnReleaseService;
     private final AppUserService appUserService;
     private final EmploymentRepository employmentRepository;
@@ -145,7 +142,7 @@ public class DataSeeding {
     }
 
     private ElementInWarehouse addElementInWarehouseFromModel(ElementInWarehouse elementInWarehouse) {
-        return elementInWarehouseMapper.toEntity(elementInWarehouseService.add(elementInWarehouseMapper.toDto(elementInWarehouse)));
+        return elementInWarehouseRepository.save(elementInWarehouse);
     }
 
     private ElementReturnRelease addElementReturnReleaseFromModel(ElementReturnRelease elementReturnRelease) {

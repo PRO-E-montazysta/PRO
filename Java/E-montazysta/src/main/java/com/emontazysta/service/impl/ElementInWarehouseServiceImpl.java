@@ -1,5 +1,6 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.ElementInWarehouseMapper;
 import com.emontazysta.model.ElementInWarehouse;
 import com.emontazysta.model.dto.ElementInWarehouseDto;
@@ -9,7 +10,6 @@ import com.emontazysta.repository.ElementInWarehouseRepository;
 import com.emontazysta.repository.ElementRepository;
 import com.emontazysta.repository.criteria.ElementInWarehouseCriteriaRepository;
 import com.emontazysta.service.ElementInWarehouseService;
-import com.emontazysta.service.ElementService;
 import com.emontazysta.util.AuthUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -30,14 +29,6 @@ public class ElementInWarehouseServiceImpl implements ElementInWarehouseService 
     private final ElementRepository elementRepository;
     private final AuthUtils authUtils;
 
-    //TO DELETE
-    @Override
-    public List<ElementInWarehouseDto> getAll(){
-        return elementInWarehouseRepository.findAll().stream()
-                .map(elementInWarehouseMapper::toDto)
-                .collect(Collectors.toList());
-    }
-
     @Override
     public ElementInWarehouseDto getById(Long id) {
         ElementInWarehouse elementInWarehouse = elementInWarehouseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Element with id " + id + " not found in warehouse!"));
@@ -45,14 +36,6 @@ public class ElementInWarehouseServiceImpl implements ElementInWarehouseService 
 
     }
 
-    //TO DELETE
-    @Override
-    public ElementInWarehouseDto add(ElementInWarehouseDto elementInWarehouseDto) {
-        ElementInWarehouse elementInWarehouse = elementInWarehouseMapper.toEntity(elementInWarehouseDto);
-        return elementInWarehouseMapper.toDto(elementInWarehouseRepository.save(elementInWarehouse));
-    }
-
-    //TO DELETE
     @Override
     public void delete(Long id) {
         elementInWarehouseRepository.deleteById(id);
@@ -64,9 +47,11 @@ public class ElementInWarehouseServiceImpl implements ElementInWarehouseService 
         ElementInWarehouse elementInWarehouse = elementInWarehouseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Element with id " + id + " not found in warehouse!"));
 
         elementInWarehouse.setInWarehouseCount(updatedElementInWarehouse.getInWarehouseCount());
-        elementInWarehouse.setInUnitCount(updatedElementInWarehouse.getInUnitCount());
-        elementInWarehouse.setRack(updatedElementInWarehouse.getRack());
-        elementInWarehouse.setShelf(updatedElementInWarehouse.getShelf());
+        if(authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MANAGER)) {
+            elementInWarehouse.setInUnitCount(updatedElementInWarehouse.getInUnitCount());
+            elementInWarehouse.setRack(updatedElementInWarehouse.getRack());
+            elementInWarehouse.setShelf(updatedElementInWarehouse.getShelf());
+        }
 
         return elementInWarehouseMapper.toDto(elementInWarehouseRepository.save(elementInWarehouse));
     }

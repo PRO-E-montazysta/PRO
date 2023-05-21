@@ -23,12 +23,6 @@ public class ElementInWarehouseController {
 
     private final ElementInWarehouseService service;
 
-    @GetMapping("/all")
-    @Operation(description = "Allows to get all elements in the warehouse", security = @SecurityRequirement(name = "bearer-key"))
-    public List<ElementInWarehouseDto> getAllElementsInWarehouse(){
-        return service.getAll();
-    }
-
     @GetMapping("/{id}")
     @Operation(description = "Allows to get element in warehouse by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public ElementInWarehouseDto getElementInWarehouseById(@PathVariable Long id) {
@@ -39,13 +33,6 @@ public class ElementInWarehouseController {
     @Operation(description = "Allows to get element in warehouse by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public List<ElementInWarehouseFilterDto> getFilteredWarehouseCount(ElementInWarehouseSearchCriteria elementInWarehouseSearchCriteria, @PathVariable Long elementId) {
         return service.getFilteredWarehouseCount(elementId, elementInWarehouseSearchCriteria);
-    }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    @Operation(description = "Allows to add new element to warehouse.", security = @SecurityRequirement(name = "bearer-key"))
-    public ElementInWarehouseDto addElementInWarehouse(@Valid @RequestBody ElementInWarehouseDto element) {
-        return service.add(element);
     }
 
     @DeleteMapping("/{id}")
