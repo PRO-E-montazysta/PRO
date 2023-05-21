@@ -13,6 +13,7 @@ import QueryBoxStatus from '../../components/base/QueryStatusBox'
 import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
+import { useElementData } from '../elements/hooks'
 
 const ElementInWarehouseDetails = () => {
     const params = useParams()
@@ -24,6 +25,7 @@ const ElementInWarehouseDetails = () => {
     //mutations and queries
     const editElementInWarehouseMutation = useEditElementInWarehouse((data) => handleOnEditSuccess(data))
     const elementInWarehouseData = useElementInWarehouseData(params.id)
+    const elementData = useElementData(String(elementInWarehouseData.data?.elementId))
     //status for all mutations and queries
     const queriesStatus = useQueriesStatus([elementInWarehouseData], [editElementInWarehouseMutation])
 
@@ -74,7 +76,7 @@ const ElementInWarehouseDetails = () => {
 
     return (
         <FormBox>
-            <FormTitle mainTitle="Stan magazynowy" subTitle="subname" />
+            <FormTitle mainTitle="Stan magazynowy" subTitle={elementData.data?.name + ' - ' + elementData.data?.code} />
             <FormPaper>
                 {queriesStatus.result != 'isSuccess' ? (
                     <QueryBoxStatus queriesStatus={queriesStatus} />
@@ -88,6 +90,7 @@ const ElementInWarehouseDetails = () => {
                             onReset={handleReset}
                             onSubmit={formik.submitForm}
                             readonlyMode={pageMode == 'read'}
+                            //TODO: Edycja tylko dla [Role.WAREHOUSE_MANAGER, Role.WAREHOUSE_MAN]
                         />
                     </>
                 )}
