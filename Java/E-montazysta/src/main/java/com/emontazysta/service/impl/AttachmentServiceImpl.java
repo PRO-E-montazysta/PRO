@@ -4,21 +4,27 @@ import com.emontazysta.mapper.AttachmentMapper;
 import com.emontazysta.model.Attachment;
 import com.emontazysta.model.dto.AttachmentDto;
 import com.emontazysta.repository.AttachmentRepository;
+import com.emontazysta.repository.FileSystemRepository;
 import com.emontazysta.service.AttachmentService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AttachmentServiceImpl implements AttachmentService {
 
     private final AttachmentRepository repository;
     private final AttachmentMapper attachmentMapper;
+    private final FileSystemRepository fileSystemRepository;
 
     @Override
     public List<AttachmentDto> getAll() {
@@ -34,10 +40,15 @@ public class AttachmentServiceImpl implements AttachmentService {
     }
 
     @Override
-    public AttachmentDto add(AttachmentDto attachmentDto) {
-        Attachment attachment = attachmentMapper.toEntity(attachmentDto);
-        attachment.setCreatedAt(LocalDateTime.now());
-        return attachmentMapper.toDto(repository.save(attachment));
+    public AttachmentDto add(AttachmentDto attachmentDto, MultipartFile file) {
+        try {
+            Attachment attachment = attachmentMapper.toEntity(attachmentDto, file);
+            attachment.setCreatedAt(LocalDateTime.now());
+            return attachmentMapper.toDto(repository.save(attachment));
+        } catch (IOException e) {
+            log.error("Error during saving attachment", e);
+            return null;
+        }
     }
 
     @Override
@@ -47,9 +58,32 @@ public class AttachmentServiceImpl implements AttachmentService {
     }
 
     @Override
-    public AttachmentDto update(Long id, AttachmentDto attachmentDto) {
-        Attachment updatedAttachment = attachmentMapper.toEntity(attachmentDto);
+    public AttachmentDto update(Long id, AttachmentDto attachmentDto, MultipartFile file) {
+
+        Attachment updatedAttachment;
+        if (file == null) {
+            updatedAttachment = attachmentMapper.toEntity(attachmentDto);
+        } else {
+            try {
+                updatedAttachment = attachmentMapper.toEntity(attachmentDto, file);
+            } catch (IOException e) {
+                log.error("Error during saving attachment", e);
+                return null;
+            }
+        }
+
         Attachment attachment = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+
+        if (file != null) {
+            try {
+                fileSystemRepository.delete(attachment.getUrl());
+            } catch (IOException e) {
+                log.error("Error during deleting attachment", e);
+                return null;
+            }
+            attachment.setFileName(updatedAttachment.getFileName());
+        }
+
         attachment.setName(updatedAttachment.getName());
         attachment.setUrl(updatedAttachment.getUrl());
         attachment.setDescription(updatedAttachment.getDescription());

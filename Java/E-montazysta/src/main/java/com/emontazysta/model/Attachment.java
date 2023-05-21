@@ -47,6 +47,7 @@ public class Attachment {
     private String description;
     private TypeOfAttachment typeOfAttachment;
     private LocalDateTime createdAt;
+    private String fileName;
     private boolean deleted = Boolean.FALSE;
 
     @ManyToOne

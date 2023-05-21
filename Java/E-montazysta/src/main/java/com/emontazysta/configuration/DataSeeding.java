@@ -14,6 +14,7 @@ import com.emontazysta.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -129,7 +130,7 @@ public class DataSeeding {
     }
 
     private Attachment addAttachmentFromModel(Attachment attachment) {
-        return attachmentMapper.toEntity(attachmentService.add(attachmentMapper.toDto(attachment)));
+        return attachmentMapper.toEntity(attachmentService.add(attachmentMapper.toDto(attachment), new MockMultipartFile("test", "test.txt", null, new byte[0])));
     }
 
     private ToolRelease addToolReleaseFromModel(ToolRelease toolRelease) {
