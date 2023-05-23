@@ -27,6 +27,7 @@ export const makeServiceCall = async (url: string, httpMethod: Method, payload: 
 
     let headers = {
         'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
         Authorization: '',
     }
     if (token) headers.Authorization = 'Bearer ' + token
