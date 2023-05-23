@@ -8,9 +8,10 @@ export const createOrderStage = (data: CreateOrderStage) => {
 }
 
 export const updateOrderStage = (data: UpdateOrderStage) => {
+    console.log('api', data)
     // const id = data.orderStageId
     // const {orderStageId, ...restData} = data
-    return makeServiceCall(`/order-stages/${data.orderStageId}`, 'PUT', { body: data });
+    return makeServiceCall(`/order-stages/${data.orderStageId}`, 'PUT', { body: data })
 }
 
 export const getAllOrderStages = (orderId: string) => {

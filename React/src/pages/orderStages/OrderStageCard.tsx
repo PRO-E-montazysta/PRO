@@ -18,7 +18,7 @@ import { getRolesFromToken } from '../../utils/token'
 import { useQuery } from 'react-query'
 import { AxiosError } from 'axios'
 import { getAllToolTypes, getPlannedToolTypesById } from '../../api/toolType.api'
-import { getAllElements } from '../../api/element.api'
+import { getAllElements, getPlannedElementById } from '../../api/element.api'
 import { useAddOrderStage, useUpdateOrderStage } from './hooks'
 import { CustomTextField } from '../../components/form/FormInput'
 import { v4 as uuidv4 } from 'uuid'
@@ -60,7 +60,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
     }
     const handleSetPlannedToolsTypes = (value: { numberOfTools: number; toolTypeId: string }[]) => {
         plannedToolsTypesRef!.current! = value
-        console.log('how is it',plannedToolsTypesRef!.current! )
+        console.log('how is it', plannedToolsTypesRef!.current!)
     }
 
     const queryAllToolTypes = useQuery<Array<ToolType>, AxiosError>(
@@ -109,13 +109,11 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
         setTabValue(newValue)
     }
 
-    const handleExpandInformationClick = () => {
+    const handleExpandInformationClick = async () => {
         setExpandedInformation(!expandedInformation)
     }
 
-    const handleEditButtonAction = async() => {
-        setIsEditing(true)
-        setIsDisplayingMode(false)
+    const handleSetToolsTypeOnEdit = async () => {
         const listOfToolsIds: number[] = stage?.listOfToolsPlannedNumber as any
         const toolsTypeData = await Promise.all(
             listOfToolsIds.map(async (tool) => {
@@ -129,8 +127,33 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
             }
             return data
         })
-        console.log("here")
+        console.log('here')
         handleSetPlannedToolsTypes(filteredData)
+    }
+
+    const handleSetElementsOnEdit = async () => {
+        const listOfElementsIds: number[] = stage?.listOfElementsPlannedNumber as any
+        const elementsData = await Promise.all(
+            listOfElementsIds.map(async (element) => {
+                return await getPlannedElementById(element)
+            }),
+        )
+        const filteredData = elementsData.map((element) => {
+            const data = {
+                numberOfTools: element.numberOfTools,
+                toolTypeId: element.element.id.toString(),
+            }
+            return data
+        })
+        console.log('here2')
+        handleSetPlannedToolsTypes(filteredData)
+    }
+
+    const handleEditButtonAction = () => {
+        setIsEditing(true)
+        setIsDisplayingMode(false)
+        handleSetToolsTypeOnEdit()
+        handleSetElementsOnEdit()
     }
 
     const formik = useFormik({
@@ -162,7 +185,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                 console.log('edytujemy', values)
                 return updateOrderStage.mutate(values)
             }
-            console.log('dodajemy')
+            console.log('dodajemy', values)
             await addOrderStage.mutate(values)
         },
     })

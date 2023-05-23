@@ -29,7 +29,10 @@ type OrderStageElementsTableType = {
 }
 
 const OrderStageElementsTable = forwardRef(
-    ({ itemsArray, isDisplayingMode, elementsListIds, handleChange, elementsRef }: OrderStageElementsTableType, ref) => {
+    (
+        { itemsArray, isDisplayingMode, elementsListIds, handleChange, elementsRef }: OrderStageElementsTableType,
+        ref,
+    ) => {
         const [tableRowIndex, setTableRowIndex] = useState(0)
         const [selectedItemId, setSelectedItemId] = useState('')
         const [selectedItemNumber, setSelectedItemNumber] = useState(0)
@@ -76,11 +79,26 @@ const OrderStageElementsTable = forwardRef(
         useEffect(() => {
             if (!!tableData && !!selectedItemId) {
                 const tempArray = [...tableData]
-                tempArray[tableRowIndex] = { numberOfElements: selectedItemNumber, elementId: selectedItemId }
+                tempArray[tableRowIndex] = {
+                    numberOfElements: tableData[tableRowIndex].numberOfElements,
+                    elementId: selectedItemId,
+                }
                 setTableData(tempArray)
                 handleChange(tempArray)
             }
-        }, [selectedItemId, selectedItemNumber])
+        }, [selectedItemId])
+
+        useEffect(() => {
+            if (!!tableData && !!selectedItemId) {
+                const tempArray = [...tableData]
+                tempArray[tableRowIndex] = {
+                    numberOfElements: selectedItemNumber,
+                    elementId: tableData[tableRowIndex].elementId,
+                }
+                setTableData(tempArray)
+                handleChange(tempArray)
+            }
+        }, [selectedItemNumber])
 
         const handleDeleteItem = (rowIndex: number) => {
             const tempArray = [...tableData]
@@ -190,7 +208,7 @@ const chooseSelectItemId = (
             </MenuItem>
         ))
     }
-    return <MenuItem>Brak typow narzedzi</MenuItem>
+    return <MenuItem>Brak elementów</MenuItem>
 }
 
 type TableItemSelectTypes = {

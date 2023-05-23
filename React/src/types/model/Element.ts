@@ -1,40 +1,32 @@
 export type Element = {
-    id: number,
-    name: string,
-    code: string,
-    typeOfUnit: string,
+    id: number
+    name: string
+    code: string
+    typeOfUnit: string
     quantityInUnit: number
 }
 
 export const TypeOfUnit = {
-    KILOGRAM: "Kilogram",
-    LITER: "Litr",
-    PIECE: "Sztuka"
+    KILOGRAM: 'Kilogram',
+    LITER: 'Litr',
+    PIECE: 'Sztuka',
 }
 
 export type PlannedElements = {
-    id: 0,
-    numberOfElements: 1,
+    id: number
+    numberOfElements: number
     element: {
-      id: 0,
-      name: string, 
-      code: string,
-      typeOfUnit: "KILOGRAM",
-      quantityInUnit: 0,
-      elementReturnReleases: [
-        0
-      ],
-      elementInWarehouses: [
-        0
-      ],
-      elementEvents: [
-        0
-      ],
-      attachmentId: 0,
-      listOfElementsPlannedNumber: [
-        0
-      ]
-    },
-    orderStageId: 0,
-    demandAdHocId: 0
-  }
+        id: number
+        name: string
+        code: string
+        typeOfUnit: string
+        quantityInUnit: number
+        elementReturnReleases: [number]
+        elementInWarehouses: [number]
+        elementEvents: [number]
+        attachmentId: number
+        listOfElementsPlannedNumber: [number]
+    }
+    orderStageId: number
+    demandAdHocId: number
+}

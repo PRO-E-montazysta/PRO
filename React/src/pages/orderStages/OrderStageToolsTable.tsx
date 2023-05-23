@@ -37,7 +37,7 @@ const OrderStageToolsTable = forwardRef(
             { numberOfTools: 0, toolTypeId: 'toChange' },
         ])
 
-        const getElementsData = async () => {
+        const getToolsTypeData = async () => {
             if (!!toolsTypeListIds) {
                 const check = await Promise.all(
                     toolsTypeListIds.map(async (tool) => {
@@ -62,7 +62,7 @@ const OrderStageToolsTable = forwardRef(
             if (toolsRef.current.length > 0) {
                 return setTableData([...toolsRef.current])
             } 
-            getElementsData()
+            getToolsTypeData()
         }, [])
 
         const handleItemNumberChange = (event: any) => {
