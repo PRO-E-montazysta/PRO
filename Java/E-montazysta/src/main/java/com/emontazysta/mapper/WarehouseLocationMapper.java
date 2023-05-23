@@ -26,7 +26,7 @@ public class WarehouseLocationMapper {
         if(location.getStreet() != null) {
             fullAddres += location.getStreet();
             fullAddres += location.getPropertyNumber() != null ? (" " + location.getPropertyNumber()) : "";
-            fullAddres += location.getApartmentNumber() != null ? ("/" + location.getApartmentNumber()) : "";
+            fullAddres += (location.getApartmentNumber() != null && !location.getApartmentNumber().equals(""))? ("/" + location.getApartmentNumber()) : "";
         }
         fullAddres += location.getZipCode() != null ? (", " + location.getZipCode()) : "";
         fullAddres += location.getCity() != null ? (" " + location.getCity()) : "";
