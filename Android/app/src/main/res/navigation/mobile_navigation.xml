@@ -133,7 +133,7 @@
     </fragment>
     <fragment
         android:id="@+id/elementsListFragment"
-        android:name="com.example.e_montazysta.ui.elementlist.ElementsListFragment"
+        android:name="com.example.e_montazysta.ui.element.ElementsListFragment"
         android:label="ElementsListFragment" >
         <action
             android:id="@+id/action_elementsListFragment_to_elementMainActivity"
@@ -146,6 +146,10 @@
         tools:layout="@layout/activity_element" >
         <argument
             android:name="elementId"
-            app:argType="string" />
+            app:argType="integer" />
     </activity>
+    <fragment
+        android:id="@+id/elementDetailFragment"
+        android:name="com.example.e_montazysta.ui.element.ElementDetailFragment"
+        android:label="ElementDetailFragment" />
 </navigation>

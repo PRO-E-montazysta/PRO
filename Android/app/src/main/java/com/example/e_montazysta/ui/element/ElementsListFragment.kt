@@ -1,5 +1,6 @@
-package com.example.e_montazysta.ui.elementlist
+package com.example.e_montazysta.ui.element
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.example.e_montazysta.databinding.FragmentElementsBinding
+import com.example.e_montazysta.ui.activities.ElementMainActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ElementsListFragment : Fragment() {
@@ -22,10 +24,14 @@ class ElementsListFragment : Fragment() {
         // give the binding object a reference to it.
         binding.elementsListViewModel = elementsListViewModel
 
-        val adapter = ElementsListAdapter()
+        val adapter = ElementListAdapter( CustomClickListener{
+            val intent = Intent(context, ElementMainActivity::class.java)
+            startActivity(intent)
+//                elementId -> findNavController().navigate(ElementsListFragmentDirections.actionElementsListFragmentToElementMainActivity(elementId))
+        })
         binding.elementList.adapter = adapter
 
-        elementsListViewModel.getTools()
+        elementsListViewModel.getElements()
 
         elementsListViewModel.elements.observe(viewLifecycleOwner, Observer {
             it?.let {

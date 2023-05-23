@@ -35,4 +35,14 @@ class ElementRepository(
             throw e
         }
     }
+
+    override suspend fun getElementDetails(id: Int): Result<Element> {
+        return try {
+            val elementService = serviceProvider.getElementService()
+            val elementDAO = elementService.getElementById(token, id)
+            Result.Success(elementDAO.mapToElement())
+        } catch (e: Exception) {
+            Result.Error(e)
+            throw e
+        }    }
 }

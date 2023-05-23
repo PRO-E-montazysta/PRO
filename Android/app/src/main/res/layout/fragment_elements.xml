@@ -9,7 +9,7 @@
     <data>
         <variable
             name="ElementsListViewModel"
-            type="com.example.e_montazysta.ui.elementlist.ElementsListViewModel" />
+            type="com.example.e_montazysta.ui.element.ElementsListViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

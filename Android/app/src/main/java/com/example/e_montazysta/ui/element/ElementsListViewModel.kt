@@ -1,15 +1,15 @@
-package com.example.e_montazysta.ui.elementlist
+package com.example.e_montazysta.ui.element
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.e_montazysta.data.model.Result
-import com.example.e_montazysta.data.repository.Interfaces.IToolRepository
+import com.example.e_montazysta.data.repository.interfaces.IElementRepository
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 
-class ElementsListViewModel(private val repository: IToolRepository) : ViewModel(), CoroutineScope {
+class ElementsListViewModel(private val repository: IElementRepository) : ViewModel(), CoroutineScope {
 
     private var job: Job? = null
 
@@ -25,17 +25,17 @@ class ElementsListViewModel(private val repository: IToolRepository) : ViewModel
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
-    fun getTools() {
+    fun getElements() {
         job = launch {
-            getToolsAsync()
+            getElementsAsync()
         }
     }
 
-    private suspend fun getToolsAsync() {
+    private suspend fun getElementsAsync() {
         _isLoadingLiveData.postValue(true)
-            val result = repository.getTools()
+            val result = repository.getElements()
             when (result) {
-                is Result.Success -> _elementsLiveData.postValue(result.data.map { it.mapToToolItem() })
+                is Result.Success -> _elementsLiveData.postValue(result.data.map { it.mapToElementItem() })
                 is Result.Error -> result.exception.message?.let { _messageLiveData.postValue(it) }
             }
         _isLoadingLiveData.postValue(false)

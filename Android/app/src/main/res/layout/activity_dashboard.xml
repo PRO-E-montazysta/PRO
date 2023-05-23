@@ -32,7 +32,6 @@
         app:defaultNavHost="true"
         app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:navGraph="@navigation/mobile_navigation"
-        android:layout_marginBottom="?android:attr/actionBarSize"
         />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

@@ -10,7 +10,7 @@ import java.net.URLEncoder
 class HttpRequestHelper {
     companion object {
         val baseUrl = "https://dev.emontazysta.pl/api/v1"
-        inline fun <T1, reified T2> sendHttpToolRequest(url: String = baseUrl, data: T1, token: String? = null): T2 {
+        inline fun <T1, reified T2> sendHttpPostRequest(url: String = baseUrl, data: T1, token: String? = null): T2 {
             var response = runBlocking {
                 var headers = emptyMap<String, String>()
                 if(token != null) {

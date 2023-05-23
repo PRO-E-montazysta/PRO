@@ -1,17 +1,19 @@
 package com.example.e_montazysta.ui.activities
 
-import com.example.e_montazysta.R
-import com.example.e_montazysta.data.controllers.Interfaces.IAuthController
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-
 //Importy potrzebne do działania FAB w oknie Element
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.navigation.navArgs
+import com.example.e_montazysta.R
+import com.example.e_montazysta.databinding.ActivityElementBinding
+import com.example.e_montazysta.ui.element.ElementDetailViewModel
 import com.google.android.material.appbar.MaterialToolbar
-import org.koin.android.ext.android.inject
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ElementMainActivity : AppCompatActivity() {
     lateinit var topAppBar : MaterialToolbar
@@ -27,6 +29,13 @@ class ElementMainActivity : AppCompatActivity() {
 
     //sprawdzanie, czy FAB podległe pod główny FAB mają być widoczne
     private var subFabsVisible: Boolean? = null
+
+
+    //SIDOR
+    val args: ElementMainActivityArgs by navArgs()
+    val elementId = args.elementId
+    private val elementDetailViewModel: ElementDetailViewModel by viewModel()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +65,17 @@ class ElementMainActivity : AppCompatActivity() {
                 }
             }
         }
+
+
+        val binding: ActivityElementBinding = ActivityElementBinding.inflate(layoutInflater)
+        binding.elementDetailViewModel = elementDetailViewModel
+
+        elementDetailViewModel.getElementDetail(elementId)
+        elementDetailViewModel.elementdetail.observe(this, Observer {
+            it?.let {
+                binding.element = it
+            }
+        })
 
         //Rejestracja Parent FAB poprzez ID
         mActionMainFab = findViewById(R.id.action_main_fab)
