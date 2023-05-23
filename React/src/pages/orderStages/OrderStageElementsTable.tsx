@@ -41,12 +41,15 @@ const OrderStageElementsTable = forwardRef(
         ])
 
         const getElementsData = async () => {
+            console.log('chekauj', elementsListIds)
+
             if (!!elementsListIds) {
                 const check = await Promise.all(
                     elementsListIds.map(async (element) => {
                         return await getPlannedElementById(element)
                     }),
                 )
+                console.log('co jest', check)
                 if (!!check && check.length > 0) {
                     const filteredData = check.map((element) => {
                         const data = {
@@ -55,6 +58,7 @@ const OrderStageElementsTable = forwardRef(
                         }
                         return data
                     })
+                    console.log('fltered', filteredData)
                     setTableData([...filteredData])
                 }
             }

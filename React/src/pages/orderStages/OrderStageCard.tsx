@@ -143,13 +143,13 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
         //tu sprawdzić czy takie w ogole istnieją
         const filteredData = elementsData.map((element) => {
             const data = {
-                numberOfTools: element.numberOfTools,
-                toolTypeId: element.element.id.toString(),
+                numberOfElements: element.numberOfElements,
+                elementId: element.element.id.toString(),
             }
             return data
         })
         console.log('here2')
-        handleSetPlannedToolsTypes(filteredData)
+        handleSetPlannedElements(filteredData)
     }
 
     const handleEditButtonAction = () => {
