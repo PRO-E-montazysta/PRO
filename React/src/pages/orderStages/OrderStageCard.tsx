@@ -120,6 +120,8 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                 return await getPlannedToolTypesById(tool)
             }),
         )
+                //tu sprawdzić czy takie w ogole istnieją
+
         const filteredData = toolsTypeData.map((tool) => {
             const data = {
                 numberOfTools: tool.numberOfTools,
@@ -138,6 +140,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                 return await getPlannedElementById(element)
             }),
         )
+        //tu sprawdzić czy takie w ogole istnieją
         const filteredData = elementsData.map((element) => {
             const data = {
                 numberOfTools: element.numberOfTools,
