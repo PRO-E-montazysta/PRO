@@ -76,7 +76,6 @@ public class ForemanServiceImpl implements ForemanService {
         foremanDto.setAttachments(new ArrayList<>());
         foremanDto.setToolEvents(new ArrayList<>());
         foremanDto.setWorkingOn(new ArrayList<>());
-        foremanDto.setOrdersStagesList(new ArrayList<>());
         foremanDto.setReceivedTools(new ArrayList<>());
         foremanDto.setAssignedOrders(new ArrayList<>());
         foremanDto.setElementReturnReleases(new ArrayList<>());
