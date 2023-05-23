@@ -45,7 +45,6 @@ const OrderStageToolsTable = forwardRef(
                     }),
                 )
                 if (!!check && check.length > 0) {
-                    console.log('here1')
                     const filteredData = check.map((tool) => {
                         const data = {
                             numberOfTools: tool.numberOfTools,
@@ -264,9 +263,7 @@ const TableItemNumber = ({
     rowIndex,
     isDisplayingMode,
 }: TableItemNumberType) => {
-    useEffect(() => {
-        console.log(selectedItemNumber)
-    }, [])
+    
     return (
         <TextField
             sx={{

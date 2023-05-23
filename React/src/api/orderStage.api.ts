@@ -2,15 +2,10 @@ import { CreateOrderStage, OrderStage, UpdateOrderStage, UpdateOrderStage2 } fro
 import { makeServiceCall } from './utils.api'
 
 export const createOrderStage = (data: CreateOrderStage) => {
-    console.log('json', data)
-
     return makeServiceCall(`/order-stages`, 'POST', { body: data })
 }
 
 export const updateOrderStage = (data: UpdateOrderStage) => {
-    console.log('api', data)
-    // const id = data.orderStageId
-    // const {orderStageId, ...restData} = data
     return makeServiceCall(`/order-stages/${data.orderStageId}`, 'PUT', { body: data })
 }
 

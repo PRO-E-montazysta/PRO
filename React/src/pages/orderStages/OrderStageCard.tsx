@@ -1,4 +1,4 @@
-import { Grid, Paper, Box, Button, Tabs, Tab, Typography, CardActions, fabClasses } from '@mui/material'
+import { Grid, Paper, Box, Button, Tabs, Tab, Typography, CardActions } from '@mui/material'
 import dayjs, { Dayjs } from 'dayjs'
 import { useFormik } from 'formik'
 import { useParams } from 'react-router-dom'
@@ -25,7 +25,6 @@ import { v4 as uuidv4 } from 'uuid'
 import { ToolType } from '../../types/model/ToolType'
 import OrderStageToolsTable from './OrderStageToolsTable'
 import OrderStageElementsTable from './OrderStageElementsTable'
-import { roleName } from '../../helpers/enum.helper'
 import { Role } from '../../types/roleEnum'
 
 type OrderStageCardProps = {
@@ -60,7 +59,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
     }
     const handleSetPlannedToolsTypes = (value: { numberOfTools: number; toolTypeId: string }[]) => {
         plannedToolsTypesRef!.current! = value
-        console.log('how is it', plannedToolsTypesRef!.current!)
     }
 
     const queryAllToolTypes = useQuery<Array<ToolType>, AxiosError>(
@@ -120,8 +118,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                 return await getPlannedToolTypesById(tool)
             }),
         )
-                //tu sprawdzić czy takie w ogole istnieją
-
         const filteredData = toolsTypeData.map((tool) => {
             const data = {
                 numberOfTools: tool.numberOfTools,
@@ -129,7 +125,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
             }
             return data
         })
-        console.log('here')
         handleSetPlannedToolsTypes(filteredData)
     }
 
@@ -140,7 +135,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                 return await getPlannedElementById(element)
             }),
         )
-        //tu sprawdzić czy takie w ogole istnieją
         const filteredData = elementsData.map((element) => {
             const data = {
                 numberOfElements: element.numberOfElements,
@@ -148,7 +142,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
             }
             return data
         })
-        console.log('here2')
         handleSetPlannedElements(filteredData)
     }
 
@@ -183,12 +176,9 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
             values.plannedStartDate = preparedPlannedStartDate
             values.plannedEndDate = preparedPlannedEndDate
 
-            //zaczynam - chyba musze ustawić useState isEditting i jeśli tak to update
             if (isEditing) {
-                console.log('edytujemy', values)
                 return updateOrderStage.mutate(values)
             }
-            console.log('dodajemy', values)
             await addOrderStage.mutate(values)
         },
     })
@@ -317,14 +307,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                 setPlannedFinishHour(data)
                             }}
 
-                            // slotProps={{
-                            //     textField: {
-                            //     //   fullWidth: fullWidth,
-                            //     //   variant: 'outlined',
-                            //       error={formik.touched.name && Boolean(formik.errors.plannedEndDate)}
-                            //       helperText={formik.touched.plannedEndDate && formik.errors.plannedEndDate}
-                            //     },
-                            //   }}
                         />
                     </LocalizationProvider>
                 </Grid>
