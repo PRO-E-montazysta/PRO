@@ -159,7 +159,7 @@ public class OrderStageImpl implements OrderStageService {
                         .forEach(elementsPlannedNumber -> elementsPlannedNumberRepository.delete(elementsPlannedNumber));
 
                 for (ElementsPlannedNumberDto elementsPlannedNumberDto : modiffiedOrderStageDto.getListOfElementsPlannedNumber()) {
-                    elementsPlannedNumberDto.setOrderStageId(orderStageDto.getId());
+                    elementsPlannedNumberDto.setOrderStageId(orderStageDb.getId());
                     ElementsPlannedNumber elementsPlannedNumber = elementsPlannedNumberMapper.toEntity(elementsPlannedNumberDto);
                     elementsPlannedNumberRepository.save(elementsPlannedNumber);
                     updatedElementsList.add(elementsPlannedNumber);
