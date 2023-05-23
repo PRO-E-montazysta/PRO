@@ -38,6 +38,7 @@ public class Warehouse {
 
     private String name;
 
+    @Column(length=1000)
     private String description;
 
     private String openingHours;
