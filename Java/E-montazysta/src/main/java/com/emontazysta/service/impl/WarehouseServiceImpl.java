@@ -1,17 +1,19 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.mapper.ElementInWarehouseMapper;
 import com.emontazysta.mapper.WarehouseMapper;
 import com.emontazysta.model.Company;
+import com.emontazysta.model.ElementInWarehouse;
 import com.emontazysta.model.Tool;
 import com.emontazysta.model.Warehouse;
 import com.emontazysta.model.dto.*;
 import com.emontazysta.model.searchcriteria.ElementSearchCriteria;
 import com.emontazysta.model.searchcriteria.WarehouseSearchCriteria;
 import com.emontazysta.repository.CompanyRepository;
+import com.emontazysta.repository.ElementInWarehouseRepository;
 import com.emontazysta.repository.WarehouseRepository;
 import com.emontazysta.repository.criteria.ElementCriteriaRepository;
 import com.emontazysta.repository.criteria.WarehouseCriteriaRepository;
-import com.emontazysta.service.ElementInWarehouseService;
 import com.emontazysta.service.WarehouseService;
 import com.emontazysta.util.AuthUtils;
 import lombok.AllArgsConstructor;
@@ -34,7 +36,8 @@ public class WarehouseServiceImpl implements WarehouseService {
     private final WarehouseCriteriaRepository warehouseCriteriaRepository;
     private final AuthUtils authUtils;
     private final ElementCriteriaRepository elementCriteriaRepository;
-    private final ElementInWarehouseService elementInWarehouseService;
+    private final ElementInWarehouseRepository elementInWarehouseRepository;
+    private final ElementInWarehouseMapper elementInWarehouseMapper;
 
     @Override
     public List<WarehouseDto> getAll() {
@@ -75,6 +78,11 @@ public class WarehouseServiceImpl implements WarehouseService {
         //Set deleted flag for Tools from warehouse
         for(Tool tool : warehouse.getTools()) {
             tool.setDeleted(true);
+        }
+
+        //Set deleted flag for ElementInWarehouse from warehouse
+        for(ElementInWarehouse elementInWarehouse : warehouse.getElementInWarehouses()) {
+            elementInWarehouse.setDeleted(true);
         }
 
         repository.deleteById(id);
@@ -120,7 +128,7 @@ public class WarehouseServiceImpl implements WarehouseService {
                     .warehouseId(warehouse.getId())
                     .build();
 
-            elementInWarehouseService.add(elementInWarehouseDto);
+            elementInWarehouseRepository.save(elementInWarehouseMapper.toEntity(elementInWarehouseDto));
         });
 
         return warehouseMapper.toDto(warehouse);
