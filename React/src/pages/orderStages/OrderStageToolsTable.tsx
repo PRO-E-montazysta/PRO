@@ -236,7 +236,6 @@ const TableItemSelect = ({
             }}
             labelId="demo-simple-select-label"
             key={uuidv4()}
-            defaultValue=""
             value={rowData.toolTypeId}
             disabled={isDisplayingMode}
             label={label}
@@ -272,7 +271,6 @@ const TableItemNumber = ({
                 },
             }}
             type="number"
-            defaultValue={0}
             value={selectedItemNumber}
             disabled={isDisplayingMode}
             id={uuidv4()}
