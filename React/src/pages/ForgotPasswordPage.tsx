@@ -1,4 +1,4 @@
-import ForgotForm from '../components/forgotPassword/ForgotForm'
+import ForgotForm from '../components/loginForm/ForgotForm'
 import LoginHeader from '../components/headers/LoginHeader'
 
 const ForgotPasswordPage = () => {

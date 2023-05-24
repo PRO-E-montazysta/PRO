@@ -18,28 +18,9 @@ import { setToken } from '../../utils/token'
 import { logIn } from '../../api/authentication.api'
 import { useMutation } from 'react-query'
 import { MouseEvent, useState } from 'react'
-import './style.less'
 
 import { Visibility, VisibilityOff } from '@mui/icons-material'
-
-const CustomTextField = styled(TextField)(({ theme }) => ({
-    label: { shrink: true, color: theme.palette.secondary.contrastText },
-    input: { color: theme.palette.secondary.contrastText },
-    '& label.Mui-focused': {
-        color: theme.palette.secondary.contrastText,
-    },
-    '& .MuiOutlinedInput-root': {
-        '& fieldset': {
-            borderColor: '#96C0FB',
-        },
-        '&:hover fieldset': {
-            borderColor: theme.palette.secondary.contrastText,
-        },
-    },
-    '&.Mui-focused fieldset': {
-        borderColor: 'green',
-    },
-}))
+import CustomTextField from './StyledTextField'
 
 const CustomCheckbox = styled(Checkbox)(({ theme }) => ({
     color: theme.palette.secondary.contrastText,
@@ -127,7 +108,7 @@ const LoginForm = () => {
                     sx={{ autoComplete: 'off', maxWidth: 666, marginTop: '17px', width: '100%' }}
                 >
                     <CustomTextField
-                        className={'login-form-input'}
+                        className={'form-input-dark'}
                         fullWidth
                         margin="normal"
                         label="Nazwa użytkownika"
@@ -142,7 +123,7 @@ const LoginForm = () => {
                         helperText={formik.touched.username && formik.errors.username}
                     />
                     <CustomTextField
-                        className={'login-form-input'}
+                        className={'form-input-dark'}
                         fullWidth
                         margin="normal"
                         label="Hasło"

@@ -7,28 +7,11 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { resetPassword } from '../../api/authentication.api'
 import { useMutation } from 'react-query'
 import { MouseEvent, useState } from 'react'
-import './style.less'
+
 
 import { Visibility, VisibilityOff } from '@mui/icons-material'
+import CustomTextField from './StyledTextField'
 
-const CustomTextField = styled(TextField)(({ theme }) => ({
-    label: { shrink: true, color: theme.palette.secondary.contrastText },
-    input: { color: theme.palette.secondary.contrastText },
-    '& label.Mui-focused': {
-        color: theme.palette.secondary.contrastText,
-    },
-    '& .MuiOutlinedInput-root': {
-        '& fieldset': {
-            borderColor: '#96C0FB',
-        },
-        '&:hover fieldset': {
-            borderColor: theme.palette.secondary.contrastText,
-        },
-    },
-    '&.Mui-focused fieldset': {
-        borderColor: 'green',
-    },
-}))
 
 const validationSchema = yup.object({
     password: yup.string().min(4, 'Hasło powinno składać się z minium 4 znaków ').required('Wpisz hasło'),
@@ -108,7 +91,7 @@ const ResetForm = () => {
                     sx={{ autoComplete: 'off', maxWidth: 666, marginTop: '17px', width: '100%' }}
                 >
                     <CustomTextField
-                        className={'reset-form-input'}
+                        className={'form-input-dark'}
                         fullWidth
                         margin="normal"
                         label="Hasło"
@@ -142,7 +125,7 @@ const ResetForm = () => {
                         }}
                     />
                     <CustomTextField
-                        className={'reset-form-input'}
+                        className={'form-input-dark'}
                         fullWidth
                         margin="normal"
                         label="Potwierdź hasło"

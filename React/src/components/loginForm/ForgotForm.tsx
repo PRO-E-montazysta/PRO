@@ -5,27 +5,9 @@ import * as yup from 'yup'
 import { useFormik } from 'formik'
 import { forgotPassword } from '../../api/authentication.api'
 import { useMutation } from 'react-query'
-import './style.less'
 import { useState } from 'react'
+import CustomTextField from './StyledTextField'
 
-const CustomTextField = styled(TextField)(({ theme }) => ({
-    label: { shrink: true, color: theme.palette.secondary.contrastText },
-    input: { color: theme.palette.secondary.contrastText },
-    '& label.Mui-focused': {
-        color: theme.palette.secondary.contrastText,
-    },
-    '& .MuiOutlinedInput-root': {
-        '& fieldset': {
-            borderColor: '#96C0FB',
-        },
-        '&:hover fieldset': {
-            borderColor: theme.palette.secondary.contrastText,
-        },
-    },
-    '&.Mui-focused fieldset': {
-        borderColor: 'green',
-    },
-}))
 
 const validationSchema = yup.object({
     username: yup.string().required('Wpisz nazwę użytkownika'),
