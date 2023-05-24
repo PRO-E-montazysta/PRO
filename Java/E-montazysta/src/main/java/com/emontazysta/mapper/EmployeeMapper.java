@@ -2,7 +2,6 @@ package com.emontazysta.mapper;
 
 import com.emontazysta.model.AppUser;
 import com.emontazysta.model.Attachment;
-import com.emontazysta.model.Unavailability;
 import com.emontazysta.model.dto.EmployeeDto;
 import com.emontazysta.service.StatusService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +22,8 @@ public class EmployeeMapper {
                 .lastName(employee.getLastName())
                 .email(employee.getEmail())
                 .roles(employee.getRoles())
+                .username(employee.getUsername())
+                .pesel(employee.getPesel())
                 .phone(employee.getPhone())
                 .attachments( employee.getAttachments() == null ? null : employee.getAttachments().stream()
                         .map(Attachment::getId)
