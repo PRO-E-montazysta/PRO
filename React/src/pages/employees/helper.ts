@@ -1,13 +1,11 @@
 import { FilterInputType } from '../../components/table/filter/TableFilter'
 import { HeadCell } from '../../components/table/sort/SortedTableHeader'
-import { Employee, EmployeeStatus } from '../../types/model/Employee'
-
+import { Employee } from '../../types/model/Employee'
 import { AppSize } from '../../hooks/useBreakpoints'
-import { SelectMenuItemProps } from '../../components/form/types'
 import * as yup from 'yup'
 import { Role } from '../../types/roleEnum'
 import { FormInputProps } from '../../types/form'
-import { userRoleOptions } from '../../helpers/enum.helper'
+import { roleName, userRoleOptions } from '../../helpers/enum.helper'
 
 export const headCells: Array<HeadCell<Employee>> = [
     {
@@ -26,6 +24,21 @@ export const headCells: Array<HeadCell<Employee>> = [
     },
     {
         type: 'string',
+        id: 'roles',
+        label: 'Stanowisko',
+        visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
+        numeric: false,
+        formatFn: (role: string) => roleName(role[0]),
+    },
+    {
+        type: 'string',
+        id: 'username',
+        label: 'Username',
+        visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
+        numeric: false,
+    },
+    {
+        type: 'string',
         id: 'email',
         label: 'Email',
         visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
@@ -33,34 +46,8 @@ export const headCells: Array<HeadCell<Employee>> = [
     },
     {
         type: 'string',
-        id: 'password',
-        label: 'Password',
-        numeric: false,
-    },
-    {
-        type: 'string',
-        id: 'username',
-        label: 'Username',
-        numeric: false,
-    },
-    {
-        type: 'string',
-        id: 'status',
-        label: 'Status',
-        visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
-        numeric: false,
-    },
-    {
-        type: 'string',
-        id: 'roles',
-        label: 'Role',
-        visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
-        numeric: false,
-    },
-    {
-        type: 'string',
         id: 'phone',
-        label: 'Phone',
+        label: 'Telefon',
         visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
@@ -68,7 +55,7 @@ export const headCells: Array<HeadCell<Employee>> = [
         type: 'string',
         id: 'pesel',
         label: 'Pesel',
-        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
+        visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
     },
 ]
@@ -77,14 +64,14 @@ export const filterInitStructure: Array<FilterInputType> = [
     {
         id: 'fristName',
         value: '',
-        label: 'FirstName',
+        label: 'Imię',
         inputType: 'text',
         typeValue: 'string',
     },
     {
         id: 'lastName',
         value: '',
-        label: 'LastName',
+        label: 'Nazwisko',
         inputType: 'text',
         typeValue: 'string',
     },
@@ -96,31 +83,19 @@ export const filterInitStructure: Array<FilterInputType> = [
         typeValue: 'string',
     },
     {
-        id: 'status',
-        value: ['AKTYWNY', 'NIEAKTYWNY'],
-        label: 'Status',
-        inputType: 'multiselect',
-        typeValue: 'Array',
-        options: Object.entries(EmployeeStatus).map((s): SelectMenuItemProps => {
-            return {
-                key: s[0],
-                value: s[1],
-            }
-        }),
+        id: 'phone',
+        value: '',
+        label: 'Telefon',
+        inputType: 'text',
+        typeValue: 'string',
     },
     {
         id: 'roles',
         value: '',
-        label: 'Role',
-        inputType: 'text',
-        typeValue: 'string',
-    },
-    {
-        id: 'phone',
-        value: '',
-        label: 'Phone',
-        inputType: 'text',
-        typeValue: 'string',
+        label: 'Stanowisko',
+        inputType: 'multiselect',
+        typeValue: 'Array',
+        options: userRoleOptions(),
     },
     {
         id: 'pesel',
@@ -130,21 +105,6 @@ export const filterInitStructure: Array<FilterInputType> = [
         typeValue: 'string',
     },
 ]
-
-export const emptyForm = {
-    id: null,
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    username: '',
-    status: '',
-    roles: [],
-    phone: '',
-    pesel: '',
-}
-
-export const validationSchema = yup.object({})
 
 export const useFormStructure = (): Array<FormInputProps> => {
     return [
@@ -238,7 +198,6 @@ export const useFormStructure = (): Array<FormInputProps> => {
                 .required('Wprowadź pesel'),
             editPermissionRoles: [Role.ADMIN],
             viewPermissionRoles: [Role.ADMIN, Role.MANAGER],
-            validationOnUpdate: yup.string().nullable(),
         },
         {
             label: 'Hasło',
