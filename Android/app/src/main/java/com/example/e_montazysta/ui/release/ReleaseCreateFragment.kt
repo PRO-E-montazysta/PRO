@@ -11,6 +11,10 @@ import androidx.navigation.fragment.navArgs
 import com.example.e_montazysta.R
 import com.example.e_montazysta.data.model.mapToReleaseItem
 import com.example.e_montazysta.databinding.FragmentCreateReleaseBinding
+import com.google.android.gms.common.api.OptionalModuleApi
+import com.google.android.gms.common.moduleinstall.ModuleInstall
+import com.google.android.gms.common.moduleinstall.ModuleInstallClient
+import com.google.android.gms.common.moduleinstall.ModuleInstallRequest
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
@@ -45,8 +49,41 @@ class ReleaseCreateFragment : Fragment() {
                 Barcode.FORMAT_QR_CODE)
             .build()
 
-        val scanner = container?.let { GmsBarcodeScanning.getClient(it.context, options) }
+        val moduleInstallClient = ModuleInstall.getClient(requireContext())
+        val scanner = GmsBarcodeScanning.getClient(requireContext(), options)
+
+        fun installApiModule(moduleInstallClient: ModuleInstallClient, module: OptionalModuleApi) {
+            moduleInstallClient
+                .areModulesAvailable(module)
+                .addOnSuccessListener {
+                    if (it.areModulesAvailable()) {
+                        // Modules are present on the device...
+                    } else {
+                        val moduleInstallRequest =
+                            ModuleInstallRequest.newBuilder()
+                                .addApi(module)
+                                .build()
+                        moduleInstallClient
+                            .installModules(moduleInstallRequest)
+                            .addOnSuccessListener {
+                                if (it.areModulesAlreadyInstalled()) {
+                                    // Modules are already installed when the request is sent.
+                                }
+                            }
+                            .addOnFailureListener { exception ->
+                                Toast.makeText(activity, exception.message, Toast.LENGTH_LONG).show()
+                            }
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Toast.makeText(activity, exception.message, Toast.LENGTH_LONG).show()
+                }
+        }
+
+
+
         binding.addObjectsToRelease.setOnClickListener{
+            installApiModule(moduleInstallClient, scanner)
             scanner?.startScan()?.addOnSuccessListener {barcode ->
                 val code = barcode?.rawValue
                 when(code?.first()) {

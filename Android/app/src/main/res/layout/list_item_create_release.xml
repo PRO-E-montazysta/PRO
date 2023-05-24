@@ -121,7 +121,6 @@
                     app:layout_constraintStart_toStartOf="@id/guide_start" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/quantity"
                 style="?attr/textInputOutlinedStyle"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
@@ -129,16 +128,15 @@
                 app:layout_constraintEnd_toStartOf="@id/guide_end"
                 app:layout_constraintTop_toTopOf="@id/guide_top"
                 app:layout_constraintBottom_toBottomOf="@id/guide_bottom"
-                app:counterEnabled="true"
-                app:counterMaxLength="3"
                 android:visibility="@{release_item.isElement ? View.VISIBLE : View.GONE}">
                 <!--            app:suffixText='@{release_item.getQuantityInWarehouse()}'>-->
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/quantity"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="number"/>
-<!--                    android:text="@={String.valueOf(release_item.quantity)}"/>-->
+                    android:inputType="number"
+                    android:text="@={`` + release_item.quantity}"/>
             </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
