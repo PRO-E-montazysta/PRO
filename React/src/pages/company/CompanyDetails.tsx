@@ -63,6 +63,17 @@ const CompanyDetails = () => {
         onSubmit: handleSubmit,
     })
 
+    //show expanded component while validation errors
+    useEffect(() => {
+        if (Object.keys(formik.errors).length > 0) {
+            setIsAddAdminTabOpen(true)
+        }
+    }, [formik.isSubmitting])
+    const [isAddAdminTabOpen, setIsAddAdminTabOpen] = useState(false)
+    useEffect(() => {
+        if (isAddAdminTabOpen) setIsAddAdminTabOpen(false)
+    }, [isAddAdminTabOpen])
+
     const handleReset = () => {
         formik.resetForm()
         formik.setValues(initData)
@@ -182,6 +193,7 @@ const CompanyDetails = () => {
                                             titleIcon={<PermContactCalendarIcon />}
                                             title="Dane dministratora firmy"
                                             cardContent={addAdminCardContent()}
+                                            isOpen={isAddAdminTabOpen}
                                         />
                                     </Card>
                                 </Grid>
