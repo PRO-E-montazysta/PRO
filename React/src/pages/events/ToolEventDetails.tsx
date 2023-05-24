@@ -13,12 +13,9 @@ import QueryBoxStatus from '../../components/base/QueryStatusBox'
 import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
-import { useQuery } from 'react-query'
-import { Tool } from '../../types/model/Tool'
-import { AxiosError } from 'axios'
-import { getAllTools } from '../../api/tool.api'
 import DisplayToolHistory from '../../components/toolHistory/DisplayToolHistory'
 import Error from '../../components/error/Error'
+import { useToolData } from '../tools/hooks'
 
 const ToolEventDetails = () => {
     const params = useParams()
@@ -97,10 +94,7 @@ const ToolEventDetails = () => {
         }
     }, [params.id])
 
-    const queryTools = useQuery<Array<Tool>, AxiosError>(['tool-list'], getAllTools, {
-        cacheTime: 15 * 60 * 1000,
-        staleTime: 10 * 60 * 1000,
-    })
+    const queryTool = useToolData(String(toolEventData.data?.toolId))
 
     return toolEventData.data?.deleted ? (
         <>
@@ -111,15 +105,8 @@ const ToolEventDetails = () => {
             <FormBox>
                 <FormTitle
                     mainTitle={pageMode == 'new' ? 'Nowa usterka narzędzia' : 'Usterka narzędzia'}
-                    subTitle={
-                        pageMode == 'new'
-                            ? ''
-                            : String(
-                                  queryTools.data
-                                      ?.filter((f) => f.id == formik.values['toolId'])
-                                      .map((x) => x.name + ' - ' + x.code),
-                              )
-                    }
+                    subTitle={pageMode == 'new' ? '' : String(queryTool.data?.name + ' - ' + queryTool.data?.code)}
+                    deleted={queryTool.data?.deleted}
                 />
                 <FormPaper>
                     {queriesStatus.result !== 'isSuccess' ? (
