@@ -242,8 +242,9 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                         WebkitTextFillColor: '#000000',
                                     },
                                 }}
+                                format="DD/MM/YYYY"
                                 label="Data rozpoczęcia"
-                                value={isDisplayingMode ? stage!.startDate : ''}
+                                value={isDisplayingMode ? dayjs(stage!.startDate) : ''}
                                 disabled={isDisplayingMode}
                             />
                         </LocalizationProvider>
@@ -282,6 +283,8 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                 }}
                                 label="Data zakończenia"
                                 disabled={isDisplayingMode}
+                                format="DD/MM/YYYY"
+                                value={isDisplayingMode ? dayjs(stage!.endDate) : ''}
                                 onChange={(data) => {
                                     // const formattedDate = dayjs(data).format('YYYY-MM-DDTHH:mm:ss.SSS')
                                 }}
@@ -306,7 +309,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                             onChange={(data) => {
                                 setPlannedFinishHour(data)
                             }}
-
                         />
                     </LocalizationProvider>
                 </Grid>
