@@ -218,7 +218,7 @@ const OrderDetails = () => {
                         </>
                     )}
                 </FormPaper>
-                <OrderStagesDetails isAddOrderStageVisible={isAddOrderStageVisible} />
+                {params.id !== 'new' && <OrderStagesDetails isAddOrderStageVisible={isAddOrderStageVisible} />}
             </FormBox>
         </>
     )
