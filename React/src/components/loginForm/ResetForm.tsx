@@ -1,63 +1,60 @@
-import {
-    Grid,
-    Typography,
-    Box,
-    FormControlLabel,
-    Checkbox,
-    Button,
-    InputAdornment,
-    IconButton,
-    OutlinedInput,
-} from '@mui/material'
+import { Grid, Typography, Box, Button, InputAdornment, IconButton } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import { styled, useTheme } from '@mui/material/styles'
 import * as yup from 'yup'
 import { useFormik } from 'formik'
-import { useNavigate } from 'react-router-dom'
-import { setToken } from '../../utils/token'
-import { logIn } from '../../api/authentication.api'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { resetPassword } from '../../api/authentication.api'
 import { useMutation } from 'react-query'
 import { MouseEvent, useState } from 'react'
+
 
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import CustomTextField from './StyledTextField'
 
-const CustomCheckbox = styled(Checkbox)(({ theme }) => ({
-    color: theme.palette.secondary.contrastText,
-    '&.Mui-checked': {
-        color: theme.palette.secondary.contrastText,
-    },
-}))
 
 const validationSchema = yup.object({
-    username: yup.string().required('Wpisz nazwę użytkownika'),
     password: yup.string().min(4, 'Hasło powinno składać się z minium 4 znaków ').required('Wpisz hasło'),
+    confirmPassword: yup
+        .string()
+        .min(4, 'Hasło powinno składać się z minium 4 znaków')
+        .oneOf([yup.ref('password'), null], 'Hasła różnią się')
+        .required('Wpisz hasło'),
 })
 
-const LoginForm = () => {
+const ResetForm = () => {
     const theme = useTheme()
     const navigation = useNavigate()
+    const [errorInfo, setErrorInfo] = useState<string>()
+    const [searchParams, setSearchParams] = useSearchParams()
     const { data, isLoading, isError, error, mutate } = useMutation({
-        mutationFn: logIn,
-        onSuccess(data) {
-            setToken(data)
-            navigation('/', { replace: true })
+        mutationFn: resetPassword,
+        onSuccess() {
+            navigation('/login')
         },
-        onError(error: any) {
-            console.error(error)
+        onError() {
+            setErrorInfo('Skontaktuj się z administratorem systemu!')
         },
     })
 
     const formik = useFormik({
         initialValues: {
-            username: '',
-            password: 'password',
+            password: '',
+            confirmPassword: '',
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            return mutate({ username: values.username, password: values.password })
+            return mutate({ resetPasswordToken: String(searchParams.get('token')), password: values.password })
         },
     })
+
+    const dispalyErrorInfo = () => {
+        return (
+            <Typography color="#d32f2f" align="center" marginTop={'5px'}>
+                {errorInfo}
+            </Typography>
+        )
+    }
 
     const [showPassword, setShowPassword] = useState(false)
 
@@ -65,20 +62,6 @@ const LoginForm = () => {
 
     const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault()
-    }
-
-    const dispalyError = (error: any) => {
-        if (error == 'AxiosError: Network Error') {
-            return 'Skontaktuj się z administratorem systemu!'
-        } else if (error.response.status === 400) {
-            return 'Błędne dane logowania!'
-        } else if (error.response.status === 402) {
-            return 'Firma zawieszona, skontaktuj się z administratorem systemu!'
-        } else if (error.response.status === 403) {
-            return 'Skontaktuj się z administratorem firmy!'
-        } else {
-            return 'Skontaktuj się z administratorem systemu!'
-        }
     }
 
     return (
@@ -99,7 +82,7 @@ const LoginForm = () => {
                 sx={{ boxShadow: '0px 20px 4px rgba(0, 0, 0, 0.25)' }}
             >
                 <Typography component="h1" variant="h5">
-                    Logowanie użytkownika
+                    Zmiana hasła
                 </Typography>
                 <Box
                     component="form"
@@ -107,21 +90,6 @@ const LoginForm = () => {
                     noValidate
                     sx={{ autoComplete: 'off', maxWidth: 666, marginTop: '17px', width: '100%' }}
                 >
-                    <CustomTextField
-                        className={'form-input-dark'}
-                        fullWidth
-                        margin="normal"
-                        label="Nazwa użytkownika"
-                        name="username"
-                        id="username"
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        value={formik.values.username}
-                        onChange={formik.handleChange}
-                        error={formik.touched.username && Boolean(formik.errors.username)}
-                        helperText={formik.touched.username && formik.errors.username}
-                    />
                     <CustomTextField
                         className={'form-input-dark'}
                         fullWidth
@@ -156,38 +124,56 @@ const LoginForm = () => {
                             ),
                         }}
                     />
-                    <Typography color="#d32f2f" align="center" marginTop={'5px'}>
-                        {error && dispalyError(error)}
-                    </Typography>
-                    <FormControlLabel
-                        sx={{ marginTop: '15px', marginBottom: '25px' }}
-                        control={<CustomCheckbox value="remember" />}
-                        label="Zapamiętaj moje dane logowania"
-                        name="check"
+                    <CustomTextField
+                        className={'form-input-dark'}
+                        fullWidth
+                        margin="normal"
+                        label="Potwierdź hasło"
+                        name="confirmPassword"
+                        id="confirmPassword"
+                        type={showPassword ? 'text' : 'password'}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        onChange={formik.handleChange}
+                        error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
+                        helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        id={`showPassword`}
+                                        sx={{
+                                            color: theme.palette.secondary.contrastText,
+                                        }}
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        edge="end"
+                                    >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
                     />
+                    {errorInfo && dispalyErrorInfo()}
                     <Grid spacing={2} container justifyContent="flex-end" marginBottom={'5px'}>
                         <Grid item>
-                            <Button
-                                id={'login-logIn'}
-                                type="submit"
-                                color="primary"
-                                variant="contained"
-                                disabled={isLoading}
-                            >
-                                Zaloguj się
+                            <Button id={'reset'} type="submit" color="primary" variant="contained" disabled={isLoading}>
+                                Zmień hasło
                             </Button>
                         </Grid>
                         <Grid item>
-                            <Button id={'login-reset'} color="secondary" variant="text" href="/forgot">
-                                Resetuj hasło
+                            <Button id={'login'} color="secondary" variant="text" href="/login">
+                                Logowanie
                             </Button>
                         </Grid>
                     </Grid>
                 </Box>
             </Box>
-            <Box sx={{ m: '10px', mt: '1000px' }}>{isError ? JSON.stringify(error) : JSON.stringify(data)}</Box>
         </>
     )
 }
 
-export default LoginForm
+export default ResetForm
