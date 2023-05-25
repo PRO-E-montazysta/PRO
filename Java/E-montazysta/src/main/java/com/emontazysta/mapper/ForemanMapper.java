@@ -102,7 +102,7 @@ public class ForemanMapper {
         foremanDto.getWorkingOn().forEach(workingOnId -> workingOnList.add(orderStageRepository.findById(workingOnId).orElseThrow(EntityNotFoundException::new)));
 
         List<Orders> ordersList = new ArrayList<>();
-        foremanDto.getAssignedOrders().forEach(orderStageId -> ordersList.add(orderRepository.findById(orderStageId).orElseThrow(EntityNotFoundException::new)));
+        foremanDto.getAssignedOrders().forEach(orderId -> ordersList.add(orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new)));
 
         List<DemandAdHoc> demandAdHocsList = new ArrayList<>();
         foremanDto.getDemandsAdHocs().forEach(demandAdHocId -> demandAdHocsList.add(demandAdHocRepository.findById(demandAdHocId).orElseThrow(EntityNotFoundException::new)));

@@ -81,6 +81,10 @@ public class AppUser implements UserDetails {
         return null;
     }
 
+    public String getPesel() {
+        return null;
+    }
+
     public List<Attachment> getAttachments() {
         return null;
     }

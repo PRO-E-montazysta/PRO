@@ -6,7 +6,7 @@ export type Employee = {
     password: string
     username: string
     status: string
-    roles: string[]
+    roles: string[] | string | null
     phone: string
     unavailbilityDescription: string
     pesel: string

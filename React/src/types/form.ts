@@ -10,6 +10,7 @@ export type FormInputProps = {
     type: 'input' | 'select' | 'date' | 'password' | 'date-time' | 'number'
     options?: Array<SelectMenuItemProps>
     validation?: yup.AnySchema
+    placeholder?: string
 
     //always readonly
     readonly?: boolean //deprecated
@@ -21,7 +22,6 @@ export type FormInputProps = {
     viewPermissionRoles?: Array<Role>
     addNewPermissionRoles?: Array<Role>
 
-    
     customPermission?: (inputValue: any) => InputDisplayMode | null
 
     //if not provided then validation on update is take from validation property
