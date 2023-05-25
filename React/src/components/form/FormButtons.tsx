@@ -9,6 +9,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import useBreakpoints from '../../hooks/useBreakpoints'
 import PrintQRCodeLabel from '../label/PrintQRCodeLabel'
+import { useState } from 'react'
 
 type FormButtonsParams = {
     readonlyMode: boolean
@@ -19,12 +20,28 @@ type FormButtonsParams = {
     onReset: () => void
     onCancel: () => void
     printLabel?: [string, string]
+    orderStageButton?: boolean
+    handleAddOrderStage?: () => void
+    isAddOrderStageVisible?: boolean
 }
 
 export const FormButtons = (params: FormButtonsParams) => {
-    const { readonlyMode, id, onCancel, onDelete, onEdit, onReset, onSubmit, printLabel } = params
+    const {
+        readonlyMode,
+        id,
+        onCancel,
+        onDelete,
+        onEdit,
+        onReset,
+        onSubmit,
+        printLabel,
+        orderStageButton,
+        handleAddOrderStage,
+        isAddOrderStageVisible,
+    } = params
 
     const appSize = useBreakpoints()
+
     return (
         <Box
             sx={{
@@ -61,6 +78,18 @@ export const FormButtons = (params: FormButtonsParams) => {
                             Usuń
                         </Button>
                     ) : null}
+                    {orderStageButton && (
+                        <Button
+                            color="primary"
+                            startIcon={<EditIcon />}
+                            variant="contained"
+                            type="submit"
+                            // style={{ width: 160 }}
+                            onClick={handleAddOrderStage}
+                        >
+                            {isAddOrderStageVisible ? 'Anuluj dodawanie etapu' : 'Dodaj etap'}
+                        </Button>
+                    )}
                 </>
             ) : (
                 <>

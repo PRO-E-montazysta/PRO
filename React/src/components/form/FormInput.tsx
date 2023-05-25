@@ -7,9 +7,12 @@ type CustomTextFieldProps = {
     readOnly: boolean
 }
 
-const CustomTextField = styled(TextField)((props: CustomTextFieldProps) => ({
+export const CustomTextField = styled(TextField)((props: CustomTextFieldProps) => ({
     '& fieldset': {
         border: props.readOnly ? 'none' : '',
+    },
+    '& .MuiInputBase-input.Mui-disabled': {
+        WebkitTextFillColor: '#000000',
     },
 }))
 
