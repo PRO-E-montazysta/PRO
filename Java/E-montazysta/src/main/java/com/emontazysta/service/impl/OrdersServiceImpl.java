@@ -62,12 +62,14 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     @Transactional
     public OrdersDto add(OrdersDto ordersDto) {
-        Orders order = ordersMapper.toEntity(ordersDto);
-        
-        order.setCreatedAt(LocalDateTime.now());
-        order.setEditedAt(null);
-        order.setStatus(OrderStatus.CREATED);
+        ordersDto.setCreatedAt(LocalDateTime.now());
+        ordersDto.setEditedAt(null);
+        ordersDto.setStatus(OrderStatus.CREATED);
+        ordersDto.setOrderStages(new ArrayList<>());
+        ordersDto.setAttachments(new ArrayList<>());
+        ordersDto.setSalesRepresentativeId(authUtils.getLoggedUser().getId());
 
+        Orders order = ordersMapper.toEntity(ordersDto);
         return ordersMapper.toDto(repository.save(order));
     }
 

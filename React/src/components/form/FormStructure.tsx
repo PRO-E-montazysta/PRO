@@ -6,19 +6,20 @@ import { useInputWidth } from '../../hooks/useInputWidth'
 import { FormInputProps, PageMode } from '../../types/form'
 import { isAuthorized } from '../../utils/authorize'
 
-type FormStructureParams = {
+export type FormStructureParams = {
     formStructure: Array<FormInputProps>
     formik: any
-    readonlyMode?: boolean //deprecated
     pageMode?: PageMode
+    readonlyMode?: boolean //deprecated
+    thin?: boolean
 }
 
 export type InputDisplayMode = 'readonly' | 'available' | 'hidden'
 
 export const FormStructure = (params: FormStructureParams) => {
-    const { formStructure, formik, pageMode } = params
+    const { formStructure, formik, pageMode, thin } = params
 
-    const inputWidth = useInputWidth()
+    const inputWidth = useInputWidth(thin)
 
     //if permission unset then full access
     const setDisplayMode = (element: FormInputProps): InputDisplayMode => {

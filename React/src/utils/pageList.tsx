@@ -26,6 +26,9 @@ import ToolEventDetails from '../pages/events/ToolEventDetails'
 import ElementEventDetails from '../pages/events/ElementEventDetails'
 import Unavailabilities from '../pages/unavailabilities'
 import UnavailabilityDetails from '../pages/unavailabilities/UnavailabilityDetails'
+import ElementInWarehouseDetails from '../pages/elementInWarehouse/ElementInWarehouseDetails'
+import ForgotPasswordPage from '../pages/ForgotPasswordPage'
+import ResetPasswordPage from '../pages/ResetPasswordPage'
 
 export type PageProps = {
     name: string
@@ -54,6 +57,20 @@ export const pageList: Array<PageProps> = [
         path: '/login',
         allowedRoles: [Role['*']],
         component: <LoginPage />,
+    },
+    {
+        inNav: false,
+        name: 'Zresetuj hasło',
+        path: '/forgot',
+        allowedRoles: [Role['*']],
+        component: <ForgotPasswordPage />,
+    },
+    {
+        inNav: false,
+        name: 'Resetowanie hasła',
+        path: '/new-password',
+        allowedRoles: [Role['*']],
+        component: <ResetPasswordPage />,
     },
     {
         inNav: false,
@@ -316,6 +333,13 @@ export const pageList: Array<PageProps> = [
                 path: '/elements/:id',
                 allowedRoles: [Role.SPECIALIST, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER],
                 component: <ElementDetails />,
+            },
+            {
+                inNav: false,
+                name: '',
+                path: '/element-in-warehouse/:id',
+                allowedRoles: [Role.SPECIALIST, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER],
+                component: <ElementInWarehouseDetails />,
             },
             {
                 inNav: true,

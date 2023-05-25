@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,8 +89,8 @@ public class ToolServiceImpl implements ToolService {
         return toolMapper.toDto(repository.save(tool));
     }
 
-    public List<ToolFilterDto> getTools(ToolSearchCriteria toolSearchCriteria, Principal principal){
-        return toolCriteriaRepository.finadAllWithFilter(toolSearchCriteria, principal);
+    public List<ToolFilterDto> getTools(ToolSearchCriteria toolSearchCriteria){
+        return toolCriteriaRepository.finadAllWithFilter(toolSearchCriteria);
     }
 
 }

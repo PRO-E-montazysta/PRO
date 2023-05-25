@@ -1,6 +1,7 @@
 package com.emontazysta.controller;
 
 import com.emontazysta.model.dto.NotificationDto;
+import com.emontazysta.model.searchcriteria.NotificationSearchCriteria;
 import com.emontazysta.service.NotificationService;
 import com.emontazysta.util.AuthUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,6 +20,12 @@ public class NotificationsController {
 
     private final NotificationService notificationService;
     private final AuthUtils authUtils;
+
+    @GetMapping("/my-all")
+    @Operation(description = "Allows to get all Notifications for logged user.", security = @SecurityRequirement(name = "bearer-key"))
+    public List<NotificationDto> getMyAllNotifications(NotificationSearchCriteria notificationSearchCriteria){
+        return notificationService.findAllWithFilters(notificationSearchCriteria);
+    }
 
     @GetMapping
     @Operation(description = "Allows to get Notifications for logged user.", security = @SecurityRequirement(name = "bearer-key"))

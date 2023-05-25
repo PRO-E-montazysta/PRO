@@ -65,7 +65,7 @@ export const headCells: Array<HeadCell<Order>> = [
     },
     {
         type: 'string',
-        id: 'typeOfStatus',
+        id: 'status',
         label: 'Status',
         numeric: false,
         formatFn: (status: string) => statusName(status),
@@ -83,8 +83,8 @@ export const headCells: Array<HeadCell<Order>> = [
 
 export const filterInitStructure: Array<FilterInputType> = [
     {
-        id: 'typeOfStatus',
-        value: ['PLANNED', 'IN_PROGRESS'],
+        id: 'status',
+        value: '',
         label: 'Status',
         inputType: 'multiselect',
         typeValue: 'Array',
@@ -119,10 +119,6 @@ export const useFormStructure = (): Array<FormInputProps> => {
         staleTime: 10 * 60 * 1000,
     })
     const queryForeman = useQuery<Array<AppUser>, AxiosError>(['foreman-list'], getAllForemans, {
-        cacheTime: 15 * 60 * 1000,
-        staleTime: 10 * 60 * 1000,
-    })
-    const queryLocation = useQuery<Array<Location>, AxiosError>(['location-list'], getAllLocations, {
         cacheTime: 15 * 60 * 1000,
         staleTime: 10 * 60 * 1000,
     })
@@ -161,11 +157,13 @@ export const useFormStructure = (): Array<FormInputProps> => {
         },
         {
             label: 'Status',
-            id: 'typeOfStatus',
-            initValue: '',
+            id: 'status',
+            initValue: 'CREATED',
             type: 'select',
-            validation: yup.string().required('Wybierz status'),
             options: statusOptions(),
+            addNewPermissionRoles: [Role.NOBODY],
+            editPermissionRoles: [Role.NOBODY],
+            viewPermissionRoles: [Role['*']],
         },
         {
             label: 'Planowany czas rozpoczęcia',
@@ -187,6 +185,9 @@ export const useFormStructure = (): Array<FormInputProps> => {
             initValue: null,
             type: 'select',
             options: formatArrayToOptions('id', (x: Client) => x.name, queryClient.data),
+            addNewPermissionRoles: [Role.SALES_REPRESENTATIVE],
+            editPermissionRoles: [Role.SALES_REPRESENTATIVE],
+            viewPermissionRoles: [Role['*']],
         },
         {
             label: 'Brygadzista',
@@ -194,13 +195,20 @@ export const useFormStructure = (): Array<FormInputProps> => {
             initValue: null,
             type: 'select',
             options: formatArrayToOptions('id', (x: AppUser) => x.firstName + ' ' + x.lastName, queryForeman.data),
+            addNewPermissionRoles: [Role.NOBODY],
+            editPermissionRoles: [Role.MANAGER],
+            viewPermissionRoles: [Role['*']],
+            customPermission: (e) => {
+                if (e == null) return 'hidden'
+                else return null
+            },
         },
         {
             label: 'Lokalizacja',
             id: 'locationId',
             initValue: null,
-            type: 'select',
-            options: formatArrayToOptions('id', formatLocation, queryLocation.data),
+            type: 'number',
+            dontIncludeInFormStructure: true,
         },
         {
             label: 'Manager',
@@ -226,6 +234,9 @@ export const useFormStructure = (): Array<FormInputProps> => {
                 (x: AppUser) => x.firstName + ' ' + x.lastName,
                 querySalesRepresentative.data,
             ),
+            addNewPermissionRoles: [Role.NOBODY],
+            editPermissionRoles: [Role.NOBODY],
+            viewPermissionRoles: [Role['*']],
         },
         {
             label: 'Czas utworzenia',
@@ -246,6 +257,11 @@ export const useFormStructure = (): Array<FormInputProps> => {
             addNewPermissionRoles: [Role.NOBODY],
             editPermissionRoles: [Role.NOBODY],
             viewPermissionRoles: [Role['*']],
+            customPermission: (e) => {
+                if (e == null) return 'hidden'
+                else return null
+            },
         },
     ]
 }
+

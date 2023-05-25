@@ -23,13 +23,13 @@ import java.util.List;
 public class Notification {
 
     public Notification(Long id, String content, LocalDateTime createdAt, LocalDateTime readAt, AppUser createdBy,
-                        List<AppUser> notifiedEmployees, OrderStage orderStage) {
+                        AppUser notifiedEmployee, OrderStage orderStage) {
         this.id = id;
         this.content = content;
         this.createdAt = createdAt;
         this.readAt = readAt;
         this.createdBy = createdBy;
-        this.notifiedEmployees = notifiedEmployees;
+        this.notifiedEmployee = notifiedEmployee;
         this.orderStage = orderStage;
     }
 
@@ -52,13 +52,19 @@ public class Notification {
     @ManyToOne
     private AppUser createdBy;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<AppUser> notifiedEmployees;
+    @ManyToOne
+    private AppUser notifiedEmployee;
 
     @ManyToOne
     private OrderStage orderStage;
 
     @ManyToOne
     private Orders order;
+
+    @ManyToOne
+    private ToolEvent toolEvent;
+
+    @ManyToOne
+    private ElementEvent elementEvent;
 
 }

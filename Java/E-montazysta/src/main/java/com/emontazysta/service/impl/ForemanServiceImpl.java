@@ -1,23 +1,27 @@
 package com.emontazysta.service.impl;
 
 import com.emontazysta.enums.Role;
+import com.emontazysta.mapper.EmploymentMapper;
 import com.emontazysta.mapper.ForemanMapper;
 import com.emontazysta.model.Foreman;
+import com.emontazysta.model.dto.EmployeeDto;
 import com.emontazysta.model.dto.EmploymentDto;
 import com.emontazysta.model.dto.ForemanDto;
+import com.emontazysta.model.searchcriteria.AppUserSearchCriteria;
 import com.emontazysta.repository.ForemanRepository;
-import com.emontazysta.service.EmploymentService;
+import com.emontazysta.repository.criteria.AppUserCriteriaRepository;
+import com.emontazysta.repository.EmploymentRepository;
 import com.emontazysta.service.ForemanService;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,14 +29,23 @@ public class ForemanServiceImpl implements ForemanService {
 
     private final ForemanRepository repository;
     private final ForemanMapper foremanMapper;
-    private final EmploymentService employmentService;
+    private final EmploymentRepository employmentRepository;
+    private final EmploymentMapper employmentMapper;
     private final AuthUtils authUtils;
+    private final AppUserCriteriaRepository appUserCriteriaRepository;
 
     @Override
-    public List<ForemanDto> getAll() {
-        return repository.findAll().stream()
-                .map(foremanMapper::toDto)
-                .collect(Collectors.toList());
+    public List<ForemanDto> getAll(Principal principal) {
+        List<EmployeeDto> appUsers = appUserCriteriaRepository.findAllWithFilters(new AppUserSearchCriteria(), principal);
+        List<ForemanDto> result = new ArrayList<>();
+
+        for(EmployeeDto employeeDto : appUsers) {
+            if(employeeDto.getRoles().contains(Role.FOREMAN)) {
+                result.add(foremanMapper.toDto(repository.getReferenceById(employeeDto.getId())));
+            }
+        }
+
+        return result;
     }
 
     @Override
@@ -43,8 +56,8 @@ public class ForemanServiceImpl implements ForemanService {
         if(!authUtils.getLoggedUser().getRoles().contains(Role.ADMIN)) {
             result.setUsername(null);
         }
-        if(!authUtils.getLoggedUser().getRoles().contains(Role.ADMIN) ||
-                !authUtils.getLoggedUser().getRoles().contains(Role.MANAGER)) {
+        if(!(authUtils.getLoggedUser().getRoles().contains(Role.ADMIN) ||
+                authUtils.getLoggedUser().getRoles().contains(Role.MANAGER))) {
             result.setPesel(null);
         }
 
@@ -74,7 +87,7 @@ public class ForemanServiceImpl implements ForemanService {
                 .companyId(authUtils.getLoggedUserCompanyId())
                 .employeeId(foreman.getId())
                 .build();
-        employmentService.add(employmentDto);
+        employmentRepository.save(employmentMapper.toEntity(employmentDto));
 
         return foremanMapper.toDto(foreman);
     }
