@@ -35,7 +35,6 @@ public class ElementServiceImpl implements ElementService {
     private final ElementMapper elementMapper;
     private final ElementCriteriaRepository elementCriteriaRepository;
     private final WarehouseCriteriaRepository warehouseCriteriaRepository;
-    private final ElementInWarehouseService elementInWarehouseService;
     private final ElementInWarehouseRepository elementInWarehouseRepository;
     private final ElementInWarehouseMapper elementInWarehouseMapper;
     private final AuthUtils authUtils;
