@@ -2,6 +2,7 @@ package com.emontazysta.service.impl;
 
 import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.ElementInWarehouseMapper;
+import com.emontazysta.model.Element;
 import com.emontazysta.model.ElementInWarehouse;
 import com.emontazysta.model.dto.ElementInWarehouseDto;
 import com.emontazysta.model.dto.filterDto.ElementInWarehouseFilterDto;
@@ -18,6 +19,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -54,6 +57,19 @@ public class ElementInWarehouseServiceImpl implements ElementInWarehouseService 
         }
 
         return elementInWarehouseMapper.toDto(elementInWarehouseRepository.save(elementInWarehouse));
+    }
+
+    @Override
+    public void changeInWarehouseCountByQuantity(Element element, Long warehouseId, int quantity) {
+        Optional<ElementInWarehouse> elementInWarehouseOptional = element.getElementInWarehouses().stream()
+                .filter(o -> o.getWarehouse().getId().equals(warehouseId)).findFirst();
+        if(elementInWarehouseOptional.isPresent()) {
+            ElementInWarehouse elementInWarehouse = elementInWarehouseOptional.get();
+            elementInWarehouse.setInWarehouseCount(elementInWarehouse.getInWarehouseCount() + quantity);
+            elementInWarehouseRepository.save(elementInWarehouse);
+        }else {
+            throw new EntityNotFoundException();
+        }
     }
 
     @Override

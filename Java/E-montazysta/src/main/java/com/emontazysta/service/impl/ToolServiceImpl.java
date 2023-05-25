@@ -8,6 +8,7 @@ import com.emontazysta.model.searchcriteria.ToolSearchCriteria;
 import com.emontazysta.repository.ToolRepository;
 import com.emontazysta.repository.criteria.ToolCriteriaRepository;
 import com.emontazysta.service.ToolService;
+import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +24,9 @@ import java.util.stream.Collectors;
 public class ToolServiceImpl implements ToolService {
 
     private final ToolRepository repository;
-    
     private final ToolCriteriaRepository toolCriteriaRepository;
-
     private final ToolMapper toolMapper;
+    private final AuthUtils authUtils;
 
     @Override
     public List<ToolDto> getAll() {
@@ -38,16 +38,26 @@ public class ToolServiceImpl implements ToolService {
     @Override
     public ToolDto getById(Long id) {
         Tool tool = repository.findById(id).orElseThrow(EntityNotFoundException::new);
-        return toolMapper.toDto(tool);
+
+        if(tool.getWarehouse().getCompany().getId().equals(authUtils.getLoggedUserCompanyId())) {
+            return toolMapper.toDto(tool);
+        }else {
+            throw new EntityNotFoundException();
+        }
     }
 
     @Override
     public ToolDto getByCode(String code) {
-        Tool response = repository.findByCode(code);
-        if(response == null)
+        Tool tool = repository.findByCode(code);
+        if(tool == null) {
             throw new EntityNotFoundException();
-        else
-            return toolMapper.toDto(response);
+        }else {
+            if(tool.getWarehouse().getCompany().getId().equals(authUtils.getLoggedUserCompanyId())) {
+                return toolMapper.toDto(tool);
+            }else {
+                throw new EntityNotFoundException();
+            }
+        }
     }
 
     @Override

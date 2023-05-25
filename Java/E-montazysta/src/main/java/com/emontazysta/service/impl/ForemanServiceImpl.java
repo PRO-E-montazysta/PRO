@@ -76,9 +76,7 @@ public class ForemanServiceImpl implements ForemanService {
         foremanDto.setAttachments(new ArrayList<>());
         foremanDto.setToolEvents(new ArrayList<>());
         foremanDto.setWorkingOn(new ArrayList<>());
-        foremanDto.setReceivedTools(new ArrayList<>());
         foremanDto.setAssignedOrders(new ArrayList<>());
-        foremanDto.setElementReturnReleases(new ArrayList<>());
         foremanDto.setDemandsAdHocs(new ArrayList<>());
 
         Foreman foreman = repository.save(foremanMapper.toEntity(foremanDto));
@@ -116,9 +114,7 @@ public class ForemanServiceImpl implements ForemanService {
         foreman.setAttachments(updatedForeman.getAttachments());
         foreman.setToolEvents(updatedForeman.getToolEvents());
         foreman.setWorkingOn(updatedForeman.getWorkingOn());
-        foreman.setReceivedTools(updatedForeman.getReceivedTools());
         foreman.setAssignedOrders(updatedForeman.getAssignedOrders());
-        foreman.setElementReturnReleases(updatedForeman.getElementReturnReleases());
         foreman.setDemandsAdHocs(updatedForeman.getDemandsAdHocs());
         return foremanMapper.toDto(repository.save(foreman));
     }

@@ -10,10 +10,7 @@ import java.util.List;
 @SuperBuilder
 @NoArgsConstructor
 public class ForemanDto extends FitterDto {
-
-    private List<Long> receivedTools;
     private List<Long> assignedOrders;
-    private List<Long> elementReturnReleases;
     private List<Long> demandsAdHocs;
 }
 

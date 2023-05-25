@@ -176,12 +176,12 @@ public class DataSeeding {
                 "password", "foreman1", null, Set.of(Role.FOREMAN), "+48123123123",
                 "81050878511", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                new ArrayList<>(), new ArrayList<>());
         Foreman foreman2 = new Foreman(null, "Foreman2", "Brygadzista2", "foreman2@ema.il",
                 "password", "foreman2", null, Set.of(Role.FOREMAN), "+48231231231",
                 "96082483486", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                new ArrayList<>(), new ArrayList<>());
 
         Warehouseman warehouseman1 = new Warehouseman(null, "Warehouseman1", "Magazynier1",
                 "warehouseman1@ema.il", "password", "warehouseman1", null,
@@ -309,19 +309,19 @@ public class DataSeeding {
                 null, null, null, null));
 
         Orders order1 = addOrdersFromModel(new Orders(null, "Test Order 1 - from Client 1",
-                OrderStatus.CREATED, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.IMPORTANT,
+                OrderStatus.CREATED, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), null, TypeOfPriority.IMPORTANT,
                 company1, manager1, foreman1, specialist1, salesRepresentative1, location1, client1, new ArrayList<>(),
                 new ArrayList<>()));
         Orders order2 = addOrdersFromModel(new Orders(null, "Test Order 2 - from Client 1",
-                OrderStatus.CREATED, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.NORMAL,
+                OrderStatus.CREATED, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), null, TypeOfPriority.NORMAL,
                 company1, manager2, foreman2, specialist2, salesRepresentative2, location2, client1, new ArrayList<>(),
                 new ArrayList<>()));
         Orders order3 = addOrdersFromModel(new Orders(null, "Test Order 3 - from Client 2",
-                OrderStatus.CREATED, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.IMMEDIATE,
+                OrderStatus.CREATED, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), null, TypeOfPriority.IMMEDIATE,
                 company1, manager1, foreman1, specialist1, salesRepresentative1, location3, client2, new ArrayList<>(),
                 new ArrayList<>()));
         Orders order4 = addOrdersFromModel(new Orders(null, "Test Order 4 - from Client 4",
-                OrderStatus.CREATED, LocalDateTime.now(), LocalDateTime.now(), null, null, TypeOfPriority.NORMAL,
+                OrderStatus.CREATED, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), null, TypeOfPriority.NORMAL,
                 company4, null, null, null, null, null, client4,
                 new ArrayList<>(), new ArrayList<>()));
 
@@ -418,13 +418,13 @@ public class DataSeeding {
                 null, toolEvent1, null, null, null, null));
 
         ToolRelease toolRelease1 = addToolReleaseFromModel(new ToolRelease(null, LocalDateTime.now(), LocalDateTime.now(),
-                null, null, tool1, demandAdHoc1, orderStage1));
+                null, tool1, demandAdHoc1, orderStage1));
         ToolRelease toolRelease2 = addToolReleaseFromModel(new ToolRelease(null, LocalDateTime.now(), LocalDateTime.now(),
-                null, null, tool2, null, orderStage1));
+                null, tool2, null, orderStage1));
         ToolRelease toolRelease3 = addToolReleaseFromModel(new ToolRelease(null, LocalDateTime.now(), null,
-                null, null, tool1, null, orderStage2));
+                null, tool1, null, orderStage2));
         ToolRelease toolRelease4 = addToolReleaseFromModel(new ToolRelease(null, LocalDateTime.now(), null,
-                null, null, tool2, null, orderStage3));
+                null, tool2, null, orderStage3));
 
         Element element1 = addElementFromModel(new Element(null, "Test Element 1", null, TypeOfUnit.KILOGRAM,
                 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>()));
@@ -475,16 +475,16 @@ public class DataSeeding {
 
         ElementReturnRelease elementReturnRelease1 = addElementReturnReleaseFromModel(new ElementReturnRelease(null,
                 LocalDateTime.now(), 1, 1, LocalDateTime.now(), warehouseman1, element1,
-                demandAdHoc1, foreman1, orderStage1));
+                demandAdHoc1, orderStage1));
         ElementReturnRelease elementReturnRelease2 = addElementReturnReleaseFromModel(new ElementReturnRelease(null,
                 LocalDateTime.now(), 1, 0, null, warehouseman1, element2,
-                demandAdHoc1, foreman1, orderStage1));
+                demandAdHoc1, orderStage1));
         ElementReturnRelease elementReturnRelease3 = addElementReturnReleaseFromModel(new ElementReturnRelease(null,
                 LocalDateTime.now(), 1, 0, null, warehouseManager1, element3,
-                demandAdHoc3, foreman2, orderStage1));
+                demandAdHoc3, orderStage1));
         ElementReturnRelease elementReturnRelease4 = addElementReturnReleaseFromModel(new ElementReturnRelease(null,
                 LocalDateTime.now(), 1, 0, null, warehouseman2, element4,
-                demandAdHoc4, foreman2, orderStage1));
+                demandAdHoc4, orderStage1));
 
         context.setAuthentication(null);
     }

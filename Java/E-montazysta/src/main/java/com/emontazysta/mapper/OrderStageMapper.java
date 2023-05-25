@@ -24,14 +24,13 @@ public class OrderStageMapper {
     private final OrderRepository orderRepository;
     private final AttachmentRepository attachmentRepository;
     private final NotificationRepository notificationRepository;
-    private final ToolTypeRepository toolTypeRepository;
-    private final ElementRepository elementRepository;
     private final DemandAdHocRepository demandAdHocRepository;
-
     private final ToolsPlannedNumberRepository toolsPlannedNumberRepository;
     private final ToolsPlannedNumberMapper toolsPlannedNumberMapper;
     private final ElementsPlannedNumberRepository elementsPlannedNumberRepository;
     private final ElementsPlannedNumberMapper elementsPlannedNumberMapper;
+    private final ToolReleaseMapper toolReleaseMapper;
+    private final ElementReturnReleaseMapper elementReturnReleaseMapper;
 
     public OrderStageDto toDto(OrderStage orderStage) {
         return OrderStageDto.builder()
