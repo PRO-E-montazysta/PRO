@@ -95,7 +95,7 @@ const DemandAdHocDetails = () => {
     return (
         <>
             <FormBox>
-                <FormTitle text={pageMode == 'new' ? 'Nowe zapotrzebowanie AdHoc' : 'Zapotrzebowanie AdHoc'} />
+                <FormTitle mainTitle={pageMode == 'new' ? 'Nowe zapotrzebowanie AdHoc' : 'Zapotrzebowanie AdHoc'} />
                 <FormPaper>
                     {queriesStatus.result != 'isSuccess' ? (
                         <QueryBoxStatus queriesStatus={queriesStatus} />

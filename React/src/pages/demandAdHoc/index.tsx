@@ -36,6 +36,7 @@ const DemandAdHoc = () => {
 
     return (
         <FatTable
+            idPropName="id"
             query={queryDemandsAdHoc}
             filterProps={filter}
             headCells={headCells}
