@@ -248,7 +248,6 @@ const TableItemSelect = ({
             labelId="demo-simple-select-label"
             key={uuidv4()}
             disabled={isDisplayingMode}
-            defaultValue=""
             value={rowData.elementId}
             label={label}
             onChange={(event: SelectChangeEvent) => {

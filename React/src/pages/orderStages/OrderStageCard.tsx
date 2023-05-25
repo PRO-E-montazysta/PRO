@@ -159,7 +159,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
             name: isDisplayingMode ? stage!.name : '',
             status: isDisplayingMode ? stage!.status : null,
             price: isDisplayingMode ? stage!.price : '',
-            plannedStartDate: isDisplayingMode ? '2023-04-08' : '',
+            plannedStartDate: isDisplayingMode ? stage!.plannedStartDate : '',
             plannedEndDate: isDisplayingMode ? stage!.plannedEndDate : '',
             plannedFittersNumber: isDisplayingMode ? stage!.plannedFittersNumber : '',
             minimumImagesNumber: isDisplayingMode ? stage!.minimumImagesNumber : '0',
@@ -170,7 +170,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
         },
 
         validationSchema: validationSchema,
-        onSubmit: async (values) => {
+        onSubmit: (values) => {
             values.listOfElementsPlannedNumber = plannedElementsRef.current!
             values.listOfToolsPlannedNumber = plannedToolsTypesRef.current!
             values.plannedStartDate = preparedPlannedStartDate
@@ -179,7 +179,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
             if (isEditing) {
                 return updateOrderStage.mutate(values)
             }
-            await addOrderStage.mutate(values)
+            addOrderStage.mutate(values)
         },
     })
 
