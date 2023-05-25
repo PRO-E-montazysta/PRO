@@ -1,28 +1,29 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.mapper.ElementInWarehouseMapper;
 import com.emontazysta.mapper.WarehouseMapper;
 import com.emontazysta.model.Company;
+import com.emontazysta.model.ElementInWarehouse;
+import com.emontazysta.model.Tool;
 import com.emontazysta.model.Warehouse;
-import com.emontazysta.model.dto.ElementDto;
-import com.emontazysta.model.dto.ElementInWarehouseDto;
-import com.emontazysta.model.dto.WarehouseDto;
-import com.emontazysta.model.dto.WarehouseLocationDto;
+import com.emontazysta.model.dto.*;
 import com.emontazysta.model.searchcriteria.ElementSearchCriteria;
 import com.emontazysta.model.searchcriteria.WarehouseSearchCriteria;
 import com.emontazysta.repository.CompanyRepository;
+import com.emontazysta.repository.ElementInWarehouseRepository;
 import com.emontazysta.repository.WarehouseRepository;
 import com.emontazysta.repository.criteria.ElementCriteriaRepository;
 import com.emontazysta.repository.criteria.WarehouseCriteriaRepository;
-import com.emontazysta.service.ElementInWarehouseService;
-import com.emontazysta.service.ElementService;
 import com.emontazysta.service.WarehouseService;
 import com.emontazysta.util.AuthUtils;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.server.ResponseStatusException;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,7 +36,8 @@ public class WarehouseServiceImpl implements WarehouseService {
     private final WarehouseCriteriaRepository warehouseCriteriaRepository;
     private final AuthUtils authUtils;
     private final ElementCriteriaRepository elementCriteriaRepository;
-    private final ElementInWarehouseService elementInWarehouseService;
+    private final ElementInWarehouseRepository elementInWarehouseRepository;
+    private final ElementInWarehouseMapper elementInWarehouseMapper;
 
     @Override
     public List<WarehouseDto> getAll() {
@@ -47,6 +49,12 @@ public class WarehouseServiceImpl implements WarehouseService {
     @Override
     public WarehouseDto getById(Long id) {
         Warehouse warehouse = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+
+        //Check if Warehouse is from user company
+        if(!Objects.equals(warehouse.getCompany().getId(), authUtils.getLoggedUserCompanyId())){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
         return warehouseMapper.toDto(warehouse);
     }
 
@@ -60,21 +68,38 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     @Override
     public void delete(Long id) {
+        Warehouse warehouse = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+
+        //Check if Warehouse is from user company
+        if(!Objects.equals(warehouse.getCompany().getId(), authUtils.getLoggedUserCompanyId())){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        //Set deleted flag for Tools from warehouse
+        for(Tool tool : warehouse.getTools()) {
+            tool.setDeleted(true);
+        }
+
+        //Set deleted flag for ElementInWarehouse from warehouse
+        for(ElementInWarehouse elementInWarehouse : warehouse.getElementInWarehouses()) {
+            elementInWarehouse.setDeleted(true);
+        }
+
         repository.deleteById(id);
     }
 
     @Override
     public WarehouseDto update(Long id, WarehouseDto warehouseDto) {
-
-        Warehouse updatedWarehouse = warehouseMapper.toEntity(warehouseDto);
         Warehouse warehouse = repository.findById(id).orElseThrow(EntityNotFoundException::new);
-        warehouse.setName(updatedWarehouse.getName());
-        warehouse.setDescription(updatedWarehouse.getDescription());
-        warehouse.setOpeningHours(updatedWarehouse.getOpeningHours());
-        warehouse.setCompany(updatedWarehouse.getCompany());
-        warehouse.setLocation(updatedWarehouse.getLocation());
-        warehouse.setElementInWarehouses(updatedWarehouse.getElementInWarehouses());
-        warehouse.setTools(updatedWarehouse.getTools());
+
+        //Check if Warehouse is from user company
+        if(!Objects.equals(warehouse.getCompany().getId(), authUtils.getLoggedUserCompanyId())){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        warehouse.setName(warehouseDto.getName());
+        warehouse.setDescription(warehouseDto.getDescription());
+        warehouse.setOpeningHours(warehouseDto.getOpeningHours());
 
         return warehouseMapper.toDto(repository.save(warehouse));
     }
@@ -103,7 +128,7 @@ public class WarehouseServiceImpl implements WarehouseService {
                     .warehouseId(warehouse.getId())
                     .build();
 
-            elementInWarehouseService.add(elementInWarehouseDto);
+            elementInWarehouseRepository.save(elementInWarehouseMapper.toEntity(elementInWarehouseDto));
         });
 
         return warehouseMapper.toDto(warehouse);

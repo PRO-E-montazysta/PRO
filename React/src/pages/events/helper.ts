@@ -26,7 +26,7 @@ export const headCells: Array<HeadCell<Event>> = [
         type: 'string',
         id: 'eventType',
         label: 'Typ przedmiotu',
-        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
+        visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
         formatFn: (status: string) => eventTypeName(status),
     },

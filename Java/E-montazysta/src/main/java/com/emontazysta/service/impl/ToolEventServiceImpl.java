@@ -1,12 +1,15 @@
 package com.emontazysta.service.impl;
 
 import com.emontazysta.enums.EventStatus;
+import com.emontazysta.enums.NotificationType;
 import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.ToolEventMapper;
 import com.emontazysta.model.AppUser;
 import com.emontazysta.model.ToolEvent;
 import com.emontazysta.model.dto.ToolEventDto;
 import com.emontazysta.repository.ToolEventRepository;
+import com.emontazysta.service.AppUserService;
+import com.emontazysta.service.NotificationService;
 import com.emontazysta.service.ToolEventService;
 import com.emontazysta.util.AuthUtils;
 import lombok.AllArgsConstructor;
@@ -26,6 +29,8 @@ public class ToolEventServiceImpl implements ToolEventService {
     private final ToolEventRepository repository;
     private final ToolEventMapper toolEventMapper;
     private final AuthUtils authUtils;
+    private final AppUserService userService;
+    private final NotificationService notificationService;
 
     @Override
     public List<ToolEventDto> getAll() {
@@ -39,8 +44,8 @@ public class ToolEventServiceImpl implements ToolEventService {
         ToolEvent toolEvent = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         AppUser user =  authUtils.getLoggedUser();
-        Boolean isFitter = user.getRoles().contains(Role.FITTER);
-        if(isFitter) {
+        Boolean displayOwn = user.getRoles().contains(Role.FITTER) || user.getRoles().contains(Role.FOREMAN);
+        if(displayOwn) {
             if(!toolEvent.getCreatedBy().getId().equals(user.getId()))
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }else {
@@ -57,11 +62,24 @@ public class ToolEventServiceImpl implements ToolEventService {
         toolEventDto.setAttachments(new ArrayList<>());
 
         ToolEvent toolEvent = toolEventMapper.toEntity(toolEventDto);
+
+        //Check if tool in event is from user company
+        if(!toolEvent.getTool().getWarehouse().getCompany().getId().equals(authUtils.getLoggedUserCompanyId())){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
         toolEvent.setCreatedBy(authUtils.getLoggedUser());
         toolEvent.setEventDate(LocalDateTime.now());
         toolEvent.setStatus(EventStatus.CREATED);
 
-        return toolEventMapper.toDto(repository.save(toolEvent));
+        ToolEvent savedToolEvent = repository.save(toolEvent);
+
+        //Wysłanie powiadomienia o utworzonym evencie
+        List<AppUser> notifiedEmployees = notificationService.createListOfEmployeesToNotificate(userService.findAllByRole(Role.MANAGER));
+        notifiedEmployees.addAll(notificationService.createListOfEmployeesToNotificate(userService.findAllByRole(Role.WAREHOUSE_MANAGER)));
+        notificationService.createNotification(notifiedEmployees, savedToolEvent.getId(), NotificationType.TOOL_EVENT);
+
+        return toolEventMapper.toDto(savedToolEvent);
     }
 
     @Override
@@ -79,10 +97,16 @@ public class ToolEventServiceImpl implements ToolEventService {
         ToolEvent updatedToolEvent = toolEventMapper.toEntity(toolEventDto);
         ToolEvent toolEvent = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
+        //Check if tool in event is from user company
+        if(!updatedToolEvent.getTool().getWarehouse().getCompany().getId().equals(authUtils.getLoggedUserCompanyId())){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
         AppUser user =  authUtils.getLoggedUser();
         Boolean isFitter = user.getRoles().contains(Role.FITTER);
         Boolean isWarehouseMan = user.getRoles().contains(Role.WAREHOUSE_MAN);
-        if(isFitter || isWarehouseMan) {
+        Boolean isForeman = user.getRoles().contains(Role.FOREMAN);
+        if(isFitter || isWarehouseMan || isForeman) {
             if(!toolEvent.getCreatedBy().getId().equals(user.getId()))
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }else {
@@ -101,11 +125,8 @@ public class ToolEventServiceImpl implements ToolEventService {
             toolEvent.setStatus(updatedToolEvent.getStatus());
         }
 
-
-
         toolEvent.setDescription(updatedToolEvent.getDescription());
         toolEvent.setTool(updatedToolEvent.getTool());
-        toolEvent.setAttachments(updatedToolEvent.getAttachments());
 
         return toolEventMapper.toDto(repository.save(toolEvent));
     }

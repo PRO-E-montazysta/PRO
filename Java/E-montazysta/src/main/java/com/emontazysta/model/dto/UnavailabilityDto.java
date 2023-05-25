@@ -28,4 +28,5 @@ public class UnavailabilityDto {
     @NotNull(message = "Assigned to id cannot be empty")
     private Long assignedToId;
     private Long assignedById;
+    private boolean deleted;
 }

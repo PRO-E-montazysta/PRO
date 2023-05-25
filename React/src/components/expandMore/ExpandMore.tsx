@@ -26,10 +26,14 @@ type ExpandMoreProps = {
     titleIcon: JSX.Element
     title: string
     cardContent: JSX.Element
+    isOpen?: boolean
 }
 
-const ExpandMore = ({ titleIcon, title, cardContent }: ExpandMoreProps) => {
+const ExpandMore = ({ titleIcon, title, cardContent, isOpen }: ExpandMoreProps) => {
     const [expandedInformation, setExpandedInformation] = useState(false)
+    useEffect(() => {
+        if (!!isOpen) setExpandedInformation(isOpen)
+    }, [isOpen])
 
     const handleExpandInformationClick = () => {
         setExpandedInformation(!expandedInformation)
@@ -38,7 +42,9 @@ const ExpandMore = ({ titleIcon, title, cardContent }: ExpandMoreProps) => {
     return (
         <>
             <CardActions disableSpacing>
-                <IconButton aria-label="share">{titleIcon}</IconButton>
+                <IconButton id={`expandMore-${title}`} aria-label="share">
+                    {titleIcon}
+                </IconButton>
                 <Typography variant="body2" color="text.secondary">
                     {title}
                 </Typography>

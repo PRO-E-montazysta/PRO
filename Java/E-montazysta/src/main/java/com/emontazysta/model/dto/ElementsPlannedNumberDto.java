@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -19,10 +17,7 @@ public class ElementsPlannedNumberDto {
     @Min(value = 1, message = "Number of elements should not be less than 1")
     private int numberOfElements;
     @NotNull(message = "Element cannot be empty")
-    @ManyToOne
     private Long elementId;
-    @NotNull(message = "Order stage cannot be empty")
-    @ManyToOne
     private Long orderStageId;
-
+    private Long demandAdHocId;
 }

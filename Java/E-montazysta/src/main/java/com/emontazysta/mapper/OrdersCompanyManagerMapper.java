@@ -17,7 +17,7 @@ public class OrdersCompanyManagerMapper {
         return OrdersCompanyManagerDto.builder()
                 .id(orders.getId())
                 .name(orders.getName())
-                .typeOfStatus(orders.getTypeOfStatus())
+                .status(orders.getStatus())
                 .plannedStart(orders.getPlannedStart())
                 .plannedEnd(orders.getPlannedEnd())
                 .createdAt(orders.getCreatedAt())
@@ -33,8 +33,12 @@ public class OrdersCompanyManagerMapper {
                 .salesRepresentativeId(orders.getSalesRepresentative() == null ? null : orders.getSalesRepresentative().getId())
                 .locationId(orders.getLocation() == null ? null : orders.getLocation().getId())
                 .clientId(orders.getClient() == null ? null : orders.getClient().getId())
-                .orderStages(orders.getOrderStages().stream().map(OrderStage::getId).collect(Collectors.toList()))
-                .attachments(orders.getAttachments().stream().map(Attachment::getId).collect(Collectors.toList()))
+                .orderStages(orders.getOrderStages().stream()
+                        .map(OrderStage::getId)
+                        .collect(Collectors.toList()))
+                .attachments(orders.getAttachments().stream()
+                        .map(Attachment::getId)
+                        .collect(Collectors.toList()))
                 .build();
 
 }

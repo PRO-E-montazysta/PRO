@@ -24,7 +24,7 @@ export const headCells: Array<HeadCell<Client>> = [
         type: 'string',
         id: 'orders',
         label: 'Liczba zleceń',
-        visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
+        visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
         numeric: false,
         formatFn: (orders) => orders.length,
     },
@@ -47,14 +47,22 @@ export const useFormStructure = (): Array<FormInputProps> => {
             id: 'name',
             initValue: '',
             type: 'input',
-            validation: yup.string().min(3, 'Nazwa musi zaweirać co najmniej 3 znaki').required('Wprowadź nazwę'),
+            validation: yup
+                .string()
+                .min(3, 'Wprowadź co najmniej 3 znaki')
+                .max(255, 'Wprowadź co najwyżej 255 znaków')
+                .required('Wprowadź nazwę'),
         },
         {
             label: 'Dane kontaktowe',
             id: 'contactDetails',
             initValue: '',
             type: 'input',
-            validation: yup.string().required('Wprowadź dane kontaktowe'),
+            validation: yup
+                .string()
+                .min(3, 'Wprowadź co najmniej 3 znaki')
+                .max(255, 'Wprowadź co najwyżej 255 znaków')
+                .required('Wprowadź dane kontaktowe'),
         },
     ]
 }

@@ -29,14 +29,22 @@ const QueryBoxStatus = (props: QueryBoxStatusProps) => {
                             ? queriesStatus.errorMessage
                             : 'Wewnętrzny błąd serwera. Skontaktuj się z administratorem'}
                     </Typography>
-                    <Button onClick={queriesStatus.handleResetStatus} variant="contained">
+                    <Button
+                        onClick={queriesStatus.handleResetStatus}
+                        variant="contained"
+                        id={`queryStatusBoxBtn-ServerError-OK`}
+                    >
                         OK
                     </Button>
                 </Box>
             ) : (
                 <Box sx={{ textAlign: 'center' }}>
                     <Typography>Brak danych do wyświetlenia</Typography>
-                    <Button onClick={queriesStatus.handleResetStatus} variant="contained">
+                    <Button
+                        onClick={queriesStatus.handleResetStatus}
+                        variant="contained"
+                        id={`queryStatusBoxBtn-NoData-OK`}
+                    >
                         OK
                     </Button>
                 </Box>

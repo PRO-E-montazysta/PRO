@@ -7,51 +7,25 @@ import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { Warehouse } from '../../types/model/Warehouse'
 import { deleteWarehouse, getWarehouseDetails, postWarehouse, updateWarehouse } from '../../api/warehouse.api'
 import useError from '../../hooks/useError'
+import { useAddLocation, useEditLocation } from '../../components/localization/hooks'
 
-export const useAddWarehouse = () => {
+export const useAddWarehouse = (onSuccessCallback: (data: any) => void) => {
     const navigate = useNavigate()
     const { showDialog } = useContext(DialogGlobalContext)
     const showError = useError()
     return useMutation({
         mutationFn: postWarehouse,
-        onSuccess(data) {
-            showDialog({
-                btnOptions: [
-                    {
-                        text: 'OK',
-                        value: 0,
-                    },
-                ],
-                title: 'Sukces',
-                content: <Box>Nowy magazyn utworzony pomyślnie</Box>,
-                callback: () => {
-                    if (data.id) navigate(`/warehouses/${data.id}`)
-                    else navigate(`/warehouses`)
-                },
-            })
-        },
+        onSuccess: onSuccessCallback,
         onError: showError,
     })
 }
 
-export const useEditWarehouse = (onSuccess: (data: any) => void) => {
+export const useEditWarehouse = (onSuccessCallback: (data: any) => void) => {
     const { showDialog } = useContext(DialogGlobalContext)
     const showError = useError()
     return useMutation({
         mutationFn: updateWarehouse,
-        onSuccess(data) {
-            showDialog({
-                btnOptions: [
-                    {
-                        text: 'OK',
-                        value: 0,
-                    },
-                ],
-                title: 'Sukces!',
-                content: <Box>Zmiany w magazynie zostały zapisane</Box>,
-                callback: () => onSuccess(data),
-            })
-        },
+        onSuccess: onSuccessCallback,
         onError: showError,
     })
 }
@@ -89,4 +63,42 @@ export const useWarehouseData = (id: string | undefined) => {
             enabled: !!id && id != 'new',
         },
     )
+}
+
+export const useAddWarehouseLocation = () => {
+    const navigate = useNavigate()
+    const { showDialog } = useContext(DialogGlobalContext)
+    return useAddLocation((data) => {
+        showDialog({
+            btnOptions: [
+                {
+                    text: 'OK',
+                    value: 0,
+                },
+            ],
+            title: 'Sukces',
+            content: <Box>Nowy magazyn utworzono pomyślnie</Box>,
+            callback: () => {
+                if (data.warehouseId) navigate(`/warehouses/${data.warehouseId}`)
+                else navigate(`/warehouses`)
+            },
+        })
+    })
+}
+
+export const useEditWarehouseLocation = (onSuccessCallback: (data: any) => void) => {
+    const { showDialog } = useContext(DialogGlobalContext)
+    return useEditLocation((data) => {
+        showDialog({
+            btnOptions: [
+                {
+                    text: 'OK',
+                    value: 0,
+                },
+            ],
+            title: 'Sukces!',
+            content: <Box>Zmiany w magazynie zostały zapisane</Box>,
+            callback: () => onSuccessCallback(data),
+        })
+    })
 }

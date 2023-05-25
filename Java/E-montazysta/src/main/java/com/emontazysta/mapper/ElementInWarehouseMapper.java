@@ -2,10 +2,13 @@ package com.emontazysta.mapper;
 
 import com.emontazysta.model.ElementInWarehouse;
 import com.emontazysta.model.dto.ElementInWarehouseDto;
+import com.emontazysta.model.dto.filterDto.ElementInWarehouseFilterDto;
 import com.emontazysta.repository.ElementRepository;
 import com.emontazysta.repository.WarehouseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import javax.persistence.EntityNotFoundException;
 
 @Component
 @RequiredArgsConstructor
@@ -26,6 +29,18 @@ public class ElementInWarehouseMapper {
                 .build();
     }
 
+    public ElementInWarehouseFilterDto toFilterDto(ElementInWarehouse elementInWarehouse) {
+        return ElementInWarehouseFilterDto.builder()
+                .id(elementInWarehouse.getId())
+                .inWarehouseCount(elementInWarehouse.getInWarehouseCount())
+                .inUnitCount(elementInWarehouse.getInUnitCount())
+                .rack(elementInWarehouse.getRack())
+                .shelf(elementInWarehouse.getShelf())
+                .element(elementInWarehouse.getElement() == null ? null : elementInWarehouse.getElement().getName())
+                .warehouse(elementInWarehouse.getWarehouse() == null ? null : elementInWarehouse.getWarehouse().getName())
+                .build();
+    }
+
     public ElementInWarehouse toEntity(ElementInWarehouseDto elementInWarehouseDto) {
         return ElementInWarehouse.builder()
                 .id(elementInWarehouseDto.getId())
@@ -33,8 +48,8 @@ public class ElementInWarehouseMapper {
                 .inUnitCount(elementInWarehouseDto.getInUnitCount())
                 .rack(elementInWarehouseDto.getRack())
                 .shelf(elementInWarehouseDto.getShelf())
-                .element(elementInWarehouseDto.getElementId() == null ? null : elementRepository.getReferenceById(elementInWarehouseDto.getElementId()))
-                .warehouse(elementInWarehouseDto.getWarehouseId() == null ? null : warehouseRepository.getReferenceById(elementInWarehouseDto.getWarehouseId()))
+                .element(elementInWarehouseDto.getElementId() == null ? null : elementRepository.findById(elementInWarehouseDto.getElementId()).orElseThrow(EntityNotFoundException::new))
+                .warehouse(elementInWarehouseDto.getWarehouseId() == null ? null : warehouseRepository.findById(elementInWarehouseDto.getWarehouseId()).orElseThrow(EntityNotFoundException::new))
                 .build();
     }
 }

@@ -26,6 +26,11 @@ import ToolEventDetails from '../pages/events/ToolEventDetails'
 import ElementEventDetails from '../pages/events/ElementEventDetails'
 import DemandAdHoc from '../pages/demandAdHoc'
 import DemandAdHocDetails from '../pages/demandAdHoc/DemandAdHocDetails'
+import Unavailabilities from '../pages/unavailabilities'
+import UnavailabilityDetails from '../pages/unavailabilities/UnavailabilityDetails'
+import ElementInWarehouseDetails from '../pages/elementInWarehouse/ElementInWarehouseDetails'
+import ForgotPasswordPage from '../pages/ForgotPasswordPage'
+import ResetPasswordPage from '../pages/ResetPasswordPage'
 
 export type PageProps = {
     name: string
@@ -54,6 +59,20 @@ export const pageList: Array<PageProps> = [
         path: '/login',
         allowedRoles: [Role['*']],
         component: <LoginPage />,
+    },
+    {
+        inNav: false,
+        name: 'Zresetuj hasło',
+        path: '/forgot',
+        allowedRoles: [Role['*']],
+        component: <ForgotPasswordPage />,
+    },
+    {
+        inNav: false,
+        name: 'Resetowanie hasła',
+        path: '/new-password',
+        allowedRoles: [Role['*']],
+        component: <ResetPasswordPage />,
     },
     {
         inNav: false,
@@ -318,6 +337,13 @@ export const pageList: Array<PageProps> = [
                 component: <ElementDetails />,
             },
             {
+                inNav: false,
+                name: '',
+                path: '/element-in-warehouse/:id',
+                allowedRoles: [Role.SPECIALIST, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER],
+                component: <ElementInWarehouseDetails />,
+            },
+            {
                 inNav: true,
                 name: 'Usterki',
                 path: '/events',
@@ -356,6 +382,32 @@ export const pageList: Array<PageProps> = [
                 path: '/elementEvent/:id',
                 allowedRoles: [Role.MANAGER, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER, Role.FITTER, Role.FOREMAN],
                 component: <ElementEventDetails />,
+            },
+            {
+                inNav: true,
+                name: 'Nieobecności',
+                path: '/unavailabilities',
+                allowedRoles: [Role.MANAGER],
+                component: <Unavailabilities />,
+                children: [
+                    {
+                        inNav: true,
+                        name: 'Lista nieobecności',
+                        path: '/unavailabilities',
+                    },
+                    {
+                        inNav: true,
+                        name: 'Dodaj nieobecność',
+                        path: '/unavailabilities/new',
+                    },
+                ],
+            },
+            {
+                inNav: false,
+                name: '',
+                path: '/unavailabilities/:id',
+                allowedRoles: [Role.MANAGER],
+                component: <UnavailabilityDetails />,
             },
             {
                 inNav: true,

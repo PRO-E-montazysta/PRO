@@ -27,11 +27,10 @@ public class AppUserDto {
     @Email(message = "Email should be in valid format")
     @NotBlank(message = "Email cannot be empty")
     private String email;
-    @NotBlank(message = "Password cannot be empty")
-    @Length(min = 5, message = "Password must contain at least 5 characters" )
     private String password;
     @NotBlank(message = "Username cannot be empty")
     @Length(min = 3, message = "Username must contain at least 3 characters" )
     private String username;
     private Set<Role> roles;
+    private boolean deleted;
 }

@@ -36,7 +36,8 @@ const DialogGlobal = (params: DialogGlobalParams) => {
                         {btnOptions.map((opt, idx) => {
                             return (
                                 <Button
-                                    color='secondary'
+                                    id={`dialogGlobal-${opt.text}`}
+                                    color="secondary"
                                     key={idx}
                                     onClick={() => handleBtnClick(opt.value)}
                                     variant={opt.variant}

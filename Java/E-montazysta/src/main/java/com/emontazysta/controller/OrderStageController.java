@@ -1,7 +1,9 @@
 package com.emontazysta.controller;
 
+import com.emontazysta.model.dto.ElementSimpleReturnReleaseDto;
 import com.emontazysta.model.dto.OrderStageDto;
 import com.emontazysta.model.dto.OrderStageWithToolsAndElementsDto;
+import com.emontazysta.model.dto.ToolSimpleReturnReleaseDto;
 import com.emontazysta.model.searchcriteria.OrdersStageSearchCriteria;
 import com.emontazysta.service.OrderStageService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,6 +48,7 @@ public class OrderStageController {
         return orderStageService.getById(id);
     }
 
+    @PreAuthorize("hasAnyAuthority('SCOPE_SPECIALIST')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Order Stage.", security = @SecurityRequirement(name = "bearer-key"))
@@ -58,10 +62,47 @@ public class OrderStageController {
         orderStageService.delete(id);
     }
 
+    @PreAuthorize("hasAnyAuthority('SCOPE_SPECIALIST','FOREMAN')")
     @PutMapping("/{id}")
     @Operation(description = "Allows to update Order Stage by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public OrderStageDto updateOrderStage(@PathVariable Long id, @Valid @RequestBody OrderStageWithToolsAndElementsDto orderStage) {
         return orderStageService.update(id, orderStage);
+    }
+
+    @PutMapping("/releaseTools/{id}")
+    @Operation(description = "Allows to release given tools.", security = @SecurityRequirement(name = "bearer-key"))
+    public OrderStageDto releaseTools(@PathVariable Long id, @RequestBody List<ToolSimpleReturnReleaseDto> toolCodes) {
+        return orderStageService.releaseTools(id, toolCodes);
+    }
+
+    @PutMapping("/returnTools/{id}")
+    @Operation(description = "Allows to return given tools.", security = @SecurityRequirement(name = "bearer-key"))
+    public OrderStageDto returnTools(@PathVariable Long id, @RequestBody List<ToolSimpleReturnReleaseDto> toolCodes) {
+        return orderStageService.returnTools(id, toolCodes);
+    }
+
+    @PutMapping("/releaseElements/{orderStageId}/{warehouseId}")
+    @Operation(description = "Allows to release given elements.", security = @SecurityRequirement(name = "bearer-key"))
+    public OrderStageDto releaseElements(@PathVariable Long orderStageId, @PathVariable Long warehouseId, @RequestBody List<ElementSimpleReturnReleaseDto> elements) {
+        return orderStageService.releaseElements(orderStageId, warehouseId, elements);
+    }
+
+    @PutMapping("/returnElements/{orderStageId}/{warehouseId}")
+    @Operation(description = "Allows to return given elements.", security = @SecurityRequirement(name = "bearer-key"))
+    public OrderStageDto returnElements(@PathVariable Long orderStageId, @PathVariable Long warehouseId, @RequestBody List<ElementSimpleReturnReleaseDto> elements) {
+        return orderStageService.returnElements(orderStageId, warehouseId, elements);
+    }
+
+    @PutMapping("/nextStatus/{id}")
+    @Operation(description = "Allows to change OrderStatus to next one.", security = @SecurityRequirement(name = "bearer-key"))
+    public OrderStageDto nextStatus(@PathVariable Long id) {
+        return orderStageService.nextStatus(id);
+    }
+
+    @PutMapping("/previousStatus/{id}")
+    @Operation(description = "Allows to change OrderStatus to previous one.", security = @SecurityRequirement(name = "bearer-key"))
+    public OrderStageDto previousStatus(@PathVariable Long id) {
+        return orderStageService.previousStatus(id);
     }
 
     @GetMapping("/filter")

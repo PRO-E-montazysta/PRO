@@ -16,10 +16,9 @@ const Elements = () => {
     const { initialValues, inputs } = getInputs(filterInitStructure)
     const navigation = useNavigate()
 
-    const queryOrders = useQuery<Array<Element>, AxiosError>(['orders', filterParams], async () =>
+    const queryElements = useQuery<Array<Element>, AxiosError>(['elements', filterParams], async () =>
         getFilteredElements({ queryParams: filterParams }),
     )
-
 
     const filter: Filter = {
         formik: useFormik({
@@ -36,7 +35,8 @@ const Elements = () => {
 
     return (
         <FatTable
-            query={queryOrders}
+            idPropName="id"
+            query={queryElements}
             filterProps={filter}
             headCells={headCells}
             initOrderBy={'name'}

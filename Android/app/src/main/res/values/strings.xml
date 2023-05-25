@@ -5,7 +5,8 @@
     <string name="logo_desc">Logo</string>
     <string name="start_button">Start</string>
     <string name="title_activity_login">LoginActivity</string>
-    <string name="prompt_email">Email</string>
+    <string name="title_activity_tools">ToolsActivity</string>
+    <string name="prompt_username">Username</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Zaloguj się/Zarejestruj</string>
     <string name="action_sign_in_short">Zaloguj się</string>
@@ -18,8 +19,19 @@
     <string name="title_qrscan">QR Scan</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_settings">Settings</string>
+    <string name="title_tool">Narzędzie</string>
     <string name="content_description_media">content_description_media</string>
     <string name="title">title</string>
     <string name="title_warehouses">Magazyny</string>
     <string name="title_tools">Narzędzia</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tool_warehouse_button">Przejdź do magazynu</string>
+    <string name="no_tools_found">Nie znaleziono żadnych narzędzi.</string>
+    <string name="title_releases">Wydania</string>
+    <string name="stage_title">Etap</string>
+    <string name="orderPrice">Cena</string>
+    <string name="order_list_tile">Lista zleceń</string>
+    <string name="title_orders">Zlecenia</string>
+    <string name="stages_list_tile">Lista etapów</string>
 </resources>

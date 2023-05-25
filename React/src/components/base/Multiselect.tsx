@@ -12,8 +12,6 @@ import { SelectMenuItemProps } from '../form/types'
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
 const checkedIcon = <CheckBoxIcon fontSize="small" />
 
-
-
 type MultipleSelectProps = {
     label?: string
     menuItems: Array<SelectMenuItemProps>
@@ -56,7 +54,13 @@ export default function MultipleSelect(props: MultipleSelectProps) {
                 isOptionEqualToValue={(option, value) => option.key == value.key}
                 renderOption={(props, option, { selected }) => (
                     <li {...props}>
-                        <Checkbox icon={icon} checkedIcon={checkedIcon} style={{ marginRight: 8 }} checked={selected} />
+                        <Checkbox
+                            icon={icon}
+                            checkedIcon={checkedIcon}
+                            style={{ marginRight: 8 }}
+                            checked={selected}
+                            id={`multiselect-${id}-opt${option.key}`}
+                        />
                         {option.value}
                     </li>
                 )}

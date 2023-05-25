@@ -46,11 +46,12 @@ interface SortedTableProps<T> {
     query: UseQueryResult<T[], AxiosError>
     initOrderBy: keyof T
     initOrderByDesc?: boolean
+    idPropName: keyof T
     onClickRow: (event: React.MouseEvent<unknown>, row: T) => void
 }
 
 export default function SortedTable<T>(props: SortedTableProps<T>) {
-    const { headCells, query, initOrderBy, onClickRow } = props
+    const { headCells, query, initOrderBy, onClickRow, idPropName } = props
     const [order, setOrder] = useState<Order>(props.initOrderByDesc ? 'desc' : 'asc')
     const [orderBy, setOrderBy] = useState<keyof T>()
     const [page, setPage] = useState(0)
@@ -116,6 +117,7 @@ export default function SortedTable<T>(props: SortedTableProps<T>) {
                                         .map((row: T, index) => {
                                             return (
                                                 <TableRow
+                                                    id={`tableRow-${row[idPropName]}`}
                                                     hover
                                                     onClick={(event) => handleClickRow(event, row)}
                                                     tabIndex={-1}
@@ -133,6 +135,7 @@ export default function SortedTable<T>(props: SortedTableProps<T>) {
                                                                 align={headCell.numeric ? 'right' : 'left'}
                                                                 sx={{
                                                                     width: '100px',
+                                                                    wordWrap: 'break-word',
                                                                     padding:
                                                                         appSize.isMobile || appSize.isTablet
                                                                             ? '8px'

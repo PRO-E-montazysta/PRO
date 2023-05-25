@@ -2,10 +2,13 @@ package com.emontazysta.util;
 
 import com.emontazysta.enums.CompanyStatus;
 import com.emontazysta.enums.Role;
+import com.emontazysta.mapper.CompanyMapper;
 import com.emontazysta.model.AppUser;
+import com.emontazysta.model.Company;
 import com.emontazysta.model.Employment;
 import com.emontazysta.model.dto.EmploymentDto;
 import com.emontazysta.service.AppUserService;
+import com.emontazysta.service.CompanyService;
 import com.emontazysta.service.EmploymentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +27,8 @@ public class AuthUtils {
 
     private final AppUserService appUserService;
     private final EmploymentService employmentService;
+    private final CompanyService companyService;
+    private final CompanyMapper companyMapper;
 
     public Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
@@ -55,7 +60,7 @@ public class AuthUtils {
 
         //Check if user exists
         if(appUser == null){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
         //Check if user is Cloud_Admin
@@ -64,16 +69,17 @@ public class AuthUtils {
         }
 
         //Get user last employment
-        Employment employment = appUser.getEmployments().get(appUser.getEmployments().size() - 1);
-        
-        //Check if company is active
-        if(employment.getCompany().getStatus() != CompanyStatus.ACTIVE){
-            throw new ResponseStatusException(HttpStatus.PAYMENT_REQUIRED);
-        }
+        Optional<EmploymentDto> employment = employmentService.getCurrentEmploymentByEmployeeId(appUser.getId());
 
         //Check if user is still working in company
-        if(employment.getDateOfDismiss() != null){
+        if(employment.isEmpty()){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+        
+        //Check if company is active
+        Company empCompany = companyMapper.toEntity(companyService.getById(employment.get().getCompanyId()));
+        if(empCompany.getStatus() != CompanyStatus.ACTIVE){
+            throw new ResponseStatusException(HttpStatus.PAYMENT_REQUIRED);
         }
 
         return true;

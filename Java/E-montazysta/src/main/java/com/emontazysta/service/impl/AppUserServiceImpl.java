@@ -1,14 +1,18 @@
 package com.emontazysta.service.impl;
 
 import com.emontazysta.enums.Role;
+import com.emontazysta.mail.MailTemplates;
 import com.emontazysta.model.AppUser;
+import com.emontazysta.model.EmailData;
 import com.emontazysta.model.dto.EmployeeDto;
 import com.emontazysta.model.searchcriteria.AppUserSearchCriteria;
 import com.emontazysta.repository.AppUserRepository;
 import com.emontazysta.repository.criteria.AppUserCriteriaRepository;
 import com.emontazysta.service.AppUserService;
+import com.emontazysta.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +36,10 @@ public class AppUserServiceImpl  implements AppUserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AppUserRepository appUserRepository;
     private final AppUserCriteriaRepository  appUserCriteriaRepository;
+    private final EmailService emailService;
+
+    @Value("${environmentProperties.frontendUrl}")
+    private String frontendUrl;
 
     @Override
     public List<AppUser> getAll() {
@@ -88,9 +97,14 @@ public class AppUserServiceImpl  implements AppUserService {
             throw new EntityNotFoundException();
         }
         user.setResetPasswordToken(UUID.randomUUID().toString());
-        Map<String, Object> variables = new HashMap<>();
-        variables.put("link", ""); // TODO link to frontend with token
-        // TODO mailService.sendEmail()
+        String url = frontendUrl + "/new-password?token=" + user.getResetPasswordToken();
+        emailService.sendEmail(
+                EmailData.builder()
+                        .to(user.getEmail())
+                        .message(MailTemplates.resetPassword(url))
+                        .subject("Resetowanie hasła w serwisie E-Montażysta")
+                        .build()
+        );
     }
 
     @Override
@@ -111,6 +125,11 @@ public class AppUserServiceImpl  implements AppUserService {
     }
 
     @Override
+    public List<AppUser> findAllByIds(List<Long> listOfIds) {
+        return appUserRepository.findAllByIdIn(listOfIds);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         AppUser user = appUserRepository
                 .findByUsername(username);
@@ -124,7 +143,11 @@ public class AppUserServiceImpl  implements AppUserService {
     }
 
     @Override
-    public List <EmployeeDto> getFilteredUsers(AppUserSearchCriteria appUserSearchCriteria){
-    return appUserCriteriaRepository.findAllWithFilters(appUserSearchCriteria);
+    public List <EmployeeDto> getFilteredUsers(AppUserSearchCriteria appUserSearchCriteria, Principal principal){
+    return appUserCriteriaRepository.findAllWithFilters(appUserSearchCriteria, principal);
+    }
+
+    public List<AppUser> findAllByRole(Role role){
+        return appUserRepository.findAllByRolesContaining(role);
     }
 }

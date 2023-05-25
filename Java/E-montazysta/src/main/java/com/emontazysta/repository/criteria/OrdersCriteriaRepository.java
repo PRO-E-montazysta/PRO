@@ -1,8 +1,8 @@
 package com.emontazysta.repository.criteria;
 
+import com.emontazysta.enums.OrderStatus;
 import com.emontazysta.enums.Role;
 import com.emontazysta.enums.TypeOfPriority;
-import com.emontazysta.enums.TypeOfStatus;
 import com.emontazysta.mapper.OrdersCompanyManagerMapper;
 import com.emontazysta.model.AppUser;
 import com.emontazysta.model.Employment;
@@ -20,7 +20,6 @@ import javax.persistence.criteria.Root;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.*;
-
 import java.util.stream.Collectors;
 
 @Repository
@@ -53,6 +52,10 @@ public class OrdersCriteriaRepository {
 
     private Predicate getPredicate(OrdersSearchCriteria ordersSearchCriteria, Root<Orders> ordersRoot, Principal principal) {
         List<Predicate> predicates = new ArrayList<>();
+
+        //Get not-deleted
+        predicates.add(criteriaBuilder.equal(ordersRoot.get("deleted"), false));
+
         if (Objects.nonNull(ordersSearchCriteria.getName())) {
             predicates.add(criteriaBuilder.like(ordersRoot.get("name"), "%" + ordersSearchCriteria.getName() + "%"));
         }
@@ -81,12 +84,12 @@ public class OrdersCriteriaRepository {
                     LocalDateTime.parse(ordersSearchCriteria.getPlannedStartMax())));
         }
 
-        if (Objects.nonNull(ordersSearchCriteria.getTypeOfStatus())) {
-            List<Predicate> typeOfStatusPredicates = new ArrayList<>();
-            for (String type : ordersSearchCriteria.getTypeOfStatus()) {
-                typeOfStatusPredicates.add(criteriaBuilder.equal(ordersRoot.get("typeOfStatus"), TypeOfStatus.valueOf(type)));
+        if (Objects.nonNull(ordersSearchCriteria.getStatus())) {
+            List<Predicate> statusPredicates = new ArrayList<>();
+            for (String type : ordersSearchCriteria.getStatus()) {
+                statusPredicates.add(criteriaBuilder.equal(ordersRoot.get("status"), OrderStatus.valueOf(type)));
             }
-            predicates.add(criteriaBuilder.or(typeOfStatusPredicates.toArray(new Predicate[0])));
+            predicates.add(criteriaBuilder.or(statusPredicates.toArray(new Predicate[0])));
         }
 
         if (Objects.nonNull(ordersSearchCriteria.getTypeOfPriority())) {

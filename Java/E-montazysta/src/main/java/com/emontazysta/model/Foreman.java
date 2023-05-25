@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -17,6 +18,7 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE app_user SET deleted = true WHERE id=?")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Foreman extends Fitter {
 
@@ -25,30 +27,17 @@ public class Foreman extends Fitter {
                   List<Unavailability> unavailabilities, List<Notification> notifications,
                   List<Comment> employeeComments, List<ElementEvent> elementEvents, List<Employment> employments,
                   List<Attachment> attachments, List<ToolEvent> toolEvents, List<OrderStage> workingOn,
-                  List<OrderStage> ordersStagesList, List<ToolRelease> receivedTools, List<Orders> assignedOrders,
-                  List<ElementReturnRelease> elementReturnReleases, List<DemandAdHoc> demandsAdHocs) {
+                  List<Orders> assignedOrders, List<DemandAdHoc> demandsAdHocs) {
 
         super(id, firstName, lastName, email, password, username, resetPasswordToken, roles, phone, pesel,
                 unavailabilities, notifications, employeeComments, elementEvents, employments, attachments, toolEvents, workingOn);
-        this.ordersStagesList = ordersStagesList;
-        this.receivedTools = receivedTools;
         this.assignedOrders = assignedOrders;
-        this.elementReturnReleases = elementReturnReleases;
         this.demandsAdHocs = demandsAdHocs;
     }
-
-    @OneToMany(mappedBy = "managedBy")
-    private List<OrderStage> ordersStagesList;
-
-    @OneToMany(mappedBy = "receivedBy")
-    private List<ToolRelease> receivedTools;
 
     @OneToMany(mappedBy = "assignedTo")
     private List<Orders> assignedOrders;
 
-    @OneToMany(mappedBy = "foreman")
-    private List<ElementReturnRelease> elementReturnReleases;
-
-    @OneToMany(mappedBy = "foreman")
+    @OneToMany(mappedBy = "createdBy")
     private List<DemandAdHoc> demandsAdHocs;
 }

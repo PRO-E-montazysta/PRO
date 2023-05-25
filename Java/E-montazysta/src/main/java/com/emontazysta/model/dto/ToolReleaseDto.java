@@ -19,10 +19,10 @@ public class ToolReleaseDto {
     private Long id;
     private LocalDateTime releaseTime;
     private LocalDateTime returnTime;
-    private Long receivedById;
     private Long releasedById;
     @NotNull(message = "Tool id cannot be empty")
     private Long toolId;
     private Long demandAdHocId;
     private Long orderStageId;
+    private boolean deleted;
 }

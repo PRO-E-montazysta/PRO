@@ -18,28 +18,9 @@ import { setToken } from '../../utils/token'
 import { logIn } from '../../api/authentication.api'
 import { useMutation } from 'react-query'
 import { MouseEvent, useState } from 'react'
-import './style.less'
 
 import { Visibility, VisibilityOff } from '@mui/icons-material'
-
-const CustomTextField = styled(TextField)(({ theme }) => ({
-    label: { shrink: true, color: theme.palette.secondary.contrastText },
-    input: { color: theme.palette.secondary.contrastText },
-    '& label.Mui-focused': {
-        color: theme.palette.secondary.contrastText,
-    },
-    '& .MuiOutlinedInput-root': {
-        '& fieldset': {
-            borderColor: '#96C0FB',
-        },
-        '&:hover fieldset': {
-            borderColor: theme.palette.secondary.contrastText,
-        },
-    },
-    '&.Mui-focused fieldset': {
-        borderColor: 'green',
-    },
-}))
+import CustomTextField from './StyledTextField'
 
 const CustomCheckbox = styled(Checkbox)(({ theme }) => ({
     color: theme.palette.secondary.contrastText,
@@ -49,8 +30,8 @@ const CustomCheckbox = styled(Checkbox)(({ theme }) => ({
 }))
 
 const validationSchema = yup.object({
-    // email: yup.string().email('Wprowadź poprawny email').required('Email jest wymagany'),
-    password: yup.string().min(4, 'Hasło powinno składać się z minium 4 znaków ').required('Hasło jest wymagane'),
+    username: yup.string().required('Wpisz nazwę użytkownika'),
+    password: yup.string().min(4, 'Hasło powinno składać się z minium 4 znaków ').required('Wpisz hasło'),
 })
 
 const LoginForm = () => {
@@ -62,8 +43,7 @@ const LoginForm = () => {
             setToken(data)
             navigation('/', { replace: true })
         },
-        onError(error: Error) {
-            alert(error.message)
+        onError(error: any) {
             console.error(error)
         },
     })
@@ -85,6 +65,20 @@ const LoginForm = () => {
 
     const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault()
+    }
+
+    const dispalyError = (error: any) => {
+        if (error == 'AxiosError: Network Error') {
+            return 'Skontaktuj się z administratorem systemu!'
+        } else if (error.response.status === 400) {
+            return 'Błędne dane logowania!'
+        } else if (error.response.status === 402) {
+            return 'Firma zawieszona, skontaktuj się z administratorem systemu!'
+        } else if (error.response.status === 403) {
+            return 'Skontaktuj się z administratorem firmy!'
+        } else {
+            return 'Skontaktuj się z administratorem systemu!'
+        }
     }
 
     return (
@@ -111,14 +105,15 @@ const LoginForm = () => {
                     component="form"
                     onSubmit={formik.handleSubmit}
                     noValidate
-                    sx={{ autoComplete: 'off', maxWidth: 666, marginTop: '17px' }}
+                    sx={{ autoComplete: 'off', maxWidth: 666, marginTop: '17px', width: '100%' }}
                 >
                     <CustomTextField
-                        className={'login-form-input'}
+                        className={'form-input-dark'}
                         fullWidth
                         margin="normal"
                         label="Nazwa użytkownika"
                         name="username"
+                        id="username"
                         InputLabelProps={{
                             shrink: true,
                         }}
@@ -128,11 +123,12 @@ const LoginForm = () => {
                         helperText={formik.touched.username && formik.errors.username}
                     />
                     <CustomTextField
-                        className={'login-form-input'}
+                        className={'form-input-dark'}
                         fullWidth
                         margin="normal"
                         label="Hasło"
                         name="password"
+                        id="password"
                         type={showPassword ? 'text' : 'password'}
                         InputLabelProps={{
                             shrink: true,
@@ -145,6 +141,7 @@ const LoginForm = () => {
                             endAdornment: (
                                 <InputAdornment position="end">
                                     <IconButton
+                                        id={`showPassword`}
                                         sx={{
                                             color: theme.palette.secondary.contrastText,
                                         }}
@@ -159,21 +156,29 @@ const LoginForm = () => {
                             ),
                         }}
                     />
+                    <Typography color="#d32f2f" align="center" marginTop={'5px'}>
+                        {error && dispalyError(error)}
+                    </Typography>
                     <FormControlLabel
-                        sx={{ marginTop: '37px' }}
+                        sx={{ marginTop: '15px', marginBottom: '25px' }}
                         control={<CustomCheckbox value="remember" />}
                         label="Zapamiętaj moje dane logowania"
                         name="check"
                     />
-
-                    <Grid spacing={2} container justifyContent="flex-end" sx={{ marginTop: '62px' }}>
+                    <Grid spacing={2} container justifyContent="flex-end" marginBottom={'5px'}>
                         <Grid item>
-                            <Button type="submit" color="primary" variant="contained" disabled={isLoading}>
+                            <Button
+                                id={'login-logIn'}
+                                type="submit"
+                                color="primary"
+                                variant="contained"
+                                disabled={isLoading}
+                            >
                                 Zaloguj się
                             </Button>
                         </Grid>
                         <Grid item>
-                            <Button color="secondary" variant="text">
+                            <Button id={'login-reset'} color="secondary" variant="text" href="/forgot">
                                 Resetuj hasło
                             </Button>
                         </Grid>

@@ -32,6 +32,7 @@ const ToolsFromWarehouse = () => {
 
     return (
         <FatTable
+            idPropName="id"
             query={queryTools}
             filterProps={filter}
             headCells={selectedHeadCells}

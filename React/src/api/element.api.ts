@@ -24,3 +24,7 @@ export const postElement = (data: Element) => {
 export const deleteElement = (id: string | number) => {
     return makeServiceCall(`/elements/${id}`, 'DELETE', {})
 }
+
+export const getPlannedElementById = (id: string | number) => {
+    return makeServiceCall(`/elements-planned/${id}`, 'GET', {})
+}

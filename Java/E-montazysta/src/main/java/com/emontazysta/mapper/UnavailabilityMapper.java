@@ -8,6 +8,8 @@ import com.emontazysta.repository.ManagerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
+
 @Component
 @RequiredArgsConstructor
 public class UnavailabilityMapper {
@@ -24,6 +26,7 @@ public class UnavailabilityMapper {
                 .unavailableTo(unavailability.getUnavailableTo())
                 .assignedToId(unavailability.getAssignedTo() == null ? null : unavailability.getAssignedTo().getId())
                 .assignedById(unavailability.getAssignedBy() == null ? null : unavailability.getAssignedBy().getId())
+                .deleted(unavailability.isDeleted())
                 .build();
     }
 
@@ -34,8 +37,8 @@ public class UnavailabilityMapper {
                 .description(unavailabilityDto.getDescription())
                 .unavailableFrom(unavailabilityDto.getUnavailableFrom())
                 .unavailableTo(unavailabilityDto.getUnavailableTo())
-                .assignedTo(unavailabilityDto.getAssignedToId() == null ? null : appUserRepository.getReferenceById(unavailabilityDto.getAssignedToId()))
-                .assignedBy(unavailabilityDto.getAssignedById() == null ? null : managerRepository.getReferenceById(unavailabilityDto.getAssignedById()))
+                .assignedTo(unavailabilityDto.getAssignedToId() == null ? null : appUserRepository.findById(unavailabilityDto.getAssignedToId()).orElseThrow(EntityNotFoundException::new))
+                .assignedBy(unavailabilityDto.getAssignedById() == null ? null : managerRepository.findById(unavailabilityDto.getAssignedById()).orElseThrow(EntityNotFoundException::new))
                 .build();
     }
 

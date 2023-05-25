@@ -1,4 +1,4 @@
-import { Paper, Typography } from '@mui/material'
+import { Button, Paper, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import { useFormik } from 'formik'
 import { useContext, useEffect, useState } from 'react'
@@ -7,7 +7,14 @@ import { useParams } from 'react-router-dom'
 import { theme } from '../../themes/baseTheme'
 
 import { useFormStructure } from './helper'
-import { useAddOrder, useDeleteOrder, useEditOrder, useOrderData } from './hooks'
+import {
+    useAddOrderLocation,
+    useAddOrder,
+    useDeleteOrder,
+    useEditOrderLocation,
+    useEditOrder,
+    useOrderData,
+} from './hooks'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { FormButtons } from '../../components/form/FormButtons'
 import { FormStructure } from '../../components/form/FormStructure'
@@ -19,8 +26,17 @@ import FormPaper from '../../components/form/FormPaper'
 import FormTitle from '../../components/form/FormTitle'
 import FormBox from '../../components/form/FormBox'
 import { PageMode } from '../../types/form'
+import OrderStagesDetails from '../orderStages/OrderStagesDetails'
+import { getRolesFromToken } from '../../utils/token'
+import { Role } from '../../types/roleEnum'
+import EditIcon from '@mui/icons-material/Edit'
+import Localization from '../../components/localization/Localization'
+import { Order } from '../../types/model/Order'
+import { useAddLocation, useFormStructureLocation, useLocationData } from '../../components/localization/hooks'
 
 const OrderDetails = () => {
+    const [userRole, setUserRole] = useState('')
+
     //parameters from url
     const params = useParams()
 
@@ -35,18 +51,40 @@ const OrderDetails = () => {
     const [initData, setInitData] = useState(getInitValues(formStructure))
 
     //mutations and queries
-    const addOrderMutation = useAddOrder()
-    const editOrderMutation = useEditOrder((data) => handleOnEditSuccess(data))
+    const addOrderMutation = useAddOrder((data) => submitLocation(data))
+    const editOrderMutation = useEditOrder((data) => submitLocation(data))
     const deleteOrderMutation = useDeleteOrder(() => orderData.remove())
     const orderData = useOrderData(params.id)
     //status for all mutations and queries
     const queriesStatus = useQueriesStatus([orderData], [addOrderMutation, editOrderMutation, deleteOrderMutation])
 
     const appSize = useBreakpoints()
-    const handleSubmit = (values: any) => {
-        if (pageMode == 'new') addOrderMutation.mutate(values)
-        else if (pageMode == 'edit') editOrderMutation.mutate(values)
-        else console.warn('Try to submit while read mode')
+
+    useEffect(() => {
+        const role = getRolesFromToken()
+        if (role.length !== 0) setUserRole(role[0])
+    }, [])
+
+    const handleSubmit = async (values: any) => {
+        //show formik location errors to user
+        formikLocation.submitForm()
+        //check if there are any error
+        if (Object.keys(formikLocation.errors).length == 0) {
+            if (pageMode == 'new') addOrderMutation.mutate(values)
+            else if (pageMode == 'edit') editOrderMutation.mutate(values)
+            else console.warn('Try to submit while read mode')
+        }
+    }
+
+    const submitLocation = (data: Order) => {
+        if (data && data.id) {
+            const body = {
+                ...formikLocation.values,
+                orderId: data.id,
+            }
+            if (pageMode == 'new') addLocationMutation.mutate(body)
+            else if (pageMode == 'edit') editLocationMutation.mutate(body)
+        }
     }
 
     const handleDelete = () => {
@@ -71,6 +109,8 @@ const OrderDetails = () => {
     const handleReset = () => {
         formik.resetForm()
         formik.setValues(initData)
+        formikLocation.resetForm()
+        formikLocation.setValues(initDataLocation)
     }
 
     const handleCancel = () => {
@@ -80,7 +120,10 @@ const OrderDetails = () => {
 
     const handleOnEditSuccess = (data: any) => {
         orderData.refetch({
-            queryKey: ['order', { id: data.id }],
+            queryKey: ['order', { id: data.orderId }],
+        })
+        queryLocationData.refetch({
+            queryKey: ['location', { id: data.id }],
         })
         setPageMode('read')
     }
@@ -97,23 +140,67 @@ const OrderDetails = () => {
     //new mode
     //set readonly mode, populate formik and init data with init values from helper
     useEffect(() => {
-        if (params.id == 'new') {
+        if (params.id === 'new') {
             setPageMode('new')
             formik.setValues(getInitValues(formStructure))
+            formik.resetForm()
             setInitData(getInitValues(formStructure))
+            formikLocation.setValues(getInitValues(formStructureLocation))
+            formikLocation.resetForm()
+            setInitDataLocation(getInitValues(formStructureLocation))
         } else setPageMode('read')
     }, [params.id])
+
+    const getAddOrderStageButton = () => {
+        return userRole === Role.SPECIALIST ? true : false
+    }
+
+    const [isAddOrderStageVisible, setIsAddOrderStageVisible] = useState(false)
+
+    const handleAddOrderStage = () => {
+        setIsAddOrderStageVisible(!isAddOrderStageVisible)
+    }
+    //--------------- Location functionality --------------------
+    const formStructureLocation = useFormStructureLocation()
+    const [initDataLocation, setInitDataLocation] = useState(getInitValues(formStructureLocation))
+    const formikLocation = useFormik({
+        initialValues: initDataLocation,
+        validationSchema: getValidatinSchema(formStructureLocation, pageMode),
+        onSubmit: () => {},
+    })
+    const queryLocationData = useLocationData(
+        orderData.data && orderData.data.locationId ? orderData.data.locationId.toString() : '',
+    )
+    const addLocationMutation = useAddOrderLocation()
+    const editLocationMutation = useEditOrderLocation((data) => handleOnEditSuccess(data))
+
+    useEffect(() => {
+        if (queryLocationData.data) {
+            formikLocation.setValues(queryLocationData.data)
+            setInitDataLocation(queryLocationData.data)
+        }
+    }, [queryLocationData.data])
 
     return (
         <>
             <FormBox>
-                <FormTitle text={pageMode == 'new' ? 'Nowe zlecenie' : formik.values['name']} />
+                <FormTitle
+                    mainTitle={pageMode == 'new' ? 'Nowe zlecenie' : 'Zlecenie'}
+                    subTitle={pageMode == 'new' ? null : formik.values['name']}
+                />
                 <FormPaper>
                     {queriesStatus.result != 'isSuccess' ? (
                         <QueryBoxStatus queriesStatus={queriesStatus} />
                     ) : (
                         <>
                             <FormStructure formStructure={formStructure} formik={formik} pageMode={pageMode} />
+
+                            <Localization
+                                title="Lokalizacja"
+                                formik={formikLocation}
+                                formStructure={formStructureLocation}
+                                pageMode={pageMode}
+                            />
                             <FormButtons
                                 id={params.id}
                                 onCancel={handleCancel}
@@ -122,10 +209,14 @@ const OrderDetails = () => {
                                 onReset={handleReset}
                                 onSubmit={formik.submitForm}
                                 readonlyMode={pageMode == 'read'}
+                                orderStageButton={getAddOrderStageButton()}
+                                handleAddOrderStage={handleAddOrderStage}
+                                isAddOrderStageVisible={isAddOrderStageVisible}
                             />
                         </>
                     )}
                 </FormPaper>
+                {params.id !== 'new' && <OrderStagesDetails isAddOrderStageVisible={isAddOrderStageVisible} />}
             </FormBox>
         </>
     )

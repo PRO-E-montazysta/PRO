@@ -9,22 +9,39 @@ import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import useBreakpoints from '../../hooks/useBreakpoints'
 import PrintQRCodeLabel from '../label/PrintQRCodeLabel'
+import { useState } from 'react'
 
 type FormButtonsParams = {
     readonlyMode: boolean
     id: string | undefined
     onEdit: () => void
-    onDelete: () => void
+    onDelete?: () => void
     onSubmit: () => void
     onReset: () => void
     onCancel: () => void
     printLabel?: [string, string]
+    orderStageButton?: boolean
+    handleAddOrderStage?: () => void
+    isAddOrderStageVisible?: boolean
 }
 
 export const FormButtons = (params: FormButtonsParams) => {
-    const { readonlyMode, id, onCancel, onDelete, onEdit, onReset, onSubmit, printLabel } = params
+    const {
+        readonlyMode,
+        id,
+        onCancel,
+        onDelete,
+        onEdit,
+        onReset,
+        onSubmit,
+        printLabel,
+        orderStageButton,
+        handleAddOrderStage,
+        isAddOrderStageVisible,
+    } = params
 
     const appSize = useBreakpoints()
+
     return (
         <Box
             sx={{
@@ -38,6 +55,7 @@ export const FormButtons = (params: FormButtonsParams) => {
                 <>
                     {printLabel ? <PrintQRCodeLabel label={printLabel[0]} code={printLabel[1]} /> : null}
                     <Button
+                        id={`formButton-edit`}
                         color="primary"
                         startIcon={<EditIcon />}
                         variant="contained"
@@ -47,20 +65,36 @@ export const FormButtons = (params: FormButtonsParams) => {
                     >
                         Edytuj
                     </Button>
-                    <Button
-                        color="error"
-                        startIcon={<DeleteIcon />}
-                        variant="contained"
-                        type="submit"
-                        style={{ width: appSize.isMobile ? 'auto' : 120 }}
-                        onClick={onDelete}
-                    >
-                        Usuń
-                    </Button>
+                    {onDelete ? (
+                        <Button
+                            id={`formButton-delete`}
+                            color="error"
+                            startIcon={<DeleteIcon />}
+                            variant="contained"
+                            type="submit"
+                            style={{ width: appSize.isMobile ? 'auto' : 120 }}
+                            onClick={onDelete}
+                        >
+                            Usuń
+                        </Button>
+                    ) : null}
+                    {orderStageButton && (
+                        <Button
+                            color="primary"
+                            startIcon={<EditIcon />}
+                            variant="contained"
+                            type="submit"
+                            // style={{ width: 160 }}
+                            onClick={handleAddOrderStage}
+                        >
+                            {isAddOrderStageVisible ? 'Anuluj dodawanie etapu' : 'Dodaj etap'}
+                        </Button>
+                    )}
                 </>
             ) : (
                 <>
                     <Button
+                        id={`formButton-save`}
                         color="primary"
                         startIcon={<SaveIcon />}
                         variant="contained"
@@ -70,6 +104,7 @@ export const FormButtons = (params: FormButtonsParams) => {
                         Zapisz
                     </Button>
                     <Button
+                        id={`formButton-reset`}
                         color="primary"
                         startIcon={<ReplayIcon style={{ transform: 'rotate(-0.25turn)' }} />}
                         style={{ color: theme.palette.primary.main, width: appSize.isMobile ? 'auto' : 120 }}
@@ -80,6 +115,7 @@ export const FormButtons = (params: FormButtonsParams) => {
                     </Button>
                     {params.id != 'new' && (
                         <Button
+                            id={`formButton-cancel`}
                             color="primary"
                             startIcon={<CloseIcon style={{ transform: 'rotate(-0.25turn)' }} />}
                             style={{ color: theme.palette.primary.main, width: appSize.isMobile ? 'auto' : 120 }}

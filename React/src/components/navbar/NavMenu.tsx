@@ -45,7 +45,14 @@ const NavMenu = (params: NavMenuParams) => {
                 }}
             >
                 {allowedChilds.map((child, index) => {
-                    return <NavMenuItem onItemClick={() => handleMenuItemClick(child)} text={child.name} key={index} />
+                    return (
+                        <NavMenuItem
+                            id={`navMenu-${child.path}`}
+                            onItemClick={() => handleMenuItemClick(child)}
+                            text={child.name}
+                            key={index}
+                        />
+                    )
                 })}
             </Box>
         </>

@@ -6,10 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 
 @Data
 @Entity
@@ -29,4 +28,7 @@ public class ElementsPlannedNumber {
 
     @ManyToOne
     private OrderStage orderStage;
+
+    @ManyToOne
+    private DemandAdHoc demandAdHoc;
 }

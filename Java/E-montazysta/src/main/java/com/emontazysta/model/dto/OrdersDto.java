@@ -1,12 +1,11 @@
 package com.emontazysta.model.dto;
 
+import com.emontazysta.enums.OrderStatus;
 import com.emontazysta.enums.TypeOfPriority;
-import com.emontazysta.enums.TypeOfStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -21,8 +20,7 @@ public class OrdersDto {
     private Long id;
     @NotBlank(message = "Name cannot be empty")
     private String name;
-    @NotNull(message = "Type of status cannot be empty")
-    private TypeOfStatus typeOfStatus;
+    private OrderStatus status;
     @NotNull(message = "Planned start cannot be empty")
     private LocalDateTime plannedStart;
     @NotNull(message = "Planned end cannot be empty")
@@ -40,4 +38,5 @@ public class OrdersDto {
     private Long clientId;
     private List<Long> orderStages;
     private List<Long> attachments;
+    private boolean deleted;
 }

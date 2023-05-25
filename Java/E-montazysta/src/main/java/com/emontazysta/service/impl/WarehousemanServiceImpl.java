@@ -1,23 +1,27 @@
 package com.emontazysta.service.impl;
 
 import com.emontazysta.enums.Role;
+import com.emontazysta.mapper.EmploymentMapper;
 import com.emontazysta.mapper.WarehousemanMapper;
 import com.emontazysta.model.Warehouseman;
+import com.emontazysta.model.dto.EmployeeDto;
 import com.emontazysta.model.dto.EmploymentDto;
 import com.emontazysta.model.dto.WarehousemanDto;
+import com.emontazysta.model.searchcriteria.AppUserSearchCriteria;
 import com.emontazysta.repository.WarehousemanRepository;
-import com.emontazysta.service.EmploymentService;
+import com.emontazysta.repository.criteria.AppUserCriteriaRepository;
+import com.emontazysta.repository.EmploymentRepository;
 import com.emontazysta.service.WarehousemanService;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,20 +29,39 @@ public class WarehousemanServiceImpl implements WarehousemanService {
 
     private final WarehousemanRepository repository;
     private final WarehousemanMapper warehousemanMapper;
-    private final EmploymentService employmentService;
+    private final EmploymentRepository employmentRepository;
+    private final EmploymentMapper employmentMapper;
     private final AuthUtils authUtils;
+    private final AppUserCriteriaRepository appUserCriteriaRepository;
 
     @Override
-    public List<WarehousemanDto> getAll() {
-        return repository.findAll().stream()
-                .map(warehousemanMapper::toDto)
-                .collect(Collectors.toList());
+    public List<WarehousemanDto> getAll(Principal principal) {
+        List<EmployeeDto> appUsers = appUserCriteriaRepository.findAllWithFilters(new AppUserSearchCriteria(), principal);
+        List<WarehousemanDto> result = new ArrayList<>();
+
+        for(EmployeeDto employeeDto : appUsers) {
+            if(employeeDto.getRoles().contains(Role.WAREHOUSE_MAN)) {
+                result.add(warehousemanMapper.toDto(repository.getReferenceById(employeeDto.getId())));
+            }
+        }
+
+        return result;
     }
 
     @Override
     public WarehousemanDto getById(Long id) {
         Warehouseman warehouseman = repository.findById(id).orElseThrow(EntityNotFoundException::new);
-        return warehousemanMapper.toDto(warehouseman);
+        WarehousemanDto result = warehousemanMapper.toDto(warehouseman);
+
+        if(!authUtils.getLoggedUser().getRoles().contains(Role.ADMIN)) {
+            result.setUsername(null);
+        }
+        if(!(authUtils.getLoggedUser().getRoles().contains(Role.ADMIN) ||
+                authUtils.getLoggedUser().getRoles().contains(Role.MANAGER))) {
+            result.setPesel(null);
+        }
+
+        return result;
     }
 
     @Override
@@ -54,7 +77,6 @@ public class WarehousemanServiceImpl implements WarehousemanService {
         warehousemanDto.setToolEvents(new ArrayList<>());
         warehousemanDto.setReleaseTools(new ArrayList<>());
         warehousemanDto.setElementReturnReleases(new ArrayList<>());
-        warehousemanDto.setDemandAdHocs(new ArrayList<>());
 
         Warehouseman warehouseman = repository.save(warehousemanMapper.toEntity(warehousemanDto));
 
@@ -64,7 +86,7 @@ public class WarehousemanServiceImpl implements WarehousemanService {
                 .companyId(authUtils.getLoggedUserCompanyId())
                 .employeeId(warehouseman.getId())
                 .build();
-        employmentService.add(employmentDto);
+        employmentRepository.save(employmentMapper.toEntity(employmentDto));
 
         return warehousemanMapper.toDto(warehouseman);
     }
@@ -92,7 +114,6 @@ public class WarehousemanServiceImpl implements WarehousemanService {
         warehouseman.setToolEvents(updatedWarehouseman.getToolEvents());
         warehouseman.setReleasedTools(updatedWarehouseman.getReleasedTools());
         warehouseman.setElementReturnReleases(updatedWarehouseman.getElementReturnReleases());
-        warehouseman.setDemandAdHocs(updatedWarehouseman.getDemandAdHocs());
         return warehousemanMapper.toDto(repository.save(warehouseman));
     }
 }

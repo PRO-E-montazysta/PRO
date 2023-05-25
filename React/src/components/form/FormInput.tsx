@@ -1,5 +1,5 @@
 import { TextField, styled } from '@mui/material'
-import { formatDate } from '../../helpers/format.helper'
+import { formatDate, formatShortDate } from '../../helpers/format.helper'
 import useBreakpoints from '../../hooks/useBreakpoints'
 import { FormInputParams } from './types'
 
@@ -7,15 +7,23 @@ type CustomTextFieldProps = {
     readOnly: boolean
 }
 
-const CustomTextField = styled(TextField)((props: CustomTextFieldProps) => ({
+export const CustomTextField = styled(TextField)((props: CustomTextFieldProps) => ({
     '& fieldset': {
         border: props.readOnly ? 'none' : '',
+    },
+    '& .MuiInputBase-input.Mui-disabled': {
+        WebkitTextFillColor: '#000000',
     },
 }))
 
 const FormInput = (params: FormInputParams) => {
-    const { id, readonly, style, type, formik, label } = params
-    const value = type == 'datetime-local' ? formatDate(formik.values[id]) : String(formik.values[id])
+    const { id, readonly, style, type, formik, label, placeholder } = params
+    const value =
+        type == 'datetime-local'
+            ? formatDate(formik.values[id])
+            : type == 'date'
+            ? formatShortDate(formik.values[id])
+            : String(formik.values[id])
 
     const appSize = useBreakpoints()
     return (
@@ -40,6 +48,7 @@ const FormInput = (params: FormInputParams) => {
             error={formik.touched[id] && Boolean(formik.errors[id])}
             helperText={formik.touched[id] && formik.errors[id]}
             autoComplete="off"
+            placeholder={placeholder ? placeholder : ''}
         />
     )
 }
