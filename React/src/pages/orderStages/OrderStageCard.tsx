@@ -185,11 +185,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
 
     const errorMessage = useMemo(() => {
         switch (error) {
-            case 'maxDate':
-            case 'minDate': {
-                return 'Please select a date in the first quarter of 2022'
-            }
-
             case 'invalidDate': {
                 return 'Wprowadź poprawną datę'
             }
@@ -226,8 +221,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     helperText: errorMessage || '',
                                 },
                             }}
-                            minDate={dayjs('2022-01-01T00:00:00.000')}
-                            maxDate={dayjs('2023-06-01T00:00:00.000')}
                         />
                     </LocalizationProvider>
                 </Grid>

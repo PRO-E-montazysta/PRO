@@ -60,7 +60,7 @@ const OrderStageToolsTable = forwardRef(
         useEffect(() => {
             if (toolsRef.current.length > 0) {
                 return setTableData([...toolsRef.current])
-            } 
+            }
             getToolsTypeData()
         }, [])
 
@@ -100,8 +100,11 @@ const OrderStageToolsTable = forwardRef(
         const handleDeleteItem = (rowIndex: number) => {
             const tempArray = [...tableData]
             tempArray.splice(rowIndex, 1)
-            setTableData(tempArray)
             handleChange(tempArray)
+            if (tempArray.length === 0) {
+                return setTableData([{ numberOfTools: 0, toolTypeId: 'toChange' }])
+            }
+            setTableData(tempArray)
         }
 
         return (
@@ -192,10 +195,10 @@ const chooseSelectItemId = (
     setSelectedItemId: React.Dispatch<React.SetStateAction<string>>,
 ) => {
     if (itemsArray) {
-        return itemsArray.map((item: any) => (
+        return itemsArray.map((item: any, index) => (
             <MenuItem
                 key={uuidv4()}
-                id={uuidv4()}
+                id={'toolstableItem'+index}
                 value={item.id}
                 onClick={() => {
                     setSelectedItemId(item.id)
@@ -263,7 +266,6 @@ const TableItemNumber = ({
     rowIndex,
     isDisplayingMode,
 }: TableItemNumberType) => {
-    
     return (
         <TextField
             sx={{

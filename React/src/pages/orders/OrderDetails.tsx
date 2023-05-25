@@ -62,7 +62,6 @@ const OrderDetails = () => {
 
     useEffect(() => {
         const role = getRolesFromToken()
-        console.log(role)
         if (role.length !== 0) setUserRole(role[0])
     }, [])
 
@@ -83,7 +82,6 @@ const OrderDetails = () => {
                 ...formikLocation.values,
                 orderId: data.id,
             }
-            console.log(body)
             if (pageMode == 'new') addLocationMutation.mutate(body)
             else if (pageMode == 'edit') editLocationMutation.mutate(body)
         }

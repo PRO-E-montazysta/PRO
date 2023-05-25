@@ -40,6 +40,10 @@ const OrderStageElementsTable = forwardRef(
             { numberOfElements: 0, elementId: 'toChange' },
         ])
 
+        useEffect(() => {
+            console.log('check', tableData)
+        }, [tableData])
+
         const getElementsData = async () => {
             if (!!elementsListIds) {
                 const check = await Promise.all(
@@ -103,8 +107,12 @@ const OrderStageElementsTable = forwardRef(
         const handleDeleteItem = (rowIndex: number) => {
             const tempArray = [...tableData]
             tempArray.splice(rowIndex, 1)
-            setTableData(tempArray)
             handleChange(tempArray)
+            if (tempArray.length === 0) {
+              return  setTableData([{ numberOfElements: 0, elementId: 'toChange' }])
+            }
+            setTableData(tempArray)
+
         }
 
         return (
@@ -195,10 +203,10 @@ const chooseSelectItemId = (
     setSelectedItemId: React.Dispatch<React.SetStateAction<string>>,
 ) => {
     if (itemsArray) {
-        return itemsArray.map((item: any) => (
+        return itemsArray.map((item: any, index) => (
             <MenuItem
                 key={uuidv4()}
-                id={uuidv4()}
+                id={'elementsTable'+index}
                 value={item.id}
                 onClick={() => {
                     setSelectedItemId(item.id)
