@@ -14,7 +14,7 @@ const CustomTextField = styled(TextField)((props: CustomTextFieldProps) => ({
 }))
 
 const FormInput = (params: FormInputParams) => {
-    const { id, readonly, style, type, formik, label } = params
+    const { id, readonly, style, type, formik, label, placeholder } = params
     const value =
         type == 'datetime-local'
             ? formatDate(formik.values[id])
@@ -45,6 +45,7 @@ const FormInput = (params: FormInputParams) => {
             error={formik.touched[id] && Boolean(formik.errors[id])}
             helperText={formik.touched[id] && formik.errors[id]}
             autoComplete="off"
+            placeholder={placeholder ? placeholder : ''}
         />
     )
 }

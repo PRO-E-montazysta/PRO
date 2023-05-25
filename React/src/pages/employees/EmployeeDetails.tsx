@@ -99,13 +99,10 @@ const EmployeeDetails = () => {
                 subTitle={
                     pageMode == 'new'
                         ? ''
-                        : String(
-                              roleName(formik.values['roles'][0]) +
-                                  ' - ' +
-                                  formik.values['firstName'] +
-                                  ' ' +
-                                  formik.values['lastName'],
-                          )
+                        : String(formik.values['roles'] === null ? '' : roleName(formik.values['roles'][0]) + ' - ') +
+                          formik.values['firstName'] +
+                          ' ' +
+                          formik.values['lastName']
                 }
             />
             <FormPaper>

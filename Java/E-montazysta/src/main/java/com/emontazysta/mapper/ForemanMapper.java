@@ -109,14 +109,11 @@ public class ForemanMapper {
         List<OrderStage> workingOnList = new ArrayList<>();
         foremanDto.getWorkingOn().forEach(workingOnId -> workingOnList.add(orderStageRepository.findById(workingOnId).orElseThrow(EntityNotFoundException::new)));
 
-        List<OrderStage> orderStageList = new ArrayList<>();
-        foremanDto.getOrdersStagesList().forEach(orderStageId -> orderStageList.add(orderStageRepository.findById(orderStageId).orElseThrow(EntityNotFoundException::new)));
-
         List<ToolRelease> toolReleaseList = new ArrayList<>();
         foremanDto.getReceivedTools().forEach(toolReleaseId -> toolReleaseList.add(toolReleaseRepository.findById(toolReleaseId).orElseThrow(EntityNotFoundException::new)));
 
         List<Orders> ordersList = new ArrayList<>();
-        foremanDto.getOrdersStagesList().forEach(orderStageId -> ordersList.add(orderRepository.findById(orderStageId).orElseThrow(EntityNotFoundException::new)));
+        foremanDto.getAssignedOrders().forEach(orderId -> ordersList.add(orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new)));
 
         List<ElementReturnRelease> elementReturnReleasesList = new ArrayList<>();
         foremanDto.getElementReturnReleases().forEach(elementReturnReleaseId -> elementReturnReleasesList.add(elementReturnReleaseRepository.findById(elementReturnReleaseId).orElseThrow(EntityNotFoundException::new)));
