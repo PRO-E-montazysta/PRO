@@ -16,7 +16,7 @@ const Elements = () => {
     const { initialValues, inputs } = getInputs(filterInitStructure)
     const navigation = useNavigate()
 
-    const queryOrders = useQuery<Array<Element>, AxiosError>(['orders', filterParams], async () =>
+    const queryElements = useQuery<Array<Element>, AxiosError>(['elements', filterParams], async () =>
         getFilteredElements({ queryParams: filterParams }),
     )
 
@@ -36,7 +36,7 @@ const Elements = () => {
     return (
         <FatTable
             idPropName="id"
-            query={queryOrders}
+            query={queryElements}
             filterProps={filter}
             headCells={headCells}
             initOrderBy={'name'}

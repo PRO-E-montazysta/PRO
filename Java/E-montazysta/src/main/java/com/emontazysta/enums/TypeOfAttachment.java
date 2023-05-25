@@ -6,5 +6,6 @@ public enum TypeOfAttachment {
     FAULT_PHOTO,
     DESIGN,
     ACCEPTANCE_PROTOCOL,
-    PROFILE_PICTURE
+    PROFILE_PICTURE,
+    ORDER_STAGE_PHOTO
 }

@@ -1,7 +1,9 @@
 package com.emontazysta.service;
 
+import com.emontazysta.model.dto.ElementSimpleReturnReleaseDto;
 import com.emontazysta.model.dto.OrderStageDto;
 import com.emontazysta.model.dto.OrderStageWithToolsAndElementsDto;
+import com.emontazysta.model.dto.ToolSimpleReturnReleaseDto;
 import com.emontazysta.model.searchcriteria.OrdersStageSearchCriteria;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,4 +26,11 @@ public interface OrderStageService {
     OrderStageDto update(Long id, OrderStageWithToolsAndElementsDto orderStage);
 
     List<OrderStageDto> getFilteredOrders(OrdersStageSearchCriteria ordersStageSearchCriteria, Principal principal);
+
+    OrderStageDto releaseTools(Long id, List<ToolSimpleReturnReleaseDto> toolCodes);
+    OrderStageDto returnTools(Long id, List<ToolSimpleReturnReleaseDto> toolCodes);
+    OrderStageDto releaseElements(Long orderStageId, Long warehouseId, List<ElementSimpleReturnReleaseDto> elements);
+    OrderStageDto returnElements(Long orderStageId, Long warehouseId, List<ElementSimpleReturnReleaseDto> elements);
+    OrderStageDto nextStatus(Long id);
+    OrderStageDto previousStatus(Long id);
 }

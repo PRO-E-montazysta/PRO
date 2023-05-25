@@ -3,7 +3,7 @@ import { AxiosError } from 'axios'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import FatTable from '../../components/table/FatTable'
-import { filterInitStructure, headCells } from './helper'
+import { useFilterInitStructure, useHeadCells } from './helper'
 import { getFilterParams, getInputs, setNewFilterValues } from '../../helpers/filter.helper'
 import { Filter, FilterFormProps } from '../../components/table/filter/TableFilter'
 import { Employee } from '../../types/model/Employee'
@@ -11,9 +11,9 @@ import { useFormik } from 'formik'
 import { getFilteredEmployees } from '../../api/employee.api'
 
 const Employees = () => {
-    const [filterStructure, setFilterStructure] = useState(filterInitStructure)
-    const [filterParams, setFilterParams] = useState(getFilterParams(filterInitStructure))
-    const { initialValues, inputs } = getInputs(filterInitStructure)
+    const [filterStructure, setFilterStructure] = useState(useFilterInitStructure())
+    const [filterParams, setFilterParams] = useState(getFilterParams(useFilterInitStructure()))
+    const { initialValues, inputs } = getInputs(useFilterInitStructure())
     const navigation = useNavigate()
 
     const queryData = useQuery<Array<Employee>, AxiosError>(['users', filterParams], async () =>
@@ -38,7 +38,7 @@ const Employees = () => {
             idPropName="id"
             query={queryData}
             filterProps={filter}
-            headCells={headCells}
+            headCells={useHeadCells()}
             initOrderBy={'firstName'}
             onClickRow={(e, row) => {
                 navigation(`/employees/${row.id}`)
