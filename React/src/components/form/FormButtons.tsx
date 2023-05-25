@@ -14,7 +14,7 @@ type FormButtonsParams = {
     readonlyMode: boolean
     id: string | undefined
     onEdit: () => void
-    onDelete: () => void
+    onDelete?: () => void
     onSubmit: () => void
     onReset: () => void
     onCancel: () => void
@@ -48,17 +48,19 @@ export const FormButtons = (params: FormButtonsParams) => {
                     >
                         Edytuj
                     </Button>
-                    <Button
-                        id={`formButton-delete`}
-                        color="error"
-                        startIcon={<DeleteIcon />}
-                        variant="contained"
-                        type="submit"
-                        style={{ width: appSize.isMobile ? 'auto' : 120 }}
-                        onClick={onDelete}
-                    >
-                        Usuń
-                    </Button>
+                    {onDelete ? (
+                        <Button
+                            id={`formButton-delete`}
+                            color="error"
+                            startIcon={<DeleteIcon />}
+                            variant="contained"
+                            type="submit"
+                            style={{ width: appSize.isMobile ? 'auto' : 120 }}
+                            onClick={onDelete}
+                        >
+                            Usuń
+                        </Button>
+                    ) : null}
                 </>
             ) : (
                 <>
