@@ -14,6 +14,11 @@ import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { getInitValues, getValidatinSchema } from '../../helpers/form.helper'
 import { useAddElement, useDeleteElement, useEditElement, useElementData } from './hooks'
 import { useQueriesStatus } from '../../hooks/useQueriesStatus'
+import Grid from '@mui/material/Grid'
+import Card from '@mui/material/Card'
+import ExpandMore from '../../components/expandMore/ExpandMore'
+import HistoryIcon from '@mui/icons-material/History'
+import ElementInWarehouseView from '../elementInWarehouse'
 
 const ElementDetails = () => {
     const params = useParams()
@@ -105,6 +110,17 @@ const ElementDetails = () => {
                     ) : (
                         <>
                             <FormStructure formStructure={formStructure} formik={formik} pageMode={pageMode} />
+
+                            <Grid container alignItems="center" justifyContent="center" marginTop={2}>
+                                <Card sx={{ width: '100%', left: '50%' }}>
+                                    <ExpandMore
+                                        titleIcon={<HistoryIcon />}
+                                        title="Stan magazynowy"
+                                        cardContent={<ElementInWarehouseView elementId={Number(params.id)} />}
+                                    />
+                                </Card>
+                            </Grid>
+
                             <FormButtons
                                 id={params.id}
                                 onCancel={handleCancel}

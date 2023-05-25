@@ -1,4 +1,4 @@
-import { Filter, FilterFormProps } from '../../components/table/filter/TableFilter'
+import { Filter } from '../../components/table/filter/TableFilter'
 import FatTable from '../../components/table/FatTable'
 import { useState } from 'react'
 import { useQuery } from 'react-query'
@@ -6,18 +6,25 @@ import { AxiosError } from 'axios'
 import { filterInitStructure, headCells } from './helper'
 import { useNavigate } from 'react-router-dom'
 import { getFilterParams, getInputs, setNewFilterValues } from '../../helpers/filter.helper'
-import { Element } from '../../types/model/Element'
-import { getFilteredElements } from '../../api/element.api'
 import { useFormik } from 'formik'
+import { ElementInWarehouseFilterDto } from '../../types/model/ElementInWarehouse'
+import { getElementInWarehouseCounts } from '../../api/elementInWarehouse.api'
 
-const Elements = () => {
+type ElementInWarehouseViewParams = {
+    elementId: number
+}
+
+const ElementInWarehouseView = (params: ElementInWarehouseViewParams) => {
+    const { elementId } = params
+
     const [filterStructure, setFilterStructure] = useState(filterInitStructure)
     const [filterParams, setFilterParams] = useState(getFilterParams(filterInitStructure))
     const { initialValues, inputs } = getInputs(filterInitStructure)
     const navigation = useNavigate()
 
-    const queryElements = useQuery<Array<Element>, AxiosError>(['elements', filterParams], async () =>
-        getFilteredElements({ queryParams: filterParams }),
+    const queryElementInWarehouse = useQuery<Array<ElementInWarehouseFilterDto>, AxiosError>(
+        ['elements-in-warehouse', filterParams],
+        async () => getElementInWarehouseCounts({ queryParams: filterParams }, elementId),
     )
 
     const filter: Filter = {
@@ -36,16 +43,15 @@ const Elements = () => {
     return (
         <FatTable
             idPropName="id"
-            query={queryElements}
+            query={queryElementInWarehouse}
             filterProps={filter}
             headCells={headCells}
-            initOrderBy={'name'}
+            initOrderBy={'inWarehouseCount'}
             onClickRow={(e, row) => {
-                navigation(`/elements/${row.id}`)
+                navigation(`/element-in-warehouse/${row.id}`)
             }}
-            pageHeader="Lista elementów"
         />
     )
 }
 
-export default Elements
+export default ElementInWarehouseView

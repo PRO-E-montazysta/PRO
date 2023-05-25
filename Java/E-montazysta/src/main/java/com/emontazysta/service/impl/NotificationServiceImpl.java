@@ -4,7 +4,9 @@ import com.emontazysta.enums.NotificationType;
 import com.emontazysta.mapper.NotificationMapper;
 import com.emontazysta.model.*;
 import com.emontazysta.model.dto.NotificationDto;
+import com.emontazysta.model.searchcriteria.NotificationSearchCriteria;
 import com.emontazysta.repository.*;
+import com.emontazysta.repository.criteria.NotificationCriteriaRepository;
 import com.emontazysta.service.NotificationService;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 public class NotificationServiceImpl implements NotificationService {
 
     private final NotificationRepository notificationRepository;
+    private final NotificationCriteriaRepository notificationCriteriaRepository;
     private final NotificationMapper notificationMapper;
     private final AppUserServiceImpl appUserService;
     private final OrderStageRepository orderStageRepository;
@@ -115,5 +118,10 @@ public class NotificationServiceImpl implements NotificationService {
             }
         }
         return filteredUsers;
+    }
+
+    @Override
+    public List<NotificationDto> findAllWithFilters(NotificationSearchCriteria notificationSearchCriteria) {
+        return notificationCriteriaRepository.findAllWithFilters(notificationSearchCriteria);
     }
 }
