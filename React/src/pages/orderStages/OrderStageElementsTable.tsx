@@ -40,10 +40,6 @@ const OrderStageElementsTable = forwardRef(
             { numberOfElements: 0, elementId: 'toChange' },
         ])
 
-        useEffect(() => {
-            console.log('check', tableData)
-        }, [tableData])
-
         const getElementsData = async () => {
             if (!!elementsListIds) {
                 const check = await Promise.all(
