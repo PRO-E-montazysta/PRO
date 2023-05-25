@@ -8,182 +8,186 @@ import { FormInputProps } from '../../types/form'
 import { roleName, userRoleOptions } from '../../helpers/enum.helper'
 import { isAuthorized } from '../../utils/authorize'
 
-export const headCells: Array<HeadCell<Employee>> = isAuthorized([Role.ADMIN])
-    ? [
-          {
-              type: 'string',
-              id: 'firstName',
-              label: 'Imię',
-              visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
-              numeric: false,
-          },
-          {
-              type: 'string',
-              id: 'lastName',
-              label: 'Nazwisko',
-              visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
-              numeric: false,
-          },
-          {
-              type: 'string',
-              id: 'roles',
-              label: 'Stanowisko',
-              visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
-              numeric: false,
-              formatFn: (role: string) => roleName(role[0]),
-          },
-          {
-              type: 'string',
-              id: 'username',
-              label: 'Username',
-              visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
-              numeric: false,
-          },
-          {
-              type: 'string',
-              id: 'email',
-              label: 'Email',
-              visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
-              numeric: false,
-          },
-          {
-              type: 'string',
-              id: 'phone',
-              label: 'Telefon',
-              visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
-              numeric: false,
-          },
-          {
-              type: 'string',
-              id: 'pesel',
-              label: 'Pesel',
-              visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
-              numeric: false,
-          },
-      ]
-    : [
-          {
-              type: 'string',
-              id: 'firstName',
-              label: 'Imię',
-              visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
-              numeric: false,
-          },
-          {
-              type: 'string',
-              id: 'lastName',
-              label: 'Nazwisko',
-              visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
-              numeric: false,
-          },
-          {
-              type: 'string',
-              id: 'roles',
-              label: 'Stanowisko',
-              visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
-              numeric: false,
-              formatFn: (role: string) => roleName(role[0]),
-          },
-          {
-              type: 'string',
-              id: 'email',
-              label: 'Email',
-              visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
-              numeric: false,
-          },
-          {
-              type: 'string',
-              id: 'phone',
-              label: 'Telefon',
-              visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
-              numeric: false,
-          },
-      ]
+export const useHeadCells = (): Array<HeadCell<Employee>> => {
+    return isAuthorized([Role.ADMIN])
+        ? [
+              {
+                  type: 'string',
+                  id: 'firstName',
+                  label: 'Imię',
+                  visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
+                  numeric: false,
+              },
+              {
+                  type: 'string',
+                  id: 'lastName',
+                  label: 'Nazwisko',
+                  visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
+                  numeric: false,
+              },
+              {
+                  type: 'string',
+                  id: 'roles',
+                  label: 'Stanowisko',
+                  visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
+                  numeric: false,
+                  formatFn: (role: string) => roleName(role[0]),
+              },
+              {
+                  type: 'string',
+                  id: 'username',
+                  label: 'Username',
+                  visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
+                  numeric: false,
+              },
+              {
+                  type: 'string',
+                  id: 'email',
+                  label: 'Email',
+                  visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
+                  numeric: false,
+              },
+              {
+                  type: 'string',
+                  id: 'phone',
+                  label: 'Telefon',
+                  visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
+                  numeric: false,
+              },
+              {
+                  type: 'string',
+                  id: 'pesel',
+                  label: 'Pesel',
+                  visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
+                  numeric: false,
+              },
+          ]
+        : [
+              {
+                  type: 'string',
+                  id: 'firstName',
+                  label: 'Imię',
+                  visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
+                  numeric: false,
+              },
+              {
+                  type: 'string',
+                  id: 'lastName',
+                  label: 'Nazwisko',
+                  visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
+                  numeric: false,
+              },
+              {
+                  type: 'string',
+                  id: 'roles',
+                  label: 'Stanowisko',
+                  visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
+                  numeric: false,
+                  formatFn: (role: string) => roleName(role[0]),
+              },
+              {
+                  type: 'string',
+                  id: 'email',
+                  label: 'Email',
+                  visibleInMode: [AppSize.tablet, AppSize.notebook, AppSize.desktop],
+                  numeric: false,
+              },
+              {
+                  type: 'string',
+                  id: 'phone',
+                  label: 'Telefon',
+                  visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
+                  numeric: false,
+              },
+          ]
+}
 
-export const filterInitStructure: Array<FilterInputType> = isAuthorized([Role.ADMIN])
-    ? [
-          {
-              id: 'fristName',
-              value: '',
-              label: 'Imię',
-              inputType: 'text',
-              typeValue: 'string',
-          },
-          {
-              id: 'lastName',
-              value: '',
-              label: 'Nazwisko',
-              inputType: 'text',
-              typeValue: 'string',
-          },
-          {
-              id: 'email',
-              value: '',
-              label: 'Email',
-              inputType: 'text',
-              typeValue: 'string',
-          },
-          {
-              id: 'phone',
-              value: '',
-              label: 'Telefon',
-              inputType: 'text',
-              typeValue: 'string',
-          },
-          {
-              id: 'roles',
-              value: '',
-              label: 'Stanowisko',
-              inputType: 'multiselect',
-              typeValue: 'Array',
-              options: userRoleOptions(),
-          },
-          {
-              id: 'pesel',
-              value: '',
-              label: 'Pesel',
-              inputType: 'text',
-              typeValue: 'string',
-          },
-      ]
-    : [
-          {
-              id: 'fristName',
-              value: '',
-              label: 'Imię',
-              inputType: 'text',
-              typeValue: 'string',
-          },
-          {
-              id: 'lastName',
-              value: '',
-              label: 'Nazwisko',
-              inputType: 'text',
-              typeValue: 'string',
-          },
-          {
-              id: 'email',
-              value: '',
-              label: 'Email',
-              inputType: 'text',
-              typeValue: 'string',
-          },
-          {
-              id: 'phone',
-              value: '',
-              label: 'Telefon',
-              inputType: 'text',
-              typeValue: 'string',
-          },
-          {
-              id: 'roles',
-              value: '',
-              label: 'Stanowisko',
-              inputType: 'multiselect',
-              typeValue: 'Array',
-              options: userRoleOptions(),
-          },
-      ]
+export const useFilterInitStructure = (): Array<FilterInputType> => {
+    return isAuthorized([Role.ADMIN])
+        ? [
+              {
+                  id: 'fristName',
+                  value: '',
+                  label: 'Imię',
+                  inputType: 'text',
+                  typeValue: 'string',
+              },
+              {
+                  id: 'lastName',
+                  value: '',
+                  label: 'Nazwisko',
+                  inputType: 'text',
+                  typeValue: 'string',
+              },
+              {
+                  id: 'email',
+                  value: '',
+                  label: 'Email',
+                  inputType: 'text',
+                  typeValue: 'string',
+              },
+              {
+                  id: 'phone',
+                  value: '',
+                  label: 'Telefon',
+                  inputType: 'text',
+                  typeValue: 'string',
+              },
+              {
+                  id: 'roles',
+                  value: '',
+                  label: 'Stanowisko',
+                  inputType: 'multiselect',
+                  typeValue: 'Array',
+                  options: userRoleOptions(),
+              },
+              {
+                  id: 'pesel',
+                  value: '',
+                  label: 'Pesel',
+                  inputType: 'text',
+                  typeValue: 'string',
+              },
+          ]
+        : [
+              {
+                  id: 'fristName',
+                  value: '',
+                  label: 'Imię',
+                  inputType: 'text',
+                  typeValue: 'string',
+              },
+              {
+                  id: 'lastName',
+                  value: '',
+                  label: 'Nazwisko',
+                  inputType: 'text',
+                  typeValue: 'string',
+              },
+              {
+                  id: 'email',
+                  value: '',
+                  label: 'Email',
+                  inputType: 'text',
+                  typeValue: 'string',
+              },
+              {
+                  id: 'phone',
+                  value: '',
+                  label: 'Telefon',
+                  inputType: 'text',
+                  typeValue: 'string',
+              },
+              {
+                  id: 'roles',
+                  value: '',
+                  label: 'Stanowisko',
+                  inputType: 'multiselect',
+                  typeValue: 'Array',
+                  options: userRoleOptions(),
+              },
+          ]
+}
 
 export const useFormStructure = (): Array<FormInputProps> => {
     return [
