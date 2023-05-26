@@ -1,13 +1,12 @@
 import { FilterInputType } from '../../components/table/filter/TableFilter'
-import { Element, TypeOfUnit } from '../../types/model/Element'
+import { Element } from '../../types/model/Element'
 import { HeadCell } from '../../components/table/sort/SortedTableHeader'
-
 import * as yup from 'yup'
 import { typeOfUnitName, typeOfUnitOptions } from '../../helpers/enum.helper'
-
 import { AppSize } from '../../hooks/useBreakpoints'
 import { FormInputProps } from '../../types/form'
 import { Role } from '../../types/roleEnum'
+
 export const headCells: Array<HeadCell<Element>> = [
     {
         type: 'string',

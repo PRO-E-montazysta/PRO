@@ -3,9 +3,7 @@ package com.emontazysta.mapper;
 import com.emontazysta.model.AppUser;
 import com.emontazysta.model.Notification;
 import com.emontazysta.model.dto.NotificationDto;
-import com.emontazysta.repository.AppUserRepository;
-import com.emontazysta.repository.OrderRepository;
-import com.emontazysta.repository.OrderStageRepository;
+import com.emontazysta.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +19,8 @@ public class NotificationMapper {
     private final AppUserRepository appUserRepository;
     private final OrderStageRepository orderStageRepository;
     private final OrderRepository orderRepository;
+    private final ToolEventRepository toolEventRepository;
+    private final ElementEventRepository elementEventRepository;
 
     public NotificationDto toDto(Notification notification) {
         return NotificationDto.builder()
@@ -34,6 +34,8 @@ public class NotificationMapper {
                 .notifiedEmployeeId(notification.getNotifiedEmployee().getId())
                 .orderStageId(notification.getOrderStage() == null ? null : notification.getOrderStage().getId())
                 .orderId(notification.getOrder() == null ? null : notification.getOrder().getId())
+                .toolEventId(notification.getToolEvent() == null ? null : notification.getToolEvent().getId())
+                .elementEventId(notification.getElementEvent() == null ? null : notification.getElementEvent().getId())
                 .deleted(notification.isDeleted())
                 .build();
     }
@@ -50,6 +52,8 @@ public class NotificationMapper {
                 .notifiedEmployee(notificationDto.getNotifiedEmployeeId() == null ? null : appUserRepository.getReferenceById(notificationDto.getNotifiedEmployeeId()))
                 .orderStage(notificationDto.getOrderStageId() == null ? null : orderStageRepository.getReferenceById(notificationDto.getOrderStageId()))
                 .order(notificationDto.getOrderId() == null ? null : orderRepository.getReferenceById(notificationDto.getOrderId()))
+                .toolEvent(notificationDto.getToolEventId() == null ? null : toolEventRepository.getReferenceById(notificationDto.getToolEventId()))
+                .elementEvent(notificationDto.getElementEventId() == null ? null : elementEventRepository.getReferenceById(notificationDto.getElementEventId()))
                 .deleted(notificationDto.isDeleted())
                 .build();
     }

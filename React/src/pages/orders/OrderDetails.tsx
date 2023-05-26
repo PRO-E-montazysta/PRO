@@ -1,4 +1,4 @@
-import { Paper, Typography } from '@mui/material'
+import { Button, Paper, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import { useFormik } from 'formik'
 import { useContext, useEffect, useState } from 'react'
@@ -26,11 +26,17 @@ import FormPaper from '../../components/form/FormPaper'
 import FormTitle from '../../components/form/FormTitle'
 import FormBox from '../../components/form/FormBox'
 import { PageMode } from '../../types/form'
+import OrderStagesDetails from '../orderStages/OrderStagesDetails'
+import { getRolesFromToken } from '../../utils/token'
+import { Role } from '../../types/roleEnum'
+import EditIcon from '@mui/icons-material/Edit'
 import Localization from '../../components/localization/Localization'
 import { Order } from '../../types/model/Order'
 import { useAddLocation, useFormStructureLocation, useLocationData } from '../../components/localization/hooks'
 
 const OrderDetails = () => {
+    const [userRole, setUserRole] = useState('')
+
     //parameters from url
     const params = useParams()
 
@@ -53,8 +59,13 @@ const OrderDetails = () => {
     const queriesStatus = useQueriesStatus([orderData], [addOrderMutation, editOrderMutation, deleteOrderMutation])
 
     const appSize = useBreakpoints()
+
+    useEffect(() => {
+        const role = getRolesFromToken()
+        if (role.length !== 0) setUserRole(role[0])
+    }, [])
+
     const handleSubmit = async (values: any) => {
-        console.log(values)
         //show formik location errors to user
         formikLocation.submitForm()
         //check if there are any error
@@ -71,7 +82,6 @@ const OrderDetails = () => {
                 ...formikLocation.values,
                 orderId: data.id,
             }
-            console.log(body)
             if (pageMode == 'new') addLocationMutation.mutate(body)
             else if (pageMode == 'edit') editLocationMutation.mutate(body)
         }
@@ -130,7 +140,7 @@ const OrderDetails = () => {
     //new mode
     //set readonly mode, populate formik and init data with init values from helper
     useEffect(() => {
-        if (params.id == 'new') {
+        if (params.id === 'new') {
             setPageMode('new')
             formik.setValues(getInitValues(formStructure))
             formik.resetForm()
@@ -141,6 +151,15 @@ const OrderDetails = () => {
         } else setPageMode('read')
     }, [params.id])
 
+    const getAddOrderStageButton = () => {
+        return userRole === Role.SPECIALIST ? true : false
+    }
+
+    const [isAddOrderStageVisible, setIsAddOrderStageVisible] = useState(false)
+
+    const handleAddOrderStage = () => {
+        setIsAddOrderStageVisible(!isAddOrderStageVisible)
+    }
     //--------------- Location functionality --------------------
     const formStructureLocation = useFormStructureLocation()
     const [initDataLocation, setInitDataLocation] = useState(getInitValues(formStructureLocation))
@@ -190,10 +209,14 @@ const OrderDetails = () => {
                                 onReset={handleReset}
                                 onSubmit={formik.submitForm}
                                 readonlyMode={pageMode == 'read'}
+                                orderStageButton={getAddOrderStageButton()}
+                                handleAddOrderStage={handleAddOrderStage}
+                                isAddOrderStageVisible={isAddOrderStageVisible}
                             />
                         </>
                     )}
                 </FormPaper>
+                {params.id !== 'new' && <OrderStagesDetails isAddOrderStageVisible={isAddOrderStageVisible} />}
             </FormBox>
         </>
     )
