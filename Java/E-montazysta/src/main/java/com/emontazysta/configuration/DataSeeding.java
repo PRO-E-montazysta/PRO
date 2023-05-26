@@ -53,6 +53,8 @@ public class DataSeeding {
     private final AppUserService appUserService;
     private final EmploymentRepository employmentRepository;
     private final UnavailabilityService unavailabilityService;
+    private final ToolRepository toolRepository;
+    private final ElementRepository elementRepository;
 
     private final CompanyMapper companyMapper;
     private final ClientMapper clientMapper;
@@ -385,6 +387,10 @@ public class DataSeeding {
                 warehouse2, new ArrayList<>(), toolType3));
         Tool tool4 = addToolFromModel(new Tool(null, "Test Tool 4", null, null, new ArrayList<>(),
                 warehouse2, new ArrayList<>(), toolType4));
+        toolRepository.save(new Tool(null, "Tool 5", LocalDate.now(), "T|HARDCODED-TOOL5",
+                new ArrayList<>(), warehouse1, new ArrayList<>(), toolType1));
+        toolRepository.save(new Tool(null, "Tool 6", LocalDate.now(), "T|HARDCODED-TOOL6",
+                new ArrayList<>(), warehouse2, new ArrayList<>(), toolType2));
 
         ToolEvent toolEvent1 = addToolEventFromModel(new ToolEvent(null, LocalDateTime.now(), null, null,
                 "Test ToolEvent 1", EventStatus.CREATED, fitter1, null, tool1, new ArrayList<>()));
@@ -434,6 +440,10 @@ public class DataSeeding {
                 3.3f, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>()));
         Element element4 = addElementFromModel(new Element(null, "Test Element 4", null, TypeOfUnit.PIECE,
                 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>()));
+        Element element5 = elementRepository.save(new Element(null, "Element 5", "E|HARDCODED-ELEMENT5", TypeOfUnit.KILOGRAM,
+                1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>()));
+        Element element6 = elementRepository.save(new Element(null, "Element 6", "E|HARDCODED-ELEMENT6", TypeOfUnit.LITER,
+                1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>()));
 
         ElementEvent elementEvent1 = addElementEventFromModel(new ElementEvent(null, LocalDateTime.now(),
                 null, null, "Test ElementEvent 1", EventStatus.CREATED, 1,
@@ -472,6 +482,18 @@ public class DataSeeding {
                 3, 1, "3", "3", element3, warehouse3));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
                 4, 1, "4", "3", element4, warehouse3));
+        addElementInWarehouseFromModel(new ElementInWarehouse(null,
+                51, 1, "5", "1", element5, warehouse1));
+        addElementInWarehouseFromModel(new ElementInWarehouse(null,
+                61, 1, "6", "1", element6, warehouse1));
+        addElementInWarehouseFromModel(new ElementInWarehouse(null,
+                52, 1, "5", "2", element5, warehouse2));
+        addElementInWarehouseFromModel(new ElementInWarehouse(null,
+                62, 1, "6", "2", element6, warehouse2));
+        addElementInWarehouseFromModel(new ElementInWarehouse(null,
+                53, 1, "5", "3", element5, warehouse3));
+        addElementInWarehouseFromModel(new ElementInWarehouse(null,
+                63, 1, "6", "3", element6, warehouse3));
 
         ElementReturnRelease elementReturnRelease1 = addElementReturnReleaseFromModel(new ElementReturnRelease(null,
                 LocalDateTime.now(), 1, 1, LocalDateTime.now(), warehouseman1, element1,

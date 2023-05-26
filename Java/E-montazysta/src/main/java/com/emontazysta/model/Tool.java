@@ -65,6 +65,9 @@ public class Tool {
 
 
     public ToolStatus getStatus() {
+        if(deleted) {
+            return ToolStatus.DELETED;
+        }
         if(toolReleases.size() > 0) {
             if(toolReleases.get(toolReleases.size() - 1).getReturnTime() == null)
                 return ToolStatus.RELEASED;

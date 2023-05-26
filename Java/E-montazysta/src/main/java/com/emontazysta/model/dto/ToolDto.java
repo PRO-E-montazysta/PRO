@@ -1,5 +1,6 @@
 package com.emontazysta.model.dto;
 
+import com.emontazysta.enums.ToolStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Builder;
@@ -24,5 +25,6 @@ public class ToolDto {
     private Long warehouseId;
     private List<Long> toolEvents;
     private Long toolTypeId;
+    private ToolStatus status;
     private boolean deleted;
 }
