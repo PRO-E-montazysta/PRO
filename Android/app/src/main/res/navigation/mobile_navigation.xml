@@ -29,6 +29,9 @@
         <action
             android:id="@+id/action_navigation_dashboard_to_stageListFragment"
             app:destination="@id/stageListFragment" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_elementsListFragment"
+            app:destination="@id/elementsListFragment" />
     </fragment>
 
     <fragment
@@ -128,4 +131,25 @@
                 android:name="toolId" />
         </action>
     </fragment>
+    <fragment
+        android:id="@+id/elementsListFragment"
+        android:name="com.example.e_montazysta.ui.element.ElementsListFragment"
+        android:label="ElementsListFragment" >
+        <action
+            android:id="@+id/action_elementsListFragment_to_elementMainActivity"
+            app:destination="@id/elementMainActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/elementMainActivity"
+        android:name="com.example.e_montazysta.ui.activities.ElementMainActivity"
+        android:label="activity_element"
+        tools:layout="@layout/activity_element" >
+        <argument
+            android:name="elementId"
+            app:argType="integer" />
+    </activity>
+    <fragment
+        android:id="@+id/elementDetailFragment"
+        android:name="com.example.e_montazysta.ui.element.ElementDetailFragment"
+        android:label="ElementDetailFragment" />
 </navigation>

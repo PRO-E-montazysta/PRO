@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-    <variable
-        name="ReleaseDetailViewModel"
-        type="com.example.e_montazysta.ui.release.ReleaseDetailViewModel" />
+        <variable
+            name="ReleaseDetailViewModel"
+            type="com.example.e_montazysta.ui.release.ReleaseDetailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

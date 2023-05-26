@@ -7,16 +7,31 @@
     android:layout_height="match_parent"
     >
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@android:drawable/arrow_down_float"
+            app:title="E-montażownia"
+            app:menu="@menu/top_app_bar_menu"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            />
+    </com.google.android.material.appbar.AppBarLayout>
+
 
     <fragment
         android:id="@+id/nav_host_fragment_activity_dashboard"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_marginBottom="?attr/actionBarSize"
         app:defaultNavHost="true"
         app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:navGraph="@navigation/mobile_navigation"
-        android:layout_marginBottom="?android:attr/actionBarSize"
         />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

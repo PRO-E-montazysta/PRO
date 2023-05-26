@@ -1,55 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
-            name="item2"
+            name="element"
             type="com.example.e_montazysta.ui.element.ElementListItem" />
-        <variable
-            name="selectedWarehouse"
-            type="com.example.e_montazysta.ui.warehouse.Warehouse" />
         <variable
             name="itemClickListener"
             type="com.example.e_montazysta.ui.element.CustomClickListener" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Widget.Material3.CardView.Elevated"
+        android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?selectableItemBackground"
-        android:backgroundTint="?colorSurface"
-        android:clickable="true"
-        android:focusable="true"
-        android:minHeight="@dimen/list_item_min_height_two_line"
-        tools:theme="@style/Theme.Material3.DayNight">
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginVertical="5dp"
+        android:onClick="@{() -> itemClickListener.cardClicked(element)}">
 
-        <include layout="@layout/list_item_template"
-            android:id="@+id/item"
-            app:headline="@{item2.name}"
-            app:supportText="@{item2.code}"
-            android:layout_height="wrap_content"
+        <LinearLayout
             android:layout_width="match_parent"
-            >
-
-        </include>
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/quantity"
-            style="?attr/textInputOutlinedStyle"
-            android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:hint="@string/element_quantity_label"
-            app:layout_constraintEnd_toStartOf="@id/guide_end"
-            app:layout_constraintTop_toTopOf="@id/guide_top"
-            app:layout_constraintBottom_toBottomOf="@id/guide_bottom"
-            app:suffixText='@{item2.getQuantityInWarehouse(selectedWarehouse.id)}'>
+            android:orientation="vertical"
+            android:paddingStart="16dp">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <TextView
+                android:id="@+id/element_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="Name"
+                />
+
+            <TextView
+                android:id="@+id/element_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                tools:text="code" />
+
+            <TextView
+                android:id="@+id/element_created_at"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                tools:text="created_at" />
+
+            <TextView
+                android:id="@+id/element_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                tools:text="unit" />
+
+            <TextView
+                android:id="@+id/element_qty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                tools:text="qty" />
+
+            <TextView
+                android:id="@+id/element_warehouse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                tools:text="warehouse" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="1" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_height="1dp"
+                android:alpha=".30"
+                android:background="?colorOnPrimaryContainer"
+                android:orientation="vertical"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 </layout>

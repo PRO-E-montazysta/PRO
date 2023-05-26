@@ -1,19 +1,20 @@
-package com.example.e_montazysta.ui.release
+package com.example.e_montazysta.ui.element
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.e_montazysta.data.model.Release
 import com.example.e_montazysta.data.model.Result
-import com.example.e_montazysta.data.repository.interfaces.IReleaseRepository
+import com.example.e_montazysta.data.repository.interfaces.IElementRepository
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
-class ReleaseDetailViewModel(private val repository: IReleaseRepository) : ViewModel(), CoroutineScope {
+
+class ElementsListViewModel(private val repository: IElementRepository) : ViewModel(), CoroutineScope {
+
     private var job: Job? = null
 
-    private val _releaseDetailLiveData = MutableLiveData<Release>()
-    val releasedetail: LiveData<Release> = _releaseDetailLiveData
+    private val _elementsLiveData = MutableLiveData<List<ElementListItem>>()
+    val elements: LiveData<List<ElementListItem>> = _elementsLiveData
 
     private val _messageLiveData = MutableLiveData<String>()
     val messageLiveData: LiveData<String> = _messageLiveData
@@ -24,19 +25,19 @@ class ReleaseDetailViewModel(private val repository: IReleaseRepository) : ViewM
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
-    fun getReleaseDetail(id: Int) {
+    fun getElements() {
         job = launch {
-            getReleaseDetailAsync(id)
+            getElementsAsync()
         }
     }
 
-    private suspend fun getReleaseDetailAsync(id: Int) {
+    private suspend fun getElementsAsync() {
         _isLoadingLiveData.postValue(true)
-        val result = repository.getReleaseDetail(id)
-        when (result) {
-            is Result.Success -> _releaseDetailLiveData.postValue(result.data)
-            is Result.Error -> result.exception.message?.let { _messageLiveData.postValue(it) }
-        }
+            val result = repository.getElements()
+            when (result) {
+                is Result.Success -> _elementsLiveData.postValue(result.data.map { it.mapToElementItem() })
+                is Result.Error -> result.exception.message?.let { _messageLiveData.postValue(it) }
+            }
         _isLoadingLiveData.postValue(false)
     }
 

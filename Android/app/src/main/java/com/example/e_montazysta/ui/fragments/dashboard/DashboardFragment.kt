@@ -4,12 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.example.e_montazysta.databinding.FragmentDashboardBinding
-import com.google.android.material.card.MaterialCardView
 
 class DashboardFragment : Fragment() {
 
@@ -53,6 +50,13 @@ class DashboardFragment : Fragment() {
         val stages = binding.stages
         stages.setOnClickListener{
             val direction = DashboardFragmentDirections.actionNavigationDashboardToStageListFragment()
+            findNavController().navigate(direction)
+
+        }
+
+        val elements = binding.elements
+        elements.setOnClickListener{
+            val direction = DashboardFragmentDirections.actionNavigationDashboardToElementsListFragment()
             findNavController().navigate(direction)
 
         }
