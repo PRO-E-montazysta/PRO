@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles'
 import * as React from 'react'
 import * as yup from 'yup'
 
-type TabPanelProps = {
+export type TabPanelProps = {
     children?: React.ReactNode
     index: number
     value: number

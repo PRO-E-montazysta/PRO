@@ -151,11 +151,12 @@ const OrderStageToolsTable = forwardRef(
                                             </FormControl>
                                         </Box>
                                     </TableCell>
-                                    {isDisplayingMode && <TableCell align="right">bla</TableCell>}
+                                    {isDisplayingMode && <TableCell align="right"></TableCell>}
                                     {!isDisplayingMode && (
                                         <TableCell align="right">
                                             {rowIndex === tableData.length - 1 && (
                                                 <Button
+                                                    sx={{ marginRight: '10px' }}
                                                     color="primary"
                                                     variant="contained"
                                                     onClick={() => {
@@ -198,7 +199,7 @@ const chooseSelectItemId = (
         return itemsArray.map((item: any, index) => (
             <MenuItem
                 key={uuidv4()}
-                id={'toolstableItem'+index}
+                id={'toolstableItem' + index}
                 value={item.id}
                 onClick={() => {
                     setSelectedItemId(item.id)

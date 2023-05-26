@@ -1,5 +1,5 @@
 import { useFormik } from 'formik'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useFormStructure } from './helper'
 import FormBox from '../../components/form/FormBox'
@@ -14,6 +14,7 @@ import { getInitValues, getValidatinSchema } from '../../helpers/form.helper'
 import { useAddDemandAdHoc, useDeleteDemandAdHoc, useEditDemandAdHoc, useDemandAdHocData } from './hooks'
 import { useQueriesStatus } from '../../hooks/useQueriesStatus'
 import { Divider } from '@mui/material'
+import DemandAdHocTables from './DemandAdHocTables'
 
 const DemandAdHocDetails = () => {
     const params = useParams()
@@ -21,6 +22,11 @@ const DemandAdHocDetails = () => {
     const { showDialog } = useContext(DialogGlobalContext)
     const formStructure = useFormStructure()
     const [initData, setInitData] = useState(getInitValues(formStructure))
+
+    //użyć refów i w useeffectcie przypisać do formika, w formiku już są jako initValues,
+    //zmienić typy tablic, przemyśleć jak to zrobić przy edycji - w butonie on edit zrobić metode ustawiającą refy
+    const plannedElementsRef = useRef<{ numberOfElements: number; elementId: string }[]>([])
+    const plannedToolsTypesRef = useRef<{ numberOfTools: number; toolTypeId: string }[]>([])
 
     //mutations and queries
     const addDemandAdHocMutation = useAddDemandAdHoc()
@@ -34,6 +40,10 @@ const DemandAdHocDetails = () => {
     )
 
     const handleSubmit = (values: any) => {
+        //dołożyć dane do formika
+        values.listOfElementsPlannedNumber = plannedElementsRef.current!
+        values.listOfToolsPlannedNumber = plannedToolsTypesRef.current!
+        console.log('values', values)
         if (pageMode == 'new') addDemandAdHocMutation.mutate(values)
         else if (pageMode == 'edit') editDemandAdHocMutation.mutate(values)
         else console.warn('Try to submit while read mode')
@@ -77,6 +87,7 @@ const DemandAdHocDetails = () => {
 
     useEffect(() => {
         if (demandAdHocData.data) {
+            console.log('demand', demandAdHocData.data)
             formik.setValues(demandAdHocData.data)
             setInitData(demandAdHocData.data)
         }
@@ -102,10 +113,11 @@ const DemandAdHocDetails = () => {
                     ) : (
                         <>
                             <FormStructure formStructure={formStructure} formik={formik} pageMode={pageMode} />
-                            <Divider />
-                            Lista typów narzędzi
-                            <Divider />
-                            Lista elementów
+                            <DemandAdHocTables
+                                plannedElementsRef={plannedElementsRef}
+                                plannedToolsTypesRef={plannedToolsTypesRef}
+                                pageMode={pageMode}
+                            />
                             <FormButtons
                                 id={params.id}
                                 onCancel={handleCancel}

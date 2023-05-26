@@ -428,7 +428,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     component="div"
                                     value={tabValue}
                                     onChange={handleTabChange}
-                                    aria-label="basic tabs example"
                                 >
                                     <Tab label="Informacje o datach" {...tabProps(0)} />
                                     <Tab label="Narzędzia" {...tabProps(1)} />
