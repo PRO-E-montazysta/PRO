@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="ElementDetailViewModel"
+            type="com.example.e_montazysta.ui.element.ElementDetailViewModel" />
+        <variable
+            name="element"
+            type="com.example.e_montazysta.data.model.Element" />
+    </data>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.ElementMainActivity"
+    android:padding="8dp"
+    tools:ignore="HardcodedText">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/topAppBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@android:drawable/arrow_down_float"
+            app:title="E-montażownia"
+            app:menu="@menu/top_app_bar_menu"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!--
+    <androidx.fragment.app.FragmentContainerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+
+        android:id="@+id/fragment_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.example.e_montaysta.ElementFragment"
+        />
+     -->
+    <!--
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:context=".ElementFragment"
+        android:padding="8dp">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    -->
+
+        <!--
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/element_back"
+            android:enabled="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="0dp"
+            app:icon="@drawable/baseline_arrow_back_ios_24"
+            app:iconPadding="0dp"
+            android:background="?android:attr/selectableItemBackground"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/element_notifications"
+            android:enabled="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="0dp"
+            app:icon="@drawable/baseline_notifications_24"
+            app:iconPadding="0dp"
+            android:background="?android:attr/selectableItemBackground"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+        -->
+
+        <TextView
+            android:id="@+id/view_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_element"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/topAppBarLayout"
+            android:textSize="36dp"
+            />
+
+        <LinearLayout
+            android:id="@+id/element_frame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_name"
+            >
+            <TextView
+                android:id="@+id/element_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/element_name_text"
+                android:textColor="#96C0FB" />
+            <TextView
+                android:id="@+id/element_name_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{element.name}"
+                />
+            <TextView
+                android:id="@+id/element_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/element_code_text"
+                android:textColor="#96C0FB"/>
+            <TextView
+                android:id="@+id/element_code_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{element.code}"
+                />
+            <TextView
+                android:id="@+id/element_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/element_unit_text"
+                android:textColor="#96C0FB"/>
+            <TextView
+                android:id="@+id/element_unit_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{element.typeOfUnit}"
+                />
+            <TextView
+                android:id="@+id/element_qty_of_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/element_qty_of_unit_text"
+                android:textColor="#96C0FB"/>
+            <TextView
+                android:id="@+id/element_qty_of_unit_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TODO"
+                />
+            <TextView
+                android:id="@+id/element_warehouse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/element_warehouse_text"
+                android:textColor="#96C0FB"/>
+            <TextView
+                android:id="@+id/element_warehouse_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TODO"
+                />
+        </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/action_main_fab"
+        android:contentDescription="Wykonaj akcję"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/baseline_add_box_24"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/element_event_fab"
+        android:contentDescription="Zgłoś usterkę"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toTopOf="@+id/action_main_fab"
+        app:layout_constraintEnd_toEndOf="@+id/action_main_fab"
+        app:layout_constraintStart_toStartOf="@+id/action_main_fab"
+        app:srcCompat="@drawable/baseline_cable_24"
+        />
+    <TextView
+        android:id="@+id/element_event_fab_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="Zgłoś usterkę"
+        app:layout_constraintBottom_toBottomOf="@+id/element_event_fab"
+        app:layout_constraintEnd_toStartOf="@+id/element_event_fab"
+        app:layout_constraintTop_toTopOf="@+id/element_event_fab"
+        />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/element_manage_fab"
+        android:contentDescription="Wydaj/Zwróć element"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toTopOf="@+id/element_event_fab"
+        app:layout_constraintEnd_toEndOf="@+id/element_event_fab"
+        app:layout_constraintStart_toStartOf="@+id/element_event_fab"
+        app:srcCompat="@drawable/baseline_assignment_return_24"
+        />
+    <TextView
+        android:id="@+id/element_manage_fab_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="Wydaj/Zwróć element"
+        app:layout_constraintBottom_toBottomOf="@+id/element_manage_fab"
+        app:layout_constraintEnd_toStartOf="@+id/element_manage_fab"
+        app:layout_constraintTop_toTopOf="@+id/element_manage_fab"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>
+    <!--
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:background="?android:attr/windowBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
+    -->
+</layout>

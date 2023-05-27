@@ -2,7 +2,7 @@ package com.example.e_montazysta.data.repository
 
 import com.example.e_montazysta.data.model.Order
 import com.example.e_montazysta.data.model.Result
-import com.example.e_montazysta.data.repository.Interfaces.IOrderRepository
+import com.example.e_montazysta.data.repository.interfaces.IOrderRepository
 import com.example.e_montazysta.data.services.IServiceProvider
 import com.example.e_montazysta.helpers.Interfaces.ISharedPreferencesHelper
 import org.koin.core.component.KoinComponent
@@ -29,6 +29,7 @@ class OrderRepository (private val serviceProvider: IServiceProvider): IOrderRep
             val orderDAO = orderService.getOrderDetail(token, id)
             val orderDetail = orderDAO.mapToOrder()
             Result.Success(orderDetail)
+
         } catch (e: Exception) {
             Result.Error(e)
         }

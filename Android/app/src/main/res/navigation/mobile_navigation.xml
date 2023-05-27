@@ -29,6 +29,9 @@
         <action
             android:id="@+id/action_navigation_dashboard_to_stageListFragment"
             app:destination="@id/stageListFragment" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_elementsListFragment"
+            app:destination="@id/elementsListFragment" />
     </fragment>
 
     <fragment
@@ -56,7 +59,11 @@
         android:id="@+id/toolFragment"
         android:name="com.example.e_montazysta.ui.fragments.tool.ToolFragment"
         android:label="fragment_tool"
-        tools:layout="@layout/fragment_tool" />
+        tools:layout="@layout/fragment_tool">
+        <argument
+            android:name="toolId"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/releaseListFragment"
         android:name="com.example.e_montazysta.ui.release.ReleaseListFragment"
@@ -71,7 +78,7 @@
         android:label="ReleaseDetailFragment" >
         <argument
             android:name="releaseId"
-            app:argType="string" />
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/orderListFragment"
@@ -97,6 +104,9 @@
         <argument
             android:name="stageId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_stageDetailFragment_to_releaseCreateFragment"
+            app:destination="@id/releaseCreateFragment" />
     </fragment>
 
     <fragment
@@ -107,4 +117,39 @@
             android:id="@+id/action_stageListFragment_to_stageDetailFragment"
             app:destination="@id/stageDetailFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/releaseCreateFragment"
+        android:name="com.example.e_montazysta.ui.release.ReleaseCreateFragment"
+        android:label="ReleaseCreateFragment" >
+        <argument
+            android:name="stageId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_releaseCreateFragment_to_toolFragment"
+            app:destination="@id/toolFragment" >
+            <argument
+                android:name="toolId" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/elementsListFragment"
+        android:name="com.example.e_montazysta.ui.element.ElementsListFragment"
+        android:label="ElementsListFragment" >
+        <action
+            android:id="@+id/action_elementsListFragment_to_elementMainActivity"
+            app:destination="@id/elementMainActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/elementMainActivity"
+        android:name="com.example.e_montazysta.ui.activities.ElementMainActivity"
+        android:label="activity_element"
+        tools:layout="@layout/activity_element" >
+        <argument
+            android:name="elementId"
+            app:argType="integer" />
+    </activity>
+    <fragment
+        android:id="@+id/elementDetailFragment"
+        android:name="com.example.e_montazysta.ui.element.ElementDetailFragment"
+        android:label="ElementDetailFragment" />
 </navigation>

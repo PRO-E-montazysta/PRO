@@ -3,13 +3,13 @@ package com.example.e_montazysta.ui.order
 import com.example.e_montazysta.data.model.Order
 import com.example.e_montazysta.data.model.Result
 import com.example.e_montazysta.data.model.User
-import com.example.e_montazysta.data.repository.Interfaces.IOrderRepository
-import com.example.e_montazysta.data.repository.Interfaces.IUserRepository
+import com.example.e_montazysta.data.repository.interfaces.IUserRepository
 import com.squareup.moshi.Json
-import com.example.e_montazysta.data.repository.UserRepository
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.util.*
+import java.util.Date
 
 data class OrderDAO (
     @Json(name = "id")
@@ -21,39 +21,49 @@ data class OrderDAO (
     @Json(name = "status")
     val status: String,
     @Json(name = "plannedStart")
-    val plannedStart: Date,
+    val plannedStart: Date?,
     @Json(name = "plannedEnd")
-    val plannedEnd: Date,
+    val plannedEnd: Date?,
     @Json(name = "clientId")
-    val clientId: Int,
+    val clientId: Int?,
     @Json(name = "foremanId")
-    val foremanId: Int,
+    val foremanId: Int?,
     @Json(name = "locationId")
-    val locationId: Int,
+    val locationId: Int?,
     @Json(name = "managerId")
-    val managerId: Int,
+    val managerId: Int?,
     @Json(name = "specialistId")
-    val specialistId: Int,
+    val specialistId: Int?,
     @Json(name = "salesRepresentativeId")
-    val salesRepresentativeId: Int,
+    val salesRepresentativeId: Int?,
     @Json(name = "createdAt")
-    val createdAt: Date,
+    val createdAt: Date?,
     @Json(name = "editedAt")
     val editedAt: Date?
 ) : KoinComponent {
     val userRepository: IUserRepository by inject()
     suspend fun mapToOrder(): Order {
-        val client = getUserDetails(clientId)
-        val manager = getUserDetails(managerId)
-        val specialist = getUserDetails(specialistId)
-        val salesRepresentative = getUserDetails(salesRepresentativeId)
-        val foreman = getUserDetails(foremanId)
+        var client: User?
+        var manager: User?
+        var specialist: User?
+        var salesRepresentative: User?
+        var foreman: User?
+
+        coroutineScope {
+            client = async { getUserDetails(clientId) }.await()
+            manager = async { getUserDetails(managerId) }.await()
+            specialist = async { getUserDetails(specialistId) }.await()
+            salesRepresentative = async { getUserDetails(salesRepresentativeId) }.await()
+            foreman = async { getUserDetails(foremanId) }.await()
+        }
         return Order(id, name, priority, status, plannedStart, plannedEnd, client, foreman, manager, specialist, salesRepresentative, locationId, createdAt, editedAt)
     }
 
-    private suspend fun getUserDetails(userId: Int): User? {
-        val result = userRepository.getUserDetails(userId)
-        return when (result) {
+    private suspend fun getUserDetails(userId: Int?): User? {
+        if (userId == null) {
+            return null
+        }
+        return when (val result = userRepository.getUserDetails(userId)) {
             is Result.Success -> result.data
             is Result.Error -> null
         }

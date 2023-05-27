@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.e_montazysta.databinding.FragmentStageDetailBinding
 //import com.example.e_montazysta.ui.order.StageDetailFragmentArgs
@@ -33,9 +34,21 @@ class StageDetailFragment : Fragment() {
             it?.let {
                 binding.nameValue.text = it.name
                 binding.statusValue.text = it.id.toString()
-                binding.priceValue.text = it.fitters.toString()
+                binding.priceValue.text = it.price.toString()
+                binding.plannedStartValue.text = it.plannedStart.toString()
+                binding.plannedEndValue.text = it.plannedEnd.toString()
+                binding.plannedFittersNumberValue.text = it.plannedFittersNumber.toString()
+                binding.minimumImagesNumberValue.text = it.minimumImagesNumber.toString()
+                binding.listOfToolsPlannedNumberValue.text = it.listOfToolsPlannedNumber.toString()
+                binding.listOfElementsPlannedNumberValue.text = it.listOfToolsPlannedNumber.toString()
             }
         })
+
+        val create_release = binding.createRelease
+        create_release.setOnClickListener {
+            val direction = StageDetailFragmentDirections.actionStageDetailFragmentToReleaseCreateFragment(stageId)
+        findNavController().navigate(direction)
+        }
         // Specify the current activity as the lifecycle owner of the binding.
         // This is necessary so that the binding can observe LiveData updates.
         return binding.root

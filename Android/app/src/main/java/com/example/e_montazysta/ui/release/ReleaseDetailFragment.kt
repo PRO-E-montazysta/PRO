@@ -30,7 +30,7 @@ class ReleaseDetailFragment : Fragment() {
 
         releaseDetailViewModel.releasedetail.observe(viewLifecycleOwner, Observer {
             it?.let {
-                binding.releaseId.text = it.id
+                binding.releaseId.text = it.id.toString()
                 binding.releaseTimeValue.text = it.releaseTime
                 binding.returnTimeValue.text = it.returnTime
                 binding.receivedByIdValue.text = it.receivedById

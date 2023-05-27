@@ -1,6 +1,5 @@
 package com.example.e_montazysta.ui.release
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -40,7 +39,7 @@ class ReleaseListFragment : Fragment() {
         })
         // Specify the current activity as the lifecycle owner of the binding.
         // This is necessary so that the binding can observe LiveData updates.
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
         return binding.root
 
     }

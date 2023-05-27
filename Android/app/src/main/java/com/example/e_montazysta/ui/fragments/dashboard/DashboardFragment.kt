@@ -30,20 +30,35 @@ class DashboardFragment : Fragment() {
 
         val tools = binding.tools
         tools.setOnClickListener{
-            val action = DashboardFragmentDirections.actionNavigationDashboardToToolsFragment2()
-            findNavController().navigate(action)
+            val direction = DashboardFragmentDirections.actionNavigationDashboardToToolsFragment2()
+            findNavController().navigate(direction)
         }
 
         val releases = binding.releases
         releases.setOnClickListener{
-            val action = DashboardFragmentDirections.actionNavigationDashboardToReleaseListFragment()
-            findNavController().navigate(action)
+            val direction = DashboardFragmentDirections.actionNavigationDashboardToReleaseListFragment()
+            findNavController().navigate(direction)
         }
 
         val orders = binding.orders
         orders.setOnClickListener{
-            val action = DashboardFragmentDirections.actionNavigationDashboardToOrderListFragment()
-            findNavController().navigate(action)
+            val direction = DashboardFragmentDirections.actionNavigationDashboardToOrderListFragment()
+            findNavController().navigate(direction)
+
+        }
+
+        val stages = binding.stages
+        stages.setOnClickListener{
+            val direction = DashboardFragmentDirections.actionNavigationDashboardToStageListFragment()
+            findNavController().navigate(direction)
+
+        }
+
+        val elements = binding.elements
+        elements.setOnClickListener{
+            val direction = DashboardFragmentDirections.actionNavigationDashboardToElementsListFragment()
+            findNavController().navigate(direction)
+
         }
 
         return root

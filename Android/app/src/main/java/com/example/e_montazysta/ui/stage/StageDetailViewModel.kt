@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.e_montazysta.data.model.Stage
 import com.example.e_montazysta.data.model.Result
-import com.example.e_montazysta.data.repository.Interfaces.IStageRepository
+import com.example.e_montazysta.data.repository.interfaces.IStageRepository
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
