@@ -9,12 +9,12 @@ data class ToolDAO(
     val name: String,
     @Json(name = "code")
     val code: String,
-    @Json(name = "toolTypeId")
-    val toolTypeId: Int,
-    @Json(name = "warehouseId")
-    val warehouseId: Int
+    @Json(name = "toolType")
+    val toolType: String,
+    @Json(name = "warehouse")
+    val warehouse: String
 ){
     fun mapToTool(): Tool {
-        return Tool(id, name, code, toolTypeId, warehouseId)
+        return Tool(id, name, code, toolType, warehouse)
     }
 }
