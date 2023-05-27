@@ -5,7 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.e_montazysta.data.model.Result
 import com.example.e_montazysta.data.repository.interfaces.IOrderRepository
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 
@@ -36,7 +40,10 @@ class OrderListViewModel(private val repository: IOrderRepository) : ViewModel()
             val result = repository.getListOfOrders()
             when (result) {
                 is Result.Success -> _orderLiveData.postValue(result.data.map { it.mapToOrderItem() })
-                is Result.Error -> result.exception.message?.let { _messageLiveData.postValue(it) }
+                is Result.Error -> {
+                    result.exception.message?.let { _messageLiveData.postValue(it) }
+                    _isLoadingLiveData.postValue(false)
+                }
             }
         _isLoadingLiveData.postValue(false)
     }

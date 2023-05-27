@@ -40,6 +40,16 @@ class OrderListFragment : Fragment() {
                 adapter.elements = it
             }
         })
+
+        orderListViewModel.isLoadingLiveData.observe(viewLifecycleOwner, Observer<Boolean>{
+            it?.let {
+                if(it) {
+                    binding.loadingIndicator.visibility = View.VISIBLE
+                } else {
+                    binding.loadingIndicator.visibility = View.GONE
+                }
+            }
+        })
         // Specify the current activity as the lifecycle owner of the binding.
         // This is necessary so that the binding can observe LiveData updates.
         binding.lifecycleOwner = this

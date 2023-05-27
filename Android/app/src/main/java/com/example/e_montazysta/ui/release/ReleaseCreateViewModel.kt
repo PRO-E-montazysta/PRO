@@ -4,9 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.e_montazysta.data.model.Element
+import com.example.e_montazysta.data.model.ReleaseItem
 import com.example.e_montazysta.data.model.Result
 import com.example.e_montazysta.data.model.Tool
 import com.example.e_montazysta.data.repository.interfaces.IElementRepository
+import com.example.e_montazysta.data.repository.interfaces.IReleaseRepository
 import com.example.e_montazysta.data.repository.interfaces.IToolRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,8 +27,10 @@ class ReleaseCreateViewModel() : ViewModel(), CoroutineScope, KoinComponent {
 
     private val elementRepository: IElementRepository by inject()
 
+    private val releaseRepository: IReleaseRepository by inject()
+
     private val _itemsLiveData = MutableLiveData<List<Any>>()
-    val itemsLiveData: LiveData<List<Any>> = _itemsLiveData
+    val itemsLiveData: LiveData<List<Any>> get() = _itemsLiveData
 
     private val _messageLiveData = MutableLiveData<String>()
     val messageLiveData: LiveData<String> = _messageLiveData
@@ -67,7 +71,7 @@ class ReleaseCreateViewModel() : ViewModel(), CoroutineScope, KoinComponent {
     }
 
     //TODO Ogarnąć ten kod bo jest 2x to samo co w narzędziu
-        private suspend fun addElementToReleaseAsync(code: String?) {
+    private suspend fun addElementToReleaseAsync(code: String?) {
         _isLoadingLiveData.postValue(true)
         val currentItems = _itemsLiveData.value ?: emptyList()
         val existingItem = currentItems.find { it is Element && it.code == code }
@@ -81,14 +85,33 @@ class ReleaseCreateViewModel() : ViewModel(), CoroutineScope, KoinComponent {
                     _itemsLiveData.value = currentItems + element
                 }
 
-                is Result.Error -> result.exception.message?.let { _messageLiveData.postValue(it) }
+                is Result.Error -> {
+                    result.exception.message?.let { _messageLiveData.postValue(it) }
+                    _isLoadingLiveData.postValue(false)
+                }
             }
         }
         _isLoadingLiveData.postValue(false)
     }
 
-    fun createRelease() {
-        TODO("Not yet implemented")
+    suspend fun createRelease(items: List<ReleaseItem>, stageId: Int): Result<Any>? {
+        return createReleaseAsync(items, stageId)
+    }
+
+    private suspend fun createReleaseAsync(items: List<ReleaseItem>, stageId: Int): Result<Any> {
+        _isLoadingLiveData.postValue(true)
+        val result = releaseRepository.createRelease(items, stageId)
+        when (result) {
+            is Result.Success -> {
+                _messageLiveData.postValue("Wydanie utworzone!")
+            }
+            is Result.Error -> {
+                result.exception.message?.let { _messageLiveData.postValue(it) }
+                _isLoadingLiveData.postValue(false)
+            }
+        }
+        _isLoadingLiveData.postValue(false)
+        return result
     }
 
     override val coroutineContext: CoroutineContext

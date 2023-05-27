@@ -47,14 +47,22 @@ export const useFormStructure = (): Array<FormInputProps> => {
             id: 'name',
             initValue: '',
             type: 'input',
-            validation: yup.string().min(3, 'Nazwa musi zaweirać co najmniej 3 znaki').required('Wprowadź nazwę'),
+            validation: yup
+                .string()
+                .min(3, 'Wprowadź co najmniej 3 znaki')
+                .max(255, 'Wprowadź co najwyżej 255 znaków')
+                .required('Wprowadź nazwę'),
         },
         {
             label: 'Dane kontaktowe',
             id: 'contactDetails',
             initValue: '',
             type: 'input',
-            validation: yup.string().required('Wprowadź dane kontaktowe'),
+            validation: yup
+                .string()
+                .min(3, 'Wprowadź co najmniej 3 znaki')
+                .max(255, 'Wprowadź co najwyżej 255 znaków')
+                .required('Wprowadź dane kontaktowe'),
         },
     ]
 }

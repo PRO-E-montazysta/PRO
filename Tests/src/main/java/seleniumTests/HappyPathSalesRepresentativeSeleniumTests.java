@@ -16,7 +16,7 @@ import java.time.Duration;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 
-public class SalesRepresentativeSeleniumTests {
+public class HappyPathSalesRepresentativeSeleniumTests {
 
     private WebDriver driver;
     private WebDriverWait wait;
@@ -44,7 +44,7 @@ public class SalesRepresentativeSeleniumTests {
     }
 
     @Test
-    public void viewOrdersListTest() throws InterruptedException {
+    public void aViewOrdersListTest() throws InterruptedException {
 
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("navBtn-/orders")));
@@ -60,7 +60,7 @@ public class SalesRepresentativeSeleniumTests {
 
 
     @Test
-    public void addClientTest() throws InterruptedException {
+    public void bAddClientTest() throws InterruptedException {
 
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("navBtn-clients/")));
@@ -103,7 +103,7 @@ public class SalesRepresentativeSeleniumTests {
     }
 
     @Test
-    public void editClientTest() throws InterruptedException {
+    public void cEditClientTest() throws InterruptedException {
 
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("navBtn-clients/")));
@@ -154,7 +154,7 @@ public class SalesRepresentativeSeleniumTests {
     }
 
     @Test
-    public void addOrderTest() throws InterruptedException {
+    public void dAddOrderTest() throws InterruptedException {
 
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("navBtn-/orders")));
@@ -224,7 +224,7 @@ public class SalesRepresentativeSeleniumTests {
     }
 
     @Test
-    public void editOrderTest() throws InterruptedException {
+    public void eEditOrderTest() throws InterruptedException {
 
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("navBtn-/orders")));

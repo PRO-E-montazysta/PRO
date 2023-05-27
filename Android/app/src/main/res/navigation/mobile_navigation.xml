@@ -107,6 +107,9 @@
         <action
             android:id="@+id/action_stageDetailFragment_to_releaseCreateFragment"
             app:destination="@id/releaseCreateFragment" />
+        <action
+            android:id="@+id/action_stageDetailFragment_to_releaseDetailFragment"
+            app:destination="@id/releaseDetailFragment" />
     </fragment>
 
     <fragment

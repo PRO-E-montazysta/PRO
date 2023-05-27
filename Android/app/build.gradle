@@ -81,5 +81,10 @@ dependencies {
     implementation "net.nicbell.material-lists:listitem:0.0.6"
 
     implementation 'com.google.mlkit:barcode-scanning:17.1.0'
+    implementation 'com.google.android.gms:play-services-base:18.2.0'
+    implementation 'com.google.android.gms:play-services-tflite-java:16.1.0'
+
+
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
 
 }

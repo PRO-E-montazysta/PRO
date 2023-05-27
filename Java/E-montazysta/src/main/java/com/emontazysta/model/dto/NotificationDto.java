@@ -27,5 +27,7 @@ public class NotificationDto {
     private Long notifiedEmployeeId;
     private Long orderStageId;
     private Long orderId;
+    private Long toolEventId;
+    private Long elementEventId;
     private boolean deleted;
 }

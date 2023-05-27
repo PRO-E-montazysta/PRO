@@ -2,7 +2,6 @@ package com.emontazysta.controller;
 
 import com.emontazysta.model.dto.WarehouseDto;
 import com.emontazysta.model.dto.WarehouseLocationDto;
-import com.emontazysta.model.dto.WarehouseWithLocationDto;
 import com.emontazysta.model.searchcriteria.WarehouseSearchCriteria;
 import com.emontazysta.service.WarehouseService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,8 +43,8 @@ public class WarehouseController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Warehouse.", security = @SecurityRequirement(name = "bearer-key"))
-    public WarehouseDto add(@Valid @RequestBody WarehouseWithLocationDto warehouseWithLocationDto) {
-        return warehouseService.addWarehouseWithLocation(warehouseWithLocationDto);
+    public WarehouseDto add(@Valid @RequestBody WarehouseDto warehouseDto) {
+        return warehouseService.addWithWarehouseCount(warehouseDto);
     }
 
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
@@ -60,8 +59,8 @@ public class WarehouseController {
     @PutMapping("/{id}")
     @Operation(description = "Allows to update Warehouse by given Id, and Warehouse.", security = @SecurityRequirement(name = "bearer-key"))
     public WarehouseDto update(@PathVariable("id") Long id,
-                                @Valid @RequestBody WarehouseWithLocationDto warehouseWithLocationDto) {
-        return warehouseService.update(id, warehouseWithLocationDto);
+                                @Valid @RequestBody WarehouseDto warehouseDto) {
+        return warehouseService.update(id, warehouseDto);
     }
     @GetMapping("/filter")
     @Operation(description = "Allows to get filtered warehouses.", security = @SecurityRequirement(name = "bearer-key"))

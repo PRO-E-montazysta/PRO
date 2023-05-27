@@ -3,9 +3,11 @@ package com.emontazysta.service.impl;
 import com.emontazysta.mapper.LocationMapper;
 import com.emontazysta.model.Location;
 import com.emontazysta.model.Orders;
+import com.emontazysta.model.Warehouse;
 import com.emontazysta.model.dto.LocationDto;
 import com.emontazysta.repository.LocationRepository;
 import com.emontazysta.repository.OrderRepository;
+import com.emontazysta.repository.WarehouseRepository;
 import com.emontazysta.service.LocationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ public class LocationServiceImpl implements LocationService {
     private final LocationRepository repository;
     private final LocationMapper locationMapper;
     private final OrderRepository orderRepository;
+    private final WarehouseRepository warehouseRepository;
 
     @Override
     public List<LocationDto> getAll() {
@@ -43,6 +46,12 @@ public class LocationServiceImpl implements LocationService {
             Orders order = location.getOrder();
             order.setLocation(location);
             orderRepository.save(order);
+        }
+
+        if(locationDto.getWarehouseId()!=null){
+            Warehouse warehouse = location.getWarehouse();
+            warehouse.setLocation(location);
+            warehouseRepository.save(warehouse);
         }
 
         return locationMapper.toDto(location);

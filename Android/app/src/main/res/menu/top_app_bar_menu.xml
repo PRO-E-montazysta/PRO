@@ -2,24 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/back"
-        android:title="Back"
-        android:enabled="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minWidth="0dp"
-        android:icon="@drawable/baseline_arrow_back_ios_new_24"
-        android:contentDescription="Back"
-        app:iconPadding="0dp"
-        android:background="?android:attr/selectableItemBackground"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:showAsAction="ifRoom" />
-
-    <item
         android:id="@+id/notifications"
         android:title="Notifications"
-        android:enabled="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minWidth="0dp"

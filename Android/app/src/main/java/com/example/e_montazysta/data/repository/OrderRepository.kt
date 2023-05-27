@@ -29,6 +29,7 @@ class OrderRepository (private val serviceProvider: IServiceProvider): IOrderRep
             val orderDAO = orderService.getOrderDetail(token, id)
             val orderDetail = orderDAO.mapToOrder()
             Result.Success(orderDetail)
+
         } catch (e: Exception) {
             Result.Error(e)
         }

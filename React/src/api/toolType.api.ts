@@ -24,3 +24,8 @@ export const postToolType = (data: ToolType) => {
 export const deleteToolType = (id: string | number) => {
     return makeServiceCall(`/tooltype/${id}`, 'DELETE', {})
 }
+
+
+export const getPlannedToolTypesById = (id: string | number) => {
+    return makeServiceCall(`/tools-planned/${id}`, 'GET', {})
+}

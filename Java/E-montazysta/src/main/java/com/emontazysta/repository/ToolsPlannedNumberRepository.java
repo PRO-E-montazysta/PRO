@@ -9,7 +9,4 @@ import java.util.Optional;
 
 @Repository
 public interface ToolsPlannedNumberRepository extends JpaRepository<ToolsPlannedNumber, Long> {
-
-    Optional<ToolsPlannedNumber> findByIdAndDeletedIsFalse(Long id);
-    List<ToolsPlannedNumber> findAllByDeletedIsFalse();
 }

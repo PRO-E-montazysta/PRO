@@ -1,6 +1,8 @@
 package com.example.e_montazysta.ui.order
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.e_montazysta.databinding.FragmentOrderDetailBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.DateFormat
+import kotlin.system.measureTimeMillis
 
 class OrderDetailFragment : Fragment() {
     private val orderDetailViewModel: OrderDetailViewModel by viewModel()
@@ -26,8 +29,10 @@ class OrderDetailFragment : Fragment() {
         // To use the View Model with data binding, you have to explicitly
         // give the binding object a reference to it.
         binding.orderDetailViewModel = orderDetailViewModel
-
-        orderDetailViewModel.getOrderDetail(orderId)
+        val time = measureTimeMillis {
+            orderDetailViewModel.getOrderDetail(orderId)
+        }
+        Log.d(TAG, "Requests took $time ms.")
 
         orderDetailViewModel.orderdetail.observe(viewLifecycleOwner, Observer {
             it?.let {

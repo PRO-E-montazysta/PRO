@@ -68,20 +68,32 @@ export const useFormStructure = (): Array<FormInputProps> => {
             id: 'name',
             initValue: '',
             type: 'input',
-            validation: yup.string().min(3, 'Nazwa musi zaweirać co najmniej 3 znaki').required('Wprowadź nazwę'),
+            validation: yup
+                .string()
+                .min(3, 'Nazwa musi zawierać co najmniej 3 znaki')
+                .max(255, 'Nazwa może zawierać maksymalnie 255 znaków')
+                .required('Wprowadź nazwę'),
         },
         {
             label: 'Opis',
             id: 'description',
             initValue: '',
             type: 'input',
+            validation: yup
+                .string()
+                .min(3, 'Opis musi zawierać co najmniej 3 znaki')
+                .max(1000, 'Opis może zawierać maksymalnie 1000 znaków'),
         },
         {
             label: 'Godziny otwarcia',
             id: 'openingHours',
             initValue: '',
             type: 'input',
-            validation: yup.string().required('Wprowadź godziny otwarcia'),
+            validation: yup
+                .string()
+                .min(3, 'Godziny otwarcia muszą zawierać co najmniej 3 znaki')
+                .max(255, 'Godziny otwarcia mogą zawierać maksymalnie 255 znaków')
+                .required('Wprowadź godziny otwarcia'),
         },
     ]
 }

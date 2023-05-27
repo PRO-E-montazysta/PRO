@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
@@ -31,8 +32,8 @@ public class ForemanController {
 
     @GetMapping("/all")
     @Operation(description = "Allows to get all Foremen.", security = @SecurityRequirement(name = "bearer-key"))
-    public List<ForemanDto> getAllForemen() {
-        return foremanService.getAll();
+    public List<ForemanDto> getAllForemen(Principal principal) {
+        return foremanService.getAll(principal);
     }
 
     @GetMapping("/{id}")

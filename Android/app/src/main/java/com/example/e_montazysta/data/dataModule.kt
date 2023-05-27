@@ -20,6 +20,8 @@ import com.example.e_montazysta.data.repository.interfaces.IUserRepository
 import com.example.e_montazysta.data.services.IServiceProvider
 import com.example.e_montazysta.data.services.ServiceProvider
 import com.example.e_montazysta.helpers.CustomDateAdapter
+import com.example.e_montazysta.ui.element.ElementDetailViewModel
+import com.example.e_montazysta.ui.element.ElementsListViewModel
 import com.example.e_montazysta.ui.order.OrderDetailViewModel
 import com.example.e_montazysta.ui.order.OrderListViewModel
 import com.example.e_montazysta.ui.release.ReleaseCreateViewModel
@@ -28,7 +30,6 @@ import com.example.e_montazysta.ui.release.ReleaseListViewModel
 import com.example.e_montazysta.ui.stage.StageDetailViewModel
 import com.example.e_montazysta.ui.stage.StageListViewModel
 import com.example.e_montazysta.ui.toollist.ToolsListViewModel
-import com.example.e_montazysta.ui.element.ElementsListViewModel
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.logging.HttpLoggingInterceptor
@@ -141,5 +142,8 @@ val dataModule = module {
     }
     viewModel {
         ElementsListViewModel(get())
+    }
+    viewModel {
+        ElementDetailViewModel(get())
     }
 }

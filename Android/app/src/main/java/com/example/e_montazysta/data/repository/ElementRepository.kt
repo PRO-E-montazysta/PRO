@@ -32,7 +32,6 @@ class ElementRepository(
             Result.Success(elementDAO.mapToElement())
         } catch (e: Exception) {
             Result.Error(e)
-            throw e
         }
     }
 

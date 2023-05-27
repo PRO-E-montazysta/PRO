@@ -22,9 +22,9 @@ data class StageDAO(
     val status: String,
     @Json(name = "price")
     val price: Float,
-    @Json(name = "plannedStart")
+    @Json(name = "plannedStartDate")
     val plannedStart: Date?,
-    @Json(name = "plannedEnd")
+    @Json(name = "plannedEndDate")
     val plannedEnd: Date?,
     @Json(name = "startDate")
     val startDate: Date?,
@@ -61,7 +61,7 @@ data class StageDAO(
         val releasesList: List<Release?> = toolReleases.map {id -> getReleaseDetails(id)}
         return Stage(id, name, status, price, plannedStart, plannedEnd, startDate, endDate, plannedDurationTime,
             plannedFittersNumber, minimumImagesNumber, fittersList, commentsList, releasesList,
-            elementReturnReleases, orderId, listOfToolsPlannedNumber, listOfElementsPlannedNumber)
+            listOf(), orderId, listOfToolsPlannedNumber, listOfElementsPlannedNumber)
     }
 
     private suspend fun getUserDetails(userId: Int): User? {
