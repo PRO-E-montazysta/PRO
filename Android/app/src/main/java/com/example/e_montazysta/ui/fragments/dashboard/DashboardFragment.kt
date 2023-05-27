@@ -4,13 +4,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import coil.load
+import coil.transform.CircleCropTransformation
 import com.example.e_montazysta.databinding.FragmentDashboardBinding
+import com.example.e_montazysta.ui.viewmodels.DashboardViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DashboardFragment : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
+    private val viewModel: DashboardViewModel by viewModel()
+
+
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -24,6 +33,16 @@ class DashboardFragment : Fragment() {
 
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        viewModel.getCurrentUser()
+        viewModel.currentUser.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                binding.currentUser = it
+                binding.profilePicture.load(it.profilePhotoUrl ?: "https://i.imgflip.com/3u04h5.jpg?a468072"){
+                    transformations(CircleCropTransformation())
+                }
+            }
+        })
 
         val warehouses = binding.warehouses
         warehouses.setOnClickListener(null)
@@ -60,7 +79,10 @@ class DashboardFragment : Fragment() {
             findNavController().navigate(direction)
 
         }
-
+        // Observe the error message LiveData
+        viewModel.messageLiveData.observe(viewLifecycleOwner) {
+                errorMessage -> Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+        }
         return root
     }
 
@@ -68,4 +90,6 @@ class DashboardFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+
 }

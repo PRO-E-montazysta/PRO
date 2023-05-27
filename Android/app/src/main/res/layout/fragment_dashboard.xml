@@ -1,239 +1,277 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/topAppBar"
-        android:fitsSystemWindows="true"
-        android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:elevation="0dp"
-        app:navigationIcon="@drawable/baseline_arrow_back_24"
-        app:title="@string/title_dashboard"
-        app:menu="@menu/top_app_bar_menu"
-        />
-</com.google.android.material.appbar.AppBarLayout>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.fragments.dashboard.DashboardFragment"
-    android:layout_marginTop="?attr/actionBarSize">
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/text_dashboard"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="currentUser"
+            type="com.example.e_montazysta.data.model.CurrentUser" />
+    </data>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="-77dp">
-
-        <GridLayout
+        android:fitsSystemWindows="true">
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:columnCount="2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/warehouses"
-                style="@style/card"
-                >
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="10dp"
-                    >
-
-                    <!-- Media -->
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/warehouse"
-                        android:layout_gravity="center"
-                        android:contentDescription="@string/content_description_media"
-                        android:scaleType="centerCrop" />
-
-
-                    <!-- @string/title, secondary and supporting text -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:layout_gravity="center"
-                        android:text="@string/title_warehouses" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/tools"
-                style="@style/card">
+            android:fitsSystemWindows="true">
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:menu="@menu/top_app_bar_menu">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="10dp"
-                    >
+                    android:orientation="horizontal">
 
-                    <!-- Media -->
-                    <ImageView
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/profilePicture"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:scaleType="centerCrop"
+                        app:strokeWidth="1dp"
+                        android:padding="2dp"
+                        app:strokeColor="?colorOnSurface"
+                        app:shapeAppearanceOverlay="@style/circleImageView"
+                        android:contentDescription="@string/content_description_profile_picture"
+                        android:layout_gravity="center_vertical"/>
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/content_description_media"
-                        android:layout_gravity="center"
-                        android:src="@drawable/baseline_tools_24"
-                        android:scaleType="centerCrop" />
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center_vertical">
 
+                        <TextView
+                            android:id="@+id/user_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:paddingLeft="8dp"
+                            android:minWidth="100dp"
+                            android:text="@{currentUser.firstName + ' ' + currentUser.lastName}"/>
 
-                    <!-- @string/title, secondary and supporting text -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:layout_gravity="center"
-                        android:text="@string/title_tools" />
+                        <TextView
+                            android:id="@+id/company_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:paddingLeft="8dp"
+                            android:minWidth="100dp"
+                            android:text="@{currentUser.companyName}"/>
+                    </LinearLayout>
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+            </com.google.android.material.appbar.MaterialToolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.fragments.dashboard.DashboardFragment"
+            android:layout_marginTop="?attr/actionBarSize">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/releases"
-                style="@style/card">
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/text_dashboard"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                tools:layout_editor_absoluteX="148dp"
+                tools:layout_editor_absoluteY="145dp">
 
-                <LinearLayout
+                <GridLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="10dp"
-                    >
+                    android:layout_height="wrap_content"
+                    android:columnCount="2"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <!-- Media -->
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/content_description_media"
-                        android:layout_gravity="center"
-                        android:src="@drawable/baseline_swap_horiz_24"
-                        android:scaleType="centerCrop" />
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/warehouses"
+                        style="@style/card">
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="10dp">
 
-                    <!-- @string/title, secondary and supporting text -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:layout_gravity="center"
-                        android:text="@string/title_releases" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/elements"
-                style="@style/card">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="10dp"
-                    >
-
-                    <!-- Media -->
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/content_description_media"
-                        android:layout_gravity="center"
-                        android:src="@drawable/baseline_category_24"
-                        android:scaleType="centerCrop" />
+                            <!-- Media -->
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:contentDescription="@string/content_description_media"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/warehouse" />
 
 
-                    <!-- @string/title, secondary and supporting text -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:layout_gravity="center"
-                        android:text="@string/title_element" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                            <!-- @string/title, secondary and supporting text -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:padding="10dp"
+                                android:text="@string/title_warehouses" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/orders"
-                style="@style/card"
-                android:transitionName="shared_element_container"
-                >
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/tools"
+                        style="@style/card">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="10dp"
-                    >
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="10dp">
 
-                    <!-- Media -->
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/content_description_media"
-                        android:layout_gravity="center"
-                        android:src="@drawable/baseline_assignment_24"
-                        android:scaleType="centerCrop" />
+                            <!-- Media -->
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:contentDescription="@string/content_description_media"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/baseline_tools_24" />
 
 
-                    <!-- @string/title, secondary and supporting text -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:layout_gravity="center"
-                        android:text="@string/title_orders" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                            <!-- @string/title, secondary and supporting text -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:padding="10dp"
+                                android:text="@string/title_tools" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/stages"
-                style="@style/card"
-                android:transitionName="shared_element_container"
-                >
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/releases"
+                        style="@style/card">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="10dp"
-                    >
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="10dp">
 
-                    <!-- Media -->
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/content_description_media"
-                        android:layout_gravity="center"
-                        android:src="@drawable/baseline_format_list_numbered_24"
-                        android:scaleType="centerCrop" />
+                            <!-- Media -->
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:contentDescription="@string/content_description_media"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/baseline_swap_horiz_24" />
 
 
-                    <!-- @string/title, secondary and supporting text -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:layout_gravity="center"
-                        android:text="@string/title_stages" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                            <!-- @string/title, secondary and supporting text -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:padding="10dp"
+                                android:text="@string/title_releases" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
 
-        </GridLayout>
-    </androidx.core.widget.NestedScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/elements"
+                        style="@style/card">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="10dp">
+
+                            <!-- Media -->
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:contentDescription="@string/content_description_media"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/baseline_category_24" />
+
+
+                            <!-- @string/title, secondary and supporting text -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:padding="10dp"
+                                android:text="@string/title_element" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/orders"
+                        style="@style/card"
+                        android:transitionName="shared_element_container">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="10dp">
+
+                            <!-- Media -->
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:contentDescription="@string/content_description_media"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/baseline_assignment_24" />
+
+
+                            <!-- @string/title, secondary and supporting text -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:padding="10dp"
+                                android:text="@string/title_orders" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/stages"
+                        style="@style/card"
+                        android:transitionName="shared_element_container">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="10dp">
+
+                            <!-- Media -->
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:contentDescription="@string/content_description_media"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/baseline_format_list_numbered_24" />
+
+
+                            <!-- @string/title, secondary and supporting text -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:padding="10dp"
+                                android:text="@string/title_stages" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                </GridLayout>
+            </androidx.core.widget.NestedScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

@@ -1,5 +1,6 @@
 package com.example.e_montazysta.data.repository
 
+import com.example.e_montazysta.data.model.CurrentUser
 import com.example.e_montazysta.data.model.Result
 import com.example.e_montazysta.data.model.User
 import com.example.e_montazysta.data.repository.interfaces.IUserRepository
@@ -27,6 +28,16 @@ class UserRepository (private val serviceProvider: IServiceProvider): IUserRepos
             val userService = serviceProvider.getUserService()
             val user = userService.getUserDetail(token, id)
             Result.Success(user)
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
+    }
+
+    override suspend fun getAboutMe(): Result<CurrentUser> {
+        return try {
+            val userService = serviceProvider.getUserService()
+            val currentUser = userService.getAboutMe(token)
+            Result.Success(currentUser)
         } catch (e: Exception) {
             Result.Error(e)
         }

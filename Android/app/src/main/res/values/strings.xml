@@ -52,4 +52,5 @@
     <string name="title_element"><b>Element</b></string>
     <string name="add_release_to_stage_desc">otwiera ekran twórzenia wydania z poziomu etapu</string>
     <string name="create_release_label">Wydaj elementy</string>
+    <string name="content_description_profile_picture">Zdjęcie profilowe</string>
 </resources>

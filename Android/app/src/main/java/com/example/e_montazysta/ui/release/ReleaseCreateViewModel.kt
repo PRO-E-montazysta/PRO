@@ -19,7 +19,7 @@ import org.koin.core.component.inject
 import kotlin.coroutines.CoroutineContext
 
 
-class ReleaseCreateViewModel() : ViewModel(), CoroutineScope, KoinComponent {
+class ReleaseCreateViewModel : ViewModel(), CoroutineScope, KoinComponent {
 
     private var job: Job? = null
 
@@ -55,9 +55,8 @@ class ReleaseCreateViewModel() : ViewModel(), CoroutineScope, KoinComponent {
             when (result) {
                 is Result.Success -> {
                     val tool = result.data
-                    _itemsLiveData.value = currentItems + tool
+                    _itemsLiveData.postValue(currentItems + tool)
                 }
-
                 is Result.Error -> result.exception.message?.let { _messageLiveData.postValue(it) }
             }
         }
