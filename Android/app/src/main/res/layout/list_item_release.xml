@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                tools:text="@{release.id}" />
+                tools:text="@{Integer.toString(release.id)}" />
 
             <TextView
                 android:id="@+id/toolType"

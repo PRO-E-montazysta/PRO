@@ -84,4 +84,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-base:18.2.0'
     implementation 'com.google.android.gms:play-services-tflite-java:16.1.0'
 
+
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+
 }

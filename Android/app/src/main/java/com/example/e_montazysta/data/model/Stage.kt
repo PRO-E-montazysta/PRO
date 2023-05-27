@@ -1,6 +1,6 @@
 package com.example.e_montazysta.data.model
 
-import java.util.*
+import java.util.Date
 
 data class Stage(
     val id: Int,
@@ -17,7 +17,7 @@ data class Stage(
     val fitters: List<User?>,
     val comments: List<Comment?>,
     val toolReleases: List<Release?>,
-    val elementReturnReleases: List<Int>,
+    val elementReturnReleases: List<Release>?,
     val orderId: Int,
     val listOfToolsPlannedNumber: List<Int>,
     val listOfElementsPlannedNumber: List<Int>
