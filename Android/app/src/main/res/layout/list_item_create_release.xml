@@ -15,7 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:minHeight="90dp">
+        android:minHeight="90dp"
+        android:onClick="@{() -> clickListener.cardClicked(release_item)}">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -137,15 +138,11 @@
                     android:id="@+id/quantity"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:text="@{Integer.toString(release_item.quantity)}"/>
             </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="@{() -> clickListener.cardClicked(release_item)}" />
     </LinearLayout>
 </layout>

@@ -13,7 +13,7 @@ import com.example.e_montazysta.databinding.FragmentStageDetailReleaseListBindin
 import com.example.e_montazysta.ui.stage.StageDetailFragmentDirections
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ReleaseListFragment(val stage: Stage?) : Fragment() {
+class ReleaseListFragment(val stage: Stage? = null) : Fragment() {
     private val releaseListViewModel: ReleaseListViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
