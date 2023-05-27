@@ -30,10 +30,7 @@
                 app:layout_scrollFlags="scroll|enterAlways|snap"
                 app:layout_scrollEffect="compress"
                 />
-
-
         </com.google.android.material.appbar.AppBarLayout>
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

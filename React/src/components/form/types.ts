@@ -9,6 +9,7 @@ export type FormInputParams = {
     options?: Array<SelectMenuItemProps>
     style?: CSSProperties
     type?: HTMLInputTypeAttribute
+    placeholder?: string
 }
 
 export type FormLabelProps = {

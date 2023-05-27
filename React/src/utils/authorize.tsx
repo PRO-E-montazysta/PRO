@@ -27,6 +27,8 @@ export const AutorizedRoute = (page: PageProps) => {
     const location = useLocation()
 
     if (location.pathname === '/login') return <Outlet />
+    if (location.pathname === '/forgot') return <Outlet />
+    if (location.pathname === '/new-password') return <Outlet />
 
     if (!isAuthenticate || isExpire(token)) return <Navigate to="/login" />
 

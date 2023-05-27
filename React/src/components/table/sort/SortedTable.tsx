@@ -135,6 +135,7 @@ export default function SortedTable<T>(props: SortedTableProps<T>) {
                                                                 align={headCell.numeric ? 'right' : 'left'}
                                                                 sx={{
                                                                     width: '100px',
+                                                                    wordWrap: 'break-word',
                                                                     padding:
                                                                         appSize.isMobile || appSize.isTablet
                                                                             ? '8px'

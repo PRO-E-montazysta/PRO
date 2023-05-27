@@ -15,7 +15,6 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@SQLDelete(sql = "UPDATE elements_planned_number SET deleted = true WHERE id=?")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class ElementsPlannedNumber {
     @Id
@@ -23,8 +22,6 @@ public class ElementsPlannedNumber {
     private Long id;
 
     private int numberOfElements;
-    
-    private boolean deleted = Boolean.FALSE;
 
     @ManyToOne
     private Element element;
