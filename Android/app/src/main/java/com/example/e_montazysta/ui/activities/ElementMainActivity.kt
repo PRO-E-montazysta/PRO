@@ -32,9 +32,9 @@ class ElementMainActivity : AppCompatActivity() {
 
 
     //SIDOR
-    val args: ElementMainActivityArgs by navArgs()
-    val elementId = args.elementId
-    private val elementDetailViewModel: ElementDetailViewModel by viewModel()
+    //val args: ElementMainActivityArgs by navArgs()
+    //val elementId = args.elementId
+    //private val elementDetailViewModel: ElementDetailViewModel by viewModel()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,14 +68,14 @@ class ElementMainActivity : AppCompatActivity() {
 
 
         val binding: ActivityElementBinding = ActivityElementBinding.inflate(layoutInflater)
-        binding.elementDetailViewModel = elementDetailViewModel
+        //binding.elementDetailViewModel = elementDetailViewModel
 
-        elementDetailViewModel.getElementDetail(elementId)
-        elementDetailViewModel.elementdetail.observe(this, Observer {
-            it?.let {
-                binding.element = it
-            }
-        })
+       // elementDetailViewModel.getElementDetail(elementId)
+       // elementDetailViewModel.elementdetail.observe(this, Observer {
+        //    it?.let {
+        //        binding.element = it
+        //    }
+       // })
 
         //Rejestracja Parent FAB poprzez ID
         mActionMainFab = findViewById(R.id.action_main_fab)

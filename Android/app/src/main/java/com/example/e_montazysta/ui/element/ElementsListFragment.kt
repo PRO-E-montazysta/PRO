@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.e_montazysta.databinding.FragmentElementsBinding
-import com.example.e_montazysta.ui.activities.ElementMainActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ElementsListFragment : Fragment() {
@@ -23,14 +23,10 @@ class ElementsListFragment : Fragment() {
         // To use the View Model with data binding, you have to explicitly
         // give the binding object a reference to it.
         binding.elementsListViewModel = elementsListViewModel
-
         val adapter = ElementListAdapter( CustomClickListener{
-            val intent = Intent(context, ElementMainActivity::class.java)
-            startActivity(intent)
-//                elementId -> findNavController().navigate(ElementsListFragmentDirections.actionElementsListFragmentToElementMainActivity(elementId))
+                elementId -> findNavController().navigate(ElementsListFragmentDirections.actionElementsListFragmentToElementMainActivity(elementId))
         })
         binding.elementList.adapter = adapter
-
         elementsListViewModel.getElements()
 
         elementsListViewModel.elements.observe(viewLifecycleOwner, Observer {
@@ -40,7 +36,7 @@ class ElementsListFragment : Fragment() {
         })
         // Specify the current activity as the lifecycle owner of the binding.
         // This is necessary so that the binding can observe LiveData updates.
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
         return binding.root
 
     }
