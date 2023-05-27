@@ -20,6 +20,8 @@ import com.example.e_montazysta.data.repository.interfaces.IUserRepository
 import com.example.e_montazysta.data.services.IServiceProvider
 import com.example.e_montazysta.data.services.ServiceProvider
 import com.example.e_montazysta.helpers.CustomDateAdapter
+import com.example.e_montazysta.ui.element.ElementDetailViewModel
+import com.example.e_montazysta.ui.element.ElementsListViewModel
 import com.example.e_montazysta.ui.order.OrderDetailViewModel
 import com.example.e_montazysta.ui.order.OrderListViewModel
 import com.example.e_montazysta.ui.release.ReleaseCreateViewModel
@@ -143,5 +145,8 @@ val dataModule = module {
     }
     viewModel {
         ElementsListViewModel(get())
+    }
+    viewModel {
+        ElementDetailViewModel(get())
     }
 }

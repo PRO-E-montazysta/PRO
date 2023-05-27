@@ -61,7 +61,7 @@ data class StageDAO(
         val releasesList: List<Release?> = toolReleases.map {id -> getReleaseDetails(id)}
         return Stage(id, name, status, price, plannedStart, plannedEnd, startDate, endDate, plannedDurationTime,
             plannedFittersNumber, minimumImagesNumber, fittersList, commentsList, releasesList,
-            elementReturnReleases, orderId, listOfToolsPlannedNumber, listOfElementsPlannedNumber)
+            listOf(), orderId, listOfToolsPlannedNumber, listOfElementsPlannedNumber)
     }
 
     private suspend fun getUserDetails(userId: Int): User? {

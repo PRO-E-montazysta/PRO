@@ -25,8 +25,10 @@ class ElementsListFragment : Fragment() {
         binding.elementsListViewModel = elementsListViewModel
 
         val adapter = ElementListAdapter( CustomClickListener{
-            val intent = Intent(context, ElementMainActivity::class.java)
-            startActivity(intent)
+                elementId ->
+                val intent = Intent(requireContext(), ElementMainActivity::class.java)
+                intent.putExtra("ELEMENT_ID", elementId)
+                startActivity(intent)
 //                elementId -> findNavController().navigate(ElementsListFragmentDirections.actionElementsListFragmentToElementMainActivity(elementId))
         })
         binding.elementList.adapter = adapter
@@ -38,9 +40,19 @@ class ElementsListFragment : Fragment() {
                 adapter.elements = it
             }
         })
+
+        elementsListViewModel.isLoadingLiveData.observe(viewLifecycleOwner, Observer<Boolean>{
+            it?.let {
+                if(it) {
+                    binding.loadingIndicator.visibility = View.VISIBLE
+                } else {
+                    binding.loadingIndicator.visibility = View.GONE
+                }
+            }
+        })
         // Specify the current activity as the lifecycle owner of the binding.
         // This is necessary so that the binding can observe LiveData updates.
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
         return binding.root
 
     }

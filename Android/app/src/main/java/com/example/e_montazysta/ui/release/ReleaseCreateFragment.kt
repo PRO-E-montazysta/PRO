@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -29,7 +30,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ReleaseCreateFragment : Fragment() {
     private val releaseCreateViewModel: ReleaseCreateViewModel by viewModel()
-
+    private var isBackPressedFromDialog = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -104,6 +105,15 @@ class ReleaseCreateFragment : Fragment() {
             }
         }
 
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (!isBackPressedFromDialog && adapter.elements.isNotEmpty()) {
+                    showDiscardChangesDialog()
+                } else {
+                    findNavController().navigateUp()
+                }
+            }
+        })
 
         // Observe the error message LiveData
         releaseCreateViewModel.messageLiveData.observe(viewLifecycleOwner) {
@@ -178,5 +188,20 @@ class ReleaseCreateFragment : Fragment() {
             .addOnFailureListener { exception ->
                 Toast.makeText(activity, exception.message, Toast.LENGTH_LONG).show()
             }
+    }
+
+    private fun showDiscardChangesDialog() {
+        val alertDialogBuilder = AlertDialog.Builder(requireContext())
+        alertDialogBuilder.setTitle("Uwaga!")
+        alertDialogBuilder.setMessage("Czy na pewno chcesz odrzucić zmiany?")
+        alertDialogBuilder.setPositiveButton("Tak") { _, _ ->
+            isBackPressedFromDialog = true
+            findNavController().navigateUp()
+        }
+        alertDialogBuilder.setNegativeButton("Nie", null)
+        alertDialogBuilder.setOnDismissListener {
+            isBackPressedFromDialog = false
+        }
+        alertDialogBuilder.create().show()
     }
 }

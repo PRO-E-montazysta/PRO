@@ -25,8 +25,8 @@ data class ReleaseItem(
 
 fun mapToReleaseItem(item: Any): ReleaseItem {
     return when(item){
-        is Element -> ReleaseItem(true, item.id, item.name, item.code, 0, 0, 0)
-        is Tool -> ReleaseItem(false, item.id, item.name, item.code, item.toolType, 0, item.warehouse)
+        is Element -> ReleaseItem(true, item.id, item.name, item.code, 0, 1, 0)
+        is Tool -> ReleaseItem(false, item.id, item.name, item.code, item.toolType, 1, item.warehouse)
         else -> throw IllegalArgumentException("asd")
     }
 }
