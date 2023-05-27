@@ -22,9 +22,9 @@ data class StageDAO(
     val status: String,
     @Json(name = "price")
     val price: Float,
-    @Json(name = "plannedStart")
+    @Json(name = "plannedStartDate")
     val plannedStart: Date?,
-    @Json(name = "plannedEnd")
+    @Json(name = "plannedEndDate")
     val plannedEnd: Date?,
     @Json(name = "startDate")
     val startDate: Date?,

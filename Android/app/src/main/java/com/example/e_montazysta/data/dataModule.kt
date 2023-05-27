@@ -45,6 +45,8 @@ val dataModule = module {
                 .add(KotlinJsonAdapterFactory())
                 .add(Date::class.java, CustomDateAdapter().nullSafe())
                 .build()
+
+
         moshi
     }
 

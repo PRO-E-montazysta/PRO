@@ -5,9 +5,11 @@ import com.example.e_montazysta.data.model.Result
 import com.example.e_montazysta.data.model.User
 import com.example.e_montazysta.data.repository.interfaces.IUserRepository
 import com.squareup.moshi.Json
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.util.*
+import java.util.Date
 
 data class OrderDAO (
     @Json(name = "id")
@@ -41,11 +43,19 @@ data class OrderDAO (
 ) : KoinComponent {
     val userRepository: IUserRepository by inject()
     suspend fun mapToOrder(): Order {
-        val client = getUserDetails(clientId)
-        val manager = getUserDetails(managerId)
-        val specialist = getUserDetails(specialistId)
-        val salesRepresentative = getUserDetails(salesRepresentativeId)
-        val foreman = getUserDetails(foremanId)
+        var client: User?
+        var manager: User?
+        var specialist: User?
+        var salesRepresentative: User?
+        var foreman: User?
+
+        coroutineScope {
+            client = async { getUserDetails(clientId) }.await()
+            manager = async { getUserDetails(managerId) }.await()
+            specialist = async { getUserDetails(specialistId) }.await()
+            salesRepresentative = async { getUserDetails(salesRepresentativeId) }.await()
+            foreman = async { getUserDetails(foremanId) }.await()
+        }
         return Order(id, name, priority, status, plannedStart, plannedEnd, client, foreman, manager, specialist, salesRepresentative, locationId, createdAt, editedAt)
     }
 

@@ -49,4 +49,6 @@
     <string name="element_qty_of_unit_text"><i>Ilość w jednostce</i></string>
     <string name="element_warehouse_text"><i>Adres Magazynu</i></string>
     <string name="title_element"><b>Element</b></string>
+    <string name="add_release_to_stage_desc">otwiera ekran twórzenia wydania z poziomu etapu</string>
+    <string name="create_release_label">Wydaj elementy</string>
 </resources>

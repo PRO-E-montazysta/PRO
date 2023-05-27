@@ -14,7 +14,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:minHeight="90dp">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -77,40 +78,40 @@
                     app:barrierDirection="start"
                     app:constraint_referenced_ids="guide_end" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/txt_headline"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:textAppearance="?textAppearanceBodyLarge"
-                    android:textColor="?colorOnSurface"
-                    app:firstBaselineToTopHeight="@dimen/list_item_headline_first_baseline_to_top"
-                    app:lastBaselineToBottomHeight="@dimen/list_item_headline_last_baseline_to_bottom"
-                    app:layout_constraintBottom_toTopOf="@+id/txt_support"
-                    app:layout_constraintEnd_toStartOf="@id/barrier_text_end"
-                    app:layout_constraintHorizontal_bias="0"
-                    app:layout_constraintStart_toEndOf="@id/barrier_text_start"
-                    app:layout_constraintTop_toTopOf="@id/guide_top"
-                    app:layout_constraintVertical_chainStyle="packed"
-                    tools:text='@{release_item.name}' />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txt_headline"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="?textAppearanceBodyLarge"
+                android:textColor="?colorOnSurface"
+                app:firstBaselineToTopHeight="@dimen/list_item_headline_first_baseline_to_top"
+                app:lastBaselineToBottomHeight="@dimen/list_item_headline_last_baseline_to_bottom"
+                app:layout_constraintBottom_toTopOf="@+id/txt_support"
+                app:layout_constraintEnd_toStartOf="@+id/textInputLayout"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/barrier_text_start"
+                app:layout_constraintTop_toTopOf="@id/guide_top"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text='@{release_item.name}' />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/txt_support"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="2"
-                    android:textAppearance="?textAppearanceBodyMedium"
-                    android:textColor="?colorOnSurfaceVariant"
-                    app:firstBaselineToTopHeight="@dimen/list_item_supporting_text_first_baseline_to_top"
-                    app:lastBaselineToBottomHeight="@dimen/list_item_supporting_text_last_baseline_to_bottom"
-                    app:layout_constraintBottom_toBottomOf="@id/guide_bottom"
-                    app:layout_constraintEnd_toEndOf="@id/txt_headline"
-                    app:layout_constraintStart_toStartOf="@id/txt_headline"
-                    app:layout_constraintTop_toBottomOf="@id/txt_headline"
-                    app:layout_constraintVertical_chainStyle="packed"
-                    tools:text='@{release_item.code}'  />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txt_support"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textAppearance="?textAppearanceBodyMedium"
+                android:textColor="?colorOnSurfaceVariant"
+                app:firstBaselineToTopHeight="@dimen/list_item_supporting_text_first_baseline_to_top"
+                app:lastBaselineToBottomHeight="@dimen/list_item_supporting_text_last_baseline_to_bottom"
+                app:layout_constraintBottom_toBottomOf="@id/guide_bottom"
+                app:layout_constraintEnd_toStartOf="@+id/textInputLayout"
+                app:layout_constraintStart_toStartOf="@id/txt_headline"
+                app:layout_constraintTop_toBottomOf="@id/txt_headline"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text='@{release_item.code}' />
 
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="0dp"
@@ -121,22 +122,22 @@
                     app:layout_constraintStart_toStartOf="@id/guide_start" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout"
                 style="?attr/textInputOutlinedStyle"
-                android:layout_width="60dp"
+                android:layout_width="69dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/element_quantity_label"
-                app:layout_constraintEnd_toStartOf="@id/guide_end"
-                app:layout_constraintTop_toTopOf="@id/guide_top"
+                android:visibility="@{release_item.isElement ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="@id/guide_bottom"
-                android:visibility="@{release_item.isElement ? View.VISIBLE : View.GONE}">
+                app:layout_constraintEnd_toStartOf="@id/guide_end"
+                app:layout_constraintTop_toTopOf="@id/guide_top">
                 <!--            app:suffixText='@{release_item.getQuantityInWarehouse()}'>-->
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/quantity"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="number"
-                    android:text="@={`` + release_item.quantity}"/>
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -35,7 +35,12 @@ class StageDetailFragment : Fragment() {
                 binding.nameValue.text = it.name
                 binding.statusValue.text = it.id.toString()
                 binding.priceValue.text = it.price.toString()
-                binding.listOfElementsPlannedNumberValue.text = it.listOfElementsPlannedNumber.toString()
+                binding.plannedStartValue.text = it.plannedStart.toString()
+                binding.plannedEndValue.text = it.plannedEnd.toString()
+                binding.plannedFittersNumberValue.text = it.plannedFittersNumber.toString()
+                binding.minimumImagesNumberValue.text = it.minimumImagesNumber.toString()
+                binding.listOfToolsPlannedNumberValue.text = it.listOfToolsPlannedNumber.toString()
+                binding.listOfElementsPlannedNumberValue.text = it.listOfToolsPlannedNumber.toString()
             }
         })
 
