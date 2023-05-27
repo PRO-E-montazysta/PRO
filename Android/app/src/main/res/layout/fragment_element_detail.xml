@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+    <variable
+        name="elementDetailViewModel"
+        type="com.example.e_montazysta.ui.element.ElementDetailViewModel" />
+    <variable
+            name="element"
+            type="com.example.e_montazysta.data.model.Element" />
+    </data>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginBottom="?android:attr/actionBarSize"
+        >
+        <!--<com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/topAppBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:navigationIcon="@android:drawable/arrow_down_float"
+                app:title="E-montażownia"
+                app:menu="@menu/top_app_bar_menu"
+                style="@style/Widget.MaterialComponents.Toolbar.Primary"
+                />
+        </com.google.android.material.appbar.AppBarLayout>-->
+        <TextView
+            android:id="@+id/view_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_element"
+            android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/topAppBarLayout"
+            android:textSize="36dp"
+            />
+        <LinearLayout
+            android:id="@+id/element_frame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="10dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_name"
+            >
+            <TextView
+                android:id="@+id/element_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/element_name_text"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
+                <!-- android:textColor="#96C0FB" /> -->
+            <TextView
+                android:id="@+id/element_name_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="element_name_data"
+                />
+            <TextView
+                android:id="@+id/element_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/element_code_text"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
+            <!-- android:textColor="#96C0FB" /> -->
+            <TextView
+                android:id="@+id/element_code_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="element_code_data"
+                />
+            <TextView
+                android:id="@+id/element_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/element_unit_text"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
+            <!-- android:textColor="#96C0FB" /> -->
+            <TextView
+                android:id="@+id/element_unit_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="element_unit_data"
+                />
+            <TextView
+                android:id="@+id/element_qty_of_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/element_qty_of_unit_text"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
+            <!-- android:textColor="#96C0FB" /> -->
+            <TextView
+                android:id="@+id/element_qty_of_unit_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="element_qty_of_unit_data"
+                />
+            <TextView
+                android:id="@+id/element_warehouse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/element_warehouse_text"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
+            <!-- android:textColor="#96C0FB" /> -->
+            <TextView
+                android:id="@+id/element_warehouse_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="element_warehouse_data"
+                />
+        </LinearLayout>
+       <!-- <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/action_main_fab"
+            android:contentDescription="Wykonaj akcję"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/baseline_add_box_24"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/element_event_fab"
+            android:contentDescription="Zgłoś usterkę"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toTopOf="@+id/action_main_fab"
+            app:layout_constraintEnd_toEndOf="@+id/action_main_fab"
+            app:layout_constraintStart_toStartOf="@+id/action_main_fab"
+            app:srcCompat="@drawable/baseline_cable_24"
+            />
+        <TextView
+            android:id="@+id/element_event_fab_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Zgłoś usterkę"
+            app:layout_constraintBottom_toBottomOf="@+id/element_event_fab"
+            app:layout_constraintEnd_toStartOf="@+id/element_event_fab"
+            app:layout_constraintTop_toTopOf="@+id/element_event_fab"
+            />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/element_manage_fab"
+            android:contentDescription="Wydaj/Zwróć element"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toTopOf="@+id/element_event_fab"
+            app:layout_constraintEnd_toEndOf="@+id/element_event_fab"
+            app:layout_constraintStart_toStartOf="@+id/element_event_fab"
+            app:srcCompat="@drawable/baseline_assignment_return_24"
+            />
+        <TextView
+            android:id="@+id/element_manage_fab_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Wydaj/Zwróć element"
+            app:layout_constraintBottom_toBottomOf="@+id/element_manage_fab"
+            app:layout_constraintEnd_toStartOf="@+id/element_manage_fab"
+            app:layout_constraintTop_toTopOf="@+id/element_manage_fab"
+            />-->
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>
