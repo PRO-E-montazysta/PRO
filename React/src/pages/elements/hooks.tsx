@@ -1,7 +1,7 @@
 import { Box } from '@mui/material'
 import { AxiosError } from 'axios'
 import { useContext } from 'react'
-import { useMutation, useQuery } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
@@ -60,6 +60,7 @@ export const useDeleteElement = (onSuccess: () => void) => {
     const navigate = useNavigate()
     const { showDialog } = useContext(DialogGlobalContext)
     const showError = useError()
+    const queryClient = useQueryClient()
     return useMutation({
         mutationFn: deleteElement,
         onSuccess(data) {
@@ -73,6 +74,7 @@ export const useDeleteElement = (onSuccess: () => void) => {
                 title: 'Sukces!',
                 content: <Box>Element został usunięty</Box>,
             })
+            queryClient.invalidateQueries('element-list')
             navigate('/elements')
         },
         onError: showError,
@@ -84,7 +86,7 @@ export const useElementData = (id: string | undefined) => {
         ['element', { id: id }],
         async () => getElementDetails(id && id != 'new' ? id : ''),
         {
-            enabled: !!id && id != 'new',
+            enabled: !!id && id != 'new' && id != 'undefined',
         },
     )
 }
