@@ -52,10 +52,10 @@ class ElementMainActivity : AppCompatActivity() {
 
         topAppBar.setOnMenuItemClickListener { menuItem ->
             when(menuItem.itemId){
-                R.id.back -> {
-                    Toast.makeText(this, "Back action clicked", Toast.LENGTH_SHORT).show()
-                    true
-                }
+//                R.id.home -> {
+//                    Toast.makeText(this, "Back action clicked", Toast.LENGTH_SHORT).show()
+//                    true
+//                }
 
                 R.id.notifications -> {
                     Toast.makeText(this, "Notifications action clicked", Toast.LENGTH_SHORT).show()
