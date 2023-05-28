@@ -35,6 +35,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import Localization from '../../components/localization/Localization'
 import { Order } from '../../types/model/Order'
 import { useAddLocation, useFormStructureLocation, useLocationData } from '../../components/localization/hooks'
+import { isAuthorized } from '../../utils/authorize'
 
 const OrderDetails = () => {
     const [userRole, setUserRole] = useState('')
@@ -223,6 +224,26 @@ const OrderDetails = () => {
         }
     }, [queryLocationData.data])
 
+    const canChangeToNextStatus = () => {
+        return (
+            (orderData.data?.status == 'CREATED' && isAuthorized([Role.SALES_REPRESENTATIVE])) ||
+            (orderData.data?.status == 'PLANNING' && isAuthorized([Role.SPECIALIST])) ||
+            (orderData.data?.status == 'TO_ACCEPT' && isAuthorized([Role.MANAGER])) ||
+            (orderData.data?.status == 'ACCEPTED' && isAuthorized([Role.FOREMAN])) ||
+            (orderData.data?.status == 'IN_PROGRESS' && isAuthorized([Role.FOREMAN]))
+        )
+    }
+
+    const canChangeToPreviousStatus = () => {
+        return (
+            (orderData.data?.status == 'PLANNING' && isAuthorized([Role.SPECIALIST])) ||
+            (orderData.data?.status == 'TO_ACCEPT' && isAuthorized([Role.MANAGER])) ||
+            (orderData.data?.status == 'ACCEPTED' && isAuthorized([Role.FOREMAN])) ||
+            (orderData.data?.status == 'IN_PROGRESS' && isAuthorized([Role.FOREMAN])) ||
+            (orderData.data?.status == 'FINISHED' && isAuthorized([Role.FOREMAN]))
+        )
+    }
+
     return (
         <>
             <FormBox>
@@ -254,8 +275,8 @@ const OrderDetails = () => {
                                 orderStageButton={getAddOrderStageButton()}
                                 handleAddOrderStage={handleAddOrderStage}
                                 isAddOrderStageVisible={isAddOrderStageVisible}
-                                nextStatus={handleNextStatus}
-                                previousStatus={handlePreviousStatus}
+                                nextStatus={canChangeToNextStatus() ? handleNextStatus : undefined}
+                                previousStatus={canChangeToPreviousStatus() ? handlePreviousStatus : undefined}
                             />
                         </>
                     )}
