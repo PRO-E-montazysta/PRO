@@ -17,7 +17,7 @@ import { useQueriesStatus } from '../../hooks/useQueriesStatus'
 import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
 import ExpandMore from '../../components/expandMore/ExpandMore'
-import HistoryIcon from '@mui/icons-material/History'
+import EqualizerIcon from '@mui/icons-material/Equalizer'
 import ElementInWarehouseView from '../elementInWarehouse'
 
 const ElementDetails = () => {
@@ -114,7 +114,7 @@ const ElementDetails = () => {
                             <Grid container alignItems="center" justifyContent="center" marginTop={2}>
                                 <Card sx={{ width: '100%', left: '50%' }}>
                                     <ExpandMore
-                                        titleIcon={<HistoryIcon />}
+                                        titleIcon={<EqualizerIcon />}
                                         title="Stan magazynowy"
                                         cardContent={<ElementInWarehouseView elementId={Number(params.id)} />}
                                     />
