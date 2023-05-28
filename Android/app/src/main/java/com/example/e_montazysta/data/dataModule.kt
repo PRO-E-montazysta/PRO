@@ -1,10 +1,13 @@
 package com.example.e_montazysta.data
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.example.e_montazysta.data.environments.Environment
 import com.example.e_montazysta.data.network.NetworkServiceFactory
 import com.example.e_montazysta.data.network.ServiceFactory
 import com.example.e_montazysta.data.repository.CommentRepository
 import com.example.e_montazysta.data.repository.ElementRepository
+import com.example.e_montazysta.data.repository.NotificationRepository
 import com.example.e_montazysta.data.repository.OrderRepository
 import com.example.e_montazysta.data.repository.ReleaseRepository
 import com.example.e_montazysta.data.repository.StageRepository
@@ -12,6 +15,7 @@ import com.example.e_montazysta.data.repository.ToolRepository
 import com.example.e_montazysta.data.repository.UserRepository
 import com.example.e_montazysta.data.repository.interfaces.ICommentRepository
 import com.example.e_montazysta.data.repository.interfaces.IElementRepository
+import com.example.e_montazysta.data.repository.interfaces.INotificationRepository
 import com.example.e_montazysta.data.repository.interfaces.IOrderRepository
 import com.example.e_montazysta.data.repository.interfaces.IReleaseRepository
 import com.example.e_montazysta.data.repository.interfaces.IStageRepository
@@ -22,6 +26,7 @@ import com.example.e_montazysta.data.services.ServiceProvider
 import com.example.e_montazysta.helpers.CustomDateAdapter
 import com.example.e_montazysta.ui.element.ElementDetailViewModel
 import com.example.e_montazysta.ui.element.ElementsListViewModel
+import com.example.e_montazysta.ui.notification.NotificationListViewModel
 import com.example.e_montazysta.ui.order.OrderDetailViewModel
 import com.example.e_montazysta.ui.order.OrderListViewModel
 import com.example.e_montazysta.ui.release.ReleaseCreateViewModel
@@ -38,14 +43,14 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Converter
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.util.Date
+import java.time.LocalDateTime
 
 val dataModule = module {
     factory {
         val moshi =
             Moshi.Builder()
                 .add(KotlinJsonAdapterFactory())
-                .add(Date::class.java, CustomDateAdapter().nullSafe())
+                .add(LocalDateTime::class.java, CustomDateAdapter().nullSafe())
                 .build()
         moshi
     }
@@ -115,6 +120,12 @@ val dataModule = module {
             ElementRepository(get())
         elementRepository
     }
+    factory {
+        val notificationRepository: INotificationRepository =
+            NotificationRepository(get())
+        notificationRepository
+    }
+
 
     viewModel {
         ToolsListViewModel(get())
@@ -149,5 +160,8 @@ val dataModule = module {
     }
     viewModel {
         DashboardViewModel(get())
+    }
+    viewModel {
+        NotificationListViewModel(get())
     }
 }

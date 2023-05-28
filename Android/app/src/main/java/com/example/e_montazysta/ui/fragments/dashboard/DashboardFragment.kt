@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import coil.load
 import coil.transform.CircleCropTransformation
+import com.example.e_montazysta.R
 import com.example.e_montazysta.databinding.FragmentDashboardBinding
 import com.example.e_montazysta.ui.viewmodels.DashboardViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -43,6 +44,28 @@ class DashboardFragment : Fragment() {
                 }
             }
         })
+
+        // TOOLBAR
+
+        binding.toolbar.setOnMenuItemClickListener {menuItem ->
+            when (menuItem.itemId) {
+                R.id.notifications -> {
+                    val direction = DashboardFragmentDirections.actionNavigationDashboardToNotificationListFragment()
+                    findNavController().navigate(direction)
+                    true
+                }
+                else -> {
+                    Toast.makeText(context, "Błąd dzielenia przez ogórek", Toast.LENGTH_LONG).show()
+                    false}
+
+            }
+        }
+
+
+
+
+
+        // KAFELKI
 
         val warehouses = binding.warehouses
         warehouses.setOnClickListener(null)

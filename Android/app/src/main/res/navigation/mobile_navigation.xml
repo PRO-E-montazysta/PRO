@@ -32,6 +32,9 @@
         <action
             android:id="@+id/action_navigation_dashboard_to_elementsListFragment"
             app:destination="@id/elementsListFragment" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_notificationListFragment"
+            app:destination="@id/notificationListFragment" />
     </fragment>
 
     <fragment
@@ -159,4 +162,8 @@
             android:name="elementId"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/notificationListFragment"
+        android:name="com.example.e_montazysta.ui.notification.NotificationListFragment"
+        android:label="NotificationListFragment" />
 </navigation>
