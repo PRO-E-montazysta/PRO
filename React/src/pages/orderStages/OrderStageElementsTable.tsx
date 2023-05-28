@@ -118,7 +118,23 @@ const OrderStageElementsTable = forwardRef(
                             <TableCell>Element</TableCell>
                             <TableCell align="right">Planowana ilość</TableCell>
                             {isDisplayingMode && <TableCell align="right">Wydana ilość</TableCell>}
-                            {!isDisplayingMode && <TableCell align="right">Akcja</TableCell>}
+                            {!isDisplayingMode && (
+                                <TableCell align="right">
+                                    <Button
+                                        sx={{ marginRight: '10px' }}
+                                        color="primary"
+                                        variant="contained"
+                                        onClick={() => {
+                                            setTableData((tableData) => [
+                                                ...tableData!,
+                                                { numberOfElements: 0, elementId: 'toChange' },
+                                            ])
+                                        }}
+                                    >
+                                        Dodaj
+                                    </Button>
+                                </TableCell>
+                            )}
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -157,21 +173,6 @@ const OrderStageElementsTable = forwardRef(
                                     {isDisplayingMode && <TableCell align="right"></TableCell>}
                                     {!isDisplayingMode && (
                                         <TableCell align="right">
-                                            {rowIndex === tableData.length - 1 && (
-                                                <Button
-                                                    sx={{ marginRight: '10px' }}
-                                                    color="primary"
-                                                    variant="contained"
-                                                    onClick={() => {
-                                                        setTableData((tableData) => [
-                                                            ...tableData!,
-                                                            { numberOfElements: 0, elementId: 'toChange' },
-                                                        ])
-                                                    }}
-                                                >
-                                                    Dodaj następne
-                                                </Button>
-                                            )}
                                             <Button
                                                 color="error"
                                                 variant="contained"
