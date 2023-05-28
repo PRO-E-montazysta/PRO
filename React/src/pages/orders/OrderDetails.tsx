@@ -14,6 +14,8 @@ import {
     useEditOrderLocation,
     useEditOrder,
     useOrderData,
+    useOrderNextStatus,
+    useOrderPreviousStatus,
 } from './hooks'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { FormButtons } from '../../components/form/FormButtons'
@@ -55,8 +57,22 @@ const OrderDetails = () => {
     const editOrderMutation = useEditOrder((data) => submitLocation(data))
     const deleteOrderMutation = useDeleteOrder(() => orderData.remove())
     const orderData = useOrderData(params.id)
+    const orderNextStatusMutation = useOrderNextStatus(() => {
+        orderData.refetch({
+            queryKey: ['order', { id: params.id }],
+        })
+    })
+    const orderPreviousStatusMutation = useOrderPreviousStatus(() => {
+        orderData.refetch({
+            queryKey: ['order', { id: params.id }],
+        })
+    })
+
     //status for all mutations and queries
-    const queriesStatus = useQueriesStatus([orderData], [addOrderMutation, editOrderMutation, deleteOrderMutation])
+    const queriesStatus = useQueriesStatus(
+        [orderData],
+        [addOrderMutation, editOrderMutation, deleteOrderMutation, orderNextStatusMutation],
+    )
 
     const appSize = useBreakpoints()
 
@@ -96,6 +112,32 @@ const OrderDetails = () => {
             ],
             callback: (result: number) => {
                 if (result == 1 && params.id && Number.isInteger(params.id)) deleteOrderMutation.mutate(params.id)
+            },
+        })
+    }
+
+    const handleNextStatus = () => {
+        showDialog({
+            title: 'Czy na pewno chcesz przekazać zlecenie dalej?',
+            btnOptions: [
+                { text: 'Tak', value: 1, variant: 'contained' },
+                { text: 'Anuluj', value: 0, variant: 'outlined' },
+            ],
+            callback: (result: number) => {
+                if (result == 1 && params.id) orderNextStatusMutation.mutate(params.id)
+            },
+        })
+    }
+
+    const handlePreviousStatus = () => {
+        showDialog({
+            title: 'Czy na pewno chcesz cofnąć status zlecenia?',
+            btnOptions: [
+                { text: 'Tak', value: 1, variant: 'contained' },
+                { text: 'Anuluj', value: 0, variant: 'outlined' },
+            ],
+            callback: (result: number) => {
+                if (result == 1 && params.id) orderPreviousStatusMutation.mutate(params.id)
             },
         })
     }
@@ -212,6 +254,8 @@ const OrderDetails = () => {
                                 orderStageButton={getAddOrderStageButton()}
                                 handleAddOrderStage={handleAddOrderStage}
                                 isAddOrderStageVisible={isAddOrderStageVisible}
+                                nextStatus={handleNextStatus}
+                                previousStatus={handlePreviousStatus}
                             />
                         </>
                     )}
