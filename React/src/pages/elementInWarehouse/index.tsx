@@ -23,7 +23,7 @@ const ElementInWarehouseView = (params: ElementInWarehouseViewParams) => {
     const navigation = useNavigate()
 
     const queryElementInWarehouse = useQuery<Array<ElementInWarehouseFilterDto>, AxiosError>(
-        ['elements-in-warehouse', filterParams],
+        ['elements-in-warehouse', { id: params.elementId }, filterParams],
         async () => getElementInWarehouseCounts({ queryParams: filterParams }, elementId),
     )
 

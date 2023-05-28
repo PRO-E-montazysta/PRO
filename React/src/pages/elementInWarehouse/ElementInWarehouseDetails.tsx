@@ -52,7 +52,7 @@ const ElementInWarehouseDetails = () => {
 
     const handleOnEditSuccess = (data: any) => {
         elementInWarehouseData.refetch({
-            queryKey: ['tooltype', { id: data.id }],
+            queryKey: ['element-in-warehouse', { id: data.id }],
         })
         setPageMode('read')
     }
