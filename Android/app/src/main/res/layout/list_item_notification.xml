@@ -28,7 +28,6 @@
             layout="@layout/list_item_template"
             android:id="@+id/item"
             app:headline="@{notification.content}"
-            app:supportText='@{notification.subContent + " | " + notification.createdAt}'
             android:layout_height="wrap_content"
             android:layout_width="match_parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

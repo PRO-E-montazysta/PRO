@@ -47,7 +47,7 @@ class DashboardFragment : Fragment() {
 
         // TOOLBAR
 
-        binding.toolbar.setOnMenuItemClickListener {menuItem ->
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.notifications -> {
                     val direction = DashboardFragmentDirections.actionNavigationDashboardToNotificationListFragment()

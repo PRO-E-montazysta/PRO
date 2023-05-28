@@ -165,5 +165,12 @@
     <fragment
         android:id="@+id/notificationListFragment"
         android:name="com.example.e_montazysta.ui.notification.NotificationListFragment"
-        android:label="NotificationListFragment" />
+        android:label="NotificationListFragment" >
+        <action
+            android:id="@+id/action_notificationListFragment_to_stageDetailFragment"
+            app:destination="@id/stageDetailFragment" />
+        <action
+            android:id="@+id/action_notificationListFragment_to_orderDetailFragment"
+            app:destination="@id/orderDetailFragment" />
+    </fragment>
 </navigation>

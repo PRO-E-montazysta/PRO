@@ -1,7 +1,5 @@
 package com.example.e_montazysta.data
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.example.e_montazysta.data.environments.Environment
 import com.example.e_montazysta.data.network.NetworkServiceFactory
 import com.example.e_montazysta.data.network.ServiceFactory
@@ -43,14 +41,14 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Converter
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.time.LocalDateTime
+import java.util.Date
 
 val dataModule = module {
     factory {
         val moshi =
             Moshi.Builder()
                 .add(KotlinJsonAdapterFactory())
-                .add(LocalDateTime::class.java, CustomDateAdapter().nullSafe())
+                .add(Date::class.java, CustomDateAdapter().nullSafe())
                 .build()
         moshi
     }

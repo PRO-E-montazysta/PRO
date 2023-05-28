@@ -8,6 +8,7 @@ import com.example.e_montazysta.data.repository.interfaces.INotificationReposito
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
@@ -31,7 +32,7 @@ class NotificationListViewModel(private val repository: INotificationRepository)
 
     fun getNotification() {
         job = launch {
-            getNotificationAsync()
+            async { getNotificationAsync() }
         }
     }
 
@@ -51,5 +52,24 @@ class NotificationListViewModel(private val repository: INotificationRepository)
     override fun onCleared() {
         super.onCleared()
         coroutineContext.cancel()
+    }
+
+    fun readNotification(id: Int) {
+        job = launch {
+            readNotificationAsync(id)
+        }
+    }
+
+    private suspend fun readNotificationAsync(id: Int) {
+        _isLoadingLiveData.postValue(true)
+        val result = repository.readNotification(id)
+        when (result) {
+            is Result.Success -> getNotificationAsync()
+            is Result.Error -> {
+                result.exception.message?.let { _messageLiveData.postValue(it) }
+                _isLoadingLiveData.postValue(false)
+            }
+        }
+        _isLoadingLiveData.postValue(false)
     }
 }

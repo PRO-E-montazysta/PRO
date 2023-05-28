@@ -14,14 +14,26 @@ import retrofit2.HttpException
 class NotificationRepository (private val serviceProvider: IServiceProvider): INotificationRepository, KoinComponent{
     private val sharedPreferencesHelper: ISharedPreferencesHelper by inject()
     private val token = "Bearer " + sharedPreferencesHelper.get("lama").toString()
+    private val notificationService = serviceProvider.getNotificationService()
+
     override suspend fun getListOfNotifications(): Result<List<Notification?>> {
         return try {
-            val notificationService = serviceProvider.getNotificationService()
-            val notifications = notificationService.getListOfNotifications(token)
+            val notificationDAOs = notificationService.getListOfNotifications(token)
+            val notifications = notificationDAOs.map { it?.mapToNotification() }
             Result.Success(notifications)
         } catch (e: HttpException) {
             Log.e(TAG, e.message!!)
-            throw e
+            Result.Error(e)
+        }
+    }
+
+    override suspend fun readNotification(id: Int): Result<Notification> {
+        return try {
+            val notificationDAO = notificationService.readNotification(token, id)
+            val notifications = notificationDAO.mapToNotification()
+            Result.Success(notifications)
+        } catch (e: HttpException) {
+            Log.e(TAG, e.message!!)
             Result.Error(e)
         }
     }

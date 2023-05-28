@@ -8,13 +8,5 @@
         android:contentDescription="@string/readAll_button_text"
         android:tooltipText="readAll_button_text"
         android:icon="@drawable/baseline_done_all_24"
-        app:showAsAction="always"
-        tools:targetApi="o" />
-    <item
-        android:id="@+id/action_filter"
-        android:title="@string/filter_button_title"
-        android:icon="@drawable/baseline_filter_alt_24"
-        android:contentDescription="@string/filter_button_text"
-        android:tooltipText="@string/filter_button_text"
         app:showAsAction="always"/>
 </menu>

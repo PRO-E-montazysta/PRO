@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import com.example.e_montazysta.R
+import com.example.e_montazysta.data.model.NotificationType
 import com.example.e_montazysta.databinding.FragmentNotificationsBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -17,11 +20,40 @@ class NotificationListFragment : Fragment() {
 
         val binding: FragmentNotificationsBinding = FragmentNotificationsBinding.inflate(inflater, container, false)
         val adapter = NotificationListAdapter( CustomClickListener{
-//                notificationId -> findNavController().navigate( NotificationListFragmentDirections.actionNotificationListFragmentToNotificationDetailFragment(notificationId))
+                notification ->
+            when(notification.notificationType) {
+                    NotificationType.ORDER_CREATED -> findNavController().navigate( NotificationListFragmentDirections.actionNotificationListFragmentToOrderDetailFragment(notification.orderId!!))
+                    NotificationType.ACCEPT_ORDER -> findNavController().navigate( NotificationListFragmentDirections.actionNotificationListFragmentToOrderDetailFragment(notification.orderId!!))
+                    NotificationType.FOREMAN_ASSIGNMENT -> findNavController().navigate( NotificationListFragmentDirections.actionNotificationListFragmentToOrderDetailFragment(notification.orderId!!))
+                    NotificationType.FITTER_ASSIGNMENT -> findNavController().navigate( NotificationListFragmentDirections.actionNotificationListFragmentToStageDetailFragment(notification.orderStageId!!))
+                    NotificationType.TOOL_EVENT -> null
+                    NotificationType.ELEMENT_EVENT -> null
+                    NotificationType.AD_HOC_CREATED -> null
+            }
+            viewModel.readNotification(notification.id)
         })
 
+        // TOOLBAR
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.action_readall -> {
+                    if (adapter.elements.isNotEmpty()) {
+                        adapter.elements.forEach {
+                            viewModel.readNotification(it!!.id)
+                        }
+                        viewModel.getNotification()
+                    } else {
+                        Toast.makeText(context, "Brak nowych powiadomień!", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                    true
+                } else -> {
+                    Toast.makeText(context, "Błąd dzielenia przez ogórek", Toast.LENGTH_LONG).show()
+                    false}
+            }
+        }
 
-    // Przekazywanie obiektów do adaptera
+        // Przekazywanie obiektów do adaptera
         binding.notificationList.adapter = adapter
         viewModel.getNotification()
 

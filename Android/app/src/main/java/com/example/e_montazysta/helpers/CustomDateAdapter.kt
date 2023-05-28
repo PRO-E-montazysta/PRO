@@ -1,37 +1,39 @@
 package com.example.e_montazysta.helpers
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
 import com.squareup.moshi.ToJson
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
-class CustomDateAdapter : JsonAdapter<LocalDateTime>() {
-    private val dateTimeFormatter = DateTimeFormatter.ofPattern(SERVER_FORMAT)
+class CustomDateAdapter : JsonAdapter<Date>() {
+    private val dateFormat = SimpleDateFormat(SERVER_FORMAT, Locale.getDefault())
 
-    @RequiresApi(Build.VERSION_CODES.O)
     @FromJson
-    override fun fromJson(reader: JsonReader): LocalDateTime? {
+    override fun fromJson(reader: JsonReader): Date? {
         return try {
             val dateAsString = reader.nextString()
-            LocalDateTime.parse(dateAsString, dateTimeFormatter)
+            synchronized(dateFormat) {
+                dateFormat.parse(dateAsString)
+            }
         } catch (e: Exception) {
             null
         }
     }
 
     @ToJson
-    override fun toJson(writer: JsonWriter, value: LocalDateTime?) {
+    override fun toJson(writer: JsonWriter, value: Date?) {
         if (value != null) {
-            writer.value(value.format(dateTimeFormatter))
+            synchronized(dateFormat) {
+                writer.value(value.toString())
+            }
         }
     }
 
     companion object {
-        const val SERVER_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS" // define your server format here
+        const val SERVER_FORMAT = ("yyyy-MM-dd'T'HH:mm:ss.SSSSSS") // define your server format here
     }
 }
