@@ -116,8 +116,8 @@ const OrderStageElementsTable = forwardRef(
                     <TableHead>
                         <TableRow>
                             <TableCell>Element</TableCell>
-                            <TableCell align="right">Planowana potrzebna ilość</TableCell>
-                            {isDisplayingMode && <TableCell align="right">Wydana ilość elementów</TableCell>}
+                            <TableCell align="right">Planowana ilość</TableCell>
+                            {isDisplayingMode && <TableCell align="right">Wydana ilość</TableCell>}
                             {!isDisplayingMode && <TableCell align="right">Akcja</TableCell>}
                         </TableRow>
                     </TableHead>

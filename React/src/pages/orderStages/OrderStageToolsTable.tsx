@@ -113,7 +113,7 @@ const OrderStageToolsTable = forwardRef(
                     <TableHead>
                         <TableRow>
                             <TableCell>Typ narzędzia</TableCell>
-                            <TableCell align="right">Planowana potrzebna ilość</TableCell>
+                            <TableCell align="right">Planowana ilość</TableCell>
                             {isDisplayingMode && <TableCell align="right">Wydane narzędzia - kody</TableCell>}
                             {!isDisplayingMode && <TableCell align="right">Akcja</TableCell>}
                         </TableRow>
