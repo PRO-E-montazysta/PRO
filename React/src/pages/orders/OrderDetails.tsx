@@ -119,7 +119,7 @@ const OrderDetails = () => {
 
     const handleNextStatus = () => {
         showDialog({
-            title: 'Czy na pewno chcesz przekazać zlecenie dalej?',
+            title: 'Czy na pewno chcesz zmienić status zlecenia na następny?',
             btnOptions: [
                 { text: 'Tak', value: 1, variant: 'contained' },
                 { text: 'Anuluj', value: 0, variant: 'outlined' },
