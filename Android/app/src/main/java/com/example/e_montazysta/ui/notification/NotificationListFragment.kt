@@ -13,6 +13,7 @@ import com.example.e_montazysta.data.model.NotificationType
 import com.example.e_montazysta.databinding.FragmentNotificationsBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+
 class NotificationListFragment : Fragment() {
     private val viewModel: NotificationListViewModel by viewModel()
 
@@ -30,7 +31,7 @@ class NotificationListFragment : Fragment() {
                     NotificationType.ELEMENT_EVENT -> null
                     NotificationType.AD_HOC_CREATED -> null
             }
-            viewModel.readNotification(notification.id)
+            viewModel.readNotification(notification)
         })
 
         // TOOLBAR
@@ -38,10 +39,7 @@ class NotificationListFragment : Fragment() {
             when (menuItem.itemId) {
                 R.id.action_readall -> {
                     if (adapter.elements.isNotEmpty()) {
-                        adapter.elements.forEach {
-                            viewModel.readNotification(it!!.id)
-                        }
-                        viewModel.getNotification()
+                        viewModel.readNotification(adapter.elements)
                     } else {
                         Toast.makeText(context, "Brak nowych powiadomień!", Toast.LENGTH_SHORT)
                             .show()
@@ -53,8 +51,16 @@ class NotificationListFragment : Fragment() {
             }
         }
 
+        // SWIPE TO REFRESH
+        val mSwipeRefreshLayout = binding.swiperefresh
+        mSwipeRefreshLayout.setOnRefreshListener {
+            viewModel.getNotification()
+            mSwipeRefreshLayout.isRefreshing = false
+        }
+
+
         // Przekazywanie obiektów do adaptera
-        binding.notificationList.adapter = adapter
+        binding.list.adapter = adapter
         viewModel.getNotification()
 
         viewModel.notification.observe(viewLifecycleOwner, Observer {

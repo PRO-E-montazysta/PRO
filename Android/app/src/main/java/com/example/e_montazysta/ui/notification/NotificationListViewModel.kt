@@ -27,6 +27,9 @@ class NotificationListViewModel(private val repository: INotificationRepository)
     private val _isLoadingLiveData = MutableLiveData<Boolean>()
     val isLoadingLiveData: LiveData<Boolean> = _isLoadingLiveData
 
+    private val _notificationsNumberLiveData = MutableLiveData<Int>()
+    val notificationsNumberLiveData: LiveData<Int> = _notificationsNumberLiveData
+
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
@@ -40,7 +43,10 @@ class NotificationListViewModel(private val repository: INotificationRepository)
         _isLoadingLiveData.postValue(true)
             val result = repository.getListOfNotifications()
             when (result) {
-                is Result.Success -> _notificationLiveData.postValue(result.data)
+                is Result.Success -> {
+                    _notificationLiveData.postValue(result.data)
+                    _notificationsNumberLiveData.postValue(result.data.size)
+                }
                 is Result.Error -> {
                     result.exception.message?.let { _messageLiveData.postValue(it) }
                     _isLoadingLiveData.postValue(false)
@@ -54,15 +60,35 @@ class NotificationListViewModel(private val repository: INotificationRepository)
         coroutineContext.cancel()
     }
 
-    fun readNotification(id: Int) {
+    fun readNotification(notification: Notification) {
         job = launch {
-            readNotificationAsync(id)
+            readNotificationAsync(notification)
         }
     }
 
-    private suspend fun readNotificationAsync(id: Int) {
+    fun readNotification(notifications: List<Notification?>) {
+        job = launch {
+            readNotificationAsync(notifications)
+        }
+    }
+    private suspend fun  readNotificationAsync(notifications: List<Notification?>) {
         _isLoadingLiveData.postValue(true)
-        val result = repository.readNotification(id)
+        notifications.forEach{
+            val result = repository.readNotification(it!!.id)
+            when (result) {
+                is Result.Success -> assert(it.id == result.data.id){ _messageLiveData.postValue("Błąd!") }
+                is Result.Error -> {
+                    result.exception.message?.let { _messageLiveData.postValue(it) }
+                    _isLoadingLiveData.postValue(false)
+                }
+            }
+        }
+        getNotificationAsync()
+        _isLoadingLiveData.postValue(false)
+    }
+    private suspend fun readNotificationAsync(notification: Notification) {
+        _isLoadingLiveData.postValue(true)
+        val result = repository.readNotification(notification.id)
         when (result) {
             is Result.Success -> getNotificationAsync()
             is Result.Error -> {
