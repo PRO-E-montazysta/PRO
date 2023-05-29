@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.e_montazysta"
-        minSdk 24
+        minSdk 26
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -87,5 +87,6 @@ dependencies {
 
     implementation "androidx.viewpager2:viewpager2:1.0.0"
     implementation "io.coil-kt:coil:2.2.0"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
 
 }

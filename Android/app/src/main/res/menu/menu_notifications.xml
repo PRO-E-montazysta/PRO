@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_readall"
+        android:title="@string/readall_button_title"
+        android:contentDescription="@string/readAll_button_text"
+        android:tooltipText="readAll_button_text"
+        android:icon="@drawable/baseline_done_all_24"
+        app:showAsAction="always"/>
+</menu>

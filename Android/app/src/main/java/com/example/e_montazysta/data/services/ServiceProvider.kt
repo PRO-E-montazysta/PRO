@@ -26,4 +26,8 @@ class ServiceProvider (private val serviceFactory: ServiceFactory) : IServicePro
     override fun getCommentService(): CommentService {
         return serviceFactory.create(CommentService::class.java)
     }
+
+    override fun getNotificationService(): NotificationService {
+        return serviceFactory.create(NotificationService::class.java)
+    }
 }
