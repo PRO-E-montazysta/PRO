@@ -151,11 +151,10 @@ public class OrderStageImpl implements OrderStageService {
         OrderStage updatedOrderStage = orderStageMapper.toEntity(modiffiedOrderStageDto);
         OrderStage orderStageDb = repository.findById(id).orElseThrow(EntityNotFoundException::new);
 
-        //TODO: Send notification on status change
-
         List<ToolsPlannedNumber> updatedToolsList = new ArrayList<>();
         List<ElementsPlannedNumber> updatedElementsList = new ArrayList<>();
-        if (authUtils.getLoggedUser().getRoles().contains(Role.SPECIALIST)) {
+        if (authUtils.getLoggedUser().getRoles().contains(Role.SPECIALIST)
+                && orderStageDb.getStatus().equals(OrderStageStatus.PLANNING)) {
             if(!updatedOrderStage.getListOfToolsPlannedNumber().isEmpty()) {
                 orderStageDb.getListOfToolsPlannedNumber().stream()
                         .forEach(toolsPlannedNumber -> toolsPlannedNumberRepository.delete(toolsPlannedNumber));
@@ -186,6 +185,24 @@ public class OrderStageImpl implements OrderStageService {
             updatedElementsList = updatedOrderStage.getListOfElementsPlannedNumber();
         }
 
+        if (authUtils.getLoggedUser().getRoles().contains(Role.FOREMAN)
+                && orderStageDb.getStatus().equals(OrderStageStatus.ADDING_FITTERS)) {
+            //Utworzenie listy powiadamianych fitterów
+            List<AppUser> notifiedEmployees = new ArrayList<>();
+
+            for(Fitter fitter : updatedOrderStage.getAssignedTo()) {
+                if(!orderStageDb.getAssignedTo().contains(fitter)) {
+                    notifiedEmployees.add(fitter);
+                }
+            }
+            orderStageDb.setAssignedTo(updatedOrderStage.getAssignedTo());
+
+            //Wysłanie powiadomienia do fitterów o przypisaniu do etapu
+            if(notifiedEmployees.size() > 0) {
+                notificationService.createNotification(notifiedEmployees, orderStageDb.getId(), NotificationType.FITTER_ASSIGNMENT);
+            }
+        }
+
         orderStageDb.setName(updatedOrderStage.getName());
         orderStageDb.setStatus(updatedOrderStage.getStatus());
         orderStageDb.setPrice(updatedOrderStage.getPrice());
@@ -196,7 +213,6 @@ public class OrderStageImpl implements OrderStageService {
         orderStageDb.setPlannedDurationTime(ChronoUnit.HOURS.between(updatedOrderStage.getPlannedStartDate(),updatedOrderStage.getPlannedEndDate()));
         orderStageDb.setPlannedFittersNumber(updatedOrderStage.getPlannedFittersNumber());
         orderStageDb.setMinimumImagesNumber(updatedOrderStage.getMinimumImagesNumber());
-        orderStageDb.setAssignedTo(updatedOrderStage.getAssignedTo());
         orderStageDb.setComments(updatedOrderStage.getComments());
         orderStageDb.setAttachments(updatedOrderStage.getAttachments());
         orderStageDb.setNotifications(updatedOrderStage.getNotifications());
@@ -477,6 +493,7 @@ public class OrderStageImpl implements OrderStageService {
         if(orderStage.getStatus().equals(OrderStageStatus.PLANNING) && loggedUserRoles.contains(Role.SPECIALIST)) {
             //czy jest podzielone
             orderStage.setStatus(OrderStageStatus.ADDING_FITTERS);
+            //TODO: Powiadomienie foremana- addign fitters
         }else if(orderStage.getStatus().equals(OrderStageStatus.ADDING_FITTERS) && loggedUserRoles.contains(Role.FOREMAN)) {
             //Check if fitters are assigned
             if(orderStage.getAssignedTo().size() > 0) {
@@ -486,6 +503,7 @@ public class OrderStageImpl implements OrderStageService {
                     orderStage.setStatus(OrderStageStatus.REALESED);
                 } else {
                     orderStage.setStatus(OrderStageStatus.PICK_UP);
+                    //TODO: Powiadomienie magazynierów- wydanie
                 }
             }else {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Przypisz montażystów do etapu!");
@@ -497,6 +515,7 @@ public class OrderStageImpl implements OrderStageService {
             orderStage.setStatus(OrderStageStatus.ON_WORK);
         }else if(orderStage.getStatus().equals(OrderStageStatus.ON_WORK) && loggedUserRoles.contains(Role.FOREMAN)) {
             orderStage.setStatus(OrderStageStatus.RETURN);
+            //TODO: Powiadomienie magazynierów- zwrot
         }else if(orderStage.getStatus().equals(OrderStageStatus.RETURN) && (loggedUserRoles.contains(Role.WAREHOUSE_MAN)
                 || loggedUserRoles.contains(Role.WAREHOUSE_MANAGER))) {
             //Check if all tools are returned
