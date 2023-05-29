@@ -2,7 +2,7 @@ import { Grid, Paper, Box, Button, Tabs, Tab, Typography, CardActions } from '@m
 import dayjs, { Dayjs } from 'dayjs'
 import { useFormik } from 'formik'
 import { useParams } from 'react-router-dom'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { DatePicker, TimePicker } from '@mui/x-date-pickers'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -19,7 +19,7 @@ import { useQuery } from 'react-query'
 import { AxiosError } from 'axios'
 import { getAllToolTypes, getPlannedToolTypesById } from '../../api/toolType.api'
 import { getAllElements, getPlannedElementById } from '../../api/element.api'
-import { useAddOrderStage, useUpdateOrderStage } from './hooks'
+import { useAddOrderStage, useOrderStageNextStatus, useOrderStagePreviousStatus, useUpdateOrderStage } from './hooks'
 import { CustomTextField } from '../../components/form/FormInput'
 import { v4 as uuidv4 } from 'uuid'
 import { ToolType } from '../../types/model/ToolType'
@@ -30,6 +30,7 @@ import { isAuthorized } from '../../utils/authorize'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import useBreakpoints from '../../hooks/useBreakpoints'
+import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 
 type OrderStageCardProps = {
     index?: string
@@ -50,6 +51,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
     const addOrderStage = useAddOrderStage()
     const updateOrderStage = useUpdateOrderStage()
     const appSize = useBreakpoints()
+    const { showDialog } = useContext(DialogGlobalContext)
 
     const dummyScrollDiv = useRef<any>(null)
     const params = useParams()
@@ -340,6 +342,43 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
         )
     }
 
+    const orderNextStatusMutation = useOrderStageNextStatus(() => {
+        // orderData.refetch({
+        //     queryKey: ['order', { id: params.id }],
+        // })
+    })
+    const orderPreviousStatusMutation = useOrderStagePreviousStatus(() => {
+        // orderData.refetch({
+        //     queryKey: ['order', { id: params.id }],
+        // })
+    })
+
+    const handleNextStatus = () => {
+        showDialog({
+            title: 'Czy na pewno chcesz zmienić status etapu na następny?',
+            btnOptions: [
+                { text: 'Tak', value: 1, variant: 'contained' },
+                { text: 'Anuluj', value: 0, variant: 'outlined' },
+            ],
+            callback: (result: number) => {
+                if (result == 1 && params.id) orderNextStatusMutation.mutate(params.id)
+            },
+        })
+    }
+
+    const handlePreviousStatus = () => {
+        showDialog({
+            title: 'Czy na pewno chcesz cofnąć status etapu?',
+            btnOptions: [
+                { text: 'Tak', value: 1, variant: 'contained' },
+                { text: 'Anuluj', value: 0, variant: 'outlined' },
+            ],
+            callback: (result: number) => {
+                if (result == 1 && params.id) orderPreviousStatusMutation.mutate(params.id)
+            },
+        })
+    }
+
     return (
         <Card id={index ? index.toString() : ''} sx={{ margin: 'auto', marginTop: '20px', border: '1px solid' }}>
             <CardActions disableSpacing>
@@ -536,9 +575,8 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                         color="primary"
                                         startIcon={<ArrowForwardIosIcon />}
                                         variant="contained"
-                                        type="submit"
                                         style={{ width: appSize.isMobile ? 'auto' : 190 }}
-                                        onClick={() => {}}
+                                        onClick={handleNextStatus}
                                     >
                                         Następny status
                                     </Button>
@@ -551,7 +589,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                         variant="contained"
                                         type="submit"
                                         style={{ width: appSize.isMobile ? 'auto' : 170 }}
-                                        onClick={() => {}}
+                                        onClick={handlePreviousStatus}
                                     >
                                         Cofnij status
                                     </Button>
