@@ -19,8 +19,7 @@ const OrderStagesDetails = ({ isAddOrderStageVisible }: OrderStagesDetailsProps)
     const scrollerRef = useRef(null)
     const { showDialog } = useContext(DialogGlobalContext)
 
-
-    const queryOrderStages = useQuery<Array<OrderStage>, AxiosError>(['orderStage-list'], () =>
+    const queryOrderStages = useQuery<Array<OrderStage>, AxiosError>(['orderStage-list', { id: params.id }], () =>
         getAllOrderStages(params.id!),
     )
 
@@ -48,9 +47,7 @@ const OrderStagesDetails = ({ isAddOrderStageVisible }: OrderStagesDetailsProps)
         onError() {
             showDialog({
                 title: 'Błąd podczas dodawania etapu',
-                btnOptions: [
-                    { text: 'Ok', value: 0, },
-                ],
+                btnOptions: [{ text: 'Ok', value: 0 }],
             })
         },
     })
@@ -69,11 +66,7 @@ const OrderStagesDetails = ({ isAddOrderStageVisible }: OrderStagesDetailsProps)
                 ))}
                 {isAddOrderStageVisible ? (
                     <>
-                        <OrderStageCard
-                            key={uuidv4()}
-                            isLoading={isLoading}
-                            isDisplaying={false}
-                        />
+                        <OrderStageCard key={uuidv4()} isLoading={isLoading} isDisplaying={false} />
                         <div ref={scrollerRef}></div>
                     </>
                 ) : null}
