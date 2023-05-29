@@ -26,6 +26,10 @@ import { ToolType } from '../../types/model/ToolType'
 import OrderStageToolsTable from './OrderStageToolsTable'
 import OrderStageElementsTable from './OrderStageElementsTable'
 import { Role } from '../../types/roleEnum'
+import { isAuthorized } from '../../utils/authorize'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import useBreakpoints from '../../hooks/useBreakpoints'
 
 type OrderStageCardProps = {
     index?: string
@@ -45,6 +49,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
     const [userRole, setUserRole] = useState('')
     const addOrderStage = useAddOrderStage()
     const updateOrderStage = useUpdateOrderStage()
+    const appSize = useBreakpoints()
 
     const dummyScrollDiv = useRef<any>(null)
     const params = useParams()
@@ -309,6 +314,32 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
         )
     }
 
+    const canChangeToNextStatus = () => {
+        const orderStageStatus = stage?.status
+        return (
+            (orderStageStatus == 'PLANNING' && isAuthorized([Role.SPECIALIST])) ||
+            (orderStageStatus == 'ADDING_FITTERS' && isAuthorized([Role.FOREMAN])) ||
+            (orderStageStatus == 'PICK_UP' && isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) ||
+            (orderStageStatus == 'REALESED' && isAuthorized([Role.FOREMAN])) ||
+            (orderStageStatus == 'ON_WORK' && isAuthorized([Role.FOREMAN])) ||
+            (orderStageStatus == 'RETURN' && isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) ||
+            (orderStageStatus == 'RETURNED' && isAuthorized([Role.FOREMAN]))
+        )
+    }
+
+    const canChangeToPreviousStatus = () => {
+        const orderStageStatus = stage?.status
+        return (
+            (orderStageStatus == 'ADDING_FITTERS' && isAuthorized([Role.FOREMAN])) ||
+            (orderStageStatus == 'PICK_UP' && isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) ||
+            (orderStageStatus == 'REALESED' && isAuthorized([Role.FOREMAN])) ||
+            (orderStageStatus == 'ON_WORK' && isAuthorized([Role.FOREMAN])) ||
+            (orderStageStatus == 'RETURN' && isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) ||
+            (orderStageStatus == 'RETURNED' && isAuthorized([Role.FOREMAN])) ||
+            (orderStageStatus == 'FINISHED ' && isAuthorized([Role.FOREMAN]))
+        )
+    }
+
     return (
         <Card id={index ? index.toString() : ''} sx={{ margin: 'auto', marginTop: '20px', border: '1px solid' }}>
             <CardActions disableSpacing>
@@ -475,7 +506,15 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                         </Box>
 
                         <Grid spacing={2} container justifyContent="flex-end" sx={{ marginTop: '20px' }}>
-                            <Grid item>
+                            <Grid
+                                item
+                                sx={{
+                                    mt: '15px',
+                                    gap: '15px',
+                                    display: appSize.isMobile ? 'grid' : 'flex',
+                                    flexDirection: 'row-reverse',
+                                }}
+                            >
                                 {isDisplayingMode && userRole === Role.SPECIALIST && (
                                     <Button
                                         color="primary"
@@ -488,9 +527,35 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                 )}
                                 {(!isDisplayingMode || isEditing) && (
                                     <Button type="submit" color="primary" variant="contained" disabled={isLoading}>
-                                        Zapisz etap
+                                        Zapisz etapp
                                     </Button>
                                 )}
+                                {canChangeToNextStatus() && isDisplayingMode ? (
+                                    <Button
+                                        id={`formButton-nextStatus`}
+                                        color="primary"
+                                        startIcon={<ArrowForwardIosIcon />}
+                                        variant="contained"
+                                        type="submit"
+                                        style={{ width: appSize.isMobile ? 'auto' : 190 }}
+                                        onClick={() => {}}
+                                    >
+                                        Następny status
+                                    </Button>
+                                ) : null}
+                                {canChangeToPreviousStatus() && isDisplayingMode ? (
+                                    <Button
+                                        id={`formButton-nextStatus`}
+                                        color="primary"
+                                        startIcon={<ArrowBackIosIcon />}
+                                        variant="contained"
+                                        type="submit"
+                                        style={{ width: appSize.isMobile ? 'auto' : 170 }}
+                                        onClick={() => {}}
+                                    >
+                                        Cofnij status
+                                    </Button>
+                                ) : null}
                                 <div ref={dummyScrollDiv} />
                             </Grid>
                         </Grid>

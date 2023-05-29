@@ -66,10 +66,10 @@ export const FormButtons = (params: FormButtonsParams) => {
                             startIcon={<ArrowForwardIosIcon />}
                             variant="contained"
                             type="submit"
-                            style={{ width: appSize.isMobile ? 'auto' : 170 }}
+                            style={{ width: appSize.isMobile ? 'auto' : 190 }}
                             onClick={nextStatus}
                         >
-                            Przekaż dalej
+                            Następny status
                         </Button>
                     ) : null}
                     {previousStatus ? (
