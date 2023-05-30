@@ -11,14 +11,14 @@ export const headCells: Array<HeadCell<Notification>> = [
         id: 'content',
         label: 'Treść powiadomienia',
         visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
-        numeric: true,
+        numeric: false,
     },
     {
         type: 'string',
         id: 'subContent',
         label: 'Dotyczy',
         visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
-        numeric: true,
+        numeric: false,
     },
     {
         type: 'string',
@@ -26,7 +26,7 @@ export const headCells: Array<HeadCell<Notification>> = [
         label: 'Data powiadomienia',
         formatFn: (date: string) => formatDate(date),
         visibleInMode: [AppSize.mobile, AppSize.tablet, AppSize.notebook, AppSize.desktop],
-        numeric: true,
+        numeric: false,
     },
 ]
 
