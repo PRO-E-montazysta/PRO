@@ -37,6 +37,16 @@ public class EmploymentServiceImpl implements EmploymentService {
     }
 
     @Override
+    public List<EmploymentDto> getAllEmployeeEmployments(Long id) {
+        AppUser employee = appUserService.getById(id);
+
+
+        return employee.getEmployments().stream()
+                .map(employmentMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public EmploymentDto getById(Long id) {
         Employment employment = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         return employmentMapper.toDto(employment);

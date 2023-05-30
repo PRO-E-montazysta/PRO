@@ -29,6 +29,12 @@ public class EmploymentController {
         return employmentService.getAll();
     }
 
+    @GetMapping("/for-employee/{id}")
+    @Operation(description = "Allows to get all Employments of given employee.", security = @SecurityRequirement(name = "bearer-key"))
+    public List<EmploymentDto> getAllEmployeeEmployments(@PathVariable Long id) {
+        return employmentService.getAllEmployeeEmployments(id);
+    }
+
     @GetMapping("/{id}")
     @Operation(description = "Allows to get Employment by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public EmploymentDto getById(@PathVariable Long id) {
