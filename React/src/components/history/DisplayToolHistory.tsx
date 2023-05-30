@@ -26,9 +26,9 @@ const DisplayToolHistory = (params: ToolHistoryParams) => {
                 <TableHead>
                     <TableRow>
                         <TableCell>Nazwa etapu</TableCell>
-                        <TableCell align="right">Brygadzista</TableCell>
-                        <TableCell align="right">Początek etapu</TableCell>
-                        <TableCell align="right">Koniec etapu</TableCell>
+                        <TableCell>Brygadzista</TableCell>
+                        <TableCell>Początek etapu</TableCell>
+                        <TableCell>Koniec etapu</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -41,11 +41,11 @@ const DisplayToolHistory = (params: ToolHistoryParams) => {
                                 <TableCell component="th" scope="row">
                                     <Link href={'/order-stage/' + row['orderStageId']}>{row['orderStageName']}</Link>
                                 </TableCell>
-                                <TableCell align="right">
+                                <TableCell>
                                     <Link href={'/employees/' + row['foremanId']}>{row['foremanName']}</Link>
                                 </TableCell>
-                                <TableCell align="right">{formatDate(String(row['orderStageStartDate']))}</TableCell>
-                                <TableCell align="right">{formatDate(String(row['orderStageStartDate']))}</TableCell>
+                                <TableCell>{formatDate(String(row['orderStageStartDate']))}</TableCell>
+                                <TableCell>{formatDate(String(row['orderStageStartDate']))}</TableCell>
                             </TableRow>
                         ))}
                 </TableBody>
