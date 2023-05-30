@@ -3,7 +3,7 @@ import FatTable from '../../components/table/FatTable'
 import { useState } from 'react'
 import { useQuery } from 'react-query'
 import { AxiosError } from 'axios'
-import { filterInitStructure, headCells } from './helper'
+import { filterInitStructure, headCells, useFilterStructure } from './helper'
 import { useNavigate } from 'react-router-dom'
 import { getFilterParams, getInputs, setNewFilterValues } from '../../helpers/filter.helper'
 import { useFormik } from 'formik'
@@ -17,7 +17,7 @@ type ElementInWarehouseViewParams = {
 const ElementInWarehouseView = (params: ElementInWarehouseViewParams) => {
     const { elementId } = params
 
-    const [filterStructure, setFilterStructure] = useState(filterInitStructure)
+    const { filterStructure, setFilterStructure } = useFilterStructure()
     const [filterParams, setFilterParams] = useState(getFilterParams(filterInitStructure))
     const { initialValues, inputs } = getInputs(filterInitStructure)
     const navigation = useNavigate()
