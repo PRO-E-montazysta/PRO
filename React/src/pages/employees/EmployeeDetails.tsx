@@ -14,6 +14,9 @@ import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
 import { roleName } from '../../helpers/enum.helper'
+import DisplayEmploymentHistory from '../../components/history/DisplayEmploymentHistory'
+import { isAuthorized } from '../../utils/authorize'
+import { Role } from '../../types/roleEnum'
 
 const EmployeeDetails = () => {
     const params = useParams()
@@ -92,6 +95,10 @@ const EmployeeDetails = () => {
         }
     }, [params.id])
 
+    const canDisplayEmploymentHistory = () => {
+        return pageMode !== 'new' && isAuthorized([Role.ADMIN])
+    }
+
     return (
         <FormBox>
             <FormTitle
@@ -120,6 +127,11 @@ const EmployeeDetails = () => {
                             onSubmit={formik.submitForm}
                             readonlyMode={pageMode == 'read'}
                         />
+                        {canDisplayEmploymentHistory() ? (
+                            <DisplayEmploymentHistory employeeId={params.id!}></DisplayEmploymentHistory>
+                        ) : (
+                            ''
+                        )}
                     </>
                 )}
             </FormPaper>
