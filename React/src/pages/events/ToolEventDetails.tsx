@@ -17,7 +17,7 @@ import { useQuery } from 'react-query'
 import { Tool } from '../../types/model/Tool'
 import { AxiosError } from 'axios'
 import { getAllTools } from '../../api/tool.api'
-import DisplayToolHistory from '../../components/toolHistory/DisplayToolHistory'
+import DisplayToolHistory from '../../components/history/DisplayToolHistory'
 
 const ToolEventDetails = () => {
     const params = useParams()

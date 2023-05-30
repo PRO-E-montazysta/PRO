@@ -1,6 +1,6 @@
 import { Card, Grid, Link, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
 import { ToolHistory } from '../../types/model/Tool'
-import ExpandMore from '../../components/expandMore/ExpandMore'
+import ExpandMore from '../expandMore/ExpandMore'
 import HistoryIcon from '@mui/icons-material/History'
 import { formatDate } from '../../helpers/format.helper'
 import { useQuery } from 'react-query'
