@@ -13,4 +13,7 @@ interface ToolService {
     ): List<ToolDAO>
     @GET("/api/v1/tools/bycode/{code}")
     suspend fun getToolByCode(@Header("Authorization") token: String, @Path("code") code: String?): ToolDAO
+
+    @GET("/api/v1/tools/{id}")
+    suspend fun getToolDetails(@Header("Authorization") token: String, @Path("id") id: Int): ToolDAO
 }

@@ -1,7 +1,9 @@
 package com.example.e_montazysta.data.model
 
+import com.example.e_montazysta.data.repository.interfaces.IUserRepository
 import com.squareup.moshi.Json
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 data class User (
     @Json(name = "id")
@@ -10,6 +12,17 @@ data class User (
     val firstName: String,
     @Json(name = "lastName")
     val lastName: String
-): KoinComponent {
+) {
     override fun toString(): String = "$firstName $lastName"
+
+    companion object: KoinComponent {
+        suspend fun getUserDetails(userId: Int): User {
+            val userRepository: IUserRepository by inject()
+            val result = userRepository.getUserDetails(userId)
+            return when (result) {
+                is Result.Success -> result.data
+                is Result.Error -> throw result.exception
+            }
+        }
+    }
 }
