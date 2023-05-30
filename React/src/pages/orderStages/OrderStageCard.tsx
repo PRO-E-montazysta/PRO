@@ -160,6 +160,11 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
         handleSetElementsOnEdit()
     }
 
+    const handleCancelButtonAction = () => {
+        setIsEditing(false)
+        setIsDisplayingMode(true)
+    }
+
     const formik = useFormik({
         initialValues: {
             orderId: params.id!,
@@ -558,9 +563,26 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     </Button>
                                 )}
                                 {(!isDisplayingMode || isEditing) && (
-                                    <Button type="submit" color="primary" variant="contained" disabled={isLoading}>
-                                        Zapisz etapp
-                                    </Button>
+                                    <>
+                                        <Button
+                                            type="submit"
+                                            color="primary"
+                                            variant="contained"
+                                            disabled={isLoading}
+                                            id={`formButton-save`}
+                                        >
+                                            Zapisz
+                                        </Button>
+                                        <Button
+                                            color="primary"
+                                            variant="contained"
+                                            disabled={isLoading}
+                                            onClick={handleCancelButtonAction}
+                                            id={`formButton-cancel`}
+                                        >
+                                            Anuluj
+                                        </Button>
+                                    </>
                                 )}
                                 {canChangeToNextStatus() && isDisplayingMode ? (
                                     <Button
