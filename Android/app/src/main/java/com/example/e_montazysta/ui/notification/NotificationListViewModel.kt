@@ -37,6 +37,7 @@ class NotificationListViewModel(private val repository: INotificationRepository)
         job = launch {
             async { getNotificationAsync() }
         }
+
     }
 
     private suspend fun getNotificationAsync() {
@@ -54,6 +55,7 @@ class NotificationListViewModel(private val repository: INotificationRepository)
             }
         _isLoadingLiveData.postValue(false)
     }
+
 
     override fun onCleared() {
         super.onCleared()
