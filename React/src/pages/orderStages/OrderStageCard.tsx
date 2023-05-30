@@ -342,16 +342,8 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
         )
     }
 
-    const orderNextStatusMutation = useOrderStageNextStatus(() => {
-        // orderData.refetch({
-        //     queryKey: ['order', { id: params.id }],
-        // })
-    })
-    const orderPreviousStatusMutation = useOrderStagePreviousStatus(() => {
-        // orderData.refetch({
-        //     queryKey: ['order', { id: params.id }],
-        // })
-    })
+    const orderNextStatusMutation = useOrderStageNextStatus(() => {})
+    const orderPreviousStatusMutation = useOrderStagePreviousStatus(() => {})
 
     const handleNextStatus = () => {
         showDialog({
