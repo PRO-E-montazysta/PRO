@@ -14,6 +14,7 @@ import com.emontazysta.repository.EmploymentRepository;
 import com.emontazysta.service.ForemanService;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -33,6 +34,7 @@ public class ForemanServiceImpl implements ForemanService {
     private final EmploymentMapper employmentMapper;
     private final AuthUtils authUtils;
     private final AppUserCriteriaRepository appUserCriteriaRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public List<ForemanDto> getAll(Principal principal) {
@@ -67,6 +69,7 @@ public class ForemanServiceImpl implements ForemanService {
     @Override
     public ForemanDto add(ForemanDto foremanDto) {
         foremanDto.setUsername(foremanDto.getUsername().toLowerCase());
+        foremanDto.setPassword(bCryptPasswordEncoder.encode(foremanDto.getPassword()));
         foremanDto.setRoles(Set.of(Role.FOREMAN));
         foremanDto.setUnavailabilities(new ArrayList<>());
         foremanDto.setNotifications(new ArrayList<>());
