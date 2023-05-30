@@ -361,7 +361,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                 { text: 'Anuluj', value: 0, variant: 'outlined' },
             ],
             callback: (result: number) => {
-                if (result == 1 && params.id) orderNextStatusMutation.mutate(params.id)
+                if (result == 1 && stage?.id!) orderNextStatusMutation.mutate(stage?.id!)
             },
         })
     }
@@ -374,7 +374,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                 { text: 'Anuluj', value: 0, variant: 'outlined' },
             ],
             callback: (result: number) => {
-                if (result == 1 && params.id) orderPreviousStatusMutation.mutate(params.id)
+                if (result == 1 && stage?.id!) orderPreviousStatusMutation.mutate(stage?.id!)
             },
         })
     }
