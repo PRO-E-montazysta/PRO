@@ -31,6 +31,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import useBreakpoints from '../../hooks/useBreakpoints'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
+import { orderStageStatusName } from '../../helpers/enum.helper'
 
 type OrderStageCardProps = {
     index?: string
@@ -423,7 +424,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     variant="outlined"
                                     label="Status"
                                     name="status"
-                                    defaultValue={isDisplayingMode ? stage!.status : null}
+                                    defaultValue={isDisplayingMode ? orderStageStatusName(stage!.status) : null}
                                 />
                             </Grid>
                         ) : null}

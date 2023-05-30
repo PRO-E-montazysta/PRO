@@ -9,7 +9,7 @@ export type OrderStage = {
     startDate: Date
     endDate: Date
     plannedDurationTime: Date //jak chcemy to podawać?
-    plannedFittersNumber:  string
+    plannedFittersNumber: string
     minimumImagesNumber: string
     fitters: Array<number>
     foremanId: number
@@ -91,4 +91,15 @@ export type UpdateOrderStage2 = {
         elementId: string
     }>
     attachments: Array<number>
+}
+
+export const OrderStageStatus = {
+    PLANNING: 'PLANOWANIE',
+    ADDING_FITTERS: 'DODAWANIE MONTAŻYSTÓW',
+    PICK_UP: 'WYDAWANIE',
+    REALESED: 'WYDANO',
+    ON_WORK: 'W TRAKCIE',
+    RETURN: 'ZWRACANIE',
+    RETURNED: 'ZWRÓCONO',
+    FINISHED: 'ZAKOŃCZONO',
 }

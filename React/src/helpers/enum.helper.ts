@@ -5,9 +5,14 @@ import { EventStatus, EventType } from '../types/model/Event'
 import { EmployeeStatus, UserRole } from '../types/model/Employee'
 import { OrderPriority, OrderStatus } from '../types/model/Order'
 import { TypeOfUnavailability } from '../types/model/Unavailability'
+import { OrderStageStatus } from '../types/model/OrderStage'
 
-export const statusName = (key: string) => {
+export const orderStatusName = (key: string) => {
     return Object.values(OrderStatus)[Object.keys(OrderStatus).indexOf(key)]
+}
+
+export const orderStageStatusName = (key: string) => {
+    return Object.values(OrderStageStatus)[Object.keys(OrderStageStatus).indexOf(key)]
 }
 
 export const priorityName = (key: string) => {
