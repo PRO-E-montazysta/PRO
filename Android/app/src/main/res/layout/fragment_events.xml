@@ -15,7 +15,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
-        <com.google.android.material.appbar.AppBarLayout
+        <androidx.drawerlayout.widget.DrawerLayout
+            android:id="@+id/drawer_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:openDrawer="end">
+
+            <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,7 +40,7 @@
                 />
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".ui.elementlist.ElementListFragment"
@@ -69,5 +75,16 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <include
+                android:id="@+id/right_drawer"
+                layout="@layout/fragment_event_filters"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                >
+            </include>
+
+        </androidx.drawerlayout.widget.DrawerLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
