@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -31,13 +32,6 @@ public class EmploymentServiceImpl implements EmploymentService {
     private final AppUserService appUserService;
 
     @Override
-    public List<EmploymentDto> getAll() {
-        return repository.findAll().stream()
-                .map(employmentMapper::toDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public List<EmploymentDto> getAllEmployeeEmployments(Long id) {
         AppUser employee = appUserService.getById(id);
 
@@ -50,9 +44,10 @@ public class EmploymentServiceImpl implements EmploymentService {
     @Override
     public EmploymentDto dismiss(Long employeeId) {
         Optional<EmploymentDto> dismissingCurrentEmployment = getCurrentEmploymentByEmployeeId(employeeId);
-        Long loggedUserCompanyId = getLoggedUser().getEmployments().get(0).getCompany().getId();
 
         if(dismissingCurrentEmployment.isPresent()) {
+            Long loggedUserCompanyId = getLoggedUser().getEmployments().get(0).getCompany().getId();
+
             if(dismissingCurrentEmployment.get().getCompanyId().equals(loggedUserCompanyId)) {
                 Employment employment = employmentMapper.toEntity(dismissingCurrentEmployment.get());
                 employment.setDateOfDismiss(LocalDateTime.now());
@@ -67,15 +62,9 @@ public class EmploymentServiceImpl implements EmploymentService {
     }
 
     @Override
-    public EmploymentDto getById(Long id) {
-        Employment employment = repository.findById(id).orElseThrow(EntityNotFoundException::new);
-        return employmentMapper.toDto(employment);
-    }
-
-    @Override
-    public EmploymentDto add(EmploymentDto employmentDto) {
+    public EmploymentDto hire(Long employeeId) {
         //Employee for which we set employment
-        AppUser employee = appUserService.getById(employmentDto.getEmployeeId());
+        AppUser employee = appUserService.getById(employeeId);
 
         //Check if user is cloud admin
         if(employee.getRoles().contains(Role.CLOUD_ADMIN)) {
@@ -98,26 +87,14 @@ public class EmploymentServiceImpl implements EmploymentService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
-        employmentDto.setCompanyId(loggedUserCompanyId);
+        EmploymentDto employmentDto = EmploymentDto.builder()
+                .dateOfEmployment(LocalDateTime.now())
+                .companyId(loggedUserCompanyId)
+                .employeeId(employeeId)
+                .build();
+
         Employment employment = repository.save(employmentMapper.toEntity(employmentDto));
         return employmentMapper.toDto(employment);
-    }
-
-    @Override
-    public void delete(Long id) {
-        repository.deleteById(id);
-    }
-
-    @Override
-    public EmploymentDto update(Long id, EmploymentDto employmentDto) {
-        Employment updatedEmployment = employmentMapper.toEntity(employmentDto);
-        Employment employment = repository.findById(id).orElseThrow(EntityNotFoundException::new);
-
-        employment.setDateOfEmployment(updatedEmployment.getDateOfEmployment());
-        employment.setDateOfDismiss(updatedEmployment.getDateOfDismiss());
-        employment.setEmployee(updatedEmployment.getEmployee());
-
-        return employmentMapper.toDto(repository.save(employment));
     }
 
     @Override
@@ -129,7 +106,7 @@ public class EmploymentServiceImpl implements EmploymentService {
             return Optional.ofNullable(null);
     }
 
-    public AppUser getLoggedUser() {
+    private AppUser getLoggedUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         AppUser appUser = appUserService.findByUsername(username);
         return appUser;
