@@ -57,6 +57,7 @@ const Notifications = () => {
             filterProps={filter}
             headCells={headCells}
             initOrderBy={'createdAt'}
+            initOrderByDesc={true}
             onClickRow={async (e, row) => {
                 if (row.readAt == null) {
                     await updateNotification(row.id)
