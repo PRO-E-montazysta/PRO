@@ -5,6 +5,8 @@ import com.example.e_montazysta.data.model.Result
 import com.example.e_montazysta.data.repository.interfaces.IEventRepository
 import com.example.e_montazysta.data.services.IServiceProvider
 import com.example.e_montazysta.helpers.Interfaces.ISharedPreferencesHelper
+import com.example.e_montazysta.ui.event.EventListItem
+import com.example.e_montazysta.ui.event.FilterEventDAO
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -18,6 +20,22 @@ class EventRepository (private val serviceProvider: IServiceProvider): IEventRep
             val eventDAO = eventService.getToolEventDetails(token, id)
             val eventDetail = eventDAO.mapToEvent()
             Result.Success(eventDetail)
+        } catch (e: Exception) {
+
+            Result.Error(e)
+        }
+    }
+
+    override suspend fun getListOfEvents(payload: Map<String, String>?): Result<List<EventListItem>> {
+        return try {
+            var eventDAOs: List<FilterEventDAO>
+            if (payload.isNullOrEmpty()) {
+                eventDAOs = eventService.getFilteredEvents(token)
+            } else{
+                eventDAOs = eventService.getFilteredEvents(token, payload)
+            }
+            val events = eventDAOs.map { it.mapToEventListItem() }
+            Result.Success(events)
         } catch (e: Exception) {
             Result.Error(e)
         }

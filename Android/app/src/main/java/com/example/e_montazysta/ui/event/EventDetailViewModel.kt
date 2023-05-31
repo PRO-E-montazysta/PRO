@@ -1,5 +1,7 @@
 package com.example.e_montazysta.ui.event
 
+import android.content.ContentValues
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -39,7 +41,10 @@ class EventDetailViewModel(private val repository: IEventRepository) : ViewModel
         val result = repository.getEventDetails(id)
         when (result) {
             is Result.Success -> _eventDetailLiveData.postValue(result.data)
-            is Result.Error -> result.exception.message?.let { _messageLiveData.postValue(it) }
+            is Result.Error -> {
+                result.exception.message?.let { _messageLiveData.postValue(it) }
+                Log.e(ContentValues.TAG, Log.getStackTraceString(result.exception))
+            }
         }
         _isLoadingLiveData.postValue(false)
     }

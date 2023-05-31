@@ -5,7 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.e_montazysta.data.model.Result
 import com.example.e_montazysta.data.repository.interfaces.IEventRepository
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 
@@ -25,18 +29,21 @@ class EventListViewModel(private val repository: IEventRepository) : ViewModel()
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
-    fun getEvent() {
+    fun getEvent(payload: Map<String, String>?) {
         job = launch {
-            getEventAsync()
+            getEventAsync(payload)
         }
     }
 
-    private suspend fun getEventAsync() {
+    private suspend fun getEventAsync(payload: Map<String, String>?) {
         _isLoadingLiveData.postValue(true)
-            val result = repository.getListOfEvents()
+            val result = repository.getListOfEvents(payload)
             when (result) {
-                is Result.Success -> _eventLiveData.postValue(result.data.map { it.mapToEventItem() })
-                is Result.Error -> result.exception.message?.let { _messageLiveData.postValue(it) }
+                is Result.Success -> _eventLiveData.postValue( result.data )
+                is Result.Error -> {
+                    result.exception.message?.let { _messageLiveData.postValue(it) }
+                    _isLoadingLiveData.postValue(false)
+                }
             }
         _isLoadingLiveData.postValue(false)
     }

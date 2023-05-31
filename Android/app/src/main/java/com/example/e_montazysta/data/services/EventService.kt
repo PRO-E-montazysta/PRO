@@ -1,8 +1,8 @@
 package com.example.e_montazysta.data.services
 
 import com.example.e_montazysta.data.model.Element
-import com.example.e_montazysta.data.model.Event
 import com.example.e_montazysta.ui.event.ElementEventDAO
+import com.example.e_montazysta.ui.event.FilterEventDAO
 import com.example.e_montazysta.ui.event.ToolEventDAO
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -14,30 +14,33 @@ import retrofit2.http.Path
 import retrofit2.http.QueryMap
 
 interface EventService {
-    @GET("/events/filter")
-    fun getFilteredEvents(@Header("Authorization") token: String, @QueryMap payload: Map<String, String>): List<Event>
+    @GET("/api/v1/events/filter")
+    suspend fun getFilteredEvents(@Header("Authorization") token: String): List<FilterEventDAO>
 
-    @GET("/toolEvent/{id}")
-    fun getToolEventDetails(@Header("Authorization") token: String, @Path("id") id: Int): ToolEventDAO
+    @GET("/api/v1/events/filter")
+    suspend fun getFilteredEvents(@Header("Authorization") token: String, @QueryMap(encoded = true) payload: Map<String, String>?): List<FilterEventDAO>
+
+    @GET("/api/v1/toolEvent/{id}")
+    suspend fun getToolEventDetails(@Header("Authorization") token: String, @Path("id") id: Int): ToolEventDAO
     
-    @PUT("/toolEvent/{id}")
-    fun updateToolEvent(@Header("Authorization") token: String, @Path("id") id: Int, @Body data: Element): ToolEventDAO
+    @PUT("/api/v1/toolEvent/{id}")
+    suspend fun updateToolEvent(@Header("Authorization") token: String, @Path("id") id: Int, @Body data: Element): ToolEventDAO
 
-    @POST("/toolEvent")
-    fun postToolEvent(@Header("Authorization") token: String, @Body data: Element): ToolEventDAO
+    @POST("/api/v1/toolEvent")
+    suspend fun postToolEvent(@Header("Authorization") token: String, @Body data: Element): ToolEventDAO
 
-    @DELETE("/toolEvent/{id}")
-    fun deleteToolEvent(@Header("Authorization") token: String, @Path("id") id: String): ToolEventDAO
+    @DELETE("/api/v1/toolEvent/{id}")
+    suspend fun deleteToolEvent(@Header("Authorization") token: String, @Path("id") id: String): ToolEventDAO
 
-    @GET("/elementEvent/{id}")
-    fun getElementEventDetails(@Header("Authorization") token: String, @Path("id") id: String?): ElementEventDAO
+    @GET("/api/v1/elementEvent/{id}")
+    suspend fun getElementEventDetails(@Header("Authorization") token: String, @Path("id") id: String?): ElementEventDAO
 
-    @PUT("/elementEvent/{id}")
-    fun updateElementEvent(@Header("Authorization") token: String, @Path("id") id: String, @Body data: Element): ElementEventDAO
+    @PUT("/api/v1/elementEvent/{id}")
+    suspend fun updateElementEvent(@Header("Authorization") token: String, @Path("id") id: String, @Body data: Element): ElementEventDAO
 
-    @POST("/elementEvent")
-    fun postElementEvent(@Header("Authorization") token: String, @Body data: Element): ElementEventDAO
+    @POST("/api/v1/elementEvent")
+    suspend fun postElementEvent(@Header("Authorization") token: String, @Body data: Element): ElementEventDAO
 
-    @DELETE("/elementEvent/{id}")
-    fun deleteElementEvent(@Header("Authorization") token: String, @Path("id") id: String): ElementEventDAO
+    @DELETE("/api/v1/elementEvent/{id}")
+    suspend fun deleteElementEvent(@Header("Authorization") token: String, @Path("id") id: String): ElementEventDAO
 }

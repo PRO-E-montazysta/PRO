@@ -5,6 +5,7 @@ import com.example.e_montazysta.data.network.NetworkServiceFactory
 import com.example.e_montazysta.data.network.ServiceFactory
 import com.example.e_montazysta.data.repository.CommentRepository
 import com.example.e_montazysta.data.repository.ElementRepository
+import com.example.e_montazysta.data.repository.EventRepository
 import com.example.e_montazysta.data.repository.NotificationRepository
 import com.example.e_montazysta.data.repository.OrderRepository
 import com.example.e_montazysta.data.repository.ReleaseRepository
@@ -13,6 +14,7 @@ import com.example.e_montazysta.data.repository.ToolRepository
 import com.example.e_montazysta.data.repository.UserRepository
 import com.example.e_montazysta.data.repository.interfaces.ICommentRepository
 import com.example.e_montazysta.data.repository.interfaces.IElementRepository
+import com.example.e_montazysta.data.repository.interfaces.IEventRepository
 import com.example.e_montazysta.data.repository.interfaces.INotificationRepository
 import com.example.e_montazysta.data.repository.interfaces.IOrderRepository
 import com.example.e_montazysta.data.repository.interfaces.IReleaseRepository
@@ -24,6 +26,8 @@ import com.example.e_montazysta.data.services.ServiceProvider
 import com.example.e_montazysta.helpers.CustomDateAdapter
 import com.example.e_montazysta.ui.element.ElementDetailViewModel
 import com.example.e_montazysta.ui.element.ElementsListViewModel
+import com.example.e_montazysta.ui.event.EventDetailViewModel
+import com.example.e_montazysta.ui.event.EventListViewModel
 import com.example.e_montazysta.ui.notification.NotificationListViewModel
 import com.example.e_montazysta.ui.order.OrderDetailViewModel
 import com.example.e_montazysta.ui.order.OrderListViewModel
@@ -124,6 +128,11 @@ val dataModule = module {
         notificationRepository
     }
 
+    factory {
+        val eventRepository: IEventRepository =
+            EventRepository(get())
+        eventRepository
+    }
 
     viewModel {
         ToolsListViewModel(get())
@@ -162,4 +171,11 @@ val dataModule = module {
     viewModel {
         NotificationListViewModel(get())
     }
+    viewModel {
+        EventListViewModel(get())
+    }
+    viewModel {
+        EventDetailViewModel(get())
+    }
+
 }

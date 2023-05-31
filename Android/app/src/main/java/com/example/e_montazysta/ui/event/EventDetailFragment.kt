@@ -9,9 +9,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
+import com.example.e_montazysta.data.model.Element
+import com.example.e_montazysta.data.model.Tool
 import com.example.e_montazysta.databinding.FragmentEventDetailBinding
+import com.example.e_montazysta.helpers.DateUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.text.DateFormat
 import kotlin.system.measureTimeMillis
 
 class EventDetailFragment : Fragment() {
@@ -33,11 +35,24 @@ class EventDetailFragment : Fragment() {
         }
         Log.d(TAG, "Requests took $time ms.")
 
-        viewModel.eventdetail.observe(viewLifecycleOwner, Observer {
-
+        viewModel.eventdetail.observe(viewLifecycleOwner, Observer { event ->
+            when(event.item) {
+                is Tool -> {
+                    binding.itemName.text = "Zgłaszane narzędzie"
+                    binding.itemNameValue.text = event.item.name
+                    binding.toolbar.subtitle = "${event.item.name} ${event.item.code}"
+                }
+                is Element -> {
+                    binding.itemName.text = "Zgłaszany element"
+                    binding.itemNameValue.text = event.item.name
+                    binding.toolbar.subtitle = "${event.item.name} ${event.item.code}"
+                }
+            }
+            binding.itemStatusValue.text = event.status.name
+            binding.itemStatusValue.setTextColor(event.status.color)
+            binding.eventDateValue.text = DateUtil.format(event.eventDate)
+            binding.descriptionValue.text = event.description
         })
-        // Specify the current activity as the lifecycle owner of the binding.
-        // This is necessary so that the binding can observe LiveData updates.
         return binding.root
     }
 }
