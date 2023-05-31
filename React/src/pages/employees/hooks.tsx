@@ -1,7 +1,7 @@
 import { Box } from '@mui/material'
 import { AxiosError } from 'axios'
 import { useContext } from 'react'
-import { useMutation, useQuery } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
@@ -153,9 +153,10 @@ export const useEmployeeData = (id: string | undefined) => {
     )
 }
 
-export const useHireEmployee = () => {
+export const useHireEmployee = (id: string) => {
     const { showDialog } = useContext(DialogGlobalContext)
     const showError = useError()
+    const queryClient = useQueryClient()
     return useMutation({
         mutationFn: hireEmployee,
         onSuccess(data) {
@@ -169,14 +170,16 @@ export const useHireEmployee = () => {
                 title: 'Sukces!',
                 content: <Box>Pracownik zatrudniony</Box>,
             })
+            queryClient.invalidateQueries(['employee-employments', { id: id }])
         },
         onError: showError,
     })
 }
 
-export const useDismissEmployee = () => {
+export const useDismissEmployee = (id: string) => {
     const { showDialog } = useContext(DialogGlobalContext)
     const showError = useError()
+    const queryClient = useQueryClient()
     return useMutation({
         mutationFn: dismissEmployee,
         onSuccess(data) {
@@ -190,6 +193,7 @@ export const useDismissEmployee = () => {
                 title: 'Sukces!',
                 content: <Box>Pracownik zwolniony</Box>,
             })
+            queryClient.invalidateQueries(['employee-employments', { id: id }])
         },
         onError: showError,
     })

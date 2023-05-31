@@ -37,8 +37,8 @@ const EmployeeDetails = () => {
     const editEmployeeMutation = useEditEmployee((data) => handleOnEditSuccess(data))
     const deleteEmployeeMutation = useDeleteEmployee(() => employeeData.remove())
     const employeeData = useEmployeeData(params.id)
-    const hireEmployeeMutation = useHireEmployee()
-    const dismissEmployeeMutation = useDismissEmployee()
+    const hireEmployeeMutation = useHireEmployee(params.id!)
+    const dismissEmployeeMutation = useDismissEmployee(params.id!)
 
     //status for all mutations and queries
     const queriesStatus = useQueriesStatus(
@@ -135,6 +135,14 @@ const EmployeeDetails = () => {
         return pageMode !== 'new' && isAuthorized([Role.ADMIN])
     }
 
+    const canHire = () => {
+        return pageMode !== 'new' && isAuthorized([Role.ADMIN]) && !employeeData.data?.active
+    }
+
+    const canDismiss = () => {
+        return pageMode !== 'new' && isAuthorized([Role.ADMIN]) && employeeData.data?.active
+    }
+
     return (
         <FormBox>
             <FormTitle
@@ -162,7 +170,13 @@ const EmployeeDetails = () => {
                             onReset={handleReset}
                             onSubmit={formik.submitForm}
                             readonlyMode={pageMode == 'read'}
-                            hireDismissEmp={[handleHireEmployee, 'hire']}
+                            hireDismissEmp={
+                                canHire()
+                                    ? [handleHireEmployee, 'hire']
+                                    : canDismiss()
+                                    ? [handleDismissEmployee, 'dismiss']
+                                    : undefined
+                            }
                         />
                         {canDisplayEmploymentHistory() ? (
                             <DisplayEmploymentHistory employeeId={params.id!}></DisplayEmploymentHistory>
