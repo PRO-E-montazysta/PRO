@@ -14,6 +14,8 @@ class ToolRepository(
 ) : IToolRepository, KoinComponent {
     private val sharedPreferencesHelper: ISharedPreferencesHelper by inject()
     private val token = "Bearer " + sharedPreferencesHelper.get("lama").toString()
+    private val toolService = serviceProvider.getToolService()
+
     override suspend fun getTools(): Result<List<Tool>> {
         return try {
             val toolService = serviceProvider.getToolService()
@@ -32,7 +34,15 @@ class ToolRepository(
             Result.Success(toolDAO.mapToTool())
         } catch (e: Exception) {
             Result.Error(e)
-            throw e
+        }
+    }
+
+    override suspend fun getToolDetails(id: Int): Result<Tool> {
+        return try {
+            val toolDAO = toolService.getToolDetails(token, id)
+            Result.Success(toolDAO.mapToTool())
+        } catch (e: java.lang.Exception) {
+            Result.Error(e)
         }
     }
 }

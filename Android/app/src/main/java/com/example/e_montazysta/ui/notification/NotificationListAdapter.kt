@@ -1,10 +1,10 @@
 package com.example.e_montazysta.ui.notification
 
-import android.icu.text.DateFormat
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.e_montazysta.databinding.ListItemNotificationBinding
+import com.example.e_montazysta.helpers.DateUtil
 
 
 class NotificationListAdapter(val clickListener: CustomClickListener) : RecyclerView.Adapter<NotificationListAdapter.ViewHolder>(){
@@ -31,9 +31,8 @@ class NotificationListAdapter(val clickListener: CustomClickListener) : Recycler
     class ViewHolder( val binding: ListItemNotificationBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: Notification?, clickListener: CustomClickListener) {
-            val dateFormat = DateFormat.getDateTimeInstance()
             binding.notification = data
-            binding.item.supportText =  "${data?.createdBy} | ${dateFormat.format(data?.createdAt)}"
+            binding.item.supportText =  "${data?.createdBy} | ${DateUtil.format(data?.createdAt!!)}"
             binding.itemClickListener = clickListener
             binding.executePendingBindings()
         }

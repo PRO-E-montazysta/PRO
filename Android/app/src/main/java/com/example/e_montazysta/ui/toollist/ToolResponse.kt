@@ -4,15 +4,15 @@ import com.squareup.moshi.Json
 
 data class ToolDAO(
     @Json(name = "id")
-    val id: Int,
+    val id: Int = 0,
     @Json(name = "name")
-    val name: String,
+    val name: String = "",
     @Json(name = "code")
-    val code: String,
-    @Json(name = "toolType")
-    val toolType: String,
+    val code: String = "",
+    @Json(name = "tool_type")
+    val toolType: String = "",
     @Json(name = "warehouse")
-    val warehouse: String
+    val warehouse: String = ""
 ){
     fun mapToTool(): Tool {
         return Tool(id, name, code, toolType, warehouse)
