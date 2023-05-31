@@ -4,7 +4,14 @@ import { useParams } from 'react-router-dom'
 import { useFormStructure } from './helper'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { getInitValues, getValidatinSchema } from '../../helpers/form.helper'
-import { useAddEmployee, useEmployeeData, useDeleteEmployee, useEditEmployee } from './hooks'
+import {
+    useAddEmployee,
+    useEmployeeData,
+    useDeleteEmployee,
+    useEditEmployee,
+    useHireEmployee,
+    useDismissEmployee,
+} from './hooks'
 import { useQueriesStatus } from '../../hooks/useQueriesStatus'
 import FormBox from '../../components/form/FormBox'
 import FormTitle from '../../components/form/FormTitle'
@@ -30,6 +37,9 @@ const EmployeeDetails = () => {
     const editEmployeeMutation = useEditEmployee((data) => handleOnEditSuccess(data))
     const deleteEmployeeMutation = useDeleteEmployee(() => employeeData.remove())
     const employeeData = useEmployeeData(params.id)
+    const hireEmployeeMutation = useHireEmployee()
+    const dismissEmployeeMutation = useDismissEmployee()
+
     //status for all mutations and queries
     const queriesStatus = useQueriesStatus(
         [employeeData],
@@ -76,6 +86,32 @@ const EmployeeDetails = () => {
             queryKey: ['employee', { id: data.id }],
         })
         setPageMode('read')
+    }
+
+    const handleHireEmployee = () => {
+        showDialog({
+            title: 'Czy na pewno chcesz zatrudnić tego pracownika?',
+            btnOptions: [
+                { text: 'Tak', value: 1, variant: 'contained' },
+                { text: 'Anuluj', value: 0, variant: 'outlined' },
+            ],
+            callback: (result: number) => {
+                if (result == 1 && params.id) hireEmployeeMutation.mutate(params.id)
+            },
+        })
+    }
+
+    const handleDismissEmployee = () => {
+        showDialog({
+            title: 'Czy na pewno chcesz zwolnić tego pracownika?',
+            btnOptions: [
+                { text: 'Tak', value: 1, variant: 'contained' },
+                { text: 'Anuluj', value: 0, variant: 'outlined' },
+            ],
+            callback: (result: number) => {
+                if (result == 1 && params.id) dismissEmployeeMutation.mutate(params.id)
+            },
+        })
     }
 
     useEffect(() => {
@@ -126,6 +162,7 @@ const EmployeeDetails = () => {
                             onReset={handleReset}
                             onSubmit={formik.submitForm}
                             readonlyMode={pageMode == 'read'}
+                            hireDismissEmp={[handleHireEmployee, 'hire']}
                         />
                         {canDisplayEmploymentHistory() ? (
                             <DisplayEmploymentHistory employeeId={params.id!}></DisplayEmploymentHistory>

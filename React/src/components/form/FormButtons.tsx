@@ -23,6 +23,7 @@ type FormButtonsParams = {
     orderStageButton?: boolean
     handleAddOrderStage?: () => void
     isAddOrderStageVisible?: boolean
+    hireDismissEmp?: [() => void, 'hire' | 'dismiss']
 }
 
 export const FormButtons = (params: FormButtonsParams) => {
@@ -38,6 +39,7 @@ export const FormButtons = (params: FormButtonsParams) => {
         orderStageButton,
         handleAddOrderStage,
         isAddOrderStageVisible,
+        hireDismissEmp,
     } = params
 
     const appSize = useBreakpoints()
@@ -88,6 +90,17 @@ export const FormButtons = (params: FormButtonsParams) => {
                             onClick={handleAddOrderStage}
                         >
                             {isAddOrderStageVisible ? 'Anuluj dodawanie etapu' : 'Dodaj etap'}
+                        </Button>
+                    )}
+                    {hireDismissEmp && (
+                        <Button
+                            color="primary"
+                            startIcon={<EditIcon />}
+                            variant="contained"
+                            type="submit"
+                            onClick={hireDismissEmp[0]}
+                        >
+                            {hireDismissEmp[1] == 'hire' ? 'Zatrudnij' : 'Zwolnij'}
                         </Button>
                     )}
                 </>

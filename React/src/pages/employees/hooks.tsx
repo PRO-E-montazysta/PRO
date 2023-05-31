@@ -17,6 +17,7 @@ import { postSpecialist, updateSpecialist } from '../../api/specialist.api'
 import { postWarehouseman, updateWarehouseman } from '../../api/warehouseman.api'
 import { postWarehouseManager, updateWarehouseManager } from '../../api/warehousemanager.api'
 import { Role } from '../../types/roleEnum'
+import { dismissEmployee, hireEmployee } from '../../api/employment.api'
 
 const sendRoleBasedPost = (data: Employee) => {
     const role = data.roles && data.roles
@@ -150,4 +151,46 @@ export const useEmployeeData = (id: string | undefined) => {
             enabled: !!id && id != 'new',
         },
     )
+}
+
+export const useHireEmployee = () => {
+    const { showDialog } = useContext(DialogGlobalContext)
+    const showError = useError()
+    return useMutation({
+        mutationFn: hireEmployee,
+        onSuccess(data) {
+            showDialog({
+                btnOptions: [
+                    {
+                        text: 'OK',
+                        value: 0,
+                    },
+                ],
+                title: 'Sukces!',
+                content: <Box>Pracownik zatrudniony</Box>,
+            })
+        },
+        onError: showError,
+    })
+}
+
+export const useDismissEmployee = () => {
+    const { showDialog } = useContext(DialogGlobalContext)
+    const showError = useError()
+    return useMutation({
+        mutationFn: dismissEmployee,
+        onSuccess(data) {
+            showDialog({
+                btnOptions: [
+                    {
+                        text: 'OK',
+                        value: 0,
+                    },
+                ],
+                title: 'Sukces!',
+                content: <Box>Pracownik zwolniony</Box>,
+            })
+        },
+        onError: showError,
+    })
 }
