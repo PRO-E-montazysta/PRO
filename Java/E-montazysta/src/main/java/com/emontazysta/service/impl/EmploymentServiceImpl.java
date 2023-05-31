@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -44,6 +45,25 @@ public class EmploymentServiceImpl implements EmploymentService {
         return employee.getEmployments().stream()
                 .map(employmentMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public EmploymentDto dismiss(Long employeeId) {
+        Optional<EmploymentDto> dismissingCurrentEmployment = getCurrentEmploymentByEmployeeId(employeeId);
+        Long loggedUserCompanyId = getLoggedUser().getEmployments().get(0).getCompany().getId();
+
+        if(dismissingCurrentEmployment.isPresent()) {
+            if(dismissingCurrentEmployment.get().getCompanyId().equals(loggedUserCompanyId)) {
+                Employment employment = employmentMapper.toEntity(dismissingCurrentEmployment.get());
+                employment.setDateOfDismiss(LocalDateTime.now());
+                repository.save(employment);
+                return null;
+            }else {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+            }
+        }else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
     }
 
     @Override

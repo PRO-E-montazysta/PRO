@@ -23,24 +23,32 @@ public class EmploymentController {
 
     private final EmploymentService employmentService;
 
+    //TO DELETE
     @GetMapping("/all")
     @Operation(description = "Allows to get all Employments.", security = @SecurityRequirement(name = "bearer-key"))
     public List<EmploymentDto> getAll() {
         return employmentService.getAll();
     }
 
-    @GetMapping("/for-employee/{id}")
+    @GetMapping("/for-employee/{employeeId}")
     @Operation(description = "Allows to get all Employments of given employee.", security = @SecurityRequirement(name = "bearer-key"))
-    public List<EmploymentDto> getAllEmployeeEmployments(@PathVariable Long id) {
-        return employmentService.getAllEmployeeEmployments(id);
+    public List<EmploymentDto> getAllEmployeeEmployments(@PathVariable Long employeeId) {
+        return employmentService.getAllEmployeeEmployments(employeeId);
+    }
+    @PutMapping("/{employeeId}")
+    @Operation(description = "Allows to dismiss Employee of given id.", security = @SecurityRequirement(name = "bearer-key"))
+    public EmploymentDto dismiss(@PathVariable Long employeeId) {
+        return employmentService.dismiss(employeeId);
     }
 
+    //TO DELETE
     @GetMapping("/{id}")
     @Operation(description = "Allows to get Employment by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public EmploymentDto getById(@PathVariable Long id) {
         return employmentService.getById(id);
     }
 
+    //TO DELETE
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Employment.", security = @SecurityRequirement(name = "bearer-key"))
@@ -48,12 +56,14 @@ public class EmploymentController {
         return employmentService.add(employment);
     }
 
+    //TO DELETE
     @DeleteMapping("/{id}")
     @Operation(description = "Allows to delete new Employment.", security = @SecurityRequirement(name = "bearer-key"))
     public void delete(@PathVariable Long id) {
         employmentService.delete(id);
     }
 
+    //TO DELETE
     @PutMapping("/{id}")
     @Operation(description = "Allows to update new Employment.", security = @SecurityRequirement(name = "bearer-key"))
     public EmploymentDto update(@PathVariable Long id, @Valid @RequestBody EmploymentDto employment) {

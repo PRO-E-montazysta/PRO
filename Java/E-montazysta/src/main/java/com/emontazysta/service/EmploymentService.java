@@ -9,7 +9,8 @@ import java.util.Optional;
 public interface EmploymentService {
 
     List<EmploymentDto> getAll();
-    List<EmploymentDto> getAllEmployeeEmployments(Long id);
+    List<EmploymentDto> getAllEmployeeEmployments(Long employeeId);
+    EmploymentDto dismiss(Long employeeId);
     EmploymentDto getById(Long id);
     EmploymentDto add(EmploymentDto employment);
     void delete(Long id);
