@@ -142,6 +142,10 @@ const EmployeeDetails = () => {
         }
     }, [params.id])
 
+    useEffect(() => {
+        setHired(employeeData.data?.active!)
+    }, [employeeData.data?.active])
+
     const canDisplayEmploymentHistory = () => {
         return pageMode !== 'new' && isAuthorized([Role.ADMIN])
     }
