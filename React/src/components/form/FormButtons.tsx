@@ -7,6 +7,7 @@ import ReplayIcon from '@mui/icons-material/Replay'
 import CloseIcon from '@mui/icons-material/Close'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
+import AssignmentIcon from '@mui/icons-material/Assignment'
 import useBreakpoints from '../../hooks/useBreakpoints'
 import PrintQRCodeLabel from '../label/PrintQRCodeLabel'
 import { useState } from 'react'
@@ -56,6 +57,17 @@ export const FormButtons = (params: FormButtonsParams) => {
             {readonlyMode && id != 'new' ? (
                 <>
                     {printLabel ? <PrintQRCodeLabel label={printLabel[0]} code={printLabel[1]} /> : null}
+                    {hireDismissEmp && (
+                        <Button
+                            color="primary"
+                            startIcon={<AssignmentIcon />}
+                            variant="contained"
+                            type="submit"
+                            onClick={hireDismissEmp[0]}
+                        >
+                            {hireDismissEmp[1] == 'hire' ? 'Zatrudnij' : 'Zwolnij'}
+                        </Button>
+                    )}
                     <Button
                         id={`formButton-edit`}
                         color="primary"
@@ -90,17 +102,6 @@ export const FormButtons = (params: FormButtonsParams) => {
                             onClick={handleAddOrderStage}
                         >
                             {isAddOrderStageVisible ? 'Anuluj dodawanie etapu' : 'Dodaj etap'}
-                        </Button>
-                    )}
-                    {hireDismissEmp && (
-                        <Button
-                            color="primary"
-                            startIcon={<EditIcon />}
-                            variant="contained"
-                            type="submit"
-                            onClick={hireDismissEmp[0]}
-                        >
-                            {hireDismissEmp[1] == 'hire' ? 'Zatrudnij' : 'Zwolnij'}
                         </Button>
                     )}
                 </>

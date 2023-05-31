@@ -46,9 +46,13 @@ const EmployeeDetails = () => {
         [addEmployeeMutation, editEmployeeMutation, deleteEmployeeMutation],
     )
 
+    const [hired, setHired] = useState<boolean>(employeeData.data?.active!)
+
     const handleSubmit = (values: any) => {
-        if (pageMode == 'new') addEmployeeMutation.mutate(values)
-        else if (pageMode == 'edit') editEmployeeMutation.mutate(values)
+        if (pageMode == 'new') {
+            addEmployeeMutation.mutate(values)
+            setHired(true)
+        } else if (pageMode == 'edit') editEmployeeMutation.mutate(values)
         else console.warn('Try to submit while read mode')
     }
 
@@ -96,7 +100,11 @@ const EmployeeDetails = () => {
                 { text: 'Anuluj', value: 0, variant: 'outlined' },
             ],
             callback: (result: number) => {
-                if (result == 1 && params.id) hireEmployeeMutation.mutate(params.id)
+                if (result == 1 && params.id) {
+                    hireEmployeeMutation.mutate(params.id)
+
+                    setHired(true)
+                }
             },
         })
     }
@@ -109,7 +117,10 @@ const EmployeeDetails = () => {
                 { text: 'Anuluj', value: 0, variant: 'outlined' },
             ],
             callback: (result: number) => {
-                if (result == 1 && params.id) dismissEmployeeMutation.mutate(params.id)
+                if (result == 1 && params.id) {
+                    dismissEmployeeMutation.mutate(params.id)
+                    setHired(false)
+                }
             },
         })
     }
@@ -133,14 +144,6 @@ const EmployeeDetails = () => {
 
     const canDisplayEmploymentHistory = () => {
         return pageMode !== 'new' && isAuthorized([Role.ADMIN])
-    }
-
-    const canHire = () => {
-        return pageMode !== 'new' && isAuthorized([Role.ADMIN]) && !employeeData.data?.active
-    }
-
-    const canDismiss = () => {
-        return pageMode !== 'new' && isAuthorized([Role.ADMIN]) && employeeData.data?.active
     }
 
     return (
@@ -171,11 +174,11 @@ const EmployeeDetails = () => {
                             onSubmit={formik.submitForm}
                             readonlyMode={pageMode == 'read'}
                             hireDismissEmp={
-                                canHire()
-                                    ? [handleHireEmployee, 'hire']
-                                    : canDismiss()
+                                !isAuthorized([Role.ADMIN])
+                                    ? undefined
+                                    : hired
                                     ? [handleDismissEmployee, 'dismiss']
-                                    : undefined
+                                    : [handleHireEmployee, 'hire']
                             }
                         />
                         {canDisplayEmploymentHistory() ? (
