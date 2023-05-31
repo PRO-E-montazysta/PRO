@@ -53,20 +53,20 @@ public class DemandAdHocCriteriaRepository {
         //Check if dateFrom isn't after dateTo
         if (Objects.nonNull(demandAdHocSearchCriteria.getDateFrom())
                 && Objects.nonNull(demandAdHocSearchCriteria.getDateTo())) {
-            if (LocalDateTime.parse(demandAdHocSearchCriteria.getDateFrom())
-                    .isAfter(LocalDateTime.parse(demandAdHocSearchCriteria.getDateTo()))) {
+            if (LocalDateTime.parse(demandAdHocSearchCriteria.getDateFrom()+"T00:00")
+                    .isAfter(LocalDateTime.parse(demandAdHocSearchCriteria.getDateTo()+"T23:59"))) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
             }
         }
         //Check dateFrom
         if (Objects.nonNull(demandAdHocSearchCriteria.getDateFrom())) {
             predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createdAt"),
-                    LocalDateTime.parse(demandAdHocSearchCriteria.getDateFrom())));
+                    LocalDateTime.parse(demandAdHocSearchCriteria.getDateFrom()+"T00:00")));
         }
         //Check dateTo
         if (Objects.nonNull(demandAdHocSearchCriteria.getDateTo())) {
             predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("createdAt"),
-                    LocalDateTime.parse(demandAdHocSearchCriteria.getDateTo())));
+                    LocalDateTime.parse(demandAdHocSearchCriteria.getDateTo()+"T23:59")));
         }
 
         //Get DemandsAdHoc by createdByName
