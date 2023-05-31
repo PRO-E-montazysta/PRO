@@ -22,6 +22,7 @@ import com.emontazysta.repository.OrderRepository;
 import com.emontazysta.repository.OrderStageRepository;
 import com.emontazysta.repository.ToolEventRepository;
 import com.emontazysta.repository.UnavailabilityRepository;
+import com.emontazysta.service.EmploymentService;
 import com.emontazysta.service.StatusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -40,6 +41,7 @@ public class ForemanMapper {
     private final CommentRepository commentRepository;
     private final ElementEventRepository elementEventRepository;
     private final EmploymentRepository employmentRepository;
+    private final EmploymentService employmentService;
     private final AttachmentRepository attachmentRepository;
     private final ToolEventRepository toolEventRepository;
     private final OrderStageRepository orderStageRepository;
@@ -72,6 +74,7 @@ public class ForemanMapper {
                 .unavailableTo(statusService.checkUnavailability(foreman) == null ? null : statusService.checkUnavailability(foreman).getUnavailableTo())
                 .unavailbilityDescription(statusService.checkUnavailability(foreman) == null ? null : statusService.checkUnavailability(foreman).getDescription())
                 .deleted(foreman.isDeleted())
+                .active(employmentService.getCurrentEmploymentByEmployeeId(foreman.getId()).isPresent())
                 .build();
     }
 

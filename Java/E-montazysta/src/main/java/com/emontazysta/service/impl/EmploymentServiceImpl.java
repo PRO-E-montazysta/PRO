@@ -5,19 +5,14 @@ import com.emontazysta.mapper.EmploymentMapper;
 import com.emontazysta.model.AppUser;
 import com.emontazysta.model.Employment;
 import com.emontazysta.model.dto.EmploymentDto;
+import com.emontazysta.repository.AppUserRepository;
 import com.emontazysta.repository.EmploymentRepository;
-import com.emontazysta.service.AppUserService;
 import com.emontazysta.service.EmploymentService;
-import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import javax.persistence.EntityNotFoundException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -29,11 +24,11 @@ public class EmploymentServiceImpl implements EmploymentService {
 
     private final EmploymentRepository repository;
     private final EmploymentMapper employmentMapper;
-    private final AppUserService appUserService;
+    private final AppUserRepository appUserRepository;
 
     @Override
     public List<EmploymentDto> getAllEmployeeEmployments(Long id) {
-        AppUser employee = appUserService.getById(id);
+        AppUser employee = appUserRepository.getById(id);
 
 
         return employee.getEmployments().stream()
@@ -64,7 +59,7 @@ public class EmploymentServiceImpl implements EmploymentService {
     @Override
     public EmploymentDto hire(Long employeeId) {
         //Employee for which we set employment
-        AppUser employee = appUserService.getById(employeeId);
+        AppUser employee = appUserRepository.getById(employeeId);
 
         //Check if user is cloud admin
         if(employee.getRoles().contains(Role.CLOUD_ADMIN)) {
@@ -108,7 +103,7 @@ public class EmploymentServiceImpl implements EmploymentService {
 
     private AppUser getLoggedUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        AppUser appUser = appUserService.findByUsername(username);
+        AppUser appUser = appUserRepository.findByUsername(username);
         return appUser;
     }
 }

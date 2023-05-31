@@ -4,6 +4,7 @@ import com.emontazysta.model.*;
 import com.emontazysta.model.dto.CompanyAdminDto;
 import com.emontazysta.model.CompanyAdmin;
 import com.emontazysta.repository.*;
+import com.emontazysta.service.EmploymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,7 @@ public class CompanyAdminMapper {
     private final CommentRepository commentRepository;
     private final ElementEventRepository elementEventRepository;
     private final EmploymentRepository employmentRepository;
+    private final EmploymentService employmentService;
     private final AttachmentRepository attachmentRepository;
     private final ToolEventRepository toolEventRepository;
     private final OrderRepository orderRepository;
@@ -58,6 +60,7 @@ public class CompanyAdminMapper {
                         .map(ToolEvent::getId)
                         .collect(Collectors.toList()))
                 .deleted(companyAdmin.isDeleted())
+                .active(employmentService.getCurrentEmploymentByEmployeeId(companyAdmin.getId()).isPresent())
                 .build();
     }
 
