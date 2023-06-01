@@ -113,9 +113,25 @@ const OrderStageToolsTable = forwardRef(
                     <TableHead>
                         <TableRow>
                             <TableCell>Typ narzędzia</TableCell>
-                            <TableCell align="right">Planowana potrzebna ilość</TableCell>
+                            <TableCell align="right">Planowana ilość</TableCell>
                             {isDisplayingMode && <TableCell align="right">Wydane narzędzia - kody</TableCell>}
-                            {!isDisplayingMode && <TableCell align="right">Akcja</TableCell>}
+                            {!isDisplayingMode && (
+                                <TableCell align="right">
+                                    <Button
+                                        sx={{ marginRight: '10px' }}
+                                        color="primary"
+                                        variant="contained"
+                                        onClick={() => {
+                                            setTableData((tableData) => [
+                                                ...tableData!,
+                                                { numberOfTools: 0, toolTypeId: 'toChange' },
+                                            ])
+                                        }}
+                                    >
+                                        Dodaj
+                                    </Button>
+                                </TableCell>
+                            )}
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -151,23 +167,9 @@ const OrderStageToolsTable = forwardRef(
                                             </FormControl>
                                         </Box>
                                     </TableCell>
-                                    {isDisplayingMode && <TableCell align="right">bla</TableCell>}
+                                    {isDisplayingMode && <TableCell align="right"></TableCell>}
                                     {!isDisplayingMode && (
                                         <TableCell align="right">
-                                            {rowIndex === tableData.length - 1 && (
-                                                <Button
-                                                    color="primary"
-                                                    variant="contained"
-                                                    onClick={() => {
-                                                        setTableData((tableData) => [
-                                                            ...tableData!,
-                                                            { numberOfTools: 0, toolTypeId: 'toChange' },
-                                                        ])
-                                                    }}
-                                                >
-                                                    Dodaj następne
-                                                </Button>
-                                            )}
                                             <Button
                                                 color="error"
                                                 variant="contained"
@@ -198,7 +200,7 @@ const chooseSelectItemId = (
         return itemsArray.map((item: any, index) => (
             <MenuItem
                 key={uuidv4()}
-                id={'toolstableItem'+index}
+                id={'toolstableItem' + index}
                 value={item.id}
                 onClick={() => {
                     setSelectedItemId(item.id)

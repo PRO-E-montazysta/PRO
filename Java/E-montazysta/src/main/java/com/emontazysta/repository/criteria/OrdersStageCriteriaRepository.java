@@ -17,10 +17,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
@@ -50,7 +47,7 @@ public class OrdersStageCriteriaRepository {
         TypedQuery<OrderStage> typedQuery = entityManager.createQuery(criteriaQuery);
         List<OrderStage> ordersStages = typedQuery.getResultList();
 
-        return ordersStages.stream().map(orderStageMapper::toDto).collect(Collectors.toList());
+        return ordersStages.stream().sorted(Comparator.comparing(OrderStage::getPlannedStartDate)).map(orderStageMapper::toDto).collect(Collectors.toList());
     }
 
     private Predicate getPredicate(OrdersStageSearchCriteria ordersStageSearchCriteria, Root<OrderStage> ordersStageRoot, Principal principal) {

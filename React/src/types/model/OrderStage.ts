@@ -9,7 +9,7 @@ export type OrderStage = {
     startDate: Date
     endDate: Date
     plannedDurationTime: Date //jak chcemy to podawać?
-    plannedFittersNumber:  string
+    plannedFittersNumber: string
     minimumImagesNumber: string
     fitters: Array<number>
     foremanId: number

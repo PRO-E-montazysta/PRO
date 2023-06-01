@@ -37,9 +37,15 @@ type OrderStageCardProps = {
 const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCardProps) => {
     const [tabValue, setTabValue] = useState(0)
     const [expandedInformation, setExpandedInformation] = useState(false)
-    const [plannedStartDate, setPlannedStartDate] = useState<Dayjs | null>(dayjs(stage?.plannedStartDate))
-    const [plannedStartHour, setPlannedStartHour] = useState<Dayjs | null>(dayjs(stage?.plannedStartDate))
-    const [plannedFinishHour, setPlannedFinishHour] = useState<Dayjs | null>(dayjs(stage?.plannedEndDate))
+    const [plannedStartDate, setPlannedStartDate] = useState<Dayjs | null>(
+        dayjs(stage?.plannedStartDate ? stage?.plannedStartDate : null),
+    )
+    const [plannedStartHour, setPlannedStartHour] = useState<Dayjs | null>(
+        dayjs(stage?.plannedStartDate ? stage?.plannedStartDate : null),
+    )
+    const [plannedFinishHour, setPlannedFinishHour] = useState<Dayjs | null>(
+        dayjs(stage?.plannedEndDate ? stage?.plannedEndDate : null),
+    )
     const [preparedPlannedStartDate, setPreparedPlannedStartDate] = useState('')
     const [preparedPlannedEndDate, setPreparedPlannedEndDate] = useState('')
     const [userRole, setUserRole] = useState('')
@@ -253,7 +259,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                 },
                             }}
                             label="Planowana godzina rozpoczęcia"
-                            format={'HH:mm:ss'}
+                            format={'HH:mm'}
                             ampm={false}
                             value={plannedStartHour}
                             disabled={isDisplayingMode}
@@ -297,7 +303,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                             disabled={isDisplayingMode}
                             label="Planowana godzina zakończenia"
                             ampm={false}
-                            format={'HH:mm:ss'}
+                            format={'HH:mm'}
                             value={plannedFinishHour}
                             onChange={(data) => {
                                 setPlannedFinishHour(data)
@@ -424,12 +430,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     justifyContent: 'space-around',
                                 }}
                             >
-                                <Tabs
-                                    component="div"
-                                    value={tabValue}
-                                    onChange={handleTabChange}
-                                    aria-label="basic tabs example"
-                                >
+                                <Tabs component="div" value={tabValue} onChange={handleTabChange}>
                                     <Tab label="Informacje o datach" {...tabProps(0)} />
                                     <Tab label="Narzędzia" {...tabProps(1)} />
                                     <Tab label="Elementy" {...tabProps(2)} />
