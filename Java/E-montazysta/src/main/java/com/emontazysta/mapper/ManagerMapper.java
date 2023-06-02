@@ -20,6 +20,7 @@ import com.emontazysta.repository.NotificationRepository;
 import com.emontazysta.repository.OrderRepository;
 import com.emontazysta.repository.ToolEventRepository;
 import com.emontazysta.repository.UnavailabilityRepository;
+import com.emontazysta.service.EmploymentService;
 import com.emontazysta.service.StatusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -38,6 +39,7 @@ public class ManagerMapper {
     private final CommentRepository commentRepository;
     private final ElementEventRepository elementEventRepository;
     private final EmploymentRepository employmentRepository;
+    private final EmploymentService employmentService;
     private final AttachmentRepository attachmentRepository;
     private final ToolEventRepository toolEventRepository;
     private final OrderRepository orderRepository;
@@ -90,6 +92,7 @@ public class ManagerMapper {
                 .unavailableTo(statusService.checkUnavailability(manager) == null ? null : statusService.checkUnavailability(manager).getUnavailableTo())
                 .unavailbilityDescription(statusService.checkUnavailability(manager) == null ? null : statusService.checkUnavailability(manager).getDescription())
                 .deleted(manager.isDeleted())
+                .active(employmentService.getCurrentEmploymentByEmployeeId(manager.getId()).isPresent())
                 .build();
     }
 

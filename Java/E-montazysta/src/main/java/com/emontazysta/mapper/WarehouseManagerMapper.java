@@ -22,6 +22,7 @@ import com.emontazysta.repository.NotificationRepository;
 import com.emontazysta.repository.ToolEventRepository;
 import com.emontazysta.repository.ToolReleaseRepository;
 import com.emontazysta.repository.UnavailabilityRepository;
+import com.emontazysta.service.EmploymentService;
 import com.emontazysta.service.StatusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -40,6 +41,7 @@ public class WarehouseManagerMapper {
     private final CommentRepository commentRepository;
     private final ElementEventRepository elementEventRepository;
     private final EmploymentRepository employmentRepository;
+    private final EmploymentService employmentService;
     private final AttachmentRepository attachmentRepository;
     private final ToolEventRepository toolEventRepository;
     private final ToolReleaseRepository toolReleaseRepository;
@@ -93,6 +95,7 @@ public class WarehouseManagerMapper {
                 .unavailableTo(statusService.checkUnavailability(warehouseManager) == null ? null : statusService.checkUnavailability(warehouseManager).getUnavailableTo())
                 .unavailbilityDescription(statusService.checkUnavailability(warehouseManager) == null ? null : statusService.checkUnavailability(warehouseManager).getDescription())
                 .deleted(warehouseManager.isDeleted())
+                .active(employmentService.getCurrentEmploymentByEmployeeId(warehouseManager.getId()).isPresent())
                 .build();
     }
 

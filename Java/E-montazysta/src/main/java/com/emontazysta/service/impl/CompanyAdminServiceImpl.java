@@ -16,6 +16,7 @@ import com.emontazysta.service.EmailService;
 import com.emontazysta.util.AuthUtils;
 import com.emontazysta.util.PasswordGenerator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
@@ -35,6 +36,7 @@ public class CompanyAdminServiceImpl implements CompanyAdminService {
     private final EmploymentMapper employmentMapper;
     private final CompanyService companyService;
     private final AuthUtils authUtils;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public List<CompanyAdminDto> getAll() {
@@ -63,6 +65,7 @@ public class CompanyAdminServiceImpl implements CompanyAdminService {
     public CompanyAdminDto add(CompanyAdminDto companyAdminDto) {
         companyAdminDto.setUsername(companyAdminDto.getUsername().toLowerCase());
         //companyAdminDto.setPassword(PasswordGenerator.generatePassword(10));  //TODO: uncomment to generate password
+        companyAdminDto.setPassword(bCryptPasswordEncoder.encode(companyAdminDto.getPassword()));
         companyAdminDto.setRoles(Set.of(Role.ADMIN));
         companyAdminDto.setUnavailabilities(new ArrayList<>());
         companyAdminDto.setNotifications(new ArrayList<>());

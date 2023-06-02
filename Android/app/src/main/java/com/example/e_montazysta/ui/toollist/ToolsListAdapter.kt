@@ -3,9 +3,12 @@ package com.example.e_montazysta.ui.toollist
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.e_montazysta.data.model.Element
+import com.example.e_montazysta.data.model.Tool
 import com.example.e_montazysta.databinding.ListItemToolBinding
+import com.example.e_montazysta.ui.release.ReleaseCreateAdapter
 
-class ToolsListAdapter : RecyclerView.Adapter<ToolsListAdapter.ViewHolder>() {
+class ToolsListAdapter(val clickListener: CustomClickListener): RecyclerView.Adapter<ToolsListAdapter.ViewHolder>() {
 
     var elements = listOf<ToolListItem>()
 
@@ -39,5 +42,9 @@ class ToolsListAdapter : RecyclerView.Adapter<ToolsListAdapter.ViewHolder>() {
                 return ViewHolder(binding)
             }
         }
+    }
+    class CustomClickListener(val clickListener: (toolId: Int) -> Unit) {
+
+        fun cardClicked(item: ToolListItem) = clickListener(item.id)
     }
 }

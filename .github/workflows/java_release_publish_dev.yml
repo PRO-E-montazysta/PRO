@@ -22,11 +22,11 @@ jobs:
         with:
           registry: ${{ secrets.DOCKER_REGISTRY }}
           username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}    
-      - 
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      -
         name: Build Docker image
         uses: docker/build-push-action@v2
-        
+
         with:
           file: Java/E-montazysta/Dockerfile
           context: Java/E-montazysta
@@ -36,7 +36,7 @@ jobs:
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          
+
   publish:
     needs: [release]
     runs-on: ubuntu-latest
@@ -51,17 +51,19 @@ jobs:
           # Cluster Url
           k8s-url: ${{ secrets.KUBERNETES_URL }}
           k8s-secret: ${{ secrets.KUBERNETES_SECRET_DEV }}
-      - 
+      -
         name: Checkout source code
         uses: actions/checkout@v3
-      - 
+      -
         name: Deploy to the Kubernetes cluster
         uses: azure/k8s-deploy@v4.9
         with:
           namespace: development
           manifests: |
+            Java/E-montazysta/.build/backend-pvc.yaml
             Java/E-montazysta/.build/postgres-deployment.yaml
             Java/E-montazysta/.build/postgres-service.yaml
+            Java/E-montazysta/.build/postgres-pvc.yaml
             Java/E-montazysta/.build/deployment.yml
             Java/E-montazysta/.build/ingressroute_dev.yml
             Java/E-montazysta/.build/middleware.yml

@@ -24,6 +24,8 @@ import ClientDetails from '../pages/clients/ClientDetails'
 import Events from '../pages/events'
 import ToolEventDetails from '../pages/events/ToolEventDetails'
 import ElementEventDetails from '../pages/events/ElementEventDetails'
+import DemandAdHoc from '../pages/demandAdHoc'
+import DemandAdHocDetails from '../pages/demandAdHoc/DemandAdHocDetails'
 import Unavailabilities from '../pages/unavailabilities'
 import UnavailabilityDetails from '../pages/unavailabilities/UnavailabilityDetails'
 import Notifications from '../pages/notifications'
@@ -407,6 +409,32 @@ export const pageList: Array<PageProps> = [
                 path: '/unavailabilities/:id',
                 allowedRoles: [Role.MANAGER],
                 component: <UnavailabilityDetails />,
+            },
+            {
+                inNav: true,
+                name: 'Zapotrzebowania AdHoc',
+                path: '/demands-adhoc',
+                allowedRoles: [Role['*']],
+                component: <DemandAdHoc />,
+                children: [
+                    {
+                        inNav: true,
+                        name: 'Lista zapotrzebowań',
+                        path: '/demands-adhoc',
+                    },
+                    {
+                        inNav: true,
+                        name: 'Dodaj zapotrzebowanie',
+                        path: '/demands-adhoc/new',
+                    },
+                ],
+            },
+            {
+                inNav: false,
+                name: '',
+                path: '/demands-adhoc/:id',
+                allowedRoles: [Role['*']],
+                component: <DemandAdHocDetails />,
             },
             {
                 inNav: false,

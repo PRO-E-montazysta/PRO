@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.e_montazysta"
-        minSdk 24
+        minSdk 26
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -51,6 +51,7 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
     implementation 'com.google.android.gms:play-services-basement:18.1.0'
+    implementation 'com.google.android.gms:play-services-code-scanner:16.0.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
@@ -77,5 +78,15 @@ dependencies {
     implementation 'com.squareup.moshi:moshi-adapters:1.14.0'
 
     implementation 'com.google.code.gson:gson:2.10.1'
+    implementation "net.nicbell.material-lists:listitem:0.0.6"
+
+    implementation 'com.google.mlkit:barcode-scanning:17.1.0'
+    implementation 'com.google.android.gms:play-services-base:18.2.0'
+    implementation 'com.google.android.gms:play-services-tflite-java:16.1.0'
+
+
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+    implementation "io.coil-kt:coil:2.2.0"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
 
 }

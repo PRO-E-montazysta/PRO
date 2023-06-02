@@ -6,6 +6,11 @@ class ServiceProvider (private val serviceFactory: ServiceFactory) : IServicePro
     override fun getToolService(): ToolService {
         return serviceFactory.create(ToolService::class.java)
     }
+
+    override fun getElementService(): ElementService {
+        return serviceFactory.create(ElementService::class.java)
+    }
+
     override fun getReleaseService(): ReleaseService {
         return serviceFactory.create(ReleaseService::class.java)
     }
@@ -17,5 +22,16 @@ class ServiceProvider (private val serviceFactory: ServiceFactory) : IServicePro
     }
     override fun getStageService(): StageService {
         return serviceFactory.create(StageService::class.java)
+    }
+    override fun getCommentService(): CommentService {
+        return serviceFactory.create(CommentService::class.java)
+    }
+
+    override fun getNotificationService(): NotificationService {
+        return serviceFactory.create(NotificationService::class.java)
+    }
+
+    override fun getEventService(): EventService {
+        return serviceFactory.create(EventService::class.java)
     }
 }

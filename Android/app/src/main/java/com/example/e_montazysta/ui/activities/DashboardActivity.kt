@@ -13,6 +13,7 @@ import org.koin.android.ext.android.inject
 class DashboardActivity : AppCompatActivity() {
     private val sharedPreferencesHelper: ISharedPreferencesHelper by inject()
     private lateinit var binding: ActivityDashboardBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPreferencesHelper.get("lama")

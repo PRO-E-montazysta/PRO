@@ -14,6 +14,7 @@ import com.emontazysta.repository.EmploymentRepository;
 import com.emontazysta.service.WarehousemanService;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -33,6 +34,7 @@ public class WarehousemanServiceImpl implements WarehousemanService {
     private final EmploymentMapper employmentMapper;
     private final AuthUtils authUtils;
     private final AppUserCriteriaRepository appUserCriteriaRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public List<WarehousemanDto> getAll(Principal principal) {
@@ -67,6 +69,7 @@ public class WarehousemanServiceImpl implements WarehousemanService {
     @Override
     public WarehousemanDto add(WarehousemanDto warehousemanDto) {
         warehousemanDto.setUsername(warehousemanDto.getUsername().toLowerCase());
+        warehousemanDto.setPassword(bCryptPasswordEncoder.encode(warehousemanDto.getPassword()));
         warehousemanDto.setRoles(Set.of(Role.WAREHOUSE_MAN));
         warehousemanDto.setUnavailabilities(new ArrayList<>());
         warehousemanDto.setNotifications(new ArrayList<>());

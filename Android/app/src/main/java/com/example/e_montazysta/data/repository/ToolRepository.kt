@@ -2,7 +2,7 @@ package com.example.e_montazysta.data.repository
 
 import com.example.e_montazysta.data.model.Result
 import com.example.e_montazysta.data.model.Tool
-import com.example.e_montazysta.data.repository.Interfaces.IToolRepository
+import com.example.e_montazysta.data.repository.interfaces.IToolRepository
 import com.example.e_montazysta.data.services.IServiceProvider
 import com.example.e_montazysta.helpers.Interfaces.ISharedPreferencesHelper
 import org.koin.core.component.KoinComponent
@@ -14,6 +14,8 @@ class ToolRepository(
 ) : IToolRepository, KoinComponent {
     private val sharedPreferencesHelper: ISharedPreferencesHelper by inject()
     private val token = "Bearer " + sharedPreferencesHelper.get("lama").toString()
+    private val toolService = serviceProvider.getToolService()
+
     override suspend fun getTools(): Result<List<Tool>> {
         return try {
             val toolService = serviceProvider.getToolService()
@@ -21,6 +23,25 @@ class ToolRepository(
             val tools = toolDAOs.map { it.mapToTool() }
             Result.Success(tools)
         } catch (e: Exception) {
+            Result.Error(e)
+        }
+    }
+
+    override suspend fun getToolByCode(code: String?): Result<Tool> {
+        return try {
+            val toolService = serviceProvider.getToolService()
+            val toolDAO = toolService.getToolByCode(token, code)
+            Result.Success(toolDAO.mapToTool())
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
+    }
+
+    override suspend fun getToolDetails(id: Int): Result<Tool> {
+        return try {
+            val toolDAO = toolService.getToolDetails(token, id)
+            Result.Success(toolDAO.mapToTool())
+        } catch (e: java.lang.Exception) {
             Result.Error(e)
         }
     }

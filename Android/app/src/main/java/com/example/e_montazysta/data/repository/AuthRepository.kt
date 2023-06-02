@@ -4,7 +4,7 @@ import com.example.e_montazysta.data.model.LoggedInUser
 import com.example.e_montazysta.data.model.LoginCredentials
 import com.example.e_montazysta.data.model.Result
 import com.example.e_montazysta.data.model.TokenResponse
-import com.example.e_montazysta.data.repository.Interfaces.IAuthRepository
+import com.example.e_montazysta.data.repository.interfaces.IAuthRepository
 import com.example.e_montazysta.helpers.HttpRequestHelper
 import com.example.e_montazysta.helpers.Interfaces.ISharedPreferencesHelper
 import com.example.e_montazysta.helpers.JwtTokenHelper
@@ -17,15 +17,15 @@ class AuthRepository : IAuthRepository, KoinComponent {
 
     override fun login(login: String, password: String) : Result<LoggedInUser> {
         val creds = LoginCredentials(login, password)
-        var rsp : String? = null;
+        var rsp : String? = null
         try {
-             var token  = HttpRequestHelper.sendHttpToolRequest<LoginCredentials, TokenResponse>(
+             var token  = HttpRequestHelper.sendHttpPostRequest<LoginCredentials, TokenResponse>(
                 "https://dev.emontazysta.pl/api/v1/gettoken",
                 creds
             )
             rsp = token.getToken()
             sharedPreferencesHelper.set("lama", rsp)
-            var storedToken =  sharedPreferencesHelper.get("lama")
+            var storedToken = sharedPreferencesHelper.get("lama")
             var roles = JwtTokenHelper.getRole(storedToken)
             val user = LoggedInUser("Tu będzie ID", storedToken.toString(), roles)
 

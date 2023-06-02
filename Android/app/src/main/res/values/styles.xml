@@ -32,4 +32,10 @@
     <style name="backdrop" >
         <item name="android:background">?backgroundColor</item>
     </style>
+
+    <style name="circleImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+        <item name="android:padding">5dp</item>
+    </style>
 </resources>

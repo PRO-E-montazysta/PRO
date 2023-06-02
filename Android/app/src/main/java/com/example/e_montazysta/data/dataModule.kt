@@ -3,24 +3,41 @@ package com.example.e_montazysta.data
 import com.example.e_montazysta.data.environments.Environment
 import com.example.e_montazysta.data.network.NetworkServiceFactory
 import com.example.e_montazysta.data.network.ServiceFactory
-import com.example.e_montazysta.data.repository.Interfaces.IOrderRepository
-import com.example.e_montazysta.data.repository.Interfaces.IReleaseRepository
-import com.example.e_montazysta.data.repository.Interfaces.IToolRepository
-import com.example.e_montazysta.data.repository.Interfaces.IUserRepository
+import com.example.e_montazysta.data.repository.CommentRepository
+import com.example.e_montazysta.data.repository.ElementRepository
+import com.example.e_montazysta.data.repository.EventRepository
+import com.example.e_montazysta.data.repository.NotificationRepository
 import com.example.e_montazysta.data.repository.OrderRepository
 import com.example.e_montazysta.data.repository.ReleaseRepository
+import com.example.e_montazysta.data.repository.StageRepository
 import com.example.e_montazysta.data.repository.ToolRepository
 import com.example.e_montazysta.data.repository.UserRepository
+import com.example.e_montazysta.data.repository.interfaces.ICommentRepository
+import com.example.e_montazysta.data.repository.interfaces.IElementRepository
+import com.example.e_montazysta.data.repository.interfaces.IEventRepository
+import com.example.e_montazysta.data.repository.interfaces.INotificationRepository
+import com.example.e_montazysta.data.repository.interfaces.IOrderRepository
+import com.example.e_montazysta.data.repository.interfaces.IReleaseRepository
+import com.example.e_montazysta.data.repository.interfaces.IStageRepository
+import com.example.e_montazysta.data.repository.interfaces.IToolRepository
+import com.example.e_montazysta.data.repository.interfaces.IUserRepository
 import com.example.e_montazysta.data.services.IServiceProvider
 import com.example.e_montazysta.data.services.ServiceProvider
 import com.example.e_montazysta.helpers.CustomDateAdapter
+import com.example.e_montazysta.ui.element.ElementDetailViewModel
+import com.example.e_montazysta.ui.element.ElementsListViewModel
+import com.example.e_montazysta.ui.event.EventDetailViewModel
+import com.example.e_montazysta.ui.event.EventListViewModel
+import com.example.e_montazysta.ui.notification.NotificationListViewModel
 import com.example.e_montazysta.ui.order.OrderDetailViewModel
 import com.example.e_montazysta.ui.order.OrderListViewModel
+import com.example.e_montazysta.ui.release.ReleaseCreateViewModel
 import com.example.e_montazysta.ui.release.ReleaseDetailViewModel
 import com.example.e_montazysta.ui.release.ReleaseListViewModel
 import com.example.e_montazysta.ui.stage.StageDetailViewModel
 import com.example.e_montazysta.ui.stage.StageListViewModel
 import com.example.e_montazysta.ui.toollist.ToolsListViewModel
+import com.example.e_montazysta.ui.viewmodels.DashboardViewModel
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.logging.HttpLoggingInterceptor
@@ -28,7 +45,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Converter
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.util.*
+import java.util.Date
 
 val dataModule = module {
     factory {
@@ -88,6 +105,35 @@ val dataModule = module {
         userRepository
     }
 
+    factory {
+        val stageRepository: IStageRepository =
+            StageRepository(get())
+        stageRepository
+    }
+
+    factory {
+        val commentRepository: ICommentRepository =
+            CommentRepository(get())
+        commentRepository
+    }
+
+    factory {
+        val elementRepository: IElementRepository =
+            ElementRepository(get())
+        elementRepository
+    }
+    factory {
+        val notificationRepository: INotificationRepository =
+            NotificationRepository(get())
+        notificationRepository
+    }
+
+    factory {
+        val eventRepository: IEventRepository =
+            EventRepository(get())
+        eventRepository
+    }
+
     viewModel {
         ToolsListViewModel(get())
     }
@@ -109,4 +155,27 @@ val dataModule = module {
     viewModel {
         StageDetailViewModel(get())
     }
+
+    viewModel {
+        ReleaseCreateViewModel()
+    }
+    viewModel {
+        ElementsListViewModel(get())
+    }
+    viewModel {
+        ElementDetailViewModel(get())
+    }
+    viewModel {
+        DashboardViewModel(get())
+    }
+    viewModel {
+        NotificationListViewModel(get())
+    }
+    viewModel {
+        EventListViewModel(get())
+    }
+    viewModel {
+        EventDetailViewModel(get())
+    }
+
 }
