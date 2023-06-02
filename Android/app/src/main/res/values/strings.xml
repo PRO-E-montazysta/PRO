@@ -53,4 +53,12 @@
     <string name="add_release_to_stage_desc">otwiera ekran twórzenia wydania z poziomu etapu</string>
     <string name="create_release_label">Wydaj elementy</string>
     <string name="content_description_profile_picture">Zdjęcie profilowe</string>
+    <string name="notifications_list_title">Powiadomienia</string>
+    <string name="readAll_button_text">Oznacz wszystkie jako odczytane</string>
+    <string name="readall_button_title">readAll</string>
+    <string name="filter_button_title">Filtruj</string>
+    <string name="filter_button_text">Ustawia filtry</string>
+    <string name="events_list_tile">Usterki</string>
+    <string name="event_details_title">Usterka narzędzia</string>
+    <string name="title_events">Usterki</string>
 </resources>

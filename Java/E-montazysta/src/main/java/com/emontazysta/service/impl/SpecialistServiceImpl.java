@@ -14,6 +14,7 @@ import com.emontazysta.repository.EmploymentRepository;
 import com.emontazysta.service.SpecialistService;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.security.Principal;
@@ -32,6 +33,7 @@ public class SpecialistServiceImpl implements SpecialistService {
     private final EmploymentMapper employmentMapper;
     private final AuthUtils authUtils;
     private final AppUserCriteriaRepository appUserCriteriaRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public List<SpecialistDto> getAll(Principal principal) {
@@ -66,6 +68,7 @@ public class SpecialistServiceImpl implements SpecialistService {
     @Override
     public SpecialistDto add(SpecialistDto specialistDto) {
         specialistDto.setUsername(specialistDto.getUsername().toLowerCase());
+        specialistDto.setPassword(bCryptPasswordEncoder.encode(specialistDto.getPassword()));
         specialistDto.setRoles(Set.of(Role.SPECIALIST));
         specialistDto.setUnavailabilities(new ArrayList<>());
         specialistDto.setNotifications(new ArrayList<>());

@@ -105,10 +105,9 @@ const OrderStageElementsTable = forwardRef(
             tempArray.splice(rowIndex, 1)
             handleChange(tempArray)
             if (tempArray.length === 0) {
-              return  setTableData([{ numberOfElements: 0, elementId: 'toChange' }])
+                return setTableData([{ numberOfElements: 0, elementId: 'toChange' }])
             }
             setTableData(tempArray)
-
         }
 
         return (
@@ -117,9 +116,25 @@ const OrderStageElementsTable = forwardRef(
                     <TableHead>
                         <TableRow>
                             <TableCell>Element</TableCell>
-                            <TableCell align="right">Planowana potrzebna ilość</TableCell>
-                            {isDisplayingMode && <TableCell align="right">Wydana ilosć elementy</TableCell>}
-                            {!isDisplayingMode && <TableCell align="right">Akcja</TableCell>}
+                            <TableCell align="right">Planowana ilość</TableCell>
+                            {isDisplayingMode && <TableCell align="right">Wydana ilość</TableCell>}
+                            {!isDisplayingMode && (
+                                <TableCell align="right">
+                                    <Button
+                                        sx={{ marginRight: '10px' }}
+                                        color="primary"
+                                        variant="contained"
+                                        onClick={() => {
+                                            setTableData((tableData) => [
+                                                ...tableData!,
+                                                { numberOfElements: 0, elementId: 'toChange' },
+                                            ])
+                                        }}
+                                    >
+                                        Dodaj
+                                    </Button>
+                                </TableCell>
+                            )}
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -155,23 +170,9 @@ const OrderStageElementsTable = forwardRef(
                                             </FormControl>
                                         </Box>
                                     </TableCell>
-                                    {isDisplayingMode && <TableCell align="right">bla</TableCell>}
+                                    {isDisplayingMode && <TableCell align="right"></TableCell>}
                                     {!isDisplayingMode && (
                                         <TableCell align="right">
-                                            {rowIndex === tableData.length - 1 && (
-                                                <Button
-                                                    color="primary"
-                                                    variant="contained"
-                                                    onClick={() => {
-                                                        setTableData((tableData) => [
-                                                            ...tableData!,
-                                                            { numberOfElements: 0, elementId: 'toChange' },
-                                                        ])
-                                                    }}
-                                                >
-                                                    Dodaj następne
-                                                </Button>
-                                            )}
                                             <Button
                                                 color="error"
                                                 variant="contained"
@@ -202,7 +203,7 @@ const chooseSelectItemId = (
         return itemsArray.map((item: any, index) => (
             <MenuItem
                 key={uuidv4()}
-                id={'elementsTable'+index}
+                id={'elementsTable' + index}
                 value={item.id}
                 onClick={() => {
                     setSelectedItemId(item.id)

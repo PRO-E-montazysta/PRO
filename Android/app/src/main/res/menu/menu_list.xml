@@ -2,16 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/notifications"
-        android:title="Notifications"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minWidth="0dp"
+        android:id="@+id/sort"
+        android:title="Filters"
+        android:icon="@drawable/baseline_sort_24"
+        android:contentDescription="Filters"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/filter"
+        android:title="Filters"
         android:icon="@drawable/baseline_filter_alt_24"
-        android:contentDescription="Notifications"
-        app:iconPadding="0dp"
-        android:background="?android:attr/selectableItemBackground"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="Filters"
         app:showAsAction="ifRoom"/>
 </menu>

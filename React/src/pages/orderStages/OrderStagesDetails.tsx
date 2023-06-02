@@ -5,7 +5,7 @@ import { OrderStage } from '../../types/model/OrderStage'
 import { useMutation, useQuery } from 'react-query'
 import { AxiosError } from 'axios'
 import OrderStageCard from './OrderStageCard'
-import { createOrderStage, getAllOrderStages } from '../../api/orderStage.api'
+import { createOrderStage, getAllOrderStagesForOrder } from '../../api/orderStage.api'
 import { v4 as uuidv4 } from 'uuid'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 
@@ -20,7 +20,7 @@ const OrderStagesDetails = ({ isAddOrderStageVisible }: OrderStagesDetailsProps)
     const { showDialog } = useContext(DialogGlobalContext)
 
     const queryOrderStages = useQuery<Array<OrderStage>, AxiosError>(['orderStage-list', { id: params.id }], () =>
-        getAllOrderStages(params.id!),
+        getAllOrderStagesForOrder(params.id!),
     )
 
     useEffect(() => {

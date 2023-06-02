@@ -32,6 +32,12 @@
         <action
             android:id="@+id/action_navigation_dashboard_to_elementsListFragment"
             app:destination="@id/elementsListFragment" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_notificationListFragment"
+            app:destination="@id/notificationListFragment" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_eventListFragment"
+            app:destination="@id/eventListFragment" />
     </fragment>
 
     <fragment
@@ -158,5 +164,42 @@
         <argument
             android:name="elementId"
             app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/notificationListFragment"
+        android:name="com.example.e_montazysta.ui.notification.NotificationListFragment"
+        android:label="NotificationListFragment" >
+        <action
+            android:id="@+id/action_notificationListFragment_to_stageDetailFragment"
+            app:destination="@id/stageDetailFragment" />
+        <action
+            android:id="@+id/action_notificationListFragment_to_orderDetailFragment"
+            app:destination="@id/orderDetailFragment" />
+    </fragment>
+    <activity
+        android:id="@+id/dashboardActivity"
+        android:name="com.example.e_montazysta.ui.activities.DashboardActivity"
+        android:label="DashboardActivity" />
+    <fragment
+        android:id="@+id/eventDetailFragment"
+        android:name="com.example.e_montazysta.ui.event.EventDetailFragment"
+        android:label="EventDetailFragment">
+        <argument
+            android:name="eventId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_eventDetailFragment_to_toolFragment"
+            app:destination="@id/toolFragment" />
+        <action
+            android:id="@+id/action_eventDetailFragment_to_elementDetailFragment"
+            app:destination="@id/elementDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/eventListFragment"
+        android:name="com.example.e_montazysta.ui.event.EventListFragment"
+        android:label="EventListFragment" >
+        <action
+            android:id="@+id/action_eventListFragment_to_eventDetailFragment"
+            app:destination="@id/eventDetailFragment" />
     </fragment>
 </navigation>

@@ -14,6 +14,7 @@ import com.emontazysta.repository.EmploymentRepository;
 import com.emontazysta.service.FitterService;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -33,6 +34,7 @@ public class FitterServiceImpl implements FitterService {
     private final EmploymentMapper employmentMapper;
     private final AuthUtils authUtils;
     private final AppUserCriteriaRepository appUserCriteriaRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public List<FitterDto> getAll(Principal principal) {
@@ -68,6 +70,7 @@ public class FitterServiceImpl implements FitterService {
     @Override
     public FitterDto add(FitterDto fitterDto) {
         fitterDto.setUsername(fitterDto.getUsername().toLowerCase());
+        fitterDto.setPassword(bCryptPasswordEncoder.encode(fitterDto.getPassword()));
         fitterDto.setRoles(Set.of(Role.FITTER));
         fitterDto.setUnavailabilities(new ArrayList<>());
         fitterDto.setNotifications(new ArrayList<>());
@@ -116,5 +119,18 @@ public class FitterServiceImpl implements FitterService {
         fitter.setWorkingOn(updatedFitter.getWorkingOn());
 
         return fitterMapper.toDto(repository.save(fitter));
+    }
+
+    @Override
+    public List<FitterDto> getAvailable(AppUserSearchCriteria appUserSearchCriteria, Principal principal) {
+        appUserSearchCriteria.setRoles(List.of("FITTER"));
+        List<EmployeeDto> appUsers = appUserCriteriaRepository.findAllWithFilters(appUserSearchCriteria, principal);
+        List<FitterDto> result = new ArrayList<>();
+
+        for(EmployeeDto employeeDto : appUsers) {
+            result.add(fitterMapper.toDto(repository.getReferenceById(employeeDto.getId())));
+        }
+
+        return result;
     }
 }
