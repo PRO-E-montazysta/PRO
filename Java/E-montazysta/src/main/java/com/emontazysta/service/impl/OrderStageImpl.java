@@ -11,14 +11,10 @@ import com.emontazysta.service.*;
 import com.emontazysta.mapper.ElementsPlannedNumberMapper;
 import com.emontazysta.mapper.OrderStageMapper;
 import com.emontazysta.mapper.ToolsPlannedNumberMapper;
-import com.emontazysta.model.*;
 import com.emontazysta.model.dto.ElementsPlannedNumberDto;
 import com.emontazysta.model.dto.OrderStageDto;
 import com.emontazysta.model.dto.OrderStageWithToolsAndElementsDto;
 import com.emontazysta.model.dto.ToolsPlannedNumberDto;
-import com.emontazysta.model.searchcriteria.OrdersStageSearchCriteria;
-import com.emontazysta.repository.*;
-import com.emontazysta.repository.criteria.OrdersStageCriteriaRepository;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -224,8 +219,8 @@ public class OrderStageImpl implements OrderStageService {
     }
 
     @Override
-    public List<OrderStageDto> getFilteredOrders(OrdersStageSearchCriteria ordersStageSearchCriteria, Principal principal) {
-        return  ordersStageCriteriaRepository.findAllWithFilters(ordersStageSearchCriteria, principal);
+    public List<OrderStageDto> getFilteredOrders(OrdersStageSearchCriteria ordersStageSearchCriteria) {
+        return  ordersStageCriteriaRepository.findAllWithFilters(ordersStageSearchCriteria);
     }
 
     @Override

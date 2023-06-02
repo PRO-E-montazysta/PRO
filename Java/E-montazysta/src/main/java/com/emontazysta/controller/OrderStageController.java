@@ -22,9 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.List;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
@@ -107,7 +105,7 @@ public class OrderStageController {
 
     @GetMapping("/filter")
     @Operation(description = "Return filtered OrdersStage by given parameters.", security = @SecurityRequirement(name = "bearer-key"))
-    public ResponseEntity<List<OrderStageDto>> Stages(OrdersStageSearchCriteria ordersStageSearchCriteria, Principal principal){
-        return new ResponseEntity<>(orderStageService.getFilteredOrders(ordersStageSearchCriteria, principal), HttpStatus.OK);
+    public ResponseEntity<List<OrderStageDto>> Stages(OrdersStageSearchCriteria ordersStageSearchCriteria){
+        return new ResponseEntity<>(orderStageService.getFilteredOrders(ordersStageSearchCriteria), HttpStatus.OK);
     }
 }
