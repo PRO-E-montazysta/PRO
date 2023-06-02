@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -19,7 +19,7 @@ public class ToolDto {
     private Long id;
     @NotBlank(message = "Name cannot be empty")
     private String name;
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
     private String code;
     private List<Long> toolReleases;
     private Long warehouseId;

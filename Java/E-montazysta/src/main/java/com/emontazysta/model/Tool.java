@@ -15,7 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -27,7 +27,7 @@ import java.util.List;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Tool {
 
-    public Tool(Long id, String name, LocalDate createdAt, String code, List<ToolRelease> toolReleases,
+    public Tool(Long id, String name, LocalDateTime createdAt, String code, List<ToolRelease> toolReleases,
                 Warehouse warehouse, List<ToolEvent> toolEvents, ToolType toolType) {
         this.id = id;
         this.name = name;
@@ -45,7 +45,7 @@ public class Tool {
 
     private String name;
 
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     private String code;
 
