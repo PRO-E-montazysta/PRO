@@ -55,6 +55,7 @@ public class OrderStageImpl implements OrderStageService {
     private final AppUserService userService;
     private final OrderRepository orderRepository;
     private final ElementInWarehouseService elementInWarehouseService;
+    private final FitterRepository fitterRepository;
 
     @Override
     public List<OrderStageDto> getAll() {
@@ -182,14 +183,27 @@ public class OrderStageImpl implements OrderStageService {
 
         if (authUtils.getLoggedUser().getRoles().contains(Role.FOREMAN)
                 && orderStageDb.getStatus().equals(OrderStageStatus.ADDING_FITTERS)) {
+
+            //Usunięcie nieprzypisanych fitterów
+            for(Fitter fitter : orderStageDb.getAssignedTo()) {
+                if(!updatedOrderStage.getAssignedTo().contains(fitter)) {
+                    fitter.getWorkingOn().remove(orderStageDb);
+                    fitterRepository.save(fitter);
+                }
+            }
+
             //Utworzenie listy powiadamianych fitterów
             List<AppUser> notifiedEmployees = new ArrayList<>();
 
             for(Fitter fitter : updatedOrderStage.getAssignedTo()) {
                 if(!orderStageDb.getAssignedTo().contains(fitter)) {
                     notifiedEmployees.add(fitter);
+                    fitter.getWorkingOn().add(orderStageDb);
+                    fitterRepository.save(fitter);
                 }
             }
+
+
             orderStageDb.setAssignedTo(updatedOrderStage.getAssignedTo());
 
             //Wysłanie powiadomienia do fitterów o przypisaniu do etapu
