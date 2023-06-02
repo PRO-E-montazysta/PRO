@@ -19,16 +19,16 @@ data class Event(
     val eventType: EventType
 )
 
-enum class EventType(val type: String) {
+enum class EventType(val value: String) {
     T("Narzędzie"),
     E("Element")
 }
 
-enum class EventStatus (val color: Int){
-    CREATED(Color.BLUE),         // Blue
-    IN_PROGRESS(Color.YELLOW),     // Yellow
-    REPAIRED(Color.GREEN),        // Green
-    ELIMINATED(Color.RED),      // Red
-    MISSING(0x800080),         // Purple
-    OTHER(Color.GRAY);           // Gray
+enum class EventStatus (val color: Int, val value: String){
+    CREATED(Color.BLUE, "UTWORZONY"),         // Blue
+    IN_PROGRESS(Color.YELLOW, "W REALIZACJI"),     // Yellow
+    REPAIRED(Color.GREEN, "NAPRAWIONY"),        // Green
+    ELIMINATED(Color.RED, "ZLIKWIDOWANY"),      // Red
+    MISSING(0x800080, "ZAGUBIONY"),         // Purple
+    OTHER(Color.GRAY, "INNY");           // Gray
 }

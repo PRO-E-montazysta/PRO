@@ -26,6 +26,9 @@ class EventListViewModel(private val repository: IEventRepository) : ViewModel()
     private val _isLoadingLiveData = MutableLiveData<Boolean>()
     val isLoadingLiveData: LiveData<Boolean> = _isLoadingLiveData
 
+    private val _filterLiveData = MutableLiveData<Map<String, String>>()
+    val filterLiveData: LiveData<Map<String, String>> = _filterLiveData
+
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
@@ -46,6 +49,12 @@ class EventListViewModel(private val repository: IEventRepository) : ViewModel()
                 }
             }
         _isLoadingLiveData.postValue(false)
+    }
+
+    fun filterDataChanged(key: String, value: String) {
+            val filters: MutableMap<String, String> = filterLiveData.value!!.toMutableMap()
+            filters[key] = value
+            _filterLiveData.value = filters
     }
 
     override fun onCleared() {
