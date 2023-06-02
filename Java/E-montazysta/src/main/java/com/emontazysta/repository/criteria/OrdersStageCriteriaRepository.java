@@ -1,5 +1,7 @@
 package com.emontazysta.repository.criteria;
 
+import com.emontazysta.enums.OrderStageStatus;
+import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.OrderStageMapper;
 import com.emontazysta.model.*;
 import com.emontazysta.model.dto.OrderStageDto;
@@ -57,6 +59,17 @@ public class OrdersStageCriteriaRepository {
         //Get for given order_Id
         if (Objects.nonNull(ordersStageSearchCriteria.getOrder_Id())) {
             predicates.add(criteriaBuilder.equal(ordersStageRoot.get("orders").get("id"), ordersStageSearchCriteria.getOrder_Id()));
+        }
+
+        //Strict displayed for warehouse-man & -manager
+        if(authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MAN)
+                || authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MANAGER)) {
+            List<Predicate> warehousePredicates = new ArrayList<>();
+
+            warehousePredicates.add(criteriaBuilder.equal(ordersStageRoot.get("status"), OrderStageStatus.PICK_UP));
+            warehousePredicates.add(criteriaBuilder.equal(ordersStageRoot.get("status"), OrderStageStatus.RETURN));
+
+            predicates.add(criteriaBuilder.or(warehousePredicates.toArray(new Predicate[0])));
         }
 
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
