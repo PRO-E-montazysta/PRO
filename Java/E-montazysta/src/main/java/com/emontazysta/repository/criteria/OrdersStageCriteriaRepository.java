@@ -72,6 +72,11 @@ public class OrdersStageCriteriaRepository {
             predicates.add(criteriaBuilder.or(warehousePredicates.toArray(new Predicate[0])));
         }
 
+        //Strict displayed for fitter
+        if(authUtils.getLoggedUser().getRoles().contains(Role.FITTER)) {
+            predicates.add(criteriaBuilder.isMember(authUtils.getLoggedUser(), ordersStageRoot.get("assignedTo")));
+        }
+
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 }
