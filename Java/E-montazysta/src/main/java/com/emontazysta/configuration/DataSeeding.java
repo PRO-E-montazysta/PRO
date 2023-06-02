@@ -388,9 +388,9 @@ public class DataSeeding {
                 warehouse2, new ArrayList<>(), toolType3));
         Tool tool4 = addToolFromModel(new Tool(null, "Test Tool 4", null, null, new ArrayList<>(),
                 warehouse2, new ArrayList<>(), toolType4));
-        toolRepository.save(new Tool(null, "Tool 5", LocalDate.now(), "T|HARDCODED-TOOL5",
+        toolRepository.save(new Tool(null, "Tool 5", LocalDateTime.now(), "T|HARDCODED-TOOL5",
                 new ArrayList<>(), warehouse1, new ArrayList<>(), toolType1));
-        toolRepository.save(new Tool(null, "Tool 6", LocalDate.now(), "T|HARDCODED-TOOL6",
+        toolRepository.save(new Tool(null, "Tool 6", LocalDateTime.now(), "T|HARDCODED-TOOL6",
                 new ArrayList<>(), warehouse2, new ArrayList<>(), toolType2));
 
         ToolEvent toolEvent1 = addToolEventFromModel(new ToolEvent(null, LocalDateTime.now(), null, null,

@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -20,7 +20,7 @@ public class CompanyWithAdminMapper {
         return Company.builder()
                 .id(null)
                 .companyName(dto.getCompanyName())
-                .createdAt(LocalDate.now())
+                .createdAt(LocalDateTime.now())
                 .status(dto.getStatus())
                 .statusReason(dto.getStatusReason())
                 .warehouses(new ArrayList<>())
