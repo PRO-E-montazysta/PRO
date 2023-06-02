@@ -64,6 +64,11 @@ class EventListViewModel(private val repository: IEventRepository) : ViewModel()
         _filterLiveData.value = filters
     }
 
+    fun filterClear() {
+        val filters = mutableMapOf<String, String>()
+        _filterLiveData.value = filters
+    }
+
     override fun onCleared() {
         super.onCleared()
         coroutineContext.cancel()

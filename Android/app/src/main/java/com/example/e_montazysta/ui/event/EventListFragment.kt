@@ -33,9 +33,6 @@ class EventListFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-
-
-
         // Get a reference to the binding object and inflate the fragment views.
         binding = FragmentEventsBinding.inflate(inflater, container, false)
 
@@ -69,8 +66,6 @@ class EventListFragment : Fragment() {
                 }
             }
         })
-
-
 
         // Szuflada
         val toolbar: MaterialToolbar = binding.toolbar
@@ -172,9 +167,19 @@ class EventListFragment : Fragment() {
             viewModel.filterDataChanged("itemName", name)
             viewModel.filterDataChanged("eventDateMin", startDate)
             viewModel.filterDataChanged("eventDateMax", endDate)
+            viewModel.getEvent()
+            drawerLayout.closeDrawer(GravityCompat.END)
+        }
 
+        val clearFilterButton = binding.rightDrawer.clearFilterButton
 
-            Toast.makeText(context, viewModel.filterLiveData.value.toString(), Toast.LENGTH_LONG).show()
+        clearFilterButton.setOnClickListener{
+            statusFilter.clearCheck()
+            typeFilter.clearCheck()
+            nameFilter.text?.clear()
+            startDateFilter.text?.clear()
+            endDateFilter.text?.clear()
+            viewModel.filterClear()
             viewModel.getEvent()
             drawerLayout.closeDrawer(GravityCompat.END)
         }
