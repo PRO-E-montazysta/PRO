@@ -60,7 +60,7 @@ public class OrderStageController {
         orderStageService.delete(id);
     }
 
-    @PreAuthorize("hasAnyAuthority('SCOPE_SPECIALIST','FOREMAN')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_SPECIALIST','SCOPE_FOREMAN')")
     @PutMapping("/{id}")
     @Operation(description = "Allows to update Order Stage by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public OrderStageDto updateOrderStage(@PathVariable Long id, @Valid @RequestBody OrderStageWithToolsAndElementsDto orderStage) {
