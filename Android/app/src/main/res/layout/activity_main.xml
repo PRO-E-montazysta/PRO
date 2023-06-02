@@ -24,7 +24,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="20dp"
             android:contentDescription="@string/logo_desc"
-            android:src="@drawable/logo" />
+            android:src="@mipmap/ic_launcher_round" />
 
         <TextView
             android:layout_width="wrap_content"
