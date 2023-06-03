@@ -166,9 +166,17 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
         handleSetElementsOnEdit()
     }
 
+    const handleResetFormik = () => {
+        plannedElementsRef.current! = []
+        plannedToolsTypesRef.current! = []
+        setPreparedPlannedStartDate('')
+        setPreparedPlannedEndDate('')
+        formik.resetForm()
+    }
     const handleCancelButtonAction = () => {
         setIsEditing(false)
         setIsDisplayingMode(true)
+        handleResetFormik()
     }
 
     const formik = useFormik({
@@ -187,7 +195,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
             attachments: [],
             test: '',
         },
-
         validationSchema: validationSchema,
         onSubmit: (values) => {
             values.listOfElementsPlannedNumber = plannedElementsRef.current!
