@@ -3,10 +3,7 @@ package com.example.e_montazysta.ui.toollist
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.e_montazysta.data.model.Element
-import com.example.e_montazysta.data.model.Tool
 import com.example.e_montazysta.databinding.ListItemToolBinding
-import com.example.e_montazysta.ui.release.ReleaseCreateAdapter
 
 class ToolsListAdapter(val clickListener: CustomClickListener): RecyclerView.Adapter<ToolsListAdapter.ViewHolder>() {
 
@@ -26,13 +23,13 @@ class ToolsListAdapter(val clickListener: CustomClickListener): RecyclerView.Ada
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = elements[position]
-        holder.bind(item)
+        holder.bind(item, clickListener)
     }
     class ViewHolder( val binding: ListItemToolBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(data: ToolListItem) {
-            binding.toolName.text = data.name
-            binding.toolCode.text = data.code
+        fun bind(data: ToolListItem, clickListener: CustomClickListener) {
+            binding.tool = data
+            binding.itemClickListener = clickListener
             binding.executePendingBindings()
         }
         companion object {
@@ -44,7 +41,6 @@ class ToolsListAdapter(val clickListener: CustomClickListener): RecyclerView.Ada
         }
     }
     class CustomClickListener(val clickListener: (toolId: Int) -> Unit) {
-
         fun cardClicked(item: ToolListItem) = clickListener(item.id)
     }
 }

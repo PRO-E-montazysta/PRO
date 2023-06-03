@@ -189,11 +189,8 @@ class EventListFragment : Fragment() {
                 errorMessage -> Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
         }
 
-        // Wyświetlanie błędów
-        viewModel.filterLiveData.observe(viewLifecycleOwner) {
-        }
-    binding.lifecycleOwner = this
-    return binding.root
+        binding.lifecycleOwner = this
+        return binding.root
     }
 
     private fun populateStatusChips(chipGroup: ChipGroup) {

@@ -1,10 +1,13 @@
-package com.example.e_montazysta.ui.event
+package com.example.e_montazysta.ui.toollist
 
+import android.util.Log
+import android.util.Log.getStackTraceString
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.e_montazysta.data.model.Result
-import com.example.e_montazysta.data.repository.interfaces.IEventRepository
+import com.example.e_montazysta.data.model.Tool
+import com.example.e_montazysta.data.repository.interfaces.IToolRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -13,12 +16,12 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 
-class EventListViewModel(private val repository: IEventRepository) : ViewModel(), CoroutineScope {
+class ToolDetailViewModel(private val repository: IToolRepository) : ViewModel(), CoroutineScope {
 
     private var job: Job? = null
 
-    private val _eventLiveData = MutableLiveData<List<EventListItem>>()
-    val event: LiveData<List<EventListItem>> = _eventLiveData
+    private val _eventLiveData = MutableLiveData<Tool>()
+    val tool: LiveData<Tool> = _eventLiveData
 
     private val _messageLiveData = MutableLiveData<String>()
     val messageLiveData: LiveData<String> = _messageLiveData
@@ -26,47 +29,28 @@ class EventListViewModel(private val repository: IEventRepository) : ViewModel()
     private val _isLoadingLiveData = MutableLiveData<Boolean>()
     val isLoadingLiveData: LiveData<Boolean> = _isLoadingLiveData
 
-    private val _filterLiveData = MutableLiveData<Map<String, String>>()
-    val filterLiveData: LiveData<Map<String, String>> = _filterLiveData
-
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
-    fun getEvent() {
+    fun getToolDetail(id: Int) {
         job = launch {
-            val payload = _filterLiveData.value
-            getEventAsync(payload)
+            getToolDetailAsync(id)
         }
     }
 
-    private suspend fun getEventAsync(payload: Map<String, String>?) {
+    private suspend fun getToolDetailAsync(id: Int) {
         _isLoadingLiveData.postValue(true)
-            val result = repository.getListOfEvents(payload)
+            val result = repository.getToolDetails(id)
             when (result) {
                 is Result.Success -> _eventLiveData.postValue( result.data )
                 is Result.Error -> {
+                    throw result.exception
+                    Log.e("getTool", getStackTraceString(result.exception))
                     result.exception.message?.let { _messageLiveData.postValue(it) }
                     _isLoadingLiveData.postValue(false)
                 }
             }
         _isLoadingLiveData.postValue(false)
-    }
-
-    fun filterDataChanged(key: String, value: String?) {
-        val filters: MutableMap<String, String> =
-            if (!filterLiveData.value.isNullOrEmpty()) filterLiveData.value!!.toMutableMap()
-            else mutableMapOf()
-        if (!value.isNullOrBlank()) {
-            filters[key] = value
-        } else {
-            filters.remove(key)
-        }
-        _filterLiveData.value = filters
-    }
-
-    fun filterClear() {
-        val filters = mutableMapOf<String, String>()
-        _filterLiveData.value = filters
     }
 
     override fun onCleared() {

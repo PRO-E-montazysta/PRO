@@ -65,4 +65,7 @@
     <string name="filter_status_field_label">Status</string>
     <string name="filter_createdDateFilter_field_label">Czas utworzenia od</string>
     <string name="filter_title">Filtry</string>
+    <string name="filter_code_field_label">Kod</string>
+    <string name="filter_warehouse_field_label">Magazyny: </string>
+    <string name="tool_details_title">Narzędzie</string>
 </resources>

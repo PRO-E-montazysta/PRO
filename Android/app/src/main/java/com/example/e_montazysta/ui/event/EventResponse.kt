@@ -8,14 +8,12 @@ import com.example.e_montazysta.data.model.EventType
 import com.example.e_montazysta.data.model.Tool
 import com.example.e_montazysta.data.model.User
 import com.example.e_montazysta.helpers.DateUtil
-import com.squareup.moshi.JsonClass
 import org.koin.core.component.KoinComponent
 import java.util.Date
 
-@JsonClass(generateAdapter = true)
 data class ElementEventDAO(
     val acceptedById: Int?,
-    val attachments: List<Int>,
+    val attachments: List<Int?>,
     val completionDate: Date?,
     val createdById: Int,
     val deleted: Boolean,
@@ -34,17 +32,15 @@ data class ElementEventDAO(
             } else {
             acceptedBy = null
         }
-
         val createdBy =  User.getUserDetails(createdById)
         val element = Element.getElementDetails(elementId)
         return Event(acceptedBy, attachments, completionDate, createdBy, deleted, description, element, eventDate, id, movingDate, quantity, status, EventType.E)
     }
 }
 
-@JsonClass(generateAdapter = true)
 data class ToolEventDAO(
     val acceptedById: Int?,
-    val attachments: List<Int>,
+    val attachments: List<Int?>,
     val completionDate: Date?,
     val createdById: Int,
     val deleted: Boolean,
@@ -62,14 +58,12 @@ data class ToolEventDAO(
         } else {
             acceptedBy = null
         }
-
         val createdBy =  User.getUserDetails(createdById)
-        val tool = Tool.getElementDetails(toolId)
+        val tool = Tool.getToolDetails(toolId)
         return Event(acceptedBy, attachments, completionDate, createdBy, deleted, description, tool, eventDate, id, movingDate, null, status, EventType.T)
     }
 }
 
-@JsonClass(generateAdapter = true)
 data class FilterEventDAO(
     val acceptedById: Int?,
     val completionDate: Date?,
