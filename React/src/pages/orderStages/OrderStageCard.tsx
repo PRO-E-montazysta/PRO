@@ -172,6 +172,8 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
         setPreparedPlannedStartDate('')
         setPreparedPlannedEndDate('')
         setPlannedStartDate(dayjs(stage!.plannedStartDate))
+        setPlannedStartHour(dayjs(stage!.plannedStartDate))
+        setPlannedFinishHour(dayjs(stage!.plannedEndDate))
         formik.resetForm()
     }
     const handleCancelButtonAction = () => {
