@@ -171,6 +171,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
         plannedToolsTypesRef.current! = []
         setPreparedPlannedStartDate('')
         setPreparedPlannedEndDate('')
+        setPlannedStartDate(dayjs(stage!.plannedStartDate))
         formik.resetForm()
     }
     const handleCancelButtonAction = () => {
