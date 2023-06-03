@@ -1,0 +1,24 @@
+package com.example.e_montazysta.data.repository
+
+import com.example.e_montazysta.data.model.Result
+import com.example.e_montazysta.data.model.ToolType
+import com.example.e_montazysta.data.repository.interfaces.IToolTypeRepository
+import com.example.e_montazysta.data.services.IServiceProvider
+import com.example.e_montazysta.helpers.Interfaces.ISharedPreferencesHelper
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+
+class WarehouseRepository (private val serviceProvider: IServiceProvider): IToolTypeRepository, KoinComponent{
+    private val sharedPreferencesHelper: ISharedPreferencesHelper by inject()
+    private val token = "Bearer " + sharedPreferencesHelper.get("lama").toString()
+    val toolTypeService = serviceProvider.getToolTypeService()
+
+    override suspend fun getToolType(id: Int): Result<ToolType> {
+        return try {
+            val result = toolTypeService.getToolType(token, id)
+            Result.Success(result)
+        } catch (e: Exception){
+            Result.Error(e)
+        }
+    }
+}
