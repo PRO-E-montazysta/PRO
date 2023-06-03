@@ -9,49 +9,36 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
-import com.example.e_montazysta.data.model.Element
-import com.example.e_montazysta.data.model.Tool
-import com.example.e_montazysta.databinding.FragmentEventDetailBinding
+import com.example.e_montazysta.databinding.FragmentToolDetailBinding
 import com.example.e_montazysta.helpers.DateUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.system.measureTimeMillis
 
 class ToolDetailFragment : Fragment() {
-    private val viewModel: EventDetailViewModel by viewModel()
+    private val viewModel: ToolDetailViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        val args: EventDetailFragmentArgs by navArgs()
-        val eventId = args.eventId
+        val args: ToolDetailFragmentArgs by navArgs()
+        val eventId = args.toolId
 
         // Get a reference to the binding object and inflate the fragment views.
-        val binding: FragmentEventDetailBinding = FragmentEventDetailBinding.inflate(inflater, container, false)
+        val binding: FragmentToolDetailBinding = FragmentToolDetailBinding.inflate(inflater, container, false)
         val application = requireNotNull(this.activity).application
 
         // To use the View Model with data binding, you have to explicitly
         // give the binding object a reference to it.
         val time = measureTimeMillis {
-            viewModel.getEventDetail(eventId)
+            viewModel.getToolDetail(eventId)
         }
         Log.d(TAG, "Requests took $time ms.")
 
-        viewModel.eventdetail.observe(viewLifecycleOwner, Observer { event ->
-            when(event.item) {
-                is Tool -> {
-                    binding.itemName.text = "Zgłaszane narzędzie"
-                    binding.itemNameValue.text = event.item.name
-                    binding.toolbar.subtitle = "${event.item.name} ${event.item.code}"
-                }
-                is Element -> {
-                    binding.itemName.text = "Zgłaszany element"
-                    binding.itemNameValue.text = event.item.name
-                    binding.toolbar.subtitle = "${event.item.name} ${event.item.code}"
-                }
-            }
-            binding.itemStatusValue.text = event.status.name
-            binding.itemStatusValue.setTextColor(event.status.color)
-            binding.eventDateValue.text = DateUtil.format(event.eventDate)
-            binding.descriptionValue.text = event.description
+        viewModel.tool.observe(viewLifecycleOwner, Observer { tool ->
+            binding.toolNameValue.text = tool.name
+            binding.toolCodeValue.text = tool.code
+            binding.toolWarehouseValue.text = tool.warehouse.name
+            binding.toolCreatedAtValue.text = DateUtil.format(tool.createdAt)
+            binding.toolTypeValue.text = tool.toolType.name
         })
         return binding.root
     }

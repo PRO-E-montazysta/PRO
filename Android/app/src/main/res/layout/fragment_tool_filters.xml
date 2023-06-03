@@ -42,42 +42,20 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/startDateTimeInputLayout"
+        android:id="@+id/codeFilter"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Od"
-        app:endIconMode="clear_text"
+        android:hint="@string/filter_code_field_label"
         android:layout_marginBottom="10dp"
-        app:startIconDrawable="@drawable/baseline_calendar_month_24"
+        app:endIconMode="clear_text"
         app:layout_constraintTop_toBottomOf="@id/divider"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/startDateTimeTextInputEditText"
+            android:id="@+id/codeFilterEditText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="none"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/endDateTimeInputLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Do"
-        app:endIconMode="clear_text"
-        app:startIconDrawable="@drawable/baseline_calendar_month_24"
-        app:layout_constraintTop_toBottomOf="@id/startDateTimeInputLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/endDateTimeTextInputEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="none"
-            />
+            android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.divider.MaterialDivider
@@ -85,7 +63,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginVertical="10dp"
-        app:layout_constraintTop_toBottomOf="@id/endDateTimeInputLayout"
+        app:layout_constraintTop_toBottomOf="@id/codeFilter"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -93,7 +71,7 @@
         android:id="@+id/statusTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Status:"
+        android:text="@string/filter_warehouse_field_label"
         android:layout_marginVertical="10dp"
         app:layout_constraintTop_toBottomOf="@id/divider2"
         app:layout_constraintStart_toStartOf="parent"

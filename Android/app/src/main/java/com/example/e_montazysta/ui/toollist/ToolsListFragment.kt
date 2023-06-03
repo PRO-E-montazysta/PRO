@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.example.e_montazysta.databinding.FragmentToolsBinding
@@ -12,11 +11,12 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ToolsListFragment : Fragment() {
     private val toolsListViewModel: ToolsListViewModel by viewModel()
+    private lateinit var binding: FragmentToolsBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         // Get a reference to the binding object and inflate the fragment views.
-        val binding: FragmentToolsBinding = FragmentToolsBinding.inflate(inflater, container, false)
+        binding = FragmentToolsBinding.inflate(inflater, container, false)
         val application = requireNotNull(this.activity).application
 
         // To use the View Model with data binding, you have to explicitly
@@ -24,11 +24,10 @@ class ToolsListFragment : Fragment() {
         binding.toolsListViewModel = toolsListViewModel
 
         val adapter = ToolsListAdapter(ToolsListAdapter.CustomClickListener {
-            toolId -> Toast.makeText(context, toolId, Toast.LENGTH_SHORT).show()
         })
-        binding.toolList.adapter = adapter
+        binding.list.adapter = adapter
 
-        toolsListViewModel.getTools()
+        toolsListViewModel.getFilterTools()
 
         toolsListViewModel.tools.observe(viewLifecycleOwner, Observer {
             it?.let {

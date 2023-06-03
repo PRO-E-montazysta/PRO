@@ -1,6 +1,9 @@
 package com.example.e_montazysta.data.model
 
 import android.graphics.Color
+import com.example.e_montazysta.data.repository.interfaces.IEventRepository
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.util.Date
 
 data class Event(
@@ -17,7 +20,18 @@ data class Event(
     val quantity: Int?,
     val status: EventStatus,
     val eventType: EventType
-)
+) {
+    companion object : KoinComponent {
+        val eventRepository: IEventRepository by inject()
+        suspend fun getEventDetails(id: Int): Event {
+            val result = eventRepository.getEventDetails(id)
+            return when (result) {
+                is Result.Success -> result.data
+                is Result.Error -> throw result.exception
+            }
+        }
+    }
+}
 
 enum class EventType(val value: String) {
     T("Narzędzie"),
@@ -32,3 +46,4 @@ enum class EventStatus (val color: Int, val value: String){
     MISSING(0x800080, "ZAGUBIONY"),         // Purple
     OTHER(Color.GRAY, "INNY");           // Gray
 }
+

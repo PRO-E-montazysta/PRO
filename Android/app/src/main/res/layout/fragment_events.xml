@@ -81,8 +81,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
-                >
-            </include>
+                />
 
         </androidx.drawerlayout.widget.DrawerLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

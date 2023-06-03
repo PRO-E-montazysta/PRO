@@ -31,8 +31,7 @@ class ToolsListAdapter(val clickListener: CustomClickListener): RecyclerView.Ada
     class ViewHolder( val binding: ListItemToolBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: ToolListItem) {
-            binding.toolName.text = data.name
-            binding.toolCode.text = data.code
+            binding.tool = data
             binding.executePendingBindings()
         }
         companion object {

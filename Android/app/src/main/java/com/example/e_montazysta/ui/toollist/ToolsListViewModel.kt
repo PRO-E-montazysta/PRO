@@ -5,7 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.e_montazysta.data.model.Result
 import com.example.e_montazysta.data.repository.interfaces.IToolRepository
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 
@@ -25,17 +29,17 @@ class ToolsListViewModel(private val repository: IToolRepository) : ViewModel(),
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
-    fun getTools() {
+    fun getFilterTools() {
         job = launch {
-            getToolsAsync()
+            getFilterToolsAsync()
         }
     }
 
-    private suspend fun getToolsAsync() {
+    private suspend fun getFilterToolsAsync() {
         _isLoadingLiveData.postValue(true)
-            val result = repository.getTools()
+            val result = repository.getFilterTools()
             when (result) {
-                is Result.Success -> _toolsLiveData.postValue(result.data.map { it.mapToToolItem() })
+                is Result.Success -> _toolsLiveData.postValue(result.data)
                 is Result.Error -> result.exception.message?.let { _messageLiveData.postValue(it) }
             }
         _isLoadingLiveData.postValue(false)

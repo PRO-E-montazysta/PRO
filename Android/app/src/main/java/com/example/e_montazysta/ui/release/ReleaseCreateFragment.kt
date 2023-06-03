@@ -48,8 +48,8 @@ class ReleaseCreateFragment : Fragment() {
 
         val adapter = ReleaseCreateAdapter(
             ReleaseCreateAdapter.CustomClickListener {
-                item -> val direction = ReleaseCreateFragmentDirections.actionReleaseCreateFragmentToToolFragment(item.toString())
-                findNavController().navigate(direction)
+//                item -> val direction = ReleaseCreateFragmentDirections.actionReleaseCreateFragmentToToolFragment(item.toString())
+//                findNavController().navigate(direction)
             }
         )
 
