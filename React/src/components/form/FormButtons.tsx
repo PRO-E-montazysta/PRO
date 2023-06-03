@@ -7,6 +7,8 @@ import ReplayIcon from '@mui/icons-material/Replay'
 import CloseIcon from '@mui/icons-material/Close'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import useBreakpoints from '../../hooks/useBreakpoints'
 import PrintQRCodeLabel from '../label/PrintQRCodeLabel'
 import { useState } from 'react'
@@ -23,6 +25,8 @@ type FormButtonsParams = {
     orderStageButton?: boolean
     handleAddOrderStage?: () => void
     isAddOrderStageVisible?: boolean
+    nextStatus?: () => void
+    previousStatus?: () => void
 }
 
 export const FormButtons = (params: FormButtonsParams) => {
@@ -38,6 +42,8 @@ export const FormButtons = (params: FormButtonsParams) => {
         orderStageButton,
         handleAddOrderStage,
         isAddOrderStageVisible,
+        nextStatus,
+        previousStatus,
     } = params
 
     const appSize = useBreakpoints()
@@ -53,6 +59,32 @@ export const FormButtons = (params: FormButtonsParams) => {
         >
             {readonlyMode && id != 'new' ? (
                 <>
+                    {nextStatus ? (
+                        <Button
+                            id={`formButton-nextStatus`}
+                            color="primary"
+                            startIcon={<ArrowForwardIosIcon />}
+                            variant="contained"
+                            type="submit"
+                            style={{ width: appSize.isMobile ? 'auto' : 190 }}
+                            onClick={nextStatus}
+                        >
+                            Następny status
+                        </Button>
+                    ) : null}
+                    {previousStatus ? (
+                        <Button
+                            id={`formButton-nextStatus`}
+                            color="primary"
+                            startIcon={<ArrowBackIosIcon />}
+                            variant="contained"
+                            type="submit"
+                            style={{ width: appSize.isMobile ? 'auto' : 170 }}
+                            onClick={previousStatus}
+                        >
+                            Cofnij status
+                        </Button>
+                    ) : null}
                     {printLabel ? <PrintQRCodeLabel label={printLabel[0]} code={printLabel[1]} /> : null}
                     <Button
                         id={`formButton-edit`}

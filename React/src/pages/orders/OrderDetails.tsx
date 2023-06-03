@@ -14,6 +14,8 @@ import {
     useEditOrderLocation,
     useEditOrder,
     useOrderData,
+    useOrderNextStatus,
+    useOrderPreviousStatus,
 } from './hooks'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { FormButtons } from '../../components/form/FormButtons'
@@ -33,6 +35,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import Localization from '../../components/localization/Localization'
 import { Order } from '../../types/model/Order'
 import { useAddLocation, useFormStructureLocation, useLocationData } from '../../components/localization/hooks'
+import { isAuthorized } from '../../utils/authorize'
 
 const OrderDetails = () => {
     const [userRole, setUserRole] = useState('')
@@ -55,8 +58,22 @@ const OrderDetails = () => {
     const editOrderMutation = useEditOrder((data) => submitLocation(data))
     const deleteOrderMutation = useDeleteOrder(() => orderData.remove())
     const orderData = useOrderData(params.id)
+    const orderNextStatusMutation = useOrderNextStatus(() => {
+        orderData.refetch({
+            queryKey: ['order', { id: params.id }],
+        })
+    })
+    const orderPreviousStatusMutation = useOrderPreviousStatus(() => {
+        orderData.refetch({
+            queryKey: ['order', { id: params.id }],
+        })
+    })
+
     //status for all mutations and queries
-    const queriesStatus = useQueriesStatus([orderData], [addOrderMutation, editOrderMutation, deleteOrderMutation])
+    const queriesStatus = useQueriesStatus(
+        [orderData],
+        [addOrderMutation, editOrderMutation, deleteOrderMutation, orderNextStatusMutation],
+    )
 
     const appSize = useBreakpoints()
 
@@ -96,6 +113,32 @@ const OrderDetails = () => {
             ],
             callback: (result: number) => {
                 if (result == 1 && params.id && Number.isInteger(params.id)) deleteOrderMutation.mutate(params.id)
+            },
+        })
+    }
+
+    const handleNextStatus = () => {
+        showDialog({
+            title: 'Czy na pewno chcesz zmienić status zlecenia na następny?',
+            btnOptions: [
+                { text: 'Tak', value: 1, variant: 'contained' },
+                { text: 'Anuluj', value: 0, variant: 'outlined' },
+            ],
+            callback: (result: number) => {
+                if (result == 1 && params.id) orderNextStatusMutation.mutate(params.id)
+            },
+        })
+    }
+
+    const handlePreviousStatus = () => {
+        showDialog({
+            title: 'Czy na pewno chcesz cofnąć status zlecenia?',
+            btnOptions: [
+                { text: 'Tak', value: 1, variant: 'contained' },
+                { text: 'Anuluj', value: 0, variant: 'outlined' },
+            ],
+            callback: (result: number) => {
+                if (result == 1 && params.id) orderPreviousStatusMutation.mutate(params.id)
             },
         })
     }
@@ -181,6 +224,26 @@ const OrderDetails = () => {
         }
     }, [queryLocationData.data])
 
+    const canChangeToNextStatus = () => {
+        return (
+            (orderData.data?.status == 'CREATED' && isAuthorized([Role.SALES_REPRESENTATIVE])) ||
+            (orderData.data?.status == 'PLANNING' && isAuthorized([Role.SPECIALIST])) ||
+            (orderData.data?.status == 'TO_ACCEPT' && isAuthorized([Role.MANAGER])) ||
+            (orderData.data?.status == 'ACCEPTED' && isAuthorized([Role.FOREMAN])) ||
+            (orderData.data?.status == 'IN_PROGRESS' && isAuthorized([Role.FOREMAN]))
+        )
+    }
+
+    const canChangeToPreviousStatus = () => {
+        return (
+            (orderData.data?.status == 'PLANNING' && isAuthorized([Role.SPECIALIST])) ||
+            (orderData.data?.status == 'TO_ACCEPT' && isAuthorized([Role.MANAGER])) ||
+            (orderData.data?.status == 'ACCEPTED' && isAuthorized([Role.FOREMAN])) ||
+            (orderData.data?.status == 'IN_PROGRESS' && isAuthorized([Role.FOREMAN])) ||
+            (orderData.data?.status == 'FINISHED' && isAuthorized([Role.FOREMAN]))
+        )
+    }
+
     return (
         <>
             <FormBox>
@@ -212,6 +275,8 @@ const OrderDetails = () => {
                                 orderStageButton={getAddOrderStageButton()}
                                 handleAddOrderStage={handleAddOrderStage}
                                 isAddOrderStageVisible={isAddOrderStageVisible}
+                                nextStatus={canChangeToNextStatus() ? handleNextStatus : undefined}
+                                previousStatus={canChangeToPreviousStatus() ? handlePreviousStatus : undefined}
                             />
                         </>
                     )}

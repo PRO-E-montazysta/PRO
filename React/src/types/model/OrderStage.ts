@@ -92,3 +92,14 @@ export type UpdateOrderStage2 = {
     }>
     attachments: Array<number>
 }
+
+export const OrderStageStatus = {
+    PLANNING: 'PLANOWANIE',
+    ADDING_FITTERS: 'DODAWANIE MONTAŻYSTÓW',
+    PICK_UP: 'WYDAWANIE',
+    REALESED: 'WYDANO',
+    ON_WORK: 'W TRAKCIE',
+    RETURN: 'ZWRACANIE',
+    RETURNED: 'ZWRÓCONO',
+    FINISHED: 'ZAKOŃCZONO',
+}

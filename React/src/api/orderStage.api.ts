@@ -20,3 +20,11 @@ export const getAllOrderSages = () => {
 export const getOrderStageById = (id: string) => {
     return makeServiceCall(`/order-stages/${id}`, 'GET', {})
 }
+
+export const orderStageNextStatus = (id: string | number) => {
+    return makeServiceCall(`/order-stages/nextStatus/${id}`, 'PUT', {})
+}
+
+export const orderStagePreviousStatus = (id: string | number) => {
+    return makeServiceCall(`/order-stages/previousStatus/${id}`, 'PUT', {})
+}
