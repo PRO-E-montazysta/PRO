@@ -8,7 +8,7 @@ import java.util.Date
 
 data class Event(
     val acceptedBy: User?,
-    val attachments: List<Int>,
+    val attachments: List<Int?>,
     val completionDate: Date?,
     val createdBy: User,
     val deleted: Boolean,

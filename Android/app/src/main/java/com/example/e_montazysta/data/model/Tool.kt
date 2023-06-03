@@ -13,14 +13,14 @@ data class Tool(
     val name: String,
     val code: String,
     val createdAt: Date,
-    val toolReleases: List<Release>,
+    val toolReleases: List<Int>,
     val warehouse: Warehouse,
-    val toolEvents: List<Event>,
+    val toolEvents: List<Int>,
     val toolType: ToolType,
     val status: ToolDAO.toolStatus
 ) {
     companion object : KoinComponent{
-        suspend fun getElementDetails(toolId: Int): Any {
+        suspend fun getToolDetails(toolId: Int): Tool {
             val toolRepository: IToolRepository by inject()
             val result = toolRepository.getToolDetails(toolId)
             return when (result) {

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.e_montazysta.databinding.FragmentToolsBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -24,7 +25,9 @@ class ToolsListFragment : Fragment() {
         binding.toolsListViewModel = toolsListViewModel
 
         val adapter = ToolsListAdapter(ToolsListAdapter.CustomClickListener {
+                toolId -> findNavController().navigate(ToolsListFragmentDirections.actionToolsFragmentToToolDetailFragment(toolId))
         })
+
         binding.list.adapter = adapter
 
         toolsListViewModel.getFilterTools()

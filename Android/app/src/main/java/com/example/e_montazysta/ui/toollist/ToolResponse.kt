@@ -16,8 +16,8 @@ data class ToolDAO(
     suspend fun mapToTool(): Tool {
         val toolType = ToolType.getToolType(toolTypeId)
         val warehouse = Warehouse.getWarehouseDetails(warehouseId)
-        val toolEvents: List<Event> = toolEvents.map { Event.getEventDetails(it) }
-        val toolReleases: List<Release> = toolReleases.map { Release.getEventDetails(it) }
+//        val toolEvents: List<Event> = toolEvents.map { Event.getEventDetails(it) }
+//        val toolReleases: List<Release> = toolReleases.map { Release.getReleaseDetails(it) }
         return Tool(id, name, code, createdAt, toolReleases, warehouse, toolEvents, toolType, status)
     }
     enum class toolStatus(val value: String){

@@ -1,5 +1,7 @@
 package com.example.e_montazysta.ui.toollist
 
+import android.util.Log
+import android.util.Log.getStackTraceString
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -42,6 +44,8 @@ class ToolDetailViewModel(private val repository: IToolRepository) : ViewModel()
             when (result) {
                 is Result.Success -> _eventLiveData.postValue( result.data )
                 is Result.Error -> {
+                    throw result.exception
+                    Log.e("getTool", getStackTraceString(result.exception))
                     result.exception.message?.let { _messageLiveData.postValue(it) }
                     _isLoadingLiveData.postValue(false)
                 }

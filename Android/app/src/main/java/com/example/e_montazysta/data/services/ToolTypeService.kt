@@ -6,6 +6,6 @@ import retrofit2.http.Header
 import retrofit2.http.Path
 
 interface ToolTypeService {
-    @GET("/api/v1/toolEvent/{id}")
+    @GET("/api/v1/tooltype/{id}")
     suspend fun getToolType(@Header("Authorization") token: String, @Path("id") id: Int): ToolType
 }

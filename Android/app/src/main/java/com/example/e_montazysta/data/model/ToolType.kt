@@ -12,10 +12,10 @@ data class ToolType(
     val inServiceCount: Int?,
     val criticalNumber: Int?,
     val availableCount: Int?,
-    val attachments: Int?,
-    val tools: Int?,
+    val attachments: List<Int?>,
+    val tools: List<Int?>,
     val companyId: Int?,
-    val listOfToolsPlannedNumber: Int?
+    val listOfToolsPlannedNumber: List<Int?>
 ){
     companion object: KoinComponent{
         suspend fun getToolType(toolTypeId: Int): ToolType {

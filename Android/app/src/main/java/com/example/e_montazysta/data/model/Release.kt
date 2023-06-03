@@ -16,7 +16,7 @@ data class Release(
 ){
     companion object : KoinComponent {
         val releaseRepository: IReleaseRepository by inject()
-        suspend fun getEventDetails(id: Int): Release {
+        suspend fun getReleaseDetails(id: Int): Release {
             val result = releaseRepository.getReleaseDetail(id)
             return when(result){
                 is Result.Success -> result.data
