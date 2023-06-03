@@ -77,6 +77,11 @@ public class OrdersStageCriteriaRepository {
             predicates.add(criteriaBuilder.isMember(authUtils.getLoggedUser(), ordersStageRoot.get("assignedTo")));
         }
 
+        //Strict displayed for foreman
+        if(authUtils.getLoggedUser().getRoles().contains(Role.FOREMAN)) {
+            predicates.add(criteriaBuilder.equal(ordersStageRoot.get("orders").get("assignedTo").get("id"), authUtils.getLoggedUser().getId()));
+        }
+
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 }
