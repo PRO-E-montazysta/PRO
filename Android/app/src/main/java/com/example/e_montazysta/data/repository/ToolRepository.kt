@@ -17,10 +17,15 @@ class ToolRepository(
     private val token = "Bearer " + sharedPreferencesHelper.get("lama").toString()
     private val toolService = serviceProvider.getToolService()
 
-    override suspend fun getFilterTools(): Result<List<ToolListItem>> {
+    override suspend fun getFilterTools(payload: Map<String, String>?): Result<List<ToolListItem>> {
         return try {
             val toolService = serviceProvider.getToolService()
-            val toolItemDAOs = toolService.getFilterTools(token)
+            val toolItemDAOs: List<ToolListItem>
+            if (payload.isNullOrEmpty()) {
+                toolItemDAOs = toolService.getFilterTools(token)
+            } else{
+                toolItemDAOs = toolService.getFilterTools(token, payload)
+            }
             Result.Success(toolItemDAOs)
         } catch (e: Exception) {
             Result.Error(e)

@@ -21,4 +21,13 @@ class ToolTypeRepository (private val serviceProvider: IServiceProvider): IToolT
             Result.Error(e)
         }
     }
+
+    override suspend fun getListOfToolType(): Result<List<ToolType>> {
+        return try {
+            val result = toolTypeService.getListOFToolType(token)
+            Result.Success(result)
+        } catch (e: java.lang.Exception){
+            Result.Error(e)
+        }
+    }
 }

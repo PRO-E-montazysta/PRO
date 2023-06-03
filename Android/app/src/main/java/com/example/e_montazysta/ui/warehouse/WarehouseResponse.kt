@@ -19,7 +19,9 @@ data class WarehouseDAO(
 }
 
 data class WarehouseFilterDAO(
+    val id: Int,
     val description: String,
     val name: String,
-    val zipCode: String,
+    val openingHours: String?,
+    val fullAddress: String?
 )
