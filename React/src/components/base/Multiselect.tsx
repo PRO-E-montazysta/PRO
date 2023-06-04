@@ -64,6 +64,12 @@ export default function MultipleSelect(props: MultipleSelectProps) {
                         {option.value}
                     </li>
                 )}
+                sx={{
+                    '& .MuiAutocomplete-input': {
+                        paddingLeft: '0px !important',
+                        paddingRight: '0px !important',
+                    },
+                }}
                 renderInput={(params) => (
                     <TextField
                         {...params}

@@ -1,67 +1,62 @@
-import FullCalendar from '@fullcalendar/react' // must go before plugins
-import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
 import { Box, Paper } from '@mui/material'
+import { EventInput } from '@fullcalendar/core'
+import { useMemo } from 'react'
+import { Moment } from 'moment'
+import { stages } from './data'
+import Calendar from './Calendar'
+import CalendarFilter from './CalendarFilter'
+import FormTitle from '../../components/form/FormTitle'
+import FormBox from '../../components/form/FormBox'
+import Planner from './Planner'
+
+export type OrderStage = {
+    eventId: number
+    id: number
+    orderId: number
+    name: string
+    orderName: string
+    status: string
+    startDate: Moment
+    endDate: Moment
+    plannedFittersNumber: number
+    fitters: Array<any>
+}
 
 const Home = () => {
+    const eventStages: EventInput[] = useMemo(
+        () =>
+            stages.map((s): EventInput => {
+                return {
+                    id: s.eventId.toString(),
+                    title: s.name,
+                    start: s.startDate.toDate(),
+                    end: s.endDate.toDate(),
+                    color: 'purple',
+                    display: 'block',
+                }
+            }),
+        [],
+    )
     return (
-        <Box
-            sx={{
-                width: '80vw',
-                m: '20px auto',
-            }}
-        >
-            <Paper sx={{ p: '20px' }}>
-                <FullCalendar
-                    plugins={[dayGridPlugin]}
-                    initialView="dayGridMonth"
-                    height={'80vh'}
-                    locale={'pl'}
-                    weekNumberCalculation={'ISO'}
-                    headerToolbar={{
-                        left: 'title',
-                        right: 'today prev,next',
-                    }}
-                    buttonText={{
-                        today: 'dziś',
-                    }}
-                    weekNumbers={true}
-                    showNonCurrentDates={false}
-                    fixedWeekCount={false}
-                    displayEventEnd={true}
-
-                    
-                    events={[
-                        { title: 'urlop', start: '2023-05-08', end: '2023-05-12', backgroundColor: 'red' },
-                        { title: 'Robota u radka', start: '2023-05-01', end: '2023-05-06', backgroundColor: 'blue' },
-                        {
-                            title: 'Poprawki malarskie u Stacha',
-                            backgroundColor: 'green',
-                            start: '2023-05-12 12:30',
-                            end: '2023-05-12 15:00',
-                        },
-                        {
-                            title: 'Papierki',
-                            backgroundColor: 'yellow',
-                            start: '2023-05-12 08:30',
-                            end: '2023-05-12 11:30',
-                        },
-                        {
-                            title: 'Spotkanie komitetu planowania imprez',
-                            backgroundColor: 'purple',
-                            start: '2023-05-12 15:00',
-                            end: '2023-05-12 16:00',
-                        },
-                    ]}
-                    // events= [
-                    //     {
-                    //       id: 'a',
-                    //       title: 'my event',
-                    //       start: '2018-09-01'
-                    //     }
-                    //   ]
-                />
-            </Paper>
-        </Box>
+        <FormBox>
+            <Box
+                sx={{
+                    maxWidth: '1200px',
+                    m: '20px auto',
+                }}
+            >
+                <FormTitle mainTitle="Kalendarz" />
+                <Paper sx={{ p: '20px' }}>
+                    <Calendar eventsCollection={eventStages} />
+                </Paper>
+                <Box sx={{ mt: '100px' }}>
+                    <FormTitle mainTitle="Planer" />
+                    <Paper sx={{ p: '20px' }}>
+                        <Planner eventsCollection={eventStages} />
+                    </Paper>
+                </Box>
+            </Box>
+        </FormBox>
     )
 }
 
