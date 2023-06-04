@@ -1,5 +1,6 @@
 package com.emontazysta.controller;
 
+import com.emontazysta.model.dto.UnavailabilityToCalendarDto;
 import com.emontazysta.model.dto.UnavailabilityDto;
 import com.emontazysta.model.dto.UnavailabilityWithLocalDateDto;
 import com.emontazysta.model.dto.filterDto.UnavailabilityFilterDto;
@@ -64,4 +65,11 @@ public class UnavailabilityController {
     @Operation(description = "Allows to get filtered unavailabilities.", security = @SecurityRequirement(name = "bearer-key"))
     public ResponseEntity<List<UnavailabilityFilterDto>> getFiltered(UnavailabilitySearchCriteria unavailabilitySearchCriteria){
         return new ResponseEntity<>(unavailabilityService.findAllWithFilters(unavailabilitySearchCriteria),HttpStatus.OK);}
+
+    @GetMapping("/monthly")
+    @Operation(description = "Allows to get all unavailabilities for logged user company for given month.", security = @SecurityRequirement(name = "bearer-key"))
+    public List<UnavailabilityToCalendarDto> getUnavabilities(@RequestParam int month, @RequestParam int year){
+        return unavailabilityService.getAllForCompanyLoggedUserInMonth(month, year);
+    }
+
 }
