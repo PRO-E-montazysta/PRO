@@ -37,7 +37,7 @@ public class OrderStageDto {
     private List<Long> fitters;
     private List<Long> comments;
     private List<Long> toolReleases;
-    private List<ToolReleaseDto> simpletoolReleases;
+    private List<ToolReleaseDto> simpleToolReleases;
     private List<Long> elementReturnReleases;
     private List<ElementReturnReleaseDto> simpleElementReturnReleases;
     private Long orderId;
