@@ -15,6 +15,7 @@ export type UserInfo = {
     name: string
     company: string
     photoSrc: string
+    userId: number
 }
 
 type NavActionsProps = {}
@@ -34,6 +35,7 @@ const NavActions = (props: NavActionsProps) => {
         name: 'Imię Nazwisko',
         company: 'Firma',
         photoSrc: MOCK_CAT_URL,
+        userId: 0,
     })
 
     useEffect(() => {
@@ -43,6 +45,7 @@ const NavActions = (props: NavActionsProps) => {
                 company: aboutMeQuery.data.companyName,
                 photoSrc:
                     aboutMeQuery.data.profilePhotoUrl != 'null' ? aboutMeQuery.data.profilePhotoUrl : MOCK_CAT_URL,
+                userId: aboutMeQuery.data.userId,
             })
         }
     }, [aboutMeQuery.status])
