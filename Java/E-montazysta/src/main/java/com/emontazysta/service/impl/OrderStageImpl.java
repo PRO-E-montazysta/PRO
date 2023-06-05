@@ -11,14 +11,10 @@ import com.emontazysta.service.*;
 import com.emontazysta.mapper.ElementsPlannedNumberMapper;
 import com.emontazysta.mapper.OrderStageMapper;
 import com.emontazysta.mapper.ToolsPlannedNumberMapper;
-import com.emontazysta.model.*;
 import com.emontazysta.model.dto.ElementsPlannedNumberDto;
 import com.emontazysta.model.dto.OrderStageDto;
 import com.emontazysta.model.dto.OrderStageWithToolsAndElementsDto;
 import com.emontazysta.model.dto.ToolsPlannedNumberDto;
-import com.emontazysta.model.searchcriteria.OrdersStageSearchCriteria;
-import com.emontazysta.repository.*;
-import com.emontazysta.repository.criteria.OrdersStageCriteriaRepository;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -60,6 +55,7 @@ public class OrderStageImpl implements OrderStageService {
     private final AppUserService userService;
     private final OrderRepository orderRepository;
     private final ElementInWarehouseService elementInWarehouseService;
+    private final FitterRepository fitterRepository;
 
     @Override
     public List<OrderStageDto> getAll() {
@@ -187,14 +183,27 @@ public class OrderStageImpl implements OrderStageService {
 
         if (authUtils.getLoggedUser().getRoles().contains(Role.FOREMAN)
                 && orderStageDb.getStatus().equals(OrderStageStatus.ADDING_FITTERS)) {
+
+            //Usunięcie nieprzypisanych fitterów
+            for(Fitter fitter : orderStageDb.getAssignedTo()) {
+                if(!updatedOrderStage.getAssignedTo().contains(fitter)) {
+                    fitter.getWorkingOn().remove(orderStageDb);
+                    fitterRepository.save(fitter);
+                }
+            }
+
             //Utworzenie listy powiadamianych fitterów
             List<AppUser> notifiedEmployees = new ArrayList<>();
 
             for(Fitter fitter : updatedOrderStage.getAssignedTo()) {
                 if(!orderStageDb.getAssignedTo().contains(fitter)) {
                     notifiedEmployees.add(fitter);
+                    fitter.getWorkingOn().add(orderStageDb);
+                    fitterRepository.save(fitter);
                 }
             }
+
+
             orderStageDb.setAssignedTo(updatedOrderStage.getAssignedTo());
 
             //Wysłanie powiadomienia do fitterów o przypisaniu do etapu
@@ -224,8 +233,8 @@ public class OrderStageImpl implements OrderStageService {
     }
 
     @Override
-    public List<OrderStageDto> getFilteredOrders(OrdersStageSearchCriteria ordersStageSearchCriteria, Principal principal) {
-        return  ordersStageCriteriaRepository.findAllWithFilters(ordersStageSearchCriteria, principal);
+    public List<OrderStageDto> getFilteredOrders(OrdersStageSearchCriteria ordersStageSearchCriteria) {
+        return  ordersStageCriteriaRepository.findAllWithFilters(ordersStageSearchCriteria);
     }
 
     @Override
