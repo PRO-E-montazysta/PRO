@@ -14,6 +14,7 @@ import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
 import { roleName } from '../../helpers/enum.helper'
+import { Role } from '../../types/roleEnum'
 
 const EmployeeDetails = () => {
     const params = useParams()
@@ -119,6 +120,7 @@ const EmployeeDetails = () => {
                             onReset={handleReset}
                             onSubmit={formik.submitForm}
                             readonlyMode={pageMode == 'read'}
+                            editPermissionRoles={[Role.MANAGER, Role.ADMIN]}
                         />
                     </>
                 )}

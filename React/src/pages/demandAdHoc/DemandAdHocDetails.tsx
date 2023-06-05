@@ -15,6 +15,11 @@ import { useAddDemandAdHoc, useDeleteDemandAdHoc, useEditDemandAdHoc, useDemandA
 import { useQueriesStatus } from '../../hooks/useQueriesStatus'
 import { Divider } from '@mui/material'
 import DemandAdHocTables from './DemandAdHocTables'
+import { Role } from '../../types/roleEnum'
+import { AxiosError } from 'axios'
+import { useQuery } from 'react-query'
+import { getAboutMeInfo } from '../../api/employee.api'
+import NavActions from '../../components/navbar/NavActions'
 
 const DemandAdHocDetails = () => {
     const params = useParams()
@@ -103,6 +108,8 @@ const DemandAdHocDetails = () => {
         }
     }, [params.id])
 
+    const aboutMeQuery = useQuery<any, AxiosError>(['about-me'], async () => getAboutMeInfo())
+
     return (
         <>
             <FormBox>
@@ -126,6 +133,16 @@ const DemandAdHocDetails = () => {
                                 onReset={handleReset}
                                 onSubmit={formik.submitForm}
                                 readonlyMode={pageMode == 'read'}
+                                deletePermissionRoles={
+                                    aboutMeQuery.data.userId == formik.values['createdById']
+                                        ? [Role.FOREMAN]
+                                        : [Role.NOBODY]
+                                }
+                                editPermissionRoles={
+                                    aboutMeQuery.data.userId == formik.values['createdById']
+                                        ? [Role.FOREMAN]
+                                        : [Role.NOBODY]
+                                }
                             />
                         </>
                     )}

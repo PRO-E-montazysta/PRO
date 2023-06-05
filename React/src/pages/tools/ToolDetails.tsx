@@ -14,6 +14,7 @@ import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
 import DisplayToolHistory from '../../components/toolHistory/DisplayToolHistory'
+import { Role } from '../../types/roleEnum'
 
 const ToolDetails = () => {
     const params = useParams()
@@ -111,6 +112,8 @@ const ToolDetails = () => {
                             onSubmit={formik.submitForm}
                             readonlyMode={pageMode === 'read'}
                             printLabel={[toolData.data?.name as string, toolData.data?.code as string]}
+                            editPermissionRoles={[Role.WAREHOUSE_MANAGER]}
+                            deletePermissionRoles={[Role.WAREHOUSE_MANAGER]}
                         />
                     </>
                 )}

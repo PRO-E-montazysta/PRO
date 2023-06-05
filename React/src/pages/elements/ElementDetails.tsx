@@ -19,6 +19,7 @@ import Card from '@mui/material/Card'
 import ExpandMore from '../../components/expandMore/ExpandMore'
 import HistoryIcon from '@mui/icons-material/History'
 import ElementInWarehouseView from '../elementInWarehouse'
+import { Role } from '../../types/roleEnum'
 
 const ElementDetails = () => {
     const params = useParams()
@@ -130,6 +131,8 @@ const ElementDetails = () => {
                                 onSubmit={formik.submitForm}
                                 readonlyMode={pageMode == 'read'}
                                 printLabel={[elementData.data?.name as string, elementData.data?.code as string]}
+                                editPermissionRoles={[Role.WAREHOUSE_MANAGER]}
+                                deletePermissionRoles={[Role.WAREHOUSE_MANAGER]}
                             />
                         </>
                     )}
