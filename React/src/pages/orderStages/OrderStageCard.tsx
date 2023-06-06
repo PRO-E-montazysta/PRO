@@ -563,7 +563,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     flexDirection: 'row-reverse',
                                 }}
                             >
-                                {isDisplayingMode && userRole === Role.SPECIALIST && (
+                                {isDisplayingMode && canChangeToNextStatus() && (
                                     <Button
                                         color="primary"
                                         variant="contained"

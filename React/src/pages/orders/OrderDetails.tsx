@@ -195,7 +195,7 @@ const OrderDetails = () => {
     }, [params.id])
 
     const getAddOrderStageButton = () => {
-        return userRole === Role.SPECIALIST ? true : false
+        return userRole === Role.SPECIALIST ? orderData.data?.status == 'PLANNING' : false
     }
 
     const [isAddOrderStageVisible, setIsAddOrderStageVisible] = useState(false)
