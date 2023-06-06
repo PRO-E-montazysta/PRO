@@ -156,10 +156,18 @@ public class OrderStageImpl implements OrderStageService {
                         .forEach(toolsPlannedNumber -> toolsPlannedNumberRepository.delete(toolsPlannedNumber));
 
                 for (ToolsPlannedNumberDto toolsPlannedNumberDto : modiffiedOrderStageDto.getListOfToolsPlannedNumber()) {
-                    toolsPlannedNumberDto.setOrderStageId(orderStageDb.getId());
-                    ToolsPlannedNumber toolsPlannedNumber = toolsPlannedNumberMapper.toEntity(toolsPlannedNumberDto);
-                    toolsPlannedNumberRepository.save(toolsPlannedNumber);
-                    updatedToolsList.add(toolsPlannedNumber);
+                    Optional<ToolsPlannedNumber> existingToolsPlannedNumber = updatedToolsList.stream()
+                            .filter(o -> o.getToolType().getId() == toolsPlannedNumberDto.getToolTypeId()).findFirst();
+                    if(existingToolsPlannedNumber.isPresent()) {
+                        ToolsPlannedNumber toolsPlannedNumber = existingToolsPlannedNumber.get();
+                        toolsPlannedNumber.setNumberOfTools(toolsPlannedNumber.getNumberOfTools() + toolsPlannedNumberDto.getNumberOfTools());
+                        toolsPlannedNumberRepository.save(toolsPlannedNumber);
+                    }else {
+                        toolsPlannedNumberDto.setOrderStageId(orderStageDb.getId());
+                        ToolsPlannedNumber toolsPlannedNumber = toolsPlannedNumberMapper.toEntity(toolsPlannedNumberDto);
+                        toolsPlannedNumberRepository.save(toolsPlannedNumber);
+                        updatedToolsList.add(toolsPlannedNumber);
+                    }
                 }
             }
 
@@ -168,11 +176,18 @@ public class OrderStageImpl implements OrderStageService {
                         .forEach(elementsPlannedNumber -> elementsPlannedNumberRepository.delete(elementsPlannedNumber));
 
                 for (ElementsPlannedNumberDto elementsPlannedNumberDto : modiffiedOrderStageDto.getListOfElementsPlannedNumber()) {
-                    elementsPlannedNumberDto.setOrderStageId(orderStageDb.getId());
-                    ElementsPlannedNumber elementsPlannedNumber = elementsPlannedNumberMapper.toEntity(elementsPlannedNumberDto);
-                    elementsPlannedNumberRepository.save(elementsPlannedNumber);
-                    updatedElementsList.add(elementsPlannedNumber);
-
+                    Optional<ElementsPlannedNumber> existingElementsPlannedNumber = updatedElementsList.stream()
+                            .filter(o -> o.getElement().getId() == elementsPlannedNumberDto.getElementId()).findFirst();
+                    if(existingElementsPlannedNumber.isPresent()) {
+                        ElementsPlannedNumber elementsPlannedNumber = existingElementsPlannedNumber.get();
+                        elementsPlannedNumber.setNumberOfElements(elementsPlannedNumber.getNumberOfElements() + elementsPlannedNumberDto.getNumberOfElements());
+                        elementsPlannedNumberRepository.save(elementsPlannedNumber);
+                    }else {
+                        elementsPlannedNumberDto.setOrderStageId(orderStageDb.getId());
+                        ElementsPlannedNumber elementsPlannedNumber = elementsPlannedNumberMapper.toEntity(elementsPlannedNumberDto);
+                        elementsPlannedNumberRepository.save(elementsPlannedNumber);
+                        updatedElementsList.add(elementsPlannedNumber);
+                    }
                 }
             }
 
