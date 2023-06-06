@@ -20,6 +20,7 @@ import ExpandMore from '../../components/expandMore/ExpandMore'
 import HistoryIcon from '@mui/icons-material/History'
 import ElementInWarehouseView from '../elementInWarehouse'
 import { Role } from '../../types/roleEnum'
+import { isAuthorized } from '../../utils/authorize'
 
 const ElementDetails = () => {
     const params = useParams()
@@ -98,6 +99,14 @@ const ElementDetails = () => {
         }
     }, [params.id])
 
+    const canPrintLabel = () => {
+        if (isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) {
+            return true
+        } else {
+            return false
+        }
+    }
+
     return (
         <>
             <FormBox>
@@ -130,7 +139,11 @@ const ElementDetails = () => {
                                 onReset={handleReset}
                                 onSubmit={formik.submitForm}
                                 readonlyMode={pageMode == 'read'}
-                                printLabel={[elementData.data?.name as string, elementData.data?.code as string]}
+                                printLabel={
+                                    canPrintLabel()
+                                        ? [elementData.data?.name as string, elementData.data?.code as string]
+                                        : undefined
+                                }
                                 editPermissionRoles={[Role.WAREHOUSE_MANAGER]}
                                 deletePermissionRoles={[Role.WAREHOUSE_MANAGER]}
                             />

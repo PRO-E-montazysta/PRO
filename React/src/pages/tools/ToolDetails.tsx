@@ -15,6 +15,7 @@ import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
 import DisplayToolHistory from '../../components/toolHistory/DisplayToolHistory'
 import { Role } from '../../types/roleEnum'
+import { isAuthorized } from '../../utils/authorize'
 
 const ToolDetails = () => {
     const params = useParams()
@@ -90,6 +91,14 @@ const ToolDetails = () => {
         }
     }, [params.id])
 
+    const canPrintLabel = () => {
+        if (isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) {
+            return true
+        } else {
+            return false
+        }
+    }
+
     return (
         <FormBox>
             <FormTitle
@@ -111,7 +120,11 @@ const ToolDetails = () => {
                             onReset={handleReset}
                             onSubmit={formik.submitForm}
                             readonlyMode={pageMode === 'read'}
-                            printLabel={[toolData.data?.name as string, toolData.data?.code as string]}
+                            printLabel={
+                                canPrintLabel()
+                                    ? [toolData.data?.name as string, toolData.data?.code as string]
+                                    : undefined
+                            }
                             editPermissionRoles={[Role.WAREHOUSE_MANAGER]}
                             deletePermissionRoles={[Role.WAREHOUSE_MANAGER]}
                         />
