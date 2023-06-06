@@ -244,7 +244,11 @@ const OrderStageToolsTable = forwardRef(
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {!!tableData &&
+                        {!!isDisplayingMode &&
+                        !!tableData &&
+                        (tableData.length === 1 && tableData[0].toolTypeId) == 'toChange' ? (
+                            <Typography sx={{ padding: '20px' }}>Brak zaplanowanych lub wydanych narzędzi</Typography>
+                        ) : (
                             tableData.map((rowData, rowIndex) => (
                                 <TableRow key={rowIndex} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                     <TableCell component="th" scope="row">
@@ -277,9 +281,7 @@ const OrderStageToolsTable = forwardRef(
                                         </Box>
                                     </TableCell>
                                     {isDisplayingMode && (
-                                        <TableCell>
-                                            {displayReleasedToolData(rowData.toolTypeId)}
-                                        </TableCell>
+                                        <TableCell>{displayReleasedToolData(rowData.toolTypeId)}</TableCell>
                                     )}
                                     {!isDisplayingMode && (
                                         <TableCell align="right">
@@ -295,7 +297,8 @@ const OrderStageToolsTable = forwardRef(
                                         </TableCell>
                                     )}
                                 </TableRow>
-                            ))}
+                            ))
+                        )}
                     </TableBody>
                 </Table>
             </TableContainer>

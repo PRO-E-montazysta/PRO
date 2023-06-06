@@ -197,7 +197,11 @@ const OrderStageElementsTable = forwardRef(
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {!!tableData &&
+                        {!!isDisplayingMode &&
+                        !!tableData &&
+                        (tableData.length === 1 && tableData[0].elementId) == 'toChange' ? (
+                            <Typography sx={{ padding: '20px' }}>Brak zaplanowanych lub wydanych elementów</Typography>
+                        ) : (
                             tableData.map((rowData, rowIndex) => (
                                 <TableRow key={rowIndex} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                     <TableCell component="th" scope="row">
@@ -230,7 +234,9 @@ const OrderStageElementsTable = forwardRef(
                                         </Box>
                                     </TableCell>
                                     {isDisplayingMode && (
-                                        <TableCell align="right">{displayReleasedReturnedData(rowData.elementId)}</TableCell>
+                                        <TableCell align="right">
+                                            {displayReleasedReturnedData(rowData.elementId)}
+                                        </TableCell>
                                     )}
                                     {!isDisplayingMode && (
                                         <TableCell align="right">
@@ -246,7 +252,8 @@ const OrderStageElementsTable = forwardRef(
                                         </TableCell>
                                     )}
                                 </TableRow>
-                            ))}
+                            ))
+                        )}
                     </TableBody>
                 </Table>
             </TableContainer>
