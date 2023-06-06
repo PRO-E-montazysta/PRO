@@ -1,4 +1,4 @@
-import { Box, Button, TextField } from '@mui/material'
+import { Box, Button, TextField, Typography } from '@mui/material'
 import * as React from 'react'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -14,6 +14,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select'
 import { forwardRef, useEffect, useState } from 'react'
 import { getPlannedElementById } from '../../api/element.api'
 import { v4 as uuidv4 } from 'uuid'
+import { OrderStageSimpleElementRelease } from '../../types/model/OrderStage'
 
 type OrderStageElementsTableType = {
     itemsArray: Array<any> | undefined
@@ -26,11 +27,19 @@ type OrderStageElementsTableType = {
             elementId: string
         }[]
     >
+    releasedReturnedElementsInfo?: OrderStageSimpleElementRelease | []
 }
 
 const OrderStageElementsTable = forwardRef(
     (
-        { itemsArray, isDisplayingMode, elementsListIds, handleChange, elementsRef }: OrderStageElementsTableType,
+        {
+            itemsArray,
+            isDisplayingMode,
+            elementsListIds,
+            handleChange,
+            elementsRef,
+            releasedReturnedElementsInfo,
+        }: OrderStageElementsTableType,
         ref,
     ) => {
         const [tableRowIndex, setTableRowIndex] = useState(0)
@@ -41,6 +50,8 @@ const OrderStageElementsTable = forwardRef(
         ])
 
         const getElementsData = async () => {
+            let filteredData = [{ numberOfElements: 0, elementId: 'toChange' }]
+
             if (!!elementsListIds) {
                 const check = await Promise.all(
                     elementsListIds.map(async (element) => {
@@ -48,16 +59,46 @@ const OrderStageElementsTable = forwardRef(
                     }),
                 )
                 if (!!check && check.length > 0) {
-                    const filteredData = check.map((element) => {
+                    filteredData = check.map((element) => {
                         const data = {
                             numberOfElements: element.numberOfElements,
                             elementId: element.element.id.toString(),
                         }
                         return data
                     })
-                    setTableData([...filteredData])
                 }
+                prepareDataForTable(filteredData)
             }
+        }
+
+        const prepareDataForTable = (
+            filteredData: {
+                numberOfElements: number
+                elementId: string
+            }[],
+        ) => {
+            if (!releasedReturnedElementsInfo) {
+                return setTableData([...filteredData])
+            }
+
+            const releasedToolsThatWereNotPlanned = releasedReturnedElementsInfo.filter(
+                (released) =>
+                    !filteredData.some((planned) => {
+                        return planned.elementId == released.elementId
+                    }),
+            )
+            const preparedReleasedToolsThatWereNotPlanned = releasedToolsThatWereNotPlanned.map((element) => {
+                const data = {
+                    numberOfElements: 0,
+                    elementId: element.elementId,
+                }
+                return data
+            })
+            if (preparedReleasedToolsThatWereNotPlanned.length > 0 && filteredData[0].elementId == 'toChange') {
+                filteredData.pop()
+            }
+            const finalPreparedTable = filteredData.concat(preparedReleasedToolsThatWereNotPlanned)
+            setTableData([...finalPreparedTable])
         }
 
         useEffect(() => {
@@ -110,14 +151,32 @@ const OrderStageElementsTable = forwardRef(
             setTableData(tempArray)
         }
 
+        const displayReleasedReturnedData = (plannedElementId: string) => {
+            if (!releasedReturnedElementsInfo || releasedReturnedElementsInfo.length < 1) {
+                return
+            }
+            const filteredElemetDetails = releasedReturnedElementsInfo.filter(
+                (element) => element.elementId == plannedElementId,
+            )
+
+            if (filteredElemetDetails.length == 0) {
+                return <Typography>0/0</Typography>
+            }
+            return (
+                <Typography>
+                    {filteredElemetDetails[0].releasedQuantity}/{filteredElemetDetails[0].returnedQuantity}
+                </Typography>
+            )
+        }
+
         return (
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
                             <TableCell>Element</TableCell>
-                            <TableCell align="right">Planowana ilość</TableCell>
-                            {isDisplayingMode && <TableCell align="right">Wydana ilość</TableCell>}
+                            <TableCell align="left">Planowana ilość</TableCell>
+                            {isDisplayingMode && <TableCell align="right">Wydano/Zwrócono</TableCell>}
                             {!isDisplayingMode && (
                                 <TableCell align="right">
                                     <Button
@@ -170,7 +229,9 @@ const OrderStageElementsTable = forwardRef(
                                             </FormControl>
                                         </Box>
                                     </TableCell>
-                                    {isDisplayingMode && <TableCell align="right"></TableCell>}
+                                    {isDisplayingMode && (
+                                        <TableCell align="right">{displayReleasedReturnedData(rowData.elementId)}</TableCell>
+                                    )}
                                     {!isDisplayingMode && (
                                         <TableCell align="right">
                                             <Button

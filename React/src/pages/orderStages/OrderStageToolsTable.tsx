@@ -1,4 +1,4 @@
-import { Box, Button, TextField } from '@mui/material'
+import { Box, Button, FormLabel, TextField, Typography } from '@mui/material'
 import * as React from 'react'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -14,6 +14,9 @@ import Select from '@mui/material/Select'
 import { forwardRef, useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { getPlannedToolTypesById } from '../../api/toolType.api'
+import { OrderStageSimpleToolReleases } from '../../types/model/OrderStage'
+import { getToolDetails } from '../../api/tool.api'
+import { useNavigate } from 'react-router-dom'
 
 type OrderStageToolsTableType = {
     itemsArray: Array<any> | undefined
@@ -26,42 +29,97 @@ type OrderStageToolsTableType = {
             toolTypeId: string
         }[]
     >
+    releasedToolsInfo?: OrderStageSimpleToolReleases | []
 }
 
 const OrderStageToolsTable = forwardRef(
-    ({ itemsArray, isDisplayingMode, toolsTypeListIds, handleChange, toolsRef }: OrderStageToolsTableType, ref) => {
+    (
+        {
+            itemsArray,
+            isDisplayingMode,
+            toolsTypeListIds,
+            handleChange,
+            toolsRef,
+            releasedToolsInfo,
+        }: OrderStageToolsTableType,
+        ref,
+    ) => {
         const [tableRowIndex, setTableRowIndex] = useState(0)
         const [selectedItemId, setSelectedItemId] = useState('')
         const [selectedItemNumber, setSelectedItemNumber] = useState(0)
         const [tableData, setTableData] = useState<{ numberOfTools: number; toolTypeId: string }[]>([
             { numberOfTools: 0, toolTypeId: 'toChange' },
         ])
+        const releasedToolDetails = React.useRef<{ code: string; toolId: string }[]>([])
+        const navigate = useNavigate()
 
         const getToolsTypeData = async () => {
+            let filteredData = [{ numberOfTools: 0, toolTypeId: 'toChange' }]
+
             if (!!toolsTypeListIds) {
-                const check = await Promise.all(
+                const plannedToolTypes = await Promise.all(
                     toolsTypeListIds.map(async (tool) => {
                         return await getPlannedToolTypesById(tool)
                     }),
                 )
-                if (!!check && check.length > 0) {
-                    const filteredData = check.map((tool) => {
+                if (!!plannedToolTypes && plannedToolTypes.length > 0) {
+                    filteredData = plannedToolTypes.map((tool) => {
                         const data = {
                             numberOfTools: tool.numberOfTools,
                             toolTypeId: tool.toolType.id.toString(),
                         }
                         return data
                     })
-                    setTableData([...filteredData])
                 }
+                prepareDataForTable(filteredData)
             }
         }
 
+        const prepareDataForTable = (
+            filteredData: {
+                numberOfTools: number
+                toolTypeId: string
+            }[],
+        ) => {
+            const releasedToolsThatWereNotPlanned = releasedToolDetails.current.filter(
+                (released) =>
+                    !filteredData.some((planned) => {
+                        return planned.toolTypeId == released.toolId
+                    }),
+            )
+            const preparedReleasedToolsThatWereNotPlanned = releasedToolsThatWereNotPlanned.map((tool) => {
+                const data = {
+                    numberOfTools: 0,
+                    toolTypeId: tool.toolId,
+                }
+                return data
+            })
+            if (preparedReleasedToolsThatWereNotPlanned.length > 0 && filteredData[0].toolTypeId == 'toChange') {
+                filteredData.pop()
+            }
+            const finalPreparedTable = filteredData.concat(preparedReleasedToolsThatWereNotPlanned)
+            setTableData([...finalPreparedTable])
+        }
+
+        const getReleasedToolsDetails = async () => {
+            if (!releasedToolsInfo) {
+                return
+            }
+            const releasedToolDetailsData = await Promise.all(
+                releasedToolsInfo.map((tool) => {
+                    return getToolDetails(tool.toolId).then((toolData) => {
+                        return { code: toolData.code, toolId: toolData.id }
+                    })
+                }),
+            )
+            releasedToolDetails.current = releasedToolDetailsData
+        }
+
         useEffect(() => {
+            getReleasedToolsDetails().then(() => getToolsTypeData())
             if (toolsRef.current.length > 0) {
                 return setTableData([...toolsRef.current])
             }
-            getToolsTypeData()
         }, [])
 
         const handleItemNumberChange = (event: any) => {
@@ -107,14 +165,65 @@ const OrderStageToolsTable = forwardRef(
             setTableData(tempArray)
         }
 
+        const displayReleasedToolData = (plannedToolId: string) => {
+            if (releasedToolDetails.current.length < 1) {
+                return <Typography> Nie wydano</Typography>
+            }
+            const filteredToolDetails = releasedToolDetails.current.filter(
+                (releasedTool) => releasedTool.toolId == plannedToolId,
+            )
+
+            if (filteredToolDetails.length < 1) {
+                return <Typography> Nie wydano</Typography>
+            }
+
+            return (
+                <Box>
+                    <FormLabel
+                        sx={{
+                            marginLeft: '0.71em',
+                            marginTop: '-0.71em',
+                            paddingLeft: '0.44em',
+                            paddingRight: '0.44em',
+                            zIndex: 2,
+                            backgroundColor: 'white',
+                            position: 'absolute',
+                            fontSize: '0.8em',
+                            width: 'auto',
+                        }}
+                    >
+                        Kody narzędzi
+                    </FormLabel>
+                    <Box
+                        sx={{
+                            border: '1px solid rgba(0, 0, 0, 0.38)',
+                            borderRadius: '4px',
+                            minHeight: '56px',
+                            paddingTop: '8px',
+                        }}
+                    >
+                        {filteredToolDetails.map((tool) => (
+                            <MenuItem
+                                key={tool.toolId}
+                                value={tool.code}
+                                onClick={() => navigate(`/tools/${tool.toolId}`)}
+                            >
+                                <Typography>{tool.code}</Typography>
+                            </MenuItem>
+                        ))}
+                    </Box>
+                </Box>
+            )
+        }
+
         return (
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
                             <TableCell>Typ narzędzia</TableCell>
-                            <TableCell align="right">Planowana ilość</TableCell>
-                            {isDisplayingMode && <TableCell align="right">Wydane narzędzia - kody</TableCell>}
+                            <TableCell align="left">Planowana ilość</TableCell>
+                            {isDisplayingMode && <TableCell align="left">Wydane narzędzia</TableCell>}
                             {!isDisplayingMode && (
                                 <TableCell align="right">
                                     <Button
@@ -167,7 +276,11 @@ const OrderStageToolsTable = forwardRef(
                                             </FormControl>
                                         </Box>
                                     </TableCell>
-                                    {isDisplayingMode && <TableCell align="right"></TableCell>}
+                                    {isDisplayingMode && (
+                                        <TableCell>
+                                            {displayReleasedToolData(rowData.toolTypeId)}
+                                        </TableCell>
+                                    )}
                                     {!isDisplayingMode && (
                                         <TableCell align="right">
                                             <Button

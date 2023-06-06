@@ -526,6 +526,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     toolsTypeListIds={stage?.listOfToolsPlannedNumber as any}
                                     handleChange={handleSetPlannedToolsTypes}
                                     toolsRef={plannedToolsTypesRef}
+                                    releasedToolsInfo={stage?.simpleToolReleases}
                                 />
                             </TabPanel>
                             <TabPanel key={uuidv4()} value={tabValue} index={2}>
@@ -535,6 +536,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     elementsListIds={stage?.listOfElementsPlannedNumber as any}
                                     handleChange={handleSetPlannedElements}
                                     elementsRef={plannedElementsRef}
+                                    releasedReturnedElementsInfo={stage?.simpleElementReturnReleases}
                                 />
                             </TabPanel>
 
