@@ -56,28 +56,12 @@ export const FormButtons = (params: FormButtonsParams) => {
 
     const appSize = useBreakpoints()
 
-    const canDelete = () => {
-        if (deletePermissionRoles) {
-            if (isAuthorized(deletePermissionRoles)) {
-                return true
-            } else {
-                return false
-            }
-        } else {
-            return false
-        }
+    const canDelete = (): boolean => {
+        return !!deletePermissionRoles && isAuthorized(deletePermissionRoles)
     }
 
-    const canEdit = () => {
-        if (editPermissionRoles) {
-            if (isAuthorized(editPermissionRoles)) {
-                return true
-            } else {
-                return false
-            }
-        } else {
-            return false
-        }
+    const canEdit = (): boolean => {
+        return !!editPermissionRoles && isAuthorized(editPermissionRoles)
     }
 
     return (

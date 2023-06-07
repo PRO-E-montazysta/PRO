@@ -92,11 +92,7 @@ const ToolDetails = () => {
     }, [params.id])
 
     const canPrintLabel = () => {
-        if (isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) {
-            return true
-        } else {
-            return false
-        }
+        return isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])
     }
 
     return (
@@ -121,9 +117,7 @@ const ToolDetails = () => {
                             onSubmit={formik.submitForm}
                             readonlyMode={pageMode === 'read'}
                             printLabel={
-                                canPrintLabel()
-                                    ? [toolData.data?.name as string, toolData.data?.code as string]
-                                    : undefined
+                                canPrintLabel() && toolData.data ? [toolData.data.name, toolData.data.code] : undefined
                             }
                             editPermissionRoles={[Role.WAREHOUSE_MANAGER]}
                             deletePermissionRoles={[Role.WAREHOUSE_MANAGER]}

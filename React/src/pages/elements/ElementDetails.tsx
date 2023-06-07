@@ -100,11 +100,7 @@ const ElementDetails = () => {
     }, [params.id])
 
     const canPrintLabel = () => {
-        if (isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) {
-            return true
-        } else {
-            return false
-        }
+        return isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])
     }
 
     return (

@@ -107,7 +107,7 @@ const DemandAdHocDetails = () => {
             setPageMode('read')
         }
     }, [params.id])
-
+    
     const aboutMeQuery = useQuery<any, AxiosError>(['about-me'], async () => getAboutMeInfo())
 
     return (

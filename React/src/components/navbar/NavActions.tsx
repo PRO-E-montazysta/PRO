@@ -22,7 +22,7 @@ type NavActionsProps = {}
 //TODO
 //ERROR
 //CHANGE THIS LATER
-const MOCK_CAT_URL = 'https://i.pinimg.com/originals/59/54/b4/5954b408c66525ad932faa693a647e3f.jpg'
+
 const NavActions = (props: NavActionsProps) => {
     const [drawerOpen, setDrawerOpen] = useState(false)
     const appSize = useBreakpoints()
@@ -34,7 +34,7 @@ const NavActions = (props: NavActionsProps) => {
     const [userInfo, setUserInfo] = useState<UserInfo>({
         name: 'Imię Nazwisko',
         company: 'Firma',
-        photoSrc: MOCK_CAT_URL,
+        photoSrc: '',
         userId: 0,
     })
 
@@ -43,8 +43,7 @@ const NavActions = (props: NavActionsProps) => {
             setUserInfo({
                 name: aboutMeQuery.data.firstName + ' ' + aboutMeQuery.data.lastName,
                 company: aboutMeQuery.data.companyName,
-                photoSrc:
-                    aboutMeQuery.data.profilePhotoUrl != 'null' ? aboutMeQuery.data.profilePhotoUrl : MOCK_CAT_URL,
+                photoSrc: aboutMeQuery.data.profilePhotoUrl != 'null' ? aboutMeQuery.data.profilePhotoUrl : '',
                 userId: aboutMeQuery.data.userId,
             })
         }
