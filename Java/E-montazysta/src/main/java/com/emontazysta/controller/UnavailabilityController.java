@@ -22,7 +22,6 @@ import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 
 @RestController
 @AllArgsConstructor
-@PreAuthorize("hasAuthority('SCOPE_MANAGER')")
 @RequestMapping(value = API_BASE_CONSTANT + "/unavailabilities", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UnavailabilityController {
 
@@ -42,6 +41,7 @@ public class UnavailabilityController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('SCOPE_MANAGER')")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Unavailability.", security = @SecurityRequirement(name = "bearer-key"))
     public UnavailabilityDto add(@Valid @RequestBody UnavailabilityWithLocalDateDto unavailability) {
