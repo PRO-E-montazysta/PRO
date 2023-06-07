@@ -24,3 +24,7 @@ export const postUnavailability = (data: Unavailability) => {
 export const deleteUnavailability = (id: string | number) => {
     return makeServiceCall(`/unavailabilities/${id}`, 'DELETE', {})
 }
+
+export const getUnavailabilityByMonth = (payload: PayloadProps) => {
+    return makeServiceCall(`/api/v1/unavailabilities/monthly`, 'GET', { ...payload })
+}

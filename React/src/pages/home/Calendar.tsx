@@ -1,20 +1,23 @@
 import FullCalendar from '@fullcalendar/react' // must go before plugins
 import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
 import { EventInput, EventSourceInput } from '@fullcalendar/core'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { events, stages } from './data'
 import CalendarEventDetails, { PopupEventInfo, cleanEventInfo } from './CalendarEventDetails'
 import CalendarFilter from './CalendarFilter'
 import FilterAltIcon from '@mui/icons-material/FilterAlt'
 import { Box, Button, IconButton } from '@mui/material'
+import moment, { Moment } from 'moment'
 
 type CalendarProps = {
     eventsCollection: Array<EventInput>
+    setCurrentDate: (value: Moment) => void
 }
 
-const Calendar = ({ eventsCollection }: CalendarProps) => {
+const Calendar = ({ eventsCollection, setCurrentDate }: CalendarProps) => {
     const [popupEventInfo, setPopupEventInfo] = useState<PopupEventInfo>(cleanEventInfo)
     const [filterOpen, setFilterOpen] = useState<boolean>(false)
+
     return (
         <>
             <Box>
@@ -62,6 +65,9 @@ const Calendar = ({ eventsCollection }: CalendarProps) => {
                         }, 10)
                 }}
                 editable={true}
+                datesSet={(e) => {
+                    setCurrentDate(moment(e.start))
+                }}
             />
             <CalendarEventDetails popupEventInfo={popupEventInfo} setPopupEventInfo={setPopupEventInfo} />
         </>
