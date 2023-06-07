@@ -31,17 +31,17 @@ const DisplayEmploymentHistory = (params: EmploymentHistoryParams) => {
                 </TableHead>
                 <TableBody>
                     {queryEmploymentHistory.data &&
-                        queryEmploymentHistory.data.map((row: { [x: string]: Date | number | boolean }) => (
+                        queryEmploymentHistory.data.map((row) => (
                             <TableRow
                                 //key={row['orderStageName']}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
                                 <TableCell component="th" scope="row">
-                                    {formatShortDate(String(row['dateOfEmployment']))}
+                                    {formatShortDate(row.dateOfEmployment.toString())}
                                 </TableCell>
                                 <TableCell>
                                     {row['dateOfDismiss'] != null
-                                        ? formatShortDate(String(row['dateOfDismiss']))
+                                        ? formatShortDate(row.dateOfDismiss.toString())
                                         : 'Trwa'}
                                 </TableCell>
                             </TableRow>

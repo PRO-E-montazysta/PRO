@@ -37,8 +37,8 @@ const EmployeeDetails = () => {
     const editEmployeeMutation = useEditEmployee((data) => handleOnEditSuccess(data))
     const deleteEmployeeMutation = useDeleteEmployee(() => employeeData.remove())
     const employeeData = useEmployeeData(params.id)
-    const hireEmployeeMutation = useHireEmployee(params.id!)
-    const dismissEmployeeMutation = useDismissEmployee(params.id!)
+    const hireEmployeeMutation = useHireEmployee(params.id)
+    const dismissEmployeeMutation = useDismissEmployee(params.id)
 
     //status for all mutations and queries
     const queriesStatus = useQueriesStatus(
@@ -46,7 +46,7 @@ const EmployeeDetails = () => {
         [addEmployeeMutation, editEmployeeMutation, deleteEmployeeMutation],
     )
 
-    const [hired, setHired] = useState<boolean>(employeeData.data?.active!)
+    const [hired, setHired] = useState<boolean>(employeeData.data ? employeeData.data.active : false)
 
     const handleSubmit = (values: any) => {
         if (pageMode == 'new') {

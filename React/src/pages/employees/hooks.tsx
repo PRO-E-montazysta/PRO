@@ -153,7 +153,7 @@ export const useEmployeeData = (id: string | undefined) => {
     )
 }
 
-export const useHireEmployee = (id: string) => {
+export const useHireEmployee = (id?: string) => {
     const { showDialog } = useContext(DialogGlobalContext)
     const showError = useError()
     const queryClient = useQueryClient()
@@ -176,7 +176,7 @@ export const useHireEmployee = (id: string) => {
     })
 }
 
-export const useDismissEmployee = (id: string) => {
+export const useDismissEmployee = (id?: string) => {
     const { showDialog } = useContext(DialogGlobalContext)
     const showError = useError()
     const queryClient = useQueryClient()
