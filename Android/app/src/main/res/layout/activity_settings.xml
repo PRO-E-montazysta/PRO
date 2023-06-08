@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- activity_settings.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.activities.SettingsActivity"
+    android:elevation="4dp"
+    android:id="@+id/settings_screen">
+
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:elevation="4dp" />
+
+    <!-- Settings Content -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Theme Selection -->
+        <TextView
+            android:id="@+id/selectThemeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wybierz motyw"
+            android:textSize="18sp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="parent"/>
+
+        <RadioGroup
+            android:id="@+id/radioGroupTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            app:layout_constraintTop_toBottomOf="@+id/selectThemeText">
+
+            <RadioButton
+                android:id="@+id/radioBtnSystem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Domyślny systemowy" />
+
+            <RadioButton
+                android:id="@+id/radioBtnLight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jasny motyw" />
+
+            <RadioButton
+                android:id="@+id/radioBtnDark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ciemny motyw" />
+        </RadioGroup>
+
+    </RelativeLayout>
+
+</LinearLayout>
