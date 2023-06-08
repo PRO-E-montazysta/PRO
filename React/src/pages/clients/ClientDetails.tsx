@@ -15,6 +15,7 @@ import QueryBoxStatus from '../../components/base/QueryStatusBox'
 import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
+import { Role } from '../../types/roleEnum'
 
 const ClientDetails = () => {
     const params = useParams()
@@ -110,6 +111,8 @@ const ClientDetails = () => {
                             onReset={handleReset}
                             onSubmit={formik.submitForm}
                             readonlyMode={pageMode == 'read'}
+                            deletePermissionRoles={[Role.MANAGER]}
+                            editPermissionRoles={[Role.MANAGER, Role.SALES_REPRESENTATIVE]}
                         />
                     </>
                 )}

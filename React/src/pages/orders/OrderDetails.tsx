@@ -195,7 +195,7 @@ const OrderDetails = () => {
     }, [params.id])
 
     const getAddOrderStageButton = () => {
-        return userRole === Role.SPECIALIST ? true : false
+        return userRole === Role.SPECIALIST ? orderData.data?.status == 'PLANNING' : false
     }
 
     const [isAddOrderStageVisible, setIsAddOrderStageVisible] = useState(false)
@@ -277,6 +277,12 @@ const OrderDetails = () => {
                                 isAddOrderStageVisible={isAddOrderStageVisible}
                                 nextStatus={canChangeToNextStatus() ? handleNextStatus : undefined}
                                 previousStatus={canChangeToPreviousStatus() ? handlePreviousStatus : undefined}
+                                editPermissionRoles={[Role.MANAGER, Role.SALES_REPRESENTATIVE]}
+                                deletePermissionRoles={
+                                    formik.values['status'] == 'CREATED'
+                                        ? [Role.MANAGER, Role.SALES_REPRESENTATIVE]
+                                        : undefined
+                                }
                             />
                         </>
                     )}
