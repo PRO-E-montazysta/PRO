@@ -34,4 +34,12 @@ class ServiceProvider (private val serviceFactory: ServiceFactory) : IServicePro
     override fun getEventService(): EventService {
         return serviceFactory.create(EventService::class.java)
     }
+
+    override fun getToolTypeService(): ToolTypeService {
+        return serviceFactory.create(ToolTypeService::class.java)
+    }
+
+    override fun getWarehouseService(): WarehouseService {
+        return serviceFactory.create(WarehouseService::class.java)
+    }
 }

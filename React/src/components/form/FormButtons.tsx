@@ -7,9 +7,13 @@ import ReplayIcon from '@mui/icons-material/Replay'
 import CloseIcon from '@mui/icons-material/Close'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import useBreakpoints from '../../hooks/useBreakpoints'
 import PrintQRCodeLabel from '../label/PrintQRCodeLabel'
 import { useState } from 'react'
+import { Role } from '../../types/roleEnum'
+import { isAuthorized } from '../../utils/authorize'
 
 type FormButtonsParams = {
     readonlyMode: boolean
@@ -23,6 +27,12 @@ type FormButtonsParams = {
     orderStageButton?: boolean
     handleAddOrderStage?: () => void
     isAddOrderStageVisible?: boolean
+    nextStatus?: () => void
+    previousStatus?: () => void
+
+    //if not provided then denied
+    deletePermissionRoles?: Array<Role>
+    editPermissionRoles?: Array<Role>
 }
 
 export const FormButtons = (params: FormButtonsParams) => {
@@ -38,9 +48,21 @@ export const FormButtons = (params: FormButtonsParams) => {
         orderStageButton,
         handleAddOrderStage,
         isAddOrderStageVisible,
+        nextStatus,
+        previousStatus,
+        deletePermissionRoles,
+        editPermissionRoles,
     } = params
 
     const appSize = useBreakpoints()
+
+    const canDelete = (): boolean => {
+        return !!deletePermissionRoles && isAuthorized(deletePermissionRoles)
+    }
+
+    const canEdit = (): boolean => {
+        return !!editPermissionRoles && isAuthorized(editPermissionRoles)
+    }
 
     return (
         <Box
@@ -53,19 +75,47 @@ export const FormButtons = (params: FormButtonsParams) => {
         >
             {readonlyMode && id != 'new' ? (
                 <>
+                    {nextStatus ? (
+                        <Button
+                            id={`formButton-nextStatus`}
+                            color="primary"
+                            startIcon={<ArrowForwardIosIcon />}
+                            variant="contained"
+                            type="submit"
+                            style={{ width: appSize.isMobile ? 'auto' : 190 }}
+                            onClick={nextStatus}
+                        >
+                            Następny status
+                        </Button>
+                    ) : null}
+                    {previousStatus ? (
+                        <Button
+                            id={`formButton-nextStatus`}
+                            color="primary"
+                            startIcon={<ArrowBackIosIcon />}
+                            variant="contained"
+                            type="submit"
+                            style={{ width: appSize.isMobile ? 'auto' : 170 }}
+                            onClick={previousStatus}
+                        >
+                            Cofnij status
+                        </Button>
+                    ) : null}
                     {printLabel ? <PrintQRCodeLabel label={printLabel[0]} code={printLabel[1]} /> : null}
-                    <Button
-                        id={`formButton-edit`}
-                        color="primary"
-                        startIcon={<EditIcon />}
-                        variant="contained"
-                        type="submit"
-                        style={{ width: appSize.isMobile ? 'auto' : 120 }}
-                        onClick={onEdit}
-                    >
-                        Edytuj
-                    </Button>
-                    {onDelete ? (
+                    {canEdit() ? (
+                        <Button
+                            id={`formButton-edit`}
+                            color="primary"
+                            startIcon={<EditIcon />}
+                            variant="contained"
+                            type="submit"
+                            style={{ width: appSize.isMobile ? 'auto' : 120 }}
+                            onClick={onEdit}
+                        >
+                            Edytuj
+                        </Button>
+                    ) : null}
+                    {onDelete && canDelete() ? (
                         <Button
                             id={`formButton-delete`}
                             color="error"

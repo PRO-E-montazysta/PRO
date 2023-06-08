@@ -20,6 +20,9 @@ import { Tool } from '../../types/model/Tool'
 import { getAllTools } from '../../api/tool.api'
 import { getAllElements } from '../../api/element.api'
 import { Element } from '../../types/model/Element'
+import { Role } from '../../types/roleEnum'
+import { getAboutMeInfo } from '../../api/employee.api'
+import { EventStatus } from '../../types/model/Event'
 
 const ElementEventDetails = () => {
     const params = useParams()
@@ -103,6 +106,8 @@ const ElementEventDetails = () => {
         cacheTime: 15 * 60 * 1000,
         staleTime: 10 * 60 * 1000,
     })
+    const aboutMeQuery = useQuery<any, AxiosError>(['about-me'], async () => getAboutMeInfo())
+
     return (
         <>
             <FormBox>
@@ -136,6 +141,18 @@ const ElementEventDetails = () => {
                                 onReset={handleReset}
                                 onSubmit={formik.submitForm}
                                 readonlyMode={pageMode == 'read'}
+                                editPermissionRoles={
+                                    aboutMeQuery.data.userId == formik.values['createdById'] &&
+                                    formik.values['status'] == 'CREATED'
+                                        ? [Role.MANAGER, Role.WAREHOUSE_MANAGER, Role.FOREMAN]
+                                        : [Role.MANAGER, Role.WAREHOUSE_MANAGER]
+                                }
+                                deletePermissionRoles={
+                                    aboutMeQuery.data.userId == formik.values['createdById'] &&
+                                    formik.values['status'] == 'CREATED'
+                                        ? [Role.MANAGER, Role.WAREHOUSE_MANAGER, Role.FOREMAN]
+                                        : [Role.MANAGER, Role.WAREHOUSE_MANAGER]
+                                }
                             />
                         </>
                     )}

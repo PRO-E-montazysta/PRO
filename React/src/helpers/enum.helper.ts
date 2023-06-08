@@ -15,9 +15,14 @@ import {
     NotificationType_SPECIALIST,
     NotificationType_WAREHOUSEMANAGER,
 } from '../types/model/Notification'
+import { OrderStageStatus } from '../types/model/OrderStage'
 
-export const statusName = (key: string) => {
+export const orderStatusName = (key: string) => {
     return Object.values(OrderStatus)[Object.keys(OrderStatus).indexOf(key)]
+}
+
+export const orderStageStatusName = (key: string) => {
+    return Object.values(OrderStageStatus)[Object.keys(OrderStageStatus).indexOf(key)]
 }
 
 export const priorityName = (key: string) => {

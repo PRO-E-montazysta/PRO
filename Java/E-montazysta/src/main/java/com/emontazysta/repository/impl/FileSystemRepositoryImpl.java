@@ -19,7 +19,8 @@ public class FileSystemRepositoryImpl implements FileSystemRepository {
         Path newFile = Paths.get(RESOURCES_DIR + new Date().getTime() + "-" + fileName);
         Files.createDirectories(newFile.getParent());
 
-        Files.write(newFile, content);
+        //TODO UNCOMMENT IT TO SAVE FILES!
+        //Files.write(newFile, content);
 
         return newFile.toAbsolutePath().toString();
     }

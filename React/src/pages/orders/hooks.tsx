@@ -1,9 +1,16 @@
 import { Box } from '@mui/material'
 import { AxiosError } from 'axios'
 import { useContext } from 'react'
-import { useMutation, useQuery } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useNavigate } from 'react-router-dom'
-import { deleteOrder, getOrderDetails, postOrder, updateOrder } from '../../api/order.api'
+import {
+    deleteOrder,
+    getOrderDetails,
+    orderNextStatus,
+    orderPreviousStatus,
+    postOrder,
+    updateOrder,
+} from '../../api/order.api'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { Order } from '../../types/model/Order'
 import useError from '../../hooks/useError'
@@ -97,5 +104,53 @@ export const useEditOrderLocation = (onSuccessCallback: (data: any) => void) => 
             content: <Box>Zmiany w zleceniu zostały zapisane</Box>,
             callback: () => onSuccessCallback(data),
         })
+    })
+}
+
+export const useOrderNextStatus = (onSuccessCallback: () => void) => {
+    const { showDialog } = useContext(DialogGlobalContext)
+    const showError = useError()
+    const queryClient = useQueryClient()
+    return useMutation({
+        mutationFn: orderNextStatus,
+        onSuccess(data) {
+            showDialog({
+                btnOptions: [
+                    {
+                        text: 'OK',
+                        value: 0,
+                    },
+                ],
+                title: 'Sukces!',
+                content: <Box>Status został zmieniony</Box>,
+            })
+            queryClient.invalidateQueries('orders')
+            onSuccessCallback()
+        },
+        onError: showError,
+    })
+}
+
+export const useOrderPreviousStatus = (onSuccessCallback: () => void) => {
+    const { showDialog } = useContext(DialogGlobalContext)
+    const showError = useError()
+    const queryClient = useQueryClient()
+    return useMutation({
+        mutationFn: orderPreviousStatus,
+        onSuccess(data) {
+            showDialog({
+                btnOptions: [
+                    {
+                        text: 'OK',
+                        value: 0,
+                    },
+                ],
+                title: 'Sukces!',
+                content: <Box>Status został zmieniony</Box>,
+            })
+            queryClient.invalidateQueries('orders')
+            onSuccessCallback()
+        },
+        onError: showError,
     })
 }

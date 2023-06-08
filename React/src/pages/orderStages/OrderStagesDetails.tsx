@@ -19,7 +19,7 @@ const OrderStagesDetails = ({ isAddOrderStageVisible }: OrderStagesDetailsProps)
     const scrollerRef = useRef(null)
     const { showDialog } = useContext(DialogGlobalContext)
 
-    const queryOrderStages = useQuery<Array<OrderStage>, AxiosError>(['orderStage-list'], () =>
+    const queryOrderStages = useQuery<Array<OrderStage>, AxiosError>(['orderStage-list', { id: params.id }], () =>
         getAllOrderStagesForOrder(params.id!),
     )
 

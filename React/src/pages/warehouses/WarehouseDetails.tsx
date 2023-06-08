@@ -24,6 +24,7 @@ import { PageMode } from '../../types/form'
 import { useFormStructureLocation, useLocationData } from '../../components/localization/hooks'
 import { Warehouse } from '../../types/model/Warehouse'
 import Localization from '../../components/localization/Localization'
+import { Role } from '../../types/roleEnum'
 
 const WarehouseDetails = () => {
     const params = useParams()
@@ -172,6 +173,8 @@ const WarehouseDetails = () => {
                             onReset={handleReset}
                             onSubmit={formik.submitForm}
                             readonlyMode={pageMode == 'read'}
+                            editPermissionRoles={[Role.ADMIN, Role.WAREHOUSE_MANAGER]}
+                            deletePermissionRoles={[Role.ADMIN, Role.WAREHOUSE_MANAGER]}
                         />
                     </>
                 )}

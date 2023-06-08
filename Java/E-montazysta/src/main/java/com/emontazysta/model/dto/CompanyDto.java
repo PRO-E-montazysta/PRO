@@ -9,7 +9,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -22,7 +22,7 @@ public class CompanyDto {
     private Long id;
     @NotBlank(message = "Company name cannot be empty")
     private String companyName;
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
     @NotNull(message = "Status cannot be empty")
     private CompanyStatus status;
     private String statusReason;

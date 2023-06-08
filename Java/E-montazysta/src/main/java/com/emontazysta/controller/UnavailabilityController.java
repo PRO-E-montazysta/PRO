@@ -1,5 +1,6 @@
 package com.emontazysta.controller;
 
+import com.emontazysta.model.dto.UnavailabilityToCalendarDto;
 import com.emontazysta.model.dto.UnavailabilityDto;
 import com.emontazysta.model.dto.UnavailabilityWithLocalDateDto;
 import com.emontazysta.model.dto.filterDto.UnavailabilityFilterDto;
@@ -21,7 +22,6 @@ import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
 
 @RestController
 @AllArgsConstructor
-@PreAuthorize("hasAuthority('SCOPE_MANAGER')")
 @RequestMapping(value = API_BASE_CONSTANT + "/unavailabilities", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UnavailabilityController {
 
@@ -41,6 +41,7 @@ public class UnavailabilityController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('SCOPE_MANAGER')")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Allows to add new Unavailability.", security = @SecurityRequirement(name = "bearer-key"))
     public UnavailabilityDto add(@Valid @RequestBody UnavailabilityWithLocalDateDto unavailability) {
@@ -64,4 +65,11 @@ public class UnavailabilityController {
     @Operation(description = "Allows to get filtered unavailabilities.", security = @SecurityRequirement(name = "bearer-key"))
     public ResponseEntity<List<UnavailabilityFilterDto>> getFiltered(UnavailabilitySearchCriteria unavailabilitySearchCriteria){
         return new ResponseEntity<>(unavailabilityService.findAllWithFilters(unavailabilitySearchCriteria),HttpStatus.OK);}
+
+    @GetMapping("/monthly")
+    @Operation(description = "Allows to get all unavailabilities for logged user company for given month.", security = @SecurityRequirement(name = "bearer-key"))
+    public List<UnavailabilityToCalendarDto> getUnavabilities(@RequestParam int month, @RequestParam int year){
+        return unavailabilityService.getAllForCompanyLoggedUserInMonth(month, year);
+    }
+
 }

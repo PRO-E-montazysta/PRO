@@ -19,6 +19,7 @@ import QueryBoxStatus from '../../components/base/QueryStatusBox'
 import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { useInputWidth } from '../../hooks/useInputWidth'
+import { Role } from '../../types/roleEnum'
 
 const CompanyDetails = () => {
     const params = useParams()
@@ -208,6 +209,8 @@ const CompanyDetails = () => {
                                 onReset={handleReset}
                                 onSubmit={formik.submitForm}
                                 readonlyMode={pageMode == 'read'}
+                                deletePermissionRoles={[Role.CLOUD_ADMIN]}
+                                editPermissionRoles={[Role.CLOUD_ADMIN]}
                             />
                         </>
                     )}
