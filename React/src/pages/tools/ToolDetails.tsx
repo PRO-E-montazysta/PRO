@@ -13,7 +13,7 @@ import QueryBoxStatus from '../../components/base/QueryStatusBox'
 import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
-import DisplayToolHistory from '../../components/toolHistory/DisplayToolHistory'
+import DisplayToolHistory from '../../components/history/DisplayToolHistory'
 import { Role } from '../../types/roleEnum'
 import { isAuthorized } from '../../utils/authorize'
 

@@ -7,6 +7,7 @@ import ReplayIcon from '@mui/icons-material/Replay'
 import CloseIcon from '@mui/icons-material/Close'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
+import AssignmentIcon from '@mui/icons-material/Assignment'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import useBreakpoints from '../../hooks/useBreakpoints'
@@ -27,6 +28,7 @@ type FormButtonsParams = {
     orderStageButton?: boolean
     handleAddOrderStage?: () => void
     isAddOrderStageVisible?: boolean
+    hireDismissEmp?: [() => void, 'hire' | 'dismiss']
     nextStatus?: () => void
     previousStatus?: () => void
 
@@ -48,6 +50,7 @@ export const FormButtons = (params: FormButtonsParams) => {
         orderStageButton,
         handleAddOrderStage,
         isAddOrderStageVisible,
+        hireDismissEmp,
         nextStatus,
         previousStatus,
         deletePermissionRoles,
@@ -102,6 +105,17 @@ export const FormButtons = (params: FormButtonsParams) => {
                         </Button>
                     ) : null}
                     {printLabel ? <PrintQRCodeLabel label={printLabel[0]} code={printLabel[1]} /> : null}
+                    {hireDismissEmp && (
+                        <Button
+                            color="primary"
+                            startIcon={<AssignmentIcon />}
+                            variant="contained"
+                            type="submit"
+                            onClick={hireDismissEmp[0]}
+                        >
+                            {hireDismissEmp[1] == 'hire' ? 'Zatrudnij' : 'Zwolnij'}
+                        </Button>
+                    )}
                     {canEdit() ? (
                         <Button
                             id={`formButton-edit`}

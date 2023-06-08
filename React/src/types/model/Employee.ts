@@ -10,6 +10,7 @@ export type Employee = {
     phone: string
     unavailbilityDescription: string
     pesel: string
+    active: boolean
 }
 
 export const EmployeeStatus = {
