@@ -8,9 +8,12 @@ import com.example.e_montazysta.data.model.User
 import com.example.e_montazysta.data.repository.interfaces.ICommentRepository
 import com.example.e_montazysta.data.repository.interfaces.IReleaseRepository
 import com.example.e_montazysta.data.repository.interfaces.IUserRepository
+import com.example.e_montazysta.ui.release.ReleaseElementDAO
+import com.example.e_montazysta.ui.release.ReleaseToolDAO
 import com.squareup.moshi.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.math.BigDecimal
 import java.util.Date
 
 data class StageDAO(
@@ -21,7 +24,7 @@ data class StageDAO(
     @Json(name = "status")
     val status: String,
     @Json(name = "price")
-    val price: Float,
+    val price: BigDecimal,
     @Json(name = "plannedStartDate")
     val plannedStart: Date?,
     @Json(name = "plannedEndDate")
@@ -49,7 +52,9 @@ data class StageDAO(
     @Json(name = "listOfToolsPlannedNumber")
     val listOfToolsPlannedNumber: List<Int>,
     @Json(name = "listOfElementsPlannedNumber")
-    val listOfElementsPlannedNumber: List<Int>
+    val listOfElementsPlannedNumber: List<Int>,
+    val simpleToolReleases: List<ReleaseToolDAO>,
+    val simpleElementReturnReleases: List<ReleaseElementDAO>
 ) : KoinComponent {
     private val userRepository: IUserRepository by inject()
     private val commentRepository: ICommentRepository by inject()
@@ -61,7 +66,8 @@ data class StageDAO(
         val releasesList: List<Release?> = toolReleases.map {id -> getReleaseDetails(id)}
         return Stage(id, name, status, price, plannedStart, plannedEnd, startDate, endDate, plannedDurationTime,
             plannedFittersNumber, minimumImagesNumber, fittersList, commentsList, releasesList,
-            listOf(), orderId, listOfToolsPlannedNumber, listOfElementsPlannedNumber)
+            listOf(), orderId, listOfToolsPlannedNumber, listOfElementsPlannedNumber,
+            simpleToolReleases, simpleElementReturnReleases)
     }
 
     private suspend fun getUserDetails(userId: Int): User? {

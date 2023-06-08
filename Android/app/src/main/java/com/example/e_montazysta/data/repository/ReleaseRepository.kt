@@ -21,7 +21,7 @@ class ReleaseRepository (
     override suspend fun getRelease(): Result<List<Release>> {
         return try {
             val releaseService = serviceProvider.getReleaseService()
-            val releaseDAOs = releaseService.getRelease(token)
+            val releaseDAOs = releaseService.getToolRelease(token)
             val releases = releaseDAOs.map { it.mapToRelease() }
             Result.Success(releases)
         } catch (e: Exception) {

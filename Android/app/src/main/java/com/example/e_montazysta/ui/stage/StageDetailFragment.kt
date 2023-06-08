@@ -42,8 +42,8 @@ class StageDetailFragment : Fragment() {
                 val tabLayout = binding.tabs
                 TabLayoutMediator(tabLayout, viewPager) { tab, position ->
                     tab.text = when (position) {
-                        0 -> "Details"
-                        1 -> "Releases"
+                        0 -> "Szczegóły"
+                        1 -> "Wydania"
                         else -> ""
                     }
                 }.attach()
