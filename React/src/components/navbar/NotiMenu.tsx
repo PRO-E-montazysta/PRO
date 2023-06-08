@@ -34,7 +34,7 @@ const NotiMenu = (params: NotiMenuParams) => {
             <Box
                 sx={{
                     transitionDuration: '.5s',
-                    height: open ? (notificationCount > 0 ? notificationCount * 60 + 'px' : '40px') : 0,
+                    height: open ? (notificationCount > 0 ? 40 + notificationCount * 60 + 'px' : '60px') : 0,
                     position: 'absolute',
                     backgroundColor: theme.palette.primary.main,
                     borderRadius: '5px',
@@ -73,14 +73,19 @@ const NotiMenu = (params: NotiMenuParams) => {
                         )
                     })}
                 {notificationCount == 0 ? (
-                    <>
-                        <NotiMenuItem
-                            id="navBtn-notifications-noNotifications"
-                            onItemClick={() => {}}
-                            text="Brak powiadomień"
-                        />
-                    </>
-                ) : null}
+                    <NotiMenuItem
+                        id="navBtn-notifications-noNotifications"
+                        onItemClick={() => navigate('/notifications')}
+                        text="Brak powiadomień"
+                        subtext="Przejdź do historii"
+                    />
+                ) : (
+                    <NotiMenuItem
+                        id="navBtn-notifications-notificationHistory"
+                        onItemClick={() => navigate('/notifications')}
+                        text="Historia powiadomień"
+                    />
+                )}
             </Box>
         </>
     )

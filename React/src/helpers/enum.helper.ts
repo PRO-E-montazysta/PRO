@@ -5,6 +5,16 @@ import { EventStatus, EventType } from '../types/model/Event'
 import { EmployeeStatus, UserRole } from '../types/model/Employee'
 import { OrderPriority, OrderStatus } from '../types/model/Order'
 import { TypeOfUnavailability } from '../types/model/Unavailability'
+import { isAuthorized } from '../utils/authorize'
+import { Role } from '../types/roleEnum'
+import {
+    NotificationType_FITTER,
+    NotificationType_FOREMAN,
+    NotificationType_MANAGER,
+    NotificationType_OTHERS,
+    NotificationType_SPECIALIST,
+    NotificationType_WAREHOUSEMANAGER,
+} from '../types/model/Notification'
 import { OrderStageStatus } from '../types/model/OrderStage'
 
 export const orderStatusName = (key: string) => {
@@ -122,4 +132,50 @@ export const typeOfUnavailabilityOptions = () => {
             value: s[1],
         }
     })
+}
+
+export const notificationTypeOptions = () => {
+    if (isAuthorized([Role.SPECIALIST])) {
+        return Object.entries(NotificationType_SPECIALIST).map((s): SelectMenuItemProps => {
+            return {
+                key: s[0],
+                value: s[1],
+            }
+        })
+    } else if (isAuthorized([Role.MANAGER])) {
+        return Object.entries(NotificationType_MANAGER).map((s): SelectMenuItemProps => {
+            return {
+                key: s[0],
+                value: s[1],
+            }
+        })
+    } else if (isAuthorized([Role.WAREHOUSE_MANAGER])) {
+        return Object.entries(NotificationType_WAREHOUSEMANAGER).map((s): SelectMenuItemProps => {
+            return {
+                key: s[0],
+                value: s[1],
+            }
+        })
+    } else if (isAuthorized([Role.FOREMAN])) {
+        return Object.entries(NotificationType_FOREMAN).map((s): SelectMenuItemProps => {
+            return {
+                key: s[0],
+                value: s[1],
+            }
+        })
+    } else if (isAuthorized([Role.FITTER])) {
+        return Object.entries(NotificationType_FITTER).map((s): SelectMenuItemProps => {
+            return {
+                key: s[0],
+                value: s[1],
+            }
+        })
+    } else {
+        return Object.entries(NotificationType_OTHERS).map((s): SelectMenuItemProps => {
+            return {
+                key: s[0],
+                value: s[1],
+            }
+        })
+    }
 }
