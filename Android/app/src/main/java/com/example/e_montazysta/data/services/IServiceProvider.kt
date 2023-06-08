@@ -9,5 +9,7 @@ interface IServiceProvider {
     fun getStageService(): StageService
     fun getCommentService(): CommentService
     fun getNotificationService(): NotificationService
-
+    fun getEventService(): EventService
+    fun getToolTypeService(): ToolTypeService
+    fun getWarehouseService(): WarehouseService
 }

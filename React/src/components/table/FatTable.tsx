@@ -14,13 +14,14 @@ type FatTableParams<T> = {
     filterProps?: Filter
     headCells: Array<HeadCell<T>>
     initOrderBy: keyof T
+    initOrderByDesc?: boolean
     onClickRow: (event: React.MouseEvent<unknown>, row: T) => void
     pageHeader?: string
     idPropName: keyof T
 }
 
 function FatTable<T>(props: FatTableParams<T>) {
-    const { query, filterProps, headCells, initOrderBy, onClickRow, pageHeader, idPropName } = props
+    const { query, filterProps, headCells, initOrderBy, initOrderByDesc, onClickRow, pageHeader, idPropName } = props
     const appSize = useBreakpoints()
 
     const headCellsFiltered = useMemo(() => {
@@ -72,6 +73,7 @@ function FatTable<T>(props: FatTableParams<T>) {
                     headCells={headCellsFiltered}
                     initOrderBy={initOrderBy}
                     onClickRow={onClickRow}
+                    initOrderByDesc={initOrderByDesc ? initOrderByDesc : false}
                 />
             }
         </Box>

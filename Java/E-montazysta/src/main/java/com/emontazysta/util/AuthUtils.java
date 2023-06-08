@@ -54,6 +54,17 @@ public class AuthUtils {
         return null;
     }
 
+    public Long getUserCompanyId(AppUser appUser) {
+        Optional<EmploymentDto> employment = employmentService.getCurrentEmploymentByEmployeeId(appUser.getId());
+        if(employment.isPresent()) {
+            log.debug("Employment found for logged user: {}", employment.get());
+            Long companyId = employment.get().getCompanyId();
+            log.debug("CompanyId found for logged used: {}", companyId);
+            return employment.get().getCompanyId();
+        }
+        return null;
+    }
+
     public boolean userCanLogin(String username) {
         //Get user
         AppUser appUser = appUserService.findByUsername(username);

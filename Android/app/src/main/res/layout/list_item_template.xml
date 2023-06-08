@@ -12,6 +12,7 @@
             name="supportText"
             type="java.lang.String" />
     </data>
+
 <merge
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -19,9 +20,9 @@
     android:backgroundTint="?colorSurface"
     android:clickable="true"
     android:focusable="true"
-    android:minHeight="@dimen/list_item_min_height_two_line"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
-    tools:theme="@style/Theme.Material3.DayNight">
+    tools:theme="@style/Theme.EMontażysta"
+    android:paddingBottom="@dimen/list_item_space_x3">
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -48,7 +49,7 @@
         android:layout_height="0dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintGuide_begin="20dp"
+        app:layout_constraintGuide_begin="@dimen/list_item_space_x3"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -57,7 +58,7 @@
         android:layout_height="0dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintGuide_end="9dp"
+        app:layout_constraintGuide_end="-58dp"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Barrier
@@ -88,7 +89,6 @@
         app:lastBaselineToBottomHeight="@dimen/list_item_headline_last_baseline_to_bottom"
         app:layout_constraintBottom_toTopOf="@+id/txt_support"
         app:layout_constraintEnd_toStartOf="@id/barrier_text_end"
-        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@id/barrier_text_start"
         app:layout_constraintTop_toTopOf="@id/guide_top"
         app:layout_constraintVertical_chainStyle="packed"
@@ -104,9 +104,8 @@
         android:textColor="?colorOnSurfaceVariant"
         app:firstBaselineToTopHeight="@dimen/list_item_supporting_text_first_baseline_to_top"
         app:lastBaselineToBottomHeight="@dimen/list_item_supporting_text_last_baseline_to_bottom"
-        app:layout_constraintBottom_toBottomOf="@id/guide_bottom"
-        app:layout_constraintEnd_toEndOf="@id/txt_headline"
-        app:layout_constraintStart_toStartOf="@id/txt_headline"
+        app:layout_constraintEnd_toEndOf="@id/barrier_text_end"
+        app:layout_constraintStart_toStartOf="@id/barrier_text_start"
         app:layout_constraintTop_toBottomOf="@id/txt_headline"
         app:layout_constraintVertical_chainStyle="packed"
         tools:text='@{supportText}'  />
@@ -114,10 +113,10 @@
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:dividerColor="?colorSurfaceVariant"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guide_end"
-        app:layout_constraintStart_toStartOf="@id/guide_start" />
+        app:layout_constraintStart_toStartOf="@id/guide_start"
+        android:layout_marginTop="@dimen/list_item_space_x3"/>
 
 
 </merge>

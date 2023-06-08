@@ -2,7 +2,7 @@ import { Grid, Paper, Box, Button, Tabs, Tab, Typography, CardActions } from '@m
 import dayjs, { Dayjs } from 'dayjs'
 import { useFormik } from 'formik'
 import { useParams } from 'react-router-dom'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { DatePicker, TimePicker } from '@mui/x-date-pickers'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -19,13 +19,19 @@ import { useQuery } from 'react-query'
 import { AxiosError } from 'axios'
 import { getAllToolTypes, getPlannedToolTypesById } from '../../api/toolType.api'
 import { getAllElements, getPlannedElementById } from '../../api/element.api'
-import { useAddOrderStage, useUpdateOrderStage } from './hooks'
+import { useAddOrderStage, useOrderStageNextStatus, useOrderStagePreviousStatus, useUpdateOrderStage } from './hooks'
 import { CustomTextField } from '../../components/form/FormInput'
 import { v4 as uuidv4 } from 'uuid'
 import { ToolType } from '../../types/model/ToolType'
 import OrderStageToolsTable from './OrderStageToolsTable'
 import OrderStageElementsTable from './OrderStageElementsTable'
 import { Role } from '../../types/roleEnum'
+import { isAuthorized } from '../../utils/authorize'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import useBreakpoints from '../../hooks/useBreakpoints'
+import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
+import { orderStageStatusName } from '../../helpers/enum.helper'
 
 type OrderStageCardProps = {
     index?: string
@@ -37,14 +43,22 @@ type OrderStageCardProps = {
 const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCardProps) => {
     const [tabValue, setTabValue] = useState(0)
     const [expandedInformation, setExpandedInformation] = useState(false)
-    const [plannedStartDate, setPlannedStartDate] = useState<Dayjs | null>(dayjs(stage?.plannedStartDate))
-    const [plannedStartHour, setPlannedStartHour] = useState<Dayjs | null>(dayjs(stage?.plannedStartDate))
-    const [plannedFinishHour, setPlannedFinishHour] = useState<Dayjs | null>(dayjs(stage?.plannedEndDate))
+    const [plannedStartDate, setPlannedStartDate] = useState<Dayjs | null>(
+        dayjs(stage?.plannedStartDate ? stage?.plannedStartDate : null),
+    )
+    const [plannedStartHour, setPlannedStartHour] = useState<Dayjs | null>(
+        dayjs(stage?.plannedStartDate ? stage?.plannedStartDate : null),
+    )
+    const [plannedFinishHour, setPlannedFinishHour] = useState<Dayjs | null>(
+        dayjs(stage?.plannedEndDate ? stage?.plannedEndDate : null),
+    )
     const [preparedPlannedStartDate, setPreparedPlannedStartDate] = useState('')
     const [preparedPlannedEndDate, setPreparedPlannedEndDate] = useState('')
     const [userRole, setUserRole] = useState('')
     const addOrderStage = useAddOrderStage()
     const updateOrderStage = useUpdateOrderStage()
+    const appSize = useBreakpoints()
+    const { showDialog } = useContext(DialogGlobalContext)
 
     const dummyScrollDiv = useRef<any>(null)
     const params = useParams()
@@ -152,6 +166,22 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
         handleSetElementsOnEdit()
     }
 
+    const handleResetFormik = () => {
+        plannedElementsRef.current! = []
+        plannedToolsTypesRef.current! = []
+        setPreparedPlannedStartDate('')
+        setPreparedPlannedEndDate('')
+        setPlannedStartDate(dayjs(stage!.plannedStartDate))
+        setPlannedStartHour(dayjs(stage!.plannedStartDate))
+        setPlannedFinishHour(dayjs(stage!.plannedEndDate))
+        formik.resetForm()
+    }
+    const handleCancelButtonAction = () => {
+        setIsEditing(false)
+        setIsDisplayingMode(true)
+        handleResetFormik()
+    }
+
     const formik = useFormik({
         initialValues: {
             orderId: params.id!,
@@ -168,7 +198,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
             attachments: [],
             test: '',
         },
-
         validationSchema: validationSchema,
         onSubmit: (values) => {
             values.listOfElementsPlannedNumber = plannedElementsRef.current!
@@ -253,7 +282,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                 },
                             }}
                             label="Planowana godzina rozpoczęcia"
-                            format={'HH:mm:ss'}
+                            format={'HH:mm'}
                             ampm={false}
                             value={plannedStartHour}
                             disabled={isDisplayingMode}
@@ -297,7 +326,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                             disabled={isDisplayingMode}
                             label="Planowana godzina zakończenia"
                             ampm={false}
-                            format={'HH:mm:ss'}
+                            format={'HH:mm'}
                             value={plannedFinishHour}
                             onChange={(data) => {
                                 setPlannedFinishHour(data)
@@ -307,6 +336,61 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                 </Grid>
             </Grid>
         )
+    }
+
+    const canChangeToNextStatus = () => {
+        const orderStageStatus = stage?.status
+        return (
+            (orderStageStatus == 'PLANNING' && isAuthorized([Role.SPECIALIST])) ||
+            (orderStageStatus == 'ADDING_FITTERS' && isAuthorized([Role.FOREMAN])) ||
+            (orderStageStatus == 'PICK_UP' && isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) ||
+            (orderStageStatus == 'REALESED' && isAuthorized([Role.FOREMAN])) ||
+            (orderStageStatus == 'ON_WORK' && isAuthorized([Role.FOREMAN])) ||
+            (orderStageStatus == 'RETURN' && isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) ||
+            (orderStageStatus == 'RETURNED' && isAuthorized([Role.FOREMAN]))
+        )
+    }
+
+    const canChangeToPreviousStatus = () => {
+        const orderStageStatus = stage?.status
+        return (
+            (orderStageStatus == 'ADDING_FITTERS' && isAuthorized([Role.FOREMAN])) ||
+            (orderStageStatus == 'PICK_UP' && isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) ||
+            (orderStageStatus == 'REALESED' && isAuthorized([Role.FOREMAN])) ||
+            (orderStageStatus == 'ON_WORK' && isAuthorized([Role.FOREMAN])) ||
+            (orderStageStatus == 'RETURN' && isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) ||
+            (orderStageStatus == 'RETURNED' && isAuthorized([Role.FOREMAN])) ||
+            (orderStageStatus == 'FINISHED ' && isAuthorized([Role.FOREMAN]))
+        )
+    }
+
+    const orderNextStatusMutation = useOrderStageNextStatus(() => {})
+    const orderPreviousStatusMutation = useOrderStagePreviousStatus(() => {})
+
+    const handleNextStatus = () => {
+        showDialog({
+            title: 'Czy na pewno chcesz zmienić status etapu na następny?',
+            btnOptions: [
+                { text: 'Tak', value: 1, variant: 'contained' },
+                { text: 'Anuluj', value: 0, variant: 'outlined' },
+            ],
+            callback: (result: number) => {
+                if (result == 1 && stage?.id!) orderNextStatusMutation.mutate(stage?.id!)
+            },
+        })
+    }
+
+    const handlePreviousStatus = () => {
+        showDialog({
+            title: 'Czy na pewno chcesz cofnąć status etapu?',
+            btnOptions: [
+                { text: 'Tak', value: 1, variant: 'contained' },
+                { text: 'Anuluj', value: 0, variant: 'outlined' },
+            ],
+            callback: (result: number) => {
+                if (result == 1 && stage?.id!) orderPreviousStatusMutation.mutate(stage?.id!)
+            },
+        })
     }
 
     return (
@@ -361,7 +445,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     variant="outlined"
                                     label="Status"
                                     name="status"
-                                    defaultValue={isDisplayingMode ? stage!.status : null}
+                                    defaultValue={isDisplayingMode ? orderStageStatusName(stage!.status) : null}
                                 />
                             </Grid>
                         ) : null}
@@ -424,12 +508,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     justifyContent: 'space-around',
                                 }}
                             >
-                                <Tabs
-                                    component="div"
-                                    value={tabValue}
-                                    onChange={handleTabChange}
-                                    aria-label="basic tabs example"
-                                >
+                                <Tabs component="div" value={tabValue} onChange={handleTabChange}>
                                     <Tab label="Informacje o datach" {...tabProps(0)} />
                                     <Tab label="Narzędzia" {...tabProps(1)} />
                                     <Tab label="Elementy" {...tabProps(2)} />
@@ -447,6 +526,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     toolsTypeListIds={stage?.listOfToolsPlannedNumber as any}
                                     handleChange={handleSetPlannedToolsTypes}
                                     toolsRef={plannedToolsTypesRef}
+                                    releasedToolsInfo={stage?.simpleToolReleases}
                                 />
                             </TabPanel>
                             <TabPanel key={uuidv4()} value={tabValue} index={2}>
@@ -456,6 +536,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     elementsListIds={stage?.listOfElementsPlannedNumber as any}
                                     handleChange={handleSetPlannedElements}
                                     elementsRef={plannedElementsRef}
+                                    releasedReturnedElementsInfo={stage?.simpleElementReturnReleases}
                                 />
                             </TabPanel>
 
@@ -475,8 +556,16 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                         </Box>
 
                         <Grid spacing={2} container justifyContent="flex-end" sx={{ marginTop: '20px' }}>
-                            <Grid item>
-                                {isDisplayingMode && userRole === Role.SPECIALIST && (
+                            <Grid
+                                item
+                                sx={{
+                                    mt: '15px',
+                                    gap: '15px',
+                                    display: appSize.isMobile ? 'grid' : 'flex',
+                                    flexDirection: 'row-reverse',
+                                }}
+                            >
+                                {isDisplayingMode && canChangeToNextStatus() && (
                                     <Button
                                         color="primary"
                                         variant="contained"
@@ -487,10 +576,52 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     </Button>
                                 )}
                                 {(!isDisplayingMode || isEditing) && (
-                                    <Button type="submit" color="primary" variant="contained" disabled={isLoading}>
-                                        Zapisz etap
-                                    </Button>
+                                    <>
+                                        <Button
+                                            type="submit"
+                                            color="primary"
+                                            variant="contained"
+                                            disabled={isLoading}
+                                            id={`formButton-save`}
+                                        >
+                                            Zapisz
+                                        </Button>
+                                        <Button
+                                            color="primary"
+                                            variant="contained"
+                                            disabled={isLoading}
+                                            onClick={handleCancelButtonAction}
+                                            id={`formButton-cancel`}
+                                        >
+                                            Anuluj
+                                        </Button>
+                                    </>
                                 )}
+                                {canChangeToNextStatus() && isDisplayingMode ? (
+                                    <Button
+                                        id={`formButton-nextStatus`}
+                                        color="primary"
+                                        startIcon={<ArrowForwardIosIcon />}
+                                        variant="contained"
+                                        style={{ width: appSize.isMobile ? 'auto' : 190 }}
+                                        onClick={handleNextStatus}
+                                    >
+                                        Następny status
+                                    </Button>
+                                ) : null}
+                                {canChangeToPreviousStatus() && isDisplayingMode ? (
+                                    <Button
+                                        id={`formButton-nextStatus`}
+                                        color="primary"
+                                        startIcon={<ArrowBackIosIcon />}
+                                        variant="contained"
+                                        type="submit"
+                                        style={{ width: appSize.isMobile ? 'auto' : 170 }}
+                                        onClick={handlePreviousStatus}
+                                    >
+                                        Cofnij status
+                                    </Button>
+                                ) : null}
                                 <div ref={dummyScrollDiv} />
                             </Grid>
                         </Grid>

@@ -211,7 +211,7 @@ export const useFormStructure = (): Array<FormInputProps> => {
             label: 'Data utworzenia',
             id: 'createdAt',
             initValue: '',
-            type: 'date',
+            type: 'date-time',
             addNewPermissionRoles: [Role.NOBODY],
             editPermissionRoles: [Role.NOBODY],
             viewPermissionRoles: [Role['*']],

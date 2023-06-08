@@ -1,10 +1,10 @@
-import { Box, Typography } from '@mui/material'
+import { Box } from '@mui/material'
 import IconButton, { IconButtonProps } from '@mui/material/IconButton'
 import { styled } from '@mui/material/styles'
 import * as React from 'react'
 import * as yup from 'yup'
 
-type TabPanelProps = {
+export type TabPanelProps = {
     children?: React.ReactNode
     index: number
     value: number

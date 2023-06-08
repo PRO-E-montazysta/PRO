@@ -8,10 +8,8 @@ import java.util.Optional;
 
 public interface EmploymentService {
 
-    List<EmploymentDto> getAll();
-    EmploymentDto getById(Long id);
-    EmploymentDto add(EmploymentDto employment);
-    void delete(Long id);
-    EmploymentDto update(Long id, EmploymentDto employment);
+    List<EmploymentDto> getAllEmployeeEmployments(Long employeeId);
+    EmploymentDto hire(Long employeeId);
+    EmploymentDto dismiss(Long employeeId);
     Optional<EmploymentDto> getCurrentEmploymentByEmployeeId(Long employeeId);
 }

@@ -62,3 +62,10 @@ spec:
             path: /actuator/health/readiness
             port: 8080
           initialDelaySeconds: 5
+        volumeMounts:
+          - mountPath: /files
+            name: backendfiles
+      volumes:
+        - name: backendfiles
+          persistentVolumeClaim:
+            claimName: backend-volume-claim

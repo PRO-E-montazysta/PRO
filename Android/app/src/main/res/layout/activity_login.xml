@@ -31,7 +31,8 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="20dp"
                 android:contentDescription="@string/logo_desc"
-                android:src="@drawable/logo" />
+                android:src="@mipmap/ic_launcher_round"
+                />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"

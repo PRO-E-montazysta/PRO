@@ -11,14 +11,10 @@ import com.emontazysta.service.*;
 import com.emontazysta.mapper.ElementsPlannedNumberMapper;
 import com.emontazysta.mapper.OrderStageMapper;
 import com.emontazysta.mapper.ToolsPlannedNumberMapper;
-import com.emontazysta.model.*;
 import com.emontazysta.model.dto.ElementsPlannedNumberDto;
 import com.emontazysta.model.dto.OrderStageDto;
 import com.emontazysta.model.dto.OrderStageWithToolsAndElementsDto;
 import com.emontazysta.model.dto.ToolsPlannedNumberDto;
-import com.emontazysta.model.searchcriteria.OrdersStageSearchCriteria;
-import com.emontazysta.repository.*;
-import com.emontazysta.repository.criteria.OrdersStageCriteriaRepository;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -60,6 +55,7 @@ public class OrderStageImpl implements OrderStageService {
     private final AppUserService userService;
     private final OrderRepository orderRepository;
     private final ElementInWarehouseService elementInWarehouseService;
+    private final FitterRepository fitterRepository;
 
     @Override
     public List<OrderStageDto> getAll() {
@@ -151,20 +147,27 @@ public class OrderStageImpl implements OrderStageService {
         OrderStage updatedOrderStage = orderStageMapper.toEntity(modiffiedOrderStageDto);
         OrderStage orderStageDb = repository.findById(id).orElseThrow(EntityNotFoundException::new);
 
-        //TODO: Send notification on status change
-
         List<ToolsPlannedNumber> updatedToolsList = new ArrayList<>();
         List<ElementsPlannedNumber> updatedElementsList = new ArrayList<>();
-        if (authUtils.getLoggedUser().getRoles().contains(Role.SPECIALIST)) {
+        if (authUtils.getLoggedUser().getRoles().contains(Role.SPECIALIST)
+                && orderStageDb.getStatus().equals(OrderStageStatus.PLANNING)) {
             if(!updatedOrderStage.getListOfToolsPlannedNumber().isEmpty()) {
                 orderStageDb.getListOfToolsPlannedNumber().stream()
                         .forEach(toolsPlannedNumber -> toolsPlannedNumberRepository.delete(toolsPlannedNumber));
 
                 for (ToolsPlannedNumberDto toolsPlannedNumberDto : modiffiedOrderStageDto.getListOfToolsPlannedNumber()) {
-                    toolsPlannedNumberDto.setOrderStageId(orderStageDb.getId());
-                    ToolsPlannedNumber toolsPlannedNumber = toolsPlannedNumberMapper.toEntity(toolsPlannedNumberDto);
-                    toolsPlannedNumberRepository.save(toolsPlannedNumber);
-                    updatedToolsList.add(toolsPlannedNumber);
+                    Optional<ToolsPlannedNumber> existingToolsPlannedNumber = updatedToolsList.stream()
+                            .filter(o -> o.getToolType().getId() == toolsPlannedNumberDto.getToolTypeId()).findFirst();
+                    if(existingToolsPlannedNumber.isPresent()) {
+                        ToolsPlannedNumber toolsPlannedNumber = existingToolsPlannedNumber.get();
+                        toolsPlannedNumber.setNumberOfTools(toolsPlannedNumber.getNumberOfTools() + toolsPlannedNumberDto.getNumberOfTools());
+                        toolsPlannedNumberRepository.save(toolsPlannedNumber);
+                    }else {
+                        toolsPlannedNumberDto.setOrderStageId(orderStageDb.getId());
+                        ToolsPlannedNumber toolsPlannedNumber = toolsPlannedNumberMapper.toEntity(toolsPlannedNumberDto);
+                        toolsPlannedNumberRepository.save(toolsPlannedNumber);
+                        updatedToolsList.add(toolsPlannedNumber);
+                    }
                 }
             }
 
@@ -173,17 +176,55 @@ public class OrderStageImpl implements OrderStageService {
                         .forEach(elementsPlannedNumber -> elementsPlannedNumberRepository.delete(elementsPlannedNumber));
 
                 for (ElementsPlannedNumberDto elementsPlannedNumberDto : modiffiedOrderStageDto.getListOfElementsPlannedNumber()) {
-                    elementsPlannedNumberDto.setOrderStageId(orderStageDb.getId());
-                    ElementsPlannedNumber elementsPlannedNumber = elementsPlannedNumberMapper.toEntity(elementsPlannedNumberDto);
-                    elementsPlannedNumberRepository.save(elementsPlannedNumber);
-                    updatedElementsList.add(elementsPlannedNumber);
-
+                    Optional<ElementsPlannedNumber> existingElementsPlannedNumber = updatedElementsList.stream()
+                            .filter(o -> o.getElement().getId() == elementsPlannedNumberDto.getElementId()).findFirst();
+                    if(existingElementsPlannedNumber.isPresent()) {
+                        ElementsPlannedNumber elementsPlannedNumber = existingElementsPlannedNumber.get();
+                        elementsPlannedNumber.setNumberOfElements(elementsPlannedNumber.getNumberOfElements() + elementsPlannedNumberDto.getNumberOfElements());
+                        elementsPlannedNumberRepository.save(elementsPlannedNumber);
+                    }else {
+                        elementsPlannedNumberDto.setOrderStageId(orderStageDb.getId());
+                        ElementsPlannedNumber elementsPlannedNumber = elementsPlannedNumberMapper.toEntity(elementsPlannedNumberDto);
+                        elementsPlannedNumberRepository.save(elementsPlannedNumber);
+                        updatedElementsList.add(elementsPlannedNumber);
+                    }
                 }
             }
 
         } else{
             updatedToolsList = updatedOrderStage.getListOfToolsPlannedNumber();
             updatedElementsList = updatedOrderStage.getListOfElementsPlannedNumber();
+        }
+
+        if (authUtils.getLoggedUser().getRoles().contains(Role.FOREMAN)
+                && orderStageDb.getStatus().equals(OrderStageStatus.ADDING_FITTERS)) {
+
+            //Usunięcie nieprzypisanych fitterów
+            for(Fitter fitter : orderStageDb.getAssignedTo()) {
+                if(!updatedOrderStage.getAssignedTo().contains(fitter)) {
+                    fitter.getWorkingOn().remove(orderStageDb);
+                    fitterRepository.save(fitter);
+                }
+            }
+
+            //Utworzenie listy powiadamianych fitterów
+            List<AppUser> notifiedEmployees = new ArrayList<>();
+
+            for(Fitter fitter : updatedOrderStage.getAssignedTo()) {
+                if(!orderStageDb.getAssignedTo().contains(fitter)) {
+                    notifiedEmployees.add(fitter);
+                    fitter.getWorkingOn().add(orderStageDb);
+                    fitterRepository.save(fitter);
+                }
+            }
+
+
+            orderStageDb.setAssignedTo(updatedOrderStage.getAssignedTo());
+
+            //Wysłanie powiadomienia do fitterów o przypisaniu do etapu
+            if(notifiedEmployees.size() > 0) {
+                notificationService.createNotification(notifiedEmployees, orderStageDb.getId(), NotificationType.FITTER_ASSIGNMENT);
+            }
         }
 
         orderStageDb.setName(updatedOrderStage.getName());
@@ -196,7 +237,6 @@ public class OrderStageImpl implements OrderStageService {
         orderStageDb.setPlannedDurationTime(ChronoUnit.HOURS.between(updatedOrderStage.getPlannedStartDate(),updatedOrderStage.getPlannedEndDate()));
         orderStageDb.setPlannedFittersNumber(updatedOrderStage.getPlannedFittersNumber());
         orderStageDb.setMinimumImagesNumber(updatedOrderStage.getMinimumImagesNumber());
-        orderStageDb.setAssignedTo(updatedOrderStage.getAssignedTo());
         orderStageDb.setComments(updatedOrderStage.getComments());
         orderStageDb.setAttachments(updatedOrderStage.getAttachments());
         orderStageDb.setNotifications(updatedOrderStage.getNotifications());
@@ -208,8 +248,8 @@ public class OrderStageImpl implements OrderStageService {
     }
 
     @Override
-    public List<OrderStageDto> getFilteredOrders(OrdersStageSearchCriteria ordersStageSearchCriteria, Principal principal) {
-        return  ordersStageCriteriaRepository.findAllWithFilters(ordersStageSearchCriteria, principal);
+    public List<OrderStageDto> getFilteredOrders(OrdersStageSearchCriteria ordersStageSearchCriteria) {
+        return  ordersStageCriteriaRepository.findAllWithFilters(ordersStageSearchCriteria);
     }
 
     @Override
@@ -477,6 +517,7 @@ public class OrderStageImpl implements OrderStageService {
         if(orderStage.getStatus().equals(OrderStageStatus.PLANNING) && loggedUserRoles.contains(Role.SPECIALIST)) {
             //czy jest podzielone
             orderStage.setStatus(OrderStageStatus.ADDING_FITTERS);
+            //TODO: Powiadomienie foremana- addign fitters
         }else if(orderStage.getStatus().equals(OrderStageStatus.ADDING_FITTERS) && loggedUserRoles.contains(Role.FOREMAN)) {
             //Check if fitters are assigned
             if(orderStage.getAssignedTo().size() > 0) {
@@ -486,6 +527,7 @@ public class OrderStageImpl implements OrderStageService {
                     orderStage.setStatus(OrderStageStatus.REALESED);
                 } else {
                     orderStage.setStatus(OrderStageStatus.PICK_UP);
+                    //TODO: Powiadomienie magazynierów- wydanie
                 }
             }else {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Przypisz montażystów do etapu!");
@@ -497,6 +539,7 @@ public class OrderStageImpl implements OrderStageService {
             orderStage.setStatus(OrderStageStatus.ON_WORK);
         }else if(orderStage.getStatus().equals(OrderStageStatus.ON_WORK) && loggedUserRoles.contains(Role.FOREMAN)) {
             orderStage.setStatus(OrderStageStatus.RETURN);
+            //TODO: Powiadomienie magazynierów- zwrot
         }else if(orderStage.getStatus().equals(OrderStageStatus.RETURN) && (loggedUserRoles.contains(Role.WAREHOUSE_MAN)
                 || loggedUserRoles.contains(Role.WAREHOUSE_MANAGER))) {
             //Check if all tools are returned

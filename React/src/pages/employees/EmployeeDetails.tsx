@@ -184,6 +184,7 @@ const EmployeeDetails = () => {
                                     ? [handleDismissEmployee, 'dismiss']
                                     : [handleHireEmployee, 'hire']
                             }
+                            editPermissionRoles={[Role.MANAGER, Role.ADMIN]}
                         />
                         {canDisplayEmploymentHistory() ? (
                             <DisplayEmploymentHistory employeeId={params.id!}></DisplayEmploymentHistory>

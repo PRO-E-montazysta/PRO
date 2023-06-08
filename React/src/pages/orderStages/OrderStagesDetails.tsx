@@ -5,7 +5,7 @@ import { OrderStage } from '../../types/model/OrderStage'
 import { useMutation, useQuery } from 'react-query'
 import { AxiosError } from 'axios'
 import OrderStageCard from './OrderStageCard'
-import { createOrderStage, getAllOrderStages } from '../../api/orderStage.api'
+import { createOrderStage, getAllOrderStagesForOrder } from '../../api/orderStage.api'
 import { v4 as uuidv4 } from 'uuid'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 
@@ -19,9 +19,8 @@ const OrderStagesDetails = ({ isAddOrderStageVisible }: OrderStagesDetailsProps)
     const scrollerRef = useRef(null)
     const { showDialog } = useContext(DialogGlobalContext)
 
-
-    const queryOrderStages = useQuery<Array<OrderStage>, AxiosError>(['orderStage-list'], () =>
-        getAllOrderStages(params.id!),
+    const queryOrderStages = useQuery<Array<OrderStage>, AxiosError>(['orderStage-list', { id: params.id }], () =>
+        getAllOrderStagesForOrder(params.id!),
     )
 
     useEffect(() => {
@@ -48,9 +47,7 @@ const OrderStagesDetails = ({ isAddOrderStageVisible }: OrderStagesDetailsProps)
         onError() {
             showDialog({
                 title: 'Błąd podczas dodawania etapu',
-                btnOptions: [
-                    { text: 'Ok', value: 0, },
-                ],
+                btnOptions: [{ text: 'Ok', value: 0 }],
             })
         },
     })
@@ -69,11 +66,7 @@ const OrderStagesDetails = ({ isAddOrderStageVisible }: OrderStagesDetailsProps)
                 ))}
                 {isAddOrderStageVisible ? (
                     <>
-                        <OrderStageCard
-                            key={uuidv4()}
-                            isLoading={isLoading}
-                            isDisplaying={false}
-                        />
+                        <OrderStageCard key={uuidv4()} isLoading={isLoading} isDisplaying={false} />
                         <div ref={scrollerRef}></div>
                     </>
                 ) : null}

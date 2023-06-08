@@ -11,6 +11,7 @@ import com.emontazysta.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -32,7 +33,6 @@ import java.util.Set;
 public class DataSeeding {
 
     private final SecurityProperties securityProperties;
-
     private final CompanyService companyService;
     private final ClientService clientService;
     private final LocationService locationService;
@@ -128,7 +128,7 @@ public class DataSeeding {
     }
 
     private Attachment addAttachmentFromModel(Attachment attachment) {
-        return attachmentMapper.toEntity(attachmentService.add(attachmentMapper.toDto(attachment)));
+        return attachmentMapper.toEntity(attachmentService.add(attachmentMapper.toDto(attachment), new MockMultipartFile("test", "test.txt", null, new byte[0])));
     }
 
     private ToolRelease addToolReleaseFromModel(ToolRelease toolRelease) {
@@ -282,9 +282,28 @@ public class DataSeeding {
         context.setAuthentication(authenticationMng);
 
         Unavailability unavailability1 = addUnavailabilityFromModel(new Unavailability(null,
-                TypeOfUnavailability.BUSY, "Test Unavailability 1", LocalDateTime.parse( "2023-03-06T12:00:00.000"),
-                LocalDateTime.parse("2023-03-06T23:00:00.000"), fitter1, manager1));
-        Unavailability unavailability2 = addUnavailabilityWithLocalDateDtoFromModel(new UnavailabilityWithLocalDateDto(
+                TypeOfUnavailability.BUSY, "Test Unavailability 1", LocalDateTime.parse( "2023-06-03T08:00:00.000"),
+                LocalDateTime.parse("2023-06-03T14:00:00.000"), fitter1, manager1));
+        Unavailability unavailability2 = addUnavailabilityFromModel(new Unavailability(null,
+                TypeOfUnavailability.BUSY, "Test Unavailability 2", LocalDateTime.parse( "2023-06-03T14:00:00.000"),
+                LocalDateTime.parse("2023-06-03T16:00:00.000"), fitter1, manager1));
+        Unavailability unavailability3 = addUnavailabilityFromModel(new Unavailability(null,
+                TypeOfUnavailability.HOLIDAY, "Test Unavailability 3", LocalDateTime.parse( "2023-06-10T08:00:00.000"),
+                LocalDateTime.parse("2023-06-20T16:00:00.000"), fitter2, manager1));
+        Unavailability unavailability4 = addUnavailabilityFromModel(new Unavailability(null,
+                TypeOfUnavailability.OTHER, "Test Unavailability 4", LocalDateTime.parse( "2023-06-12T12:00:00.000"),
+                LocalDateTime.parse("2023-06-12T16:00:00.000"), fitter1, manager1));
+        Unavailability unavailability5 = addUnavailabilityFromModel(new Unavailability(null,
+                TypeOfUnavailability.BUSY, "Test Unavailability 5", LocalDateTime.parse( "2023-05-20T12:00:00.000"),
+                LocalDateTime.parse("2023-05-20T16:00:00.000"), fitter1, manager1));
+        Unavailability unavailability6 = addUnavailabilityFromModel(new Unavailability(null,
+                TypeOfUnavailability.BUSY, "Test Unavailability 6", LocalDateTime.parse( "2023-05-21T08:00:00.000"),
+                LocalDateTime.parse("2023-05-21T14:00:00.000"), fitter1, manager1));
+        Unavailability unavailability7 = addUnavailabilityFromModel(new Unavailability(null,
+                TypeOfUnavailability.BUSY, "Test Unavailability 7", LocalDateTime.parse( "2023-05-21T08:00:00.000"),
+                LocalDateTime.parse("2023-05-21T14:00:00.000"), fitter2, manager1));
+
+        Unavailability unavailability8 = addUnavailabilityWithLocalDateDtoFromModel(new UnavailabilityWithLocalDateDto(
                 null, TypeOfUnavailability.BEREAVEMENT_LEAVE,"Test Unavailability 2", LocalDate.now(),
                 LocalDate.now(), fitter2.getId(), manager1.getId()));
 
@@ -333,8 +352,9 @@ public class DataSeeding {
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         OrderStage orderStage2 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 2",
-                OrderStageStatus.PLANNING, new BigDecimal(2), LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), null,
-                1, 1, 1, new ArrayList<>(),
+                OrderStageStatus.ADDING_FITTERS, new BigDecimal(2), LocalDateTime.parse( "2023-06-03T14:00:00.000"),
+                LocalDateTime.parse("2023-06-03T16:00:00.000"), LocalDateTime.now(), null,
+                1, 1, 1, List.of(fitter2,fitter1,fitter3),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         OrderStage orderStage3 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 3",
@@ -387,9 +407,9 @@ public class DataSeeding {
                 warehouse2, new ArrayList<>(), toolType3));
         Tool tool4 = addToolFromModel(new Tool(null, "Test Tool 4", null, null, new ArrayList<>(),
                 warehouse2, new ArrayList<>(), toolType4));
-        toolRepository.save(new Tool(null, "Tool 5", LocalDate.now(), "T|HARDCODED-TOOL5",
+        toolRepository.save(new Tool(null, "Tool 5", LocalDateTime.now(), "T|HARDCODED-TOOL5",
                 new ArrayList<>(), warehouse1, new ArrayList<>(), toolType1));
-        toolRepository.save(new Tool(null, "Tool 6", LocalDate.now(), "T|HARDCODED-TOOL6",
+        toolRepository.save(new Tool(null, "Tool 6", LocalDateTime.now(), "T|HARDCODED-TOOL6",
                 new ArrayList<>(), warehouse2, new ArrayList<>(), toolType2));
 
         ToolEvent toolEvent1 = addToolEventFromModel(new ToolEvent(null, LocalDateTime.now(), null, null,

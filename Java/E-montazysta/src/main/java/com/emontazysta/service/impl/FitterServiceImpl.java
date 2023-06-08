@@ -120,4 +120,17 @@ public class FitterServiceImpl implements FitterService {
 
         return fitterMapper.toDto(repository.save(fitter));
     }
+
+    @Override
+    public List<FitterDto> getAvailable(AppUserSearchCriteria appUserSearchCriteria, Principal principal) {
+        appUserSearchCriteria.setRoles(List.of("FITTER"));
+        List<EmployeeDto> appUsers = appUserCriteriaRepository.findAllWithFilters(appUserSearchCriteria, principal);
+        List<FitterDto> result = new ArrayList<>();
+
+        for(EmployeeDto employeeDto : appUsers) {
+            result.add(fitterMapper.toDto(repository.getReferenceById(employeeDto.getId())));
+        }
+
+        return result;
+    }
 }

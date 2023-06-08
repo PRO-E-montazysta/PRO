@@ -104,22 +104,26 @@ class DashboardFragment : Fragment() {
         orders.setOnClickListener{
             val direction = DashboardFragmentDirections.actionNavigationDashboardToOrderListFragment()
             findNavController().navigate(direction)
-
         }
 
         val stages = binding.stages
         stages.setOnClickListener{
             val direction = DashboardFragmentDirections.actionNavigationDashboardToStageListFragment()
             findNavController().navigate(direction)
-
         }
 
         val elements = binding.elements
         elements.setOnClickListener{
             val direction = DashboardFragmentDirections.actionNavigationDashboardToElementsListFragment()
             findNavController().navigate(direction)
-
         }
+
+        val events = binding.events
+        events.setOnClickListener{
+            val direction = DashboardFragmentDirections.actionNavigationDashboardToEventListFragment()
+            findNavController().navigate(direction)
+        }
+
         // Observe the error message LiveData
         viewModel.messageLiveData.observe(viewLifecycleOwner) {
                 errorMessage -> Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()

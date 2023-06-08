@@ -18,6 +18,8 @@ import { Tool } from '../../types/model/Tool'
 import { AxiosError } from 'axios'
 import { getAllTools } from '../../api/tool.api'
 import DisplayToolHistory from '../../components/history/DisplayToolHistory'
+import { Role } from '../../types/roleEnum'
+import { getAboutMeInfo } from '../../api/employee.api'
 
 const ToolEventDetails = () => {
     const params = useParams()
@@ -100,6 +102,7 @@ const ToolEventDetails = () => {
         cacheTime: 15 * 60 * 1000,
         staleTime: 10 * 60 * 1000,
     })
+    const aboutMeQuery = useQuery<any, AxiosError>(['about-me'], async () => getAboutMeInfo())
 
     return (
         <>
@@ -135,6 +138,18 @@ const ToolEventDetails = () => {
                                 onReset={handleReset}
                                 onSubmit={formik.submitForm}
                                 readonlyMode={pageMode === 'read'}
+                                editPermissionRoles={
+                                    aboutMeQuery.data.userId == formik.values['createdById'] &&
+                                    formik.values['status'] == 'CREATED'
+                                        ? [Role.MANAGER, Role.WAREHOUSE_MANAGER, Role.FOREMAN]
+                                        : [Role.MANAGER, Role.WAREHOUSE_MANAGER]
+                                }
+                                deletePermissionRoles={
+                                    aboutMeQuery.data.userId == formik.values['createdById'] &&
+                                    formik.values['status'] == 'CREATED'
+                                        ? [Role.MANAGER, Role.WAREHOUSE_MANAGER, Role.FOREMAN]
+                                        : [Role.MANAGER, Role.WAREHOUSE_MANAGER]
+                                }
                             />
                         </>
                     )}
