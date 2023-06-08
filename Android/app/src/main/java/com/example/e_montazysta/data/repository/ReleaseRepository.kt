@@ -40,7 +40,7 @@ class ReleaseRepository (
         }
     }
 
-    override suspend fun createRelease(items: List<ReleaseItem>, stageId: Int): Result<List<StageDAO>> {
+    override suspend fun createRelease(items: List<ReleaseItem>, stageId: Int, warehouseId: Int?): Result<List<StageDAO>> {
         return try {
             val releaseService = serviceProvider.getReleaseService()
             val elements = items.filter { it.isElement }.map { it.mapToElementReleaseRequest() }
@@ -49,7 +49,7 @@ class ReleaseRepository (
             val releaseDAOs = mutableListOf<StageDAO>()
 
             if (elements.isNotEmpty()) {
-                val elementReleaseDAOs = releaseService.createElementsRelease(token, stageId, 1, elements)
+                val elementReleaseDAOs = releaseService.createElementsRelease(token, stageId, warehouseId!!, elements)
                 releaseDAOs.add(elementReleaseDAOs)
             }
             if (tools.isNotEmpty()) {
