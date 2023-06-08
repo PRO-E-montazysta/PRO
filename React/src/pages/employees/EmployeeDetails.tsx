@@ -178,7 +178,7 @@ const EmployeeDetails = () => {
                             onSubmit={formik.submitForm}
                             readonlyMode={pageMode == 'read'}
                             hireDismissEmp={
-                                !isAuthorized([Role.ADMIN])
+                                !isAuthorized([Role.ADMIN]) || formik.values['roles'][0] == 'ADMIN'
                                     ? undefined
                                     : hired
                                     ? [handleDismissEmployee, 'dismiss']
