@@ -17,28 +17,22 @@ public class CompanyControllerTests extends AbstractTest {
 
     private String postBody = "{\n" +
             "  \"companyName\": \"Company Test\",\n" +
-            "  \"createdAt\": \"2023-03-24\",\n" +
             "  \"status\": \"ACTIVE\",\n" +
             "  \"statusReason\": \"string\",\n" +
-            "  \"warehouses\": [\n" +
-            "    \n" +
-            "  ],\n" +
-            "  \"orders\": [\n" +
-            "    \n" +
-            "  ],\n" +
-            "  \"clients\": [\n" +
-            "    \n" +
-            "  ],\n" +
-            "  \"employments\": [\n" +
-            "    \n" +
-            "  ]\n" +
+            "  \"firstName\": \"string\",\n" +
+            "  \"lastName\": \"string\",\n" +
+            "  \"email\": \"test@test.pl\",\n" +
+            "  \"password\": \"password\",\n" +
+            "  \"username\": \"testuser4comapny\",\n" +
+            "  \"phone\": \"+48690605444\",\n" +
+            "  \"pesel\": \"83082156502\"\n" +
             "}";
 
 
     private String putBody = "{\n" +
             "  \"id\": " + companyId + ",\n" +
-            "  \"companyName\": \"Company Test\",\n" +
-            "  \"createdAt\": \"2023-03-24\",\n" +
+            "  \"companyName\": \"string\",\n" +
+            "  \"createdAt\": \"2023-06-08T12:16:16.795Z\",\n" +
             "  \"status\": \"" + status + "\",\n" +
             "  \"statusReason\": \"string\",\n" +
             "  \"warehouses\": [\n" +
@@ -52,7 +46,11 @@ public class CompanyControllerTests extends AbstractTest {
             "  ],\n" +
             "  \"employments\": [\n" +
             "    \n" +
-            "  ]\n" +
+            "  ],\n" +
+            "  \"toolTypes\": [\n" +
+            "    \n" +
+            "  ],\n" +
+            "  \"deleted\": true\n" +
             "}";
 
     @Test
