@@ -2,7 +2,7 @@ import { FilterInputType } from '../../components/table/filter/TableFilter'
 import { Order } from '../../types/model/Order'
 import { HeadCell } from '../../components/table/sort/SortedTableHeader'
 import { formatArrayToOptions, formatDate, formatLocation } from '../../helpers/format.helper'
-import { priorityName, priorityOptions, statusName, statusOptions } from '../../helpers/enum.helper'
+import { priorityName, priorityOptions, orderStatusName, statusOptions } from '../../helpers/enum.helper'
 
 import * as yup from 'yup'
 import { useQuery } from 'react-query'
@@ -68,7 +68,7 @@ export const headCells: Array<HeadCell<Order>> = [
         id: 'status',
         label: 'Status',
         numeric: false,
-        formatFn: (status: string) => statusName(status),
+        formatFn: (status: string) => orderStatusName(status),
         visibleInMode: [AppSize.notebook, AppSize.desktop],
     },
     {

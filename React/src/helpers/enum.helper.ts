@@ -6,7 +6,7 @@ import { EmployeeStatus, UserRole } from '../types/model/Employee'
 import { OrderPriority, OrderStatus } from '../types/model/Order'
 import { TypeOfUnavailability } from '../types/model/Unavailability'
 
-export const statusName = (key: string) => {
+export const orderStatusName = (key: string) => {
     return Object.values(OrderStatus)[Object.keys(OrderStatus).indexOf(key)]
 }
 

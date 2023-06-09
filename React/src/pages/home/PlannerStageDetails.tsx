@@ -1,14 +1,8 @@
-import FullCalendar from '@fullcalendar/react' // must go before plugins
-import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
-import timeGridPlugin from '@fullcalendar/timegrid'
-import { Box, Button, ClickAwayListener, Icon, IconButton, Paper, Typography } from '@mui/material'
-import { EventInput, EventSourceInput } from '@fullcalendar/core'
-import { useMemo, useState } from 'react'
+import { Box, Button, ClickAwayListener, IconButton, Typography } from '@mui/material'
 import { Moment } from 'moment'
 import moment from 'moment'
-import { NavLink, Navigate } from 'react-router-dom'
-import { events, stages } from './data'
 import ForwardIcon from '@mui/icons-material/Forward'
+
 export type PopupPlannerInfo = {
     isOpen: boolean
     title: string

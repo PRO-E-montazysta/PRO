@@ -1,31 +1,22 @@
-import FullCalendar from '@fullcalendar/react' // must go before plugins
-import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
-import timeGridPlugin from '@fullcalendar/timegrid'
-import { Box, Button, ClickAwayListener, Paper, Typography } from '@mui/material'
-import { EventInput, EventSourceInput } from '@fullcalendar/core'
-import { useMemo, useState } from 'react'
-import { Moment } from 'moment'
-import moment from 'moment'
-import { NavLink, Navigate } from 'react-router-dom'
-import { events, stages } from './data'
+import { Box, Button, ClickAwayListener, Typography } from '@mui/material'
+import { NavLink } from 'react-router-dom'
 
 export type PopupEventInfo = {
     isOpen: boolean
     title: string
     subtitle?: string
-    fromDate: Moment
-    toDate: Moment
-    status: string
+    infoArray: {
+        label: string
+        value: string
+    }[]
     link: string
 }
 
-export const cleanEventInfo = {
+export const cleanEventInfo: PopupEventInfo = {
     isOpen: false,
     title: '',
     subtitle: '',
-    fromDate: moment(),
-    toDate: moment(),
-    status: '',
+    infoArray: [],
     link: '',
 }
 type CalendarEventDetailsProps = {
@@ -41,7 +32,6 @@ const CalendarEventDetails = ({ popupEventInfo, setPopupEventInfo }: CalendarEve
                     top: '50vh',
                     left: '50vw',
                     width: '400px',
-                    height: '200px',
                     transform: 'translate(-200px, -100px)',
                     zIndex: 100,
                     backgroundColor: 'white',
@@ -85,18 +75,16 @@ const CalendarEventDetails = ({ popupEventInfo, setPopupEventInfo }: CalendarEve
                         gap: '10px 20px',
                     }}
                 >
-                    <Typography variant="body1" textAlign={'right'}>
-                        Od
-                    </Typography>
-                    <Typography variant="body1">{popupEventInfo.fromDate.format('HH:mm DD-MM-YYYY')}</Typography>
-                    <Typography variant="body1" textAlign={'right'}>
-                        Do
-                    </Typography>
-                    <Typography variant="body1">{popupEventInfo.toDate.format('HH:mm DD-MM-YYYY')}</Typography>
-                    <Typography variant="body1" textAlign={'right'}>
-                        Status
-                    </Typography>
-                    <Typography variant="body1">{popupEventInfo.status}</Typography>
+                    {popupEventInfo.infoArray.map((row) => {
+                        return (
+                            <>
+                                <Typography variant="body1" textAlign={'right'}>
+                                    {row.label}
+                                </Typography>
+                                <Typography variant="body1">{row.value}</Typography>
+                            </>
+                        )
+                    })}
                 </Box>
             </Box>
         </ClickAwayListener>

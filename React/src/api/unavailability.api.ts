@@ -9,7 +9,7 @@ export const getFilteredUnavailabilities = (payload: PayloadProps) => {
     return makeServiceCall('/unavailabilities/filter', 'GET', { ...payload })
 }
 
-export const getUnavailabilityDetails = (id: string) => {
+export const getUnavailabilityDetails = (id: string): Promise<Unavailability>=> {
     return makeServiceCall(`/unavailabilities/${id}`, 'GET', {})
 }
 
@@ -26,5 +26,5 @@ export const deleteUnavailability = (id: string | number) => {
 }
 
 export const getUnavailabilityByMonth = (payload: PayloadProps) => {
-    return makeServiceCall(`/api/v1/unavailabilities/monthly`, 'GET', { ...payload })
+    return makeServiceCall(`/unavailabilities/monthly`, 'GET', { ...payload })
 }

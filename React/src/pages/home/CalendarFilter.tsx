@@ -1,25 +1,38 @@
 import { Box, Button, Paper, Switch, Typography } from '@mui/material'
-import FormSwitch from '../../components/form/FormSwitch'
-import { useFormik } from 'formik'
 import MultipleSelect from '../../components/base/Multiselect'
-import { statusOptions } from '../../helpers/enum.helper'
+import { statusOptions, typeOfUnavailabilityOptions } from '../../helpers/enum.helper'
 import useBreakpoints from '../../hooks/useBreakpoints'
+import { useEmployeesAsOptions, useOrdersAsOptions } from './hooks'
+import { useEffect } from 'react'
 
-const CalendarFilter = () => {
+type CalendarFilterProps = {
+    formikFilter: any
+}
+
+export type CalendarFilters = {
+    orderIdCollection: number[]
+    statusIdCollection: number[]
+    unavilibilityPersonCollection: number[]
+    unavilibilityTypeCollection: string[]
+}
+
+export const calendarFilterDefaultValues: CalendarFilters = {
+    orderIdCollection: [-1],
+    statusIdCollection: [],
+    unavilibilityPersonCollection: [-1],
+    unavilibilityTypeCollection: [],
+}
+
+const CalendarFilter = ({ formikFilter }: CalendarFilterProps) => {
     const appSize = useBreakpoints()
-    const formikFilter = useFormik({
-        initialValues: {
-            filterByOrder: false,
-            orderIdCollection: [-1],
-            statusIdCollection: [],
-            filterByUnavilibility: false,
-            unavilibilityPersonCollection: [-1],
-            unavilibilityTypeCollection: [],
-        },
-        onSubmit: (data: any) => {
-            console.log(data)
-        },
-    })
+
+    const orderOptions = useOrdersAsOptions()
+    const employeeOptions = useEmployeesAsOptions()
+
+    useEffect(() => {
+        console.log(formikFilter.values)
+    }, [formikFilter.values])
+
     return (
         <Paper
             sx={{
@@ -36,28 +49,7 @@ const CalendarFilter = () => {
                 </Box>
                 <Box sx={{ display: 'grid', gap: '20px', mt: '15px' }}>
                     <MultipleSelect
-                        menuItems={[
-                            {
-                                key: -1,
-                                value: 'Moje zlecenia',
-                            },
-                            {
-                                key: -2,
-                                value: 'Wszystkie zlecenia',
-                            },
-                            {
-                                key: 1,
-                                value: 'Zlecenie 1',
-                            },
-                            {
-                                key: 2,
-                                value: 'Zlecenie 2',
-                            },
-                            {
-                                key: 3,
-                                value: 'Zlecenie 3',
-                            },
-                        ]}
+                        menuItems={orderOptions}
                         id={'orderIdCollection'}
                         value={formikFilter.values.orderIdCollection}
                         formikSetFieldValue={function (id: string, value: any): void {
@@ -95,28 +87,7 @@ const CalendarFilter = () => {
                     }}
                 >
                     <MultipleSelect
-                        menuItems={[
-                            {
-                                key: -1,
-                                value: 'Moje nieobecności',
-                            },
-                            {
-                                key: -2,
-                                value: 'Nieobecności wszystkich',
-                            },
-                            {
-                                key: 1,
-                                value: 'Ania',
-                            },
-                            {
-                                key: 2,
-                                value: 'Hania',
-                            },
-                            {
-                                key: 3,
-                                value: 'Bania',
-                            },
-                        ]}
+                        menuItems={employeeOptions}
                         id={'unavilibilityPersonCollection'}
                         value={formikFilter.values.unavilibilityPersonCollection}
                         formikSetFieldValue={function (id: string, value: any): void {
@@ -128,18 +99,9 @@ const CalendarFilter = () => {
                         }}
                     />
                     <MultipleSelect
-                        menuItems={[
-                            {
-                                key: 1,
-                                value: 'Urlop',
-                            },
-                            {
-                                key: 2,
-                                value: 'Delegacja',
-                            },
-                        ]}
-                        id={'statusIdCollection'}
-                        value={formikFilter.values.statusIdCollection}
+                        menuItems={typeOfUnavailabilityOptions()}
+                        id={'unavilibilityTypeCollection'}
+                        value={formikFilter.values.unavilibilityTypeCollection}
                         formikSetFieldValue={function (id: string, value: any): void {
                             formikFilter.setFieldValue(id, value)
                         }}
