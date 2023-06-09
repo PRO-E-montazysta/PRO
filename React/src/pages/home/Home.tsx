@@ -19,12 +19,6 @@ const Home = () => {
                 <Paper sx={{ p: '20px' }}>
                     <Calendar  />
                 </Paper>
-                <Box sx={{ mt: '100px' }}>
-                    <FormTitle mainTitle="Planer" />
-                    <Paper sx={{ p: '20px' }}>
-                        {/* <Planner eventsCollection={events} /> */}
-                    </Paper>
-                </Box>
             </Box>
         </FormBox>
     )

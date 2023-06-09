@@ -70,7 +70,7 @@ const Calendar = () => {
                     if (formikFilter.values.unavilibilityTypeCollection.indexOf(d.typeOfUnavailability) > -1)
                         unavalibility = true
 
-                    return (order || employee) && orderStatus && unavalibility
+                    return order && employee && orderStatus && unavalibility
                 })
                 .map((d) => {
                     return {
