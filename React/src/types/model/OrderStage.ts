@@ -10,16 +10,16 @@ export type OrderStageSimpleToolReleases = Array<{
 }>
 
 export type OrderStageSimpleElementRelease = Array<{
-    id: number
-    releaseTime: Date
-    releasedQuantity: number
-    returnedQuantity: number
-    returnTime: null
-    releasedById: number
-    elementId: string
-    demandAdHocId: number
-    orderStageId: number
-    deleted: false
+          id: number,
+          releaseTime: Date,
+          releasedQuantity: number,
+          returnedQuantity: number,
+          returnTime: null,
+          releasedById: number,
+          elementId: string,
+          demandAdHocId: number,
+          orderStageId: number,
+          deleted: false
 }>
 
 export type OrderStage = {

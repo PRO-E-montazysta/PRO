@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="stage"
+            type="com.example.e_montazysta.ui.stage.StageListItem" />
+        <variable
+            name="itemClickListener"
+            type="com.example.e_montazysta.ui.stage.CustomClickListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:backgroundTint="?colorSurface"
+        android:clickable="true"
+        android:focusable="true"
+        android:minHeight="@dimen/list_item_min_height_two_line"
+        tools:theme="@style/Theme.Material3.DayNight"
+        android:onClick="@{() -> itemClickListener.cardClicked(stage)}"
+        >
+
+        <include layout="@layout/list_item_template"
+            android:id="@+id/item"
+            app:headline="@{stage.name}"
+            app:supportText='@={stage.id +""}'
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            >
+        </include>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

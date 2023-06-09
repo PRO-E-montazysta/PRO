@@ -50,7 +50,7 @@ public class EventCriteriaRepository {
         CriteriaQuery<ElementEvent> elementEventCriteriaQuery = criteriaBuilder.createQuery(ElementEvent.class);
         Root<ElementEvent> elementEventRoot = elementEventCriteriaQuery.from(ElementEvent.class);
         Predicate elementEventPredicate = getElementEventPredicate(eventSearchCriteria, elementEventRoot, principal);
-        elementEventCriteriaQuery.where(elementEventPredicate);
+        elementEventCriteriaQuery.where(elementEventPredicate).distinct(true);
 
         TypedQuery<ElementEvent> typedQuery = entityManager.createQuery(elementEventCriteriaQuery);
         List<ElementEvent> elementEvents = typedQuery.getResultList();
@@ -80,7 +80,7 @@ public class EventCriteriaRepository {
         if (Objects.nonNull(eventSearchCriteria.getEventType())) {
             List<Predicate> eventTypePredicates = new ArrayList<>();
             for (String type : eventSearchCriteria.getEventType()) {
-                eventTypePredicates.add(criteriaBuilder.equal(criteriaBuilder.substring(toolEventRoot.get("tool").get("code"), 0, 1), type));
+                eventTypePredicates.add(criteriaBuilder.like(toolEventRoot.get("tool").get("code"), type + "|%"));
             }
             predicates.add(criteriaBuilder.or(eventTypePredicates.toArray(new Predicate[0])));
         }
@@ -145,7 +145,7 @@ public class EventCriteriaRepository {
         if (Objects.nonNull(eventSearchCriteria.getEventType())) {
             List<Predicate> eventTypePredicates = new ArrayList<>();
             for (String type : eventSearchCriteria.getEventType()) {
-                eventTypePredicates.add(criteriaBuilder.equal(criteriaBuilder.substring(elementEventRoot.get("element").get("code"), 0, 1), type));
+                eventTypePredicates.add(criteriaBuilder.like(elementEventRoot.get("element").get("code"), type + "|%"));
             }
             predicates.add(criteriaBuilder.or(eventTypePredicates.toArray(new Predicate[0])));
         }

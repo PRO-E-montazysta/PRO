@@ -32,4 +32,5 @@ public class EmployeeDto extends AppUserDto {
     private String unavailbilityDescription;
     private LocalDateTime unavailableFrom;
     private LocalDateTime unavailableTo;
+    private boolean active;
 }

@@ -7,7 +7,7 @@ import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -20,7 +20,7 @@ import java.util.List;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Company {
 
-    public Company(Long id, String companyName, LocalDate createdAt, CompanyStatus status, String statusReason,
+    public Company(Long id, String companyName, LocalDateTime createdAt, CompanyStatus status, String statusReason,
                    List<Warehouse> warehouses, List<Orders> orders, List<Client> clients, List<Employment> employments,
                    List<ToolType> toolTypes) {
         this.id = id;
@@ -40,7 +40,7 @@ public class Company {
     private Long id;
 
     private String companyName;
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
     private CompanyStatus status;
     private String statusReason;
     private boolean deleted = Boolean.FALSE;

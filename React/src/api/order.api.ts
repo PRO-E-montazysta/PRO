@@ -20,3 +20,11 @@ export const postOrder = (data: Order) => {
 export const deleteOrder = (id: string | number) => {
     return makeServiceCall(`/orders/${id}`, 'DELETE', {})
 }
+
+export const orderNextStatus = (id: string | number) => {
+    return makeServiceCall(`/orders/nextStatus/${id}`, 'PUT', {})
+}
+
+export const orderPreviousStatus = (id: string | number) => {
+    return makeServiceCall(`/orders/previousStatus/${id}`, 'PUT', {})
+}

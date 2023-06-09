@@ -1,6 +1,7 @@
 package com.emontazysta.model.searchcriteria;
 
 import lombok.Data;
+import java.util.List;
 
 @Data
 public class AppUserSearchCriteria {
@@ -10,4 +11,7 @@ public class AppUserSearchCriteria {
     private String availableFrom;
     private String availableTo;
     private String email;
+    private String pesel;
+    private String phone;
+    private List<String> roles;
 }

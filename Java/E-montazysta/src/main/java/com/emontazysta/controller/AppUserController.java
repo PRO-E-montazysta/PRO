@@ -2,6 +2,7 @@ package com.emontazysta.controller;
 
 import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.UserMapper;
+import com.emontazysta.model.AppUser;
 import com.emontazysta.model.dto.AppUserDto;
 import com.emontazysta.model.dto.EmployeeDto;
 import com.emontazysta.model.dto.EmploymentDto;
@@ -106,8 +107,8 @@ public class AppUserController {
     @GetMapping("/{id}")
     @Operation(description = "Allows to get User by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public AppUserDto getUserById(@PathVariable Long id) {
-        Optional<EmploymentDto> userEmployment = employmentService.getCurrentEmploymentByEmployeeId(id);
-        Long wantedUserCompanyId = userEmployment.isPresent() ? userEmployment.get().getCompanyId() : null;
+        AppUser wantedUser = userService.getById(id);
+        Long wantedUserCompanyId = wantedUser.getEmployments() != null ? wantedUser.getEmployments().get(0).getCompany().getId() : null;
         Long loggedUserCompanyId = authUtils.getLoggedUserCompanyId();
 
         if(Objects.equals(wantedUserCompanyId, loggedUserCompanyId)){
@@ -156,8 +157,8 @@ public class AppUserController {
 
     @GetMapping("/filter")
     @Operation(description = "Return filtered Users by given parameters.", security = @SecurityRequirement(name = "bearer-key"))
-    public ResponseEntity<List<EmployeeDto>> filterUsers(AppUserSearchCriteria appUserSearchCriteria) {
-        return new ResponseEntity<>(userService.getFilteredUsers(appUserSearchCriteria), HttpStatus.OK);
+    public ResponseEntity<List<EmployeeDto>> filterUsers(AppUserSearchCriteria appUserSearchCriteria, Principal principal) {
+        return new ResponseEntity<>(userService.getFilteredUsers(appUserSearchCriteria, principal), HttpStatus.OK);
     }
 
 }

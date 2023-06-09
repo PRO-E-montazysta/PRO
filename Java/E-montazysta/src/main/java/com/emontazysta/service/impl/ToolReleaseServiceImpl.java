@@ -53,7 +53,6 @@ public class ToolReleaseServiceImpl implements ToolReleaseService {
         ToolRelease updatedToolRelease = toolReleaseMapper.toEntity(toolReleaseDto);
         ToolRelease toolReleaseDb = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         toolReleaseDb.setReturnTime(updatedToolRelease.getReturnTime());
-        toolReleaseDb.setReceivedBy(updatedToolRelease.getReceivedBy());
         toolReleaseDb.setReleasedBy(updatedToolRelease.getReleasedBy());
         toolReleaseDb.setTool(updatedToolRelease.getTool());
         toolReleaseDb.setDemandAdHoc(updatedToolRelease.getDemandAdHoc());

@@ -14,6 +14,13 @@ import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { getInitValues, getValidatinSchema } from '../../helpers/form.helper'
 import { useAddElement, useDeleteElement, useEditElement, useElementData } from './hooks'
 import { useQueriesStatus } from '../../hooks/useQueriesStatus'
+import Grid from '@mui/material/Grid'
+import Card from '@mui/material/Card'
+import ExpandMore from '../../components/expandMore/ExpandMore'
+import HistoryIcon from '@mui/icons-material/History'
+import ElementInWarehouseView from '../elementInWarehouse'
+import { Role } from '../../types/roleEnum'
+import { isAuthorized } from '../../utils/authorize'
 
 const ElementDetails = () => {
     const params = useParams()
@@ -92,6 +99,10 @@ const ElementDetails = () => {
         }
     }, [params.id])
 
+    const canPrintLabel = () => {
+        return isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])
+    }
+
     return (
         <>
             <FormBox>
@@ -105,6 +116,17 @@ const ElementDetails = () => {
                     ) : (
                         <>
                             <FormStructure formStructure={formStructure} formik={formik} pageMode={pageMode} />
+
+                            <Grid container alignItems="center" justifyContent="center" marginTop={2}>
+                                <Card sx={{ width: '100%', left: '50%' }}>
+                                    <ExpandMore
+                                        titleIcon={<HistoryIcon />}
+                                        title="Stan magazynowy"
+                                        cardContent={<ElementInWarehouseView elementId={Number(params.id)} />}
+                                    />
+                                </Card>
+                            </Grid>
+
                             <FormButtons
                                 id={params.id}
                                 onCancel={handleCancel}
@@ -113,7 +135,13 @@ const ElementDetails = () => {
                                 onReset={handleReset}
                                 onSubmit={formik.submitForm}
                                 readonlyMode={pageMode == 'read'}
-                                printLabel={[elementData.data?.name as string, elementData.data?.code as string]}
+                                printLabel={
+                                    canPrintLabel()
+                                        ? [elementData.data?.name as string, elementData.data?.code as string]
+                                        : undefined
+                                }
+                                editPermissionRoles={[Role.WAREHOUSE_MANAGER]}
+                                deletePermissionRoles={[Role.WAREHOUSE_MANAGER]}
                             />
                         </>
                     )}

@@ -14,13 +14,14 @@ type FatTableParams<T> = {
     filterProps?: Filter
     headCells: Array<HeadCell<T>>
     initOrderBy: keyof T
+    initOrderByDesc?: boolean
     onClickRow: (event: React.MouseEvent<unknown>, row: T) => void
-    pageHeader: string
+    pageHeader?: string
     idPropName: keyof T
 }
 
 function FatTable<T>(props: FatTableParams<T>) {
-    const { query, filterProps, headCells, initOrderBy, onClickRow, pageHeader, idPropName } = props
+    const { query, filterProps, headCells, initOrderBy, initOrderByDesc, onClickRow, pageHeader, idPropName } = props
     const appSize = useBreakpoints()
 
     const headCellsFiltered = useMemo(() => {
@@ -39,18 +40,28 @@ function FatTable<T>(props: FatTableParams<T>) {
     }, [appSize])
 
     return (
-        <Box sx={{ p: appSize.isMobile || appSize.isTablet ? '10px' : '20px', maxWidth: '1200px', m: 'auto' }}>
-            <Typography
-                variant="h4"
-                fontWeight="bold"
-                padding="5px"
-                color={theme.palette.primary.contrastText}
-                fontSize={appSize.isMobile || appSize.isTablet ? '22px' : '32px'}
-            >
-                {pageHeader}
-            </Typography>
+        <Box
+            sx={{
+                p: appSize.isMobile || appSize.isTablet ? '10px' : pageHeader ? '20px' : '0 10px 10px',
+                maxWidth: '1200px',
+                m: 'auto',
+            }}
+        >
+            {pageHeader ? (
+                <Typography
+                    variant="h4"
+                    fontWeight="bold"
+                    padding="5px"
+                    color={theme.palette.primary.contrastText}
+                    fontSize={appSize.isMobile || appSize.isTablet ? '22px' : '32px'}
+                >
+                    {pageHeader}
+                </Typography>
+            ) : (
+                ''
+            )}
             {filterProps && (
-                <Box sx={{ p: appSize.isMobile || appSize.isTablet ? '10px 0' : '20px 0' }}>
+                <Box sx={{ p: appSize.isMobile || appSize.isTablet ? '10px 0' : pageHeader ? '20px 0' : '10px 0' }}>
                     {<TableFilter {...filterProps} />}
                 </Box>
             )}
@@ -62,6 +73,7 @@ function FatTable<T>(props: FatTableParams<T>) {
                     headCells={headCellsFiltered}
                     initOrderBy={initOrderBy}
                     onClickRow={onClickRow}
+                    initOrderByDesc={initOrderByDesc ? initOrderByDesc : false}
                 />
             }
         </Box>

@@ -20,6 +20,7 @@ import com.emontazysta.repository.NotificationRepository;
 import com.emontazysta.repository.OrderRepository;
 import com.emontazysta.repository.ToolEventRepository;
 import com.emontazysta.repository.UnavailabilityRepository;
+import com.emontazysta.service.EmploymentService;
 import com.emontazysta.service.StatusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -38,6 +39,7 @@ public class SpecialistMapper {
     private final CommentRepository commentRepository;
     private final ElementEventRepository elementEventRepository;
     private final EmploymentRepository employmentRepository;
+    private final EmploymentService employmentService;
     private final AttachmentRepository attachmentRepository;
     private final ToolEventRepository toolEventRepository;
     private final OrderRepository orderRepository;
@@ -87,6 +89,7 @@ public class SpecialistMapper {
                 .unavailableTo(statusService.checkUnavailability(specialist) == null ? null : statusService.checkUnavailability(specialist).getUnavailableTo())
                 .unavailbilityDescription(statusService.checkUnavailability(specialist) == null ? null : statusService.checkUnavailability(specialist).getDescription())
                 .deleted(specialist.isDeleted())
+                .active(employmentService.getCurrentEmploymentByEmployeeId(specialist.getId()).isPresent())
                 .build();
     }
 

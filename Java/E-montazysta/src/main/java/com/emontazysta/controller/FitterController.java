@@ -1,6 +1,7 @@
 package com.emontazysta.controller;
 
 import com.emontazysta.model.dto.FitterDto;
+import com.emontazysta.model.searchcriteria.AppUserSearchCriteria;
 import com.emontazysta.service.FitterService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
@@ -31,8 +33,8 @@ public class FitterController {
 
     @GetMapping("/all")
     @Operation(description = "Allows to get all Fitters.", security = @SecurityRequirement(name = "bearer-key"))
-    public List<FitterDto> getAllFitters() {
-        return fitterService.getAll();
+    public List<FitterDto> getAllFitters(Principal principal) {
+        return fitterService.getAll(principal);
     }
 
     @GetMapping("/{id}")
@@ -58,5 +60,11 @@ public class FitterController {
     @Operation(description = "Allows to update Fitter by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public FitterDto updateFitter(@PathVariable Long id, @Valid @RequestBody FitterDto fitter) {
         return fitterService.update(id, fitter);
+    }
+
+    @GetMapping("/available")
+    @Operation(description = "Allows to get available Fitters.", security = @SecurityRequirement(name = "bearer-key"))
+    public List<FitterDto> getAvailableFitters(AppUserSearchCriteria appUserSearchCriteria, Principal principal) {
+        return fitterService.getAvailable(appUserSearchCriteria, principal);
     }
 }
