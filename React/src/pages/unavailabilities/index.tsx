@@ -6,14 +6,14 @@ import { AxiosError } from 'axios'
 import { getFilteredUnavailabilities } from '../../api/unavailability.api'
 import { filterInitStructure, headCells } from './helper'
 import { useNavigate } from 'react-router-dom'
-import { getFilterParams, getInputs, setNewFilterValues } from '../../helpers/filter.helper'
+import { getFilterParams, getFormikMetadata, newFilterValues } from '../../helpers/filter.helper'
 import { useFormik } from 'formik'
 import { UnavailabilityFilter } from '../../types/model/Unavailability'
 
 const Unavailabilities = () => {
     const [filterStructure, setFilterStructure] = useState(filterInitStructure)
     const [filterParams, setFilterParams] = useState(getFilterParams(filterInitStructure))
-    const { initialValues, inputs } = getInputs(filterInitStructure)
+    const { initialValues, inputs, validationSchema } = getFormikMetadata(filterInitStructure)
     const navigation = useNavigate()
 
     const queryUnavailabilities = useQuery<Array<UnavailabilityFilter>, AxiosError>(
@@ -24,9 +24,9 @@ const Unavailabilities = () => {
     const filter: Filter = {
         formik: useFormik({
             initialValues: initialValues,
-            // validationSchema={{}}
+            validationSchema: validationSchema,
             onSubmit: () => {
-                setFilterStructure(setNewFilterValues(filter.formik.values, filterStructure))
+                setFilterStructure(newFilterValues(filter.formik.values, filterStructure))
                 setFilterParams(getFilterParams(filterStructure))
             },
             onReset: () => filter.formik.setValues(initialValues),
