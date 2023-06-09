@@ -22,11 +22,6 @@
             android:windowSoftInputMode="adjustPan"/>
 
         <activity
-            android:name=".ui.activities.SettingsActivity"
-            android:exported="false"
-            android:label="@string/title_settings" />
-
-        <activity
             android:name=".ui.activities.LoginActivity"
             android:exported="false"
             android:label="@string/title_activity_login"
