@@ -278,7 +278,7 @@ const OrderDetails = () => {
                                     <Planner
                                         orderId={params.id}
                                         initialDate={moment(orderData.data?.plannedStart)}
-                                        readonly={!isAuthorized([Role.MANAGER])}
+                                        readonly={!isAuthorized([Role.FOREMAN])}
                                     />
                                 </Paper>
                             </Box>
