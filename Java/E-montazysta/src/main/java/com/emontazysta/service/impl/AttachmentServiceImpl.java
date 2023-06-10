@@ -13,8 +13,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -45,6 +47,9 @@ public class AttachmentServiceImpl implements AttachmentService {
             Attachment attachment = attachmentMapper.toEntity(attachmentDto, file);
             attachment.setCreatedAt(LocalDateTime.now());
             return attachmentMapper.toDto(repository.save(attachment));
+        } catch (NoSuchElementException e) {
+            log.error("Error during saving attachment - filename does not contain correct extension", e);
+            return null;
         } catch (IOException e) {
             log.error("Error during saving attachment", e);
             return null;
