@@ -8,6 +8,7 @@ export type ElementEvent = {
     quantity: number
     createdById: number
     acceptedById: number
-    toolId: number
+    elementId: number
     attachments: Array<number>
+    deleted: boolean
 }

@@ -1,3 +1,27 @@
+export type OrderStageSimpleToolReleases = Array<{
+    deleted: boolean
+    demandAdHocId: number
+    id: number
+    orderStageId: number
+    releaseTime: Date
+    releasedById: string | null
+    returnTime: Date
+    toolId: string
+}>
+
+export type OrderStageSimpleElementRelease = Array<{
+          id: number,
+          releaseTime: Date,
+          releasedQuantity: number,
+          returnedQuantity: number,
+          returnTime: null,
+          releasedById: number,
+          elementId: string,
+          demandAdHocId: number,
+          orderStageId: number,
+          deleted: false
+}>
+
 export type OrderStage = {
     id?: number
     name: string
@@ -30,6 +54,8 @@ export type OrderStage = {
         numberOfElements: number
         elementId: string
     }>
+    simpleToolReleases: OrderStageSimpleToolReleases
+    simpleElementReturnReleases: OrderStageSimpleElementRelease
 }
 
 export type CreateOrderStage = {

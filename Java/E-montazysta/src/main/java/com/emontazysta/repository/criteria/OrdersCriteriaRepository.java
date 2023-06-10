@@ -23,7 +23,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
-public class OrdersCriteriaRepository {
+public class    OrdersCriteriaRepository {
 
     private final EntityManager entityManager;
     private final CriteriaBuilder criteriaBuilder;
@@ -42,7 +42,7 @@ public class OrdersCriteriaRepository {
         CriteriaQuery<Orders> criteriaQuery = criteriaBuilder.createQuery(Orders.class);
         Root<Orders> ordersRoot = criteriaQuery.from(Orders.class);
         Predicate predicate = getPredicate(ordersSearchCriteria, ordersRoot, principal);
-        criteriaQuery.where(predicate);
+        criteriaQuery.where(predicate).distinct(true);
 
         TypedQuery<Orders> typedQuery = entityManager.createQuery(criteriaQuery);
         List<Orders> orders = typedQuery.getResultList();
@@ -103,6 +103,21 @@ public class OrdersCriteriaRepository {
 
         AppUser user =  userService.findByUsername(principal.getName());
         Boolean isCloudAdmin = user.getRoles().contains(Role.CLOUD_ADMIN);
+
+        //Get orders for Specialist
+        if(user.getRoles().contains(Role.SPECIALIST)) {
+            predicates.add(criteriaBuilder.equal(ordersRoot.get("status"), OrderStatus.PLANNING));
+        }
+
+        //Get orders assigned to Foreman
+        if(user.getRoles().contains(Role.FOREMAN)) {
+            predicates.add(criteriaBuilder.equal(ordersRoot.get("assignedTo").get("id"), user.getId()));
+        }
+
+        //Get orders by orderstages assigned to Fitter
+        if(user.getRoles().contains(Role.FITTER)) {
+            predicates.add(criteriaBuilder.isMember(user, ordersRoot.join("orderStages").get("assignedTo")));
+        }
 
         if(!isCloudAdmin) {
             Optional<Employment>  takingEmployment = user.getEmployments().stream()

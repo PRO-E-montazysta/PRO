@@ -1,6 +1,5 @@
 import { useFormik } from 'formik'
 import { useContext, useEffect, useState } from 'react'
-
 import { useParams } from 'react-router-dom'
 import { useFormStructure } from './helper'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
@@ -24,6 +23,8 @@ import { PageMode } from '../../types/form'
 import { useFormStructureLocation, useLocationData } from '../../components/localization/hooks'
 import { Warehouse } from '../../types/model/Warehouse'
 import Localization from '../../components/localization/Localization'
+import Error from '../../components/error/Error'
+import { Role } from '../../types/roleEnum'
 
 const WarehouseDetails = () => {
     const params = useParams()
@@ -73,7 +74,7 @@ const WarehouseDetails = () => {
                 { text: 'Anuluj', value: 0, variant: 'outlined' },
             ],
             callback: (result: number) => {
-                if (result == 1 && params.id && Number.isInteger(params.id)) deleteWarehouseMutation.mutate(params.id)
+                if (result == 1 && params.id) deleteWarehouseMutation.mutate(params.id)
             },
         })
     }
@@ -146,7 +147,11 @@ const WarehouseDetails = () => {
         }
     }, [queryLocationData.data])
 
-    return (
+    return warehouseData.data?.deleted ? (
+        <>
+            <Error code={404} message={'Ten obiekt został usunięty'} />
+        </>
+    ) : (
         <FormBox>
             <FormTitle
                 mainTitle={pageMode == 'new' ? 'Nowy magazyn' : 'Magazyn'}
@@ -172,6 +177,8 @@ const WarehouseDetails = () => {
                             onReset={handleReset}
                             onSubmit={formik.submitForm}
                             readonlyMode={pageMode == 'read'}
+                            editPermissionRoles={[Role.ADMIN, Role.WAREHOUSE_MANAGER]}
+                            deletePermissionRoles={[Role.ADMIN, Role.WAREHOUSE_MANAGER]}
                         />
                     </>
                 )}

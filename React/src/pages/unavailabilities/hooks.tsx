@@ -76,11 +76,8 @@ export const useDeleteUnavailability = (onSuccess: () => void) => {
                 ],
                 title: 'Sukces!',
                 content: <Box>Nieobecność została usunięta</Box>,
-                callback: () => () => {
-                    onSuccess()
-                    navigate('/unavailabilities')
-                },
             })
+            navigate('/unavailabilities')
         },
         onError: showError,
     })
