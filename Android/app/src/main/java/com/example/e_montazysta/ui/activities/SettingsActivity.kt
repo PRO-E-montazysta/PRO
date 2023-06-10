@@ -20,26 +20,87 @@ import androidx.fragment.app.Fragment
 import com.example.e_montazysta.databinding.ActivitySettingsBinding
 import com.google.android.material.switchmaterial.SwitchMaterial
 import android.os.Build
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.navigation.fragment.findNavController
+import coil.load
+import coil.transform.CircleCropTransformation
 import com.google.android.material.button.MaterialButton
+import com.example.e_montazysta.data.model.CurrentUser
+import com.example.e_montazysta.ui.fragments.dashboard.DashboardFragmentDirections
+import com.example.e_montazysta.ui.notification.NotificationListViewModel
+import com.example.e_montazysta.ui.viewmodels.SettingsViewModel
+import com.google.android.material.badge.BadgeDrawable
+import com.google.android.material.badge.BadgeUtils
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
+import com.example.e_montazysta.ui.notification.NotificationListFragment
+import com.example.e_montazysta.ui.viewmodels.DashboardViewModel
+//import androidx.navigation.fragment.findNavController
 
 class SettingsActivity : Fragment() {
 
     private lateinit var binding: ActivitySettingsBinding
+    private val viewModel: DashboardViewModel by viewModel()
+    private val notificationViewModel: NotificationListViewModel by viewModel()
+   // private var isBackPressedFromDialog = false
     private lateinit var themeHelper: ThemeHelper
     private val notificationId = 1
 
+    @com.google.android.material.badge.ExperimentalBadgeUtils
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = ActivitySettingsBinding.inflate(layoutInflater, container, false)
+        binding = ActivitySettingsBinding.inflate(inflater, container, false)
 
         themeHelper = ThemeHelper(requireContext())
         binding.toolbar.title = "Ustawienia"
+
+        viewModel.getCurrentUser()
+        viewModel.currentUser.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                binding.userName.text = it.firstName + ' ' + it.lastName
+                binding.companyName.text = it.companyName
+                binding.profilePicture.load(it.profilePhotoUrl ?: "https://i.imgflip.com/3u04h5.jpg?a468072"){
+                    transformations(CircleCropTransformation())
+                }
+            }
+        })
+
+        // TOOLBAR
+
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.notifications -> {
+                    val action = SettingsActivityDirections.actionSettingsFragmentToNotificationListFragment()
+                    view?.findNavController()?.navigate(action)
+                    true
+                }
+                else -> {
+                    Toast.makeText(context, "Błąd dzielenia przez ogórek", Toast.LENGTH_LONG).show()
+                    false}
+
+            }
+        }
+
+        val badgeDrawable = BadgeDrawable.create(requireContext())
+        notificationViewModel.getNotification()
+        notificationViewModel.notificationsNumberLiveData.observe(viewLifecycleOwner) {
+                notificationNumber ->
+            when(notificationNumber){
+                0 -> BadgeUtils.detachBadgeDrawable(badgeDrawable, binding.toolbar, R.id.notifications)
+                else -> {
+                    badgeDrawable.number = notificationNumber
+                    BadgeUtils.attachBadgeDrawable(badgeDrawable, binding.toolbar, R.id.notifications)
+                }
+            }
+
+        }
 
         // Logout the User
         val logoutButton: MaterialButton = binding.logoutButton

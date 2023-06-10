@@ -20,26 +20,26 @@ import java.text.DateFormat
 
 
 class ElementDetailFragment : Fragment() {
-   /* lateinit var topAppBar : MaterialToolbar
+    /* lateinit var topAppBar : MaterialToolbar
 
-    //deklaracja potrzebna do działania FAB w oknie Element
-    private lateinit var mActionMainFab: FloatingActionButton
-    private lateinit var mElementEventFab: FloatingActionButton
-    private lateinit var mElementManageFab: FloatingActionButton
+     //deklaracja potrzebna do działania FAB w oknie Element
+     private lateinit var mActionMainFab: FloatingActionButton
+     private lateinit var mElementEventFab: FloatingActionButton
+     private lateinit var mElementManageFab: FloatingActionButton
 
-    //wlaczanie/wylaczanie widocznosci tekstu FABów
-    private lateinit var elementEventFabText: TextView
-    private lateinit var elementManageFabText: TextView
+     //wlaczanie/wylaczanie widocznosci tekstu FABów
+     private lateinit var elementEventFabText: TextView
+     private lateinit var elementManageFabText: TextView
 
-    //sprawdzanie, czy FAB podległe pod główny FAB mają być widoczne
-    private var subFabsVisible: Boolean? = null*/
+     //sprawdzanie, czy FAB podległe pod główny FAB mają być widoczne
+     private var subFabsVisible: Boolean? = null*/
 
     private val elementDetailViewModel: ElementDetailViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         //super.onCreate(savedInstanceState)
 
-       //setContentView(R.layout.activity_element)
+        //setContentView(R.layout.activity_element)
 
         /*topAppBar = this(R.id.topAppBar)
         topAppBar.setNavigationOnClickListener {
@@ -116,38 +116,44 @@ class ElementDetailFragment : Fragment() {
 
         //Funkcjonalność pokazywanie przycisków FAB - dzieci
         //po kliknięciu w FAB - parent
-       /* mActionMainFab.setOnClickListener(View.OnClickListener {
-            (if (!subFabsVisible!!) {
-                mElementEventFab.show()
-                elementEventFabText.visibility = View.VISIBLE
-                mElementManageFab.show()
-                elementManageFabText.visibility = View.VISIBLE
+        /* mActionMainFab.setOnClickListener(View.OnClickListener {
+             (if (!subFabsVisible!!) {
+                 mElementEventFab.show()
+                 elementEventFabText.visibility = View.VISIBLE
+                 mElementManageFab.show()
+                 elementManageFabText.visibility = View.VISIBLE
 
-                //zmieniamy boolean subFabsVisible na true
-                true
-                //ponieważ pokazujemy FAB - dziecko wraz z tekstem
-            } else {
-                //ukrywamy FAB - dziecko wraz z tekstem
-                mElementEventFab.hide()
-                elementEventFabText.visibility = View.GONE
-                mElementManageFab.hide()
-                elementManageFabText.visibility = View.GONE
+                 //zmieniamy boolean subFabsVisible na true
+                 true
+                 //ponieważ pokazujemy FAB - dziecko wraz z tekstem
+             } else {
+                 //ukrywamy FAB - dziecko wraz z tekstem
+                 mElementEventFab.hide()
+                 elementEventFabText.visibility = View.GONE
+                 mElementManageFab.hide()
+                 elementManageFabText.visibility = View.GONE
 
-                //zmieniamy boolean subFabsVisible na false
-                false
-                //ponieważ ukrywamy FAB - dziecko wraz z tekstem
-            }).also { subFabsVisible = it }
-        })
+                 //zmieniamy boolean subFabsVisible na false
+                 false
+                 //ponieważ ukrywamy FAB - dziecko wraz z tekstem
+             }).also { subFabsVisible = it }
+         })
 
-        //Mockup zgłaszania usterki
-        mElementEventFab.setOnClickListener{
-            Toast.makeText(activity, "Zgłoszono usterkę", Toast.LENGTH_SHORT).show()
+         //Mockup zgłaszania usterki
+         mElementEventFab.setOnClickListener{
+             Toast.makeText(activity, "Zgłoszono usterkę", Toast.LENGTH_SHORT).show()
+         }
+
+         //Mockup wydawania/zwracania elementu
+         mElementManageFab.setOnClickListener {
+             Toast.makeText(activity, "Przeniesiono wybrany element", Toast.LENGTH_SHORT).show()
+         }*/
+
+        val toolbar: MaterialToolbar = binding.toolbar
+        toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
         }
 
-        //Mockup wydawania/zwracania elementu
-        mElementManageFab.setOnClickListener {
-            Toast.makeText(activity, "Przeniesiono wybrany element", Toast.LENGTH_SHORT).show()
-        }*/
         return binding.root
     }
 }
