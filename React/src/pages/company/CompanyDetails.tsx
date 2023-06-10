@@ -20,6 +20,7 @@ import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { useInputWidth } from '../../hooks/useInputWidth'
 import Error from '../../components/error/Error'
+import { Role } from '../../types/roleEnum'
 
 const CompanyDetails = () => {
     const params = useParams()
@@ -63,6 +64,17 @@ const CompanyDetails = () => {
         validationSchema: getValidatinSchema(formStructure, pageMode),
         onSubmit: handleSubmit,
     })
+
+    //show expanded component while validation errors
+    useEffect(() => {
+        if (Object.keys(formik.errors).length > 0) {
+            setIsAddAdminTabOpen(true)
+        }
+    }, [formik.isSubmitting])
+    const [isAddAdminTabOpen, setIsAddAdminTabOpen] = useState(false)
+    useEffect(() => {
+        if (isAddAdminTabOpen) setIsAddAdminTabOpen(false)
+    }, [isAddAdminTabOpen])
 
     const handleReset = () => {
         formik.resetForm()
@@ -138,6 +150,7 @@ const CompanyDetails = () => {
                     readonly={pageMode == 'read'}
                     label="Hasło"
                     type="password"
+                    placeholder="POLE TYMCZASOWE"
                 />
                 <FormInput
                     style={{ width: inputWidth }}
@@ -154,6 +167,7 @@ const CompanyDetails = () => {
                     readonly={pageMode == 'read'}
                     label="Telefon"
                     type="text"
+                    placeholder="+48123456789"
                 />
                 <FormInput
                     style={{ width: inputWidth }}
@@ -185,8 +199,9 @@ const CompanyDetails = () => {
                                     <Card sx={{ width: '100%', left: '50%' }}>
                                         <ExpandMore
                                             titleIcon={<PermContactCalendarIcon />}
-                                            title="Dane dministratora firmy"
+                                            title="Dane administratora firmy"
                                             cardContent={addAdminCardContent()}
+                                            isOpen={isAddAdminTabOpen}
                                         />
                                     </Card>
                                 </Grid>
@@ -199,6 +214,8 @@ const CompanyDetails = () => {
                                 onReset={handleReset}
                                 onSubmit={formik.submitForm}
                                 readonlyMode={pageMode == 'read'}
+                                deletePermissionRoles={[Role.CLOUD_ADMIN]}
+                                editPermissionRoles={[Role.CLOUD_ADMIN]}
                             />
                         </>
                     )}

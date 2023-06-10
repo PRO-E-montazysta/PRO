@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,7 +54,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CompanyDto add(CompanyDto companyDto) {
         Company company = companyMapper.toEntity(companyDto);
-        company.setCreatedAt(LocalDate.now());
+        company.setCreatedAt(LocalDateTime.now());
 
         return companyMapper.toDto(companyRepository.save(company));
     }

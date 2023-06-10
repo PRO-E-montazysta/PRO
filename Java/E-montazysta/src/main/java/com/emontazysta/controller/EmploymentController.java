@@ -9,8 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 import java.util.List;
 
 import static com.emontazysta.configuration.Constants.API_BASE_CONSTANT;
@@ -23,34 +21,22 @@ public class EmploymentController {
 
     private final EmploymentService employmentService;
 
-    @GetMapping("/all")
-    @Operation(description = "Allows to get all Employments.", security = @SecurityRequirement(name = "bearer-key"))
-    public List<EmploymentDto> getAll() {
-        return employmentService.getAll();
+    @GetMapping("/for-employee/{employeeId}")
+    @Operation(description = "Allows to get all Employments of given employee.", security = @SecurityRequirement(name = "bearer-key"))
+    public List<EmploymentDto> getAllEmployeeEmployments(@PathVariable Long employeeId) {
+        return employmentService.getAllEmployeeEmployments(employeeId);
     }
 
-    @GetMapping("/{id}")
-    @Operation(description = "Allows to get Employment by given Id.", security = @SecurityRequirement(name = "bearer-key"))
-    public EmploymentDto getById(@PathVariable Long id) {
-        return employmentService.getById(id);
-    }
-
-    @PostMapping
+    @PostMapping("/{employeeId}")
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(description = "Allows to add new Employment.", security = @SecurityRequirement(name = "bearer-key"))
-    public EmploymentDto add(@Valid @RequestBody EmploymentDto employment) {
-        return employmentService.add(employment);
+    @Operation(description = "Allows to hire Employee of given id.", security = @SecurityRequirement(name = "bearer-key"))
+    public EmploymentDto hire(@PathVariable Long employeeId) {
+        return employmentService.hire(employeeId);
     }
 
-    @DeleteMapping("/{id}")
-    @Operation(description = "Allows to delete new Employment.", security = @SecurityRequirement(name = "bearer-key"))
-    public void delete(@PathVariable Long id) {
-        employmentService.delete(id);
-    }
-
-    @PutMapping("/{id}")
-    @Operation(description = "Allows to update new Employment.", security = @SecurityRequirement(name = "bearer-key"))
-    public EmploymentDto update(@PathVariable Long id, @Valid @RequestBody EmploymentDto employment) {
-        return employmentService.update(id, employment);
+    @PutMapping("/{employeeId}")
+    @Operation(description = "Allows to dismiss Employee of given id.", security = @SecurityRequirement(name = "bearer-key"))
+    public EmploymentDto dismiss(@PathVariable Long employeeId) {
+        return employmentService.dismiss(employeeId);
     }
 }

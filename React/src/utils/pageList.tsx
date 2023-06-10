@@ -24,8 +24,14 @@ import ClientDetails from '../pages/clients/ClientDetails'
 import Events from '../pages/events'
 import ToolEventDetails from '../pages/events/ToolEventDetails'
 import ElementEventDetails from '../pages/events/ElementEventDetails'
+import DemandAdHoc from '../pages/demandAdHoc'
+import DemandAdHocDetails from '../pages/demandAdHoc/DemandAdHocDetails'
 import Unavailabilities from '../pages/unavailabilities'
 import UnavailabilityDetails from '../pages/unavailabilities/UnavailabilityDetails'
+import Notifications from '../pages/notifications'
+import ElementInWarehouseDetails from '../pages/elementInWarehouse/ElementInWarehouseDetails'
+import ForgotPasswordPage from '../pages/ForgotPasswordPage'
+import ResetPasswordPage from '../pages/ResetPasswordPage'
 
 export type PageProps = {
     name: string
@@ -54,6 +60,20 @@ export const pageList: Array<PageProps> = [
         path: '/login',
         allowedRoles: [Role['*']],
         component: <LoginPage />,
+    },
+    {
+        inNav: false,
+        name: 'Zresetuj hasło',
+        path: '/forgot',
+        allowedRoles: [Role['*']],
+        component: <ForgotPasswordPage />,
+    },
+    {
+        inNav: false,
+        name: 'Resetowanie hasła',
+        path: '/new-password',
+        allowedRoles: [Role['*']],
+        component: <ResetPasswordPage />,
     },
     {
         inNav: false,
@@ -318,6 +338,13 @@ export const pageList: Array<PageProps> = [
                 component: <ElementDetails />,
             },
             {
+                inNav: false,
+                name: '',
+                path: '/element-in-warehouse/:id',
+                allowedRoles: [Role.SPECIALIST, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER],
+                component: <ElementInWarehouseDetails />,
+            },
+            {
                 inNav: true,
                 name: 'Usterki',
                 path: '/events',
@@ -382,6 +409,39 @@ export const pageList: Array<PageProps> = [
                 path: '/unavailabilities/:id',
                 allowedRoles: [Role.MANAGER],
                 component: <UnavailabilityDetails />,
+            },
+            {
+                inNav: true,
+                name: 'Zapotrzebowania AdHoc',
+                path: '/demands-adhoc',
+                allowedRoles: [Role['*']],
+                component: <DemandAdHoc />,
+                children: [
+                    {
+                        inNav: true,
+                        name: 'Lista zapotrzebowań',
+                        path: '/demands-adhoc',
+                    },
+                    {
+                        inNav: true,
+                        name: 'Dodaj zapotrzebowanie',
+                        path: '/demands-adhoc/new',
+                    },
+                ],
+            },
+            {
+                inNav: false,
+                name: '',
+                path: '/demands-adhoc/:id',
+                allowedRoles: [Role['*']],
+                component: <DemandAdHocDetails />,
+            },
+            {
+                inNav: false,
+                name: '',
+                path: '/notifications',
+                allowedRoles: [Role['*']],
+                component: <Notifications />,
             },
         ],
     },

@@ -8,12 +8,12 @@ import com.emontazysta.model.searchcriteria.ToolSearchCriteria;
 import com.emontazysta.repository.ToolRepository;
 import com.emontazysta.repository.criteria.ToolCriteriaRepository;
 import com.emontazysta.service.ToolService;
+import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.security.Principal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -24,10 +24,9 @@ import java.util.stream.Collectors;
 public class ToolServiceImpl implements ToolService {
 
     private final ToolRepository repository;
-    
     private final ToolCriteriaRepository toolCriteriaRepository;
-
     private final ToolMapper toolMapper;
+    private final AuthUtils authUtils;
 
     @Override
     public List<ToolDto> getAll() {
@@ -39,21 +38,31 @@ public class ToolServiceImpl implements ToolService {
     @Override
     public ToolDto getById(Long id) {
         Tool tool = repository.findById(id).orElseThrow(EntityNotFoundException::new);
-        return toolMapper.toDto(tool);
+
+        if(tool.getWarehouse().getCompany().getId().equals(authUtils.getLoggedUserCompanyId())) {
+            return toolMapper.toDto(tool);
+        }else {
+            throw new EntityNotFoundException();
+        }
     }
 
     @Override
     public ToolDto getByCode(String code) {
-        Tool response = repository.findByCode(code);
-        if(response == null)
+        Tool tool = repository.findByCode(code);
+        if(tool == null) {
             throw new EntityNotFoundException();
-        else
-            return toolMapper.toDto(response);
+        }else {
+            if(tool.getWarehouse().getCompany().getId().equals(authUtils.getLoggedUserCompanyId())) {
+                return toolMapper.toDto(tool);
+            }else {
+                throw new EntityNotFoundException();
+            }
+        }
     }
 
     @Override
     public ToolDto add(ToolDto toolDto) {
-        toolDto.setCreatedAt(LocalDate.now());
+        toolDto.setCreatedAt(LocalDateTime.now());
         toolDto.setCode("T|"+UUID.randomUUID());
         toolDto.setToolReleases(new ArrayList<>());
         toolDto.setToolEvents(new ArrayList<>());
@@ -80,8 +89,8 @@ public class ToolServiceImpl implements ToolService {
         return toolMapper.toDto(repository.save(tool));
     }
 
-    public List<ToolFilterDto> getTools(ToolSearchCriteria toolSearchCriteria, Principal principal){
-        return toolCriteriaRepository.finadAllWithFilter(toolSearchCriteria, principal);
+    public List<ToolFilterDto> getTools(ToolSearchCriteria toolSearchCriteria){
+        return toolCriteriaRepository.finadAllWithFilter(toolSearchCriteria);
     }
 
 }

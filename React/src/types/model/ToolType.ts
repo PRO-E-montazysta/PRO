@@ -9,3 +9,21 @@ export type ToolType = {
     tools: Array<number>
     deleted: boolean
 }
+
+export type PlannedToolType = {
+    id: number
+    numberOfTools: number
+    toolType: {
+        id: number
+        name: string
+        inServiceCount: number
+        criticalNumber: number
+        availableCount: number
+        attachments: [number]
+        tools: [number]
+        companyId: number
+        listOfToolsPlannedNumber: [number]
+    }
+    orderStageId: number
+    demandAdHocId: number
+}

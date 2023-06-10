@@ -2,8 +2,8 @@ package com.emontazysta.mapper;
 
 import com.emontazysta.model.AppUser;
 import com.emontazysta.model.Attachment;
-import com.emontazysta.model.Unavailability;
 import com.emontazysta.model.dto.EmployeeDto;
+import com.emontazysta.service.EmploymentService;
 import com.emontazysta.service.StatusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 public class EmployeeMapper {
 
     private final StatusService statusService;
+    private final EmploymentService employmentService;
 
     public EmployeeDto toDto(AppUser employee) {
         return EmployeeDto.builder()
@@ -23,6 +24,8 @@ public class EmployeeMapper {
                 .lastName(employee.getLastName())
                 .email(employee.getEmail())
                 .roles(employee.getRoles())
+                .username(employee.getUsername())
+                .pesel(employee.getPesel())
                 .phone(employee.getPhone())
                 .attachments( employee.getAttachments() == null ? null : employee.getAttachments().stream()
                         .map(Attachment::getId)
@@ -32,6 +35,7 @@ public class EmployeeMapper {
                 .unavailableTo(statusService.checkUnavailability(employee) == null ? null : statusService.checkUnavailability(employee).getUnavailableTo())
                 .unavailbilityDescription(statusService.checkUnavailability(employee) == null ? null : statusService.checkUnavailability(employee).getDescription())
                 .deleted(employee.isDeleted())
+                .active(employmentService.getCurrentEmploymentByEmployeeId(employee.getId()).isPresent())
                 .build();
     }
 }

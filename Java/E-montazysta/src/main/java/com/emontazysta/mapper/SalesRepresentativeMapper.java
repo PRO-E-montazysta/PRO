@@ -18,6 +18,7 @@ import com.emontazysta.repository.NotificationRepository;
 import com.emontazysta.repository.OrderRepository;
 import com.emontazysta.repository.ToolEventRepository;
 import com.emontazysta.repository.UnavailabilityRepository;
+import com.emontazysta.service.EmploymentService;
 import com.emontazysta.service.StatusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -36,6 +37,7 @@ public class SalesRepresentativeMapper {
     private final CommentRepository commentRepository;
     private final ElementEventRepository elementEventRepository;
     private final EmploymentRepository employmentRepository;
+    private final EmploymentService employmentService;
     private final AttachmentRepository attachmentRepository;
     private final ToolEventRepository toolEventRepository;
     private final OrderRepository orderRepository;
@@ -81,6 +83,7 @@ public class SalesRepresentativeMapper {
                 .unavailableTo(statusService.checkUnavailability(salesRepresentative) == null ? null : statusService.checkUnavailability(salesRepresentative).getUnavailableTo())
                 .unavailbilityDescription(statusService.checkUnavailability(salesRepresentative) == null ? null : statusService.checkUnavailability(salesRepresentative).getDescription())
                 .deleted(salesRepresentative.isDeleted())
+                .active(employmentService.getCurrentEmploymentByEmployeeId(salesRepresentative.getId()).isPresent())
                 .build();
     }
 

@@ -13,8 +13,10 @@ import QueryBoxStatus from '../../components/base/QueryStatusBox'
 import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
-import DisplayToolHistory from '../../components/toolHistory/DisplayToolHistory'
 import Error from '../../components/error/Error'
+import DisplayToolHistory from '../../components/history/DisplayToolHistory'
+import { Role } from '../../types/roleEnum'
+import { isAuthorized } from '../../utils/authorize'
 
 const ToolDetails = () => {
     const params = useParams()
@@ -90,6 +92,10 @@ const ToolDetails = () => {
         }
     }, [params.id])
 
+    const canPrintLabel = () => {
+        return isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])
+    }
+
     return toolData.data?.deleted ? (
         <>
             <Error code={404} message={'Ten obiekt został usunięty'} />
@@ -115,7 +121,11 @@ const ToolDetails = () => {
                             onReset={handleReset}
                             onSubmit={formik.submitForm}
                             readonlyMode={pageMode === 'read'}
-                            printLabel={[toolData.data?.name as string, toolData.data?.code as string]}
+                            printLabel={
+                                canPrintLabel() && toolData.data ? [toolData.data.name, toolData.data.code] : undefined
+                            }
+                            editPermissionRoles={[Role.WAREHOUSE_MANAGER]}
+                            deletePermissionRoles={[Role.WAREHOUSE_MANAGER]}
                         />
                     </>
                 )}

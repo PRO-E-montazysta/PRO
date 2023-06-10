@@ -15,6 +15,7 @@ import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
 import { typeOfUnavailabilityName } from '../../helpers/enum.helper'
 import Error from '../../components/error/Error'
+import { Role } from '../../types/roleEnum'
 
 const UnavailabilityDetails = () => {
     const params = useParams()
@@ -117,6 +118,8 @@ const UnavailabilityDetails = () => {
                             onReset={handleReset}
                             onSubmit={formik.submitForm}
                             readonlyMode={pageMode == 'read'}
+                            editPermissionRoles={[Role.MANAGER]}
+                            deletePermissionRoles={[Role.MANAGER]}
                         />
                     </>
                 )}

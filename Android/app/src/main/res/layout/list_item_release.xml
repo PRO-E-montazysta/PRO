@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="release"
+            type="com.example.e_montazysta.ui.release.ReleaseListItem" />
+        <variable
+            name="itemClickListener"
+            type="com.example.e_montazysta.ui.release.CustomClickListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:backgroundTint="?colorSurface"
+        android:clickable="true"
+        android:focusable="true"
+        android:minHeight="@dimen/list_item_min_height_two_line"
+        tools:theme="@style/Theme.Material3.DayNight"
+        android:onClick="@{() -> itemClickListener.cardClicked(release)}"
+        >
+
+        <include layout="@layout/list_item_template"
+            android:id="@+id/item"
+            app:headline="@{Integer.toString(release.id)}"
+            app:supportText='@{release.type}'
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            >
+        </include>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

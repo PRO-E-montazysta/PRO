@@ -7,14 +7,17 @@ type CustomTextFieldProps = {
     readOnly: boolean
 }
 
-const CustomTextField = styled(TextField)((props: CustomTextFieldProps) => ({
+export const CustomTextField = styled(TextField)((props: CustomTextFieldProps) => ({
     '& fieldset': {
         border: props.readOnly ? 'none' : '',
+    },
+    '& .MuiInputBase-input.Mui-disabled': {
+        WebkitTextFillColor: '#000000',
     },
 }))
 
 const FormInput = (params: FormInputParams) => {
-    const { id, readonly, style, type, formik, label, formatFn } = params
+    const { id, readonly, style, type, formik, label, formatFn, placeholder } = params
     const value =
         type == 'datetime-local'
             ? formatDate(formik.values[id])
@@ -47,6 +50,7 @@ const FormInput = (params: FormInputParams) => {
             error={formik.touched[id] && Boolean(formik.errors[id])}
             helperText={formik.touched[id] && formik.errors[id]}
             autoComplete="off"
+            placeholder={placeholder ? placeholder : ''}
         />
     )
 }

@@ -72,6 +72,7 @@ export const FormStructure = (params: FormStructureParams) => {
                                     id={e.id}
                                     readonly={setDisplayMode(e) == 'readonly'}
                                     key={e.id}
+                                    placeholder={e.placeholder ? e.placeholder : ''}
                                 />
                             )
                         case 'date':
@@ -121,6 +122,7 @@ export const FormStructure = (params: FormStructureParams) => {
                                     key={e.id}
                                     type={e.type}
                                     formatFn={e.formatFn}
+                                    placeholder={e.placeholder ? e.placeholder : ''}
                                 />
                             )
                     }

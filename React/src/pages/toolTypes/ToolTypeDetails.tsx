@@ -14,6 +14,7 @@ import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
 import Error from '../../components/error/Error'
+import { Role } from '../../types/roleEnum'
 
 const ToolTypeDetails = () => {
     const params = useParams()
@@ -116,6 +117,8 @@ const ToolTypeDetails = () => {
                             onReset={handleReset}
                             onSubmit={formik.submitForm}
                             readonlyMode={pageMode == 'read'}
+                            editPermissionRoles={[Role.WAREHOUSE_MANAGER]}
+                            deletePermissionRoles={[Role.WAREHOUSE_MANAGER]}
                         />
                     </>
                 )}

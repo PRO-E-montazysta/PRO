@@ -24,14 +24,13 @@ public class OrderStageMapper {
     private final OrderRepository orderRepository;
     private final AttachmentRepository attachmentRepository;
     private final NotificationRepository notificationRepository;
-    private final ToolTypeRepository toolTypeRepository;
-    private final ElementRepository elementRepository;
     private final DemandAdHocRepository demandAdHocRepository;
-
     private final ToolsPlannedNumberRepository toolsPlannedNumberRepository;
     private final ToolsPlannedNumberMapper toolsPlannedNumberMapper;
     private final ElementsPlannedNumberRepository elementsPlannedNumberRepository;
     private final ElementsPlannedNumberMapper elementsPlannedNumberMapper;
+    private final ToolReleaseMapper toolReleaseMapper;
+    private final ElementReturnReleaseMapper elementReturnReleaseMapper;
 
     public OrderStageDto toDto(OrderStage orderStage) {
         return OrderStageDto.builder()
@@ -49,7 +48,9 @@ public class OrderStageMapper {
                 .fitters(orderStage.getAssignedTo().stream().map(Fitter::getId).collect(Collectors.toList()))
                 .comments(orderStage.getComments().stream().map(Comment::getId).collect(Collectors.toList()))
                 .toolReleases(orderStage.getToolReleases().stream().map(ToolRelease::getId).collect(Collectors.toList()))
+                .simpleToolReleases(orderStage.getToolReleases().stream().map(toolReleaseMapper::toDto).collect(Collectors.toList()))
                 .elementReturnReleases(orderStage.getElementReturnReleases().stream().map(ElementReturnRelease::getId).collect(Collectors.toList()))
+                .simpleElementReturnReleases(orderStage.getElementReturnReleases().stream().map(elementReturnReleaseMapper::toDto).collect(Collectors.toList()))
                 .orderId(orderStage.getOrders() == null ? null : orderStage.getOrders().getId())
                 .attachments(orderStage.getAttachments().stream()
                         .map(Attachment::getId)

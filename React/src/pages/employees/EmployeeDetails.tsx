@@ -4,7 +4,14 @@ import { useParams } from 'react-router-dom'
 import { useFormStructure } from './helper'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { getInitValues, getValidatinSchema } from '../../helpers/form.helper'
-import { useAddEmployee, useEmployeeData, useDeleteEmployee, useEditEmployee } from './hooks'
+import {
+    useAddEmployee,
+    useEmployeeData,
+    useDeleteEmployee,
+    useEditEmployee,
+    useHireEmployee,
+    useDismissEmployee,
+} from './hooks'
 import { useQueriesStatus } from '../../hooks/useQueriesStatus'
 import FormBox from '../../components/form/FormBox'
 import FormTitle from '../../components/form/FormTitle'
@@ -15,6 +22,9 @@ import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
 import { roleName } from '../../helpers/enum.helper'
 import Error from '../../components/error/Error'
+import DisplayEmploymentHistory from '../../components/history/DisplayEmploymentHistory'
+import { isAuthorized } from '../../utils/authorize'
+import { Role } from '../../types/roleEnum'
 
 const EmployeeDetails = () => {
     const params = useParams()
@@ -28,15 +38,22 @@ const EmployeeDetails = () => {
     const editEmployeeMutation = useEditEmployee((data) => handleOnEditSuccess(data))
     const deleteEmployeeMutation = useDeleteEmployee(() => employeeData.remove())
     const employeeData = useEmployeeData(params.id)
+    const hireEmployeeMutation = useHireEmployee(params.id)
+    const dismissEmployeeMutation = useDismissEmployee(params.id)
+
     //status for all mutations and queries
     const queriesStatus = useQueriesStatus(
         [employeeData],
         [addEmployeeMutation, editEmployeeMutation, deleteEmployeeMutation],
     )
 
+    const [hired, setHired] = useState<boolean>(employeeData.data ? employeeData.data.active : false)
+
     const handleSubmit = (values: any) => {
-        if (pageMode == 'new') addEmployeeMutation.mutate(values)
-        else if (pageMode == 'edit') editEmployeeMutation.mutate(values)
+        if (pageMode == 'new') {
+            addEmployeeMutation.mutate(values)
+            setHired(true)
+        } else if (pageMode == 'edit') editEmployeeMutation.mutate(values)
         else console.warn('Try to submit while read mode')
     }
 
@@ -76,6 +93,39 @@ const EmployeeDetails = () => {
         setPageMode('read')
     }
 
+    const handleHireEmployee = () => {
+        showDialog({
+            title: 'Czy na pewno chcesz zatrudnić tego pracownika?',
+            btnOptions: [
+                { text: 'Tak', value: 1, variant: 'contained' },
+                { text: 'Anuluj', value: 0, variant: 'outlined' },
+            ],
+            callback: (result: number) => {
+                if (result == 1 && params.id) {
+                    hireEmployeeMutation.mutate(params.id)
+
+                    setHired(true)
+                }
+            },
+        })
+    }
+
+    const handleDismissEmployee = () => {
+        showDialog({
+            title: 'Czy na pewno chcesz zwolnić tego pracownika?',
+            btnOptions: [
+                { text: 'Tak', value: 1, variant: 'contained' },
+                { text: 'Anuluj', value: 0, variant: 'outlined' },
+            ],
+            callback: (result: number) => {
+                if (result == 1 && params.id) {
+                    dismissEmployeeMutation.mutate(params.id)
+                    setHired(false)
+                }
+            },
+        })
+    }
+
     useEffect(() => {
         if (employeeData.data) {
             formik.setValues(employeeData.data)
@@ -93,6 +143,14 @@ const EmployeeDetails = () => {
         }
     }, [params.id])
 
+    useEffect(() => {
+        setHired(employeeData.data?.active!)
+    }, [employeeData.data?.active])
+
+    const canDisplayEmploymentHistory = () => {
+        return pageMode !== 'new' && isAuthorized([Role.ADMIN])
+    }
+
     return employeeData.data?.deleted ? (
         <>
             <Error code={404} message={'Ten obiekt został usunięty'} />
@@ -104,13 +162,10 @@ const EmployeeDetails = () => {
                 subTitle={
                     pageMode == 'new'
                         ? ''
-                        : String(
-                              roleName(formik.values['roles'][0]) +
-                                  ' - ' +
-                                  formik.values['firstName'] +
-                                  ' ' +
-                                  formik.values['lastName'],
-                          )
+                        : String(formik.values['roles'] === null ? '' : roleName(formik.values['roles'][0]) + ' - ') +
+                          formik.values['firstName'] +
+                          ' ' +
+                          formik.values['lastName']
                 }
             />
             <FormPaper>
@@ -127,7 +182,20 @@ const EmployeeDetails = () => {
                             onReset={handleReset}
                             onSubmit={formik.submitForm}
                             readonlyMode={pageMode == 'read'}
+                            hireDismissEmp={
+                                !isAuthorized([Role.ADMIN]) || formik.values['roles'][0] == 'ADMIN'
+                                    ? undefined
+                                    : hired
+                                    ? [handleDismissEmployee, 'dismiss']
+                                    : [handleHireEmployee, 'hire']
+                            }
+                            editPermissionRoles={[Role.MANAGER, Role.ADMIN]}
                         />
+                        {canDisplayEmploymentHistory() ? (
+                            <DisplayEmploymentHistory employeeId={params.id!}></DisplayEmploymentHistory>
+                        ) : (
+                            ''
+                        )}
                     </>
                 )}
             </FormPaper>

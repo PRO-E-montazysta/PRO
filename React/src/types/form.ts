@@ -11,6 +11,7 @@ export type FormInputProps = {
     options?: Array<SelectMenuItemProps>
     validation?: yup.AnySchema
     formatFn?: (value: any) => string
+    placeholder?: string
 
     //always readonly
     readonly?: boolean //deprecated

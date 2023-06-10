@@ -15,6 +15,16 @@ import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
 import Error from '../../components/error/Error'
 import { useElementData } from '../elements/hooks'
+import { useQuery } from 'react-query'
+import { AxiosError } from 'axios'
+import { getFilteredEvents } from '../../api/event.api'
+import { Tool } from '../../types/model/Tool'
+import { getAllTools } from '../../api/tool.api'
+import { getAllElements } from '../../api/element.api'
+import { Element } from '../../types/model/Element'
+import { Role } from '../../types/roleEnum'
+import { getAboutMeInfo } from '../../api/employee.api'
+import { EventStatus } from '../../types/model/Event'
 
 const ElementEventDetails = () => {
     const params = useParams()
@@ -94,6 +104,11 @@ const ElementEventDetails = () => {
     }, [params.id])
 
     const queryElement = useElementData(String(elementEventData.data?.elementId))
+    const queryElements = useQuery<Array<Element>, AxiosError>(['element-list'], getAllElements, {
+        cacheTime: 15 * 60 * 1000,
+        staleTime: 10 * 60 * 1000,
+    })
+    const aboutMeQuery = useQuery<any, AxiosError>(['about-me'], async () => getAboutMeInfo())
 
     return elementEventData.data?.deleted ? (
         <>
@@ -127,6 +142,18 @@ const ElementEventDetails = () => {
                                 onReset={handleReset}
                                 onSubmit={formik.submitForm}
                                 readonlyMode={pageMode == 'read'}
+                                editPermissionRoles={
+                                    aboutMeQuery.data.userId == formik.values['createdById'] &&
+                                    formik.values['status'] == 'CREATED'
+                                        ? [Role.MANAGER, Role.WAREHOUSE_MANAGER, Role.FOREMAN]
+                                        : [Role.MANAGER, Role.WAREHOUSE_MANAGER]
+                                }
+                                deletePermissionRoles={
+                                    aboutMeQuery.data.userId == formik.values['createdById'] &&
+                                    formik.values['status'] == 'CREATED'
+                                        ? [Role.MANAGER, Role.WAREHOUSE_MANAGER, Role.FOREMAN]
+                                        : [Role.MANAGER, Role.WAREHOUSE_MANAGER]
+                                }
                             />
                         </>
                     )}

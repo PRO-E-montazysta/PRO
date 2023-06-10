@@ -31,7 +31,15 @@ const browserRouterMapper = (pages: Array<PageProps>) => {
 }
 
 const router = createBrowserRouter(browserRouterMapper(pageList))
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            refetchOnWindowFocus: false,
+            refetchOnReconnect: false,
+            refetchOnMount: false,
+        },
+    },
+})
 
 function App() {
     return (

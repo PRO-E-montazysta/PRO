@@ -18,6 +18,7 @@ import com.emontazysta.repository.NotificationRepository;
 import com.emontazysta.repository.OrderStageRepository;
 import com.emontazysta.repository.ToolEventRepository;
 import com.emontazysta.repository.UnavailabilityRepository;
+import com.emontazysta.service.EmploymentService;
 import com.emontazysta.service.StatusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -36,6 +37,7 @@ public class FitterMapper {
     private final CommentRepository commentRepository;
     private final ElementEventRepository elementEventRepository;
     private final EmploymentRepository employmentRepository;
+    private final EmploymentService employmentService;
     private final AttachmentRepository attachmentRepository;
     private final ToolEventRepository toolEventRepository;
     private final OrderStageRepository orderStageRepository;
@@ -80,6 +82,7 @@ public class FitterMapper {
                 .unavailableTo(statusService.checkUnavailability(fitter) == null ? null : statusService.checkUnavailability(fitter).getUnavailableTo())
                 .unavailbilityDescription(statusService.checkUnavailability(fitter) == null ? null : statusService.checkUnavailability(fitter).getDescription())
                 .deleted(fitter.isDeleted())
+                .active(employmentService.getCurrentEmploymentByEmployeeId(fitter.getId()).isPresent())
                 .build();
     }
 

@@ -20,8 +20,10 @@ RUN jar -xf ../*.jar
 FROM eclipse-temurin:17-jre-alpine
 
 RUN addgroup -S spring && adduser -S spring -G spring
+RUN mkdir /files
+RUN chown spring:spring /files
 USER spring:spring
-VOLUME /tmp
+VOLUME /tmp /files
 ARG DEPENDENCY=/workspace/app/target/dependency
 COPY --from=prepare-production ${DEPENDENCY}/BOOT-INF/lib /app/lib
 COPY --from=prepare-production ${DEPENDENCY}/META-INF /app/META-INF

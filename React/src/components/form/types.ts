@@ -10,6 +10,7 @@ export type FormInputParams = {
     style?: CSSProperties
     type?: HTMLInputTypeAttribute
     formatFn?: (value: any) => string
+    placeholder?: string
 }
 
 export type FormLabelProps = {

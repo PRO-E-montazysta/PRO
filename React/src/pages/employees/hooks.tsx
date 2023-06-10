@@ -1,7 +1,7 @@
 import { Box } from '@mui/material'
 import { AxiosError } from 'axios'
 import { useContext } from 'react'
-import { useMutation, useQuery } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
@@ -17,9 +17,11 @@ import { postSpecialist, updateSpecialist } from '../../api/specialist.api'
 import { postWarehouseman, updateWarehouseman } from '../../api/warehouseman.api'
 import { postWarehouseManager, updateWarehouseManager } from '../../api/warehousemanager.api'
 import { Role } from '../../types/roleEnum'
+import { dismissEmployee, hireEmployee } from '../../api/employment.api'
 
 const sendRoleBasedPost = (data: Employee) => {
-    const role = data.roles[0]
+    const role = data.roles && data.roles
+    data.roles = null
 
     switch (role) {
         case Role.ADMIN:
@@ -70,7 +72,7 @@ export const useAddEmployee = () => {
 }
 
 const sendRoleBasedUpdate = (data: Employee) => {
-    const role = data.roles[0]
+    const role = data.roles && data.roles[0]
 
     switch (role) {
         case Role.ADMIN:
@@ -146,4 +148,50 @@ export const useEmployeeData = (id: string | undefined) => {
             enabled: !!id && id != 'new',
         },
     )
+}
+
+export const useHireEmployee = (id?: string) => {
+    const { showDialog } = useContext(DialogGlobalContext)
+    const showError = useError()
+    const queryClient = useQueryClient()
+    return useMutation({
+        mutationFn: hireEmployee,
+        onSuccess(data) {
+            showDialog({
+                btnOptions: [
+                    {
+                        text: 'OK',
+                        value: 0,
+                    },
+                ],
+                title: 'Sukces!',
+                content: <Box>Pracownik zatrudniony</Box>,
+            })
+            queryClient.invalidateQueries(['employee-employments', { id: id }])
+        },
+        onError: showError,
+    })
+}
+
+export const useDismissEmployee = (id?: string) => {
+    const { showDialog } = useContext(DialogGlobalContext)
+    const showError = useError()
+    const queryClient = useQueryClient()
+    return useMutation({
+        mutationFn: dismissEmployee,
+        onSuccess(data) {
+            showDialog({
+                btnOptions: [
+                    {
+                        text: 'OK',
+                        value: 0,
+                    },
+                ],
+                title: 'Sukces!',
+                content: <Box>Pracownik zwolniony</Box>,
+            })
+            queryClient.invalidateQueries(['employee-employments', { id: id }])
+        },
+        onError: showError,
+    })
 }
