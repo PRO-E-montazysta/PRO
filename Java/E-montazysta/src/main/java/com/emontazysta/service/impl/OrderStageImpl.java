@@ -56,6 +56,7 @@ public class OrderStageImpl implements OrderStageService {
     private final OrderRepository orderRepository;
     private final ElementInWarehouseService elementInWarehouseService;
     private final FitterRepository fitterRepository;
+    private final UnavailabilityRepository unavailabilityRepository;
 
     @Override
     public List<OrderStageDto> getAll() {
@@ -215,6 +216,14 @@ public class OrderStageImpl implements OrderStageService {
                     notifiedEmployees.add(fitter);
                     fitter.getWorkingOn().add(orderStageDb);
                     fitterRepository.save(fitter);
+                    unavailabilityRepository.save(Unavailability.builder()
+                                    .typeOfUnavailability(TypeOfUnavailability.BUSY)
+                                    .description("OrderStage"+orderStageDb.getId())
+                                    .unavailableFrom(orderStageDb.getPlannedStartDate())
+                                    .unavailableTo(orderStageDb.getPlannedEndDate())
+                                    .assignedTo(fitter)
+                                    .assignedBy(orderStageDb.getOrders().getManagedBy())
+                            .build());
                 }
             }
 
@@ -628,6 +637,14 @@ public class OrderStageImpl implements OrderStageService {
                     notifiedEmployees.add(fitter);
                     fitter.getWorkingOn().add(orderStage);
                     fitterRepository.save(fitter);
+                    unavailabilityRepository.save(Unavailability.builder()
+                            .typeOfUnavailability(TypeOfUnavailability.BUSY)
+                            .description("OrderStage"+orderStage.getId())
+                            .unavailableFrom(orderStage.getPlannedStartDate())
+                            .unavailableTo(orderStage.getPlannedEndDate())
+                            .assignedTo(fitter)
+                            .assignedBy(orderStage.getOrders().getManagedBy())
+                            .build());
                 }
             }
 

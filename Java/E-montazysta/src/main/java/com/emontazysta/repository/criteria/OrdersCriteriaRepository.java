@@ -104,6 +104,14 @@ public class OrdersCriteriaRepository {
         AppUser user =  userService.findByUsername(principal.getName());
         Boolean isCloudAdmin = user.getRoles().contains(Role.CLOUD_ADMIN);
 
+        if(user.getRoles().contains(Role.SPECIALIST)) {
+            predicates.add(criteriaBuilder.equal(ordersRoot.get("status"), OrderStatus.PLANNING));
+        }
+
+        if(user.getRoles().contains(Role.FOREMAN)) {
+            predicates.add(criteriaBuilder.equal(ordersRoot.get("assignedTo"), user));
+        }
+
         if(!isCloudAdmin) {
             Optional<Employment>  takingEmployment = user.getEmployments().stream()
                     .filter(employment -> employment.getDateOfDismiss() == null)
