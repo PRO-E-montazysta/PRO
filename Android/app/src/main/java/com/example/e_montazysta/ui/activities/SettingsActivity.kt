@@ -4,6 +4,7 @@ import ThemeHelper
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +23,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat.getSystemService
+import com.google.android.material.button.MaterialButton
 
 class SettingsActivity : Fragment() {
 
@@ -38,6 +40,14 @@ class SettingsActivity : Fragment() {
 
         themeHelper = ThemeHelper(requireContext())
         binding.toolbar.title = "Ustawienia"
+
+        // Logout the User
+        val logoutButton: MaterialButton = binding.logoutButton
+
+        logoutButton.setOnClickListener{
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            startActivity(intent)
+        }
 
         // Retrieve the reference to the SwitchMaterial widget
         val notificationsSwitch: SwitchMaterial = binding.notificationsSwitch

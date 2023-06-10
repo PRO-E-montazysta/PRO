@@ -80,6 +80,24 @@
             android:checked="true"
             android:layout_below="@id/notificationsSwitchText"
             android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/logoutButtonText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Inne"
+            android:textSize="18sp"
+            android:layout_marginTop="16dp"
+            android:layout_below="@id/notificationsSwitch"
+            app:layout_constraintTop_toBottomOf="parent"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/logoutButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wyloguj się"
+            android:layout_below="@+id/logoutButtonText"
+            android:layout_marginTop="8dp"/>
     </RelativeLayout>
 
 </LinearLayout>

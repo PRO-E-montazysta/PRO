@@ -34,6 +34,7 @@
     <string name="order_list_tile">Lista zleceń</string>
     <string name="title_orders">Zlecenia</string>
     <string name="stages_list_tile">Lista etapów</string>
+    <string name="warehouses_list_title">Lista magazynów</string>
     <string name="title_stages">Etapy</string>
     <string name="add_objects_to_release_label">Dodaj elementy</string>
     <string name="add_objects_to_release_desc">Dodaje obiekty do wydania</string>
@@ -68,6 +69,7 @@
     <string name="filter_code_field_label">Kod</string>
     <string name="filter_warehouse_field_label">Magazyny: </string>
     <string name="tool_details_title">Narzędzie</string>
+    <string name="warehouse_details_title">Magazyn</string>
     <string name="release_details_title">Wydanie</string>
     <string name="release_item_name_label">Przedmiot</string>
     <string name="release_release_time_label">Data wydania</string>
