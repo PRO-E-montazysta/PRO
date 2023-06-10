@@ -1,7 +1,8 @@
 package com.example.e_montazysta.data.model
 
+import com.example.e_montazysta.ui.release.ReleaseElementDAO
+import com.example.e_montazysta.ui.release.ReleaseToolDAO
 import java.math.BigDecimal
-import com.example.e_montazysta.ui.stage.StageStatus
 import java.util.Date
 
 data class Stage(
@@ -22,5 +23,7 @@ data class Stage(
     val elementReturnReleases: List<Release>?,
     val orderId: Int,
     val listOfToolsPlannedNumber: List<Int>,
-    val listOfElementsPlannedNumber: List<Int>
+    val listOfElementsPlannedNumber: List<Int>,
+    val simpleToolReleases: List<ReleaseToolDAO>,
+    val simpleElementReturnReleases: List<ReleaseElementDAO>
 )

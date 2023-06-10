@@ -1,21 +1,64 @@
 package com.example.e_montazysta.ui.release
 
+import com.example.e_montazysta.data.model.Element
 import com.example.e_montazysta.data.model.Release
+import com.example.e_montazysta.data.model.Tool
+import com.example.e_montazysta.data.model.User
+import com.example.e_montazysta.helpers.DateUtil
+import java.util.Date
 
-data class ReleaseDAO(
+data class ReleaseToolDAO(
     val id: Int,
-    val releaseTime: String,
-    val returnTime: String?,
-    val releasedQuantity: Int?,
-    val returnedQuantity: Int?,
-    val receivedById: String?,
-    val releasedById: String?,
-    val toolId: String?,
-    val elementId: String?,
-    val demandAdHocId: String?,
-    val orderStageId: String,
+    val releaseTime: Date,
+    val returnTime: Date?,
+    val receivedById: Int?,
+    val releasedById: Int?,
+    val toolId: Int,
+    val demandAdHocId: Int?,
+    val orderStageId: Int
 ){
-    fun mapToRelease(): Release {
-        return Release(id, releaseTime, returnTime, receivedById, releasedById, toolId, demandAdHocId, orderStageId)
+    suspend fun mapToRelease(): Release {
+        val releasedBy = if (releasedById != null) User.getUserDetails(releasedById) else null
+        val receivedBy = if (receivedById != null) User.getUserDetails(receivedById) else null
+        val tool = Tool.getToolDetails(toolId)
+        return Release(id, releaseTime, returnTime, releasedBy, receivedBy, tool, null, demandAdHocId, orderStageId, null, null, false)
+    }
+
+    suspend fun maptoReleaseListItem(): ReleaseListItem {
+        val releasedBy = if (releasedById != null) User.getUserDetails(releasedById) else null
+        val itemName = Tool.getToolDetails(toolId).name
+        val releaseTimeString = DateUtil.format(releaseTime)
+        val returnTimeString = returnTime?.let { DateUtil.format(it) }
+        return ReleaseListItem(id, releaseTimeString, returnTimeString, releasedBy, itemName,null, null, false)
+    }
+}
+
+data class ReleaseElementDAO(
+    val id: Int,
+    val releaseTime: Date,
+    val returnTime: Date?,
+    val releasedQuantity: Int,
+    val returnedQuantity: Int,
+    val receivedById: Int?,
+    val releasedById: Int?,
+    val elementId: Int,
+    val demandAdHocId: Int?,
+    val orderStageId: Int
+){
+    suspend fun mapToRelease(): Release {
+        val releasedBy = if (releasedById != null) User.getUserDetails(releasedById) else null
+        val receivedBy = if (receivedById != null) User.getUserDetails(receivedById) else null
+        val element = Element.getElementDetails(elementId)
+        return Release(id, releaseTime, returnTime, releasedBy, receivedBy, null, element, demandAdHocId, orderStageId, releasedQuantity, returnedQuantity, true)
+
+    }
+
+    suspend fun maptoReleaseListItem(): ReleaseListItem {
+        val releasedBy = if (releasedById != null) User.getUserDetails(releasedById) else null
+        val itemName = Element.getElementDetails(elementId).name
+        val releaseTimeString = DateUtil.format(releaseTime)
+        val returnTimeString = returnTime?.let { DateUtil.format(it) }
+
+        return ReleaseListItem(id, releaseTimeString, returnTimeString, releasedBy, itemName,releasedQuantity, returnedQuantity, true)
     }
 }

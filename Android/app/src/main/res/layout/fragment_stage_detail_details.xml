@@ -137,7 +137,7 @@
                         android:id="@+id/plannedFittersNumber"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Planowany czas zakończenia" />
+                        android:text="Planowana liczba montażystów" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/plannedFittersNumberValue"

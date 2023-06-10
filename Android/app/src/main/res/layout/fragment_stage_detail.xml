@@ -57,17 +57,67 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tabs" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/create_release"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
+            android:layout_gravity="bottom|end"
             android:layout_marginEnd="@dimen/fab_margin"
-            android:layout_marginBottom="@dimen/fab_margin"
-            android:contentDescription="@string/add_release_to_stage_desc"
-            android:text="@string/create_release_label"
-            app:icon="@drawable/baseline_swap_horiz_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:layout_marginBottom="@dimen/fab_margin">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/action_main_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="Wykonaj akcję"
+                android:src="@drawable/baseline_swap_horiz_24"
+                app:fabSize="normal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/add_objects_to_release"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:contentDescription="Zgłoś usterkę"
+                app:fabSize="normal"
+                app:layout_constraintBottom_toTopOf="@+id/action_main_fab"
+                app:layout_constraintEnd_toEndOf="@+id/action_main_fab"
+                app:layout_constraintStart_toStartOf="@+id/action_main_fab"
+                app:srcCompat="@drawable/baseline_arrow_right_alt_24" />
+
+            <TextView
+                android:id="@+id/element_event_fab_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="Wydaj elementy"
+                app:layout_constraintBottom_toBottomOf="@+id/add_objects_to_release"
+                app:layout_constraintEnd_toStartOf="@+id/add_objects_to_release"
+                app:layout_constraintTop_toTopOf="@+id/add_objects_to_release" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/add_objects_to_return"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:contentDescription="Wydaj/Zwróć element"
+                app:fabSize="normal"
+                app:layout_constraintBottom_toTopOf="@+id/add_objects_to_release"
+                app:layout_constraintEnd_toEndOf="@+id/add_objects_to_release"
+                app:layout_constraintStart_toStartOf="@+id/add_objects_to_release"
+                app:srcCompat="@drawable/baseline_arrow_left_alt_24" />
+
+            <TextView
+                android:id="@+id/add_objects_to_return_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="Zwróć elementy"
+                app:layout_constraintBottom_toBottomOf="@+id/add_objects_to_return"
+                app:layout_constraintEnd_toStartOf="@+id/add_objects_to_return"
+                app:layout_constraintTop_toTopOf="@+id/add_objects_to_return" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

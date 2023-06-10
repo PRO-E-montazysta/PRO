@@ -6,13 +6,17 @@ import org.koin.core.component.inject
 
 data class Release(
     val id: Int,
-    val releaseTime: String?,
-    val returnTime: String?,
-    val receivedById: String?,
-    val releasedById: String?,
-    val toolId: String?,
-    val demandAdHocId: String?,
-    val orderStageId: String,
+    val releaseTime: Date?,
+    val returnTime: Date?,
+    val receivedBy: User?,
+    val releasedBy: User?,
+    val tool: Tool?,
+    val element: Element?,
+    val demandAdHocId: Int?,
+    val orderStageId: Int,
+    val releasedQuantity: Int?,
+    val returnedQuantity: Int?,
+    val isElement: Boolean
 ){
     companion object : KoinComponent {
         val releaseRepository: IReleaseRepository by inject()

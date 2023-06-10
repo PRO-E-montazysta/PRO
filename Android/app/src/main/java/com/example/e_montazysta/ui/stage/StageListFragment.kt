@@ -49,12 +49,10 @@ class StageListFragment(val order: Order? = null) : Fragment() {
                 }
             }
         })
-
         // Wyświetlanie błędów
         stageListViewModel.messageLiveData.observe(viewLifecycleOwner) {
                 errorMessage -> Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
         }
-
         // Specify the current activity as the lifecycle owner of the binding.
         // This is necessary so that the binding can observe LiveData updates.
     	binding.lifecycleOwner = this

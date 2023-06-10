@@ -23,7 +23,7 @@
     <string name="content_description_media">content_description_media</string>
     <string name="title">title</string>
     <string name="title_warehouses">Magazyny</string>
-3    <string name="title_tools">Narzędzia</string>
+    <string name="title_tools">Narzędzia</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tool_warehouse_button">Przejdź do magazynu</string>

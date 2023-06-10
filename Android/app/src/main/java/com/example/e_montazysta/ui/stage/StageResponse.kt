@@ -7,7 +7,9 @@ import com.example.e_montazysta.data.model.Stage
 import com.example.e_montazysta.data.model.User
 import com.example.e_montazysta.data.repository.interfaces.ICommentRepository
 import com.example.e_montazysta.data.repository.interfaces.IReleaseRepository
-import com.example.e_montazysta.ui.release.ReleaseDAO
+
+import com.example.e_montazysta.ui.release.ReleaseElementDAO
+import com.example.e_montazysta.ui.release.ReleaseToolDAO
 import com.squareup.moshi.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -31,7 +33,8 @@ data class StageDAO(
     val fitters: List<Int>,
     val comments: List<Int>,
     val toolReleases: List<Int>,
-    val simpleElementReturnReleases: List<ReleaseDAO>,
+    val simpleToolReleases: List<ReleaseToolDAO>,
+    val simpleElementReturnReleases: List<ReleaseElementDAO>,
     val orderId: Int,
     val listOfToolsPlannedNumber: List<Int>,
     val listOfElementsPlannedNumber: List<Int>
@@ -45,7 +48,8 @@ data class StageDAO(
         val releasesList: List<Release?> = toolReleases.map {id -> getReleaseDetails(id)}
         return Stage(id, name, status, price, plannedStart, plannedEnd, startDate, endDate, plannedDurationTime,
             plannedFittersNumber, minimumImagesNumber, fittersList, commentsList, releasesList,
-            listOf(), orderId, listOfToolsPlannedNumber, listOfElementsPlannedNumber)
+            listOf(), orderId, listOfToolsPlannedNumber, listOfElementsPlannedNumber,
+            simpleToolReleases, simpleElementReturnReleases)
     }
 
     fun mapToStageListItem(): StageListItem {
