@@ -16,6 +16,7 @@ import {
     useOrderData,
     useOrderNextStatus,
     useOrderPreviousStatus,
+    useOrderStages,
 } from './hooks'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { FormButtons } from '../../components/form/FormButtons'
@@ -36,6 +37,14 @@ import Localization from '../../components/localization/Localization'
 import { Order } from '../../types/model/Order'
 import { useAddLocation, useFormStructureLocation, useLocationData } from '../../components/localization/hooks'
 import { isAuthorized } from '../../utils/authorize'
+
+import { OrderStage } from '../../types/model/OrderStage'
+import { AxiosError } from 'axios'
+import { useQuery } from 'react-query'
+import { getAllOrderStagesForOrder } from '../../api/orderStage.api'
+import { EventInput } from '@fullcalendar/core'
+import moment from 'moment'
+import Planner from './Planner'
 
 const OrderDetails = () => {
     const [userRole, setUserRole] = useState('')
@@ -243,7 +252,6 @@ const OrderDetails = () => {
             (orderData.data?.status == 'FINISHED' && isAuthorized([Role.FOREMAN]))
         )
     }
-
     return (
         <>
             <FormBox>
@@ -264,6 +272,12 @@ const OrderDetails = () => {
                                 formStructure={formStructureLocation}
                                 pageMode={pageMode}
                             />
+                            <Box sx={{ mt: '100px' }}>
+                                <Paper sx={{ p: '20px' }}>
+                                    <Typography variant="h5">Harmonogram pracy montażystów</Typography>
+                                    <Planner orderId={params.id} initialDate={moment(orderData.data?.plannedStart)} />
+                                </Paper>
+                            </Box>
                             <FormButtons
                                 id={params.id}
                                 onCancel={handleCancel}

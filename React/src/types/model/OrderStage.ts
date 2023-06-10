@@ -32,7 +32,7 @@ export type OrderStage = {
     plannedEndDate: string
     startDate: Date
     endDate: Date
-    plannedDurationTime: Date //jak chcemy to podawać?
+    plannedDurationTime: Date
     plannedFittersNumber: string
     minimumImagesNumber: string
     fitters: Array<number>

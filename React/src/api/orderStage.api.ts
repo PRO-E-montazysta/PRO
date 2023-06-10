@@ -28,3 +28,11 @@ export const orderStageNextStatus = (id: string | number) => {
 export const orderStagePreviousStatus = (id: string | number) => {
     return makeServiceCall(`/order-stages/previousStatus/${id}`, 'PUT', {})
 }
+
+export const updateOrderStageFitters = (data: { fitters: number[]; stageId: number }) => {
+    return makeServiceCall(`/order-stages/${data.stageId}`, 'PUT', {
+        body: {
+            fitters: data.fitters,
+        },
+    })
+}
