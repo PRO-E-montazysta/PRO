@@ -15,9 +15,10 @@ import PlannerStageDetails from './PlannerStageDetails'
 type PlannerStagePopupProps = {
     popupEventInfo: PopupPlannerInfo
     setPopupEventInfo: (popupEventInfo: PopupPlannerInfo) => void
+    readonly: boolean
 }
 
-const PlannerStagePopup = ({ popupEventInfo, setPopupEventInfo }: PlannerStagePopupProps) => {
+const PlannerStagePopup = ({ popupEventInfo, setPopupEventInfo, readonly }: PlannerStagePopupProps) => {
     const [assignedFitters, setAssignedFitters] = useState<number[]>([])
     const [avaliableFitters, setAvaliableFitters] = useState<number[]>([])
 
@@ -104,6 +105,7 @@ const PlannerStagePopup = ({ popupEventInfo, setPopupEventInfo }: PlannerStagePo
                     dateTo={moment(orderStageQuery.data?.plannedEndDate)}
                     fitters={assignedFitters}
                     setFitters={(fitters) => setAssignedFitters(fitters)}
+                    readonly={readonly}
                 />
                 {/* <Box
                     sx={{

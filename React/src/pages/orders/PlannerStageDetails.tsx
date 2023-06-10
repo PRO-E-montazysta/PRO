@@ -12,9 +12,10 @@ type PlannerStageDetailsProps = {
     dateTo: Moment
     fitters: number[]
     setFitters: (fitters: number[]) => void
+    readonly: boolean
 }
 
-const PlannerStageDetails = ({ dateFrom, dateTo, fitters, setFitters }: PlannerStageDetailsProps) => {
+const PlannerStageDetails = ({ dateFrom, dateTo, fitters, setFitters, readonly }: PlannerStageDetailsProps) => {
     const [avaliableFitters, setAvaliableFitters] = useState<number[]>([])
 
     const avaliableFittersQuery = useQuery<any[], AxiosError>(['avaliable-fitters'], () =>
@@ -62,6 +63,7 @@ const PlannerStageDetails = ({ dateFrom, dateTo, fitters, setFitters }: PlannerS
                     arrayType="right"
                     list={fitters}
                     removeFitter={removeFitter}
+                    readonly={readonly}
                 />
                 <FittersList
                     key={'avaliable'}
@@ -69,6 +71,7 @@ const PlannerStageDetails = ({ dateFrom, dateTo, fitters, setFitters }: PlannerS
                     arrayType="left"
                     list={avaliableFitters}
                     addFitter={addFitter}
+                    readonly={readonly}
                 />
             </Box>
         </Box>

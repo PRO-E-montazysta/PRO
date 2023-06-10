@@ -21,8 +21,9 @@ type FittersListProps = {
     arrayType: 'right' | 'left'
     addFitter?: (id: number) => void
     removeFitter?: (id: number) => void
+    readonly: boolean
 }
-const FittersList = ({ list, title, arrayType, addFitter, removeFitter }: FittersListProps) => {
+const FittersList = ({ list, title, arrayType, addFitter, removeFitter, readonly }: FittersListProps) => {
     const [fittersData, setFittersData] = useState<any[]>([])
     const fittersQuery = useQuery<any[], AxiosError>([], () => getAllFitter())
 
@@ -52,7 +53,7 @@ const FittersList = ({ list, title, arrayType, addFitter, removeFitter }: Fitter
                             key={i}
                             sx={{ p: '0 5px', alignItems: 'center', justifyContent: 'space-between', display: 'flex' }}
                         >
-                            {arrayType == 'left' ? (
+                            {arrayType == 'left' && !readonly ? (
                                 <IconButton
                                     onClick={() => handleAddFitter(f)}
                                     size="small"
@@ -62,7 +63,7 @@ const FittersList = ({ list, title, arrayType, addFitter, removeFitter }: Fitter
                                 </IconButton>
                             ) : null}
                             {getFitterNameById(f)}
-                            {arrayType == 'right' ? (
+                            {arrayType == 'right' && !readonly ? (
                                 <IconButton size="small" onClick={() => handleRemoveFitter(f)}>
                                     <ForwardIcon />
                                 </IconButton>

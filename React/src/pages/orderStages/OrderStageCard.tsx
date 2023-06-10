@@ -34,6 +34,7 @@ import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { orderStageStatusName } from '../../helpers/enum.helper'
 import PlannerStageDetails from '../orders/PlannerStageDetails'
 import moment from 'moment'
+import Attachments from '../../components/attachments/Attachments'
 
 type OrderStageCardProps = {
     index?: string
@@ -69,6 +70,10 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
     const [error, setError] = useState<DateValidationError | null>(null)
     const [isEditing, setIsEditing] = useState(false)
     const [isDisplayingMode, setIsDisplayingMode] = useState(isDisplaying)
+    const [attachmentMeta, setAttachmentMeta] = useState<{
+        stageId: number
+        saveTrigger: boolean
+    }>({ saveTrigger: false, stageId: 0 })
 
     const handleSetPlannedElements = (value: { numberOfElements: number; elementId: string }[]) => {
         plannedElementsRef!.current! = value
@@ -199,7 +204,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
             listOfElementsPlannedNumber: isDisplayingMode ? stage!.listOfElementsPlannedNumber : [],
             attachments: [],
             test: '',
-            fitters: [],
+            fitters: stage && stage.fitters ? stage.fitters : [],
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
@@ -518,7 +523,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     <Tab label="Informacje o datach" {...tabProps(0)} />
                                     <Tab label="Narzędzia" {...tabProps(1)} />
                                     <Tab label="Elementy" {...tabProps(2)} />
-                                    {isDisplayingMode ? <Tab label="Montażyści..." {...tabProps(2)} /> : null}
+                                    <Tab label="Montażyści" {...tabProps(2)} />
                                     <Tab label="Szczegóły etapu/Zalaczniki" {...tabProps(1)} />
                                 </Tabs>
                             </Box>
@@ -552,17 +557,11 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     dateTo={moment(formik.values.plannedEndDate)}
                                     fitters={formik.values.fitters}
                                     setFitters={(fitters) => formik.setFieldValue('fitters', fitters)}
+                                    readonly={!isAuthorized([Role.MANAGER])}
                                 />
                             </TabPanel>
                             <TabPanel key={uuidv4()} value={tabValue} index={4}>
-                                <Grid item xs={2}>
-                                    <CustomTextField
-                                        readOnly={isDisplayingMode!}
-                                        sx={{ width: '100%' }}
-                                        label="Załączniki"
-                                        name="attachments"
-                                    />
-                                </Grid>
+                                <Attachments {...attachmentMeta} />
                             </TabPanel>
                         </Box>
 

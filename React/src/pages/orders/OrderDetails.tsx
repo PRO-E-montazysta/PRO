@@ -275,7 +275,11 @@ const OrderDetails = () => {
                             <Box sx={{ mt: '100px' }}>
                                 <Paper sx={{ p: '20px' }}>
                                     <Typography variant="h5">Harmonogram pracy montażystów</Typography>
-                                    <Planner orderId={params.id} initialDate={moment(orderData.data?.plannedStart)} />
+                                    <Planner
+                                        orderId={params.id}
+                                        initialDate={moment(orderData.data?.plannedStart)}
+                                        readonly={!isAuthorized([Role.MANAGER])}
+                                    />
                                 </Paper>
                             </Box>
                             <FormButtons

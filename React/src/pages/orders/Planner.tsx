@@ -12,9 +12,10 @@ import PlannerStagePopup from './PlannerStagePopup'
 type PlannerProps = {
     orderId?: string
     initialDate: Moment
+    readonly: boolean
 }
 
-const Planner = ({ orderId, initialDate }: PlannerProps) => {
+const Planner = ({ orderId, initialDate, readonly }: PlannerProps) => {
     const [popupEventInfo, setPopupEventInfo] = useState<PopupPlannerInfo>(cleanPlannerInfo)
 
     const orderStagesQuery = useOrderStages(orderId)
@@ -70,7 +71,11 @@ const Planner = ({ orderId, initialDate }: PlannerProps) => {
                 }}
             />
             {/* <PlannerStageDetails popupEventInfo={popupEventInfo} setPopupEventInfo={setPopupEventInfo} /> */}
-            <PlannerStagePopup popupEventInfo={popupEventInfo} setPopupEventInfo={setPopupEventInfo} />
+            <PlannerStagePopup
+                popupEventInfo={popupEventInfo}
+                setPopupEventInfo={setPopupEventInfo}
+                readonly={readonly}
+            />
         </>
     )
 }
