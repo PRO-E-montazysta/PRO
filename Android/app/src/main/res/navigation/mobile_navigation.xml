@@ -51,7 +51,11 @@
         android:id="@+id/navigation_settings"
         android:name="com.example.e_montazysta.ui.activities.SettingsActivity"
         android:label="@string/title_settings"
-        tools:layout="@layout/activity_settings" />
+        tools:layout="@layout/activity_settings">
+        <action
+            android:id="@+id/action_settingsFragment_to_notificationListFragment"
+            app:destination="@id/notificationListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/toolsFragment"
         android:name="com.example.e_montazysta.ui.toollist.ToolsListFragment"
