@@ -121,7 +121,6 @@ public class WarehouseServiceImpl implements WarehouseService {
         elementsToAdd.forEach(elementDto -> {
             ElementInWarehouseDto elementInWarehouseDto = ElementInWarehouseDto.builder()
                     .inWarehouseCount(0)
-                    .inUnitCount(0)
                     .rack("")
                     .shelf("")
                     .elementId(elementDto.getId())

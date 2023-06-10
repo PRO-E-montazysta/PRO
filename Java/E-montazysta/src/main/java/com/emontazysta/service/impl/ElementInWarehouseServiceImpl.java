@@ -51,7 +51,6 @@ public class ElementInWarehouseServiceImpl implements ElementInWarehouseService 
 
         elementInWarehouse.setInWarehouseCount(updatedElementInWarehouse.getInWarehouseCount());
         if(authUtils.getLoggedUser().getRoles().contains(Role.WAREHOUSE_MANAGER)) {
-            elementInWarehouse.setInUnitCount(updatedElementInWarehouse.getInUnitCount());
             elementInWarehouse.setRack(updatedElementInWarehouse.getRack());
             elementInWarehouse.setShelf(updatedElementInWarehouse.getShelf());
         }

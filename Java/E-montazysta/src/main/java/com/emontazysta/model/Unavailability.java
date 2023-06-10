@@ -35,7 +35,7 @@ public class Unavailability {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private TypeOfUnavailability typeOfUnavailability;
-
+    @Column(length=500)
     private String description;
     private LocalDateTime unavailableFrom;
     private LocalDateTime unavailableTo;

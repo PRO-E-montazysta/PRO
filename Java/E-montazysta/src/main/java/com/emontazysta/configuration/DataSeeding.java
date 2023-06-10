@@ -479,41 +479,41 @@ public class DataSeeding {
                 null, warehouseman1, element3, new ArrayList<>()));
 
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                1, 1, "1", "1", element1, warehouse1));
+                1, "1", "1", element1, warehouse1));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                2, 1, "2", "1", element2, warehouse1));
+                2, "2", "1", element2, warehouse1));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                3, 1, "3", "1", element3, warehouse1));
+                3, "3", "1", element3, warehouse1));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                4, 1, "4", "1", element4, warehouse1));
+                4, "4", "1", element4, warehouse1));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                1, 1, "1", "2", element1, warehouse2));
+                1, "1", "2", element1, warehouse2));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                2, 1, "2", "2", element2, warehouse2));
+                2, "2", "2", element2, warehouse2));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                3, 1, "3", "2", element3, warehouse2));
+                3, "3", "2", element3, warehouse2));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                4, 1, "4", "2", element4, warehouse2));
+                4, "4", "2", element4, warehouse2));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                1, 1, "1", "3", element1, warehouse3));
+                1, "1", "3", element1, warehouse3));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                2, 1, "2", "3", element2, warehouse3));
+                2, "2", "3", element2, warehouse3));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                3, 1, "3", "3", element3, warehouse3));
+                3, "3", "3", element3, warehouse3));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                4, 1, "4", "3", element4, warehouse3));
+                4, "4", "3", element4, warehouse3));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                51, 1, "5", "1", element5, warehouse1));
+                51, "5", "1", element5, warehouse1));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                61, 1, "6", "1", element6, warehouse1));
+                61, "6", "1", element6, warehouse1));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                52, 1, "5", "2", element5, warehouse2));
+                52, "5", "2", element5, warehouse2));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                62, 1, "6", "2", element6, warehouse2));
+                62, "6", "2", element6, warehouse2));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                53, 1, "5", "3", element5, warehouse3));
+                53, "5", "3", element5, warehouse3));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                63, 1, "6", "3", element6, warehouse3));
+                63, "6", "3", element6, warehouse3));
 
         ElementReturnRelease elementReturnRelease1 = addElementReturnReleaseFromModel(new ElementReturnRelease(null,
                 LocalDateTime.now(), 1, 1, LocalDateTime.now(), warehouseman1, element1,

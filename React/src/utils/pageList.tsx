@@ -414,7 +414,7 @@ export const pageList: Array<PageProps> = [
                 inNav: true,
                 name: 'Zapotrzebowania AdHoc',
                 path: '/demands-adhoc',
-                allowedRoles: [Role['*']],
+                allowedRoles: [Role['NOBODY']],
                 component: <DemandAdHoc />,
                 children: [
                     {
