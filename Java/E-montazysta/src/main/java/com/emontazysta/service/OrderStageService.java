@@ -31,5 +31,4 @@ public interface OrderStageService {
     OrderStageDto returnElements(Long orderStageId, Long warehouseId, List<ElementSimpleReturnReleaseDto> elements);
     OrderStageDto nextStatus(Long id);
     OrderStageDto previousStatus(Long id);
-    OrderStageDto addFitters(Long id, List<Long> fittersId);
 }
