@@ -121,6 +121,7 @@ export const FormStructure = (params: FormStructureParams) => {
                                     readonly={setDisplayMode(e) == 'readonly'}
                                     key={e.id}
                                     type={e.type}
+                                    formatFn={e.formatFn}
                                     placeholder={e.placeholder ? e.placeholder : ''}
                                 />
                             )

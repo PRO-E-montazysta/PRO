@@ -50,6 +50,7 @@ public class AboutMeServiceImpl implements AboutMeService {
                 .roles(loggedUser.getRoles())
                 .companyName(companyName)
                 .profilePhotoUrl(profilePhotoUrl)
+                .userId(authUtils.getLoggedUser().getId())
                 .build();
     }
 }

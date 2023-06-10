@@ -89,4 +89,5 @@ dependencies {
     implementation "io.coil-kt:coil:2.2.0"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
     implementation 'androidx.preference:preference-ktx:1.2.0'
+    implementation 'androidx.recyclerview:recyclerview-selection:1.1.0'
 }

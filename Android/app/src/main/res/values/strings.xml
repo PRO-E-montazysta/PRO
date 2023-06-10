@@ -23,7 +23,7 @@
     <string name="content_description_media">content_description_media</string>
     <string name="title">title</string>
     <string name="title_warehouses">Magazyny</string>
-3    <string name="title_tools">Narzędzia</string>
+    <string name="title_tools">Narzędzia</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tool_warehouse_button">Przejdź do magazynu</string>
@@ -70,4 +70,14 @@
     <string name="filter_warehouse_field_label">Magazyny: </string>
     <string name="tool_details_title">Narzędzie</string>
     <string name="warehouse_details_title">Magazyn</string>
+    <string name="release_details_title">Wydanie</string>
+    <string name="release_item_name_label">Przedmiot</string>
+    <string name="release_release_time_label">Data wydania</string>
+    <string name="release_return_date_label">Data zwrotu</string>
+    <string name="release_recaived_by_label">Odebrane przez</string>
+    <string name="release_released_by_label">Wydane przez</string>
+    <string name="release_demand_ad_hoc_label">Zapotrzebowanie ad-hoc</string>
+    <string name="release_stage_label">Etap</string>
+    <string name="release_return_objects_label_desc">Zwraca elementy z danego wydania</string>
+    <string name="release_return_objects_label">Zwróć</string>
 </resources>

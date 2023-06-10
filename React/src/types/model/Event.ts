@@ -9,6 +9,7 @@ export type Event = {
     acceptedById: number
     itemName: string
     eventType: string
+    deleted: boolean
 }
 
 export const EventType = {

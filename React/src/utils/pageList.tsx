@@ -28,6 +28,7 @@ import DemandAdHoc from '../pages/demandAdHoc'
 import DemandAdHocDetails from '../pages/demandAdHoc/DemandAdHocDetails'
 import Unavailabilities from '../pages/unavailabilities'
 import UnavailabilityDetails from '../pages/unavailabilities/UnavailabilityDetails'
+import Notifications from '../pages/notifications'
 import ElementInWarehouseDetails from '../pages/elementInWarehouse/ElementInWarehouseDetails'
 import ForgotPasswordPage from '../pages/ForgotPasswordPage'
 import ResetPasswordPage from '../pages/ResetPasswordPage'
@@ -434,6 +435,13 @@ export const pageList: Array<PageProps> = [
                 path: '/demands-adhoc/:id',
                 allowedRoles: [Role['*']],
                 component: <DemandAdHocDetails />,
+            },
+            {
+                inNav: false,
+                name: '',
+                path: '/notifications',
+                allowedRoles: [Role['*']],
+                component: <Notifications />,
             },
         ],
     },

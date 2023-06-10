@@ -6,6 +6,7 @@ export type Unavailability = {
     unavailableTo: Date
     assignedToId: number
     assignedById: number
+    deleted: boolean
 }
 export type UnavailabilityFilter = {
     id: number
