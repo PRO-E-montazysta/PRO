@@ -8,209 +8,152 @@
         name="stageDetailViewModel"
         type="com.example.e_montazysta.ui.stage.StageDetailViewModel" />
     </data>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-    <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >
+
             <LinearLayout
                 android:id="@+id/details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:paddingHorizontal="10dp"
+                android:layout_marginHorizontal="19dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingVertical="@dimen/list_item_space_x3"
-                    android:paddingStart="@dimen/list_item_space_x4"
-                    android:paddingEnd="@dimen/list_item_space_x6">
-                <com.google.android.material.textview.MaterialTextView
+
+                <TextView
                     android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Nazwa etapu" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <TextView
                     android:id="@+id/nameValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="nameValue"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingVertical="@dimen/list_item_space_x3"
-                    android:paddingStart="@dimen/list_item_space_x4"
-                    android:paddingEnd="@dimen/list_item_space_x6">
-                <com.google.android.material.textview.MaterialTextView
+
+                <TextView
                     android:id="@+id/status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Status" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <TextView
                     android:id="@+id/statusValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="statusValue"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingVertical="@dimen/list_item_space_x3"
-                    android:paddingStart="@dimen/list_item_space_x4"
-                    android:paddingEnd="@dimen/list_item_space_x6">
-                <com.google.android.material.textview.MaterialTextView
+
+                <TextView
                     android:id="@+id/price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/orderPrice" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <TextView
                     android:id="@+id/priceValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingVertical="@dimen/list_item_space_x3"
-                    android:paddingStart="@dimen/list_item_space_x4"
-                    android:paddingEnd="@dimen/list_item_space_x6">
-                <com.google.android.material.textview.MaterialTextView
+
+                <TextView
                     android:id="@+id/plannedStart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Planowany czas rozpoczęcia" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <TextView
                     android:id="@+id/plannedStartValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="plannedStartValue"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingVertical="@dimen/list_item_space_x3"
-                    android:paddingStart="@dimen/list_item_space_x4"
-                    android:paddingEnd="@dimen/list_item_space_x6">
-                <com.google.android.material.textview.MaterialTextView
+
+                <TextView
                     android:id="@+id/plannedEnd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Planowany czas zakończenia" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <TextView
                     android:id="@+id/plannedEndValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="plannedEndValue"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingVertical="@dimen/list_item_space_x3"
-                    android:paddingStart="@dimen/list_item_space_x4"
-                    android:paddingEnd="@dimen/list_item_space_x6">
-                <com.google.android.material.textview.MaterialTextView
+
+                <TextView
                     android:id="@+id/plannedFittersNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Planowany czas zakończenia" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <TextView
                     android:id="@+id/plannedFittersNumberValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="plannedFittersNumberValue"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingVertical="@dimen/list_item_space_x3"
-                    android:paddingStart="@dimen/list_item_space_x4"
-                    android:paddingEnd="@dimen/list_item_space_x6">
-                <com.google.android.material.textview.MaterialTextView
+
+                <TextView
                     android:id="@+id/minimumImagesNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Minimalna liczba zdjęć" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <TextView
                     android:id="@+id/minimumImagesNumberValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="minimumImagesNumberValue"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingVertical="@dimen/list_item_space_x3"
-                    android:paddingStart="@dimen/list_item_space_x4"
-                    android:paddingEnd="@dimen/list_item_space_x6">
-                <com.google.android.material.textview.MaterialTextView
+
+                <TextView
                     android:id="@+id/listOfToolsPlannedNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Lista planowanych narzędzi" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <TextView
                     android:id="@+id/listOfToolsPlannedNumberValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="listOfToolsPlannedNumberValue"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingVertical="@dimen/list_item_space_x3"
-                    android:paddingStart="@dimen/list_item_space_x4"
-                    android:paddingEnd="@dimen/list_item_space_x6">
-                <com.google.android.material.textview.MaterialTextView
+
+                <TextView
                     android:id="@+id/listOfElementsPlannedNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Lista planowanych elementów" />
-                <com.google.android.material.textview.MaterialTextView
+
+                <TextView
                     android:id="@+id/listOfElementsPlannedNumberValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="listOfElementsPlannedNumberValue"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
-                <com.google.android.material.divider.MaterialDivider
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/list_item_space_x3"/>
             </LinearLayout>
 
-
+            <LinearLayout
+                android:id="@+id/separator"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:alpha=".30"
+                android:background="?colorOnPrimaryContainer"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="@+id/details"
+                app:layout_constraintStart_toStartOf="@+id/details"
+                app:layout_constraintTop_toBottomOf="@+id/details" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
 </layout>

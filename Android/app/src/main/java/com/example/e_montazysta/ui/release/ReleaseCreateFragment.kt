@@ -1,13 +1,8 @@
 package com.example.e_montazysta.ui.release
 
-import WarehouseListAdapter
-import android.content.Context
+import android.app.AlertDialog
 import android.os.Bundle
-import android.view.ActionMode
-import android.view.ActionMode.Callback
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -18,13 +13,12 @@ import androidx.navigation.fragment.navArgs
 import com.example.e_montazysta.R
 import com.example.e_montazysta.data.model.ReleaseItem
 import com.example.e_montazysta.data.model.Result
+import com.example.e_montazysta.data.model.mapToReleaseItem
 import com.example.e_montazysta.databinding.FragmentCreateReleaseBinding
-import com.example.e_montazysta.ui.warehouse.WarehouseFilterDAO
 import com.google.android.gms.common.api.OptionalModuleApi
 import com.google.android.gms.common.moduleinstall.ModuleInstall
 import com.google.android.gms.common.moduleinstall.ModuleInstallClient
 import com.google.android.gms.common.moduleinstall.ModuleInstallRequest
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
@@ -34,12 +28,10 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
 class ReleaseCreateFragment : Fragment() {
     private val releaseCreateViewModel: ReleaseCreateViewModel by viewModel()
     private var isBackPressedFromDialog = false
-    var actionMode: ActionMode? = null
-    lateinit var actionModeCallback: Callback
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -52,29 +44,13 @@ class ReleaseCreateFragment : Fragment() {
         val stageId = args.stageId
 
         binding.viewModel = releaseCreateViewModel
-        releaseCreateViewModel.getListOfWarehouse()
 
-        binding.toolbar.inflateMenu(R.menu.menu_release)
 
         val adapter = ReleaseCreateAdapter(
-            ReleaseCreateAdapter.CustomClickListener (
-                {item ->
-                    if (actionMode != null ) {
-                        Toast.makeText(requireContext(), item.code, Toast.LENGTH_LONG).show()
-                    }
-                    else {
-                        false
-                    }
-                },
-                {
-                    Toast.makeText(requireContext(), "LONG PRESS TEST", Toast.LENGTH_LONG).show()
-                    if(actionMode == null) {
-                        actionMode = requireActivity().startActionMode(actionModeCallback)
-                    }
-                },
-                { itemCount -> actionMode?.title = "Wybrane elementy: $itemCount" } // Update the listener to update the ActionMode title with item count
-
-            )
+            ReleaseCreateAdapter.CustomClickListener {
+//                item -> val direction = ReleaseCreateFragmentDirections.actionReleaseCreateFragmentToToolFragment(item.toString())
+//                findNavController().navigate(direction)
+            }
         )
 
         binding.itemList.adapter = adapter
@@ -87,23 +63,19 @@ class ReleaseCreateFragment : Fragment() {
         val moduleInstallClient = ModuleInstall.getClient(requireContext())
         val scanner = GmsBarcodeScanning.getClient(requireContext(), options)
 
+
+
+
+
         binding.addObjectsToRelease.setOnClickListener{
             installApiModule(moduleInstallClient, scanner)
             scanner?.startScan()?.addOnSuccessListener {barcode ->
                 val code = barcode?.rawValue
                 when(code?.first()) {
                     'E' -> binding.viewModel?.let {
-                        it.addElementToRelease(code)
-                        if (releaseCreateViewModel.selectedWarehouseLiveData.value == null) {
-                            showWarehouseFilterDialog(requireContext(), releaseCreateViewModel.warehouseLiveData.value!!)
-                        }
-                    }
-                    'T' -> {
-                        binding.viewModel?.let {
-                            it.addToolToRelease(code)
-
-                        }
-                    }
+                        it.addElementToRelease(code) }
+                    'T' -> binding.viewModel?.let {
+                        it.addToolToRelease(code) }
                     else -> {
                         Toast.makeText(activity, "Niepoprawny kod QR!\nWartość: $code", Toast.LENGTH_LONG ).show() }
                 }
@@ -149,53 +121,11 @@ class ReleaseCreateFragment : Fragment() {
         }
 
         releaseCreateViewModel.itemsLiveData.observe(viewLifecycleOwner) {
-            items -> adapter.elements = items.toMutableList()
-            adapter.notifyDataSetChanged()
-        }
-
-        // Spinner
-        releaseCreateViewModel.selectedWarehouseLiveData.observe(viewLifecycleOwner) {warehouse ->
-            warehouse?.let { binding.toolbar.subtitle = it.name }
-        }
-
-        actionModeCallback = object : Callback {
-            override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
-                mode.menuInflater.inflate(R.menu.contextual_action_menu, menu)
-                return true
-            }
-
-            override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
-                return false
-            }
-
-            override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
-                // Handle menu item clicks
-                when (item.itemId) {
-                    R.id.action_delete -> {
-                        adapter.elements.filter{ it.isSelected }.forEach {
-                            adapter.elements.remove(it)
-                        }
-                        releaseCreateViewModel._itemsLiveData.postValue(adapter.elements)
-                        actionMode?.finish()
-                        return true
-                    }
-                    else -> return false
-                }
-            }
-
-            override fun onDestroyActionMode(mode: ActionMode) {
-                val tempList: List<ReleaseItem> = adapter.elements
-                tempList.forEach { it.isSelected = false }
-                releaseCreateViewModel._itemsLiveData.postValue(tempList)
-                adapter.selectedItemCount = 0
-                actionMode = null
-            }
-
+            items -> adapter.elements = items.map { mapToReleaseItem(it) }.toMutableList()
         }
 
         return binding.root
     }
-
     private fun showConfirmationDialog(
         items: List<ReleaseItem>,
         binding: FragmentCreateReleaseBinding,
@@ -203,7 +133,7 @@ class ReleaseCreateFragment : Fragment() {
     ) {
         val itemNames = items.map { it.name + ", Ilość: " + it.quantity }.toTypedArray()
 
-        val dialogBuilder = MaterialAlertDialogBuilder(requireContext())
+        val dialogBuilder = AlertDialog.Builder(requireContext())
             .setTitle("Wydać:")
             .setItems(itemNames, null)
             .setPositiveButton("Wydaj") { dialog, _ ->
@@ -230,26 +160,6 @@ class ReleaseCreateFragment : Fragment() {
             }
         val dialog = dialogBuilder.create()
         dialog.show()
-    }
-
-    fun showWarehouseFilterDialog(context: Context, warehouses: List<WarehouseFilterDAO>) {
-        val adapter = WarehouseListAdapter(context, warehouses)
-        var selectedWarehouse: WarehouseFilterDAO? = null
-        val alertDialog = MaterialAlertDialogBuilder(context)
-            .setTitle("Select Warehouse")
-            .setSingleChoiceItems(adapter, -1) { _, position ->
-                selectedWarehouse = warehouses[position]
-            }
-            .setPositiveButton("OK") { dialog, _ ->
-                releaseCreateViewModel.setWarehouse(selectedWarehouse)
-                dialog.dismiss()
-            }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .create()
-
-        alertDialog.show()
     }
 
     private fun installApiModule(moduleInstallClient: ModuleInstallClient, module: OptionalModuleApi) {
@@ -281,7 +191,7 @@ class ReleaseCreateFragment : Fragment() {
     }
 
     private fun showDiscardChangesDialog() {
-        val alertDialogBuilder = MaterialAlertDialogBuilder(requireContext())
+        val alertDialogBuilder = AlertDialog.Builder(requireContext())
         alertDialogBuilder.setTitle("Uwaga!")
         alertDialogBuilder.setMessage("Czy na pewno chcesz odrzucić zmiany?")
         alertDialogBuilder.setPositiveButton("Tak") { _, _ ->

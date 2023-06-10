@@ -9,230 +9,158 @@
             type="com.example.e_montazysta.ui.release.ReleaseDetailViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="?attr/actionBarSize"
-        >
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/topAppBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true">
+        android:layout_height="match_parent">
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:elevation="0dp"
-                app:menu="@menu/menu_details"
-                app:title="@string/release_details_title"
-                app:navigationIcon="@drawable/baseline_arrow_back_24"
-                app:layout_scrollFlags="scroll|enterAlways|snap"
-                app:layout_scrollEffect="compress"
-                />
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:clickable="true">
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingVertical="@dimen/list_item_space_x3"
-                    android:paddingStart="@dimen/list_item_space_x4"
-                    android:paddingEnd="@dimen/list_item_space_x6">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tool"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="?colorOnSurfaceVariant"
-                        android:textAppearance="?textAppearanceBodySmall"
-                        android:text="@string/release_item_name_label" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/toolValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?textAppearanceBodyLarge"
-                        android:textColor="?colorOnSurface"
-                        android:text="Brak" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingVertical="@dimen/list_item_space_x3"
-                    android:paddingStart="@dimen/list_item_space_x4"
-                    android:paddingEnd="@dimen/list_item_space_x6">
-        
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/releaseTime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="?colorOnSurfaceVariant"
-                        android:textAppearance="?textAppearanceBodySmall"
-                        android:text="@string/release_release_time_label" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/releaseTimeValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?textAppearanceBodyLarge"
-                        android:textColor="?colorOnSurface"
-                        android:text="Brak" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingVertical="@dimen/list_item_space_x3"
-                    android:paddingStart="@dimen/list_item_space_x4"
-                    android:paddingEnd="@dimen/list_item_space_x6">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/returnTime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="?colorOnSurfaceVariant"
-                        android:textAppearance="?textAppearanceBodySmall"
-                        android:text="@string/release_return_date_label" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/returnTimeValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?textAppearanceBodyLarge"
-                        android:textColor="?colorOnSurface"
-                        android:text="Brak" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingVertical="@dimen/list_item_space_x3"
-                    android:paddingStart="@dimen/list_item_space_x4"
-                    android:paddingEnd="@dimen/list_item_space_x6">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/receivedById"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="?colorOnSurfaceVariant"
-                        android:textAppearance="?textAppearanceBodySmall"
-                        android:text="@string/release_recaived_by_label" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/receivedByIdValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?textAppearanceBodyLarge"
-                        android:textColor="?colorOnSurface"
-                        android:text="Brak" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingVertical="@dimen/list_item_space_x3"
-                    android:paddingStart="@dimen/list_item_space_x4"
-                    android:paddingEnd="@dimen/list_item_space_x6">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/releasedById"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="?colorOnSurfaceVariant"
-                        android:textAppearance="?textAppearanceBodySmall"
-                        android:text="@string/release_released_by_label" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/releasedByIdValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?textAppearanceBodyLarge"
-                        android:textColor="?colorOnSurface"
-                        android:text="Brak" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingVertical="@dimen/list_item_space_x3"
-                    android:paddingStart="@dimen/list_item_space_x4"
-                    android:paddingEnd="@dimen/list_item_space_x6">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/demandAdHocId"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="?colorOnSurfaceVariant"
-                        android:textAppearance="?textAppearanceBodySmall"
-                        android:text="@string/release_demand_ad_hoc_label" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/demandAdHocIdValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?textAppearanceBodyLarge"
-                        android:textColor="?colorOnSurface"
-                        android:text="Brak" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingVertical="@dimen/list_item_space_x3"
-                    android:paddingStart="@dimen/list_item_space_x4"
-                    android:paddingEnd="@dimen/list_item_space_x6">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/orderStageId"
-                        android:textColor="?colorOnSurfaceVariant"
-                        android:textAppearance="?textAppearanceBodySmall"
-                        android:text="@string/release_stage_label"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"/>
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/orderStageIdValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?textAppearanceBodyLarge"
-                        android:textColor="?colorOnSurface"
-                        android:text="Brak" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
-            </androidx.appcompat.widget.LinearLayoutCompat>
-        </ScrollView>
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/add_objects_to_release"
+        <TextView
+            android:id="@+id/releaseId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_marginEnd="@dimen/fab_margin"
-            android:layout_marginBottom="@dimen/fab_margin"
-            android:contentDescription="@string/release_return_objects_label_desc"
-            android:text="@string/release_return_objects_label"
-            app:icon="@drawable/baseline_check_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:layout_marginStart="19dp"
+            android:layout_marginTop="33dp"
+            android:text="id"
+            android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <TableLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/releaseId">
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/releaseTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="releaseTime" />
+
+                <TextView
+                    android:id="@+id/releaseTimeValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="right"
+                    android:text="releaseTimeValue" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/returnTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="returnTime" />
+
+                <TextView
+                    android:id="@+id/returnTimeValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="right"
+                    android:text="returnTimeValue" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/toolId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="toolId" />
+
+                <TextView
+                    android:id="@+id/toolIdValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="right"
+                    android:text="toolIdValue" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/receivedById"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="receivedById" />
+
+                <TextView
+                    android:id="@+id/receivedByIdValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="right"
+                    android:text="receivedByIdValue" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/releasedById"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="releasedById" />
+
+                <TextView
+                    android:id="@+id/releasedByIdValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="right"
+                    android:text="releasedByIdValue" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/demandAdHocId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="demandAdHocId" />
+
+                <TextView
+                    android:id="@+id/demandAdHocIdValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="right"
+                    android:text="demandAdHocIdValue" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/orderStageId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="orderStageId" />
+
+                <TextView
+                    android:id="@+id/orderStageIdValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="right"
+                    android:text="orderStageIdValue" />
+            </TableRow>
+        </TableLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
