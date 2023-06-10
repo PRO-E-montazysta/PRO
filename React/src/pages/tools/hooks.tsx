@@ -1,7 +1,7 @@
 import { Box } from '@mui/material'
 import { AxiosError } from 'axios'
 import { useContext } from 'react'
-import { useMutation, useQuery } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { Tool } from '../../types/model/Tool'
@@ -59,6 +59,7 @@ export const useDeleteTool = (onSuccess: () => void) => {
     const navigate = useNavigate()
     const { showDialog } = useContext(DialogGlobalContext)
     const showError = useError()
+    const queryClient = useQueryClient()
     return useMutation({
         mutationFn: deleteTool,
         onSuccess(data) {
@@ -71,11 +72,9 @@ export const useDeleteTool = (onSuccess: () => void) => {
                 ],
                 title: 'Sukces!',
                 content: <Box>Narzędzie zostało usunięte</Box>,
-                callback: () => () => {
-                    onSuccess()
-                    navigate('/tools')
-                },
             })
+            queryClient.invalidateQueries('tool-list')
+            navigate('/tools')
         },
         onError: showError,
     })
@@ -83,6 +82,6 @@ export const useDeleteTool = (onSuccess: () => void) => {
 
 export const useToolData = (id: string | undefined) => {
     return useQuery<Tool, AxiosError>(['tool', { id: id }], async () => getToolDetails(id && id != 'new' ? id : ''), {
-        enabled: !!id && id != 'new',
+        enabled: !!id && id != 'new' && id != 'undefined',
     })
 }

@@ -49,17 +49,18 @@ class ReleaseListViewModel(private val repository: IReleaseRepository) : ViewMod
        _isLoadingLiveData.postValue(false)
     }
 
-    fun setReleaseList(stage: Stage){
-        _isLoadingLiveData.postValue(true)
-        var releases: List<ReleaseListItem> = mutableListOf()
-        val temp = stage.toolReleases
-        releases = releases + (stage.toolReleases.map { it!!.mapToReleaseItem() })
-        if (!stage.elementReturnReleases.isNullOrEmpty()){
-            releases += (stage.elementReturnReleases.map { it.mapToReleaseItem() })
+    fun setReleaseList(stage: Stage) {
+        job = launch {
+            _isLoadingLiveData.postValue(true)
+            var releases: List<ReleaseListItem> = mutableListOf()
+            releases = releases + (stage.simpleToolReleases.map { it!!.maptoReleaseListItem() })
+            if (!stage.simpleElementReturnReleases.isNullOrEmpty()) {
+                releases += (stage.simpleElementReturnReleases.map { it.maptoReleaseListItem() })
+            }
+            releases.sortedBy { it.releaseTime }
+            _releaseLiveData.postValue(releases)
+            _isLoadingLiveData.postValue(false)
         }
-        releases.sortedBy { it.id }
-        _releaseLiveData.postValue(releases)
-        _isLoadingLiveData.postValue(false)
     }
 
     override fun onCleared() {

@@ -19,4 +19,5 @@ public class AboutMeDto {
     private Set<Role> roles;
     private String companyName;
     private String profilePhotoUrl;
+    private Long userId;
 }
