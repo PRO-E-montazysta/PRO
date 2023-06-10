@@ -17,12 +17,10 @@ class ReleaseListFragment(val stage: Stage? = null) : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         // Get a reference to the binding object and inflate the fragment views.
-        val binding: FragmentStageDetailReleaseListBinding = FragmentStageDetailReleaseListBinding.inflate(inflater, container, false)
-        val application = requireNotNull(this.activity).application
+        val binding: FragmentReleasesBinding = FragmentReleasesBinding.inflate(inflater, container, false)
 
         val adapter = ReleaseListAdapter(CustomClickListener{
-            releaseId ->
-            val action = StageDetailFragmentDirections.actionStageDetailFragmentToReleaseDetailFragment(releaseId)
+            releaseId -> val action = ReleaseListFragmentDirections.actionReleaseListFragmentToReleaseDetailFragment(releaseId)
             findNavController().navigate(action)
         })
 
