@@ -43,7 +43,7 @@ public class DataSeeding {
     private final CommentService commentService;
     private final ToolTypeService toolTypeService;
     private final ToolEventRepository toolEventRepository;
-    private final OrderStageService orderStageService;
+    private final OrderStageRepository orderStageRepository;
     private final ToolReleaseService toolReleaseService;
     private final ElementService elementService;
     private final DemandAdHocService demandAdHocService;
@@ -100,7 +100,7 @@ public class DataSeeding {
     }
 
     private OrderStage addOrderStageFromModel(OrderStage orderStage) {
-        return orderStageMapper.toEntity(orderStageService.add(orderStageMapper.toDto(orderStage)));
+        return orderStageRepository.save(orderStage);
     }
 
     private DemandAdHoc addDemandAdHocFromModel(DemandAdHoc demandAdHoc) {
@@ -330,16 +330,16 @@ public class DataSeeding {
                 null, null, null, null));
 
         Orders order1 = addOrdersFromModel(new Orders(null, "Test Order 1 - from Client 1",
-                OrderStatus.CREATED, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), null, TypeOfPriority.IMPORTANT,
+                OrderStatus.ACCEPTED, LocalDateTime.now(), LocalDateTime.now().plusDays(1), LocalDateTime.now(), null, TypeOfPriority.IMPORTANT,
                 company1, manager1, foreman1, specialist1, salesRepresentative1, location1, client1, new ArrayList<>(),
                 new ArrayList<>()));
         Orders order2 = addOrdersFromModel(new Orders(null, "Test Order 2 - from Client 1",
-                OrderStatus.CREATED, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), null, TypeOfPriority.NORMAL,
-                company1, manager2, foreman2, specialist2, salesRepresentative2, location2, client1, new ArrayList<>(),
+                OrderStatus.PLANNING, LocalDateTime.now(), LocalDateTime.now().plusDays(2), LocalDateTime.now(), null, TypeOfPriority.NORMAL,
+                company1, null, null, specialist1, salesRepresentative2, location2, client1, new ArrayList<>(),
                 new ArrayList<>()));
         Orders order3 = addOrdersFromModel(new Orders(null, "Test Order 3 - from Client 2",
-                OrderStatus.CREATED, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), null, TypeOfPriority.IMMEDIATE,
-                company1, manager1, foreman1, specialist1, salesRepresentative1, location3, client2, new ArrayList<>(),
+                OrderStatus.CREATED, LocalDateTime.now(), LocalDateTime.now().plusDays(3), LocalDateTime.now(), null, TypeOfPriority.IMMEDIATE,
+                company1, null, null, null, salesRepresentative1, location3, client2, new ArrayList<>(),
                 new ArrayList<>()));
         Orders order4 = addOrdersFromModel(new Orders(null, "Test Order 4 - from Client 4",
                 OrderStatus.CREATED, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), null, TypeOfPriority.NORMAL,
@@ -347,18 +347,18 @@ public class DataSeeding {
                 new ArrayList<>(), new ArrayList<>()));
 
         OrderStage orderStage1 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 1",
-                OrderStageStatus.PLANNING, new BigDecimal(1), LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(),
+                OrderStageStatus.ADDING_FITTERS, new BigDecimal(1), LocalDateTime.now(), LocalDateTime.now().plusHours(5), null, null,
                 1, 1, 1, new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         OrderStage orderStage2 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 2",
-                OrderStageStatus.ADDING_FITTERS, new BigDecimal(2), LocalDateTime.parse( "2023-06-03T14:00:00.000"),
-                LocalDateTime.parse("2023-06-03T16:00:00.000"), LocalDateTime.now(), null,
+                OrderStageStatus.ADDING_FITTERS, new BigDecimal(2), LocalDateTime.now().plusHours(1),
+                LocalDateTime.now().plusHours(2), null, null,
                 1, 1, 1, List.of(fitter2,fitter1,fitter3),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         OrderStage orderStage3 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 3",
-                OrderStageStatus.PLANNING, new BigDecimal(3), LocalDateTime.now(), LocalDateTime.now(), null, null,
+                OrderStageStatus.ADDING_FITTERS, new BigDecimal(3), LocalDateTime.now().plusHours(2).plusMinutes(30), LocalDateTime.now().plusHours(3), null, null,
                 1, 1, 1, new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
