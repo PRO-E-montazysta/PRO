@@ -108,13 +108,18 @@ export const useFormStructure = (): Array<FormInputProps> => {
             addNewPermissionRoles: [Role.NOBODY],
             editPermissionRoles: [Role.NOBODY],
             viewPermissionRoles: [Role['*']],
+            //id przekazane z params
         },
         {
             label: 'Opis zapotrzebowania',
             id: 'description',
             initValue: '',
             type: 'input', //TODO: Jako textfield
-            validation: yup.string().required('Wprowadź opis zapotrzebowania'),
+            validation: yup
+                .string()
+                .min(3, 'Opis musi zawierać co najmniej 3 znaki')
+                .max(1000, 'Opis może zawierać maksymalnie 1000 zanków')
+                .required('Wprowadź opis zapotrzebowania'),
         },
     ]
 }

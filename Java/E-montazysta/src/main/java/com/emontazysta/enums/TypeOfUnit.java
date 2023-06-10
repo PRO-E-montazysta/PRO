@@ -3,5 +3,9 @@ package com.emontazysta.enums;
 public enum TypeOfUnit {
     KILOGRAM,
     LITER,
-    PIECE
+    PIECE,
+    GRAM,
+    MILILITER,
+    MKW,
+    MSZ
 }
