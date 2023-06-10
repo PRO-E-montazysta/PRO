@@ -18,11 +18,7 @@ class ReleaseListFragment(val stage: Stage? = null) : Fragment() {
 
         // Get a reference to the binding object and inflate the fragment views.
         val binding: FragmentReleasesBinding = FragmentReleasesBinding.inflate(inflater, container, false)
-        val application = requireNotNull(this.activity).application
 
-        // To use the View Model with data binding, you have to explicitly
-        // give the binding object a reference to it.
-        // binding.releaseListViewModel = releaseListViewModel
         val adapter = ReleaseListAdapter(CustomClickListener{
             releaseId -> val action = ReleaseListFragmentDirections.actionReleaseListFragmentToReleaseDetailFragment(releaseId)
             findNavController().navigate(action)

@@ -24,7 +24,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:elevation="0dp"
-                    app:menu="@menu/menu_release"
                     app:title="@string/create_release_title"
                     app:navigationIcon="@drawable/baseline_arrow_back_24"
                     app:layout_scrollFlags="scroll|enterAlways|snap"
@@ -63,7 +62,6 @@
             app:icon="@drawable/ic_plus_24px"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
-
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

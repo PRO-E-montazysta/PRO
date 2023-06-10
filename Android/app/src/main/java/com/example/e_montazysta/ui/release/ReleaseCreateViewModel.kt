@@ -4,10 +4,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.e_montazysta.data.model.Element
 import com.example.e_montazysta.data.model.ReleaseItem
 import com.example.e_montazysta.data.model.Result
-import com.example.e_montazysta.data.model.Tool
+import com.example.e_montazysta.data.model.mapToReleaseItem
 import com.example.e_montazysta.data.repository.interfaces.IElementRepository
 import com.example.e_montazysta.data.repository.interfaces.IReleaseRepository
 import com.example.e_montazysta.data.repository.interfaces.IToolRepository
@@ -33,8 +32,8 @@ class ReleaseCreateViewModel : ViewModel(), CoroutineScope, KoinComponent {
 
     private val releaseRepository: IReleaseRepository by inject()
 
-    private val _itemsLiveData = MutableLiveData<List<Any>>()
-    val itemsLiveData: LiveData<List<Any>> get() = _itemsLiveData
+    val _itemsLiveData = MutableLiveData<List<ReleaseItem>>()
+    val itemsLiveData: LiveData<List<ReleaseItem>> = _itemsLiveData
 
     private val _messageLiveData = MutableLiveData<String>()
     val messageLiveData: LiveData<String> = _messageLiveData
@@ -57,14 +56,14 @@ class ReleaseCreateViewModel : ViewModel(), CoroutineScope, KoinComponent {
     private suspend fun addToolToReleaseAsync(code: String?) {
         _isLoadingLiveData.postValue(true)
         val currentItems = _itemsLiveData.value ?: emptyList()
-        val existingItem = currentItems.find { it is Tool && it.code == code }
+        val existingItem = currentItems.find { it.code == code }
         if (existingItem != null) {
             _messageLiveData.postValue("Item already added to list:\n$code")
         } else {
             val result = toolRepository.getToolByCode(code)
             when (result) {
                 is Result.Success -> {
-                    val tool = result.data
+                    val tool = mapToReleaseItem(result.data)
                     _itemsLiveData.postValue(currentItems + tool)
                 }
                 is Result.Error -> result.exception.message?.let { _messageLiveData.postValue(it) }
@@ -83,14 +82,14 @@ class ReleaseCreateViewModel : ViewModel(), CoroutineScope, KoinComponent {
     private suspend fun addElementToReleaseAsync(code: String?) {
         _isLoadingLiveData.postValue(true)
         val currentItems = _itemsLiveData.value ?: emptyList()
-        val existingItem = currentItems.find { it is Element && it.code == code }
+        val existingItem = currentItems.find { it.code == code }
         if (existingItem != null) {
             _messageLiveData.postValue("Item already added to list:\n$code")
         } else {
             val result = elementRepository.getElementByCode(code)
             when (result) {
                 is Result.Success -> {
-                    val element = result.data
+                    val element = mapToReleaseItem(result.data)
                     _itemsLiveData.value = currentItems + element
                 }
 
@@ -145,7 +144,6 @@ class ReleaseCreateViewModel : ViewModel(), CoroutineScope, KoinComponent {
     fun setWarehouse(selectedWarehouseFilter: WarehouseFilterDAO?) {
         _selectedWarehouseLiveData.postValue(selectedWarehouseFilter)
     }
-
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
