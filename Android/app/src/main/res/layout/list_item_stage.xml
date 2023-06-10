@@ -27,7 +27,7 @@
         <include layout="@layout/list_item_template"
             android:id="@+id/item"
             app:headline="@{stage.name}"
-            app:supportText='@={stage.id +""}'
+            app:supportText='@{stage.id + " | " + stage.status + " | " + stage.plannedStart}'
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             >
