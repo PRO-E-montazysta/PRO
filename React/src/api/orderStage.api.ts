@@ -6,6 +6,7 @@ export const createOrderStage = (data: CreateOrderStage) => {
 }
 
 export const updateOrderStage = (data: UpdateOrderStage) => {
+    console.log(data)
     return makeServiceCall(`/order-stages/${data.orderStageId}`, 'PUT', { body: data })
 }
 

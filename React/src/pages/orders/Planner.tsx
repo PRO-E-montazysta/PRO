@@ -7,6 +7,7 @@ import { useOrderStages } from './hooks'
 import moment, { Moment } from 'moment'
 import { Box } from '@mui/material'
 import { PopupPlannerInfo, cleanPlannerInfo } from './FittersList'
+import PlannerStagePopup from './PlannerStagePopup'
 
 type PlannerProps = {
     orderId?: string
@@ -68,7 +69,8 @@ const Planner = ({ orderId, initialDate }: PlannerProps) => {
                     }, 10)
                 }}
             />
-            <PlannerStageDetails popupEventInfo={popupEventInfo} setPopupEventInfo={setPopupEventInfo} />
+            {/* <PlannerStageDetails popupEventInfo={popupEventInfo} setPopupEventInfo={setPopupEventInfo} /> */}
+            <PlannerStagePopup popupEventInfo={popupEventInfo} setPopupEventInfo={setPopupEventInfo} />
         </>
     )
 }

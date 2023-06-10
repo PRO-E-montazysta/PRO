@@ -32,6 +32,8 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import useBreakpoints from '../../hooks/useBreakpoints'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { orderStageStatusName } from '../../helpers/enum.helper'
+import PlannerStageDetails from '../orders/PlannerStageDetails'
+import moment from 'moment'
 
 type OrderStageCardProps = {
     index?: string
@@ -197,9 +199,11 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
             listOfElementsPlannedNumber: isDisplayingMode ? stage!.listOfElementsPlannedNumber : [],
             attachments: [],
             test: '',
+            fitters: [],
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
+            console.log(values)
             values.listOfElementsPlannedNumber = plannedElementsRef.current!
             values.listOfToolsPlannedNumber = plannedToolsTypesRef.current!
             values.plannedStartDate = preparedPlannedStartDate
@@ -211,7 +215,9 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
             addOrderStage.mutate(values)
         },
     })
-
+    useEffect(() => {
+        console.log(formik.values)
+    }, [formik.values])
     const errorMessage = useMemo(() => {
         switch (error) {
             case 'invalidDate': {
@@ -541,7 +547,12 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                             </TabPanel>
 
                             <TabPanel key={uuidv4()} value={tabValue} index={3}>
-                                <Typography>Zalaczniki...</Typography>
+                                <PlannerStageDetails
+                                    dateFrom={moment(formik.values.plannedStartDate)}
+                                    dateTo={moment(formik.values.plannedEndDate)}
+                                    fitters={formik.values.fitters}
+                                    setFitters={(fitters) => formik.setFieldValue('fitters', fitters)}
+                                />
                             </TabPanel>
                             <TabPanel key={uuidv4()} value={tabValue} index={4}>
                                 <Grid item xs={2}>

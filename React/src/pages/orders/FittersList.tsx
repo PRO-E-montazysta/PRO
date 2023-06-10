@@ -2,7 +2,7 @@ import { Box, IconButton, Typography } from '@mui/material'
 import ForwardIcon from '@mui/icons-material/Forward'
 import { useQuery } from 'react-query'
 import { AxiosError } from 'axios'
-import { useEffect, useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import { getAllFitter } from '../../api/fitter.api'
 
 export type PopupPlannerInfo = {
@@ -25,9 +25,11 @@ type FittersListProps = {
 const FittersList = ({ list, title, arrayType, addFitter, removeFitter }: FittersListProps) => {
     const [fittersData, setFittersData] = useState<any[]>([])
     const fittersQuery = useQuery<any[], AxiosError>([], () => getAllFitter())
-    useEffect(() => {
+
+    useLayoutEffect(() => {
         if (fittersQuery.data) setFittersData(fittersQuery.data)
     }, [fittersQuery.data])
+
     const handleAddFitter = (id: number) => {
         if (addFitter) addFitter(id)
     }
@@ -37,7 +39,8 @@ const FittersList = ({ list, title, arrayType, addFitter, removeFitter }: Fitter
 
     const getFitterNameById = (id: number): string => {
         const thisFitter = fittersData.find((f) => f.id == id)
-        return thisFitter.firstName + ' ' + thisFitter.lastName
+        if (thisFitter) return thisFitter.firstName + ' ' + thisFitter.lastName
+        else return ''
     }
     return (
         <Box>

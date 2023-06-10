@@ -67,6 +67,7 @@ export type CreateOrderStage = {
     plannedEndDate: string
     plannedFittersNumber: string
     minimumImagesNumber: string
+    fitters: number[]
     listOfToolsPlannedNumber: Array<{
         numberOfTools: number
         toolTypeId: string
@@ -88,6 +89,7 @@ export type UpdateOrderStage = {
     plannedEndDate: string
     plannedFittersNumber: string
     minimumImagesNumber: string
+    fitters: number[]
     listOfToolsPlannedNumber: Array<{
         numberOfTools: number
         toolTypeId: string
