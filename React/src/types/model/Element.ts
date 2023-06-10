@@ -4,6 +4,7 @@ export type Element = {
     code: string
     typeOfUnit: string
     quantityInUnit: number
+    deleted: boolean
 }
 
 export const TypeOfUnit = {

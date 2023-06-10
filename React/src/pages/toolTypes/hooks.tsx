@@ -71,11 +71,8 @@ export const useDeleteToolType = (onSuccess: () => void) => {
                 ],
                 title: 'Sukces!',
                 content: <Box>Typ narzędzia został usunięty</Box>,
-                callback: () => () => {
-                    onSuccess()
-                    navigate('/tooltypes')
-                },
             })
+            navigate('/tooltypes')
         },
         onError: showError,
     })

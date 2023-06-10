@@ -4,4 +4,5 @@ export type Client = {
     contactDetails: string
     companyId: number
     orders: Array<number>
+    deleted: boolean
 }

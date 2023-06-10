@@ -13,6 +13,7 @@ import QueryBoxStatus from '../../components/base/QueryStatusBox'
 import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
+import Error from '../../components/error/Error'
 import { Role } from '../../types/roleEnum'
 
 const ToolTypeDetails = () => {
@@ -47,7 +48,7 @@ const ToolTypeDetails = () => {
                 { text: 'Anuluj', value: 0, variant: 'outlined' },
             ],
             callback: (result: number) => {
-                if (result == 1 && params.id && Number.isInteger(params.id)) deleteToolTypeMutation.mutate(params.id)
+                if (result == 1 && params.id) deleteToolTypeMutation.mutate(params.id)
             },
         })
     }
@@ -92,7 +93,11 @@ const ToolTypeDetails = () => {
         }
     }, [params.id])
 
-    return (
+    return toolTypeData.data?.deleted ? (
+        <>
+            <Error code={404} message={'Ten obiekt został usunięty'} />
+        </>
+    ) : (
         <FormBox>
             <FormTitle
                 mainTitle={pageMode == 'new' ? 'Nowy typ narzędzia' : 'Typ narzędzia'}

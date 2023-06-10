@@ -49,11 +49,8 @@ export const useDeleteOrder = (onSuccessCallback: () => void) => {
                 ],
                 title: 'Sukces!',
                 content: <Box>Zlecenie zostało usunięte</Box>,
-                callback: () => () => {
-                    onSuccessCallback()
-                    navigate('/orders')
-                },
             })
+            navigate('/orders')
         },
         onError: showError,
     })

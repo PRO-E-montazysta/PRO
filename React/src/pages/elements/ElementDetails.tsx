@@ -1,7 +1,6 @@
 import { useFormik } from 'formik'
 import { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-
 import { useFormStructure } from './helper'
 import FormBox from '../../components/form/FormBox'
 import FormTitle from '../../components/form/FormTitle'
@@ -14,6 +13,7 @@ import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { getInitValues, getValidatinSchema } from '../../helpers/form.helper'
 import { useAddElement, useDeleteElement, useEditElement, useElementData } from './hooks'
 import { useQueriesStatus } from '../../hooks/useQueriesStatus'
+import Error from '../../components/error/Error'
 import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
 import ExpandMore from '../../components/expandMore/ExpandMore'
@@ -54,7 +54,7 @@ const ElementDetails = () => {
                 { text: 'Anuluj', value: 0, variant: 'outlined' },
             ],
             callback: (result: number) => {
-                if (result == 1 && params.id && Number.isInteger(params.id)) deleteElementMutation.mutate(params.id)
+                if (result == 1 && params.id) deleteElementMutation.mutate(params.id)
             },
         })
     }
@@ -103,7 +103,11 @@ const ElementDetails = () => {
         return isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])
     }
 
-    return (
+    return elementData.data?.deleted ? (
+        <>
+            <Error code={404} message={'Ten obiekt został usunięty'} />
+        </>
+    ) : (
         <>
             <FormBox>
                 <FormTitle

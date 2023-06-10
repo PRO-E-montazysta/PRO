@@ -45,11 +45,8 @@ export const useDeleteWarehouse = (onSuccess: () => void) => {
                 ],
                 title: 'Sukces!',
                 content: <Box>Magazyn został usunięty</Box>,
-                callback: () => () => {
-                    onSuccess()
-                    navigate('/warehouses')
-                },
             })
+            navigate('/warehouses')
         },
         onError: showError,
     })

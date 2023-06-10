@@ -72,11 +72,8 @@ export const useDeleteClient = (onSuccess: () => void) => {
                 ],
                 title: 'Sukces!',
                 content: <Box>Klient został usunięty</Box>,
-                callback: () => () => {
-                    onSuccess()
-                    navigate('/clients')
-                },
             })
+            navigate('/clients')
         },
         onError: showError,
     })

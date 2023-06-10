@@ -72,11 +72,8 @@ export const useDeleteCompany = (onSuccess: () => void) => {
                 ],
                 title: 'Sukces!',
                 content: <Box>Firma została usunięta</Box>,
-                callback: () => () => {
-                    onSuccess()
-                    navigate('/companies')
-                },
             })
+            navigate('/companies')
         },
         onError: showError,
     })

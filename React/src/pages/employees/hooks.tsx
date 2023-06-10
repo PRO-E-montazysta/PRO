@@ -133,11 +133,8 @@ export const useDeleteEmployee = (onSuccess: () => void) => {
                 ],
                 title: 'Sukces!',
                 content: <Box>Pracownik został usunięty</Box>,
-                callback: () => () => {
-                    onSuccess()
-                    navigate('/employees')
-                },
             })
+            navigate('/employees')
         },
         onError: showError,
     })

@@ -19,6 +19,7 @@ import QueryBoxStatus from '../../components/base/QueryStatusBox'
 import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { useInputWidth } from '../../hooks/useInputWidth'
+import Error from '../../components/error/Error'
 import { Role } from '../../types/roleEnum'
 
 const CompanyDetails = () => {
@@ -53,7 +54,7 @@ const CompanyDetails = () => {
                 { text: 'Anuluj', value: 0, variant: 'outlined' },
             ],
             callback: (result: number) => {
-                if (result == 1 && params.id && Number.isInteger(params.id)) deleteCompanyMutation.mutate(params.id)
+                if (result == 1 && params.id) deleteCompanyMutation.mutate(params.id)
             },
         })
     }
@@ -112,7 +113,11 @@ const CompanyDetails = () => {
     const inputWidth = useInputWidth()
 
     const addAdminCardContent = () => {
-        return (
+        return companyData.data?.deleted ? (
+            <>
+                <Error code={404} message={'Ten obiekt został usunięty'} />
+            </>
+        ) : (
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '15px' }}>
                 <FormInput
                     style={{ width: inputWidth }}
