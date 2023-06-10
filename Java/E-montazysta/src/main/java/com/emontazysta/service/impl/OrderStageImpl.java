@@ -604,4 +604,44 @@ public class OrderStageImpl implements OrderStageService {
 
         return orderStageMapper.toDto(repository.save(orderStage));
     }
+    @Override
+    public OrderStageDto addFitters(Long id, List<Long> fittersId) {
+        OrderStage orderStage = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        List<Fitter> fitters = fittersId.stream().map(fitterId -> fitterRepository.getReferenceById(fitterId)).collect(Collectors.toList());
+
+        if (authUtils.getLoggedUser().getRoles().contains(Role.FOREMAN)
+                && orderStage.getStatus().equals(OrderStageStatus.ADDING_FITTERS)) {
+
+            //Usunięcie nieprzypisanych fitterów
+            for(Fitter fitter : orderStage.getAssignedTo()) {
+                if(!fitters.contains(fitter)) {
+                    fitter.getWorkingOn().remove(orderStage);
+                    fitterRepository.save(fitter);
+                }
+            }
+
+            //Utworzenie listy powiadamianych fitterów
+            List<AppUser> notifiedEmployees = new ArrayList<>();
+
+            for(Fitter fitter : fitters) {
+                if(!orderStage.getAssignedTo().contains(fitter)) {
+                    notifiedEmployees.add(fitter);
+                    fitter.getWorkingOn().add(orderStage);
+                    fitterRepository.save(fitter);
+                }
+            }
+
+
+            orderStage.setAssignedTo(fitters);
+
+            //Wysłanie powiadomienia do fitterów o przypisaniu do etapu
+            if(notifiedEmployees.size() > 0) {
+                notificationService.createNotification(notifiedEmployees, orderStage.getId(), NotificationType.FITTER_ASSIGNMENT);
+            }
+
+            return orderStageMapper.toDto(repository.save(orderStage));
+        }else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+    }
 }
