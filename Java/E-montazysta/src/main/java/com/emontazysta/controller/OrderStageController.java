@@ -110,7 +110,7 @@ public class OrderStageController {
     }
     
     @PreAuthorize("hasAuthority('SCOPE_FOREMAN')")
-    @PutMapping("/{id}")
+    @PutMapping("/{id}/fitters")
     @Operation(description = "Allows to update Order Stage by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public OrderStageDto addFitters(@PathVariable Long id, @RequestBody List<Long> fittersId) {
         return orderStageService.addFitters(id, fittersId);
