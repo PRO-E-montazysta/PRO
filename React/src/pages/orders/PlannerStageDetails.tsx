@@ -11,14 +11,22 @@ type PlannerStageDetailsProps = {
     dateFrom: Moment
     dateTo: Moment
     fitters: number[]
+    orderStageId: string | undefined
     setFitters: (fitters: number[]) => void
     readonly: boolean
 }
 
-const PlannerStageDetails = ({ dateFrom, dateTo, fitters, setFitters, readonly }: PlannerStageDetailsProps) => {
+const PlannerStageDetails = ({
+    dateFrom,
+    dateTo,
+    fitters,
+    setFitters,
+    readonly,
+    orderStageId,
+}: PlannerStageDetailsProps) => {
     const [avaliableFitters, setAvaliableFitters] = useState<number[]>([])
 
-    const avaliableFittersQuery = useQuery<any[], AxiosError>(['avaliable-fitters'], () =>
+    const avaliableFittersQuery = useQuery<any[], AxiosError>(['avaliable-fitters', { id: orderStageId }], () =>
         getFittersAvailable({
             availableFrom: dateFrom.toString(),
             availableTo: dateTo.toString(),

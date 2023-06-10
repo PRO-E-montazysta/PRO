@@ -106,6 +106,7 @@ const PlannerStagePopup = ({ popupEventInfo, setPopupEventInfo, readonly }: Plan
                     fitters={assignedFitters}
                     setFitters={(fitters) => setAssignedFitters(fitters)}
                     readonly={readonly}
+                    orderStageId={popupEventInfo.stageId}
                 />
                 {/* <Box
                     sx={{
