@@ -26,8 +26,8 @@
 
         <include layout="@layout/list_item_template"
             android:id="@+id/item"
-            app:headline='@{"Wydanie " + release.itemName}'
-            app:supportText='@{release.releasedBy.firstName + " " + release.releasedBy.lastName + " | " + release.releaseTime}'
+            app:headline="@{Integer.toString(release.id)}"
+            app:supportText='@{release.type}'
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             >

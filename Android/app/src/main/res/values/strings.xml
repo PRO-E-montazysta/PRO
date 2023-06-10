@@ -70,6 +70,7 @@
     <string name="filter_warehouse_field_label">Magazyny: </string>
     <string name="tool_details_title">Narzędzie</string>
     <string name="warehouse_details_title">Magazyn</string>
+<<<<<<< HEAD
     <string name="release_details_title">Wydanie</string>
     <string name="release_item_name_label">Przedmiot</string>
     <string name="release_release_time_label">Data wydania</string>
@@ -80,4 +81,6 @@
     <string name="release_stage_label">Etap</string>
     <string name="release_return_objects_label_desc">Zwraca elementy z danego wydania</string>
     <string name="release_return_objects_label">Zwróć</string>
+=======
+>>>>>>> 2867f1d (FIXES)
 </resources>

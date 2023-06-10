@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.example.e_montazysta.data.model.Stage
 import com.example.e_montazysta.databinding.FragmentStageDetailDetailsBinding
-import com.example.e_montazysta.helpers.DateUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class StageDetailDetailsFragment(val stage: Stage?) : Fragment() {
@@ -31,13 +30,13 @@ class StageDetailDetailsFragment(val stage: Stage?) : Fragment() {
             it?.let {
                 binding.nameValue.text = it.name
                 binding.statusValue.text = it.id.toString()
-                binding.priceValue.text = it.price.toString() + " PLN"
-                binding.plannedStartValue.text = if ( it.plannedStart != null) DateUtil.format(it.plannedStart) else "Brak"
-                binding.plannedEndValue.text = if ( it.plannedEnd != null) DateUtil.format(it.plannedEnd) else "Brak"
+                binding.priceValue.text = it.price.toString()
+                binding.plannedStartValue.text = it.plannedStart.toString()
+                binding.plannedEndValue.text = it.plannedEnd.toString()
                 binding.plannedFittersNumberValue.text = it.plannedFittersNumber.toString()
                 binding.minimumImagesNumberValue.text = it.minimumImagesNumber.toString()
-                binding.listOfToolsPlannedNumberValue.text = if (!it.listOfToolsPlannedNumber.isNullOrEmpty()) it.listOfToolsPlannedNumber.toString() else "Brak"
-                binding.listOfElementsPlannedNumberValue.text = if (!it.listOfToolsPlannedNumber.isNullOrEmpty()) it.listOfToolsPlannedNumber.toString() else "Brak"
+                binding.listOfToolsPlannedNumberValue.text = it.listOfToolsPlannedNumber.toString()
+                binding.listOfElementsPlannedNumberValue.text = it.listOfToolsPlannedNumber.toString()
             }
         })
 
