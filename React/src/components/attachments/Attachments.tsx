@@ -28,18 +28,25 @@ const Attachments = (props: AttachmentsProps) => {
     const saveFiles = () => {
         fileList.forEach((f, i) => {
             const fd = new FormData()
+            fd.append('file', f.file, f.file.name)
             fd.append(
-                'file' + i,
-                f.file,
+                'attachmentDto',
                 JSON.stringify({
-                    attachmentDto: {
-                        name: f.file.name,
-                        typeOfAttachment:
-                            f.file.type == 'jpg' || f.file.type == 'png'
-                                ? TypeOfAttachment.ORDER_STAGE_PHOTO
-                                : TypeOfAttachment.DESIGN,
-                        orderStageId: 5,
-                    },
+                    name: f.file.name,
+                    typeOfAttachment:
+                        f.file.type == 'jpg' || f.file.type == 'png'
+                            ? TypeOfAttachment.ORDER_STAGE_PHOTO
+                            : TypeOfAttachment.DESIGN,
+                    orderStageId: 5,
+                    url: 'string',
+                    description: 'string',
+                    toolTypeId: null,
+                    commentId: null,
+                    employeeId: null,
+                    toolEventId: null,
+                    orderId: null,
+                    elementId: null,
+                    elementEventId: null,
                 }),
             )
             addAttachments(fd).then((d) => console.log(d))
