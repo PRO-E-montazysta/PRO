@@ -314,7 +314,7 @@ public class DataSeeding {
         Client client3 = addClientFromModel(new Client(null, "Test Client 3",
                 "em@i.l", company1, new ArrayList<>()));
         Client client4 = addClientFromModel(new Client(null, "Test Client 4",
-                "em@i.l", company1, new ArrayList<>()));
+                "em@i.l", company2, new ArrayList<>()));
 
         Location location1 = addLocationFromModel(new Location(null, 1.1,
                 1.1, "Miasto1", "Miła", "1",
@@ -335,7 +335,7 @@ public class DataSeeding {
                 new ArrayList<>()));
         Orders order2 = addOrdersFromModel(new Orders(null, "Test Order 2 - from Client 1",
                 OrderStatus.PLANNING, LocalDateTime.now(), LocalDateTime.now().plusDays(2), LocalDateTime.now(), null, TypeOfPriority.NORMAL,
-                company1, null, null, specialist1, salesRepresentative2, location2, client1, new ArrayList<>(),
+                company1, null, null, specialist1, salesRepresentative1, location2, client1, new ArrayList<>(),
                 new ArrayList<>()));
         Orders order3 = addOrdersFromModel(new Orders(null, "Test Order 3 - from Client 2",
                 OrderStatus.CREATED, LocalDateTime.now(), LocalDateTime.now().plusDays(3), LocalDateTime.now(), null, TypeOfPriority.IMMEDIATE,
@@ -343,7 +343,7 @@ public class DataSeeding {
                 new ArrayList<>()));
         Orders order4 = addOrdersFromModel(new Orders(null, "Test Order 4 - from Client 4",
                 OrderStatus.CREATED, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), null, TypeOfPriority.NORMAL,
-                company4, null, null, null, null, null, client4,
+                company2, null, null, null, salesRepresentative2, null, client4,
                 new ArrayList<>(), new ArrayList<>()));
 
         OrderStage orderStage1 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 1",
