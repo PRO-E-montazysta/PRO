@@ -30,7 +30,7 @@ class StageDetailDetailsFragment(val stage: Stage?) : Fragment() {
         stageDetailViewModel.stagedetail.observe(viewLifecycleOwner, Observer {
             it?.let {
                 binding.nameValue.text = it.name
-                binding.statusValue.text = it.id.toString()
+                binding.statusValue.text = it.status.value
                 binding.priceValue.text = it.price.toString() + " PLN"
                 binding.plannedStartValue.text = if ( it.plannedStart != null) DateUtil.format(it.plannedStart) else "Brak"
                 binding.plannedEndValue.text = if ( it.plannedEnd != null) DateUtil.format(it.plannedEnd) else "Brak"

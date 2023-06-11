@@ -2,10 +2,8 @@ package com.example.e_montazysta.ui.order
 
 import com.example.e_montazysta.data.model.Order
 import com.example.e_montazysta.data.model.User
-import com.example.e_montazysta.data.repository.interfaces.IUserRepository
 import com.squareup.moshi.Json
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import java.util.Date
 
 data class OrderDAO (
@@ -31,7 +29,6 @@ data class OrderDAO (
     val orderStages: List<Int>,
     val attachments: List<Int?>
 ) : KoinComponent {
-    val userRepository: IUserRepository by inject()
     suspend fun mapToOrder(): Order {
 //        val client = if (clientId != null) User.getUserDetails(clientId) else null
         val manager = if (managerId != null) User.getUserDetails(managerId) else null

@@ -126,6 +126,9 @@
         <action
             android:id="@+id/action_stageDetailFragment_to_releaseDetailFragment"
             app:destination="@id/releaseDetailFragment" />
+        <action
+            android:id="@+id/action_stageDetailFragment_to_returnCreateFragment"
+            app:destination="@id/returnCreateFragment" />
     </fragment>
 
     <fragment
@@ -223,6 +226,14 @@
         android:label="ToolDetailFragment">
         <argument
             android:name="toolId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/returnCreateFragment"
+        android:name="com.example.e_montazysta.ui.returnitem.ReturnCreateFragment"
+        android:label="ReturnCreateFragment">
+        <argument
+            android:name="stageId"
             app:argType="integer" />
     </fragment>
 </navigation>

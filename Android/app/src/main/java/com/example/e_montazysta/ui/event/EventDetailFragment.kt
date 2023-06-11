@@ -27,7 +27,6 @@ class EventDetailFragment : Fragment() {
 
         // Get a reference to the binding object and inflate the fragment views.
         val binding: FragmentEventDetailBinding = FragmentEventDetailBinding.inflate(inflater, container, false)
-        val application = requireNotNull(this.activity).application
 
         // To use the View Model with data binding, you have to explicitly
         // give the binding object a reference to it.
@@ -49,7 +48,7 @@ class EventDetailFragment : Fragment() {
                     binding.toolbar.subtitle = "${event.item.name} ${event.item.code}"
                 }
             }
-            binding.itemStatusValue.text = event.status.name
+            binding.itemStatusValue.text = event.status.value
             binding.itemStatusValue.setTextColor(event.status.color)
             binding.eventDateValue.text = DateUtil.format(event.eventDate)
             binding.descriptionValue.text = event.description

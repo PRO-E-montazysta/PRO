@@ -3,6 +3,7 @@ package com.example.e_montazysta.data.model
 import com.example.e_montazysta.data.repository.interfaces.IReleaseRepository
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.util.Date
 
 data class Release(
     val id: Int,

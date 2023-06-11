@@ -116,7 +116,8 @@ class StageDetailFragment : Fragment() {
 
         //Mockup zwracania elementu
         mElementManageFab.setOnClickListener {
-            Toast.makeText(requireContext(), "Ekran zwrotu", Toast.LENGTH_SHORT).show()
+            val direction = StageDetailFragmentDirections.actionStageDetailFragmentToReleaseCreateFragment(stageId)
+            findNavController().navigate(direction)
         }
 
         // Wyświetlanie błędów
