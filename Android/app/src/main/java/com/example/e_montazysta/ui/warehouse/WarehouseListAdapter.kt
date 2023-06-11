@@ -4,8 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.e_montazysta.databinding.ListItemWarehouseBinding
-import com.example.e_montazysta.ui.warehouse.CustomClickListener
-import com.example.e_montazysta.ui.warehouse.WarehouseListItem
 
 
 class WarehouseListAdapter(val clickListener: CustomClickListener) : RecyclerView.Adapter<WarehouseListAdapter.ViewHolder>(){
@@ -32,10 +30,6 @@ class WarehouseListAdapter(val clickListener: CustomClickListener) : RecyclerVie
     class ViewHolder( val binding: ListItemWarehouseBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: WarehouseFilterDAO, clickListener: CustomClickListener) {
-            binding.warehouseName.text = data.name
-            binding.warehouseDescription.text = data.description
-            binding.warehouseLocationId.text = data.fullAddress
-            binding.warehouseOpeningHours.text = data.openingHours
             binding.warehouse = data
             binding.itemClickListener = clickListener
             binding.executePendingBindings()
