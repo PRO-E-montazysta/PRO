@@ -28,7 +28,7 @@ data class OrderDAO (
     val salesRepresentativeId: Int?,
     val createdAt: Date?,
     val editedAt: Date?,
-    val orderStages: List<Int?>,
+    val orderStages: List<Int>,
     val attachments: List<Int?>
 ) : KoinComponent {
     val userRepository: IUserRepository by inject()
@@ -39,7 +39,7 @@ data class OrderDAO (
         val salesRepresentative = if (salesRepresentativeId != null) User.getUserDetails(salesRepresentativeId) else null
         val foreman = if (foremanId != null) User.getUserDetails(foremanId) else null
 
-        return Order(id, name, priority, status, plannedStart, plannedEnd, clientId, foreman, manager, specialist, salesRepresentative, locationId, createdAt, editedAt)
+        return Order(id, name, priority, status, plannedStart, plannedEnd, clientId, foreman, manager, specialist, salesRepresentative, locationId, orderStages, createdAt, editedAt)
     }
 }
 

@@ -1,8 +1,6 @@
 package com.example.e_montazysta.ui.order
 
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +8,15 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
+import androidx.viewpager2.widget.ViewPager2
 import com.example.e_montazysta.databinding.FragmentOrderDetailBinding
+import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.text.DateFormat
-import kotlin.system.measureTimeMillis
 
 class OrderDetailFragment : Fragment() {
     private val orderDetailViewModel: OrderDetailViewModel by viewModel()
+    private lateinit var orderDetailAdapter: OrderDetailAdapter
+    private lateinit var viewPager: ViewPager2
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -25,41 +25,22 @@ class OrderDetailFragment : Fragment() {
 
         // Get a reference to the binding object and inflate the fragment views.
         val binding: FragmentOrderDetailBinding = FragmentOrderDetailBinding.inflate(inflater, container, false)
-        val application = requireNotNull(this.activity).application
 
-        // To use the View Model with data binding, you have to explicitly
-        // give the binding object a reference to it.
-        binding.orderDetailViewModel = orderDetailViewModel
-        val time = measureTimeMillis {
-            orderDetailViewModel.getOrderDetail(orderId)
-        }
-        Log.d(TAG, "Requests took $time ms.")
+        orderDetailViewModel.getOrderDetail(orderId)
+        viewPager = binding.pager
 
         orderDetailViewModel.orderdetail.observe(viewLifecycleOwner, Observer {
             it?.let {
-                binding.nameValue.text = it.name
-                binding.priorityValue.text = it.priority.value
-                binding.statusValue.text = it.status.value
-                it.editedAt?.let {
-                    binding.plannedStartValue.text =
-                        DateFormat.getDateTimeInstance().format(it)
-                }
-                it.editedAt?.let {
-                    binding.plannedEndValue.text = DateFormat.getDateTimeInstance().format(it)
-                }
-                binding.clientIdValue.text = it.client.toString()
-                binding.foremanIdValue.text = it.foreman.toString()
-                binding.managerIdValue.text = it.manager.toString()
-                binding.specialistIdValue.text = it.specialistId.toString()
-                binding.salesRepresentativeIdValue.text = it.salesRepresentativeId.toString()
-                it.editedAt?.let {
-                    binding.createdAtValue.text =
-                        DateFormat.getDateTimeInstance().format(it)
-                }
-                it.editedAt?.let {
-                    binding.editedAtValue.text = DateFormat.getDateTimeInstance().format(it)
-                }
-
+                orderDetailAdapter = OrderDetailAdapter(this, it)
+                viewPager.adapter  = orderDetailAdapter
+                val tabLayout = binding.tabs
+                TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+                    tab.text = when (position) {
+                        0 -> "Szczegóły"
+                        1 -> "Etapy"
+                        else -> ""
+                    }
+                }.attach()
             }
         })
 

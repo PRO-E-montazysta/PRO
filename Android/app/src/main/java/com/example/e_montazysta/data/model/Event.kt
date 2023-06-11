@@ -10,7 +10,7 @@ data class Event(
     val acceptedBy: User?,
     val attachments: List<Int?>,
     val completionDate: Date?,
-    val createdBy: User,
+    val createdBy: User?,
     val deleted: Boolean,
     val description: String?,
     val item: Any,

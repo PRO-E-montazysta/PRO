@@ -109,6 +109,9 @@
         <argument
             android:name="orderId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_orderDetailFragment_to_stageDetailFragment"
+            app:destination="@id/stageDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/stageDetailFragment"

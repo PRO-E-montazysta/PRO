@@ -86,4 +86,8 @@ data class StageDAO(
             is Result.Error -> null
         }
     }
+
+    fun mapToStageListItem() : StageListItem {
+        return StageListItem(id, name)
+    }
 }

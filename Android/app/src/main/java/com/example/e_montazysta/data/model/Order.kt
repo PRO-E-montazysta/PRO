@@ -14,9 +14,10 @@ data class Order(
     val client: Int?,
     val foreman: User?,
     val manager: User?,
-    val specialistId: User?,
-    val salesRepresentativeId: User?,
+    val specialist: User?,
+    val salesRepresentative: User?,
     val locationId: Int?,
+    val orderStages: List<Int>,
     val createdAt: Date?,
     val editedAt: Date?
 )
