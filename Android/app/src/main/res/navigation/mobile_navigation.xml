@@ -233,7 +233,7 @@
         android:name="com.example.e_montazysta.ui.returnitem.ReturnCreateFragment"
         android:label="ReturnCreateFragment">
         <argument
-            android:name="stageId"
-            app:argType="integer" />
+            android:name="stage"
+            app:argType="com.example.e_montazysta.data.model.Stage" />
     </fragment>
 </navigation>
