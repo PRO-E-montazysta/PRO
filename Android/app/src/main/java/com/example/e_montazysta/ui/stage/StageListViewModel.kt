@@ -45,7 +45,7 @@ class StageListViewModel(private val repository: IStageRepository) : ViewModel()
         _isLoadingLiveData.postValue(true)
             val result = repository.getListOfStages()
             when (result) {
-                is Result.Success -> _stageLiveData.postValue(result.data.map { it.mapToStageItem() })
+                is Result.Success -> _stageLiveData.postValue(result.data)
                 is Result.Error -> result.exception.message?.let { _messageLiveData.postValue(it) }
             }
         _isLoadingLiveData.postValue(false)

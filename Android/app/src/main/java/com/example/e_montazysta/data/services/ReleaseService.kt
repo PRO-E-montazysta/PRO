@@ -9,7 +9,7 @@ import retrofit2.http.*
 
 interface ReleaseService {
 
-    @GET("/api/v1/tool-releases/all")
+    @GET("/api/v1/tool-releases/filter")
     suspend fun getRelease(@Header("Authorization") token: String
     ): List<ReleaseDAO>
 

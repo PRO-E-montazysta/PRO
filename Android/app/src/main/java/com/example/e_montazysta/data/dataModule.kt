@@ -29,6 +29,7 @@ import com.example.e_montazysta.data.repository.interfaces.IUserRepository
 import com.example.e_montazysta.data.repository.interfaces.IWarehouseRepository
 import com.example.e_montazysta.data.services.IServiceProvider
 import com.example.e_montazysta.data.services.ServiceProvider
+import com.example.e_montazysta.helpers.BigDecimalAdapter
 import com.example.e_montazysta.helpers.CustomDateAdapter
 import com.example.e_montazysta.ui.element.ElementDetailViewModel
 import com.example.e_montazysta.ui.element.ElementsListViewModel
@@ -54,6 +55,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Converter
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.math.BigDecimal
 import java.util.Date
 
 val dataModule = module {
@@ -62,6 +64,7 @@ val dataModule = module {
             Moshi.Builder()
                 .add(KotlinJsonAdapterFactory())
                 .add(Date::class.java, CustomDateAdapter().nullSafe())
+                .add(BigDecimal::class.java, BigDecimalAdapter().nullSafe())
                 .build()
         moshi
     }

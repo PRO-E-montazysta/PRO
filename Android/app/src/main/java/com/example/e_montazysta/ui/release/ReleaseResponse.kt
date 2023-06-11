@@ -6,9 +6,12 @@ data class ReleaseDAO(
     val id: Int,
     val releaseTime: String,
     val returnTime: String?,
+    val releasedQuantity: Int?,
+    val returnedQuantity: Int?,
     val receivedById: String?,
     val releasedById: String?,
-    val toolId: String,
+    val toolId: String?,
+    val elementId: String?,
     val demandAdHocId: String?,
     val orderStageId: String,
 ){

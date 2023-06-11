@@ -10,7 +10,7 @@ data class Release(
     val returnTime: String?,
     val receivedById: String?,
     val releasedById: String?,
-    val toolId: String,
+    val toolId: String?,
     val demandAdHocId: String?,
     val orderStageId: String,
 ){

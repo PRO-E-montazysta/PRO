@@ -1,5 +1,7 @@
 package com.example.e_montazysta.data.repository
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import com.example.e_montazysta.data.model.Result
 import com.example.e_montazysta.data.model.Stage
 import com.example.e_montazysta.data.repository.interfaces.IStageRepository
@@ -14,12 +16,13 @@ class StageRepository (private val serviceProvider: IServiceProvider): IStageRep
     private val token = "Bearer " + sharedPreferencesHelper.get("lama").toString()
     private val stageService = serviceProvider.getStageService()
 
-    override suspend fun getListOfStages(): Result<List<Stage>> {
+    override suspend fun getListOfStages(): Result<List<StageListItem>> {
         return try {
             val stageDAOs = stageService.getListOfStages(token)
-            val stages = stageDAOs.map { it.mapToStage() }
+            val stages = stageDAOs.map { it.mapToStageListItem() }
             Result.Success(stages)
         } catch (e: Exception) {
+            Log.e(TAG, Log.getStackTraceString(e))
             Result.Error(e)
         }
     }

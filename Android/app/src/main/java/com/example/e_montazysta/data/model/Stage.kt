@@ -1,12 +1,14 @@
 package com.example.e_montazysta.data.model
 
+import java.math.BigDecimal
+import com.example.e_montazysta.ui.stage.StageStatus
 import java.util.Date
 
 data class Stage(
     val id: Int,
     val name: String,
-    val status: String,
-    val price: Float,
+    val status: StageStatus,
+    val price: BigDecimal,
     val plannedStart: Date?,
     val plannedEnd: Date?,
     val startDate: Date?,
