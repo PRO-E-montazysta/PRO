@@ -37,6 +37,16 @@ class StageRepository (private val serviceProvider: IServiceProvider): IStageRep
         }
     }
 
+    override suspend fun getListOfStages(stages: List<Int>): Result<List<StageListItem>> {
+        return try {
+            val stageDAOs = stages.map { stageService.getStageDetails(token, it) }
+            val stageListItems = stageDAOs.map { it.mapToStageListItem() }
+            Result.Success(stageListItems)
+        } catch (e: java.lang.Exception) {
+            Result.Error(e)
+        }
+    }
+
     override suspend fun getStageDetails(id: Int): Result<Stage> {
         return try {
             val stageService = serviceProvider.getStageService()
