@@ -73,7 +73,7 @@ export const useFormStructure = (): Array<FormInputProps> => {
             initValue: '',
             type: 'input',
             editPermissionRoles: [Role.WAREHOUSE_MANAGER],
-            validation: yup.string().min(3, 'Wprowadź co najmniej 1 znak').max(255, 'Wprowadź co najwyżej 255 znaków'),
+            validation: yup.string().min(1, 'Wprowadź co najmniej 1 znak').max(255, 'Wprowadź co najwyżej 255 znaków'),
         },
         {
             label: 'Półka',
@@ -81,7 +81,7 @@ export const useFormStructure = (): Array<FormInputProps> => {
             initValue: '',
             type: 'input',
             editPermissionRoles: [Role.WAREHOUSE_MANAGER],
-            validation: yup.string().min(3, 'Wprowadź co najmniej 1 znak').max(255, 'Wprowadź co najwyżej 255 znaków'),
+            validation: yup.string().min(1, 'Wprowadź co najmniej 1 znak').max(255, 'Wprowadź co najwyżej 255 znaków'),
         },
     ]
 }
