@@ -80,4 +80,5 @@
     <string name="release_stage_label">Etap</string>
     <string name="release_return_objects_label_desc">Zwraca elementy z danego wydania</string>
     <string name="release_return_objects_label">Zwróć</string>
+    <string name="empty_field">Brak</string>
 </resources>

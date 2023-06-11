@@ -55,6 +55,11 @@ class StageDetailFragment : Fragment() {
             val direction = StageDetailFragmentDirections.actionStageDetailFragmentToReleaseCreateFragment(stageId)
         findNavController().navigate(direction)
         }
+
+        // Wyświetlanie błędów
+        stageDetailViewModel.messageLiveData.observe(viewLifecycleOwner) {
+                errorMessage -> Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+        }
         // Specify the current activity as the lifecycle owner of the binding.
         // This is necessary so that the binding can observe LiveData updates.
         return binding.root

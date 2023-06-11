@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
@@ -37,8 +38,8 @@ class OrderDetailFragment : Fragment() {
         orderDetailViewModel.orderdetail.observe(viewLifecycleOwner, Observer {
             it?.let {
                 binding.nameValue.text = it.name
-                binding.priorityValue.text = it.priority
-                binding.statusValue.text = it.status
+                binding.priorityValue.text = it.priority.value
+                binding.statusValue.text = it.status.value
                 it.editedAt?.let {
                     binding.plannedStartValue.text =
                         DateFormat.getDateTimeInstance().format(it)
@@ -61,6 +62,12 @@ class OrderDetailFragment : Fragment() {
 
             }
         })
+
+        // Wyświetlanie błędów
+        orderDetailViewModel.messageLiveData.observe(viewLifecycleOwner) {
+                errorMessage -> Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+        }
+
         // Specify the current activity as the lifecycle owner of the binding.
         // This is necessary so that the binding can observe LiveData updates.
         return binding.root

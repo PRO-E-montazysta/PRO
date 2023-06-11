@@ -1,15 +1,17 @@
 package com.example.e_montazysta.data.model
 
-import java.util.*
+import com.example.e_montazysta.ui.order.OrderPriority
+import com.example.e_montazysta.ui.order.OrderStatus
+import java.util.Date
 
 data class Order(
     val id: Int,
     val name: String,
-    val priority: String,
-    val status: String,
+    val priority: OrderPriority,
+    val status: OrderStatus,
     val plannedStart: Date?,
     val plannedEnd: Date?,
-    val client: User?,
+    val client: Int?,
     val foreman: User?,
     val manager: User?,
     val specialistId: User?,

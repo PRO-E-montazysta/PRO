@@ -1,5 +1,7 @@
 package com.example.e_montazysta.data.model
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import com.example.e_montazysta.data.repository.interfaces.IUserRepository
 import com.squareup.moshi.Json
 import org.koin.core.component.KoinComponent
@@ -16,12 +18,15 @@ data class User (
     override fun toString(): String = "$firstName $lastName"
 
     companion object: KoinComponent {
-        suspend fun getUserDetails(userId: Int): User {
+        suspend fun getUserDetails(userId: Int): User? {
             val userRepository: IUserRepository by inject()
             val result = userRepository.getUserDetails(userId)
             return when (result) {
                 is Result.Success -> result.data
-                is Result.Error -> throw result.exception
+                is Result.Error -> {
+                    Log.e(TAG, Log.getStackTraceString(result.exception))
+                    null
+                }
             }
         }
     }
