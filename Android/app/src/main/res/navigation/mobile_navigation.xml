@@ -11,6 +11,9 @@
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" >
         <action
+            android:id="@+id/action_navigation_dashboard_to_warehouseListFragment"
+            app:destination="@id/warehouseListFragment" />
+        <action
             android:id="@+id/action_navigation_dashboard_to_toolsFragment2"
             app:destination="@id/toolsFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
@@ -49,9 +52,22 @@
 
     <fragment
         android:id="@+id/navigation_settings"
-        android:name="com.example.e_montazysta.ui.fragments.settings.SettingsFragment"
+        android:name="com.example.e_montazysta.ui.activities.SettingsActivity"
         android:label="@string/title_settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/activity_settings">
+        <action
+            android:id="@+id/action_settingsFragment_to_notificationListFragment"
+            app:destination="@id/notificationListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/warehouseListFragment"
+        android:name="com.example.e_montazysta.ui.warehouse.WarehouseListFragment"
+        android:label="WarehouseListFragment"
+        tools:layout="@layout/fragment_warehouses" >
+        <action
+            android:id="@+id/action_warehouseListFragment_to_warehouseDetailFragment"
+            app:destination="@id/warehouseDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/toolsFragment"
         android:name="com.example.e_montazysta.ui.toollist.ToolsListFragment"
@@ -189,6 +205,14 @@
         <action
             android:id="@+id/action_eventListFragment_to_eventDetailFragment"
             app:destination="@id/eventDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/warehouseDetailFragment"
+        android:name="com.example.e_montazysta.ui.warehouse.WarehouseDetailFragment"
+        android:label="WarehouseDetailFragment">
+        <argument
+            android:name="warehouseId"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/toolDetailFragment"

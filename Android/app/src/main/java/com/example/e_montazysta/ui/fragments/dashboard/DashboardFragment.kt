@@ -86,7 +86,10 @@ class DashboardFragment : Fragment() {
         // KAFELKI
 
         val warehouses = binding.warehouses
-        warehouses.setOnClickListener(null)
+        warehouses.setOnClickListener{
+            val direction = DashboardFragmentDirections.actionNavigationDashboardToWarehouseListFragment()
+            findNavController().navigate(direction)
+        }
 
         val tools = binding.tools
         tools.setOnClickListener{

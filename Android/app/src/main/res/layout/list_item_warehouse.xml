@@ -8,11 +8,8 @@
             name="warehouse"
             type="com.example.e_montazysta.ui.warehouse.WarehouseFilterDAO" />
         <variable
-            name="isSelected"
-            type="Boolean" />
-<!--        <variable-->
-<!--            name="itemClickListener"-->
-<!--            type="com.example.e_montazysta.ui.warehouse.CustomClickListener" />-->
+            name="itemClickListener"
+            type="com.example.e_montazysta.ui.warehouse.CustomClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,8 +20,8 @@
         android:clickable="true"
         android:focusable="true"
         android:minHeight="@dimen/list_item_min_height_two_line"
-        tools:theme="@style/Theme.Material3.DayNight">
-<!--        android:onClick="@{() -> itemClickListener.cardClicked(warehouse)}"-->
+        tools:theme="@style/Theme.Material3.DayNight"
+        android:onClick="@{() -> itemClickListener.cardClicked(warehouse)}">
 
         <include layout="@layout/list_item_template"
             android:id="@+id/item"

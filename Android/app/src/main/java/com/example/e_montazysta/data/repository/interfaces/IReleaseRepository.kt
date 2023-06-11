@@ -9,5 +9,5 @@ interface IReleaseRepository {
     suspend fun getRelease() : Result<List<Release>>
 
     suspend fun getReleaseDetail(id: Int): Result<Release>
-    suspend fun createRelease(items: List<ReleaseItem>, stageId: Int, warehouseId: Int?): Result<List<StageDAO>>
+    suspend fun createRelease(items: List<ReleaseItem>, stageId: Int): Result<List<StageDAO>>
 }

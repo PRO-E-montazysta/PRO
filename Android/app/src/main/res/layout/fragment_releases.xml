@@ -16,25 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/topAppBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true">
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:elevation="0dp"
-                app:menu="@menu/menu_details"
-                app:title="@string/title_releases"
-                app:navigationIcon="@drawable/baseline_arrow_back_24"
-                app:layout_scrollFlags="scroll|enterAlways|snap"
-                app:layout_scrollEffect="compress"
-                />
-        </com.google.android.material.appbar.AppBarLayout>
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tool_list"
             android:layout_width="match_parent"
@@ -44,8 +25,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/list_item_release"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            tools:listitem="@layout/list_item_release" />
 
         <ProgressBar
             android:id="@+id/loading_indicator"

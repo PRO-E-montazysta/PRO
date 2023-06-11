@@ -12,4 +12,5 @@ interface IServiceProvider {
     fun getEventService(): EventService
     fun getToolTypeService(): ToolTypeService
     fun getWarehouseService(): WarehouseService
+    fun getLocationService(): LocationService
 }
