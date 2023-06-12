@@ -4,187 +4,222 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-    <variable
-        name="elementDetailViewModel"
-        type="com.example.e_montazysta.ui.element.ElementDetailViewModel" />
-    <variable
+        <variable
+            name="elementDetailViewModel"
+            type="com.example.e_montazysta.ui.element.ElementDetailViewModel" />
+        <variable
             name="element"
             type="com.example.e_montazysta.data.model.Element" />
     </data>
-    <ScrollView
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="?attr/actionBarSize"
         >
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/topAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="0dp"
+            app:menu="@menu/menu_details"
+            app:title="@string/title_element"
+            app:navigationIcon="@drawable/baseline_arrow_back_24"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:layout_scrollEffect="compress"
+            />
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginBottom="?android:attr/actionBarSize">
-
-            <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/topAppBar"
+            android:orientation="vertical"
+            android:clickable="true">
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fitsSystemWindows="true">
-
-                <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:elevation="0dp"
-                    app:menu="@menu/menu_details"
-                    app:title="E-montażownia"
-                    app:navigationIcon="@drawable/baseline_arrow_back_24"
-                    app:layout_scrollFlags="scroll|enterAlways|snap"
-                    app:layout_scrollEffect="compress"
-                    />
-            </com.google.android.material.appbar.AppBarLayout>
-
-            <TextView
-                android:id="@+id/view_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/title_element"
-                android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
-                android:textSize="36dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_below="@id/topAppBar"
-                app:layout_constraintTop_toBottomOf="@id/topAppBar" />
-
-            <LinearLayout
-                android:id="@+id/element_frame"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:paddingHorizontal="10dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view_name">
-
-                <TextView
+                android:paddingVertical="@dimen/list_item_space_x3"
+                android:paddingStart="@dimen/list_item_space_x4"
+                android:paddingEnd="@dimen/list_item_space_x6">
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/element_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="?colorOnSurfaceVariant"
+                    android:textAppearance="?textAppearanceBodySmall"
                     android:text="@string/element_name_text"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
-                <!-- android:textColor="#96C0FB" /> -->
-                <TextView
+                    />
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/element_name_data"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="element_name_data" />
+                    android:textAppearance="?textAppearanceBodyLarge"
+                    android:textColor="?colorOnSurface"
+                    android:text="element_name_data"
+                    />
 
-                <TextView
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingVertical="@dimen/list_item_space_x3"
+                android:paddingStart="@dimen/list_item_space_x4"
+                android:paddingEnd="@dimen/list_item_space_x6">
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/element_code"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/element_code_text"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
-                <!-- android:textColor="#96C0FB" /> -->
-                <TextView
+                    android:textColor="?colorOnSurfaceVariant"
+                    android:textAppearance="?textAppearanceBodySmall"
+                    />
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/element_code_data"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="element_code_data" />
+                    android:textAppearance="?textAppearanceBodyLarge"
+                    android:text="element_code_data"
+                    />
 
-                <TextView
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:clickable="true"
+                android:paddingVertical="@dimen/list_item_space_x3"
+                android:paddingStart="@dimen/list_item_space_x4"
+                android:paddingEnd="@dimen/list_item_space_x6">
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/element_unit"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/element_unit_text"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
-                <!-- android:textColor="#96C0FB" /> -->
-                <TextView
+                    android:textColor="?colorOnSurfaceVariant"
+                    android:textAppearance="?textAppearanceBodySmall"
+                    />
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/element_unit_data"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="element_unit_data" />
+                    android:textAppearance="?textAppearanceBodyLarge"
+                    android:textColor="?colorOnSurface"
+                    android:text="element_unit_data"
+                    />
 
-                <TextView
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:clickable="true"
+                android:paddingVertical="@dimen/list_item_space_x3"
+                android:paddingStart="@dimen/list_item_space_x4"
+                android:paddingEnd="@dimen/list_item_space_x6">
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/element_qty_of_unit"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/element_qty_of_unit_text"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
-                <!-- android:textColor="#96C0FB" /> -->
-                <TextView
+                    android:textColor="?colorOnSurfaceVariant"
+                    android:textAppearance="?textAppearanceBodySmall"
+                    />
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/element_qty_of_unit_data"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="element_qty_of_unit_data" />
+                    android:textAppearance="?textAppearanceBodyLarge"
+                    android:textColor="?colorOnSurface"
+                    android:text="element_qty_of_unit_data"
+                    />
 
-                <TextView
-                    android:id="@+id/element_warehouse"
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingVertical="@dimen/list_item_space_x3"
+            android:paddingStart="@dimen/list_item_space_x4"
+            android:paddingEnd="@dimen/list_item_space_x6">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/element_warehouse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/element_warehouse_text"
+                android:textColor="?colorOnSurfaceVariant"
+                android:textAppearance="?textAppearanceBodySmall"
+                />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/element_warehouse_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?textAppearanceBodyLarge"
+                android:text="element_warehouse_data"
+                />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:clickable="true"
+                android:paddingVertical="@dimen/list_item_space_x3"
+                android:paddingStart="@dimen/list_item_space_x4"
+                android:paddingEnd="@dimen/list_item_space_x6">
+                <com.google.android.material.button.MaterialButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/element_warehouse_text"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
-                <!-- android:textColor="#96C0FB" /> -->
-                <TextView
-                    android:id="@+id/element_warehouse_data"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="element_warehouse_data" />
-            </LinearLayout>
-            <!-- <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/action_main_fab"
-            android:contentDescription="Wykonaj akcję"
+                    android:text="Zgłoś usterkę"
+                    app:icon="@drawable/baseline_cable_24"
+                    app:iconGravity="end"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:clickable="true"
+        android:paddingVertical="@dimen/list_item_space_x3"
+        android:paddingStart="@dimen/list_item_space_x4"
+        android:paddingEnd="@dimen/list_item_space_x6">
+        <com.google.android.material.button.MaterialButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:src="@drawable/baseline_add_box_24"
-            app:fabSize="normal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/element_event_fab"
-            android:contentDescription="Zgłoś usterkę"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            app:fabSize="normal"
-            app:layout_constraintBottom_toTopOf="@+id/action_main_fab"
-            app:layout_constraintEnd_toEndOf="@+id/action_main_fab"
-            app:layout_constraintStart_toStartOf="@+id/action_main_fab"
-            app:srcCompat="@drawable/baseline_cable_24"
-            />
-        <TextView
-            android:id="@+id/element_event_fab_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:text="Zgłoś usterkę"
-            app:layout_constraintBottom_toBottomOf="@+id/element_event_fab"
-            app:layout_constraintEnd_toStartOf="@+id/element_event_fab"
-            app:layout_constraintTop_toTopOf="@+id/element_event_fab"
-            />
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/element_manage_fab"
-            android:contentDescription="Wydaj/Zwróć element"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            app:fabSize="normal"
-            app:layout_constraintBottom_toTopOf="@+id/element_event_fab"
-            app:layout_constraintEnd_toEndOf="@+id/element_event_fab"
-            app:layout_constraintStart_toStartOf="@+id/element_event_fab"
-            app:srcCompat="@drawable/baseline_assignment_return_24"
-            />
-        <TextView
-            android:id="@+id/element_manage_fab_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:text="Wydaj/Zwróć element"
-            app:layout_constraintBottom_toBottomOf="@+id/element_manage_fab"
-            app:layout_constraintEnd_toStartOf="@+id/element_manage_fab"
-            app:layout_constraintTop_toTopOf="@+id/element_manage_fab"
-            />-->
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            android:text="Wydaj/zwróć element"
+            app:icon="@drawable/baseline_assignment_return_24"
+            app:iconGravity="end"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guide_end"
+                app:layout_constraintStart_toStartOf="@id/guide_start"
+                android:layout_marginTop="@dimen/list_item_space_x3"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
     </ScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
