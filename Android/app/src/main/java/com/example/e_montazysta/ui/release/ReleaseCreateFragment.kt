@@ -236,15 +236,15 @@ class ReleaseCreateFragment : Fragment() {
         val adapter = WarehouseListAdapter(context, warehouses)
         var selectedWarehouse: WarehouseFilterDAO? = null
         val alertDialog = MaterialAlertDialogBuilder(context)
-            .setTitle("Select Warehouse")
+            .setTitle("Wybierz magazyn")
             .setSingleChoiceItems(adapter, -1) { _, position ->
                 selectedWarehouse = warehouses[position]
             }
-            .setPositiveButton("OK") { dialog, _ ->
+            .setPositiveButton("Wybierz") { dialog, _ ->
                 releaseCreateViewModel.setWarehouse(selectedWarehouse)
                 dialog.dismiss()
             }
-            .setNegativeButton("Cancel") { dialog, _ ->
+            .setNegativeButton("Anuluj") { dialog, _ ->
                 dialog.dismiss()
             }
             .create()

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">e-Montażysta</string>
-    <string name="app_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer id pharetra nulla. Praesent tincidunt ipsum quis mi luctus, in molestie ante ultrices.</string>
-    <string name="app_description_header">Lorem Ipsum</string>
+    <string name="app_description">Odkryj innowacyjną aplikację, która usprawni zarządzanie Twoją firmą i procesami magazynowymi. Wspomóż efektywną koordynację działań, zwiększając efektywność pracy zespołu.</string>
+    <string name="app_description_header">@string/app_name</string>
     <string name="logo_desc">Logo</string>
     <string name="start_button">Start</string>
     <string name="title_activity_login">LoginActivity</string>
@@ -65,7 +65,7 @@
     <string name="filter_name_field_label">Nazwa</string>
     <string name="filter_status_field_label">Status</string>
     <string name="filter_createdDateFilter_field_label">Czas utworzenia od</string>
-    <string name="filter_title">Filtry</string>
+    <string name="filter_title">Filtry narzędzi</string>
     <string name="filter_code_field_label">Kod</string>
     <string name="filter_warehouse_field_label">Magazyny: </string>
     <string name="tool_details_title">Narzędzie</string>
@@ -83,4 +83,7 @@
     <string name="empty_field">Brak</string>
     <string name="order_title">Zlecenie</string>
     <string name="create_return_title">Utwórz zwrot</string>
+    <string name="user_first_name">Imię</string>
+    <string name="user_details_title">Pracownik</string>
+    <string name="title_users">Pracownicy</string>
 </resources>
