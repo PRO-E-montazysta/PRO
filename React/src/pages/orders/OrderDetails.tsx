@@ -279,7 +279,11 @@ const OrderDetails = () => {
                                 isAddOrderStageVisible={isAddOrderStageVisible}
                                 nextStatus={canChangeToNextStatus() ? handleNextStatus : undefined}
                                 previousStatus={canChangeToPreviousStatus() ? handlePreviousStatus : undefined}
-                                editPermissionRoles={[Role.MANAGER, Role.SALES_REPRESENTATIVE]}
+                                editPermissionRoles={
+                                    formik.values['status'] == 'CREATED'
+                                        ? [Role.MANAGER, Role.SALES_REPRESENTATIVE]
+                                        : [Role.MANAGER]
+                                }
                                 deletePermissionRoles={
                                     formik.values['status'] == 'CREATED'
                                         ? [Role.MANAGER, Role.SALES_REPRESENTATIVE]
