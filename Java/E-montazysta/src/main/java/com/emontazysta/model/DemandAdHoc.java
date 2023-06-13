@@ -40,6 +40,7 @@ public class DemandAdHoc {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(length=1000)
     private String description;
     private LocalDateTime createdAt;
     private boolean deleted = Boolean.FALSE;

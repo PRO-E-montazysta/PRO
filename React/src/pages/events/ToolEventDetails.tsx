@@ -13,6 +13,8 @@ import QueryBoxStatus from '../../components/base/QueryStatusBox'
 import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
+import Error from '../../components/error/Error'
+import { useToolData } from '../tools/hooks'
 import { useQuery } from 'react-query'
 import { Tool } from '../../types/model/Tool'
 import { AxiosError } from 'axios'
@@ -53,7 +55,7 @@ const ToolEventDetails = () => {
                 { text: 'Anuluj', value: 0, variant: 'outlined' },
             ],
             callback: (result: number) => {
-                if (result === 1 && params.id && Number.isInteger(params.id)) deleteToolEventMutation.mutate(params.id)
+                if (result === 1 && params.id) deleteToolEventMutation.mutate(params.id)
             },
         })
     }
@@ -98,26 +100,24 @@ const ToolEventDetails = () => {
         }
     }, [params.id])
 
+    const queryTool = useToolData(String(toolEventData.data?.toolId))
     const queryTools = useQuery<Array<Tool>, AxiosError>(['tool-list'], getAllTools, {
         cacheTime: 15 * 60 * 1000,
         staleTime: 10 * 60 * 1000,
     })
     const aboutMeQuery = useQuery<any, AxiosError>(['about-me'], async () => getAboutMeInfo())
 
-    return (
+    return toolEventData.data?.deleted ? (
+        <>
+            <Error code={404} message={'Ten obiekt został usunięty'} />
+        </>
+    ) : (
         <>
             <FormBox>
                 <FormTitle
                     mainTitle={pageMode == 'new' ? 'Nowa usterka narzędzia' : 'Usterka narzędzia'}
-                    subTitle={
-                        pageMode == 'new'
-                            ? ''
-                            : String(
-                                  queryTools.data
-                                      ?.filter((f) => f.id == formik.values['toolId'])
-                                      .map((x) => x.name + ' - ' + x.code),
-                              )
-                    }
+                    subTitle={pageMode == 'new' ? '' : String(queryTool.data?.name + ' - ' + queryTool.data?.code)}
+                    deleted={queryTool.data?.deleted}
                 />
                 <FormPaper>
                     {queriesStatus.result !== 'isSuccess' ? (

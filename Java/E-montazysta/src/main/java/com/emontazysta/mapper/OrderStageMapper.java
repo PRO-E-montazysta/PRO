@@ -52,6 +52,7 @@ public class OrderStageMapper {
                 .elementReturnReleases(orderStage.getElementReturnReleases().stream().map(ElementReturnRelease::getId).collect(Collectors.toList()))
                 .simpleElementReturnReleases(orderStage.getElementReturnReleases().stream().map(elementReturnReleaseMapper::toDto).collect(Collectors.toList()))
                 .orderId(orderStage.getOrders() == null ? null : orderStage.getOrders().getId())
+                .orderName(orderStage.getOrders() == null ? null : orderStage.getOrders().getName())
                 .attachments(orderStage.getAttachments().stream()
                         .map(Attachment::getId)
                         .collect(Collectors.toList()))

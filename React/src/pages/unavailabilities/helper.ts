@@ -106,6 +106,10 @@ export const useFormStructure = (): Array<FormInputProps> => {
             id: 'description',
             initValue: '',
             type: 'input',
+            validation: yup
+                .string()
+                .min(3, 'Opis musi zawierać co najmniej 3 znaki')
+                .max(500, 'Opis może zawierać maksymalnie 500 zanków'),
         },
         {
             label: 'Od',

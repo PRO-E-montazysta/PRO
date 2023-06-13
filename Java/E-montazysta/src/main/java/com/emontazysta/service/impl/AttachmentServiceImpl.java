@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;

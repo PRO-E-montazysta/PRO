@@ -7,9 +7,10 @@ export type FormInputProps = {
     label: string
     id: string
     initValue: any
-    type: 'input' | 'select' | 'date' | 'password' | 'date-time' | 'number'
+    type: 'input' | 'select' | 'date' | 'password' | 'date-time' | 'number' | 'can-be-deleted'
     options?: Array<SelectMenuItemProps>
     validation?: yup.AnySchema
+    formatFn?: (value: any) => string
     placeholder?: string
 
     //always readonly

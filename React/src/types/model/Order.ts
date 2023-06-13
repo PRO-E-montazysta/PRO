@@ -16,6 +16,7 @@ export type Order = {
     clientId: number
     orderStages: Array<number>
     attachments: Array<number>
+    deleted: boolean
 }
 
 export const OrderStatus = {

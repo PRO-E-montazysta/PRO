@@ -13,6 +13,8 @@ import QueryBoxStatus from '../../components/base/QueryStatusBox'
 import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
+import Error from '../../components/error/Error'
+import { useElementData } from '../elements/hooks'
 import { useQuery } from 'react-query'
 import { AxiosError } from 'axios'
 import { getFilteredEvents } from '../../api/event.api'
@@ -56,8 +58,7 @@ const ElementEventDetails = () => {
                 { text: 'Anuluj', value: 0, variant: 'outlined' },
             ],
             callback: (result: number) => {
-                if (result == 1 && params.id && Number.isInteger(params.id))
-                    deleteElementEventMutation.mutate(params.id)
+                if (result == 1 && params.id) deleteElementEventMutation.mutate(params.id)
             },
         })
     }
@@ -102,26 +103,26 @@ const ElementEventDetails = () => {
         }
     }, [params.id])
 
+    const queryElement = useElementData(String(elementEventData.data?.elementId))
     const queryElements = useQuery<Array<Element>, AxiosError>(['element-list'], getAllElements, {
         cacheTime: 15 * 60 * 1000,
         staleTime: 10 * 60 * 1000,
     })
     const aboutMeQuery = useQuery<any, AxiosError>(['about-me'], async () => getAboutMeInfo())
 
-    return (
+    return elementEventData.data?.deleted ? (
+        <>
+            <Error code={404} message={'Ten obiekt został usunięty'} />
+        </>
+    ) : (
         <>
             <FormBox>
                 <FormTitle
                     mainTitle={pageMode == 'new' ? 'Nowa usterka elementu' : 'Usterka elementu'}
                     subTitle={
-                        pageMode == 'new'
-                            ? ''
-                            : String(
-                                  queryElements.data
-                                      ?.filter((f) => f.id == formik.values['elementId'])
-                                      .map((x) => x.name + ' - ' + x.code),
-                              )
+                        pageMode == 'new' ? '' : String(queryElement.data?.name + ' - ' + queryElement.data?.code)
                     }
+                    deleted={queryElement.data?.deleted}
                 />
                 <FormPaper>
                     {queriesStatus.result != 'isSuccess' ? (

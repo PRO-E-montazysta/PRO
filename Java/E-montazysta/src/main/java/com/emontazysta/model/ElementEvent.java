@@ -45,6 +45,7 @@ public class ElementEvent {
     private LocalDateTime eventDate;
     private LocalDateTime movingDate;
     private LocalDateTime completionDate;
+    @Column(length=500)
     private String description;
     private EventStatus status;
     private int quantity;

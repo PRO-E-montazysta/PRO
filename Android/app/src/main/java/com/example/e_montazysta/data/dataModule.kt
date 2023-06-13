@@ -6,6 +6,7 @@ import com.example.e_montazysta.data.network.ServiceFactory
 import com.example.e_montazysta.data.repository.CommentRepository
 import com.example.e_montazysta.data.repository.ElementRepository
 import com.example.e_montazysta.data.repository.EventRepository
+import com.example.e_montazysta.data.repository.LocationRepository
 import com.example.e_montazysta.data.repository.NotificationRepository
 import com.example.e_montazysta.data.repository.OrderRepository
 import com.example.e_montazysta.data.repository.ReleaseRepository
@@ -17,6 +18,7 @@ import com.example.e_montazysta.data.repository.WarehouseRepository
 import com.example.e_montazysta.data.repository.interfaces.ICommentRepository
 import com.example.e_montazysta.data.repository.interfaces.IElementRepository
 import com.example.e_montazysta.data.repository.interfaces.IEventRepository
+import com.example.e_montazysta.data.repository.interfaces.ILocationRepository
 import com.example.e_montazysta.data.repository.interfaces.INotificationRepository
 import com.example.e_montazysta.data.repository.interfaces.IOrderRepository
 import com.example.e_montazysta.data.repository.interfaces.IReleaseRepository
@@ -43,6 +45,8 @@ import com.example.e_montazysta.ui.stage.StageListViewModel
 import com.example.e_montazysta.ui.toollist.ToolDetailViewModel
 import com.example.e_montazysta.ui.toollist.ToolsListViewModel
 import com.example.e_montazysta.ui.viewmodels.DashboardViewModel
+import com.example.e_montazysta.ui.warehouse.WarehouseDetailViewModel
+import com.example.e_montazysta.ui.warehouse.WarehouseListViewModel
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.logging.HttpLoggingInterceptor
@@ -151,6 +155,12 @@ val dataModule = module {
         warehouseRepository
     }
 
+    factory{
+        val locationRepository: ILocationRepository =
+            LocationRepository(get())
+        locationRepository
+    }
+
     viewModel {
         ToolsListViewModel(get())
     }
@@ -196,6 +206,12 @@ val dataModule = module {
     }
     viewModel {
         EventDetailViewModel(get())
+    }
+    viewModel{
+        WarehouseListViewModel(get())
+    }
+    viewModel{
+        WarehouseDetailViewModel(get())
     }
 
 }

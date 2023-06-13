@@ -1,12 +1,13 @@
 //Tutaj powinniśmy wrzucać Typy danych, jakie dostajemy z Backendu. Tutaj np. dla pracowników
 
 export type Location = {
-   id: number
-   city: string
-   street: string
-   propertyNumber: string
-   apartmentNumber: string
-   zipCode: string
-   xcoordinate: number
-   ycoordinate: number
-};
+    id: number
+    city: string
+    street: string
+    propertyNumber: string
+    apartmentNumber: string
+    zipCode: string
+    xcoordinate: number
+    ycoordinate: number
+    deleted: boolean
+}

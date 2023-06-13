@@ -1,13 +1,11 @@
 import { useFormik } from 'formik'
 import { useContext, useEffect, useState } from 'react'
-
 import { useParams } from 'react-router-dom'
 import { useFormStructure } from './helper'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { getInitValues, getValidatinSchema } from '../../helpers/form.helper'
 import { useAddClient, useClientData, useDeleteClient, useEditClient } from './hooks'
 import { useQueriesStatus } from '../../hooks/useQueriesStatus'
-import useBreakpoints from '../../hooks/useBreakpoints'
 import FormBox from '../../components/form/FormBox'
 import FormTitle from '../../components/form/FormTitle'
 import FormPaper from '../../components/form/FormPaper'
@@ -15,6 +13,7 @@ import QueryBoxStatus from '../../components/base/QueryStatusBox'
 import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
+import Error from '../../components/error/Error'
 import { Role } from '../../types/roleEnum'
 
 const ClientDetails = () => {
@@ -46,7 +45,7 @@ const ClientDetails = () => {
                 { text: 'Anuluj', value: 0, variant: 'outlined' },
             ],
             callback: (result: number) => {
-                if (result == 1 && params.id && Number.isInteger(params.id)) deleteClientMutation.mutate(params.id)
+                if (result == 1 && params.id) deleteClientMutation.mutate(params.id)
             },
         })
     }
@@ -91,7 +90,11 @@ const ClientDetails = () => {
         }
     }, [params.id])
 
-    return (
+    return clientData.data?.deleted ? (
+        <>
+            <Error code={404} message={'Ten obiekt został usunięty'} />
+        </>
+    ) : (
         <FormBox>
             <FormTitle
                 mainTitle={pageMode == 'new' ? 'Nowy klient' : 'Klient'}

@@ -14,6 +14,7 @@ import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
 import { typeOfUnavailabilityName } from '../../helpers/enum.helper'
+import Error from '../../components/error/Error'
 import { Role } from '../../types/roleEnum'
 
 const UnavailabilityDetails = () => {
@@ -48,8 +49,7 @@ const UnavailabilityDetails = () => {
                 { text: 'Anuluj', value: 0, variant: 'outlined' },
             ],
             callback: (result: number) => {
-                if (result == 1 && params.id && Number.isInteger(params.id))
-                    deleteUnavailabilityMutation.mutate(params.id)
+                if (result == 1 && params.id) deleteUnavailabilityMutation.mutate(params.id)
             },
         })
     }
@@ -94,7 +94,11 @@ const UnavailabilityDetails = () => {
         }
     }, [params.id])
 
-    return (
+    return unavailabilityData.data?.deleted ? (
+        <>
+            <Error code={404} message={'Ten obiekt został usunięty'} />
+        </>
+    ) : (
         <FormBox>
             <FormTitle
                 mainTitle={pageMode == 'new' ? 'Nowa nieobecność' : 'Nieobecność'}

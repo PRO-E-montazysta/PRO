@@ -76,7 +76,11 @@ export const useFormStructure = (): Array<FormInputProps> => {
             id: 'name',
             initValue: '',
             type: 'input',
-            validation: yup.string().min(3, 'Nazwa musi zaweirać co najmniej 3 znaki').required('Wprowadź nazwę'),
+            validation: yup
+                .string()
+                .min(3, 'Nazwa musi zawierać co najmniej 3 znaki')
+                .max(255, 'Nazwa może zawierać maksymalnie 255 znaki')
+                .required('Wprowadź nazwę'),
         },
         {
             label: 'Kod',
@@ -100,6 +104,10 @@ export const useFormStructure = (): Array<FormInputProps> => {
             id: 'quantityInUnit',
             initValue: '',
             type: 'number',
+            validation: yup
+                .number()
+                .required('Wybierz ilość w jednostce')
+                .moreThan(0, 'Ilośc w jednostce musi być większa od 0'),
         },
     ]
 }
