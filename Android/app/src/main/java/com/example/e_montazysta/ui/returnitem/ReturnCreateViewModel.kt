@@ -1,4 +1,4 @@
-package com.example.e_montazysta.ui.release
+package com.example.e_montazysta.ui.returnitem
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -22,7 +22,7 @@ import org.koin.core.component.inject
 import kotlin.coroutines.CoroutineContext
 
 
-class ReleaseCreateViewModel : ViewModel(), CoroutineScope, KoinComponent {
+class ReturnCreateViewModel : ViewModel(), CoroutineScope, KoinComponent {
 
     private var job: Job? = null
 

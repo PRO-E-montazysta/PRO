@@ -28,9 +28,15 @@
             android:id="@+id/item"
             app:headline="@{tool.name}"
             app:supportText='@{tool.warehouse + " | " + tool.toolType}'
+            app:icon='@drawable/baseline_arrow_left_alt_24'
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            app:layout_constraintStart_toEndOf="@id/leading_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/leading_icon"
+            app:layout_constraintBottom_toBottomOf="@id/leading_icon"
             >
         </include>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -23,7 +23,7 @@
     <string name="content_description_media">content_description_media</string>
     <string name="title">title</string>
     <string name="title_warehouses">Magazyny</string>
-3    <string name="title_tools">Narzędzia</string>
+    <string name="title_tools">Narzędzia</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tool_warehouse_button">Przejdź do magazynu</string>
@@ -44,13 +44,13 @@
     <string name="element_manage_button">Wydaj/zwróć element</string>
     <string name="element_order_button">Dodaj do etapu zlecenia</string>
     <string name="element_event_button">Utwórz zdarzenie elementu</string>
-    <string name="element_name_text"><i>Nazwa</i></string>
-    <string name="element_code_text"><i>Kod</i></string>
-    <string name="element_unit_text"><i>Jednostka</i></string>
-    <string name="element_qty_of_unit_text"><i>Ilość w jednostce</i></string>
-    <string name="element_warehouse_text"><i>Adres Magazynu</i></string>
+    <string name="element_name_text">Nazwa</string>
+    <string name="element_code_text">Kod</string>
+    <string name="element_unit_text">Jednostka</string>
+    <string name="element_qty_of_unit_text">Ilość w jednostce</string>
+    <string name="element_warehouse_text">Adres Magazynu</string>
     <string name="element_list_tile">Lista elementów</string>
-    <string name="title_element"><b>Element</b></string>
+    <string name="title_element">Element</string>
     <string name="add_release_to_stage_desc">otwiera ekran twórzenia wydania z poziomu etapu</string>
     <string name="create_release_label">Wydaj elementy</string>
     <string name="content_description_profile_picture">Zdjęcie profilowe</string>
@@ -80,4 +80,7 @@
     <string name="release_stage_label">Etap</string>
     <string name="release_return_objects_label_desc">Zwraca elementy z danego wydania</string>
     <string name="release_return_objects_label">Zwróć</string>
+    <string name="empty_field">Brak</string>
+    <string name="order_title">Zlecenie</string>
+    <string name="create_return_title">Utwórz zwrot</string>
 </resources>

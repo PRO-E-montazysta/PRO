@@ -28,7 +28,7 @@
             layout="@layout/list_item_template"
             android:id="@+id/item"
             app:headline="@{event.itemName}"
-            app:supportText='@{event.status + " | " + event.eventType.value + " | " + event.eventDate }'
+            app:supportText='@{event.status.value + " | " + event.eventType.value + " | " + event.eventDate }'
             android:layout_height="wrap_content"
             android:layout_width="match_parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.example.e_montazysta.ui.release
+package com.example.e_montazysta.ui.returnitem
 
 import android.graphics.Color
 import android.text.Editable
@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.e_montazysta.data.model.ReleaseItem
-import com.example.e_montazysta.databinding.ListItemCreateReleaseBinding
+import com.example.e_montazysta.databinding.ListItemCreateReturnBinding
 import com.google.android.material.R
 
 
-class ReleaseCreateAdapter(val clickListener: CustomClickListener) : ListAdapter<ReleaseItem, ReleaseCreateAdapter.ViewHolder>(DiffCallback()){
+class ReturnCreateAdapter(val clickListener: CustomClickListener) : ListAdapter<ReleaseItem, ReturnCreateAdapter.ViewHolder>(DiffCallback()){
 
 
     var elements = mutableListOf<ReleaseItem>()
@@ -31,7 +31,7 @@ class ReleaseCreateAdapter(val clickListener: CustomClickListener) : ListAdapter
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = ListItemCreateReleaseBinding.inflate(inflater, parent, false)
+        val binding = ListItemCreateReturnBinding.inflate(inflater, parent, false)
         return ViewHolder(binding)
     }
 
@@ -57,7 +57,7 @@ class ReleaseCreateAdapter(val clickListener: CustomClickListener) : ListAdapter
         }
     }
 
-    inner class ViewHolder(val binding: ListItemCreateReleaseBinding) :
+    inner class ViewHolder(val binding: ListItemCreateReturnBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: ReleaseItem, clickListener: CustomClickListener) {

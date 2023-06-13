@@ -1,4 +1,4 @@
-package com.example.e_montazysta.ui.release
+package com.example.e_montazysta.ui.returnitem
 
 import WarehouseListAdapter
 import android.content.Context
@@ -18,7 +18,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.e_montazysta.R
 import com.example.e_montazysta.data.model.ReleaseItem
 import com.example.e_montazysta.data.model.Result
-import com.example.e_montazysta.databinding.FragmentCreateReleaseBinding
+import com.example.e_montazysta.databinding.FragmentCreateReturnBinding
 import com.example.e_montazysta.ui.warehouse.WarehouseFilterDAO
 import com.google.android.gms.common.api.OptionalModuleApi
 import com.google.android.gms.common.moduleinstall.ModuleInstall
@@ -35,8 +35,8 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class ReleaseCreateFragment : Fragment() {
-    private val releaseCreateViewModel: ReleaseCreateViewModel by viewModel()
+class ReturnCreateFragment : Fragment() {
+    private val viewModel: ReturnCreateViewModel by viewModel()
     private var isBackPressedFromDialog = false
     var actionMode: ActionMode? = null
     lateinit var actionModeCallback: Callback
@@ -46,18 +46,18 @@ class ReleaseCreateFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val binding: FragmentCreateReleaseBinding = FragmentCreateReleaseBinding.inflate(inflater, container, false)
+        val binding: FragmentCreateReturnBinding = FragmentCreateReturnBinding.inflate(inflater, container, false)
 
-        val args: ReleaseCreateFragmentArgs by navArgs()
-        val stageId = args.stageId
+        val args: ReturnCreateFragmentArgs by navArgs()
+        val stageId = args.stage
 
-        binding.viewModel = releaseCreateViewModel
-        releaseCreateViewModel.getListOfWarehouse()
+        binding.viewModel = viewModel
+        viewModel.getListOfWarehouse()
 
         binding.toolbar.inflateMenu(R.menu.menu_release)
 
-        val adapter = ReleaseCreateAdapter(
-            ReleaseCreateAdapter.CustomClickListener (
+        val adapter = ReturnCreateAdapter(
+            ReturnCreateAdapter.CustomClickListener (
                 {item ->
                     if (actionMode != null ) {
                         Toast.makeText(requireContext(), item.code, Toast.LENGTH_LONG).show()
@@ -94,8 +94,8 @@ class ReleaseCreateFragment : Fragment() {
                 when(code?.first()) {
                     'E' -> binding.viewModel?.let {
                         it.addElementToRelease(code)
-                        if (releaseCreateViewModel.selectedWarehouseLiveData.value == null) {
-                            showWarehouseFilterDialog(requireContext(), releaseCreateViewModel.warehouseLiveData.value!!)
+                        if (viewModel.selectedWarehouseLiveData.value == null) {
+                            showWarehouseFilterDialog(requireContext(), viewModel.warehouseLiveData.value!!)
                         }
                     }
                     'T' -> {
@@ -144,17 +144,17 @@ class ReleaseCreateFragment : Fragment() {
         })
 
         // Observe the error message LiveData
-        releaseCreateViewModel.messageLiveData.observe(viewLifecycleOwner) {
+        viewModel.messageLiveData.observe(viewLifecycleOwner) {
             errorMessage -> Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
         }
 
-        releaseCreateViewModel.itemsLiveData.observe(viewLifecycleOwner) {
+        viewModel.itemsLiveData.observe(viewLifecycleOwner) {
             items -> adapter.elements = items.toMutableList()
             adapter.notifyDataSetChanged()
         }
 
         // Spinner
-        releaseCreateViewModel.selectedWarehouseLiveData.observe(viewLifecycleOwner) {warehouse ->
+        viewModel.selectedWarehouseLiveData.observe(viewLifecycleOwner) {warehouse ->
             warehouse?.let { binding.toolbar.subtitle = it.name }
         }
 
@@ -175,7 +175,7 @@ class ReleaseCreateFragment : Fragment() {
                         adapter.elements.filter{ it.isSelected }.forEach {
                             adapter.elements.remove(it)
                         }
-                        releaseCreateViewModel._itemsLiveData.postValue(adapter.elements)
+                        viewModel._itemsLiveData.postValue(adapter.elements)
                         actionMode?.finish()
                         return true
                     }
@@ -186,7 +186,7 @@ class ReleaseCreateFragment : Fragment() {
             override fun onDestroyActionMode(mode: ActionMode) {
                 val tempList: List<ReleaseItem> = adapter.elements
                 tempList.forEach { it.isSelected = false }
-                releaseCreateViewModel._itemsLiveData.postValue(tempList)
+                viewModel._itemsLiveData.postValue(tempList)
                 adapter.selectedItemCount = 0
                 actionMode = null
             }
@@ -198,7 +198,7 @@ class ReleaseCreateFragment : Fragment() {
 
     private fun showConfirmationDialog(
         items: List<ReleaseItem>,
-        binding: FragmentCreateReleaseBinding,
+        binding: FragmentCreateReturnBinding,
         stageId: Int
     ) {
         val itemNames = items.map { it.name + ", Ilość: " + it.quantity }.toTypedArray()
@@ -241,7 +241,7 @@ class ReleaseCreateFragment : Fragment() {
                 selectedWarehouse = warehouses[position]
             }
             .setPositiveButton("OK") { dialog, _ ->
-                releaseCreateViewModel.setWarehouse(selectedWarehouse)
+                viewModel.setWarehouse(selectedWarehouse)
                 dialog.dismiss()
             }
             .setNegativeButton("Cancel") { dialog, _ ->

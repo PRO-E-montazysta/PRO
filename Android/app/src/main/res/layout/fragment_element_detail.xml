@@ -15,7 +15,6 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="?attr/actionBarSize"
         >
 
     <com.google.android.material.appbar.AppBarLayout
@@ -176,40 +175,6 @@
                 />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:clickable="true"
-                android:paddingVertical="@dimen/list_item_space_x3"
-                android:paddingStart="@dimen/list_item_space_x4"
-                android:paddingEnd="@dimen/list_item_space_x6">
-                <com.google.android.material.button.MaterialButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Zgłoś usterkę"
-                    app:icon="@drawable/baseline_cable_24"
-                    app:iconGravity="end"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:clickable="true"
-        android:paddingVertical="@dimen/list_item_space_x3"
-        android:paddingStart="@dimen/list_item_space_x4"
-        android:paddingEnd="@dimen/list_item_space_x6">
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Wydaj/zwróć element"
-            app:icon="@drawable/baseline_assignment_return_24"
-            app:iconGravity="end"/>
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"

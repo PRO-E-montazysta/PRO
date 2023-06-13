@@ -1,243 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-    <variable
-        name="orderDetailViewModel"
-        type="com.example.e_montazysta.ui.order.OrderDetailViewModel" />
-    </data>
-    <ScrollView
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/topAppBar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="0dp"
+            app:menu="@menu/menu_details"
+            app:title="@string/order_title"
+            app:navigationIcon="@drawable/baseline_arrow_back_24"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:layout_scrollEffect="compress"
+            />
+    </com.google.android.material.appbar.AppBarLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginBottom="?android:attr/actionBarSize"
-        >
+        android:layout_gravity="bottom"
+        android:layout_marginTop="?attr/actionBarSize"
+        app:layout_anchor="@id/topAppBar"
+        app:layout_anchorGravity="bottom">
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Zlecenie"
-            android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-        <LinearLayout
-            android:id="@+id/details"
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/pager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="10dp"
-            android:layout_marginTop="15dp"
-            app:layout_constraintEnd_toEndOf="@+id/title"
-            app:layout_constraintStart_toStartOf="@+id/title"
-            app:layout_constraintTop_toBottomOf="@+id/title">
-
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nazwa zlecenia"
-                 />
-
-            <TextView
-                android:id="@+id/nameValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="nameValue"
-                android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-
-            <TextView
-                android:id="@+id/status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Status" />
-
-            <TextView
-                android:id="@+id/statusValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="statusValue"
-                android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-
-            <TextView
-                android:id="@+id/priority"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Priorytet" />
-
-            <TextView
-                android:id="@+id/priorityValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="priorityValue"
-                android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-
-
-            <TextView
-                android:id="@+id/plannedStart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Planowany czas rozpoczęcia" />
-
-            <TextView
-                android:id="@+id/plannedStartValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="plannedStartValue"
-                android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-
-            <TextView
-                android:id="@+id/plannedEnd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Planowany czas zakończenia" />
-
-            <TextView
-                android:id="@+id/plannedEndValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="plannedEndValue"
-                android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-
-            <TextView
-                android:id="@+id/clientId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Klient" />
-            <TextView
-                android:id="@+id/clientIdValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="clientIdValue"
-                android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-
-            <TextView
-                android:id="@+id/foremanId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Brygadzista"/>
-            <TextView
-                android:id="@+id/foremanIdValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="foremanIdValue"
-                android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-
-            <TextView
-                android:id="@+id/locationId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Lokalizacja" />
-            <TextView
-                android:id="@+id/locationIdValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="locationIdValue"
-                android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-
-            <TextView
-                android:id="@+id/managerId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Manager" />
-            <TextView
-                android:id="@+id/managerIdValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="managerIdValue"
-                android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-
-            <TextView
-                android:id="@+id/specialistId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Specjalista" />
-            <TextView
-                android:id="@+id/specialistIdValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="specialistIdValue"
-                android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-
-            <TextView
-                android:id="@+id/salesRepresentativeId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Specjalista" />
-            <TextView
-                android:id="@+id/salesRepresentativeIdValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="salesRepresentativeIdValue"
-                android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-
-            <TextView
-                android:id="@+id/createdAt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Czas utworzenia" />
-            <TextView
-                android:id="@+id/createdAtValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="createdAtValue"
-                android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-
-            <TextView
-                android:id="@+id/editedAt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Czas ostatniej edycji" />
-            <TextView
-                android:id="@+id/editedAtValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Brak"
-                android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/separator"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:alpha=".30"
-            android:background="?colorOnPrimaryContainer"
-            android:orientation="vertical"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="3dp"
-            app:layout_constraintEnd_toEndOf="@+id/details"
-            app:layout_constraintStart_toStartOf="@+id/details"
-            app:layout_constraintTop_toBottomOf="@+id/details"
-            />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="@+id/separator"
-            app:layout_constraintStart_toStartOf="@+id/separator"
-            app:layout_constraintTop_toBottomOf="@+id/separator">
-
-        <TextView
-            android:id="@+id/stage_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Etapy"
-            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/order_stage_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/list_item_order"
-            />
-        </LinearLayout>
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tabs"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

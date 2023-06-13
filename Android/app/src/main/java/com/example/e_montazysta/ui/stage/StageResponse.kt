@@ -7,69 +7,53 @@ import com.example.e_montazysta.data.model.Stage
 import com.example.e_montazysta.data.model.User
 import com.example.e_montazysta.data.repository.interfaces.ICommentRepository
 import com.example.e_montazysta.data.repository.interfaces.IReleaseRepository
-import com.example.e_montazysta.data.repository.interfaces.IUserRepository
+
+import com.example.e_montazysta.ui.release.ReleaseElementDAO
+import com.example.e_montazysta.ui.release.ReleaseToolDAO
 import com.squareup.moshi.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.math.BigDecimal
 import java.util.Date
 
 data class StageDAO(
-    @Json(name = "id")
     val id: Int,
-    @Json(name = "name")
     val name: String,
-    @Json(name = "status")
-    val status: String,
-    @Json(name = "price")
-    val price: Float,
+    val status: StageStatus,
+    val price: BigDecimal,
     @Json(name = "plannedStartDate")
     val plannedStart: Date?,
     @Json(name = "plannedEndDate")
     val plannedEnd: Date?,
-    @Json(name = "startDate")
     val startDate: Date?,
-    @Json(name = "endDate")
     val endDate: Date?,
-    @Json(name = "plannedDurationTime")
     val plannedDurationTime: Date?,
-    @Json(name = "plannedFittersNumber")
     val plannedFittersNumber: Int,
-    @Json(name = "minimumImagesNumber")
     val minimumImagesNumber: Int,
-    @Json(name = "fitters")
     val fitters: List<Int>,
-    @Json(name = "comments")
     val comments: List<Int>,
-    @Json(name = "toolReleases")
     val toolReleases: List<Int>,
-    @Json(name = "elementReturnReleases")
-    val elementReturnReleases: List<Int>,
-    @Json(name = "orderId")
+    val simpleToolReleases: List<ReleaseToolDAO>,
+    val simpleElementReturnReleases: List<ReleaseElementDAO>,
     val orderId: Int,
-    @Json(name = "listOfToolsPlannedNumber")
     val listOfToolsPlannedNumber: List<Int>,
-    @Json(name = "listOfElementsPlannedNumber")
     val listOfElementsPlannedNumber: List<Int>
 ) : KoinComponent {
-    private val userRepository: IUserRepository by inject()
     private val commentRepository: ICommentRepository by inject()
     private val releaseRepository: IReleaseRepository by inject()
 
     suspend fun mapToStage(): Stage {
-        val fittersList: List<User?> = fitters.map {id -> getUserDetails(id)}
+        val fittersList: List<User?> = fitters.map {id -> User.getUserDetails(id)}
         val commentsList: List<Comment?> = comments.map {id -> getCommentDetails(id)}
         val releasesList: List<Release?> = toolReleases.map {id -> getReleaseDetails(id)}
         return Stage(id, name, status, price, plannedStart, plannedEnd, startDate, endDate, plannedDurationTime,
             plannedFittersNumber, minimumImagesNumber, fittersList, commentsList, releasesList,
-            listOf(), orderId, listOfToolsPlannedNumber, listOfElementsPlannedNumber)
+            listOf(), orderId, listOfToolsPlannedNumber, listOfElementsPlannedNumber,
+            simpleToolReleases, simpleElementReturnReleases)
     }
 
-    private suspend fun getUserDetails(userId: Int): User? {
-        val result = userRepository.getUserDetails(userId)
-        return when (result) {
-            is Result.Success -> result.data
-            is Result.Error -> null
-        }
+    fun mapToStageListItem(): StageListItem {
+        return StageListItem(id, name, "TODO", status, plannedStart, plannedEnd)
     }
 
     private suspend fun getCommentDetails(commentId: Int): Comment? {
@@ -86,4 +70,14 @@ data class StageDAO(
             is Result.Error -> null
         }
     }
+}
+enum class StageStatus(val value: String){
+    PLANNING("PLANOWANIE"),
+    ADDING_FITTERS("DODAWANIE MONTAŻYSTÓW"),
+    PICK_UP("WYDAWANIE"),
+    REALESED("WYDANO"),
+    ON_WORK("W TRAKCIE"),
+    RETURN("ZWRACANIE"),
+    RETURNED("ZWRÓCONO"),
+    FINISHED("ZAKOŃCZONO")
 }
