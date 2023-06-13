@@ -234,6 +234,6 @@
         android:label="ReturnCreateFragment">
         <argument
             android:name="stage"
-            app:argType="com.example.e_montazysta.data.model.Stage" />
+            app:argType="integer" />
     </fragment>
 </navigation>

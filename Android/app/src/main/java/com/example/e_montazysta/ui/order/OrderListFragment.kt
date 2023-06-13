@@ -7,31 +7,38 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.example.e_montazysta.databinding.FragmentOrdersBinding
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.transition.MaterialContainerTransform
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class OrderListFragment : Fragment() {
     private val orderListViewModel: OrderListViewModel by viewModel()
 
-//    override fun onCreate(savedInstanceState: Bundle?) {
+    //    override fun onCreate(savedInstanceState: Bundle?) {
 //        super.onCreate(savedInstanceState)
 //        sharedElementEnterTransition = MaterialContainerTransform()
 //    }
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         // Get a reference to the binding object and inflate the fragment views.
-        val binding: FragmentOrdersBinding = FragmentOrdersBinding.inflate(inflater, container, false)
+        val binding: FragmentOrdersBinding =
+            FragmentOrdersBinding.inflate(inflater, container, false)
         val application = requireNotNull(this.activity).application
 
         // To use the View Model with data binding, you have to explicitly
         // give the binding object a reference to it.
         binding.orderListViewModel = orderListViewModel
-        val adapter = OrderListAdapter( CustomClickListener{
-                orderId -> findNavController().navigate( OrderListFragmentDirections.actionOrderListFragmentToOrderDetailFragment(orderId))
+        val adapter = OrderListAdapter(CustomClickListener { orderId ->
+            findNavController().navigate(
+                OrderListFragmentDirections.actionOrderListFragmentToOrderDetailFragment(
+                    orderId
+                )
+            )
         })
 
         binding.orderList.adapter = adapter
@@ -43,9 +50,9 @@ class OrderListFragment : Fragment() {
             }
         })
 
-        orderListViewModel.isLoadingLiveData.observe(viewLifecycleOwner, Observer<Boolean>{
+        orderListViewModel.isLoadingLiveData.observe(viewLifecycleOwner, Observer<Boolean> {
             it?.let {
-                if(it) {
+                if (it) {
                     binding.loadingIndicator.visibility = View.VISIBLE
                 } else {
                     binding.loadingIndicator.visibility = View.GONE
@@ -59,14 +66,14 @@ class OrderListFragment : Fragment() {
         val toolbar: MaterialToolbar = binding.toolbar
         toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
+        }
 
         // Wyświetlanie błędów
-        orderListViewModel.messageLiveData.observe(viewLifecycleOwner) {
-                errorMessage -> Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+        orderListViewModel.messageLiveData.observe(viewLifecycleOwner) { errorMessage ->
+            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
         }
 
         return binding.root
-
     }
-
 }
+

@@ -49,7 +49,7 @@ class ReturnCreateFragment : Fragment() {
         val binding: FragmentCreateReturnBinding = FragmentCreateReturnBinding.inflate(inflater, container, false)
 
         val args: ReturnCreateFragmentArgs by navArgs()
-        val stageId = args.stage.id
+        val stageId = args.stage
 
         binding.viewModel = viewModel
         viewModel.getListOfWarehouse()
