@@ -21,6 +21,7 @@ import { getAllSpecialists } from '../../api/specialist.api'
 import { AppSize } from '../../hooks/useBreakpoints'
 import { FormInputProps } from '../../types/form'
 import { Role } from '../../types/roleEnum'
+import { isAuthorized } from '../../utils/authorize'
 
 export const headCells: Array<HeadCell<Order>> = [
     {
@@ -203,7 +204,8 @@ export const useFormStructure = (): Array<FormInputProps> => {
             editPermissionRoles: [Role.MANAGER],
             viewPermissionRoles: [Role['*']],
             customPermission: (e) => {
-                if (e == null) return 'hidden'
+                if (isAuthorized([Role.MANAGER])) return null
+                else if (e == null) return 'hidden'
                 else return null
             },
         },
