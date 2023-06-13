@@ -26,12 +26,16 @@ const PlannerStagePopup = ({ popupEventInfo, setPopupEventInfo, readonly }: Plan
     const updateOrderStageFitters = useOrderStageFittersMutation((data) => {
         console.log(data)
     })
+    console.log('toto', orderStageQuery.data?.plannedStartDate)
 
-    const avaliableFittersQuery = useQuery<any[], AxiosError>(['fitters', { id: popupEventInfo.stageId }], () =>
-        getFittersAvailable({
-            availableFrom: orderStageQuery.data?.plannedStartDate || '',
-            availableTo: orderStageQuery.data?.plannedEndDate || '',
-        }),
+    const avaliableFittersQuery = useQuery<any[], AxiosError>(
+        ['fitters', { id: popupEventInfo.stageId }],
+        () => getFittersAvailable(orderStageQuery.data?.plannedStartDate!, orderStageQuery.data?.plannedEndDate!),
+        {
+            enabled:
+                orderStageQuery.data?.plannedStartDate != undefined &&
+                orderStageQuery.data?.plannedEndDate != undefined,
+        },
     )
 
     useEffect(() => {
@@ -101,8 +105,8 @@ const PlannerStagePopup = ({ popupEventInfo, setPopupEventInfo, readonly }: Plan
                     {orderStageQuery.data?.name}
                 </Typography>
                 <PlannerStageDetails
-                    dateFrom={moment(orderStageQuery.data?.plannedStartDate)}
-                    dateTo={moment(orderStageQuery.data?.plannedEndDate)}
+                    dateFrom={orderStageQuery.data?.plannedStartDate}
+                    dateTo={orderStageQuery.data?.plannedEndDate}
                     fitters={assignedFitters}
                     setFitters={(fitters) => setAssignedFitters(fitters)}
                     readonly={readonly}

@@ -17,6 +17,6 @@ export const getFitterById = (id: string) => {
     return makeServiceCall(`/fitters/${id}`, 'GET', {})
 }
 
-export const getFittersAvailable = (data: { availableFrom: string; availableTo: string }) => {
-    return makeServiceCall(`/fitters/available`, 'GET', { body: data })
+export const getFittersAvailable = (availableFrom: string, availableTo: string) => {
+    return makeServiceCall(`/fitters/available/${availableFrom}/${availableTo}`, 'GET', {})
 }
