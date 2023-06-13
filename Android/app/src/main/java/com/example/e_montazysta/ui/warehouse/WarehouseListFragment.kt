@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.e_montazysta.databinding.FragmentWarehousesBinding
+import com.google.android.material.appbar.MaterialToolbar
 //import com.example.e_montazysta.ui.activities.ElementMainActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -55,6 +56,12 @@ class WarehouseListFragment : Fragment() {
         // Specify the current activity as the lifecycle owner of the binding.
         // This is necessary so that the binding can observe LiveData updates.
         binding.lifecycleOwner = this
+
+        val toolbar: MaterialToolbar = binding.toolbar
+        toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
+
         return binding.root
 
     }

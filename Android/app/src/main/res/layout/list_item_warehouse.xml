@@ -26,7 +26,7 @@
         <include layout="@layout/list_item_template"
             android:id="@+id/item"
             app:headline="@{warehouse.name}"
-            app:supportText='@{warehouse.fullAddress}'
+            app:supportText='@{warehouse.description + " | " + warehouse.fullAddress + " | " + warehouse.openingHours}'
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             >

@@ -13,6 +13,7 @@ import com.example.e_montazysta.data.model.Element
 import com.example.e_montazysta.data.model.Tool
 import com.example.e_montazysta.databinding.FragmentEventDetailBinding
 import com.example.e_montazysta.helpers.DateUtil
+import com.google.android.material.appbar.MaterialToolbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.system.measureTimeMillis
 
@@ -53,6 +54,12 @@ class EventDetailFragment : Fragment() {
             binding.eventDateValue.text = DateUtil.format(event.eventDate)
             binding.descriptionValue.text = event.description
         })
+
+        val toolbar: MaterialToolbar = binding.toolbar
+        toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
+
         return binding.root
     }
 }
