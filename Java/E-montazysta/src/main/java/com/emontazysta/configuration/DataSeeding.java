@@ -283,25 +283,25 @@ public class DataSeeding {
 
         Unavailability unavailability1 = addUnavailabilityFromModel(new Unavailability(null,
                 TypeOfUnavailability.BUSY, "Test Unavailability 1", LocalDateTime.parse( "2023-06-03T08:00:00.000"),
-                LocalDateTime.parse("2023-06-03T14:00:00.000"), fitter1, manager1));
+                LocalDateTime.parse("2023-06-03T14:00:00.000"), fitter1, manager1, null));
         Unavailability unavailability2 = addUnavailabilityFromModel(new Unavailability(null,
                 TypeOfUnavailability.BUSY, "Test Unavailability 2", LocalDateTime.parse( "2023-06-03T14:00:00.000"),
-                LocalDateTime.parse("2023-06-03T16:00:00.000"), fitter1, manager1));
+                LocalDateTime.parse("2023-06-03T16:00:00.000"), fitter1, manager1, null));
         Unavailability unavailability3 = addUnavailabilityFromModel(new Unavailability(null,
                 TypeOfUnavailability.HOLIDAY, "Test Unavailability 3", LocalDateTime.parse( "2023-06-10T08:00:00.000"),
-                LocalDateTime.parse("2023-06-20T16:00:00.000"), fitter2, manager1));
+                LocalDateTime.parse("2023-06-20T16:00:00.000"), fitter2, manager1, null));
         Unavailability unavailability4 = addUnavailabilityFromModel(new Unavailability(null,
                 TypeOfUnavailability.OTHER, "Test Unavailability 4", LocalDateTime.parse( "2023-06-12T12:00:00.000"),
-                LocalDateTime.parse("2023-06-12T16:00:00.000"), fitter1, manager1));
+                LocalDateTime.parse("2023-06-12T16:00:00.000"), fitter1, manager1, null));
         Unavailability unavailability5 = addUnavailabilityFromModel(new Unavailability(null,
                 TypeOfUnavailability.BUSY, "Test Unavailability 5", LocalDateTime.parse( "2023-05-20T12:00:00.000"),
-                LocalDateTime.parse("2023-05-20T16:00:00.000"), fitter1, manager1));
+                LocalDateTime.parse("2023-05-20T16:00:00.000"), fitter1, manager1, null));
         Unavailability unavailability6 = addUnavailabilityFromModel(new Unavailability(null,
                 TypeOfUnavailability.BUSY, "Test Unavailability 6", LocalDateTime.parse( "2023-05-21T08:00:00.000"),
-                LocalDateTime.parse("2023-05-21T14:00:00.000"), fitter1, manager1));
+                LocalDateTime.parse("2023-05-21T14:00:00.000"), fitter1, manager1, null));
         Unavailability unavailability7 = addUnavailabilityFromModel(new Unavailability(null,
                 TypeOfUnavailability.BUSY, "Test Unavailability 7", LocalDateTime.parse( "2023-05-21T08:00:00.000"),
-                LocalDateTime.parse("2023-05-21T14:00:00.000"), fitter2, manager1));
+                LocalDateTime.parse("2023-05-21T14:00:00.000"), fitter2, manager1, null));
 
         Unavailability unavailability8 = addUnavailabilityWithLocalDateDtoFromModel(new UnavailabilityWithLocalDateDto(
                 null, TypeOfUnavailability.BEREAVEMENT_LEAVE,"Test Unavailability 2", LocalDate.now(),

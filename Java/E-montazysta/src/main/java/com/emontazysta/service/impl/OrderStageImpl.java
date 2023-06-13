@@ -201,9 +201,14 @@ public class OrderStageImpl implements OrderStageService {
                 && orderStageDb.getStatus().equals(OrderStageStatus.ADDING_FITTERS)) {
 
             //Usunięcie nieprzypisanych fitterów
-            for(Fitter fitter : orderStageDb.getAssignedTo()) {
+            List<Fitter> oldAsignedFitters = orderStageDb.getAssignedTo();
+            for(Fitter fitter : oldAsignedFitters) {
                 if(!updatedOrderStage.getAssignedTo().contains(fitter)) {
                     fitter.getWorkingOn().remove(orderStageDb);
+                    Optional<Unavailability> unavailability = unavailabilityRepository.findByOrderStageIdAndAssignedTo(orderStageDb.getId(), fitter);
+                    if(unavailability.isPresent()) {
+                        unavailabilityRepository.delete(unavailability.get());
+                    }
                     fitterRepository.save(fitter);
                 }
             }
@@ -223,6 +228,7 @@ public class OrderStageImpl implements OrderStageService {
                                     .unavailableTo(orderStageDb.getPlannedEndDate())
                                     .assignedTo(fitter)
                                     .assignedBy(orderStageDb.getOrders().getManagedBy())
+                                    .orderStageId(orderStageDb.getId())
                             .build());
                 }
             }
@@ -616,15 +622,21 @@ public class OrderStageImpl implements OrderStageService {
     @Override
     public OrderStageDto addFitters(Long id, List<Long> fittersId) {
         OrderStage orderStage = repository.findById(id).orElseThrow(EntityNotFoundException::new);
-        List<Fitter> fitters = fittersId.stream().map(fitterId -> fitterRepository.getReferenceById(fitterId)).collect(Collectors.toList());
 
         if (authUtils.getLoggedUser().getRoles().contains(Role.FOREMAN)
                 && orderStage.getStatus().equals(OrderStageStatus.ADDING_FITTERS)) {
 
+            List<Fitter> fitters = fittersId.stream().map(fitterId -> fitterRepository.getReferenceById(fitterId)).collect(Collectors.toList());
+
             //Usunięcie nieprzypisanych fitterów
-            for(Fitter fitter : orderStage.getAssignedTo()) {
+            List<Fitter> oldAsignedFitters = orderStage.getAssignedTo();
+            for(Fitter fitter : oldAsignedFitters) {
                 if(!fitters.contains(fitter)) {
                     fitter.getWorkingOn().remove(orderStage);
+                    Optional<Unavailability> unavailability = unavailabilityRepository.findByOrderStageIdAndAssignedTo(orderStage.getId(), fitter);
+                    if(unavailability.isPresent()) {
+                        unavailabilityRepository.delete(unavailability.get());
+                    }
                     fitterRepository.save(fitter);
                 }
             }
@@ -644,6 +656,7 @@ public class OrderStageImpl implements OrderStageService {
                             .unavailableTo(orderStage.getPlannedEndDate())
                             .assignedTo(fitter)
                             .assignedBy(orderStage.getOrders().getManagedBy())
+                            .orderStageId(orderStage.getId())
                             .build());
                 }
             }

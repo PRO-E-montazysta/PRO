@@ -26,7 +26,7 @@ public class UnavailabilityMapper {
                 .unavailableTo(unavailability.getUnavailableTo())
                 .assignedToId(unavailability.getAssignedTo() == null ? null : unavailability.getAssignedTo().getId())
                 .assignedById(unavailability.getAssignedBy() == null ? null : unavailability.getAssignedBy().getId())
-                .deleted(unavailability.isDeleted())
+                .orderStageId(unavailability.getOrderStageId() == null ? null : unavailability.getOrderStageId())
                 .build();
     }
 
@@ -39,6 +39,7 @@ public class UnavailabilityMapper {
                 .unavailableTo(unavailabilityDto.getUnavailableTo())
                 .assignedTo(unavailabilityDto.getAssignedToId() == null ? null : appUserRepository.findById(unavailabilityDto.getAssignedToId()).orElseThrow(EntityNotFoundException::new))
                 .assignedBy(unavailabilityDto.getAssignedById() == null ? null : managerRepository.findById(unavailabilityDto.getAssignedById()).orElseThrow(EntityNotFoundException::new))
+                .orderStageId(unavailabilityDto.getOrderStageId() == null ? null : unavailabilityDto.getOrderStageId())
                 .build();
     }
 
