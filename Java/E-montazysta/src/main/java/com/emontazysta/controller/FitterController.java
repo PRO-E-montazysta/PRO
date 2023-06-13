@@ -62,9 +62,12 @@ public class FitterController {
         return fitterService.update(id, fitter);
     }
 
-    @GetMapping("/available")
+    @GetMapping("/available/{availableFrom}/{availableTo}")
     @Operation(description = "Allows to get available Fitters.", security = @SecurityRequirement(name = "bearer-key"))
-    public List<FitterDto> getAvailableFitters(AppUserSearchCriteria appUserSearchCriteria, Principal principal) {
+    public List<FitterDto> getAvailableFitters(@PathVariable String availableFrom, @PathVariable String availableTo, Principal principal) {
+        AppUserSearchCriteria appUserSearchCriteria = new AppUserSearchCriteria();
+        appUserSearchCriteria.setAvailableFrom(availableFrom);
+        appUserSearchCriteria.setAvailableTo(availableTo);
         return fitterService.getAvailable(appUserSearchCriteria, principal);
     }
 }
