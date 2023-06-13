@@ -165,7 +165,7 @@ export const pageList: Array<PageProps> = [
                 inNav: false,
                 name: '',
                 path: '/tools/:id',
-                allowedRoles: [Role.SPECIALIST, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER],
+                allowedRoles: [Role['*']],
                 component: <ToolDetails />,
             },
             {
@@ -334,7 +334,7 @@ export const pageList: Array<PageProps> = [
                 inNav: false,
                 name: '',
                 path: '/elements/:id',
-                allowedRoles: [Role.SPECIALIST, Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER],
+                allowedRoles: [Role['*']],
                 component: <ElementDetails />,
             },
             {
