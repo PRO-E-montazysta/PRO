@@ -578,11 +578,12 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
 
                             <TabPanel value={tabValue} index={3}>
                                 <PlannerStageDetails
-                                    dateFrom={moment(formik.values.plannedStartDate)}
-                                    dateTo={moment(formik.values.plannedEndDate)}
+                                    dateFrom={preparedPlannedStartDate}
+                                    dateTo={preparedPlannedEndDate}
                                     fitters={formik.values.fitters}
                                     setFitters={(fitters) => formik.setFieldValue('fitters', fitters)}
-                                    readonly={!isAuthorized([Role.FOREMAN])}
+                                    readonly={!isAuthorized([Role.FOREMAN]) || isDisplayingMode}
+                                    orderStageId={formik.values.orderStageId}
                                 />
                             </TabPanel>
                             <TabPanel value={tabValue} index={4}>

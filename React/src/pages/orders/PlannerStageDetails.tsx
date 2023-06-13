@@ -8,21 +8,30 @@ import { getFittersAvailable } from '../../api/fitter.api'
 import FittersList from './FittersList'
 
 type PlannerStageDetailsProps = {
-    dateFrom: Moment
-    dateTo: Moment
+    dateFrom: string | undefined
+    dateTo: string | undefined
     fitters: number[]
+    orderStageId: string | undefined
     setFitters: (fitters: number[]) => void
     readonly: boolean
 }
 
-const PlannerStageDetails = ({ dateFrom, dateTo, fitters, setFitters, readonly }: PlannerStageDetailsProps) => {
+const PlannerStageDetails = ({
+    dateFrom,
+    dateTo,
+    fitters,
+    setFitters,
+    readonly,
+    orderStageId,
+}: PlannerStageDetailsProps) => {
     const [avaliableFitters, setAvaliableFitters] = useState<number[]>([])
 
-    const avaliableFittersQuery = useQuery<any[], AxiosError>(['avaliable-fitters'], () =>
-        getFittersAvailable({
-            availableFrom: dateFrom.toString(),
-            availableTo: dateTo.toString(),
-        }),
+    const avaliableFittersQuery = useQuery<any[], AxiosError>(
+        ['avaliable-fitters', { id: orderStageId }],
+        () => getFittersAvailable(dateFrom!, dateTo!),
+        {
+            enabled: dateFrom != undefined && dateTo != undefined,
+        },
     )
 
     useLayoutEffect(() => {
