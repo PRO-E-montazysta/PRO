@@ -57,10 +57,7 @@ const CalendarEventDetails = ({ popupEventInfo, setPopupEventInfo }: CalendarEve
                         {popupEventInfo.subtitle}
                     </Typography>
                 )}
-                <NavLink
-                    to={popupEventInfo.link}
-                    // className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}
-                >
+                <NavLink to={popupEventInfo.link}>
                     <Typography
                         variant="h5"
                         sx={{ mb: '20px', textDecoration: 'underline', cursor: 'pointer', color: 'black' }}
@@ -75,14 +72,14 @@ const CalendarEventDetails = ({ popupEventInfo, setPopupEventInfo }: CalendarEve
                         gap: '10px 20px',
                     }}
                 >
-                    {popupEventInfo.infoArray.map((row) => {
+                    {popupEventInfo.infoArray.map((row, i) => {
                         return (
-                            <>
+                            <Box key={i}>
                                 <Typography variant="body1" textAlign={'right'}>
                                     {row.label}
                                 </Typography>
                                 <Typography variant="body1">{row.value}</Typography>
-                            </>
+                            </Box>
                         )
                     })}
                 </Box>

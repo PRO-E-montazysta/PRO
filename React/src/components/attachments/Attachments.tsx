@@ -59,7 +59,11 @@ const Attachments = (props: AttachmentsProps) => {
 
     const downloadAttachment = (uniqueName: string, name: string) => {
         const link = getBaseUrl() + `/attachments/download/${uniqueName}`
-        window.open(link)
+
+        const tempLink = document.createElement('a')
+        tempLink.href = link
+        tempLink.setAttribute('download', name)
+        tempLink.click()
     }
 
     return (

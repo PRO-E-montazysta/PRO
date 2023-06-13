@@ -94,7 +94,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
             content: message,
             callback: () => {
                 queryClient.refetchQueries({
-                    queryKey: ['orderStage', { id: params.id }],
+                    queryKey: ['orderStageForOrder', { id: params.id }],
                 })
                 setIsEditing(false)
                 setIsDisplayingMode(true)
@@ -438,7 +438,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                     <AssignmentIcon />
                 </IconButton>
                 <Typography variant="h5" color="text.secondary">
-                    {stage ? <Typography>Etap {stage.name}</Typography> : <Typography>Dodaj etap</Typography>}
+                    {stage ? `Etap - ${stage.name}` : `Nowy etap`}
                 </Typography>
                 <ExpandMore
                     expand={expandedInformation}
@@ -551,7 +551,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     <Tab label="Narzędzia" {...tabProps(1)} />
                                     <Tab label="Elementy" {...tabProps(2)} />
                                     <Tab label="Montażyści" {...tabProps(2)} />
-                                    <Tab label="Szczegóły etapu/Zalaczniki" {...tabProps(1)} />
+                                    <Tab label="Załączniki" {...tabProps(1)} />
                                 </Tabs>
                             </Box>
                             <TabPanel value={tabValue} index={0}>

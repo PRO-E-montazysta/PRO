@@ -45,44 +45,60 @@ const FittersList = ({ list, title, arrayType, addFitter, removeFitter, readonly
     }
     return (
         <Box>
-            <Typography>{title}</Typography>
-            <Box sx={{ border: '1px solid black', overflowY: 'scroll', height: '300px' }}>
-                {list.map((f, i) => {
-                    return (
-                        <Box
-                            key={i}
-                            sx={{ p: '0 5px', alignItems: 'center', justifyContent: 'space-between', display: 'flex' }}
-                        >
-                            {arrayType == 'left' && (
-                                <Box>
-                                    {!readonly ? (
-                                        <IconButton
-                                            onClick={() => handleAddFitter(f)}
-                                            size="small"
-                                            sx={{ transform: 'rotate(180deg)' }}
-                                        >
-                                            <ForwardIcon />
-                                        </IconButton>
-                                    ) : (
-                                        <Box></Box>
-                                    )}
-                                </Box>
-                            )}
-                            {getFitterNameById(f)}
-                            {arrayType == 'right' && (
-                                <Box>
-                                    {!readonly ? (
-                                        <IconButton size="small" onClick={() => handleRemoveFitter(f)}>
-                                            <ForwardIcon />
-                                        </IconButton>
-                                    ) : (
-                                        <Box></Box>
-                                    )}
-                                </Box>
-                            )}
-                        </Box>
-                    )
-                })}
+            <Typography variant="h6" sx={{ fontWeight: '700', mb: '5px' }}>
+                {title}
+            </Typography>
+            <Box
+                sx={{
+                    border: '2px solid gray',
+                    overflowY: 'auto',
+                    height: '300px',
+                    borderRadius: '10px',
+                }}
+            >
+                {list &&
+                    list.map((f, i) => {
+                        return (
+                            <Box
+                                key={i}
+                                sx={{
+                                    m: '5px 10px',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    display: 'flex',
+                                    height: '30px',
+                                }}
+                            >
+                                {arrayType == 'left' && (
+                                    <Box>
+                                        {!readonly ? (
+                                            <IconButton
+                                                onClick={() => handleAddFitter(f)}
+                                                size="small"
+                                                sx={{ transform: 'rotate(180deg)' }}
+                                            >
+                                                <ForwardIcon />
+                                            </IconButton>
+                                        ) : (
+                                            <Box></Box>
+                                        )}
+                                    </Box>
+                                )}
+                                {getFitterNameById(f)}
+                                {arrayType == 'right' && (
+                                    <Box>
+                                        {!readonly ? (
+                                            <IconButton size="small" onClick={() => handleRemoveFitter(f)}>
+                                                <ForwardIcon />
+                                            </IconButton>
+                                        ) : (
+                                            <Box></Box>
+                                        )}
+                                    </Box>
+                                )}
+                            </Box>
+                        )
+                    })}
             </Box>
         </Box>
     )

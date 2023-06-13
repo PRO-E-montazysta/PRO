@@ -44,7 +44,7 @@ const Planner = ({ orderId, initialDate, readonly }: PlannerProps) => {
                 initialDate={initialDate.toDate()}
                 plugins={[timeGridPlugin]}
                 initialView="timeGridWeek"
-                height={'80vh'}
+                height={'60vh'}
                 locale={'pl'}
                 weekNumberCalculation={'ISO'}
                 headerToolbar={{
@@ -54,6 +54,8 @@ const Planner = ({ orderId, initialDate, readonly }: PlannerProps) => {
                 buttonText={{
                     today: 'dziś',
                 }}
+                slotDuration={'1:00:00'}
+                allDaySlot={false}
                 showNonCurrentDates={false}
                 fixedWeekCount={false}
                 displayEventEnd={true}

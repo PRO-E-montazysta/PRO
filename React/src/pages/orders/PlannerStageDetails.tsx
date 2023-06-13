@@ -35,7 +35,8 @@ const PlannerStageDetails = ({
     )
 
     useLayoutEffect(() => {
-        if (avaliableFittersQuery.data) {
+        if (avaliableFittersQuery.data && fitters) {
+            console.log(fitters)
             setAvaliableFitters(avaliableFittersQuery.data.map((d) => d.id).filter((d) => fitters.indexOf(d) == -1))
         }
     }, [avaliableFittersQuery.data, fitters])
@@ -60,11 +61,15 @@ const PlannerStageDetails = ({
             >
                 <Box>
                     <Typography variant="body2">Rozpoczęcie</Typography>
-                    <Typography variant="body1">{moment(dateFrom).format('HH:mm DD-MM-YYYY')}</Typography>
+                    <Typography variant="body1" sx={{ fontWeight: '700' }}>
+                        {moment(dateFrom).format('HH:mm DD-MM-YYYY')}
+                    </Typography>
                 </Box>
                 <Box>
                     <Typography variant="body2">Zakończenie</Typography>
-                    <Typography variant="body1">{moment(dateTo).format('HH:mm DD-MM-YYYY')}</Typography>
+                    <Typography variant="body1" sx={{ fontWeight: '700' }}>
+                        {moment(dateTo).format('HH:mm DD-MM-YYYY')}
+                    </Typography>
                 </Box>
                 <FittersList
                     key={'signed'}

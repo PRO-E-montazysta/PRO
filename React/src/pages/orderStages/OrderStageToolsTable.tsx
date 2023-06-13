@@ -397,8 +397,8 @@ const TableItemNumber = ({
             label="Ilość"
             variant="outlined"
             InputProps={{
-                inputProps: { min: 0 }
-              }}
+                inputProps: { min: 0 },
+            }}
             onChange={(event) => {
                 setTableRowIndex(rowIndex)
                 handleItemNumberChange(event)
