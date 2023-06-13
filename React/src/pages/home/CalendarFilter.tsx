@@ -1,9 +1,8 @@
-import { Box, Button, Paper, Switch, Typography } from '@mui/material'
+import { Box, Paper, Typography } from '@mui/material'
 import MultipleSelect from '../../components/base/Multiselect'
 import { statusOptions, typeOfUnavailabilityOptions } from '../../helpers/enum.helper'
 import useBreakpoints from '../../hooks/useBreakpoints'
 import { useEmployeesAsOptions, useOrdersAsOptions } from './hooks'
-import { useEffect } from 'react'
 
 type CalendarFilterProps = {
     formikFilter: any
@@ -17,9 +16,9 @@ export type CalendarFilters = {
 }
 
 export const calendarFilterDefaultValues: CalendarFilters = {
-    orderIdCollection: [-1],
+    orderIdCollection: [],
     statusIdCollection: [],
-    unavilibilityPersonCollection: [-1],
+    unavilibilityPersonCollection: [],
     unavilibilityTypeCollection: [],
 }
 
@@ -28,10 +27,6 @@ const CalendarFilter = ({ formikFilter }: CalendarFilterProps) => {
 
     const orderOptions = useOrdersAsOptions()
     const employeeOptions = useEmployeesAsOptions()
-
-    useEffect(() => {
-        console.log(formikFilter.values)
-    }, [formikFilter.values])
 
     return (
         <Paper

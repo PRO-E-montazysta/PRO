@@ -1,7 +1,7 @@
 import FullCalendar from '@fullcalendar/react' // must go before plugins
 import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
 import { EventClickArg, EventInput } from '@fullcalendar/core'
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import CalendarEventDetails, { PopupEventInfo, cleanEventInfo } from './CalendarEventDetails'
 import CalendarFilter, { CalendarFilters, calendarFilterDefaultValues } from './CalendarFilter'
 import FilterAltIcon from '@mui/icons-material/FilterAlt'
@@ -16,6 +16,7 @@ import { useQuery } from 'react-query'
 import { AxiosError } from 'axios'
 import { getAboutMeInfo } from '../../api/employee.api'
 import { useFormik } from 'formik'
+import { Unavailability } from '../../types/model/Unavailability'
 
 const Calendar = () => {
     const [popupEventInfo, setPopupEventInfo] = useState<PopupEventInfo>(cleanEventInfo)
@@ -34,62 +35,69 @@ const Calendar = () => {
         },
     })
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (aboutMeQuery.data && aboutMeQuery.data.userId)
             formikFilter.setFieldValue('unavilibilityPersonCollection', [aboutMeQuery.data.userId])
     }, [aboutMeQuery.data])
 
-    useEffect(() => {
-        if (unavailabilityListByMonth.data) {
-            console.log(unavailabilityListByMonth.data)
-            const newEvents: EventInput[] = unavailabilityListByMonth.data
+    useLayoutEffect(() => {
+        if (unavailabilityListByMonth.data && aboutMeQuery.data) {
+            const newOrderEvents: Unavailability[] = unavailabilityListByMonth.data
                 .filter((d) => {
-                    let order = false,
-                        orderStatus = true,
-                        employee = false,
-                        unavalibility = false
-                    if (formikFilter.values.orderIdCollection.length == 0) order = true
-                    if (formikFilter.values.unavilibilityPersonCollection.length == 0) employee = true
+                    return d.typeOfUnavailability == 'BUSY'
+                })
+                .filter((d) => {
+                    if (formikFilter.values.orderIdCollection.length == 0) return true
+                    if (d.orderId && formikFilter.values.orderIdCollection.indexOf(d.orderId) > -1) return true
+                    return false
+                })
+            //TODO
+            // .filter((d) => {
+            //     if (formikFilter.values.statusIdCollection.length == 0) return true
+            //     if (d.statusId && formikFilter.values.statusIdCollection.indexOf(d.statuId) > -1) return true
+            //     return false
+            // })
 
+            const newAbsenceEvents: Unavailability[] = unavailabilityListByMonth.data
+                .filter((d) => {
+                    return d.typeOfUnavailability != 'BUSY'
+                })
+                .filter((d) => {
+                    if (formikFilter.values.unavilibilityPersonCollection.length == 0) return true
                     if (
-                        d.typeOfUnavailability == 'BUSY' &&
-                        d.orderId &&
-                        formikFilter.values.orderIdCollection.indexOf(d.orderId) > -1
-                    )
-                        order = true
-                    if (
-                        d.typeOfUnavailability != 'BUSY' &&
                         d.assignedToId &&
                         formikFilter.values.unavilibilityPersonCollection.indexOf(d.assignedToId) > -1
                     )
-                        employee = true
-
-                    //TODO filter by order status - potrzebne w zwracanej liście
-
-                    if (formikFilter.values.unavilibilityTypeCollection.length == 0) unavalibility = true
-                    if (formikFilter.values.unavilibilityTypeCollection.indexOf(d.typeOfUnavailability) > -1)
-                        unavalibility = true
-
-                    return order && employee && orderStatus && unavalibility
+                        return true
+                    return false
                 })
-                .map((d) => {
-                    return {
-                        id: d.id.toString(),
-                        groupId: d.typeOfUnavailability,
-                        title:
-                            d.typeOfUnavailability == 'BUSY' && d.orderStageName
-                                ? d.orderStageName
-                                : typeOfUnavailabilityName(d.typeOfUnavailability),
-                        start: d.unavailableFrom,
-                        end: d.unavailableTo,
-                        display: 'block',
-                        color: d.typeOfUnavailability == 'BUSY' ? 'blue' : 'red',
-                    }
+                .filter((d) => {
+                    if (formikFilter.values.unavilibilityTypeCollection.length == 0) return true
+                    if (
+                        d.typeOfUnavailability &&
+                        formikFilter.values.unavilibilityTypeCollection.indexOf(d.typeOfUnavailability) > -1
+                    )
+                        return true
+                    return false
                 })
-            console.log(newEvents)
+            const newEvents: EventInput[] = [...newOrderEvents, ...newAbsenceEvents].map((d) => {
+                return {
+                    id: d.id.toString(),
+                    groupId: d.typeOfUnavailability,
+                    title:
+                        d.typeOfUnavailability == 'BUSY' && d.orderStageName
+                            ? d.orderStageName
+                            : typeOfUnavailabilityName(d.typeOfUnavailability),
+                    start: d.unavailableFrom,
+                    end: d.unavailableTo,
+                    display: 'block',
+                    color: d.typeOfUnavailability == 'BUSY' ? 'blue' : 'red',
+                }
+            })
+
             setEvents(newEvents)
         }
-    }, [unavailabilityListByMonth.data, formikFilter.values])
+    }, [unavailabilityListByMonth.data, formikFilter.values, aboutMeQuery.data])
 
     const handleEventClick = async (e: EventClickArg) => {
         const _def = e.event._def
