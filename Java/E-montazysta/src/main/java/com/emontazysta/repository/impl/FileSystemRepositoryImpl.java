@@ -19,17 +19,16 @@ public class FileSystemRepositoryImpl implements FileSystemRepository {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public String save(byte[] content, String fileName) throws IOException {
+    public Path save(byte[] content, String fileName) throws IOException {
 
         String fileExtension = getFileExtension(fileName).orElseThrow();
         String uniqueName = getUniqueFileName();
         Path newFile = Paths.get(RESOURCES_DIR + uniqueName + "." + fileExtension).normalize();
         Files.createDirectories(newFile.getParent());
 
-        //TODO UNCOMMENT IT TO SAVE FILES!
-        //Files.write(newFile, content);
+        Files.write(newFile, content);
 
-        return newFile.toAbsolutePath().toString();
+        return newFile;
     }
 
     @Override

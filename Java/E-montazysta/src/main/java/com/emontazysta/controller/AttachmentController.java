@@ -69,12 +69,12 @@ public class AttachmentController {
         return ResponseEntity.ok().body(dto);
     }
 
-    @GetMapping("/download/{id}")
+    @GetMapping("/download/{uniqueName}")
     @Operation(description = "Allows to get file from Attachment of id passed in path variable.", security = @SecurityRequirement(name = "bearer-key"))
-    public ResponseEntity<byte[]> downloadImage(@PathVariable Long id) {
+    public ResponseEntity<byte[]> downloadImage(@PathVariable String uniqueName) {
         try {
-            AttachmentDto attachmentDto = attachmentService.getById(id);
-            byte[] file = Files.readAllBytes(fileSystemRepository.get(attachmentDto.getUrl()).getFile().toPath());
+            AttachmentDto attachmentDto = attachmentService.getByUniqueName(uniqueName);
+            byte[] file = Files.readAllBytes(fileSystemRepository.get(attachmentDto.getPath()).getFile().toPath());
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
             httpHeaders.set(HttpHeaders.CONTENT_LENGTH, String.valueOf(file.length));

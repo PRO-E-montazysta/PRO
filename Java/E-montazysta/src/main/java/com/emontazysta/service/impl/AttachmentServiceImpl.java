@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
-import java.nio.file.NoSuchFileException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -38,6 +37,12 @@ public class AttachmentServiceImpl implements AttachmentService {
     @Override
     public AttachmentDto getById(Long id) {
         Attachment attachment = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return attachmentMapper.toDto(attachment);
+    }
+
+    @Override
+    public AttachmentDto getByUniqueName(String uniqueName) {
+        Attachment attachment = repository.findByUniqueNameAndDeletedIsFalse(uniqueName).orElseThrow(EntityNotFoundException::new);
         return attachmentMapper.toDto(attachment);
     }
 
@@ -81,7 +86,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 
         if (file != null) {
             try {
-                fileSystemRepository.delete(attachment.getUrl());
+                fileSystemRepository.delete(attachment.getUniqueName());
             } catch (IOException e) {
                 log.error("Error during deleting attachment", e);
                 return null;
@@ -90,7 +95,7 @@ public class AttachmentServiceImpl implements AttachmentService {
         }
 
         attachment.setName(updatedAttachment.getName());
-        attachment.setUrl(updatedAttachment.getUrl());
+        attachment.setUniqueName(updatedAttachment.getUniqueName());
         attachment.setDescription(updatedAttachment.getDescription());
         attachment.setToolType(updatedAttachment.getToolType());
         attachment.setComment(updatedAttachment.getComment());

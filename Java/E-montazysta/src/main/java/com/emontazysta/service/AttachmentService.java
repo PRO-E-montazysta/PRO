@@ -9,6 +9,7 @@ public interface AttachmentService {
 
     List<AttachmentDto> getAll();
     AttachmentDto getById(Long id);
+    AttachmentDto getByUniqueName(String uniqueName);
     AttachmentDto add(AttachmentDto attachment, MultipartFile file);
     void delete(Long id);
     AttachmentDto update(Long id, AttachmentDto attachment, MultipartFile file);
