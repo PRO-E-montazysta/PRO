@@ -53,21 +53,33 @@ const FittersList = ({ list, title, arrayType, addFitter, removeFitter, readonly
                             key={i}
                             sx={{ p: '0 5px', alignItems: 'center', justifyContent: 'space-between', display: 'flex' }}
                         >
-                            {arrayType == 'left' && !readonly ? (
-                                <IconButton
-                                    onClick={() => handleAddFitter(f)}
-                                    size="small"
-                                    sx={{ transform: 'rotate(180deg)' }}
-                                >
-                                    <ForwardIcon />
-                                </IconButton>
-                            ) : null}
+                            {arrayType == 'left' && (
+                                <Box>
+                                    {!readonly ? (
+                                        <IconButton
+                                            onClick={() => handleAddFitter(f)}
+                                            size="small"
+                                            sx={{ transform: 'rotate(180deg)' }}
+                                        >
+                                            <ForwardIcon />
+                                        </IconButton>
+                                    ) : (
+                                        <Box></Box>
+                                    )}
+                                </Box>
+                            )}
                             {getFitterNameById(f)}
-                            {arrayType == 'right' && !readonly ? (
-                                <IconButton size="small" onClick={() => handleRemoveFitter(f)}>
-                                    <ForwardIcon />
-                                </IconButton>
-                            ) : null}
+                            {arrayType == 'right' && (
+                                <Box>
+                                    {!readonly ? (
+                                        <IconButton size="small" onClick={() => handleRemoveFitter(f)}>
+                                            <ForwardIcon />
+                                        </IconButton>
+                                    ) : (
+                                        <Box></Box>
+                                    )}
+                                </Box>
+                            )}
                         </Box>
                     )
                 })}

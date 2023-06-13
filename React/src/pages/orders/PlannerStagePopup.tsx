@@ -1,16 +1,12 @@
-import { Box, Button, ClickAwayListener, IconButton, Typography } from '@mui/material'
-import { Moment } from 'moment'
-import moment from 'moment'
-import ForwardIcon from '@mui/icons-material/Forward'
-import { useQuery } from 'react-query'
-import { OrderStage } from '../../types/model/OrderStage'
-import { getOrderStageById } from '../../api/orderStage.api'
-import { AxiosError } from 'axios'
-import { useEffect, useState } from 'react'
-import { getAllFitter, getFittersAvailable } from '../../api/fitter.api'
+import { Box, Button, ClickAwayListener, Typography } from '@mui/material'
+import { useContext, useLayoutEffect, useState } from 'react'
 import { useOrderStageFittersMutation, useOrderStageQuery } from './hooks'
-import FittersList, { PopupPlannerInfo, cleanPlannerInfo } from './FittersList'
+import { PopupPlannerInfo, cleanPlannerInfo } from './FittersList'
 import PlannerStageDetails from './PlannerStageDetails'
+import { useUpdateOrderStage } from '../orderStages/hooks'
+import { UpdateOrderStage } from '../../types/model/OrderStage'
+import { useQueryClient } from 'react-query'
+import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 
 type PlannerStagePopupProps = {
     popupEventInfo: PopupPlannerInfo
@@ -20,55 +16,53 @@ type PlannerStagePopupProps = {
 
 const PlannerStagePopup = ({ popupEventInfo, setPopupEventInfo, readonly }: PlannerStagePopupProps) => {
     const [assignedFitters, setAssignedFitters] = useState<number[]>([])
-    const [avaliableFitters, setAvaliableFitters] = useState<number[]>([])
+    const { showDialog } = useContext(DialogGlobalContext)
 
     const orderStageQuery = useOrderStageQuery(popupEventInfo.stageId)
-    const updateOrderStageFitters = useOrderStageFittersMutation((data) => {
-        console.log(data)
+    const queryClient = useQueryClient()
+    const updateOrderStage = useUpdateOrderStage(() => {
+        queryClient.refetchQueries({
+            queryKey: ['orderStageForOrder', { id: orderStageQuery.data?.orderId.toString() }],
+        })
+        queryClient.refetchQueries({
+            queryKey: ['orderStage', { id: popupEventInfo.stageId }],
+        })
+        showDialog({
+            title: 'Sukces',
+            content: 'Montażyści zapisani',
+            btnOptions: [
+                {
+                    text: 'Ok',
+                    value: 0,
+                },
+            ],
+            callback: () => setPopupEventInfo({ ...popupEventInfo, isOpen: false }),
+        })
     })
-    console.log('toto', orderStageQuery.data?.plannedStartDate)
 
-    const avaliableFittersQuery = useQuery<any[], AxiosError>(
-        ['fitters', { id: popupEventInfo.stageId }],
-        () => getFittersAvailable(orderStageQuery.data?.plannedStartDate!, orderStageQuery.data?.plannedEndDate!),
-        {
-            enabled:
-                orderStageQuery.data?.plannedStartDate != undefined &&
-                orderStageQuery.data?.plannedEndDate != undefined,
-        },
-    )
-
-    useEffect(() => {
-        if (avaliableFittersQuery.data) {
-            console.log(avaliableFittersQuery.data)
-            setAvaliableFitters(avaliableFittersQuery.data.map((d) => d.id))
-        }
-    }, [avaliableFittersQuery.data])
-
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (orderStageQuery.data) {
             console.log(orderStageQuery.data)
             setAssignedFitters(orderStageQuery.data.fitters)
         }
-    }, [orderStageQuery.data])
-
-    const addFitter = (id: number) => {
-        setAssignedFitters([...assignedFitters, id])
-        setAvaliableFitters(avaliableFitters.filter((f) => f != id))
-    }
-    const removeFitter = (id: number) => {
-        setAvaliableFitters([...avaliableFitters, id])
-        setAssignedFitters(assignedFitters.filter((f) => f != id))
-    }
+    }, [orderStageQuery.status, popupEventInfo.isOpen])
 
     const saveChanges = () => {
         const currentData = orderStageQuery.data
         const id = popupEventInfo.stageId ? parseInt(popupEventInfo.stageId) : null
-        if (currentData && id)
-            updateOrderStageFitters.mutate({
-                stageId: id,
+        if (currentData && id) {
+            const uos: UpdateOrderStage = {
+                ...currentData,
                 fitters: assignedFitters,
-            })
+                orderStageId: id.toString(),
+                orderId: currentData.orderId.toString(),
+            }
+            updateOrderStage.mutate(uos)
+        }
+    }
+
+    const handleCancel = () => {
+        setPopupEventInfo({ ...popupEventInfo, isOpen: false })
     }
 
     return (
@@ -81,7 +75,7 @@ const PlannerStagePopup = ({ popupEventInfo, setPopupEventInfo, readonly }: Plan
                     width: '600px',
                     height: '500px',
                     transform: 'translate(-300px, -250px)',
-                    zIndex: 2000,
+                    zIndex: 100,
                     backgroundColor: 'white',
                     border: '1px solid black',
                     display: popupEventInfo.isOpen ? '' : 'none',
@@ -113,11 +107,7 @@ const PlannerStagePopup = ({ popupEventInfo, setPopupEventInfo, readonly }: Plan
                     orderStageId={popupEventInfo.stageId}
                 />
                 <Box sx={{ mt: '10px', float: 'right', display: 'flex', gap: '10px' }}>
-                    <Button
-                        variant="outlined"
-                        sx={{ color: 'black' }}
-                        onClick={() => setPopupEventInfo({ ...popupEventInfo, isOpen: false })}
-                    >
+                    <Button variant="outlined" sx={{ color: 'black' }} onClick={handleCancel}>
                         Anuluj
                     </Button>
                     <Button variant="contained" onClick={saveChanges}>

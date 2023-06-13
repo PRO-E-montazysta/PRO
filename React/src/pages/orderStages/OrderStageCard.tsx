@@ -94,7 +94,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
             content: message,
             callback: () => {
                 queryClient.refetchQueries({
-                    queryKey: ['orderStage-list', { id: params.id }],
+                    queryKey: ['orderStage', { id: params.id }],
                 })
                 setIsEditing(false)
                 setIsDisplayingMode(true)
@@ -216,7 +216,9 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
         handleResetFormik()
         attachmentData.handleReset()
     }
-
+    useEffect(() => {
+        if (stage) formik.setFieldValue('fitters', stage.fitters)
+    }, [stage])
     const formik = useFormik({
         initialValues: {
             orderId: params.id!,

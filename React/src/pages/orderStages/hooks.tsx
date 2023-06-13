@@ -46,7 +46,7 @@ export const useOrderStageNextStatus = (onSuccessCallback: () => void) => {
                 title: 'Sukces!',
                 content: <Box>Status został zmieniony</Box>,
             })
-            queryClient.invalidateQueries('orderStage-list')
+            queryClient.invalidateQueries('orderStage')
             onSuccessCallback()
         },
         onError: showError,
@@ -70,7 +70,7 @@ export const useOrderStagePreviousStatus = (onSuccessCallback: () => void) => {
                 title: 'Sukces!',
                 content: <Box>Status został zmieniony</Box>,
             })
-            queryClient.invalidateQueries('orderStage-list')
+            queryClient.invalidateQueries('orderStage')
             onSuccessCallback()
         },
         onError: showError,

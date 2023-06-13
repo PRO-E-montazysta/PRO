@@ -159,7 +159,7 @@ export const useOrderPreviousStatus = (onSuccessCallback: () => void) => {
 
 export const useOrderStages = (id?: string) => {
     return useQuery<Array<OrderStage>, AxiosError>(
-        ['orderStage-list', { id: id }],
+        ['orderStage', { id: id }],
         () => getAllOrderStagesForOrder(id || ''),
         {
             enabled: !!id,
