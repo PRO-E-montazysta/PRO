@@ -41,6 +41,7 @@ public class OrderStageDto {
     private List<Long> elementReturnReleases;
     private List<ElementReturnReleaseDto> simpleElementReturnReleases;
     private Long orderId;
+    private String orderName;
     private List<Long> attachments;
     private List<Long> notifications;
     private List<Long> listOfToolsPlannedNumber;
