@@ -107,40 +107,6 @@ const PlannerStagePopup = ({ popupEventInfo, setPopupEventInfo, readonly }: Plan
                     setFitters={(fitters) => setAssignedFitters(fitters)}
                     readonly={readonly}
                 />
-                {/* <Box
-                    sx={{
-                        display: 'grid',
-                        gridTemplateColumns: '1fr 1fr',
-                        gap: '10px 20px',
-                    }}
-                >
-                    <Box>
-                        <Typography variant="body2">Rozpoczęcie</Typography>
-                        <Typography variant="body1">
-                            {moment(orderStageQuery.data?.plannedStartDate).format('HH:mm DD-MM-YYYY')}
-                        </Typography>
-                    </Box>
-                    <Box>
-                        <Typography variant="body2">Zakończenie</Typography>
-                        <Typography variant="body1">
-                            {moment(orderStageQuery.data?.plannedEndDate).format('HH:mm DD-MM-YYYY')}
-                        </Typography>
-                    </Box>
-                    <FittersList
-                        key={'signed'}
-                        title="Przypisani"
-                        arrayType="right"
-                        list={assignedFitters}
-                        removeFitter={removeFitter}
-                    />
-                    <FittersList
-                        key={'avaliable'}
-                        title="Dostępni"
-                        arrayType="left"
-                        list={avaliableFitters}
-                        addFitter={addFitter}
-                    />
-                </Box> */}
                 <Box sx={{ mt: '10px', float: 'right', display: 'flex', gap: '10px' }}>
                     <Button
                         variant="outlined"

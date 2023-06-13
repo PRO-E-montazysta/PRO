@@ -54,6 +54,7 @@ export const typeOfAttachmentName = (key: string) => {
     return Object.values(TypeOfAttachment)[Object.keys(TypeOfAttachment).indexOf(key)]
 }
 
+
 export const roleName = (key: string) => {
     return Object.values(UserRole)[Object.keys(UserRole).indexOf(key)]
 }

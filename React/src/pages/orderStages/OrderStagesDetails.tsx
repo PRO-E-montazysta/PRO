@@ -57,7 +57,7 @@ const OrderStagesDetails = ({ isAddOrderStageVisible }: OrderStagesDetailsProps)
             <>
                 {queryOrderStages.data!.map((stage, index) => (
                     <OrderStageCard
-                        key={uuidv4()}
+                        key={stage.id}
                         index={index.toString()}
                         stage={stage}
                         isLoading={isLoading}
@@ -66,7 +66,7 @@ const OrderStagesDetails = ({ isAddOrderStageVisible }: OrderStagesDetailsProps)
                 ))}
                 {isAddOrderStageVisible ? (
                     <>
-                        <OrderStageCard key={uuidv4()} isLoading={isLoading} isDisplaying={false} />
+                        <OrderStageCard key={'new'} isLoading={isLoading} isDisplaying={false} />
                         <div ref={scrollerRef}></div>
                     </>
                 ) : null}

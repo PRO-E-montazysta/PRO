@@ -70,7 +70,6 @@ const Planner = ({ orderId, initialDate, readonly }: PlannerProps) => {
                     }, 10)
                 }}
             />
-            {/* <PlannerStageDetails popupEventInfo={popupEventInfo} setPopupEventInfo={setPopupEventInfo} /> */}
             <PlannerStagePopup
                 popupEventInfo={popupEventInfo}
                 setPopupEventInfo={setPopupEventInfo}
