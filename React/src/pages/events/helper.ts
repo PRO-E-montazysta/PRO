@@ -58,20 +58,20 @@ export const filterInitStructure: Array<FilterInputType> = [
         typeValue: 'string',
     },
     {
-        id: 'typeOfStatus',
-        value: '',
-        label: 'Status',
-        inputType: 'multiselect',
-        typeValue: 'Array',
-        options: eventStatusOptions(),
-    },
-    {
         id: 'eventType',
         value: '',
         label: 'Typ przedmiotu',
         inputType: 'multiselect',
         typeValue: 'Array',
         options: eventTypeOptions(),
+    },
+    {
+        id: 'typeOfStatus',
+        value: '',
+        label: 'Status',
+        inputType: 'multiselect',
+        typeValue: 'Array',
+        options: eventStatusOptions(),
     },
     {
         id: 'eventDateMin',

@@ -39,18 +39,18 @@ export const headCells: Array<HeadCell<ElementInWarehouseFilterDto>> = [
 
 export const filterInitStructure: Array<FilterInputType> = [
     {
-        id: 'minCount',
-        value: '',
-        label: 'Minimalna ilość',
-        inputType: 'number',
-        typeValue: 'number',
-    },
-    {
         id: 'warehouseId',
         value: '',
         label: 'Magazyn',
         inputType: 'multiselect',
         typeValue: 'Array',
+    },
+    {
+        id: 'minCount',
+        value: '',
+        label: 'Minimalna ilość',
+        inputType: 'number',
+        typeValue: 'number',
     },
 ]
 

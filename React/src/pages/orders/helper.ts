@@ -84,14 +84,6 @@ export const headCells: Array<HeadCell<Order>> = [
 
 export const filterInitStructure: Array<FilterInputType> = [
     {
-        id: 'status',
-        value: '',
-        label: 'Status',
-        inputType: 'multiselect',
-        typeValue: 'Array',
-        options: statusOptions(),
-    },
-    {
         id: 'name',
         value: '',
         label: 'Nazwa',
@@ -111,6 +103,14 @@ export const filterInitStructure: Array<FilterInputType> = [
         label: 'Czas utworzenia do',
         inputType: 'datetime-local',
         typeValue: 'date',
+    },
+    {
+        id: 'status',
+        value: '',
+        label: 'Status',
+        inputType: 'multiselect',
+        typeValue: 'Array',
+        options: statusOptions(),
     },
 ]
 

@@ -120,6 +120,14 @@ export const useFilterInitStructure = (): Array<FilterInputType> => {
                   typeValue: 'string',
               },
               {
+                  id: 'roles',
+                  value: '',
+                  label: 'Stanowisko',
+                  inputType: 'multiselect',
+                  typeValue: 'Array',
+                  options: userRoleOptions(),
+              },
+              {
                   id: 'email',
                   value: '',
                   label: 'Email',
@@ -132,14 +140,6 @@ export const useFilterInitStructure = (): Array<FilterInputType> => {
                   label: 'Telefon',
                   inputType: 'text',
                   typeValue: 'string',
-              },
-              {
-                  id: 'roles',
-                  value: '',
-                  label: 'Stanowisko',
-                  inputType: 'multiselect',
-                  typeValue: 'Array',
-                  options: userRoleOptions(),
               },
               {
                   id: 'pesel',
@@ -165,6 +165,14 @@ export const useFilterInitStructure = (): Array<FilterInputType> => {
                   typeValue: 'string',
               },
               {
+                  id: 'roles',
+                  value: '',
+                  label: 'Stanowisko',
+                  inputType: 'multiselect',
+                  typeValue: 'Array',
+                  options: userRoleOptions(),
+              },
+              {
                   id: 'email',
                   value: '',
                   label: 'Email',
@@ -177,14 +185,6 @@ export const useFilterInitStructure = (): Array<FilterInputType> => {
                   label: 'Telefon',
                   inputType: 'text',
                   typeValue: 'string',
-              },
-              {
-                  id: 'roles',
-                  value: '',
-                  label: 'Stanowisko',
-                  inputType: 'multiselect',
-                  typeValue: 'Array',
-                  options: userRoleOptions(),
               },
           ]
 }
