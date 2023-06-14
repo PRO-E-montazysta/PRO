@@ -1,6 +1,7 @@
 package com.emontazysta.controller;
 
 import com.emontazysta.model.dto.ForemanDto;
+import com.emontazysta.model.dto.WorkingOnDto;
 import com.emontazysta.service.ForemanService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -59,5 +60,11 @@ public class ForemanController {
     @Operation(description = "Allows to update Foreman by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public ForemanDto updateForeman(@PathVariable Long id, @Valid @RequestBody ForemanDto foreman) {
         return foremanService.update(id, foreman);
+    }
+
+    @GetMapping("/work-history/{id}")
+    @Operation(description = "Allows to get work history.", security = @SecurityRequirement(name = "bearer-key"))
+    public List<WorkingOnDto> getWorkingHistory(@PathVariable Long id) {
+        return foremanService.getWorkingOn(id);
     }
 }
