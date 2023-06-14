@@ -1,6 +1,7 @@
 package com.example.e_montazysta.ui.warehouse
 
 import com.example.e_montazysta.data.model.Warehouse
+import com.example.e_montazysta.ui.location.LocationDAO
 
 data class WarehouseDAO(
     val companyId: Int,
@@ -13,8 +14,9 @@ data class WarehouseDAO(
     val openingHours: String,
     val tools: List<Int>
 ) {
-    fun mapToWarehouse(): Warehouse {
-        return Warehouse(companyId, deleted, description, elementInWarehouses, id, locationId, name, openingHours, tools)
+    suspend fun mapToWarehouse(): Warehouse {
+        val location = locationId?.let { LocationDAO.getLocation(locationId) }
+        return Warehouse(companyId, deleted, description, elementInWarehouses, id, location, name, openingHours, tools)
     }
 }
 

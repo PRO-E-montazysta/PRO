@@ -39,7 +39,7 @@ public class AboutMeServiceImpl implements AboutMeService {
                     .findFirst();
 
             if (profilePhotoAttachment.isPresent()) {
-                profilePhotoUrl = profilePhotoAttachment.get().getUrl();
+                profilePhotoUrl = profilePhotoAttachment.get().getPath();
             }
         }
 

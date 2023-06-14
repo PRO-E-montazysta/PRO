@@ -28,8 +28,10 @@
             layout="@layout/list_item_template"
             android:id="@+id/item"
             app:headline="@{order.name}"
-            app:supportText='@{order.status + " | " + order.priority}'
+            app:supportText='@{order.getListItemInfo()}'
             android:layout_height="wrap_content"
-            android:layout_width="match_parent" />
+            android:layout_width="match_parent"
+            app:icon="@{@drawable/baseline_assignment_24}">
+        </include>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

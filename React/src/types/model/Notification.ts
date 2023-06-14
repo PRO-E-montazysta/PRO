@@ -6,6 +6,7 @@ export type Notification = {
     createdAt: string
     readAt: number
     createdById: number
+    deleted: boolean
 
     orderStageId: number
     orderId: number

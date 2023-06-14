@@ -48,7 +48,7 @@ class DashboardFragment : Fragment() {
         viewModel.currentUser.observe(viewLifecycleOwner, Observer {
             it?.let {
                 binding.currentUser = it
-                binding.profilePicture.load(it.profilePhotoUrl ?: "https://i.imgflip.com/3u04h5.jpg?a468072"){
+                binding.profilePicture.load(it.profilePhotoUrl ?: "https://cdn-icons-png.flaticon.com/512/149/149071.png"){
                     transformations(CircleCropTransformation())
                 }
             }
@@ -86,7 +86,10 @@ class DashboardFragment : Fragment() {
         // KAFELKI
 
         val warehouses = binding.warehouses
-        warehouses.setOnClickListener(null)
+        warehouses.setOnClickListener{
+            val direction = DashboardFragmentDirections.actionNavigationDashboardToWarehouseListFragment()
+            findNavController().navigate(direction)
+        }
 
         val tools = binding.tools
         tools.setOnClickListener{
@@ -121,6 +124,12 @@ class DashboardFragment : Fragment() {
         val events = binding.events
         events.setOnClickListener{
             val direction = DashboardFragmentDirections.actionNavigationDashboardToEventListFragment()
+            findNavController().navigate(direction)
+        }
+
+        val users = binding.users
+        users.setOnClickListener{
+            val direction = DashboardFragmentDirections.actionNavigationDashboardToUserListFragment()
             findNavController().navigate(direction)
         }
 

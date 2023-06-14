@@ -24,6 +24,7 @@ export type Unavailability = {
     propertyNumber: string
     street: string
     zipCode: string
+    deleted: boolean
 }
 export type UnavailabilityFilter = {
     id: number

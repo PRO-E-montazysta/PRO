@@ -56,6 +56,7 @@ public class OrderStageImpl implements OrderStageService {
     private final OrderRepository orderRepository;
     private final ElementInWarehouseService elementInWarehouseService;
     private final FitterRepository fitterRepository;
+    private final UnavailabilityRepository unavailabilityRepository;
 
     @Override
     public List<OrderStageDto> getAll() {
@@ -200,9 +201,14 @@ public class OrderStageImpl implements OrderStageService {
                 && orderStageDb.getStatus().equals(OrderStageStatus.ADDING_FITTERS)) {
 
             //Usunięcie nieprzypisanych fitterów
-            for(Fitter fitter : orderStageDb.getAssignedTo()) {
+            List<Fitter> oldAsignedFitters = orderStageDb.getAssignedTo();
+            for(Fitter fitter : oldAsignedFitters) {
                 if(!updatedOrderStage.getAssignedTo().contains(fitter)) {
                     fitter.getWorkingOn().remove(orderStageDb);
+                    Optional<Unavailability> unavailability = unavailabilityRepository.findByOrderStageIdAndAssignedTo(orderStageDb.getId(), fitter);
+                    if(unavailability.isPresent()) {
+                        unavailabilityRepository.delete(unavailability.get());
+                    }
                     fitterRepository.save(fitter);
                 }
             }
@@ -215,6 +221,15 @@ public class OrderStageImpl implements OrderStageService {
                     notifiedEmployees.add(fitter);
                     fitter.getWorkingOn().add(orderStageDb);
                     fitterRepository.save(fitter);
+                    unavailabilityRepository.save(Unavailability.builder()
+                                    .typeOfUnavailability(TypeOfUnavailability.BUSY)
+                                    .description("OrderStage"+orderStageDb.getId())
+                                    .unavailableFrom(orderStageDb.getPlannedStartDate())
+                                    .unavailableTo(orderStageDb.getPlannedEndDate())
+                                    .assignedTo(fitter)
+                                    .assignedBy(orderStageDb.getOrders().getManagedBy())
+                                    .orderStageId(orderStageDb.getId())
+                            .build());
                 }
             }
 
@@ -603,5 +618,60 @@ public class OrderStageImpl implements OrderStageService {
         }
 
         return orderStageMapper.toDto(repository.save(orderStage));
+    }
+    @Override
+    public OrderStageDto addFitters(Long id, List<Long> fittersId) {
+        OrderStage orderStage = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+
+        if (authUtils.getLoggedUser().getRoles().contains(Role.FOREMAN)
+                && orderStage.getStatus().equals(OrderStageStatus.ADDING_FITTERS)) {
+
+            List<Fitter> fitters = fittersId.stream().map(fitterId -> fitterRepository.getReferenceById(fitterId)).collect(Collectors.toList());
+
+            //Usunięcie nieprzypisanych fitterów
+            List<Fitter> oldAsignedFitters = orderStage.getAssignedTo();
+            for(Fitter fitter : oldAsignedFitters) {
+                if(!fitters.contains(fitter)) {
+                    fitter.getWorkingOn().remove(orderStage);
+                    Optional<Unavailability> unavailability = unavailabilityRepository.findByOrderStageIdAndAssignedTo(orderStage.getId(), fitter);
+                    if(unavailability.isPresent()) {
+                        unavailabilityRepository.delete(unavailability.get());
+                    }
+                    fitterRepository.save(fitter);
+                }
+            }
+
+            //Utworzenie listy powiadamianych fitterów
+            List<AppUser> notifiedEmployees = new ArrayList<>();
+
+            for(Fitter fitter : fitters) {
+                if(!orderStage.getAssignedTo().contains(fitter)) {
+                    notifiedEmployees.add(fitter);
+                    fitter.getWorkingOn().add(orderStage);
+                    fitterRepository.save(fitter);
+                    unavailabilityRepository.save(Unavailability.builder()
+                            .typeOfUnavailability(TypeOfUnavailability.BUSY)
+                            .description("OrderStage"+orderStage.getId())
+                            .unavailableFrom(orderStage.getPlannedStartDate())
+                            .unavailableTo(orderStage.getPlannedEndDate())
+                            .assignedTo(fitter)
+                            .assignedBy(orderStage.getOrders().getManagedBy())
+                            .orderStageId(orderStage.getId())
+                            .build());
+                }
+            }
+
+
+            orderStage.setAssignedTo(fitters);
+
+            //Wysłanie powiadomienia do fitterów o przypisaniu do etapu
+            if(notifiedEmployees.size() > 0) {
+                notificationService.createNotification(notifiedEmployees, orderStage.getId(), NotificationType.FITTER_ASSIGNMENT);
+            }
+
+            return orderStageMapper.toDto(repository.save(orderStage));
+        }else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
     }
 }

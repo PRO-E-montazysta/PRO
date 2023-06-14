@@ -9,9 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UnavailabilityRepository extends JpaRepository<Unavailability, Long> {
-
-    Optional<Unavailability> findByIdAndDeletedIsFalse(Long id);
     List<Unavailability> findAllByAssignedTo(AppUser assignedTo);
-    List<Unavailability> findAllByDeletedIsFalse();
     List<Unavailability> findAllByUnavailableFromGreaterThanAndUnavailableFromLessThan(LocalDateTime startDate, LocalDateTime endDate);
+    Optional<Unavailability> findByOrderStageIdAndAssignedTo(Long orderStageId, AppUser assignedTo);
 }

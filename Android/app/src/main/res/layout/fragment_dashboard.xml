@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -299,6 +300,38 @@
                                 android:layout_gravity="center"
                                 android:padding="10dp"
                                 android:text="@string/title_events" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/users"
+                        style="@style/card"
+                        android:transitionName="shared_element_container"
+                        android:clickable="true">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="10dp">
+
+                            <!-- Media -->
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:contentDescription="@string/content_description_media"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/baseline_supervisor_account_24" />
+
+
+                            <!-- @string/title, secondary and supporting text -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:padding="10dp"
+                                android:text="@string/title_users" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 

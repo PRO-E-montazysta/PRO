@@ -43,7 +43,7 @@ public class DataSeeding {
     private final CommentService commentService;
     private final ToolTypeService toolTypeService;
     private final ToolEventRepository toolEventRepository;
-    private final OrderStageService orderStageService;
+    private final OrderStageRepository orderStageRepository;
     private final ToolReleaseService toolReleaseService;
     private final ElementService elementService;
     private final DemandAdHocService demandAdHocService;
@@ -100,7 +100,7 @@ public class DataSeeding {
     }
 
     private OrderStage addOrderStageFromModel(OrderStage orderStage) {
-        return orderStageMapper.toEntity(orderStageService.add(orderStageMapper.toDto(orderStage)));
+        return orderStageRepository.save(orderStage);
     }
 
     private DemandAdHoc addDemandAdHocFromModel(DemandAdHoc demandAdHoc) {
@@ -283,25 +283,25 @@ public class DataSeeding {
 
         Unavailability unavailability1 = addUnavailabilityFromModel(new Unavailability(null,
                 TypeOfUnavailability.BUSY, "Test Unavailability 1", LocalDateTime.parse( "2023-06-03T08:00:00.000"),
-                LocalDateTime.parse("2023-06-03T14:00:00.000"), fitter1, manager1));
+                LocalDateTime.parse("2023-06-03T14:00:00.000"), fitter1, manager1, null));
         Unavailability unavailability2 = addUnavailabilityFromModel(new Unavailability(null,
                 TypeOfUnavailability.BUSY, "Test Unavailability 2", LocalDateTime.parse( "2023-06-03T14:00:00.000"),
-                LocalDateTime.parse("2023-06-03T16:00:00.000"), fitter1, manager1));
+                LocalDateTime.parse("2023-06-03T16:00:00.000"), fitter1, manager1, null));
         Unavailability unavailability3 = addUnavailabilityFromModel(new Unavailability(null,
                 TypeOfUnavailability.HOLIDAY, "Test Unavailability 3", LocalDateTime.parse( "2023-06-10T08:00:00.000"),
-                LocalDateTime.parse("2023-06-20T16:00:00.000"), fitter2, manager1));
+                LocalDateTime.parse("2023-06-20T16:00:00.000"), fitter2, manager1, null));
         Unavailability unavailability4 = addUnavailabilityFromModel(new Unavailability(null,
                 TypeOfUnavailability.OTHER, "Test Unavailability 4", LocalDateTime.parse( "2023-06-12T12:00:00.000"),
-                LocalDateTime.parse("2023-06-12T16:00:00.000"), fitter1, manager1));
+                LocalDateTime.parse("2023-06-12T16:00:00.000"), fitter1, manager1, null));
         Unavailability unavailability5 = addUnavailabilityFromModel(new Unavailability(null,
                 TypeOfUnavailability.BUSY, "Test Unavailability 5", LocalDateTime.parse( "2023-05-20T12:00:00.000"),
-                LocalDateTime.parse("2023-05-20T16:00:00.000"), fitter1, manager1));
+                LocalDateTime.parse("2023-05-20T16:00:00.000"), fitter1, manager1, null));
         Unavailability unavailability6 = addUnavailabilityFromModel(new Unavailability(null,
                 TypeOfUnavailability.BUSY, "Test Unavailability 6", LocalDateTime.parse( "2023-05-21T08:00:00.000"),
-                LocalDateTime.parse("2023-05-21T14:00:00.000"), fitter1, manager1));
+                LocalDateTime.parse("2023-05-21T14:00:00.000"), fitter1, manager1, null));
         Unavailability unavailability7 = addUnavailabilityFromModel(new Unavailability(null,
                 TypeOfUnavailability.BUSY, "Test Unavailability 7", LocalDateTime.parse( "2023-05-21T08:00:00.000"),
-                LocalDateTime.parse("2023-05-21T14:00:00.000"), fitter2, manager1));
+                LocalDateTime.parse("2023-05-21T14:00:00.000"), fitter2, manager1, null));
 
         Unavailability unavailability8 = addUnavailabilityWithLocalDateDtoFromModel(new UnavailabilityWithLocalDateDto(
                 null, TypeOfUnavailability.BEREAVEMENT_LEAVE,"Test Unavailability 2", LocalDate.now(),
@@ -314,7 +314,7 @@ public class DataSeeding {
         Client client3 = addClientFromModel(new Client(null, "Test Client 3",
                 "em@i.l", company1, new ArrayList<>()));
         Client client4 = addClientFromModel(new Client(null, "Test Client 4",
-                "em@i.l", company1, new ArrayList<>()));
+                "em@i.l", company2, new ArrayList<>()));
 
         Location location1 = addLocationFromModel(new Location(null, 1.1,
                 1.1, "Miasto1", "Miła", "1",
@@ -330,35 +330,35 @@ public class DataSeeding {
                 null, null, null, null));
 
         Orders order1 = addOrdersFromModel(new Orders(null, "Test Order 1 - from Client 1",
-                OrderStatus.CREATED, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), null, TypeOfPriority.IMPORTANT,
+                OrderStatus.ACCEPTED, LocalDateTime.now(), LocalDateTime.now().plusDays(1), LocalDateTime.now(), null, TypeOfPriority.IMPORTANT,
                 company1, manager1, foreman1, specialist1, salesRepresentative1, location1, client1, new ArrayList<>(),
                 new ArrayList<>()));
         Orders order2 = addOrdersFromModel(new Orders(null, "Test Order 2 - from Client 1",
-                OrderStatus.CREATED, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), null, TypeOfPriority.NORMAL,
-                company1, manager2, foreman2, specialist2, salesRepresentative2, location2, client1, new ArrayList<>(),
+                OrderStatus.PLANNING, LocalDateTime.now(), LocalDateTime.now().plusDays(2), LocalDateTime.now(), null, TypeOfPriority.NORMAL,
+                company1, null, null, specialist1, salesRepresentative1, location2, client1, new ArrayList<>(),
                 new ArrayList<>()));
         Orders order3 = addOrdersFromModel(new Orders(null, "Test Order 3 - from Client 2",
-                OrderStatus.CREATED, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), null, TypeOfPriority.IMMEDIATE,
-                company1, manager1, foreman1, specialist1, salesRepresentative1, location3, client2, new ArrayList<>(),
+                OrderStatus.CREATED, LocalDateTime.now(), LocalDateTime.now().plusDays(3), LocalDateTime.now(), null, TypeOfPriority.IMMEDIATE,
+                company1, null, null, null, salesRepresentative1, location3, client2, new ArrayList<>(),
                 new ArrayList<>()));
         Orders order4 = addOrdersFromModel(new Orders(null, "Test Order 4 - from Client 4",
                 OrderStatus.CREATED, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), null, TypeOfPriority.NORMAL,
-                company4, null, null, null, null, null, client4,
+                company2, null, null, null, salesRepresentative2, null, client4,
                 new ArrayList<>(), new ArrayList<>()));
 
         OrderStage orderStage1 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 1",
-                OrderStageStatus.PLANNING, new BigDecimal(1), LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(),
+                OrderStageStatus.ADDING_FITTERS, new BigDecimal(1), LocalDateTime.now(), LocalDateTime.now().plusHours(5), null, null,
                 1, 1, 1, new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         OrderStage orderStage2 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 2",
-                OrderStageStatus.ADDING_FITTERS, new BigDecimal(2), LocalDateTime.parse( "2023-06-03T14:00:00.000"),
-                LocalDateTime.parse("2023-06-03T16:00:00.000"), LocalDateTime.now(), null,
+                OrderStageStatus.ADDING_FITTERS, new BigDecimal(2), LocalDateTime.now().plusHours(1),
+                LocalDateTime.now().plusHours(2), null, null,
                 1, 1, 1, List.of(fitter2,fitter1,fitter3),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         OrderStage orderStage3 = addOrderStageFromModel(new OrderStage(null, "Test OrderStage 3",
-                OrderStageStatus.PLANNING, new BigDecimal(3), LocalDateTime.now(), LocalDateTime.now(), null, null,
+                OrderStageStatus.ADDING_FITTERS, new BigDecimal(3), LocalDateTime.now().plusHours(2).plusMinutes(30), LocalDateTime.now().plusHours(3), null, null,
                 1, 1, 1, new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
@@ -479,41 +479,41 @@ public class DataSeeding {
                 null, warehouseman1, element3, new ArrayList<>()));
 
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                1, 1, "1", "1", element1, warehouse1));
+                1, "1", "1", element1, warehouse1));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                2, 1, "2", "1", element2, warehouse1));
+                2, "2", "1", element2, warehouse1));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                3, 1, "3", "1", element3, warehouse1));
+                3, "3", "1", element3, warehouse1));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                4, 1, "4", "1", element4, warehouse1));
+                4, "4", "1", element4, warehouse1));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                1, 1, "1", "2", element1, warehouse2));
+                1, "1", "2", element1, warehouse2));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                2, 1, "2", "2", element2, warehouse2));
+                2, "2", "2", element2, warehouse2));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                3, 1, "3", "2", element3, warehouse2));
+                3, "3", "2", element3, warehouse2));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                4, 1, "4", "2", element4, warehouse2));
+                4, "4", "2", element4, warehouse2));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                1, 1, "1", "3", element1, warehouse3));
+                1, "1", "3", element1, warehouse3));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                2, 1, "2", "3", element2, warehouse3));
+                2, "2", "3", element2, warehouse3));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                3, 1, "3", "3", element3, warehouse3));
+                3, "3", "3", element3, warehouse3));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                4, 1, "4", "3", element4, warehouse3));
+                4, "4", "3", element4, warehouse3));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                51, 1, "5", "1", element5, warehouse1));
+                51, "5", "1", element5, warehouse1));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                61, 1, "6", "1", element6, warehouse1));
+                61, "6", "1", element6, warehouse1));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                52, 1, "5", "2", element5, warehouse2));
+                52, "5", "2", element5, warehouse2));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                62, 1, "6", "2", element6, warehouse2));
+                62, "6", "2", element6, warehouse2));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                53, 1, "5", "3", element5, warehouse3));
+                53, "5", "3", element5, warehouse3));
         addElementInWarehouseFromModel(new ElementInWarehouse(null,
-                63, 1, "6", "3", element6, warehouse3));
+                63, "6", "3", element6, warehouse3));
 
         ElementReturnRelease elementReturnRelease1 = addElementReturnReleaseFromModel(new ElementReturnRelease(null,
                 LocalDateTime.now(), 1, 1, LocalDateTime.now(), warehouseman1, element1,

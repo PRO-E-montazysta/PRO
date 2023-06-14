@@ -82,11 +82,8 @@ export const useDeleteElementEvent = (onSuccess: () => void) => {
                 ],
                 title: 'Sukces!',
                 content: <Box>Zgłoszenie zostało usunięte</Box>,
-                callback: () => () => {
-                    onSuccess()
-                    navigate('/events')
-                },
             })
+            navigate('/events')
         },
         onError: showError,
     })
@@ -165,11 +162,8 @@ export const useDeleteToolEvent = (onSuccess: () => void) => {
                 ],
                 title: 'Sukces!',
                 content: <Box>Zgłoszenie zostało usunięte</Box>,
-                callback: () => () => {
-                    onSuccess()
-                    navigate('/events')
-                },
             })
+            navigate('/events')
         },
         onError: showError,
     })

@@ -24,13 +24,13 @@
         android:onClick="@{() -> itemClickListener.cardClicked(release)}"
         >
 
-        <include layout="@layout/list_item_template"
+        <include
+            layout="@layout/list_item_template"
             android:id="@+id/item"
-            app:headline="@{Integer.toString(release.id)}"
-            app:supportText='@{release.type}'
+            app:headline='@{"Wydanie " + release.itemName}'
+            app:supportText='@{release.releasedBy.firstName + " " + release.releasedBy.lastName + " | " + release.releaseTime}'
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            >
-        </include>
+            app:icon="@{@drawable/baseline_swap_horiz_24}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

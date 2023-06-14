@@ -3,9 +3,6 @@ import { Box } from '@mui/system'
 import { useFormik } from 'formik'
 import { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-
-import { theme } from '../../themes/baseTheme'
-
 import { useFormStructure } from './helper'
 import {
     useAddOrderLocation,
@@ -35,7 +32,8 @@ import { Role } from '../../types/roleEnum'
 import EditIcon from '@mui/icons-material/Edit'
 import Localization from '../../components/localization/Localization'
 import { Order } from '../../types/model/Order'
-import { useAddLocation, useFormStructureLocation, useLocationData } from '../../components/localization/hooks'
+import { useFormStructureLocation, useLocationData } from '../../components/localization/hooks'
+import Error from '../../components/error/Error'
 import { isAuthorized } from '../../utils/authorize'
 
 import { OrderStage } from '../../types/model/OrderStage'
@@ -121,7 +119,7 @@ const OrderDetails = () => {
                 { text: 'Anuluj', value: 0, variant: 'outlined' },
             ],
             callback: (result: number) => {
-                if (result == 1 && params.id && Number.isInteger(params.id)) deleteOrderMutation.mutate(params.id)
+                if (result == 1 && params.id) deleteOrderMutation.mutate(params.id)
             },
         })
     }
@@ -252,7 +250,12 @@ const OrderDetails = () => {
             (orderData.data?.status == 'FINISHED' && isAuthorized([Role.FOREMAN]))
         )
     }
-    return (
+
+    return orderData.data?.deleted ? (
+        <>
+            <Error code={404} message={'Ten obiekt został usunięty'} />
+        </>
+    ) : (
         <>
             <FormBox>
                 <FormTitle
@@ -295,7 +298,11 @@ const OrderDetails = () => {
                                 isAddOrderStageVisible={isAddOrderStageVisible}
                                 nextStatus={canChangeToNextStatus() ? handleNextStatus : undefined}
                                 previousStatus={canChangeToPreviousStatus() ? handlePreviousStatus : undefined}
-                                editPermissionRoles={[Role.MANAGER, Role.SALES_REPRESENTATIVE]}
+                                editPermissionRoles={
+                                    formik.values['status'] == 'CREATED'
+                                        ? [Role.MANAGER, Role.SALES_REPRESENTATIVE]
+                                        : [Role.MANAGER]
+                                }
                                 deletePermissionRoles={
                                     formik.values['status'] == 'CREATED'
                                         ? [Role.MANAGER, Role.SALES_REPRESENTATIVE]

@@ -4,12 +4,17 @@ export type Element = {
     code: string
     typeOfUnit: string
     quantityInUnit: number
+    deleted: boolean
 }
 
 export const TypeOfUnit = {
     KILOGRAM: 'Kilogram',
+    GRAM: 'Gram',
     LITER: 'Litr',
+    MILILITER: 'Mililitr',
     PIECE: 'Sztuka',
+    MKW: 'Metr kwadratowy',
+    MSZ: 'Metr sześcienny',
 }
 
 export type PlannedElements = {

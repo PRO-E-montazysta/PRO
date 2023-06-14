@@ -9,4 +9,5 @@ export type ToolEvent = {
     acceptedById: number
     toolId: number
     attachments: Array<number>
+    deleted: boolean
 }

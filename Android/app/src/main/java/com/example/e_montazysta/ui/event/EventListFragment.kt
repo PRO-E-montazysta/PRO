@@ -190,6 +190,11 @@ class EventListFragment : Fragment() {
         }
 
         binding.lifecycleOwner = this
+
+        toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
+
         return binding.root
     }
 

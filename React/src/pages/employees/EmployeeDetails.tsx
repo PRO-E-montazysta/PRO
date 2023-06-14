@@ -21,6 +21,7 @@ import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
 import { roleName } from '../../helpers/enum.helper'
+import Error from '../../components/error/Error'
 import DisplayEmploymentHistory from '../../components/history/DisplayEmploymentHistory'
 import { isAuthorized } from '../../utils/authorize'
 import { Role } from '../../types/roleEnum'
@@ -64,7 +65,7 @@ const EmployeeDetails = () => {
                 { text: 'Anuluj', value: 0, variant: 'outlined' },
             ],
             callback: (result: number) => {
-                if (result == 1 && params.id && Number.isInteger(params.id)) deleteEmployeeMutation.mutate(params.id)
+                if (result == 1 && params.id) deleteEmployeeMutation.mutate(params.id)
             },
         })
     }
@@ -150,7 +151,11 @@ const EmployeeDetails = () => {
         return pageMode !== 'new' && isAuthorized([Role.ADMIN])
     }
 
-    return (
+    return employeeData.data?.deleted ? (
+        <>
+            <Error code={404} message={'Ten obiekt został usunięty'} />
+        </>
+    ) : (
         <FormBox>
             <FormTitle
                 mainTitle={pageMode == 'new' ? 'Nowy pracownik' : 'Pracownik'}

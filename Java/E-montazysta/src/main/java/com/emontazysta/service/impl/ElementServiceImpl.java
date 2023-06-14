@@ -138,7 +138,6 @@ public class ElementServiceImpl implements ElementService {
         warehousesToAdd.forEach(warehouseLocationDto -> {
             ElementInWarehouseDto elementInWarehouseDto = ElementInWarehouseDto.builder()
                     .inWarehouseCount(0)
-                    .inUnitCount(0)
                     .rack("")
                     .shelf("")
                     .elementId(element.getId())

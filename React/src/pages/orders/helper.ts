@@ -21,6 +21,7 @@ import { getAllSpecialists } from '../../api/specialist.api'
 import { AppSize } from '../../hooks/useBreakpoints'
 import { FormInputProps } from '../../types/form'
 import { Role } from '../../types/roleEnum'
+import { isAuthorized } from '../../utils/authorize'
 
 export const headCells: Array<HeadCell<Order>> = [
     {
@@ -83,14 +84,6 @@ export const headCells: Array<HeadCell<Order>> = [
 
 export const filterInitStructure: Array<FilterInputType> = [
     {
-        id: 'status',
-        value: '',
-        label: 'Status',
-        inputType: 'multiselect',
-        typeValue: 'Array',
-        options: statusOptions(),
-    },
-    {
         id: 'name',
         value: '',
         label: 'Nazwa',
@@ -110,6 +103,14 @@ export const filterInitStructure: Array<FilterInputType> = [
         label: 'Czas utworzenia do',
         inputType: 'datetime-local',
         typeValue: 'date',
+    },
+    {
+        id: 'status',
+        value: '',
+        label: 'Status',
+        inputType: 'multiselect',
+        typeValue: 'Array',
+        options: statusOptions(),
     },
 ]
 
@@ -145,7 +146,11 @@ export const useFormStructure = (): Array<FormInputProps> => {
             id: 'name',
             initValue: '',
             type: 'input',
-            validation: yup.string().min(3, 'Nazwa musi zawierać co najmniej 3 znaki').required('Wprowadź nazwę'),
+            validation: yup
+                .string()
+                .min(3, 'Nazwa musi zawierać co najmniej 3 znaki')
+                .max(255, 'Nazwa może zawierać maksymalnie 255 znaki')
+                .required('Wprowadź nazwę'),
         },
         {
             label: 'Priorytet',
@@ -199,7 +204,8 @@ export const useFormStructure = (): Array<FormInputProps> => {
             editPermissionRoles: [Role.MANAGER],
             viewPermissionRoles: [Role['*']],
             customPermission: (e) => {
-                if (e == null) return 'hidden'
+                if (isAuthorized([Role.MANAGER])) return null
+                else if (e == null) return 'hidden'
                 else return null
             },
         },
@@ -210,20 +216,20 @@ export const useFormStructure = (): Array<FormInputProps> => {
             type: 'number',
             dontIncludeInFormStructure: true,
         },
-        {
-            label: 'Manager',
-            id: 'managerId',
-            initValue: null,
-            type: 'select',
-            options: formatArrayToOptions('id', (x: AppUser) => x.firstName + ' ' + x.lastName, queryManager.data),
-        },
-        {
-            label: 'Specjalista',
-            id: 'specialistId',
-            initValue: null,
-            type: 'select',
-            options: formatArrayToOptions('id', (x: AppUser) => x.firstName + ' ' + x.lastName, querySpecialist.data),
-        },
+        // {
+        //     label: 'Manager',
+        //     id: 'managerId',
+        //     initValue: null,
+        //     type: 'select',
+        //     options: formatArrayToOptions('id', (x: AppUser) => x.firstName + ' ' + x.lastName, queryManager.data),
+        // },
+        // {
+        //     label: 'Specjalista',
+        //     id: 'specialistId',
+        //     initValue: null,
+        //     type: 'select',
+        //     options: formatArrayToOptions('id', (x: AppUser) => x.firstName + ' ' + x.lastName, querySpecialist.data),
+        // },
         {
             label: 'Handlowiec',
             id: 'salesRepresentativeId',

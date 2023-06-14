@@ -17,12 +17,14 @@ export const CustomTextField = styled(TextField)((props: CustomTextFieldProps) =
 }))
 
 const FormInput = (params: FormInputParams) => {
-    const { id, readonly, style, type, formik, label, placeholder } = params
+    const { id, readonly, style, type, formik, label, formatFn, placeholder } = params
     const value =
         type == 'datetime-local'
             ? formatDate(formik.values[id])
             : type == 'date'
             ? formatShortDate(formik.values[id])
+            : type == 'can-be-deleted'
+            ? formatFn && formatFn(String(formik.values[id]))
             : String(formik.values[id])
 
     const appSize = useBreakpoints()

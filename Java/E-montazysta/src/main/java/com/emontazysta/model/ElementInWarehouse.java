@@ -23,11 +23,10 @@ import javax.persistence.ManyToOne;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class ElementInWarehouse {
 
-    public ElementInWarehouse(Long id, int inWarehouseCount, int inUnitCount, String rack, String shelf,
+    public ElementInWarehouse(Long id, int inWarehouseCount, String rack, String shelf,
                               Element element, Warehouse warehouse) {
         this.id = id;
         this.inWarehouseCount = inWarehouseCount;
-        this.inUnitCount = inUnitCount;
         this.rack = rack;
         this.shelf = shelf;
         this.element = element;
@@ -39,7 +38,6 @@ public class ElementInWarehouse {
     private Long id;
 
     private int inWarehouseCount;
-    private int inUnitCount;
     private String rack;
     private String shelf;
     private boolean deleted = Boolean.FALSE;
