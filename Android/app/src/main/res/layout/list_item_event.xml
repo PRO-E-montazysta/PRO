@@ -30,6 +30,8 @@
             app:headline="@{event.itemName}"
             app:supportText='@{event.status.value + " | " + event.eventType.value + " | " + event.eventDate }'
             android:layout_height="wrap_content"
-            android:layout_width="match_parent" />
+            android:layout_width="match_parent"
+            app:icon="@{@drawable/baseline_events_24}"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

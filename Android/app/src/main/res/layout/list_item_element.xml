@@ -29,7 +29,6 @@
         app:supportText='@{element.code + " | " + element.typeOfUnit + " | " + element.quantityInUnit}'
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        >
-        </include>
+        app:icon="@{@drawable/baseline_category_24}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
