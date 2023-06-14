@@ -70,10 +70,6 @@ data class StageDAO(
             is Result.Error -> null
         }
     }
-
-    fun mapToStageListItem() : StageListItem {
-        return StageListItem(id, name)
-    }
 }
 enum class StageStatus(val value: String){
     PLANNING("PLANOWANIE"),
