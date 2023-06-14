@@ -10,6 +10,7 @@ export type Tool = {
 export type ToolHistory = {
     orderStageName: string
     orderStageId: number
+    orderId: number
     orderStageStartDate: string
     orderStageEndDate: string
     foremanName: string
