@@ -30,7 +30,7 @@ const ElementInWarehouseView = (params: ElementInWarehouseViewParams) => {
     const filter: Filter = {
         formik: useFormik({
             initialValues: initialValues,
-            // validationSchema={{}}
+
             onSubmit: () => {
                 setFilterStructure(setNewFilterValues(filter.formik.values, filterStructure))
                 setFilterParams(getFilterParams(filterStructure))

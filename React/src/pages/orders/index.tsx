@@ -24,7 +24,7 @@ const Orders = () => {
     const filter: Filter = {
         formik: useFormik({
             initialValues: initialValues,
-            // validationSchema={{}}
+
             onSubmit: () => {
                 setFilterStructure(setNewFilterValues(filter.formik.values, filterStructure))
                 setFilterParams(getFilterParams(filterStructure))
@@ -36,15 +36,15 @@ const Orders = () => {
 
     return (
         <FatTable
-            idPropName="id"
+            pageHeader="Lista zleceń"
             query={queryOrders}
             filterProps={filter}
             headCells={headCells}
+            idPropName="id"
             initOrderBy={'name'}
             onClickRow={(e, row) => {
                 navigation(`/orders/${row.id}`)
             }}
-            pageHeader="Lista zleceń"
         />
     )
 }

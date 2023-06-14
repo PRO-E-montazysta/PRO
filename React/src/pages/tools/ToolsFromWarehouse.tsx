@@ -23,7 +23,7 @@ const ToolsFromWarehouse = () => {
     const filter: Filter = {
         formik: useFormik({
             initialValues: initialValues,
-            // validationSchema={{}}
+
             onSubmit: () => setFilterParams(filter.formik.values),
             onReset: () => filter.formik.setValues(initialValues),
         }),

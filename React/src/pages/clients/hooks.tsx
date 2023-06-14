@@ -1,7 +1,7 @@
 import { Box } from '@mui/material'
 import { AxiosError } from 'axios'
 import { useContext } from 'react'
-import { useMutation, useQuery } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
@@ -13,6 +13,7 @@ export const useAddClient = () => {
     const navigate = useNavigate()
     const { showDialog } = useContext(DialogGlobalContext)
     const showError = useError()
+    const queryClient = useQueryClient()
     return useMutation({
         mutationFn: postClient,
         onSuccess(data) {
@@ -26,6 +27,9 @@ export const useAddClient = () => {
                 title: 'Sukces',
                 content: <Box>Nowy klient utworzony pomyślnie</Box>,
                 callback: () => {
+                    queryClient.refetchQueries({
+                        queryKey: ['clients'],
+                    })
                     if (data.id) navigate(`/clients/${data.id}`)
                     else navigate(`/clients`)
                 },
