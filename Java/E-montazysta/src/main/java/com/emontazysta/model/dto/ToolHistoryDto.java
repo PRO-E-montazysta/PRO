@@ -15,6 +15,7 @@ public class ToolHistoryDto implements Comparable<ToolHistoryDto> {
 
     private String orderStageName;
     private Long orderStageId;
+    private Long orderId;
     private LocalDateTime orderStageStartDate;
     private LocalDateTime orderStageEndDate;
     private String foremanName;

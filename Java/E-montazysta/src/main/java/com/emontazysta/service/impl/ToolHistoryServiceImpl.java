@@ -37,6 +37,7 @@ public class ToolHistoryServiceImpl implements ToolHistoryService {
                         ToolHistoryDto.builder()
                                 .orderStageName(orderStage.getName())
                                 .orderStageId(orderStage.getId())
+                                .orderId(orderStage.getOrders().getId())
                                 .orderStageStartDate(orderStage.getStartDate())
                                 .orderStageEndDate(orderStage.getEndDate())
                                 .foremanName(orderStage.getOrders().getAssignedTo().getFirstName() + " " + orderStage.getOrders().getAssignedTo().getLastName())

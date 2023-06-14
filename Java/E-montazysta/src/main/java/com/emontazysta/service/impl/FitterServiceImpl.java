@@ -3,10 +3,12 @@ package com.emontazysta.service.impl;
 import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.EmploymentMapper;
 import com.emontazysta.mapper.FitterMapper;
+import com.emontazysta.mapper.WorkingOnMapper;
 import com.emontazysta.model.Fitter;
 import com.emontazysta.model.dto.EmployeeDto;
 import com.emontazysta.model.dto.EmploymentDto;
 import com.emontazysta.model.dto.FitterDto;
+import com.emontazysta.model.dto.WorkingOnDto;
 import com.emontazysta.model.searchcriteria.AppUserSearchCriteria;
 import com.emontazysta.repository.FitterRepository;
 import com.emontazysta.repository.criteria.AppUserCriteriaRepository;
@@ -23,6 +25,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +38,7 @@ public class FitterServiceImpl implements FitterService {
     private final AuthUtils authUtils;
     private final AppUserCriteriaRepository appUserCriteriaRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final WorkingOnMapper workingOnMapper;
 
     @Override
     public List<FitterDto> getAll(Principal principal) {
@@ -132,5 +136,11 @@ public class FitterServiceImpl implements FitterService {
         }
 
         return result;
+    }
+
+    @Override
+    public List<WorkingOnDto> getWorkingOn(Long id) {
+        Fitter fitter = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return fitter.getWorkingOn().stream().map(workingOnMapper::fitterWorks).collect(Collectors.toList());
     }
 }
