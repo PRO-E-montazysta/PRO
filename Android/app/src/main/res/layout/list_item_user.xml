@@ -20,23 +20,17 @@
         android:clickable="true"
         android:focusable="true"
         android:minHeight="@dimen/list_item_min_height_two_line"
-        tools:theme="@style/Theme.Material3.DayNight"
         android:onClick="@{() -> itemClickListener.cardClicked(user)}"
-        >
+        tools:theme="@style/Theme.Material3.DayNight">
 
-        <include layout="@layout/list_item_template"
+        <include
+            layout="@layout/list_item_template"
             android:id="@+id/item"
             app:headline="@{user.name}"
-            app:supportText='@{user.getItemInfo()}'
-            app:icon='@drawable/baseline_arrow_left_alt_24'
+            app:supportText='@{user.getListItemInfo()}'
             android:layout_height="wrap_content"
-            android:layout_width="0dp"
-            app:layout_constraintStart_toEndOf="@id/leading_icon"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/leading_icon"
-            app:layout_constraintBottom_toBottomOf="@id/leading_icon"
-            >
-        </include>
+            android:layout_width="match_parent"
+            app:icon="@{@drawable/baseline_supervisor_account_24}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
