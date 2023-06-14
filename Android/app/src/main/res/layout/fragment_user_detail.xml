@@ -3,16 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <variable
-            name="ReleaseDetailViewModel"
-            type="com.example.e_montazysta.ui.release.ReleaseDetailViewModel" />
-    </data>
-
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
+
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
@@ -25,12 +20,13 @@
                 android:layout_height="?attr/actionBarSize"
                 android:elevation="0dp"
                 app:menu="@menu/menu_details"
-                app:title="@string/release_details_title"
+                app:title="@string/user_details_title"
                 app:navigationIcon="@drawable/baseline_arrow_back_24"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
                 app:layout_scrollEffect="compress"
                 />
         </com.google.android.material.appbar.AppBarLayout>
+
 
         <ScrollView
             android:layout_width="match_parent"
@@ -38,10 +34,9 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:clickable="true">
-
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -49,22 +44,23 @@
                     android:paddingVertical="@dimen/list_item_space_x3"
                     android:paddingStart="@dimen/list_item_space_x4"
                     android:paddingEnd="@dimen/list_item_space_x6">
-
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tool"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/userFirstName"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="?colorOnSurfaceVariant"
                         android:textAppearance="?textAppearanceBodySmall"
-                        android:text="@string/release_item_name_label" />
-
+                        android:text="@string/user_first_name"
+                        />
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/toolValue"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/userFirstNameValue"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?textAppearanceBodyLarge"
                         android:textColor="?colorOnSurface"
-                        android:text="Brak" />
+                        android:text="Brak"
+                        />
+
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
@@ -74,164 +70,141 @@
                     android:paddingVertical="@dimen/list_item_space_x3"
                     android:paddingStart="@dimen/list_item_space_x4"
                     android:paddingEnd="@dimen/list_item_space_x6">
-        
-
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/releaseTime"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/userLastName"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text='Nazwisko'
                         android:textColor="?colorOnSurfaceVariant"
                         android:textAppearance="?textAppearanceBodySmall"
-                        android:text="@string/release_release_time_label" />
-
+                        />
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/releaseTimeValue"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/userLastNameValue"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?textAppearanceBodyLarge"
-                        android:textColor="?colorOnSurface"
-                        android:text="Brak" />
+                        android:text="Brak"
+                        />
+
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
+                    android:clickable="true"
                     android:paddingVertical="@dimen/list_item_space_x3"
                     android:paddingStart="@dimen/list_item_space_x4"
                     android:paddingEnd="@dimen/list_item_space_x6">
-
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/returnTime"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/userPesel"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text='Pesel'
                         android:textColor="?colorOnSurfaceVariant"
                         android:textAppearance="?textAppearanceBodySmall"
-                        android:text="@string/release_return_date_label" />
-
+                        />
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/returnTimeValue"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/userPeselValue"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?textAppearanceBodyLarge"
                         android:textColor="?colorOnSurface"
-                        android:text="Brak" />
+                        android:text="Brak"
+                        />
+
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
+                    android:clickable="true"
                     android:paddingVertical="@dimen/list_item_space_x3"
                     android:paddingStart="@dimen/list_item_space_x4"
                     android:paddingEnd="@dimen/list_item_space_x6">
-
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/receivedById"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/userRole"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text='Stanowisko'
                         android:textColor="?colorOnSurfaceVariant"
                         android:textAppearance="?textAppearanceBodySmall"
-                        android:text="@string/release_recaived_by_label" />
-
+                        />
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/receivedByIdValue"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/userRoleValue"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?textAppearanceBodyLarge"
                         android:textColor="?colorOnSurface"
-                        android:text="Brak" />
+                        android:text="Brak"
+                        />
+
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
+                    android:clickable="true"
                     android:paddingVertical="@dimen/list_item_space_x3"
                     android:paddingStart="@dimen/list_item_space_x4"
                     android:paddingEnd="@dimen/list_item_space_x6">
-
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/releasedById"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/userEmail"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text='Email'
                         android:textColor="?colorOnSurfaceVariant"
                         android:textAppearance="?textAppearanceBodySmall"
-                        android:text="@string/release_released_by_label" />
-
+                        />
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/releasedByIdValue"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/userEmailValue"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?textAppearanceBodyLarge"
                         android:textColor="?colorOnSurface"
-                        android:text="Brak" />
+                        android:text="Brak"
+                        />
+
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
+                    android:clickable="true"
                     android:paddingVertical="@dimen/list_item_space_x3"
                     android:paddingStart="@dimen/list_item_space_x4"
                     android:paddingEnd="@dimen/list_item_space_x6">
-
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/demandAdHocId"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/userPhone"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text='Telefon'
                         android:textColor="?colorOnSurfaceVariant"
                         android:textAppearance="?textAppearanceBodySmall"
-                        android:text="@string/release_demand_ad_hoc_label" />
-
+                        />
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/demandAdHocIdValue"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/userPhoneValue"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?textAppearanceBodyLarge"
                         android:textColor="?colorOnSurface"
-                        android:text="Brak" />
+                        android:text="Brak"
+                        />
+
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
-                <androidx.appcompat.widget.LinearLayoutCompat
+                <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingVertical="@dimen/list_item_space_x3"
-                    android:paddingStart="@dimen/list_item_space_x4"
-                    android:paddingEnd="@dimen/list_item_space_x6">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/orderStageId"
-                        android:textColor="?colorOnSurfaceVariant"
-                        android:textAppearance="?textAppearanceBodySmall"
-                        android:text="@string/release_stage_label"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"/>
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/orderStageIdValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?textAppearanceBodyLarge"
-                        android:textColor="?colorOnSurface"
-                        android:text="Brak" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/guide_end"
+                    app:layout_constraintStart_toStartOf="@id/guide_start"
+                    android:layout_marginTop="@dimen/list_item_space_x3"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
+
         </ScrollView>
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/add_objects_to_release"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_marginEnd="@dimen/fab_margin"
-            android:layout_marginBottom="@dimen/fab_margin"
-            android:contentDescription="@string/release_return_objects_label_desc"
-            android:text="@string/release_return_objects_label"
-            app:icon="@drawable/baseline_check_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

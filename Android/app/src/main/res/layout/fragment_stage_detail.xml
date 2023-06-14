@@ -70,6 +70,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="Wykonaj akcję"
+                android:layout_marginEnd="@dimen/fab_margin"
+                android:layout_marginBottom="@dimen/fab_margin"
                 android:src="@drawable/baseline_swap_horiz_24"
                 app:fabSize="normal"
                 app:layout_constraintBottom_toBottomOf="parent"

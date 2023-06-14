@@ -3,17 +3,18 @@ package com.example.e_montazysta.data.model
 import android.content.ContentValues.TAG
 import android.util.Log
 import com.example.e_montazysta.data.repository.interfaces.IUserRepository
-import com.squareup.moshi.Json
+import com.example.e_montazysta.ui.user.Role
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-data class User (
-    @Json(name = "id")
+data class User(
     val id: Int,
-    @Json(name = "firstName")
     val firstName: String,
-    @Json(name = "lastName")
-    val lastName: String
+    val lastName: String,
+    val pesel: String?,
+    val roles: List<Role>,
+    val email: String,
+    val phone: String
 ) {
     override fun toString(): String = "$firstName $lastName"
 

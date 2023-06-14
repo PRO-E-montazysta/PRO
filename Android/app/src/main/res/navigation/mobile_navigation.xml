@@ -41,6 +41,9 @@
         <action
             android:id="@+id/action_navigation_dashboard_to_eventListFragment"
             app:destination="@id/eventListFragment" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_userListFragment"
+            app:destination="@id/userListFragment" />
     </fragment>
 
     <fragment
@@ -235,5 +238,21 @@
         <argument
             android:name="stage"
             app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/userDetailFragment"
+        android:name="com.example.e_montazysta.ui.user.UserDetailFragment"
+        android:label="UserDetailFragment" >
+        <argument
+            android:name="userId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/userListFragment"
+        android:name="com.example.e_montazysta.ui.user.UserListFragment"
+        android:label="UserListFragment" >
+        <action
+            android:id="@+id/action_userListFragment_to_userDetailFragment"
+            app:destination="@id/userDetailFragment" />
     </fragment>
 </navigation>

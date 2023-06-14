@@ -45,6 +45,8 @@ import com.example.e_montazysta.ui.stage.StageDetailViewModel
 import com.example.e_montazysta.ui.stage.StageListViewModel
 import com.example.e_montazysta.ui.toollist.ToolDetailViewModel
 import com.example.e_montazysta.ui.toollist.ToolsListViewModel
+import com.example.e_montazysta.ui.user.UserDetailViewModel
+import com.example.e_montazysta.ui.user.UserListViewModel
 import com.example.e_montazysta.ui.viewmodels.DashboardViewModel
 import com.example.e_montazysta.ui.warehouse.WarehouseDetailViewModel
 import com.example.e_montazysta.ui.warehouse.WarehouseListViewModel
@@ -215,6 +217,12 @@ val dataModule = module {
     }
     viewModel{
         WarehouseDetailViewModel(get())
+    }
+    viewModel{
+        UserDetailViewModel(get())
+    }
+    viewModel{
+        UserListViewModel(get())
     }
 
 }
