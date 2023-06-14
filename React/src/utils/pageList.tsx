@@ -28,6 +28,7 @@ import DemandAdHoc from '../pages/demandAdHoc'
 import DemandAdHocDetails from '../pages/demandAdHoc/DemandAdHocDetails'
 import Unavailabilities from '../pages/unavailabilities'
 import UnavailabilityDetails from '../pages/unavailabilities/UnavailabilityDetails'
+import Home from '../pages/home/Home'
 import Notifications from '../pages/notifications'
 import ElementInWarehouseDetails from '../pages/elementInWarehouse/ElementInWarehouseDetails'
 import ForgotPasswordPage from '../pages/ForgotPasswordPage'
@@ -82,6 +83,13 @@ export const pageList: Array<PageProps> = [
         allowedRoles: [Role['*']],
         component: <Root />,
         children: [
+            {
+                inNav: false,
+                name: '',
+                path: '',
+                allowedRoles: [Role['*']],
+                component: <Home />,
+            },
             {
                 inNav: true,
                 name: 'Firmy',

@@ -15,7 +15,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment'
 import Collapse from '@mui/material/Collapse'
 import { ExpandMore, TabPanel, validationSchema } from './helper'
 import { getRolesFromToken } from '../../utils/token'
-import { useQuery } from 'react-query'
+import { useQuery, useQueryClient } from 'react-query'
 import { AxiosError } from 'axios'
 import { getAllToolTypes, getPlannedToolTypesById } from '../../api/toolType.api'
 import { getAllElements, getPlannedElementById } from '../../api/element.api'
@@ -32,6 +32,11 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import useBreakpoints from '../../hooks/useBreakpoints'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { orderStageStatusName } from '../../helpers/enum.helper'
+import PlannerStageDetails from '../orders/PlannerStageDetails'
+import moment from 'moment'
+import Attachments, { AttachmentsProps } from '../../components/attachments/Attachments'
+import useAttachmentData from '../../components/attachments/AttachmentData.hook'
+import { deleteFilesFromServer, saveNewFiles } from '../../components/attachments/attachments.helper'
 
 type OrderStageCardProps = {
     index?: string
@@ -55,8 +60,8 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
     const [preparedPlannedStartDate, setPreparedPlannedStartDate] = useState('')
     const [preparedPlannedEndDate, setPreparedPlannedEndDate] = useState('')
     const [userRole, setUserRole] = useState('')
-    const addOrderStage = useAddOrderStage()
-    const updateOrderStage = useUpdateOrderStage()
+    const addOrderStage = useAddOrderStage(() => onSaveOrderStageSucceess())
+    const updateOrderStage = useUpdateOrderStage(() => onSaveOrderStageSucceess())
     const appSize = useBreakpoints()
     const { showDialog } = useContext(DialogGlobalContext)
 
@@ -67,6 +72,35 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
     const [error, setError] = useState<DateValidationError | null>(null)
     const [isEditing, setIsEditing] = useState(false)
     const [isDisplayingMode, setIsDisplayingMode] = useState(isDisplaying)
+    const queryClient = useQueryClient()
+    //attachment functionality
+    const attachmentData = useAttachmentData({
+        idsOfFilesFromServer: stage?.attachments || [],
+    })
+    const onSaveOrderStageSucceess = async () => {
+        const saveResult = await saveNewFiles(attachmentData.fileListLocal, stage?.id)
+        const deleteResult = await deleteFilesFromServer(attachmentData.fileIdsFromServerToDelete)
+        const attachmentResult = saveResult && deleteResult
+        let message = isEditing ? 'Zedytowano etap pomyślnie' : 'Nowy etap utworzono pomyślnie'
+        if (!attachmentResult) message += ', jednak wystąpił błąd zapisu załączników'
+        showDialog({
+            btnOptions: [
+                {
+                    text: 'OK',
+                    value: 0,
+                },
+            ],
+            title: attachmentResult ? 'Sukces' : 'Błąd zapisu załączników',
+            content: message,
+            callback: () => {
+                queryClient.refetchQueries({
+                    queryKey: ['orderStageForOrder', { id: params.id }],
+                })
+                setIsEditing(false)
+                setIsDisplayingMode(true)
+            },
+        })
+    }
 
     const handleSetPlannedElements = (value: { numberOfElements: number; elementId: string }[]) => {
         plannedElementsRef!.current! = value
@@ -180,8 +214,11 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
         setIsEditing(false)
         setIsDisplayingMode(true)
         handleResetFormik()
+        attachmentData.handleReset()
     }
-
+    useEffect(() => {
+        if (stage) formik.setFieldValue('fitters', stage.fitters)
+    }, [stage])
     const formik = useFormik({
         initialValues: {
             orderId: params.id!,
@@ -197,6 +234,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
             listOfElementsPlannedNumber: isDisplayingMode ? stage!.listOfElementsPlannedNumber : [],
             attachments: [],
             test: '',
+            fitters: stage && stage.fitters ? stage.fitters : [],
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
@@ -400,7 +438,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                     <AssignmentIcon />
                 </IconButton>
                 <Typography variant="h5" color="text.secondary">
-                    {stage ? <Typography>Etap {stage.name}</Typography> : <Typography>Dodaj etap</Typography>}
+                    {stage ? `Etap - ${stage.name}` : `Nowy etap`}
                 </Typography>
                 <ExpandMore
                     expand={expandedInformation}
@@ -435,20 +473,20 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                 helperText={formik.touched.name && formik.errors.name}
                             />
                         </Grid>
-                        {isDisplayingMode ? (
-                            <Grid item xs={4} md={3}>
-                                <CustomTextField
-                                    readOnly={isDisplayingMode!}
-                                    disabled={isDisplayingMode}
-                                    sx={{ width: '100%' }}
-                                    id="standard-basic"
-                                    variant="outlined"
-                                    label="Status"
-                                    name="status"
-                                    defaultValue={isDisplayingMode ? orderStageStatusName(stage!.status) : null}
-                                />
-                            </Grid>
-                        ) : null}
+
+                        <Grid item xs={4} md={3}>
+                            <CustomTextField
+                                readOnly={true}
+                                disabled={true}
+                                sx={{ width: '100%' }}
+                                id="standard-basic"
+                                variant="outlined"
+                                label="Status"
+                                name="status"
+                                defaultValue={isDisplayingMode ? orderStageStatusName(stage!.status) : null}
+                            />
+                        </Grid>
+
                         <Grid item xs={4} md={3}>
                             <CustomTextField
                                 readOnly={isDisplayingMode!}
@@ -512,14 +550,14 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     <Tab label="Informacje o datach" {...tabProps(0)} />
                                     <Tab label="Narzędzia" {...tabProps(1)} />
                                     <Tab label="Elementy" {...tabProps(2)} />
-                                    {isDisplayingMode ? <Tab label="Montażyści..." {...tabProps(2)} /> : null}
-                                    <Tab label="Szczegóły etapu/Zalaczniki" {...tabProps(1)} />
+                                    <Tab label="Montażyści" {...tabProps(2)} />
+                                    <Tab label="Załączniki" {...tabProps(1)} />
                                 </Tabs>
                             </Box>
-                            <TabPanel key={uuidv4()} value={tabValue} index={0}>
+                            <TabPanel value={tabValue} index={0}>
                                 {getDateInformations(stage)}
                             </TabPanel>
-                            <TabPanel key={uuidv4()} value={tabValue} index={1}>
+                            <TabPanel value={tabValue} index={1}>
                                 <OrderStageToolsTable
                                     itemsArray={queryAllToolTypes.data!}
                                     isDisplayingMode={isDisplayingMode!}
@@ -529,7 +567,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     releasedToolsInfo={stage?.simpleToolReleases}
                                 />
                             </TabPanel>
-                            <TabPanel key={uuidv4()} value={tabValue} index={2}>
+                            <TabPanel value={tabValue} index={2}>
                                 <OrderStageElementsTable
                                     itemsArray={queryAllElements.data!}
                                     isDisplayingMode={isDisplayingMode!}
@@ -540,18 +578,18 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                 />
                             </TabPanel>
 
-                            <TabPanel key={uuidv4()} value={tabValue} index={3}>
-                                <Typography>Zalaczniki...</Typography>
+                            <TabPanel value={tabValue} index={3}>
+                                <PlannerStageDetails
+                                    dateFrom={preparedPlannedStartDate}
+                                    dateTo={preparedPlannedEndDate}
+                                    fitters={formik.values.fitters}
+                                    setFitters={(fitters) => formik.setFieldValue('fitters', fitters)}
+                                    readonly={!isAuthorized([Role.FOREMAN]) || isDisplayingMode}
+                                    orderStageId={formik.values.orderStageId}
+                                />
                             </TabPanel>
-                            <TabPanel key={uuidv4()} value={tabValue} index={4}>
-                                <Grid item xs={2}>
-                                    <CustomTextField
-                                        readOnly={isDisplayingMode!}
-                                        sx={{ width: '100%' }}
-                                        label="Załączniki"
-                                        name="attachments"
-                                    />
-                                </Grid>
+                            <TabPanel value={tabValue} index={4}>
+                                <Attachments {...attachmentData} readonly={isDisplayingMode} />
                             </TabPanel>
                         </Box>
 
