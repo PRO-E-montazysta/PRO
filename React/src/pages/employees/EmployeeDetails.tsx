@@ -25,6 +25,8 @@ import Error from '../../components/error/Error'
 import DisplayEmploymentHistory from '../../components/history/DisplayEmploymentHistory'
 import { isAuthorized } from '../../utils/authorize'
 import { Role } from '../../types/roleEnum'
+import DisplayForemanHistory from '../../components/history/DisplayForemanHistory'
+import DisplayFitterHistory from '../../components/history/DisplayFitterHistory'
 
 const EmployeeDetails = () => {
     const params = useParams()
@@ -151,6 +153,21 @@ const EmployeeDetails = () => {
         return pageMode !== 'new' && isAuthorized([Role.ADMIN])
     }
 
+    const canDistplayWorkingHistory = () => {
+        return pageMode !== 'new' && isAuthorized([Role.ADMIN, Role.MANAGER, Role.FOREMAN, Role.FITTER])
+    }
+
+    const workHistory = () => {
+        if (canDistplayWorkingHistory()) {
+            if (formik.values['roles'][0] == 'FOREMAN') {
+                return <DisplayForemanHistory foremanId={params.id!}></DisplayForemanHistory>
+            } else if (formik.values['roles'][0] == 'FITTER') {
+                return <DisplayFitterHistory fitterId={params.id!}></DisplayFitterHistory>
+            }
+        }
+        return ''
+    }
+
     return employeeData.data?.deleted ? (
         <>
             <Error code={404} message={'Ten obiekt został usunięty'} />
@@ -196,6 +213,7 @@ const EmployeeDetails = () => {
                         ) : (
                             ''
                         )}
+                        {workHistory()}
                     </>
                 )}
             </FormPaper>
