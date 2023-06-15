@@ -37,6 +37,8 @@ import moment from 'moment'
 import Attachments, { AttachmentsProps } from '../../components/attachments/Attachments'
 import useAttachmentData from '../../components/attachments/AttachmentData.hook'
 import { deleteFilesFromServer, saveNewFiles } from '../../components/attachments/attachments.helper'
+import { Order } from '../../types/model/Order'
+import { getOrderDetails } from '../../api/order.api'
 
 type OrderStageCardProps = {
     index?: string
@@ -376,10 +378,33 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
         )
     }
 
-    const canChangeToNextStatus = () => {
+    const queryOrder = useQuery<Order, AxiosError>(
+        ['order', { id: stage?.orderId }],
+        async () => getOrderDetails(String(stage?.orderId)),
+        {
+            enabled: !!stage?.orderId && stage?.orderId != undefined,
+        },
+    )
+
+    const canEdit = () => {
         const orderStageStatus = stage?.status
         return (
             (orderStageStatus == 'PLANNING' && isAuthorized([Role.SPECIALIST])) ||
+            (orderStageStatus == 'ADDING_FITTERS' && isAuthorized([Role.FOREMAN])) ||
+            (orderStageStatus == 'PICK_UP' && isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) ||
+            (orderStageStatus == 'REALESED' && isAuthorized([Role.FOREMAN])) ||
+            (orderStageStatus == 'ON_WORK' && isAuthorized([Role.FOREMAN])) ||
+            (orderStageStatus == 'RETURN' && isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) ||
+            (orderStageStatus == 'RETURNED' && isAuthorized([Role.FOREMAN]))
+        )
+    }
+
+    const canChangeToNextStatus = () => {
+        const orderStageStatus = stage?.status
+        return (
+            (orderStageStatus == 'PLANNING' &&
+                isAuthorized([Role.SPECIALIST]) &&
+                queryOrder.data?.status != 'PLANNING') ||
             (orderStageStatus == 'ADDING_FITTERS' && isAuthorized([Role.FOREMAN])) ||
             (orderStageStatus == 'PICK_UP' && isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) ||
             (orderStageStatus == 'REALESED' && isAuthorized([Role.FOREMAN])) ||
@@ -603,7 +628,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     flexDirection: 'row-reverse',
                                 }}
                             >
-                                {isDisplayingMode && canChangeToNextStatus() && (
+                                {isDisplayingMode && canEdit() && (
                                     <Button
                                         color="primary"
                                         variant="contained"
