@@ -39,7 +39,7 @@ class OrderListViewModel(private val repository: IOrderRepository) : ViewModel()
         _isLoadingLiveData.postValue(true)
             val result = repository.getListOfOrders()
             when (result) {
-                is Result.Success -> _orderLiveData.postValue(result.data.map { it.mapToOrderItem() })
+                is Result.Success -> _orderLiveData.postValue(result.data)
                 is Result.Error -> {
                     result.exception.message?.let { _messageLiveData.postValue(it) }
                     _isLoadingLiveData.postValue(false)

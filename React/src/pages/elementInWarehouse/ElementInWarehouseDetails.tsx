@@ -14,6 +14,7 @@ import { FormStructure } from '../../components/form/FormStructure'
 import { FormButtons } from '../../components/form/FormButtons'
 import { PageMode } from '../../types/form'
 import { useElementData } from '../elements/hooks'
+import { Role } from '../../types/roleEnum'
 
 const ElementInWarehouseDetails = () => {
     const params = useParams()
@@ -90,7 +91,7 @@ const ElementInWarehouseDetails = () => {
                             onReset={handleReset}
                             onSubmit={formik.submitForm}
                             readonlyMode={pageMode == 'read'}
-                            //TODO: Edycja tylko dla [Role.WAREHOUSE_MANAGER, Role.WAREHOUSE_MAN]
+                            editPermissionRoles={[Role.WAREHOUSE_MANAGER, Role.WAREHOUSE_MAN]}
                         />
                     </>
                 )}

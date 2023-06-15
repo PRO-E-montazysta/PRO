@@ -10,7 +10,8 @@ data class ReleaseItem(
     val code: String,
     val toolType: String,
     var quantity: Int = 1,
-    val warehouse: String){
+    val warehouse: String,
+    var isSelected: Boolean = false){
 
     fun getQuantityInWarehouse(id: Int): Int {
         return 99
@@ -26,15 +27,7 @@ data class ReleaseItem(
 fun mapToReleaseItem(item: Any): ReleaseItem {
     return when(item){
         is Element -> ReleaseItem(true, item.id, item.name, item.code, "", 1, "")
-        is Tool -> ReleaseItem(false, item.id, item.name, item.code, item.toolType, 1, item.warehouse)
+        is Tool -> ReleaseItem(false, item.id, item.name, item.code, item.toolType.name, 1, item.warehouse.name)
         else -> throw IllegalArgumentException("asd")
     }
-}
-
-fun Element.mapToReleaseItem(): ReleaseItem {
-    return ReleaseItem(true, id, name, code, "", 0, "")
-}
-
-fun Tool.mapToReleaseItem(): ReleaseItem {
-    return ReleaseItem(false, id, name, code, toolType, 1, warehouse)
 }

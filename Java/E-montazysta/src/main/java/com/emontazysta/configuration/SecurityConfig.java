@@ -83,6 +83,7 @@ public class SecurityConfig {
         http.oauth2ResourceServer().jwt();
         http.authorizeRequests().antMatchers("/api/v1/gettoken",
                                             "/api/v1/h2-console/**",
+                                            "/api/v1/attachments/download/**",
                                             "/api/v1/password/forgot",
                                             "/api/v1/password/reset")
                                             .permitAll();

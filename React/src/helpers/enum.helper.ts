@@ -5,9 +5,25 @@ import { EventStatus, EventType } from '../types/model/Event'
 import { EmployeeStatus, UserRole } from '../types/model/Employee'
 import { OrderPriority, OrderStatus } from '../types/model/Order'
 import { TypeOfUnavailability } from '../types/model/Unavailability'
+import { isAuthorized } from '../utils/authorize'
+import { Role } from '../types/roleEnum'
+import {
+    NotificationType_FITTER,
+    NotificationType_FOREMAN,
+    NotificationType_MANAGER,
+    NotificationType_OTHERS,
+    NotificationType_SPECIALIST,
+    NotificationType_WAREHOUSEMANAGER,
+} from '../types/model/Notification'
+import { OrderStageStatus } from '../types/model/OrderStage'
+import { TypeOfAttachment } from '../types/model/Attachment'
 
-export const statusName = (key: string) => {
+export const orderStatusName = (key: string) => {
     return Object.values(OrderStatus)[Object.keys(OrderStatus).indexOf(key)]
+}
+
+export const orderStageStatusName = (key: string) => {
+    return Object.values(OrderStageStatus)[Object.keys(OrderStageStatus).indexOf(key)]
 }
 
 export const priorityName = (key: string) => {
@@ -33,6 +49,11 @@ export const typeOfUnitName = (key: string) => {
 export const typeOfUnavailabilityName = (key: string) => {
     return Object.values(TypeOfUnavailability)[Object.keys(TypeOfUnavailability).indexOf(key)]
 }
+
+export const typeOfAttachmentName = (key: string) => {
+    return Object.values(TypeOfAttachment)[Object.keys(TypeOfAttachment).indexOf(key)]
+}
+
 
 export const roleName = (key: string) => {
     return Object.values(UserRole)[Object.keys(UserRole).indexOf(key)]
@@ -117,4 +138,50 @@ export const typeOfUnavailabilityOptions = () => {
             value: s[1],
         }
     })
+}
+
+export const notificationTypeOptions = () => {
+    if (isAuthorized([Role.SPECIALIST])) {
+        return Object.entries(NotificationType_SPECIALIST).map((s): SelectMenuItemProps => {
+            return {
+                key: s[0],
+                value: s[1],
+            }
+        })
+    } else if (isAuthorized([Role.MANAGER])) {
+        return Object.entries(NotificationType_MANAGER).map((s): SelectMenuItemProps => {
+            return {
+                key: s[0],
+                value: s[1],
+            }
+        })
+    } else if (isAuthorized([Role.WAREHOUSE_MANAGER])) {
+        return Object.entries(NotificationType_WAREHOUSEMANAGER).map((s): SelectMenuItemProps => {
+            return {
+                key: s[0],
+                value: s[1],
+            }
+        })
+    } else if (isAuthorized([Role.FOREMAN])) {
+        return Object.entries(NotificationType_FOREMAN).map((s): SelectMenuItemProps => {
+            return {
+                key: s[0],
+                value: s[1],
+            }
+        })
+    } else if (isAuthorized([Role.FITTER])) {
+        return Object.entries(NotificationType_FITTER).map((s): SelectMenuItemProps => {
+            return {
+                key: s[0],
+                value: s[1],
+            }
+        })
+    } else {
+        return Object.entries(NotificationType_OTHERS).map((s): SelectMenuItemProps => {
+            return {
+                key: s[0],
+                value: s[1],
+            }
+        })
+    }
 }

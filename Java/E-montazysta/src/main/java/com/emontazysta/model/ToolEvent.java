@@ -44,6 +44,7 @@ public class ToolEvent {
     private LocalDateTime eventDate;
     private LocalDateTime movingDate;
     private LocalDateTime completionDate;
+    @Column(length=500)
     private String description;
     private boolean deleted = Boolean.FALSE;
     private EventStatus status;

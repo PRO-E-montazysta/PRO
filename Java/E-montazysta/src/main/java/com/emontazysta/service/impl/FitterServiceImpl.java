@@ -3,10 +3,12 @@ package com.emontazysta.service.impl;
 import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.EmploymentMapper;
 import com.emontazysta.mapper.FitterMapper;
+import com.emontazysta.mapper.WorkingOnMapper;
 import com.emontazysta.model.Fitter;
 import com.emontazysta.model.dto.EmployeeDto;
 import com.emontazysta.model.dto.EmploymentDto;
 import com.emontazysta.model.dto.FitterDto;
+import com.emontazysta.model.dto.WorkingOnDto;
 import com.emontazysta.model.searchcriteria.AppUserSearchCriteria;
 import com.emontazysta.repository.FitterRepository;
 import com.emontazysta.repository.criteria.AppUserCriteriaRepository;
@@ -14,6 +16,7 @@ import com.emontazysta.repository.EmploymentRepository;
 import com.emontazysta.service.FitterService;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -22,6 +25,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +37,8 @@ public class FitterServiceImpl implements FitterService {
     private final EmploymentMapper employmentMapper;
     private final AuthUtils authUtils;
     private final AppUserCriteriaRepository appUserCriteriaRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final WorkingOnMapper workingOnMapper;
 
     @Override
     public List<FitterDto> getAll(Principal principal) {
@@ -68,6 +74,7 @@ public class FitterServiceImpl implements FitterService {
     @Override
     public FitterDto add(FitterDto fitterDto) {
         fitterDto.setUsername(fitterDto.getUsername().toLowerCase());
+        fitterDto.setPassword(bCryptPasswordEncoder.encode(fitterDto.getPassword()));
         fitterDto.setRoles(Set.of(Role.FITTER));
         fitterDto.setUnavailabilities(new ArrayList<>());
         fitterDto.setNotifications(new ArrayList<>());
@@ -116,5 +123,24 @@ public class FitterServiceImpl implements FitterService {
         fitter.setWorkingOn(updatedFitter.getWorkingOn());
 
         return fitterMapper.toDto(repository.save(fitter));
+    }
+
+    @Override
+    public List<FitterDto> getAvailable(AppUserSearchCriteria appUserSearchCriteria, Principal principal) {
+        appUserSearchCriteria.setRoles(List.of("FITTER"));
+        List<EmployeeDto> appUsers = appUserCriteriaRepository.findAllWithFilters(appUserSearchCriteria, principal);
+        List<FitterDto> result = new ArrayList<>();
+
+        for(EmployeeDto employeeDto : appUsers) {
+            result.add(fitterMapper.toDto(repository.getReferenceById(employeeDto.getId())));
+        }
+
+        return result;
+    }
+
+    @Override
+    public List<WorkingOnDto> getWorkingOn(Long id) {
+        Fitter fitter = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return fitter.getWorkingOn().stream().map(workingOnMapper::fitterWorks).collect(Collectors.toList());
     }
 }

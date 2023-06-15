@@ -1,17 +1,40 @@
 import { Box } from '@mui/material'
 import { useContext } from 'react'
-import { useMutation } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import useError from '../../hooks/useError'
-import { createOrderStage, updateOrderStage } from '../../api/orderStage.api'
+import {
+    createOrderStage,
+    orderStageNextStatus,
+    orderStagePreviousStatus,
+    updateOrderStage,
+} from '../../api/orderStage.api'
 
-export const useAddOrderStage = () => {
-    const navigate = useNavigate()
-    const { showDialog } = useContext(DialogGlobalContext)
+export const useAddOrderStage = (onSuccessCallback: (data: any) => void) => {
     const showError = useError()
     return useMutation({
         mutationFn: createOrderStage,
+        onSuccess: onSuccessCallback,
+        onError: showError,
+    })
+}
+
+export const useUpdateOrderStage = (onSuccessCallback: (data: any) => void) => {
+    const showError = useError()
+    return useMutation({
+        mutationFn: updateOrderStage,
+        onSuccess: onSuccessCallback,
+        onError: showError,
+    })
+}
+
+export const useOrderStageNextStatus = (onSuccessCallback: () => void) => {
+    const { showDialog } = useContext(DialogGlobalContext)
+    const showError = useError()
+    const queryClient = useQueryClient()
+    return useMutation({
+        mutationFn: orderStageNextStatus,
         onSuccess(data) {
             showDialog({
                 btnOptions: [
@@ -20,24 +43,22 @@ export const useAddOrderStage = () => {
                         value: 0,
                     },
                 ],
-                title: 'Sukces',
-                content: <Box>Nowy etap utworzono pomyślnie</Box>,
-                callback: () => {
-                    if (data.id) navigate(0)
-                    else navigate(`/orders`)
-                },
+                title: 'Sukces!',
+                content: <Box>Status został zmieniony</Box>,
             })
+            queryClient.invalidateQueries('orderStage')
+            onSuccessCallback()
         },
         onError: showError,
     })
 }
 
-export const useUpdateOrderStage = () => {
-    const navigate = useNavigate()
+export const useOrderStagePreviousStatus = (onSuccessCallback: () => void) => {
     const { showDialog } = useContext(DialogGlobalContext)
     const showError = useError()
+    const queryClient = useQueryClient()
     return useMutation({
-        mutationFn: updateOrderStage,
+        mutationFn: orderStagePreviousStatus,
         onSuccess(data) {
             showDialog({
                 btnOptions: [
@@ -46,13 +67,11 @@ export const useUpdateOrderStage = () => {
                         value: 0,
                     },
                 ],
-                title: 'Sukces',
-                content: <Box>Zedytowano etap pomyślnie</Box>,
-                callback: () => {
-                    if (data.id) navigate(0)
-                    else navigate(`/orders`)
-                },
+                title: 'Sukces!',
+                content: <Box>Status został zmieniony</Box>,
             })
+            queryClient.invalidateQueries('orderStage')
+            onSuccessCallback()
         },
         onError: showError,
     })

@@ -14,6 +14,7 @@ import com.emontazysta.repository.EmploymentRepository;
 import com.emontazysta.service.ManagerService;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.security.Principal;
@@ -32,6 +33,7 @@ public class ManagerServiceImpl implements ManagerService {
     private final EmploymentMapper employmentMapper;
     private final AuthUtils authUtils;
     private final AppUserCriteriaRepository appUserCriteriaRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public List<ManagerDto> getAll(Principal principal) {
@@ -66,6 +68,7 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public ManagerDto add(ManagerDto managerDto) {
         managerDto.setUsername(managerDto.getUsername().toLowerCase());
+        managerDto.setPassword(bCryptPasswordEncoder.encode(managerDto.getPassword()));
         managerDto.setRoles(Set.of(Role.MANAGER));
         managerDto.setUnavailabilities(new ArrayList<>());
         managerDto.setNotifications(new ArrayList<>());

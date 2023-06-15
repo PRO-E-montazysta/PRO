@@ -2,7 +2,7 @@ import { Grid, Paper, Box, Button, Tabs, Tab, Typography, CardActions } from '@m
 import dayjs, { Dayjs } from 'dayjs'
 import { useFormik } from 'formik'
 import { useParams } from 'react-router-dom'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { DatePicker, TimePicker } from '@mui/x-date-pickers'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -15,17 +15,30 @@ import AssignmentIcon from '@mui/icons-material/Assignment'
 import Collapse from '@mui/material/Collapse'
 import { ExpandMore, TabPanel, validationSchema } from './helper'
 import { getRolesFromToken } from '../../utils/token'
-import { useQuery } from 'react-query'
+import { useQuery, useQueryClient } from 'react-query'
 import { AxiosError } from 'axios'
 import { getAllToolTypes, getPlannedToolTypesById } from '../../api/toolType.api'
 import { getAllElements, getPlannedElementById } from '../../api/element.api'
-import { useAddOrderStage, useUpdateOrderStage } from './hooks'
+import { useAddOrderStage, useOrderStageNextStatus, useOrderStagePreviousStatus, useUpdateOrderStage } from './hooks'
 import { CustomTextField } from '../../components/form/FormInput'
 import { v4 as uuidv4 } from 'uuid'
 import { ToolType } from '../../types/model/ToolType'
 import OrderStageToolsTable from './OrderStageToolsTable'
 import OrderStageElementsTable from './OrderStageElementsTable'
 import { Role } from '../../types/roleEnum'
+import { isAuthorized } from '../../utils/authorize'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import useBreakpoints from '../../hooks/useBreakpoints'
+import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
+import { orderStageStatusName } from '../../helpers/enum.helper'
+import PlannerStageDetails from '../orders/PlannerStageDetails'
+import moment from 'moment'
+import Attachments, { AttachmentsProps } from '../../components/attachments/Attachments'
+import useAttachmentData from '../../components/attachments/AttachmentData.hook'
+import { deleteFilesFromServer, saveNewFiles } from '../../components/attachments/attachments.helper'
+import { Order } from '../../types/model/Order'
+import { getOrderDetails } from '../../api/order.api'
 
 type OrderStageCardProps = {
     index?: string
@@ -37,14 +50,22 @@ type OrderStageCardProps = {
 const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCardProps) => {
     const [tabValue, setTabValue] = useState(0)
     const [expandedInformation, setExpandedInformation] = useState(false)
-    const [plannedStartDate, setPlannedStartDate] = useState<Dayjs | null>(dayjs(stage?.plannedStartDate))
-    const [plannedStartHour, setPlannedStartHour] = useState<Dayjs | null>(dayjs(stage?.plannedStartDate))
-    const [plannedFinishHour, setPlannedFinishHour] = useState<Dayjs | null>(dayjs(stage?.plannedEndDate))
+    const [plannedStartDate, setPlannedStartDate] = useState<Dayjs | null>(
+        dayjs(stage?.plannedStartDate ? stage?.plannedStartDate : null),
+    )
+    const [plannedStartHour, setPlannedStartHour] = useState<Dayjs | null>(
+        dayjs(stage?.plannedStartDate ? stage?.plannedStartDate : null),
+    )
+    const [plannedFinishHour, setPlannedFinishHour] = useState<Dayjs | null>(
+        dayjs(stage?.plannedEndDate ? stage?.plannedEndDate : null),
+    )
     const [preparedPlannedStartDate, setPreparedPlannedStartDate] = useState('')
     const [preparedPlannedEndDate, setPreparedPlannedEndDate] = useState('')
     const [userRole, setUserRole] = useState('')
-    const addOrderStage = useAddOrderStage()
-    const updateOrderStage = useUpdateOrderStage()
+    const addOrderStage = useAddOrderStage(() => onSaveOrderStageSucceess())
+    const updateOrderStage = useUpdateOrderStage(() => onSaveOrderStageSucceess())
+    const appSize = useBreakpoints()
+    const { showDialog } = useContext(DialogGlobalContext)
 
     const dummyScrollDiv = useRef<any>(null)
     const params = useParams()
@@ -53,6 +74,35 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
     const [error, setError] = useState<DateValidationError | null>(null)
     const [isEditing, setIsEditing] = useState(false)
     const [isDisplayingMode, setIsDisplayingMode] = useState(isDisplaying)
+    const queryClient = useQueryClient()
+    //attachment functionality
+    const attachmentData = useAttachmentData({
+        idsOfFilesFromServer: stage?.attachments || [],
+    })
+    const onSaveOrderStageSucceess = async () => {
+        const saveResult = await saveNewFiles(attachmentData.fileListLocal, stage?.id)
+        const deleteResult = await deleteFilesFromServer(attachmentData.fileIdsFromServerToDelete)
+        const attachmentResult = saveResult && deleteResult
+        let message = isEditing ? 'Zedytowano etap pomyślnie' : 'Nowy etap utworzono pomyślnie'
+        if (!attachmentResult) message += ', jednak wystąpił błąd zapisu załączników'
+        showDialog({
+            btnOptions: [
+                {
+                    text: 'OK',
+                    value: 0,
+                },
+            ],
+            title: attachmentResult ? 'Sukces' : 'Błąd zapisu załączników',
+            content: message,
+            callback: () => {
+                queryClient.refetchQueries({
+                    queryKey: ['orderStageForOrder', { id: params.id }],
+                })
+                setIsEditing(false)
+                setIsDisplayingMode(true)
+            },
+        })
+    }
 
     const handleSetPlannedElements = (value: { numberOfElements: number; elementId: string }[]) => {
         plannedElementsRef!.current! = value
@@ -152,6 +202,25 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
         handleSetElementsOnEdit()
     }
 
+    const handleResetFormik = () => {
+        plannedElementsRef.current! = []
+        plannedToolsTypesRef.current! = []
+        setPreparedPlannedStartDate('')
+        setPreparedPlannedEndDate('')
+        setPlannedStartDate(dayjs(stage!.plannedStartDate))
+        setPlannedStartHour(dayjs(stage!.plannedStartDate))
+        setPlannedFinishHour(dayjs(stage!.plannedEndDate))
+        formik.resetForm()
+    }
+    const handleCancelButtonAction = () => {
+        setIsEditing(false)
+        setIsDisplayingMode(true)
+        handleResetFormik()
+        attachmentData.handleReset()
+    }
+    useEffect(() => {
+        if (stage) formik.setFieldValue('fitters', stage.fitters)
+    }, [stage])
     const formik = useFormik({
         initialValues: {
             orderId: params.id!,
@@ -167,8 +236,8 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
             listOfElementsPlannedNumber: isDisplayingMode && stage ? stage.listOfElementsPlannedNumber : [],
             attachments: [],
             test: '',
+            fitters: stage && stage.fitters ? stage.fitters : [],
         },
-
         validationSchema: validationSchema,
         onSubmit: (values) => {
             values.listOfElementsPlannedNumber = plannedElementsRef.current!
@@ -253,7 +322,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                 },
                             }}
                             label="Planowana godzina rozpoczęcia"
-                            format={'HH:mm:ss'}
+                            format={'HH:mm'}
                             ampm={false}
                             value={plannedStartHour}
                             disabled={isDisplayingMode}
@@ -297,7 +366,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                             disabled={isDisplayingMode}
                             label="Planowana godzina zakończenia"
                             ampm={false}
-                            format={'HH:mm:ss'}
+                            format={'HH:mm'}
                             value={plannedFinishHour}
                             onChange={(data) => {
                                 setPlannedFinishHour(data)
@@ -309,6 +378,84 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
         )
     }
 
+    const queryOrder = useQuery<Order, AxiosError>(
+        ['order', { id: stage?.orderId }],
+        async () => getOrderDetails(String(stage?.orderId)),
+        {
+            enabled: !!stage?.orderId && stage?.orderId != undefined,
+        },
+    )
+
+    const canEdit = () => {
+        const orderStageStatus = stage?.status
+        return (
+            (orderStageStatus == 'PLANNING' && isAuthorized([Role.SPECIALIST])) ||
+            (orderStageStatus == 'ADDING_FITTERS' && isAuthorized([Role.FOREMAN])) ||
+            (orderStageStatus == 'PICK_UP' && isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) ||
+            (orderStageStatus == 'REALESED' && isAuthorized([Role.FOREMAN])) ||
+            (orderStageStatus == 'ON_WORK' && isAuthorized([Role.FOREMAN])) ||
+            (orderStageStatus == 'RETURN' && isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) ||
+            (orderStageStatus == 'RETURNED' && isAuthorized([Role.FOREMAN]))
+        )
+    }
+
+    const canChangeToNextStatus = () => {
+        const orderStageStatus = stage?.status
+        return (
+            (orderStageStatus == 'PLANNING' &&
+                isAuthorized([Role.SPECIALIST]) &&
+                queryOrder.data?.status != 'PLANNING') ||
+            (orderStageStatus == 'ADDING_FITTERS' && isAuthorized([Role.FOREMAN])) ||
+            (orderStageStatus == 'PICK_UP' && isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) ||
+            (orderStageStatus == 'REALESED' && isAuthorized([Role.FOREMAN])) ||
+            (orderStageStatus == 'ON_WORK' && isAuthorized([Role.FOREMAN])) ||
+            (orderStageStatus == 'RETURN' && isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) ||
+            (orderStageStatus == 'RETURNED' && isAuthorized([Role.FOREMAN]))
+        )
+    }
+
+    const canChangeToPreviousStatus = () => {
+        const orderStageStatus = stage?.status
+        return (
+            (orderStageStatus == 'ADDING_FITTERS' && isAuthorized([Role.FOREMAN])) ||
+            (orderStageStatus == 'PICK_UP' && isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) ||
+            (orderStageStatus == 'REALESED' && isAuthorized([Role.FOREMAN])) ||
+            (orderStageStatus == 'ON_WORK' && isAuthorized([Role.FOREMAN])) ||
+            (orderStageStatus == 'RETURN' && isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) ||
+            (orderStageStatus == 'RETURNED' && isAuthorized([Role.FOREMAN])) ||
+            (orderStageStatus == 'FINISHED ' && isAuthorized([Role.FOREMAN]))
+        )
+    }
+
+    const orderNextStatusMutation = useOrderStageNextStatus(() => {})
+    const orderPreviousStatusMutation = useOrderStagePreviousStatus(() => {})
+
+    const handleNextStatus = () => {
+        showDialog({
+            title: 'Czy na pewno chcesz zmienić status etapu na następny?',
+            btnOptions: [
+                { text: 'Tak', value: 1, variant: 'contained' },
+                { text: 'Anuluj', value: 0, variant: 'outlined' },
+            ],
+            callback: (result: number) => {
+                if (result == 1 && stage?.id!) orderNextStatusMutation.mutate(stage?.id!)
+            },
+        })
+    }
+
+    const handlePreviousStatus = () => {
+        showDialog({
+            title: 'Czy na pewno chcesz cofnąć status etapu?',
+            btnOptions: [
+                { text: 'Tak', value: 1, variant: 'contained' },
+                { text: 'Anuluj', value: 0, variant: 'outlined' },
+            ],
+            callback: (result: number) => {
+                if (result == 1 && stage?.id!) orderPreviousStatusMutation.mutate(stage?.id!)
+            },
+        })
+    }
+
     return (
         <Card id={index ? index.toString() : ''} sx={{ margin: 'auto', marginTop: '20px', border: '1px solid' }}>
             <CardActions disableSpacing>
@@ -316,7 +463,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                     <AssignmentIcon />
                 </IconButton>
                 <Typography variant="h5" color="text.secondary">
-                    {stage ? <Typography>Etap {stage.name}</Typography> : <Typography>Dodaj etap</Typography>}
+                    {stage ? `Etap - ${stage.name}` : `Nowy etap`}
                 </Typography>
                 <ExpandMore
                     expand={expandedInformation}
@@ -351,20 +498,20 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                 helperText={formik.touched.name && formik.errors.name}
                             />
                         </Grid>
-                        {isDisplayingMode ? (
-                            <Grid item xs={4} md={3}>
-                                <CustomTextField
-                                    readOnly={isDisplayingMode!}
-                                    disabled={isDisplayingMode}
-                                    sx={{ width: '100%' }}
-                                    id="standard-basic"
-                                    variant="outlined"
-                                    label="Status"
-                                    name="status"
-                                    defaultValue={isDisplayingMode ? stage!.status : null}
-                                />
-                            </Grid>
-                        ) : null}
+
+                        <Grid item xs={4} md={3}>
+                            <CustomTextField
+                                readOnly={true}
+                                disabled={true}
+                                sx={{ width: '100%' }}
+                                id="standard-basic"
+                                variant="outlined"
+                                label="Status"
+                                name="status"
+                                defaultValue={isDisplayingMode ? orderStageStatusName(stage!.status) : null}
+                            />
+                        </Grid>
+
                         <Grid item xs={4} md={3}>
                             <CustomTextField
                                 readOnly={isDisplayingMode!}
@@ -424,59 +571,64 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     justifyContent: 'space-around',
                                 }}
                             >
-                                <Tabs
-                                    component="div"
-                                    value={tabValue}
-                                    onChange={handleTabChange}
-                                    aria-label="basic tabs example"
-                                >
+                                <Tabs component="div" value={tabValue} onChange={handleTabChange}>
                                     <Tab label="Informacje o datach" {...tabProps(0)} />
                                     <Tab label="Narzędzia" {...tabProps(1)} />
                                     <Tab label="Elementy" {...tabProps(2)} />
-                                    {isDisplayingMode ? <Tab label="Montażyści..." {...tabProps(2)} /> : null}
-                                    <Tab label="Szczegóły etapu/Zalaczniki" {...tabProps(1)} />
+                                    <Tab label="Montażyści" {...tabProps(2)} />
+                                    <Tab label="Załączniki" {...tabProps(1)} />
                                 </Tabs>
                             </Box>
-                            <TabPanel key={uuidv4()} value={tabValue} index={0}>
+                            <TabPanel value={tabValue} index={0}>
                                 {getDateInformations(stage)}
                             </TabPanel>
-                            <TabPanel key={uuidv4()} value={tabValue} index={1}>
+                            <TabPanel value={tabValue} index={1}>
                                 <OrderStageToolsTable
                                     itemsArray={queryAllToolTypes.data!}
                                     isDisplayingMode={isDisplayingMode!}
                                     toolsTypeListIds={stage?.listOfToolsPlannedNumber as any}
                                     handleChange={handleSetPlannedToolsTypes}
                                     toolsRef={plannedToolsTypesRef}
+                                    releasedToolsInfo={stage?.simpleToolReleases}
                                 />
                             </TabPanel>
-                            <TabPanel key={uuidv4()} value={tabValue} index={2}>
+                            <TabPanel value={tabValue} index={2}>
                                 <OrderStageElementsTable
                                     itemsArray={queryAllElements.data!}
                                     isDisplayingMode={isDisplayingMode!}
                                     elementsListIds={stage?.listOfElementsPlannedNumber as any}
                                     handleChange={handleSetPlannedElements}
                                     elementsRef={plannedElementsRef}
+                                    releasedReturnedElementsInfo={stage?.simpleElementReturnReleases}
                                 />
                             </TabPanel>
 
-                            <TabPanel key={uuidv4()} value={tabValue} index={3}>
-                                <Typography>Zalaczniki...</Typography>
+                            <TabPanel value={tabValue} index={3}>
+                                <PlannerStageDetails
+                                    dateFrom={preparedPlannedStartDate}
+                                    dateTo={preparedPlannedEndDate}
+                                    fitters={formik.values.fitters}
+                                    setFitters={(fitters) => formik.setFieldValue('fitters', fitters)}
+                                    readonly={!isAuthorized([Role.FOREMAN]) || isDisplayingMode}
+                                    orderStageId={formik.values.orderStageId}
+                                />
                             </TabPanel>
-                            <TabPanel key={uuidv4()} value={tabValue} index={4}>
-                                <Grid item xs={2}>
-                                    <CustomTextField
-                                        readOnly={isDisplayingMode!}
-                                        sx={{ width: '100%' }}
-                                        label="Załączniki"
-                                        name="attachments"
-                                    />
-                                </Grid>
+                            <TabPanel value={tabValue} index={4}>
+                                <Attachments {...attachmentData} readonly={isDisplayingMode} />
                             </TabPanel>
                         </Box>
 
                         <Grid spacing={2} container justifyContent="flex-end" sx={{ marginTop: '20px' }}>
-                            <Grid item>
-                                {isDisplayingMode && userRole === Role.SPECIALIST && (
+                            <Grid
+                                item
+                                sx={{
+                                    mt: '15px',
+                                    gap: '15px',
+                                    display: appSize.isMobile ? 'grid' : 'flex',
+                                    flexDirection: 'row-reverse',
+                                }}
+                            >
+                                {isDisplayingMode && canEdit() && (
                                     <Button
                                         color="primary"
                                         variant="contained"
@@ -487,10 +639,52 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     </Button>
                                 )}
                                 {(!isDisplayingMode || isEditing) && (
-                                    <Button type="submit" color="primary" variant="contained" disabled={isLoading}>
-                                        Zapisz etap
-                                    </Button>
+                                    <>
+                                        <Button
+                                            type="submit"
+                                            color="primary"
+                                            variant="contained"
+                                            disabled={isLoading}
+                                            id={`formButton-save`}
+                                        >
+                                            Zapisz
+                                        </Button>
+                                        <Button
+                                            color="primary"
+                                            variant="contained"
+                                            disabled={isLoading}
+                                            onClick={handleCancelButtonAction}
+                                            id={`formButton-cancel`}
+                                        >
+                                            Anuluj
+                                        </Button>
+                                    </>
                                 )}
+                                {canChangeToNextStatus() && isDisplayingMode ? (
+                                    <Button
+                                        id={`formButton-nextStatus`}
+                                        color="primary"
+                                        startIcon={<ArrowForwardIosIcon />}
+                                        variant="contained"
+                                        style={{ width: appSize.isMobile ? 'auto' : 190 }}
+                                        onClick={handleNextStatus}
+                                    >
+                                        Następny status
+                                    </Button>
+                                ) : null}
+                                {canChangeToPreviousStatus() && isDisplayingMode ? (
+                                    <Button
+                                        id={`formButton-nextStatus`}
+                                        color="primary"
+                                        startIcon={<ArrowBackIosIcon />}
+                                        variant="contained"
+                                        type="submit"
+                                        style={{ width: appSize.isMobile ? 'auto' : 170 }}
+                                        onClick={handlePreviousStatus}
+                                    >
+                                        Cofnij status
+                                    </Button>
+                                ) : null}
                                 <div ref={dummyScrollDiv} />
                             </Grid>
                         </Grid>

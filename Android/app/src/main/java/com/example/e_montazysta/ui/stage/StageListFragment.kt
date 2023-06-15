@@ -4,30 +4,35 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.example.e_montazysta.data.model.Order
 import com.example.e_montazysta.databinding.FragmentStagesBinding
+import com.google.android.material.appbar.MaterialToolbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class StageListFragment : Fragment() {
+class StageListFragment(val order: Order? = null) : Fragment() {
     private val stageListViewModel: StageListViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         // Get a reference to the binding object and inflate the fragment views.
         val binding: FragmentStagesBinding = FragmentStagesBinding.inflate(inflater, container, false)
-        val application = requireNotNull(this.activity).application
 
-        // To use the View Model with data binding, you have to explicitly
-        // give the binding object a reference to it.
-        binding.stageListViewModel = stageListViewModel
         val adapter = StageListAdapter( CustomClickListener{
             stageId -> findNavController().navigate(StageListFragmentDirections.actionStageListFragmentToStageDetailFragment(stageId))
         })
 
         binding.stageList.adapter = adapter
-        stageListViewModel.getStage()
+
+        if (order == null) {
+            stageListViewModel.getStages()
+        } else {
+            binding.toolbar
+            stageListViewModel.setStageList(order.orderStages.filterNotNull())
+        }
 
         stageListViewModel.stage.observe(viewLifecycleOwner, Observer {
             it?.let {
@@ -44,9 +49,19 @@ class StageListFragment : Fragment() {
                 }
             }
         })
+        // Wyświetlanie błędów
+        stageListViewModel.messageLiveData.observe(viewLifecycleOwner) {
+                errorMessage -> Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+        }
         // Specify the current activity as the lifecycle owner of the binding.
         // This is necessary so that the binding can observe LiveData updates.
-    binding.lifecycleOwner = this
-    return binding.root
+    	binding.lifecycleOwner = this
+
+        val toolbar: MaterialToolbar = binding.toolbar
+	toolbar.setNavigationOnClickListener {
+	    requireActivity().onBackPressed()
+	}
+
+    	return binding.root
     }
 }

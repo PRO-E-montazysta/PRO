@@ -2,7 +2,7 @@ import { FilterInputType } from '../../components/table/filter/TableFilter'
 import { Order } from '../../types/model/Order'
 import { HeadCell } from '../../components/table/sort/SortedTableHeader'
 import { formatArrayToOptions, formatDate, formatLocation } from '../../helpers/format.helper'
-import { priorityName, priorityOptions, statusName, statusOptions } from '../../helpers/enum.helper'
+import { priorityName, priorityOptions, orderStatusName, statusOptions } from '../../helpers/enum.helper'
 
 import * as yup from 'yup'
 import { useQuery } from 'react-query'
@@ -21,6 +21,8 @@ import { getAllSpecialists } from '../../api/specialist.api'
 import { AppSize } from '../../hooks/useBreakpoints'
 import { FormInputProps } from '../../types/form'
 import { Role } from '../../types/roleEnum'
+import { isAuthorized } from '../../utils/authorize'
+import { DeletedClientName } from '../../helpers/Delted.helper'
 
 export const headCells: Array<HeadCell<Order>> = [
     {
@@ -68,7 +70,7 @@ export const headCells: Array<HeadCell<Order>> = [
         id: 'status',
         label: 'Status',
         numeric: false,
-        formatFn: (status: string) => statusName(status),
+        formatFn: (status: string) => orderStatusName(status),
         visibleInMode: [AppSize.notebook, AppSize.desktop],
     },
     {
@@ -82,14 +84,6 @@ export const headCells: Array<HeadCell<Order>> = [
 ]
 
 export const filterInitStructure: Array<FilterInputType> = [
-    {
-        id: 'status',
-        value: '',
-        label: 'Status',
-        inputType: 'multiselect',
-        typeValue: 'Array',
-        options: statusOptions(),
-    },
     {
         id: 'name',
         value: '',
@@ -110,6 +104,14 @@ export const filterInitStructure: Array<FilterInputType> = [
         label: 'Czas utworzenia do',
         inputType: 'datetime-local',
         typeValue: 'date',
+    },
+    {
+        id: 'status',
+        value: '',
+        label: 'Status',
+        inputType: 'multiselect',
+        typeValue: 'Array',
+        options: statusOptions(),
     },
 ]
 
@@ -145,7 +147,11 @@ export const useFormStructure = (): Array<FormInputProps> => {
             id: 'name',
             initValue: '',
             type: 'input',
-            validation: yup.string().min(3, 'Nazwa musi zawierać co najmniej 3 znaki').required('Wprowadź nazwę'),
+            validation: yup
+                .string()
+                .min(3, 'Nazwa musi zawierać co najmniej 3 znaki')
+                .max(255, 'Nazwa może zawierać maksymalnie 255 znaki')
+                .required('Wprowadź nazwę'),
         },
         {
             label: 'Priorytet',
@@ -186,7 +192,17 @@ export const useFormStructure = (): Array<FormInputProps> => {
             type: 'select',
             options: formatArrayToOptions('id', (x: Client) => x.name, queryClient.data),
             addNewPermissionRoles: [Role.SALES_REPRESENTATIVE],
-            editPermissionRoles: [Role.SALES_REPRESENTATIVE],
+            editPermissionRoles: [Role.NOBODY],
+            viewPermissionRoles: [Role.NOBODY],
+        },
+        {
+            label: 'Klient',
+            id: 'clientId',
+            initValue: '',
+            type: 'can-be-deleted',
+            formatFn: (id: string) => DeletedClientName(id),
+            addNewPermissionRoles: [Role.NOBODY],
+            editPermissionRoles: [Role.NOBODY],
             viewPermissionRoles: [Role['*']],
         },
         {
@@ -199,7 +215,8 @@ export const useFormStructure = (): Array<FormInputProps> => {
             editPermissionRoles: [Role.MANAGER],
             viewPermissionRoles: [Role['*']],
             customPermission: (e) => {
-                if (e == null) return 'hidden'
+                if (isAuthorized([Role.MANAGER])) return null
+                else if (e == null) return 'hidden'
                 else return null
             },
         },
@@ -210,20 +227,20 @@ export const useFormStructure = (): Array<FormInputProps> => {
             type: 'number',
             dontIncludeInFormStructure: true,
         },
-        {
-            label: 'Manager',
-            id: 'managerId',
-            initValue: null,
-            type: 'select',
-            options: formatArrayToOptions('id', (x: AppUser) => x.firstName + ' ' + x.lastName, queryManager.data),
-        },
-        {
-            label: 'Specjalista',
-            id: 'specialistId',
-            initValue: null,
-            type: 'select',
-            options: formatArrayToOptions('id', (x: AppUser) => x.firstName + ' ' + x.lastName, querySpecialist.data),
-        },
+        // {
+        //     label: 'Manager',
+        //     id: 'managerId',
+        //     initValue: null,
+        //     type: 'select',
+        //     options: formatArrayToOptions('id', (x: AppUser) => x.firstName + ' ' + x.lastName, queryManager.data),
+        // },
+        // {
+        //     label: 'Specjalista',
+        //     id: 'specialistId',
+        //     initValue: null,
+        //     type: 'select',
+        //     options: formatArrayToOptions('id', (x: AppUser) => x.firstName + ' ' + x.lastName, querySpecialist.data),
+        // },
         {
             label: 'Handlowiec',
             id: 'salesRepresentativeId',
@@ -264,4 +281,3 @@ export const useFormStructure = (): Array<FormInputProps> => {
         },
     ]
 }
-

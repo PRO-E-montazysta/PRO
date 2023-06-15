@@ -19,12 +19,12 @@ import java.time.LocalDateTime;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Attachment {
 
-    public Attachment(Long id, String name, String url, String description, TypeOfAttachment typeOfAttachment,
+    public Attachment(Long id, String name, String uniqueName, String description, TypeOfAttachment typeOfAttachment,
                       LocalDateTime createdAt, ToolType toolType, Comment comment, AppUser employee, ToolEvent toolEvent,
                       Orders order, Element element, OrderStage orderStage, ElementEvent elementEvent) {
         this.id = id;
         this.name = name;
-        this.url = url;
+        this.uniqueName = uniqueName;
         this.description = description;
         this.typeOfAttachment = typeOfAttachment;
         this.createdAt = createdAt;
@@ -43,10 +43,12 @@ public class Attachment {
     private Long id;
 
     private String name;
-    private String url;
+    private String uniqueName;
+    private String path;
     private String description;
     private TypeOfAttachment typeOfAttachment;
     private LocalDateTime createdAt;
+    private String fileName;
     private boolean deleted = Boolean.FALSE;
 
     @ManyToOne

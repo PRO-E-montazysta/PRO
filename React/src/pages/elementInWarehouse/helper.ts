@@ -45,18 +45,18 @@ export const headCells: Array<HeadCell<ElementInWarehouseFilterDto>> = [
 
 export const filterInitStructure: Array<FilterInputType> = [
     {
-        id: 'minCount',
-        value: '',
-        label: 'Minimalna ilość',
-        inputType: 'number',
-        typeValue: 'number',
-    },
-    {
         id: 'warehouseId',
         value: '',
         label: 'Magazyn',
         inputType: 'multiselect',
         typeValue: 'Array',
+    },
+    {
+        id: 'minCount',
+        value: '',
+        label: 'Minimalna ilość',
+        inputType: 'number',
+        typeValue: 'number',
     },
 ]
 
@@ -93,19 +93,12 @@ export const useFormStructure = (): Array<FormInputProps> => {
             editPermissionRoles: [Role.WAREHOUSE_MANAGER, Role.WAREHOUSE_MAN],
         },
         {
-            label: 'Ilość w jednostce',
-            id: 'inUnitCount',
-            initValue: '',
-            type: 'input',
-            validation: yup.number().typeError('Podana wartość musi być liczbą'),
-            editPermissionRoles: [Role.WAREHOUSE_MANAGER],
-        },
-        {
             label: 'Regał',
             id: 'rack',
             initValue: '',
             type: 'input',
             editPermissionRoles: [Role.WAREHOUSE_MANAGER],
+            validation: yup.string().min(1, 'Wprowadź co najmniej 1 znak').max(255, 'Wprowadź co najwyżej 255 znaków'),
         },
         {
             label: 'Półka',
@@ -113,6 +106,7 @@ export const useFormStructure = (): Array<FormInputProps> => {
             initValue: '',
             type: 'input',
             editPermissionRoles: [Role.WAREHOUSE_MANAGER],
+            validation: yup.string().min(1, 'Wprowadź co najmniej 1 znak').max(255, 'Wprowadź co najwyżej 255 znaków'),
         },
     ]
 }

@@ -30,8 +30,6 @@ class ElementListAdapter(val clickListener: CustomClickListener) : RecyclerView.
     class ViewHolder( val binding: ListItemElementBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: ElementListItem, clickListener: CustomClickListener) {
-            binding.elementName.text = data.name
-            binding.elementCode.text = data.code
             binding.element = data
             binding.itemClickListener = clickListener
             binding.executePendingBindings()

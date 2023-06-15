@@ -80,7 +80,7 @@ public class EventCriteriaRepository {
         if (Objects.nonNull(eventSearchCriteria.getEventType())) {
             List<Predicate> eventTypePredicates = new ArrayList<>();
             for (String type : eventSearchCriteria.getEventType()) {
-                eventTypePredicates.add(criteriaBuilder.equal(criteriaBuilder.substring(toolEventRoot.get("tool").get("code"), 0, 1), type));
+                eventTypePredicates.add(criteriaBuilder.like(toolEventRoot.get("tool").get("code"), type + "|%"));
             }
             predicates.add(criteriaBuilder.or(eventTypePredicates.toArray(new Predicate[0])));
         }
@@ -145,7 +145,7 @@ public class EventCriteriaRepository {
         if (Objects.nonNull(eventSearchCriteria.getEventType())) {
             List<Predicate> eventTypePredicates = new ArrayList<>();
             for (String type : eventSearchCriteria.getEventType()) {
-                eventTypePredicates.add(criteriaBuilder.equal(criteriaBuilder.substring(elementEventRoot.get("element").get("code"), 0, 1), type));
+                eventTypePredicates.add(criteriaBuilder.like(elementEventRoot.get("element").get("code"), type + "|%"));
             }
             predicates.add(criteriaBuilder.or(eventTypePredicates.toArray(new Predicate[0])));
         }
@@ -184,6 +184,9 @@ public class EventCriteriaRepository {
             predicates.add(criteriaBuilder.equal(elementEventRoot.join("element").join("elementInWarehouses")
                             .get("warehouse").get("company").get("id"), authUtils.getLoggedUserCompanyId()));
         }
+
+        //Get not-deleted
+        predicates.add(criteriaBuilder.equal(elementEventRoot.get("deleted"), false));
 
         return  criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }

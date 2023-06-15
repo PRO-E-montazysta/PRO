@@ -14,6 +14,7 @@ import com.emontazysta.repository.EmploymentRepository;
 import com.emontazysta.service.SalesRepresentativeService;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.security.Principal;
@@ -32,6 +33,7 @@ public class SalesRepresentativeServiceImpl implements SalesRepresentativeServic
     private final EmploymentMapper employmentMapper;
     private final AuthUtils authUtils;
     private final AppUserCriteriaRepository appUserCriteriaRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public List<SalesRepresentativeDto> getAll(Principal principal) {
@@ -66,6 +68,7 @@ public class SalesRepresentativeServiceImpl implements SalesRepresentativeServic
     @Override
     public SalesRepresentativeDto add(SalesRepresentativeDto salesRepresentativeDto) {
         salesRepresentativeDto.setUsername(salesRepresentativeDto.getUsername().toLowerCase());
+        salesRepresentativeDto.setPassword(bCryptPasswordEncoder.encode(salesRepresentativeDto.getPassword()));
         salesRepresentativeDto.setRoles(Set.of(Role.SALES_REPRESENTATIVE));
         salesRepresentativeDto.setUnavailabilities(new ArrayList<>());
         salesRepresentativeDto.setNotifications(new ArrayList<>());

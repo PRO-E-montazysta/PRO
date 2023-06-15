@@ -1,8 +1,11 @@
 package com.emontazysta.service.impl;
 
+import com.emontazysta.mapper.UnavailabilityToCallendarMapper;
 import com.emontazysta.mapper.UnavailabilityMapper;
 import com.emontazysta.model.Manager;
+import com.emontazysta.model.OrderStage;
 import com.emontazysta.model.Unavailability;
+import com.emontazysta.model.dto.UnavailabilityToCalendarDto;
 import com.emontazysta.model.dto.UnavailabilityDto;
 import com.emontazysta.model.dto.UnavailabilityWithLocalDateDto;
 import com.emontazysta.model.dto.filterDto.UnavailabilityFilterDto;
@@ -15,7 +18,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +33,7 @@ public class UnavailabilityServiceImpl implements UnavailabilityService {
     private final AuthUtils authUtils;
     private final UnavailabilityCriteriaRepository unavailabilityCriteriaRepository;
 
+    private final UnavailabilityToCallendarMapper unavailabilityToCallendarMapper;
     @Override
     public List<UnavailabilityDto> getAll() {
         return repository.findAll().stream()
@@ -97,5 +103,52 @@ public class UnavailabilityServiceImpl implements UnavailabilityService {
     @Override
     public List<UnavailabilityFilterDto> findAllWithFilters(UnavailabilitySearchCriteria unavailabilitySearchCriteria) {
         return unavailabilityCriteriaRepository.findAllWithFilters(unavailabilitySearchCriteria);
+    }
+
+    @Override
+    public List<UnavailabilityToCalendarDto> getAllForCompanyLoggedUserInMonth(int month, int year) {
+       List<UnavailabilityToCalendarDto> unavailabilityToCalendarDtoList = new ArrayList<>();
+       List<Unavailability> unavailabilitiesfilteredByCompanyId = new ArrayList<>();
+
+
+       Long loggedUserCompanyId = authUtils.getLoggedUserCompanyId();
+       LocalDateTime startDate = createStartDate(month,year);
+       LocalDateTime endDate = createEndDate(month,year);
+
+       // wszystkie nieobecności dla danego miesiąca
+       List<Unavailability> unavailabilities =
+               repository.findAllByUnavailableFromGreaterThanAndUnavailableFromLessThan(startDate, endDate);
+
+       // tylko nieobecności dla firmy zalogowanego użytkownika
+        for (Unavailability unavailability : unavailabilities) {
+            if(loggedUserCompanyId.equals(authUtils.getUserCompanyId(unavailability.getAssignedBy()))) {
+                unavailabilitiesfilteredByCompanyId.add(unavailability);
+            }
+        }
+        //mapowanie nieobecności
+        for (Unavailability unavailability: unavailabilitiesfilteredByCompanyId) {
+                unavailabilityToCalendarDtoList.add(unavailabilityToCallendarMapper.toDto(unavailability));
+        }
+
+       return unavailabilityToCalendarDtoList;
+    }
+
+    private LocalDateTime createEndDate(int month, int year) {
+        List<Integer> thirtyDayMonth = List.of(4,6,9,11);
+        int lastDay;
+
+        if (month==2){
+            lastDay=28;
+        } else if (thirtyDayMonth.contains(month)) {
+            lastDay=30;
+        } else {
+            lastDay=31;
+        }
+
+       return LocalDateTime.of(year,month,lastDay,23,59);
+    }
+
+    private LocalDateTime createStartDate(int month, int year) {
+        return LocalDateTime.of(year,month,1,0,0);
     }
 }

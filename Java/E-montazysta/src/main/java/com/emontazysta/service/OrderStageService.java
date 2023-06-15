@@ -6,8 +6,6 @@ import com.emontazysta.model.dto.OrderStageWithToolsAndElementsDto;
 import com.emontazysta.model.dto.ToolSimpleReturnReleaseDto;
 import com.emontazysta.model.searchcriteria.OrdersStageSearchCriteria;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.security.Principal;
 import java.util.List;
 
 public interface OrderStageService {
@@ -25,7 +23,7 @@ public interface OrderStageService {
 
     OrderStageDto update(Long id, OrderStageWithToolsAndElementsDto orderStage);
 
-    List<OrderStageDto> getFilteredOrders(OrdersStageSearchCriteria ordersStageSearchCriteria, Principal principal);
+    List<OrderStageDto> getFilteredOrders(OrdersStageSearchCriteria ordersStageSearchCriteria);
 
     OrderStageDto releaseTools(Long id, List<ToolSimpleReturnReleaseDto> toolCodes);
     OrderStageDto returnTools(Long id, List<ToolSimpleReturnReleaseDto> toolCodes);
@@ -33,4 +31,5 @@ public interface OrderStageService {
     OrderStageDto returnElements(Long orderStageId, Long warehouseId, List<ElementSimpleReturnReleaseDto> elements);
     OrderStageDto nextStatus(Long id);
     OrderStageDto previousStatus(Long id);
+    OrderStageDto addFitters(Long id, List<Long> fittersId);
 }

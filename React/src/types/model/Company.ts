@@ -8,6 +8,7 @@ export type Company = {
     orders?: Array<number>
     clients?: Array<number>
     employments?: Array<number>
+    deleted: boolean
 }
 
 export const CompanyStatus = {

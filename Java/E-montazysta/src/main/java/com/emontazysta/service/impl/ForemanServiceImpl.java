@@ -3,10 +3,12 @@ package com.emontazysta.service.impl;
 import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.EmploymentMapper;
 import com.emontazysta.mapper.ForemanMapper;
+import com.emontazysta.mapper.WorkingOnMapper;
 import com.emontazysta.model.Foreman;
 import com.emontazysta.model.dto.EmployeeDto;
 import com.emontazysta.model.dto.EmploymentDto;
 import com.emontazysta.model.dto.ForemanDto;
+import com.emontazysta.model.dto.WorkingOnDto;
 import com.emontazysta.model.searchcriteria.AppUserSearchCriteria;
 import com.emontazysta.repository.ForemanRepository;
 import com.emontazysta.repository.criteria.AppUserCriteriaRepository;
@@ -14,6 +16,7 @@ import com.emontazysta.repository.EmploymentRepository;
 import com.emontazysta.service.ForemanService;
 import com.emontazysta.util.AuthUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -22,6 +25,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +37,8 @@ public class ForemanServiceImpl implements ForemanService {
     private final EmploymentMapper employmentMapper;
     private final AuthUtils authUtils;
     private final AppUserCriteriaRepository appUserCriteriaRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final WorkingOnMapper workingOnMapper;
 
     @Override
     public List<ForemanDto> getAll(Principal principal) {
@@ -67,6 +73,7 @@ public class ForemanServiceImpl implements ForemanService {
     @Override
     public ForemanDto add(ForemanDto foremanDto) {
         foremanDto.setUsername(foremanDto.getUsername().toLowerCase());
+        foremanDto.setPassword(bCryptPasswordEncoder.encode(foremanDto.getPassword()));
         foremanDto.setRoles(Set.of(Role.FOREMAN));
         foremanDto.setUnavailabilities(new ArrayList<>());
         foremanDto.setNotifications(new ArrayList<>());
@@ -117,5 +124,12 @@ public class ForemanServiceImpl implements ForemanService {
         foreman.setAssignedOrders(updatedForeman.getAssignedOrders());
         foreman.setDemandsAdHocs(updatedForeman.getDemandsAdHocs());
         return foremanMapper.toDto(repository.save(foreman));
+    }
+
+    @Override
+    public List<WorkingOnDto> getWorkingOn(Long id) {
+        Foreman foreman = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        System.out.println("~~"+foreman.getAssignedOrders().size());
+        return foreman.getAssignedOrders().stream().map(workingOnMapper::foremanWorks).collect(Collectors.toList());
     }
 }

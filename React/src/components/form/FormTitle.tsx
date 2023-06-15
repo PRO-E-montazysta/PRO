@@ -5,8 +5,9 @@ import useBreakpoints from '../../hooks/useBreakpoints'
 type FormTitleProps = {
     mainTitle: string
     subTitle?: string
+    deleted?: boolean
 }
-const FormTitle = ({ mainTitle, subTitle }: FormTitleProps) => {
+const FormTitle = ({ mainTitle, subTitle, deleted }: FormTitleProps) => {
     const appSize = useBreakpoints()
     if (subTitle) {
         return (
@@ -26,6 +27,7 @@ const FormTitle = ({ mainTitle, subTitle }: FormTitleProps) => {
                     padding="0px 5px 5px"
                     color={theme.palette.primary.contrastText}
                     fontSize={appSize.isMobile || appSize.isTablet ? '12px' : '22px'}
+                    style={deleted ? { textDecoration: 'line-through' } : {}}
                 >
                     {subTitle}
                 </Typography>

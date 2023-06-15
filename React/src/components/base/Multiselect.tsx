@@ -1,10 +1,9 @@
-import React, { CSSProperties, useEffect, useState } from 'react'
+import { CSSProperties, useEffect, useState } from 'react'
 import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
 import { Autocomplete, Checkbox, TextField } from '@mui/material'
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
 import CheckBoxIcon from '@mui/icons-material/CheckBox'
-import styled from '@emotion/styled'
 
 import './style.less'
 import { SelectMenuItemProps } from '../form/types'
@@ -27,7 +26,7 @@ export default function MultipleSelect(props: MultipleSelectProps) {
 
     useEffect(() => {
         setSelectedValues(menuItems.filter((m) => value.indexOf(m.key) > -1))
-    }, [value])
+    }, [value, menuItems])
 
     const handleChange = (newValues: any) => {
         const values = newValues.map((e: SelectMenuItemProps) => e.key)
@@ -64,6 +63,12 @@ export default function MultipleSelect(props: MultipleSelectProps) {
                         {option.value}
                     </li>
                 )}
+                sx={{
+                    '& .MuiAutocomplete-input': {
+                        paddingLeft: '0px !important',
+                        paddingRight: '0px !important',
+                    },
+                }}
                 renderInput={(params) => (
                     <TextField
                         {...params}

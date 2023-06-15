@@ -3,9 +3,6 @@ import { Box } from '@mui/system'
 import { useFormik } from 'formik'
 import { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-
-import { theme } from '../../themes/baseTheme'
-
 import { useFormStructure } from './helper'
 import {
     useAddOrderLocation,
@@ -14,6 +11,9 @@ import {
     useEditOrderLocation,
     useEditOrder,
     useOrderData,
+    useOrderNextStatus,
+    useOrderPreviousStatus,
+    useOrderStages,
 } from './hooks'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { FormButtons } from '../../components/form/FormButtons'
@@ -32,7 +32,17 @@ import { Role } from '../../types/roleEnum'
 import EditIcon from '@mui/icons-material/Edit'
 import Localization from '../../components/localization/Localization'
 import { Order } from '../../types/model/Order'
-import { useAddLocation, useFormStructureLocation, useLocationData } from '../../components/localization/hooks'
+import { useFormStructureLocation, useLocationData } from '../../components/localization/hooks'
+import Error from '../../components/error/Error'
+import { isAuthorized } from '../../utils/authorize'
+
+import { OrderStage } from '../../types/model/OrderStage'
+import { AxiosError } from 'axios'
+import { useQuery } from 'react-query'
+import { getAllOrderStagesForOrder } from '../../api/orderStage.api'
+import { EventInput } from '@fullcalendar/core'
+import moment from 'moment'
+import Planner from './Planner'
 
 const OrderDetails = () => {
     const [userRole, setUserRole] = useState('')
@@ -55,8 +65,22 @@ const OrderDetails = () => {
     const editOrderMutation = useEditOrder((data) => submitLocation(data))
     const deleteOrderMutation = useDeleteOrder(() => orderData.remove())
     const orderData = useOrderData(params.id)
+    const orderNextStatusMutation = useOrderNextStatus(() => {
+        orderData.refetch({
+            queryKey: ['order', { id: params.id }],
+        })
+    })
+    const orderPreviousStatusMutation = useOrderPreviousStatus(() => {
+        orderData.refetch({
+            queryKey: ['order', { id: params.id }],
+        })
+    })
+
     //status for all mutations and queries
-    const queriesStatus = useQueriesStatus([orderData], [addOrderMutation, editOrderMutation, deleteOrderMutation])
+    const queriesStatus = useQueriesStatus(
+        [orderData],
+        [addOrderMutation, editOrderMutation, deleteOrderMutation, orderNextStatusMutation],
+    )
 
     const appSize = useBreakpoints()
 
@@ -95,7 +119,33 @@ const OrderDetails = () => {
                 { text: 'Anuluj', value: 0, variant: 'outlined' },
             ],
             callback: (result: number) => {
-                if (result == 1 && params.id && Number.isInteger(params.id)) deleteOrderMutation.mutate(params.id)
+                if (result == 1 && params.id) deleteOrderMutation.mutate(params.id)
+            },
+        })
+    }
+
+    const handleNextStatus = () => {
+        showDialog({
+            title: 'Czy na pewno chcesz zmienić status zlecenia na następny?',
+            btnOptions: [
+                { text: 'Tak', value: 1, variant: 'contained' },
+                { text: 'Anuluj', value: 0, variant: 'outlined' },
+            ],
+            callback: (result: number) => {
+                if (result == 1 && params.id) orderNextStatusMutation.mutate(params.id)
+            },
+        })
+    }
+
+    const handlePreviousStatus = () => {
+        showDialog({
+            title: 'Czy na pewno chcesz cofnąć status zlecenia?',
+            btnOptions: [
+                { text: 'Tak', value: 1, variant: 'contained' },
+                { text: 'Anuluj', value: 0, variant: 'outlined' },
+            ],
+            callback: (result: number) => {
+                if (result == 1 && params.id) orderPreviousStatusMutation.mutate(params.id)
             },
         })
     }
@@ -152,7 +202,7 @@ const OrderDetails = () => {
     }, [params.id])
 
     const getAddOrderStageButton = () => {
-        return userRole === Role.SPECIALIST ? true : false
+        return userRole === Role.SPECIALIST ? orderData.data?.status == 'PLANNING' : false
     }
 
     const [isAddOrderStageVisible, setIsAddOrderStageVisible] = useState(false)
@@ -181,7 +231,31 @@ const OrderDetails = () => {
         }
     }, [queryLocationData.data])
 
-    return (
+    const canChangeToNextStatus = () => {
+        return (
+            (orderData.data?.status == 'CREATED' && isAuthorized([Role.SALES_REPRESENTATIVE])) ||
+            (orderData.data?.status == 'PLANNING' && isAuthorized([Role.SPECIALIST])) ||
+            (orderData.data?.status == 'TO_ACCEPT' && isAuthorized([Role.MANAGER])) ||
+            (orderData.data?.status == 'ACCEPTED' && isAuthorized([Role.FOREMAN])) ||
+            (orderData.data?.status == 'IN_PROGRESS' && isAuthorized([Role.FOREMAN]))
+        )
+    }
+
+    const canChangeToPreviousStatus = () => {
+        return (
+            (orderData.data?.status == 'PLANNING' && isAuthorized([Role.SPECIALIST])) ||
+            (orderData.data?.status == 'TO_ACCEPT' && isAuthorized([Role.MANAGER])) ||
+            (orderData.data?.status == 'ACCEPTED' && isAuthorized([Role.FOREMAN])) ||
+            (orderData.data?.status == 'IN_PROGRESS' && isAuthorized([Role.FOREMAN])) ||
+            (orderData.data?.status == 'FINISHED' && isAuthorized([Role.FOREMAN]))
+        )
+    }
+
+    return orderData.data?.deleted ? (
+        <>
+            <Error code={404} message={'Ten obiekt został usunięty'} />
+        </>
+    ) : (
         <>
             <FormBox>
                 <FormTitle
@@ -201,6 +275,16 @@ const OrderDetails = () => {
                                 formStructure={formStructureLocation}
                                 pageMode={pageMode}
                             />
+                            <Box sx={{ mt: '100px' }}>
+                                <Paper sx={{ p: '20px' }}>
+                                    <Typography variant="h5">Harmonogram pracy montażystów</Typography>
+                                    <Planner
+                                        orderId={params.id}
+                                        initialDate={moment(orderData.data?.plannedStart)}
+                                        readonly={!isAuthorized([Role.FOREMAN])}
+                                    />
+                                </Paper>
+                            </Box>
                             <FormButtons
                                 id={params.id}
                                 onCancel={handleCancel}
@@ -212,6 +296,18 @@ const OrderDetails = () => {
                                 orderStageButton={getAddOrderStageButton()}
                                 handleAddOrderStage={handleAddOrderStage}
                                 isAddOrderStageVisible={isAddOrderStageVisible}
+                                nextStatus={canChangeToNextStatus() ? handleNextStatus : undefined}
+                                previousStatus={canChangeToPreviousStatus() ? handlePreviousStatus : undefined}
+                                editPermissionRoles={
+                                    formik.values['status'] == 'CREATED'
+                                        ? [Role.MANAGER, Role.SALES_REPRESENTATIVE]
+                                        : [Role.MANAGER]
+                                }
+                                deletePermissionRoles={
+                                    formik.values['status'] == 'CREATED'
+                                        ? [Role.MANAGER, Role.SALES_REPRESENTATIVE]
+                                        : undefined
+                                }
                             />
                         </>
                     )}

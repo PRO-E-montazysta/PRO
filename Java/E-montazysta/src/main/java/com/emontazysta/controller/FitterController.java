@@ -1,6 +1,8 @@
 package com.emontazysta.controller;
 
 import com.emontazysta.model.dto.FitterDto;
+import com.emontazysta.model.dto.WorkingOnDto;
+import com.emontazysta.model.searchcriteria.AppUserSearchCriteria;
 import com.emontazysta.service.FitterService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -59,5 +61,20 @@ public class FitterController {
     @Operation(description = "Allows to update Fitter by given Id.", security = @SecurityRequirement(name = "bearer-key"))
     public FitterDto updateFitter(@PathVariable Long id, @Valid @RequestBody FitterDto fitter) {
         return fitterService.update(id, fitter);
+    }
+
+    @GetMapping("/available/{availableFrom}/{availableTo}")
+    @Operation(description = "Allows to get available Fitters.", security = @SecurityRequirement(name = "bearer-key"))
+    public List<FitterDto> getAvailableFitters(@PathVariable String availableFrom, @PathVariable String availableTo, Principal principal) {
+        AppUserSearchCriteria appUserSearchCriteria = new AppUserSearchCriteria();
+        appUserSearchCriteria.setAvailableFrom(availableFrom);
+        appUserSearchCriteria.setAvailableTo(availableTo);
+        return fitterService.getAvailable(appUserSearchCriteria, principal);
+    }
+
+    @GetMapping("/work-history/{id}")
+    @Operation(description = "Allows to get work history.", security = @SecurityRequirement(name = "bearer-key"))
+    public List<WorkingOnDto> getWorkingHistory(@PathVariable Long id) {
+        return fitterService.getWorkingOn(id);
     }
 }

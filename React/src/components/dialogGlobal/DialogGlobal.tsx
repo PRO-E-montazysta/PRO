@@ -8,6 +8,7 @@ export type DialogGlobalParams = {
     content?: ReactNode
     callback?: (response: number) => void
     btnOptions: Array<DialogGlobalButton>
+    under?: boolean
 }
 
 type DialogGlobalButton = {

@@ -19,12 +19,13 @@ public class AttachmentDto {
     private Long id;
     @NotBlank(message = "Name cannot be empty")
     private String name;
-    @NotBlank(message = "Url cannot be empty")
-    private String url;
+    private String uniqueName;
+    private String path;
     private String description;
     @NotNull(message = "Type of attachment cannot be empty")
     private TypeOfAttachment typeOfAttachment;
     private LocalDateTime createdAt;
+    private String fileName;
     private Long toolTypeId;
     private Long commentId;
     private Long employeeId;

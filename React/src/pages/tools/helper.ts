@@ -180,7 +180,11 @@ export const useFormStructure = (): Array<FormInputProps> => {
             id: 'name',
             initValue: '',
             type: 'input',
-            validation: yup.string().min(3, 'Nazwa musi zaweirać co najmniej 3 znaki').required('Wprowadź nazwę'),
+            validation: yup
+                .string()
+                .min(3, 'Nazwa musi zawierać co najmniej 3 znaki')
+                .max(255, 'Nazwa może zawierać maksymalnie 255 znaki')
+                .required('Wprowadź nazwę'),
         },
         {
             label: 'Kod',
@@ -211,7 +215,7 @@ export const useFormStructure = (): Array<FormInputProps> => {
             label: 'Data utworzenia',
             id: 'createdAt',
             initValue: '',
-            type: 'date',
+            type: 'date-time',
             addNewPermissionRoles: [Role.NOBODY],
             editPermissionRoles: [Role.NOBODY],
             viewPermissionRoles: [Role['*']],

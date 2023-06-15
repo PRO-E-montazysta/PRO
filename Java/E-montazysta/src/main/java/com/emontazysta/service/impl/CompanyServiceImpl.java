@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,7 +54,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CompanyDto add(CompanyDto companyDto) {
         Company company = companyMapper.toEntity(companyDto);
-        company.setCreatedAt(LocalDate.now());
+        company.setCreatedAt(LocalDateTime.now());
 
         return companyMapper.toDto(companyRepository.save(company));
     }
@@ -70,14 +69,13 @@ public class CompanyServiceImpl implements CompanyService {
 
         employmentRepository.save(new Employment(null, LocalDateTime.now(), null, company, companyAdmin));
 
-        /* TODO: uncomment to send email on company create
         emailService.sendEmail(
                 EmailData.builder()
                 .to(companyAdmin.getEmail())
                 .message(MailTemplates.companyCreate(company.getCompanyName(), companyAdmin.getUsername(), companyWithAdminDto.getPassword()))
                 .subject("Witaj w E-Montażysta!")
                 .build()
-        );*/
+        );
 
         return companyMapper.toDto(company);
     }

@@ -1,7 +1,6 @@
 import { useFormik } from 'formik'
 import { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-
 import { useFormStructure } from './helper'
 import FormBox from '../../components/form/FormBox'
 import FormTitle from '../../components/form/FormTitle'
@@ -14,11 +13,14 @@ import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { getInitValues, getValidatinSchema } from '../../helpers/form.helper'
 import { useAddElement, useDeleteElement, useEditElement, useElementData } from './hooks'
 import { useQueriesStatus } from '../../hooks/useQueriesStatus'
+import Error from '../../components/error/Error'
 import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
 import ExpandMore from '../../components/expandMore/ExpandMore'
 import EqualizerIcon from '@mui/icons-material/Equalizer'
 import ElementInWarehouseView from '../elementInWarehouse'
+import { Role } from '../../types/roleEnum'
+import { isAuthorized } from '../../utils/authorize'
 
 const ElementDetails = () => {
     const params = useParams()
@@ -52,7 +54,7 @@ const ElementDetails = () => {
                 { text: 'Anuluj', value: 0, variant: 'outlined' },
             ],
             callback: (result: number) => {
-                if (result == 1 && params.id && Number.isInteger(params.id)) deleteElementMutation.mutate(params.id)
+                if (result == 1 && params.id) deleteElementMutation.mutate(params.id)
             },
         })
     }
@@ -97,7 +99,15 @@ const ElementDetails = () => {
         }
     }, [params.id])
 
-    return (
+    const canPrintLabel = () => {
+        return isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])
+    }
+
+    return elementData.data?.deleted ? (
+        <>
+            <Error code={404} message={'Ten obiekt został usunięty'} />
+        </>
+    ) : (
         <>
             <FormBox>
                 <FormTitle
@@ -129,7 +139,13 @@ const ElementDetails = () => {
                                 onReset={handleReset}
                                 onSubmit={formik.submitForm}
                                 readonlyMode={pageMode == 'read'}
-                                printLabel={[elementData.data?.name as string, elementData.data?.code as string]}
+                                printLabel={
+                                    canPrintLabel()
+                                        ? [elementData.data?.name as string, elementData.data?.code as string]
+                                        : undefined
+                                }
+                                editPermissionRoles={[Role.WAREHOUSE_MANAGER]}
+                                deletePermissionRoles={[Role.WAREHOUSE_MANAGER]}
                             />
                         </>
                     )}

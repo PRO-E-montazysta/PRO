@@ -31,7 +31,6 @@ class ElementMainActivity : AppCompatActivity() {
     //sprawdzanie, czy FAB podległe pod główny FAB mają być widoczne
     private var subFabsVisible: Boolean? = null
 
-
     //SIDOR
     //    val args: ElementMainActivityArgs by navArgs()
     //    val elementId = args.elementId

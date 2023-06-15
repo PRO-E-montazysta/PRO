@@ -39,7 +39,7 @@ public class AboutMeServiceImpl implements AboutMeService {
                     .findFirst();
 
             if (profilePhotoAttachment.isPresent()) {
-                profilePhotoUrl = profilePhotoAttachment.get().getUrl();
+                profilePhotoUrl = profilePhotoAttachment.get().getPath();
             }
         }
 
@@ -50,6 +50,7 @@ public class AboutMeServiceImpl implements AboutMeService {
                 .roles(loggedUser.getRoles())
                 .companyName(companyName)
                 .profilePhotoUrl(profilePhotoUrl)
+                .userId(authUtils.getLoggedUser().getId())
                 .build();
     }
 }

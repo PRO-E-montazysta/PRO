@@ -16,7 +16,6 @@ import javax.validation.constraints.PositiveOrZero;
 public class ElementInWarehouseFilterDto {
     private Long id;
     private int inWarehouseCount;
-    private int inUnitCount;
     private String rack;
     private String shelf;
     private String element;

@@ -7,7 +7,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minWidth="0dp"
-        android:icon="@drawable/baseline_notifications_24"
+        android:icon="@drawable/baseline_notifications_none_24"
         android:contentDescription="Notifications"
         app:iconPadding="0dp"
         android:background="?android:attr/selectableItemBackground"

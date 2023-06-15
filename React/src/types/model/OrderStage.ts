@@ -1,3 +1,27 @@
+export type OrderStageSimpleToolReleases = Array<{
+    deleted: boolean
+    demandAdHocId: number
+    id: number
+    orderStageId: number
+    releaseTime: Date
+    releasedById: string | null
+    returnTime: Date
+    toolId: string
+}>
+
+export type OrderStageSimpleElementRelease = Array<{
+          id: number,
+          releaseTime: Date,
+          releasedQuantity: number,
+          returnedQuantity: number,
+          returnTime: null,
+          releasedById: number,
+          elementId: string,
+          demandAdHocId: number,
+          orderStageId: number,
+          deleted: false
+}>
+
 export type OrderStage = {
     id?: number
     name: string
@@ -8,8 +32,8 @@ export type OrderStage = {
     plannedEndDate: string
     startDate: Date
     endDate: Date
-    plannedDurationTime: Date //jak chcemy to podawać?
-    plannedFittersNumber:  string
+    plannedDurationTime: Date
+    plannedFittersNumber: string
     minimumImagesNumber: string
     fitters: Array<number>
     foremanId: number
@@ -30,6 +54,8 @@ export type OrderStage = {
         numberOfElements: number
         elementId: string
     }>
+    simpleToolReleases: OrderStageSimpleToolReleases
+    simpleElementReturnReleases: OrderStageSimpleElementRelease
 }
 
 export type CreateOrderStage = {
@@ -41,6 +67,7 @@ export type CreateOrderStage = {
     plannedEndDate: string
     plannedFittersNumber: string
     minimumImagesNumber: string
+    fitters: number[]
     listOfToolsPlannedNumber: Array<{
         numberOfTools: number
         toolTypeId: string
@@ -62,6 +89,7 @@ export type UpdateOrderStage = {
     plannedEndDate: string
     plannedFittersNumber: string
     minimumImagesNumber: string
+    fitters: number[]
     listOfToolsPlannedNumber: Array<{
         numberOfTools: number
         toolTypeId: string
@@ -91,4 +119,15 @@ export type UpdateOrderStage2 = {
         elementId: string
     }>
     attachments: Array<number>
+}
+
+export const OrderStageStatus = {
+    PLANNING: 'PLANOWANIE',
+    ADDING_FITTERS: 'DODAWANIE MONTAŻYSTÓW',
+    PICK_UP: 'WYDAWANIE',
+    REALESED: 'WYDANO',
+    ON_WORK: 'W TRAKCIE',
+    RETURN: 'ZWRACANIE',
+    RETURNED: 'ZWRÓCONO',
+    FINISHED: 'ZAKOŃCZONO',
 }

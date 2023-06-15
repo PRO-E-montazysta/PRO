@@ -185,7 +185,6 @@ const LoginForm = () => {
                     </Grid>
                 </Box>
             </Box>
-            <Box sx={{ m: '10px', mt: '1000px' }}>{isError ? JSON.stringify(error) : JSON.stringify(data)}</Box>
         </>
     )
 }
