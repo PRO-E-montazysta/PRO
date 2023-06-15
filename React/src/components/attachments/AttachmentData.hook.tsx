@@ -29,7 +29,7 @@ const useAttachmentData = (props: useAttachmentDataProps) => {
                 setFileListLocal([])
             })
         } else setFileListLocal([])
-    }, [props.idsOfFilesFromServer])
+    }, [props.idsOfFilesFromServer.length])
 
     const handleLocalFileDelete = (localUUID: string) => {
         const updatedFileList = fileListLocal.filter((file) => file.uuid !== localUUID)
