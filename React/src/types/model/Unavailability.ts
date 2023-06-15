@@ -35,7 +35,7 @@ export type UnavailabilityFilter = {
 }
 
 export const TypeOfUnavailability = {
-    BUSY: 'Zajęty',
+    //BUSY: 'Zajęty',
     HOLIDAY: 'Urlop wypoczynkowy',
     SICK_LEAVE: 'Urlop chorobowy',
     BEREAVEMENT_LEAVE: 'Urlop okolicznościowy',
