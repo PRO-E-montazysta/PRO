@@ -18,9 +18,7 @@ public class ElementInWarehouseDto {
 
     @PositiveOrZero(message = "Quantity cannot be negative")
     private int inWarehouseCount;
-    @NotBlank(message = "Rack cannot be empty")
     private String rack;
-    @NotBlank(message = "Shelf cannot be empty")
     private String shelf;
     @NotNull(message = "Element id cannot be empty")
     private Long elementId;

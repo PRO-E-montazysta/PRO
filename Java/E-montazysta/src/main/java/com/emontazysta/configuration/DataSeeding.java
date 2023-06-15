@@ -37,7 +37,7 @@ public class DataSeeding {
     private final ClientService clientService;
     private final LocationService locationService;
     private final OrderRepository orderRepository;
-    private final WarehouseService warehouseService;
+    private final WarehouseRepository warehouseRepository;
     private final ToolService toolService;
     private final AttachmentService attachmentService;
     private final CommentService commentService;
@@ -108,7 +108,7 @@ public class DataSeeding {
     }
 
     private Warehouse addWarehouseFromModel(Warehouse warehouse) {
-        return warehouseMapper.toEntity(warehouseService.add(warehouseMapper.toDto(warehouse)));
+        return warehouseRepository.save(warehouse);
     }
 
     private ToolType addToolTypeFromModel(ToolType toolType) {

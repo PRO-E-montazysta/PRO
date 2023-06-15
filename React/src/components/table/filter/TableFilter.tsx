@@ -9,7 +9,7 @@ import './style.less'
 import useBreakpoints from '../../../hooks/useBreakpoints'
 import { useInputWidth } from '../../../hooks/useInputWidth'
 import { SelectMenuItemProps } from '../../form/types'
-
+import * as yup from 'yup'
 export type Filter = {
     formik: any
     inputs: Array<any>
@@ -35,7 +35,7 @@ export type FilterInputType = {
     value: string | number | Date | Array<any>
     typeValue?: 'string' | 'number' | 'date' | 'Array'
     options?: Array<SelectMenuItemProps>
-    // validations?: Array<Validation>
+    validations?: Array<yup.AnyObjectSchema>
 
     style?: CSSProperties
 }

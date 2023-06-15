@@ -5,7 +5,7 @@ import { useQuery } from 'react-query'
 import { AxiosError } from 'axios'
 import { filterInitStructure, headCells } from './helper'
 import { useNavigate } from 'react-router-dom'
-import { getFilterParams, getInputs, setNewFilterValues } from '../../helpers/filter.helper'
+import { getFilterParams, getFormikMetadata, newFilterValues } from '../../helpers/filter.helper'
 import { DemandAdHocFilterDto } from '../../types/model/DemandAdHoc'
 import { getFilteredDemandsAdHoc } from '../../api/demandAdHoc.api'
 import { useFormik } from 'formik'
@@ -13,7 +13,7 @@ import { useFormik } from 'formik'
 const DemandAdHoc = () => {
     const [filterStructure, setFilterStructure] = useState(filterInitStructure)
     const [filterParams, setFilterParams] = useState(getFilterParams(filterInitStructure))
-    const { initialValues, inputs } = getInputs(filterInitStructure)
+    const { initialValues, inputs } = getFormikMetadata(filterInitStructure)
     const navigation = useNavigate()
 
     const queryDemandsAdHoc = useQuery<Array<DemandAdHocFilterDto>, AxiosError>(
@@ -26,7 +26,7 @@ const DemandAdHoc = () => {
             initialValues: initialValues,
             // validationSchema={{}}
             onSubmit: () => {
-                setFilterStructure(setNewFilterValues(filter.formik.values, filterStructure))
+                setFilterStructure(newFilterValues(filter.formik.values, filterStructure))
                 setFilterParams(getFilterParams(filterStructure))
             },
             onReset: () => filter.formik.setValues(initialValues),

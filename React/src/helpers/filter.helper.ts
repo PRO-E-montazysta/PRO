@@ -1,19 +1,19 @@
-import { FilterInputType } from "../components/table/filter/TableFilter"
+import { FilterInputType } from '../components/table/filter/TableFilter'
+import * as yup from 'yup'
 
-
-export const getInputs = (form: Array<FilterInputType>) => {
+export const getFormikMetadata = (form: Array<FilterInputType>) => {
     let initialValues: { [key: string]: any } = {}
-    // let validationFields = {}
+    let validationFields: { [key: string]: any } = {}
     for (const field of form) {
         initialValues[field.id] = field.value
+        validationFields[field.id] = field.validations
     }
     return {
-        // validationSchema: Yup.object({ ...validationsFields }),
+        validationSchema: yup.object({ ...validationFields }),
         initialValues,
-        inputs: form
+        inputs: form,
     }
 }
-
 
 export const getFilterParams = (filterStructure: Array<FilterInputType>) => {
     const filterParams: any = {}
@@ -33,16 +33,13 @@ export const getFilterParams = (filterStructure: Array<FilterInputType>) => {
         }
     })
 
-    return filterParams;
+    return filterParams
 }
 
+export const newFilterValues = (filterForm: any, filterInitValues: Array<FilterInputType>) => {
+    let filtersWithNewValues = filterInitValues
 
-
-export const setNewFilterValues = (filterForm: any, filterInitValues: Array<FilterInputType>) => {
-    let filtersWithNewValues = filterInitValues;
-
-    for (const filter of filtersWithNewValues)
-        filter.value = filterForm[filter.id]
+    for (const filter of filtersWithNewValues) filter.value = filterForm[filter.id]
 
     return filtersWithNewValues
 }

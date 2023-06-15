@@ -6,14 +6,14 @@ import { AxiosError } from 'axios'
 import { getToolsFromWarehouse } from '../../api/tool.api'
 import { selectedFilterInitStructure, selectedHeadCells } from './helper'
 import { useNavigate, useParams } from 'react-router-dom'
-import { getFilterParams, getInputs, setNewFilterValues } from '../../helpers/filter.helper'
+import { getFilterParams, getFormikMetadata, newFilterValues } from '../../helpers/filter.helper'
 import { Tool } from '../../types/model/Tool'
 import { useFormik } from 'formik'
 
 const ToolsFromWarehouse = () => {
     const params = useParams()
     const [filterParams, setFilterParams] = useState(getFilterParams(selectedFilterInitStructure))
-    const { initialValues, inputs } = getInputs(selectedFilterInitStructure)
+    const { initialValues, inputs, validationSchema } = getFormikMetadata(selectedFilterInitStructure)
     const navigation = useNavigate()
 
     const queryTools = useQuery<Array<Tool>, AxiosError>(['tools', filterParams], async () =>
@@ -23,7 +23,7 @@ const ToolsFromWarehouse = () => {
     const filter: Filter = {
         formik: useFormik({
             initialValues: initialValues,
-            // validationSchema={{}}
+            validationSchema: validationSchema,
             onSubmit: () => setFilterParams(filter.formik.values),
             onReset: () => filter.formik.setValues(initialValues),
         }),
