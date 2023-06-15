@@ -22,6 +22,7 @@ import { AppSize } from '../../hooks/useBreakpoints'
 import { FormInputProps } from '../../types/form'
 import { Role } from '../../types/roleEnum'
 import { isAuthorized } from '../../utils/authorize'
+import { DeletedClientName } from '../../helpers/Delted.helper'
 
 export const headCells: Array<HeadCell<Order>> = [
     {
@@ -191,7 +192,17 @@ export const useFormStructure = (): Array<FormInputProps> => {
             type: 'select',
             options: formatArrayToOptions('id', (x: Client) => x.name, queryClient.data),
             addNewPermissionRoles: [Role.SALES_REPRESENTATIVE],
-            editPermissionRoles: [Role.SALES_REPRESENTATIVE],
+            editPermissionRoles: [Role.NOBODY],
+            viewPermissionRoles: [Role.NOBODY],
+        },
+        {
+            label: 'Klient',
+            id: 'clientId',
+            initValue: '',
+            type: 'can-be-deleted',
+            formatFn: (id: string) => DeletedClientName(id),
+            addNewPermissionRoles: [Role.NOBODY],
+            editPermissionRoles: [Role.NOBODY],
             viewPermissionRoles: [Role['*']],
         },
         {
