@@ -112,6 +112,13 @@ public class    OrdersCriteriaRepository {
         //Get orders assigned to Foreman
         if(user.getRoles().contains(Role.FOREMAN)) {
             predicates.add(criteriaBuilder.equal(ordersRoot.get("assignedTo").get("id"), user.getId()));
+
+            //create predicates based on status, so foreman cant see orders that he is assigned to, before acceptation
+            List<Predicate> statusPredicates = new ArrayList<>();
+            statusPredicates.add(criteriaBuilder.equal(ordersRoot.get("status"), OrderStatus.ACCEPTED));
+            statusPredicates.add(criteriaBuilder.equal(ordersRoot.get("status"), OrderStatus.IN_PROGRESS));
+            statusPredicates.add(criteriaBuilder.equal(ordersRoot.get("status"), OrderStatus.FINISHED));
+            predicates.add(criteriaBuilder.or(statusPredicates.toArray(new Predicate[0])));
         }
 
         //Get orders by orderstages assigned to Fitter
