@@ -73,7 +73,6 @@ const PlannerStagePopup = ({ popupEventInfo, setPopupEventInfo, readonly }: Plan
                     top: '50vh',
                     left: '50vw',
                     width: '600px',
-                    height: '500px',
                     transform: 'translate(-300px, -250px)',
                     zIndex: 100,
                     backgroundColor: 'white',
@@ -106,14 +105,16 @@ const PlannerStagePopup = ({ popupEventInfo, setPopupEventInfo, readonly }: Plan
                     readonly={readonly}
                     orderStageId={popupEventInfo.stageId}
                 />
-                <Box sx={{ mt: '10px', float: 'right', display: 'flex', gap: '10px' }}>
-                    <Button variant="outlined" sx={{ color: 'black' }} onClick={handleCancel}>
-                        Anuluj
-                    </Button>
-                    <Button variant="contained" onClick={saveChanges}>
-                        Zapisz
-                    </Button>
-                </Box>
+                {!readonly && (
+                    <Box sx={{ mt: '10px', float: 'right', display: 'flex', gap: '10px' }}>
+                        <Button variant="outlined" sx={{ color: 'black' }} onClick={handleCancel}>
+                            Anuluj
+                        </Button>
+                        <Button variant="contained" onClick={saveChanges}>
+                            Zapisz
+                        </Button>
+                    </Box>
+                )}
             </Box>
         </ClickAwayListener>
     )
