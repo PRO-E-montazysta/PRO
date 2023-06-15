@@ -1,5 +1,5 @@
 import { Employee } from '../types/model/Employee'
-import { PayloadProps, makeServiceCall } from './utils.api'
+import { makeServiceCall } from './utils.api'
 
 export const getAllFitter = () => {
     return makeServiceCall('/fitters/all', 'GET', {})
@@ -19,4 +19,8 @@ export const getFitterById = (id: string) => {
 
 export const getFittersAvailable = (availableFrom: string, availableTo: string) => {
     return makeServiceCall(`/fitters/available/${availableFrom}/${availableTo}`, 'GET', {})
+}
+
+export const getFitterWorkHistory = (id: string) => {
+    return makeServiceCall(`/fitters/work-history/${id}`, 'GET', {})
 }

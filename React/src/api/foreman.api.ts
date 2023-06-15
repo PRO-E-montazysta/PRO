@@ -1,11 +1,8 @@
-import { Employee } from "../types/model/Employee";
-import { makeServiceCall } from "./utils.api";
-
-
-
+import { Employee } from '../types/model/Employee'
+import { makeServiceCall } from './utils.api'
 
 export const getAllForemans = () => {
-    return makeServiceCall('/foremen/all', 'GET', {});
+    return makeServiceCall('/foremen/all', 'GET', {})
 }
 
 export const postForeman = (data: Employee) => {
@@ -18,4 +15,8 @@ export const updateForeman = (data: Employee) => {
 
 export const getForemanById = (id: string) => {
     return makeServiceCall(`/foremen/${id}`, 'GET', {})
+}
+
+export const getForemanWorkHistory = (id: string) => {
+    return makeServiceCall(`/foremen/work-history/${id}`, 'GET', {})
 }
