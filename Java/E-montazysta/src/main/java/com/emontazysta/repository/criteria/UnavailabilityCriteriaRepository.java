@@ -97,9 +97,6 @@ public class UnavailabilityCriteriaRepository {
         predicates.add(criteriaBuilder.equal(unavailabilityRoot.join("assignedBy").join("employments").get("company").get("id"),
                 authUtils.getLoggedUserCompanyId()));
 
-        //Get not-deleted
-        predicates.add(criteriaBuilder.equal(unavailabilityRoot.get("deleted"), false));
-
         return  criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 }
