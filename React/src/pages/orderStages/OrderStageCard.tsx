@@ -37,15 +37,17 @@ import OrderStageElementsTable from './OrderStageElementsTable'
 import OrderStageToolsTable from './OrderStageToolsTable'
 import { ExpandMore, TabPanel, validationSchema } from './helper'
 import { useAddOrderStage, useOrderStageNextStatus, useOrderStagePreviousStatus, useUpdateOrderStage } from './hooks'
+import { PageMode } from '../../types/form'
 
 type OrderStageCardProps = {
     index?: string
     stage?: OrderStage
-    addingNewStage: boolean
+    addingNewStag: boolean
     setAddingNewStage: (value: boolean) => void
 }
 
-const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: OrderStageCardProps) => {
+const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: OrderStageCardProps) => {
+    const [stageMode, setStageMode] = useState<PageMode>(addingNewStag ? 'new' : 'read')
     const [tabValue, setTabValue] = useState(0)
     const [expandedInformation, setExpandedInformation] = useState(false)
     const [plannedStartDate, setPlannedStartDate] = useState<Dayjs | null>(
@@ -69,7 +71,6 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
     const plannedElementsRef = useRef<{ numberOfElements: number; elementId: string }[]>([])
     const plannedToolsTypesRef = useRef<{ numberOfTools: number; toolTypeId: string }[]>([])
     const [error, setError] = useState<DateValidationError | null>(null)
-    const [isEditing, setIsEditing] = useState(false)
     const queryClient = useQueryClient()
     //attachment functionality
     const attachmentData = useAttachmentData({
@@ -79,7 +80,7 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
         const saveResult = await saveNewFiles(attachmentData.fileListLocal, stage?.id)
         const deleteResult = await deleteFilesFromServer(attachmentData.fileIdsFromServerToDelete)
         const attachmentResult = saveResult && deleteResult
-        let message = isEditing ? 'Zedytowano etap pomyślnie' : 'Nowy etap utworzono pomyślnie'
+        let message = stageMode == 'edit' ? 'Zedytowano etap pomyślnie' : 'Nowy etap utworzono pomyślnie'
         if (!attachmentResult) message += ', jednak wystąpił błąd zapisu załączników'
         showDialog({
             btnOptions: [
@@ -95,6 +96,7 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
                     queryKey: ['orderStageForOrder', { id: params.id }],
                 })
                 setAddingNewStage(false)
+                setStageMode('read')
             },
         })
     }
@@ -117,10 +119,10 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
     )
 
     useLayoutEffect(() => {
-        if (addingNewStage === true) {
+        if (addingNewStag === true) {
             setExpandedInformation(true)
         }
-    }, [addingNewStage])
+    }, [addingNewStag])
 
     useEffect(() => {
         const date = dayjs(plannedStartDate).format('YYYY-MM-DDTHH:mm:ss.SSS')
@@ -186,7 +188,7 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
     }
 
     const handleEditButtonAction = () => {
-        setIsEditing(true)
+        setStageMode('edit')
         handleSetToolsTypeOnEdit()
         handleSetElementsOnEdit()
     }
@@ -208,7 +210,7 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
         formik.resetForm()
     }
     const handleCancelButtonAction = () => {
-        setIsEditing(false)
+        setStageMode('read')
         setAddingNewStage(false)
         handleResetFormik()
         attachmentData.handleReset()
@@ -237,7 +239,7 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
             values.plannedStartDate = preparedPlannedStartDate
             values.plannedEndDate = preparedPlannedEndDate
 
-            if (isEditing) {
+            if (stageMode == 'edit') {
                 return updateOrderStage.mutate(values)
             }
             addOrderStage.mutate(values)
@@ -269,7 +271,7 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
                                 },
                             }}
                             label="Planowana data rozpoczęcia"
-                            disabled={!addingNewStage}
+                            disabled={stageMode != 'new'}
                             format="DD/MM/YYYY"
                             value={plannedStartDate}
                             onChange={(data) => {
@@ -286,7 +288,7 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
                     </LocalizationProvider>
                 </Grid>
 
-                {!addingNewStage ? (
+                {stageMode != 'new' ? (
                     <Grid item xs={6}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
@@ -299,7 +301,7 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
                                 format="DD/MM/YYYY"
                                 label="Data rozpoczęcia"
                                 value={stage ? dayjs(stage.startDate) : ''}
-                                disabled={!addingNewStage}
+                                disabled={stageMode == 'read'}
                             />
                         </LocalizationProvider>
                     </Grid>
@@ -317,7 +319,7 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
                             format={'HH:mm'}
                             ampm={false}
                             value={plannedStartHour}
-                            disabled={!addingNewStage}
+                            disabled={stageMode == 'read'}
                             onChange={(data) => {
                                 setPlannedStartHour(data)
                             }}
@@ -325,7 +327,7 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
                     </LocalizationProvider>
                 </Grid>
 
-                {!addingNewStage ? (
+                {stageMode != 'new' ? (
                     <Grid item xs={6}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
@@ -336,7 +338,7 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
                                     },
                                 }}
                                 label="Data zakończenia"
-                                disabled={!addingNewStage}
+                                disabled={stageMode == 'read'}
                                 format="DD/MM/YYYY"
                                 value={stage ? dayjs(stage.endDate) : ''}
                                 onChange={(data) => {
@@ -355,7 +357,7 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
                                     WebkitTextFillColor: '#000000',
                                 },
                             }}
-                            disabled={!addingNewStage}
+                            disabled={stageMode == 'read'}
                             label="Planowana godzina zakończenia"
                             ampm={false}
                             format={'HH:mm'}
@@ -498,8 +500,8 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
                     >
                         <Grid item xs={4} md={3}>
                             <CustomTextField
-                                readOnly={!addingNewStage!}
-                                disabled={!addingNewStage}
+                                readOnly={stageMode == 'read'}
+                                disabled={stageMode == 'read'}
                                 sx={{ width: '100%' }}
                                 id="standard-basic"
                                 variant="outlined"
@@ -522,17 +524,15 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
                                 label="Status"
                                 name="status"
                                 defaultValue={
-                                    !addingNewStage && stage
-                                        ? orderStageStatusName(stage.status)
-                                        : orderStageStatusName('PLANNING')
+                                    stage ? orderStageStatusName(stage.status) : orderStageStatusName('PLANNING')
                                 }
                             />
                         </Grid>
 
                         <Grid item xs={4} md={3}>
                             <CustomTextField
-                                readOnly={!addingNewStage}
-                                disabled={!addingNewStage}
+                                readOnly={stageMode == 'read'}
+                                disabled={stageMode == 'read'}
                                 sx={{ width: '100%' }}
                                 id="standard-basic"
                                 variant="outlined"
@@ -547,8 +547,8 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
 
                         <Grid item xs={4} md={3}>
                             <CustomTextField
-                                readOnly={!addingNewStage}
-                                disabled={!addingNewStage}
+                                readOnly={stageMode == 'read'}
+                                disabled={stageMode == 'read'}
                                 sx={{
                                     width: '100%',
                                 }}
@@ -566,8 +566,8 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
                         </Grid>
                         <Grid item xs={4} md={3}>
                             <CustomTextField
-                                readOnly={!addingNewStage}
-                                disabled={!addingNewStage}
+                                readOnly={stageMode == 'read'}
+                                disabled={stageMode == 'read'}
                                 sx={{ width: '100%' }}
                                 id="standard-basic"
                                 label="Minimalna liczba zdjęć"
@@ -592,8 +592,8 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
                                     <Tab label="Informacje o datach" {...tabProps(0)} />
                                     <Tab label="Narzędzia" {...tabProps(1)} />
                                     <Tab label="Elementy" {...tabProps(2)} />
-                                    {!isAuthorized([Role.SPECIALIST]) && <Tab label="Montażyści" {...tabProps(2)} />}
-                                    <Tab label="Załączniki" {...tabProps(1)} />
+                                    <Tab label="Załączniki" {...tabProps(3)} />
+                                    {!isAuthorized([Role.SPECIALIST]) && <Tab label="Montażyści" {...tabProps(4)} />}
                                 </Tabs>
                             </Box>
                             <TabPanel value={tabValue} index={0}>
@@ -602,7 +602,7 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
                             <TabPanel value={tabValue} index={1}>
                                 <OrderStageToolsTable
                                     itemsArray={queryAllToolTypes.data || []}
-                                    isDisplayingMode={!addingNewStage}
+                                    isDisplayingMode={stageMode == 'read'}
                                     toolsTypeListIds={stage?.listOfToolsPlannedNumber as any}
                                     handleChange={handleSetPlannedToolsTypes}
                                     toolsRef={plannedToolsTypesRef}
@@ -612,29 +612,28 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
                             <TabPanel value={tabValue} index={2}>
                                 <OrderStageElementsTable
                                     itemsArray={queryAllElements.data || []}
-                                    isDisplayingMode={!addingNewStage}
+                                    isDisplayingMode={stageMode == 'read'}
                                     elementsListIds={stage?.listOfElementsPlannedNumber as any}
                                     handleChange={handleSetPlannedElements}
                                     elementsRef={plannedElementsRef}
                                     releasedReturnedElementsInfo={stage?.simpleElementReturnReleases}
                                 />
                             </TabPanel>
-
+                            <TabPanel value={tabValue} index={3}>
+                                <Attachments {...attachmentData} readonly={stageMode == 'read'} />
+                            </TabPanel>
                             {!isAuthorized([Role.SPECIALIST]) && (
-                                <TabPanel value={tabValue} index={3}>
+                                <TabPanel value={tabValue} index={4}>
                                     <PlannerStageDetails
                                         dateFrom={preparedPlannedStartDate}
                                         dateTo={preparedPlannedEndDate}
                                         fitters={formik.values.fitters}
                                         setFitters={(fitters) => formik.setFieldValue('fitters', fitters)}
-                                        readonly={!isAuthorized([Role.FOREMAN]) || !isEditing}
+                                        readonly={!isAuthorized([Role.FOREMAN]) || stageMode == 'read'}
                                         orderStageId={formik.values.orderStageId}
                                     />
                                 </TabPanel>
                             )}
-                            <TabPanel value={tabValue} index={4}>
-                                <Attachments {...attachmentData} readonly={!addingNewStage} />
-                            </TabPanel>
                         </Box>
 
                         <Grid spacing={2} container justifyContent="flex-end" sx={{ marginTop: '20px' }}>
@@ -647,7 +646,7 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
                                     flexDirection: 'row-reverse',
                                 }}
                             >
-                                {!addingNewStage && !isEditing && canEdit() && (
+                                {stageMode == 'read' && canEdit() && (
                                     <Button
                                         color="primary"
                                         variant="contained"
@@ -657,7 +656,7 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
                                         Edytuj etap
                                     </Button>
                                 )}
-                                {(addingNewStage || isEditing) && (
+                                {stageMode != 'read' && (
                                     <>
                                         <Button
                                             type="submit"
@@ -679,7 +678,7 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
                                         </Button>
                                     </>
                                 )}
-                                {canChangeToNextStatus() && !addingNewStage && !isEditing ? (
+                                {canChangeToNextStatus() && stageMode == 'read' ? (
                                     <Button
                                         id={`formButton-nextStatus`}
                                         color="primary"
@@ -691,7 +690,7 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
                                         Następny status
                                     </Button>
                                 ) : null}
-                                {canChangeToPreviousStatus() && !addingNewStage && !isEditing ? (
+                                {canChangeToPreviousStatus() && stageMode == 'read' ? (
                                     <Button
                                         id={`formButton-nextStatus`}
                                         color="primary"
