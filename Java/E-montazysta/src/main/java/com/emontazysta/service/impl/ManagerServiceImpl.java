@@ -1,8 +1,10 @@
 package com.emontazysta.service.impl;
 
 import com.emontazysta.enums.Role;
+import com.emontazysta.mail.MailTemplates;
 import com.emontazysta.mapper.EmploymentMapper;
 import com.emontazysta.mapper.ManagerMapper;
+import com.emontazysta.model.EmailData;
 import com.emontazysta.model.Manager;
 import com.emontazysta.model.dto.EmployeeDto;
 import com.emontazysta.model.dto.EmploymentDto;
@@ -11,8 +13,10 @@ import com.emontazysta.model.searchcriteria.AppUserSearchCriteria;
 import com.emontazysta.repository.ManagerRepository;
 import com.emontazysta.repository.criteria.AppUserCriteriaRepository;
 import com.emontazysta.repository.EmploymentRepository;
+import com.emontazysta.service.EmailService;
 import com.emontazysta.service.ManagerService;
 import com.emontazysta.util.AuthUtils;
+import com.emontazysta.util.PasswordGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,6 +38,7 @@ public class ManagerServiceImpl implements ManagerService {
     private final AuthUtils authUtils;
     private final AppUserCriteriaRepository appUserCriteriaRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final EmailService emailService;
 
     @Override
     public List<ManagerDto> getAll(Principal principal) {
@@ -67,8 +72,9 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Override
     public ManagerDto add(ManagerDto managerDto) {
+        String password = PasswordGenerator.generatePassword(10);
         managerDto.setUsername(managerDto.getUsername().toLowerCase());
-        managerDto.setPassword(bCryptPasswordEncoder.encode(managerDto.getPassword()));
+        managerDto.setPassword(bCryptPasswordEncoder.encode(password));
         managerDto.setRoles(Set.of(Role.MANAGER));
         managerDto.setUnavailabilities(new ArrayList<>());
         managerDto.setNotifications(new ArrayList<>());
@@ -91,6 +97,15 @@ public class ManagerServiceImpl implements ManagerService {
                 .employeeId(manager.getId())
                 .build();
         employmentRepository.save(employmentMapper.toEntity(employmentDto));
+
+        emailService.sendEmail(
+                EmailData.builder()
+                        .to(managerDto.getEmail())
+                        .message(MailTemplates.employeeCreate(managerDto.getUsername(),
+                                password, managerDto.getFirstName(), managerDto.getLastName()))
+                        .subject("Witaj w E-Montażysta!")
+                        .build()
+        );
 
         return managerMapper.toDto(manager);
     }
