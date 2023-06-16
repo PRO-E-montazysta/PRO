@@ -35,8 +35,8 @@ const PlannerStageDetails = ({
     )
 
     useLayoutEffect(() => {
+        console.log(avaliableFittersQuery.data)
         if (avaliableFittersQuery.data && fitters) {
-            console.log(fitters)
             setAvaliableFitters(avaliableFittersQuery.data.map((d) => d.id).filter((d) => fitters.indexOf(d) == -1))
         }
     }, [avaliableFittersQuery.data, fitters])

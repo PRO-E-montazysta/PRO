@@ -42,7 +42,6 @@ const PlannerStagePopup = ({ popupEventInfo, setPopupEventInfo, readonly }: Plan
 
     useLayoutEffect(() => {
         if (orderStageQuery.data) {
-            console.log(orderStageQuery.data)
             setAssignedFitters(orderStageQuery.data.fitters)
         }
     }, [orderStageQuery.status, popupEventInfo.isOpen])

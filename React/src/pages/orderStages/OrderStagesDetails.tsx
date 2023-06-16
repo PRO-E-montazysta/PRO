@@ -68,13 +68,13 @@ const OrderStagesDetails = ({ addingNewStage, setAddingNewStage }: OrderStagesDe
                     key={stage.id}
                     index={index.toString()}
                     stage={stage}
-                    addingNewStage={false}
+                    addingNewStag={false}
                     setAddingNewStage={setAddingNewStage}
                 />
             ))}
             {addingNewStage && (
                 <>
-                    <OrderStageCard key={'new'} addingNewStage={true} setAddingNewStage={setAddingNewStage} />
+                    <OrderStageCard key={'new'} addingNewStag={addingNewStage} setAddingNewStage={setAddingNewStage} />
                     <div ref={scrollerRef}></div>
                 </>
             )}
