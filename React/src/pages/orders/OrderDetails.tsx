@@ -288,7 +288,15 @@ const OrderDetails = () => {
                                         <Localization
                                             formik={formikLocation}
                                             formStructure={formStructureLocation}
-                                            pageMode={pageMode}
+                                            pageMode={
+                                                isAuthorized([
+                                                    Role.SALES_REPRESENTATIVE,
+                                                    Role.ADMIN,
+                                                    Role.WAREHOUSE_MANAGER,
+                                                ])
+                                                    ? pageMode
+                                                    : 'read'
+                                            }
                                         />
                                     }
                                 />
