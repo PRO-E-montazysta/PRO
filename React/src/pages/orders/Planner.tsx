@@ -39,7 +39,7 @@ const Planner = ({ orderId, initialDate, readonly }: PlannerProps) => {
     }, [orderStagesQuery.data])
 
     return (
-        <>
+        <Box sx={{ p: '20px' }}>
             <FullCalendar
                 initialDate={initialDate.toDate()}
                 plugins={[timeGridPlugin]}
@@ -77,7 +77,7 @@ const Planner = ({ orderId, initialDate, readonly }: PlannerProps) => {
                 setPopupEventInfo={setPopupEventInfo}
                 readonly={readonly}
             />
-        </>
+        </Box>
     )
 }
 

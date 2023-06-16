@@ -29,20 +29,17 @@ import { PageMode } from '../../types/form'
 import OrderStagesDetails from '../orderStages/OrderStagesDetails'
 import { getRolesFromToken } from '../../utils/token'
 import { Role } from '../../types/roleEnum'
-import EditIcon from '@mui/icons-material/Edit'
 import Localization from '../../components/localization/Localization'
 import { Order } from '../../types/model/Order'
 import { useFormStructureLocation, useLocationData } from '../../components/localization/hooks'
 import Error from '../../components/error/Error'
 import { isAuthorized } from '../../utils/authorize'
 
-import { OrderStage } from '../../types/model/OrderStage'
-import { AxiosError } from 'axios'
-import { useQuery } from 'react-query'
-import { getAllOrderStagesForOrder } from '../../api/orderStage.api'
-import { EventInput } from '@fullcalendar/core'
 import moment from 'moment'
 import Planner from './Planner'
+import ExpandMore from '../../components/expandMore/ExpandMore'
+import MapIcon from '@mui/icons-material/Map'
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 
 const OrderDetails = () => {
     const [userRole, setUserRole] = useState('')
@@ -210,7 +207,7 @@ const OrderDetails = () => {
     const handleAddOrderStage = () => {
         setIsAddOrderStageVisible(!isAddOrderStageVisible)
     }
-    //--------------- Location functionality --------------------
+    //--------------- Localization functionality --------------------
     const formStructureLocation = useFormStructureLocation()
     const [initDataLocation, setInitDataLocation] = useState(getInitValues(formStructureLocation))
     const formikLocation = useFormik({
@@ -230,6 +227,8 @@ const OrderDetails = () => {
             setInitDataLocation(queryLocationData.data)
         }
     }, [queryLocationData.data])
+
+    //------------------------status functionality
 
     const canChangeToNextStatus = () => {
         return (
@@ -269,22 +268,39 @@ const OrderDetails = () => {
                         <>
                             <FormStructure formStructure={formStructure} formik={formik} pageMode={pageMode} />
 
-                            <Localization
-                                title="Lokalizacja"
-                                formik={formikLocation}
-                                formStructure={formStructureLocation}
-                                pageMode={pageMode}
-                            />
-                            <Box sx={{ mt: '100px' }}>
-                                <Paper sx={{ p: '20px' }}>
-                                    <Typography variant="h5">Harmonogram pracy montażystów</Typography>
-                                    <Planner
-                                        orderId={params.id}
-                                        initialDate={moment(orderData.data?.plannedStart)}
-                                        readonly={!isAuthorized([Role.FOREMAN])}
-                                    />
-                                </Paper>
-                            </Box>
+                            <Paper sx={{ m: '20px 0' }}>
+                                <ExpandMore
+                                    isOpen={pageMode == 'new'}
+                                    titleIcon={<MapIcon />}
+                                    title="Lokalizacja"
+                                    titleVariant="h5"
+                                    cardContent={
+                                        <Localization
+                                            formik={formikLocation}
+                                            formStructure={formStructureLocation}
+                                            pageMode={pageMode}
+                                        />
+                                    }
+                                />
+                            </Paper>
+
+                            {/* {pageMode != 'new' && ( */}
+                            <Paper>
+                                <ExpandMore
+                                    titleIcon={<CalendarMonthIcon />}
+                                    title="Harmonogram pracy montażystów"
+                                    titleVariant="h5"
+                                    cardContent={
+                                        <Planner
+                                            orderId={params.id}
+                                            initialDate={moment(orderData.data?.plannedStart)}
+                                            readonly={!isAuthorized([Role.FOREMAN])}
+                                        />
+                                    }
+                                />
+                            </Paper>
+                            {/* )} */}
+
                             <FormButtons
                                 id={params.id}
                                 onCancel={handleCancel}

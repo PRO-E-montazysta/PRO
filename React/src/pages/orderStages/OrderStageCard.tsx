@@ -98,7 +98,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                 queryClient.refetchQueries({
                     queryKey: ['orderStageForOrder', { id: params.id }],
                 })
-                setIsEditing(false)
+                // setIsEditing(false)
                 setIsDisplayingMode(true)
             },
         })
@@ -514,7 +514,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                 variant="outlined"
                                 label="Status"
                                 name="status"
-                                defaultValue={isDisplayingMode && stage ? orderStageStatusName(stage.status) : null}
+                                defaultValue={isDisplayingMode && stage ? orderStageStatusName(stage.status) : orderStageStatusName('PLANNING')}
                             />
                         </Grid>
 

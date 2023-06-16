@@ -14,11 +14,10 @@ type LocalizationProps = {
     formStructure: Array<FormInputProps>
     formik: any
     pageMode?: PageMode
-    title: string
 }
 
 const Localization = (props: LocalizationProps) => {
-    const { title, formStructure, formik, pageMode } = props
+    const { formStructure, formik, pageMode } = props
     const appSize = useBreakpoints()
     const [coordinates, setCoordinates] = useState<Coordinates | null>(null)
 
@@ -82,38 +81,33 @@ const Localization = (props: LocalizationProps) => {
 
     return (
         <FormBox>
-            <FormPaper sx={{ mt: 0, pt: '10px' }}>
-                <Typography variant="h5" sx={{ mb: '20px' }}>
-                    {title}
-                </Typography>
-                <FormStructure formStructure={formStructure} formik={formik} pageMode={pageMode} />
-                {pageMode != 'read' && (
-                    <Button
-                        id="confirmLocation"
-                        onClick={search}
-                        variant="contained"
-                        sx={{
-                            mt: appSize.isMobile ? '20px' : '',
-                            width: appSize.isMobile ? '100%' : '100px',
-                            float: !appSize.isMobile ? 'right' : '',
-                            transform: !appSize.isMobile ? 'translate(0, -100%)' : '',
-                        }}
-                    >
-                        Potwierdź
-                    </Button>
-                )}
-                <Map
-                    coords={coordinates?.lat && coordinates?.lon ? coordinates : userCoordintates}
-                    popupText={'Wskazana lokalizacja'}
-                    handleCoordinatesChange={onCoordinatesChange}
-                    pageMode={pageMode}
-                    style={{
-                        marginTop: '20px',
-                        width: '100%',
-                        height: '500px',
+            <FormStructure formStructure={formStructure} formik={formik} pageMode={pageMode} />
+            {pageMode != 'read' && (
+                <Button
+                    id="confirmLocation"
+                    onClick={search}
+                    variant="contained"
+                    sx={{
+                        mt: appSize.isMobile ? '20px' : '',
+                        width: appSize.isMobile ? '100%' : '100px',
+                        float: !appSize.isMobile ? 'right' : '',
+                        transform: !appSize.isMobile ? 'translate(0, -100%)' : '',
                     }}
-                />
-            </FormPaper>
+                >
+                    Potwierdź
+                </Button>
+            )}
+            <Map
+                coords={coordinates?.lat && coordinates?.lon ? coordinates : userCoordintates}
+                popupText={'Wskazana lokalizacja'}
+                handleCoordinatesChange={onCoordinatesChange}
+                pageMode={pageMode}
+                style={{
+                    marginTop: '20px',
+                    width: '100%',
+                    height: '500px',
+                }}
+            />
         </FormBox>
     )
 }
