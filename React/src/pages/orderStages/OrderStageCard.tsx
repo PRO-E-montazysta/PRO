@@ -2,7 +2,7 @@ import { Grid, Paper, Box, Button, Tabs, Tab, Typography, CardActions } from '@m
 import dayjs, { Dayjs } from 'dayjs'
 import { useFormik } from 'formik'
 import { useParams } from 'react-router-dom'
-import { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { DatePicker, TimePicker } from '@mui/x-date-pickers'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -43,11 +43,11 @@ import { getOrderDetails } from '../../api/order.api'
 type OrderStageCardProps = {
     index?: string
     stage?: OrderStage
-    isLoading: boolean
-    isDisplaying: boolean
+    addingNewStage: boolean
+    setAddingNewStage: (value: boolean) => void
 }
 
-const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCardProps) => {
+const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: OrderStageCardProps) => {
     const [tabValue, setTabValue] = useState(0)
     const [expandedInformation, setExpandedInformation] = useState(false)
     const [plannedStartDate, setPlannedStartDate] = useState<Dayjs | null>(
@@ -73,7 +73,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
     const plannedToolsTypesRef = useRef<{ numberOfTools: number; toolTypeId: string }[]>([])
     const [error, setError] = useState<DateValidationError | null>(null)
     const [isEditing, setIsEditing] = useState(false)
-    const [isDisplayingMode, setIsDisplayingMode] = useState(isDisplaying)
     const queryClient = useQueryClient()
     //attachment functionality
     const attachmentData = useAttachmentData({
@@ -98,8 +97,9 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                 queryClient.refetchQueries({
                     queryKey: ['orderStageForOrder', { id: params.id }],
                 })
+                setAddingNewStage(false)
                 // setIsEditing(false)
-                setIsDisplayingMode(true)
+                // setIsDisplayingMode(true)
             },
         })
     }
@@ -126,11 +126,11 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
         if (role.length !== 0) setUserRole(role[0])
     }, [])
 
-    useEffect(() => {
-        if (isDisplayingMode === false) {
+    useLayoutEffect(() => {
+        if (addingNewStage === true) {
             setExpandedInformation(true)
         }
-    }, [isDisplayingMode])
+    }, [addingNewStage])
 
     useEffect(() => {
         const date = dayjs(plannedStartDate).format('YYYY-MM-DDTHH:mm:ss.SSS')
@@ -197,7 +197,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
 
     const handleEditButtonAction = () => {
         setIsEditing(true)
-        setIsDisplayingMode(false)
+        // setIsDisplayingMode(false)
         handleSetToolsTypeOnEdit()
         handleSetElementsOnEdit()
     }
@@ -220,7 +220,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
     }
     const handleCancelButtonAction = () => {
         setIsEditing(false)
-        setIsDisplayingMode(true)
+        setAddingNewStage(false)
         handleResetFormik()
         attachmentData.handleReset()
     }
@@ -231,17 +231,16 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
         initialValues: {
             orderId: params.id!,
             orderStageId: !!stage && stage.id ? stage.id.toString() : '',
-            name: isDisplayingMode && stage ? stage.name : '',
-            status: isDisplayingMode && stage ? stage.status : null,
-            price: isDisplayingMode && stage ? stage.price : '',
-            plannedStartDate: isDisplayingMode && stage ? stage.plannedStartDate : '',
-            plannedEndDate: isDisplayingMode && stage ? stage.plannedEndDate : '',
-            plannedFittersNumber: isDisplayingMode && stage ? stage.plannedFittersNumber : '',
-            minimumImagesNumber: isDisplayingMode && stage ? stage.minimumImagesNumber : '0',
-            listOfToolsPlannedNumber: isDisplayingMode && stage ? stage.listOfToolsPlannedNumber : [],
-            listOfElementsPlannedNumber: isDisplayingMode && stage ? stage.listOfElementsPlannedNumber : [],
-            attachments: [],
-            test: '',
+            name: stage ? stage.name : '',
+            status: stage ? stage.status : null,
+            price: stage ? stage.price : '',
+            plannedStartDate: stage ? stage.plannedStartDate : '',
+            plannedEndDate: stage ? stage.plannedEndDate : '',
+            plannedFittersNumber: stage ? stage.plannedFittersNumber : '',
+            minimumImagesNumber: stage ? stage.minimumImagesNumber : '0',
+            listOfToolsPlannedNumber: stage ? stage.listOfToolsPlannedNumber : [],
+            listOfElementsPlannedNumber: stage ? stage.listOfElementsPlannedNumber : [],
+            attachments: stage && stage.attachments ? stage.attachments : [],
             fitters: stage && stage.fitters ? stage.fitters : [],
         },
         validationSchema: validationSchema,
@@ -283,7 +282,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                 },
                             }}
                             label="Planowana data rozpoczęcia"
-                            disabled={isDisplayingMode}
+                            disabled={!addingNewStage}
                             format="DD/MM/YYYY"
                             value={plannedStartDate}
                             onChange={(data) => {
@@ -300,7 +299,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                     </LocalizationProvider>
                 </Grid>
 
-                {isDisplayingMode ? (
+                {!addingNewStage ? (
                     <Grid item xs={6}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
@@ -312,8 +311,8 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                 }}
                                 format="DD/MM/YYYY"
                                 label="Data rozpoczęcia"
-                                value={isDisplayingMode && stage ? dayjs(stage.startDate) : ''}
-                                disabled={isDisplayingMode}
+                                value={stage ? dayjs(stage.startDate) : ''}
+                                disabled={!addingNewStage}
                             />
                         </LocalizationProvider>
                     </Grid>
@@ -331,7 +330,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                             format={'HH:mm'}
                             ampm={false}
                             value={plannedStartHour}
-                            disabled={isDisplayingMode}
+                            disabled={!addingNewStage}
                             onChange={(data) => {
                                 setPlannedStartHour(data)
                             }}
@@ -339,7 +338,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                     </LocalizationProvider>
                 </Grid>
 
-                {isDisplayingMode ? (
+                {!addingNewStage ? (
                     <Grid item xs={6}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
@@ -350,9 +349,9 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     },
                                 }}
                                 label="Data zakończenia"
-                                disabled={isDisplayingMode}
+                                disabled={!addingNewStage}
                                 format="DD/MM/YYYY"
-                                value={isDisplayingMode && stage ? dayjs(stage.endDate) : ''}
+                                value={stage ? dayjs(stage.endDate) : ''}
                                 onChange={(data) => {
                                     // const formattedDate = dayjs(data).format('YYYY-MM-DDTHH:mm:ss.SSS')
                                 }}
@@ -369,7 +368,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     WebkitTextFillColor: '#000000',
                                 },
                             }}
-                            disabled={isDisplayingMode}
+                            disabled={!addingNewStage}
                             label="Planowana godzina zakończenia"
                             ampm={false}
                             format={'HH:mm'}
@@ -494,8 +493,8 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                     >
                         <Grid item xs={4} md={3}>
                             <CustomTextField
-                                readOnly={isDisplayingMode!}
-                                disabled={isDisplayingMode}
+                                readOnly={!addingNewStage!}
+                                disabled={!addingNewStage}
                                 sx={{ width: '100%' }}
                                 id="standard-basic"
                                 variant="outlined"
@@ -517,14 +516,18 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                 variant="outlined"
                                 label="Status"
                                 name="status"
-                                defaultValue={isDisplayingMode && stage ? orderStageStatusName(stage.status) : orderStageStatusName('PLANNING')}
+                                defaultValue={
+                                    !addingNewStage && stage
+                                        ? orderStageStatusName(stage.status)
+                                        : orderStageStatusName('PLANNING')
+                                }
                             />
                         </Grid>
 
                         <Grid item xs={4} md={3}>
                             <CustomTextField
-                                readOnly={isDisplayingMode!}
-                                disabled={isDisplayingMode}
+                                readOnly={!addingNewStage}
+                                disabled={!addingNewStage}
                                 sx={{ width: '100%' }}
                                 id="standard-basic"
                                 variant="outlined"
@@ -539,8 +542,8 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
 
                         <Grid item xs={4} md={3}>
                             <CustomTextField
-                                readOnly={isDisplayingMode!}
-                                disabled={isDisplayingMode}
+                                readOnly={!addingNewStage}
+                                disabled={!addingNewStage}
                                 sx={{
                                     width: '100%',
                                 }}
@@ -558,8 +561,8 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                         </Grid>
                         <Grid item xs={4} md={3}>
                             <CustomTextField
-                                readOnly={isDisplayingMode!}
-                                disabled={isDisplayingMode}
+                                readOnly={!addingNewStage}
+                                disabled={!addingNewStage}
                                 sx={{ width: '100%' }}
                                 id="standard-basic"
                                 label="Minimalna liczba zdjęć"
@@ -584,7 +587,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     <Tab label="Informacje o datach" {...tabProps(0)} />
                                     <Tab label="Narzędzia" {...tabProps(1)} />
                                     <Tab label="Elementy" {...tabProps(2)} />
-                                    <Tab label="Montażyści" {...tabProps(2)} />
+                                    {!isAuthorized([Role.SPECIALIST]) && <Tab label="Montażyści" {...tabProps(2)} />}
                                     <Tab label="Załączniki" {...tabProps(1)} />
                                 </Tabs>
                             </Box>
@@ -593,8 +596,8 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                             </TabPanel>
                             <TabPanel value={tabValue} index={1}>
                                 <OrderStageToolsTable
-                                    itemsArray={queryAllToolTypes.data!}
-                                    isDisplayingMode={isDisplayingMode!}
+                                    itemsArray={queryAllToolTypes.data || []}
+                                    isDisplayingMode={!addingNewStage}
                                     toolsTypeListIds={stage?.listOfToolsPlannedNumber as any}
                                     handleChange={handleSetPlannedToolsTypes}
                                     toolsRef={plannedToolsTypesRef}
@@ -603,8 +606,8 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                             </TabPanel>
                             <TabPanel value={tabValue} index={2}>
                                 <OrderStageElementsTable
-                                    itemsArray={queryAllElements.data!}
-                                    isDisplayingMode={isDisplayingMode!}
+                                    itemsArray={queryAllElements.data || []}
+                                    isDisplayingMode={!addingNewStage}
                                     elementsListIds={stage?.listOfElementsPlannedNumber as any}
                                     handleChange={handleSetPlannedElements}
                                     elementsRef={plannedElementsRef}
@@ -612,18 +615,20 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                 />
                             </TabPanel>
 
-                            <TabPanel value={tabValue} index={3}>
-                                <PlannerStageDetails
-                                    dateFrom={preparedPlannedStartDate}
-                                    dateTo={preparedPlannedEndDate}
-                                    fitters={formik.values.fitters}
-                                    setFitters={(fitters) => formik.setFieldValue('fitters', fitters)}
-                                    readonly={!isAuthorized([Role.FOREMAN]) || isDisplayingMode}
-                                    orderStageId={formik.values.orderStageId}
-                                />
-                            </TabPanel>
+                            {!isAuthorized([Role.SPECIALIST]) && (
+                                <TabPanel value={tabValue} index={3}>
+                                    <PlannerStageDetails
+                                        dateFrom={preparedPlannedStartDate}
+                                        dateTo={preparedPlannedEndDate}
+                                        fitters={formik.values.fitters}
+                                        setFitters={(fitters) => formik.setFieldValue('fitters', fitters)}
+                                        readonly={!isAuthorized([Role.FOREMAN]) || !addingNewStage}
+                                        orderStageId={formik.values.orderStageId}
+                                    />
+                                </TabPanel>
+                            )}
                             <TabPanel value={tabValue} index={4}>
-                                <Attachments {...attachmentData} readonly={isDisplayingMode} />
+                                <Attachments {...attachmentData} readonly={!addingNewStage} />
                             </TabPanel>
                         </Box>
 
@@ -637,23 +642,23 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     flexDirection: 'row-reverse',
                                 }}
                             >
-                                {isDisplayingMode && canEdit() && (
+                                {addingNewStage && canEdit() && (
                                     <Button
                                         color="primary"
                                         variant="contained"
-                                        disabled={isLoading}
+                                        // disabled={isLoading}
                                         onClick={handleEditButtonAction}
                                     >
                                         Edytuj etap
                                     </Button>
                                 )}
-                                {(!isDisplayingMode || isEditing) && (
+                                {(addingNewStage || isEditing) && (
                                     <>
                                         <Button
                                             type="submit"
                                             color="primary"
                                             variant="contained"
-                                            disabled={isLoading}
+                                            // disabled={isLoading}
                                             id={`formButton-save`}
                                         >
                                             Zapisz
@@ -661,7 +666,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                         <Button
                                             color="primary"
                                             variant="contained"
-                                            disabled={isLoading}
+                                            // disabled={isLoading}
                                             onClick={handleCancelButtonAction}
                                             id={`formButton-cancel`}
                                         >
@@ -669,7 +674,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                         </Button>
                                     </>
                                 )}
-                                {canChangeToNextStatus() && isDisplayingMode ? (
+                                {canChangeToNextStatus() && !addingNewStage ? (
                                     <Button
                                         id={`formButton-nextStatus`}
                                         color="primary"
@@ -681,7 +686,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                         Następny status
                                     </Button>
                                 ) : null}
-                                {canChangeToPreviousStatus() && isDisplayingMode ? (
+                                {canChangeToPreviousStatus() && !addingNewStage ? (
                                     <Button
                                         id={`formButton-nextStatus`}
                                         color="primary"

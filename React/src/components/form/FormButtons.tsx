@@ -26,8 +26,8 @@ type FormButtonsParams = {
     onCancel: () => void
     printLabel?: [string, string]
     orderStageButton?: boolean
-    handleAddOrderStage?: () => void
-    isAddOrderStageVisible?: boolean
+    setAddingNewStage?: (value: boolean) => void
+    addingNewStage?: boolean
     hireDismissEmp?: [() => void, 'hire' | 'dismiss']
     nextStatus?: () => void
     previousStatus?: () => void
@@ -48,8 +48,8 @@ export const FormButtons = (params: FormButtonsParams) => {
         onSubmit,
         printLabel,
         orderStageButton,
-        handleAddOrderStage,
-        isAddOrderStageVisible,
+        setAddingNewStage,
+        addingNewStage,
         hireDismissEmp,
         nextStatus,
         previousStatus,
@@ -149,9 +149,11 @@ export const FormButtons = (params: FormButtonsParams) => {
                             variant="contained"
                             type="submit"
                             // style={{ width: 160 }}
-                            onClick={handleAddOrderStage}
+                            onClick={() => {
+                                setAddingNewStage && setAddingNewStage(!addingNewStage)
+                            }}
                         >
-                            {isAddOrderStageVisible ? 'Anuluj dodawanie etapu' : 'Dodaj etap'}
+                            {addingNewStage ? 'Anuluj dodawanie etapu' : 'Dodaj etap'}
                         </Button>
                     )}
                 </>

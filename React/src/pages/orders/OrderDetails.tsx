@@ -1,7 +1,7 @@
 import { Button, Paper, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import { useFormik } from 'formik'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState, useLayoutEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useFormStructure } from './helper'
 import {
@@ -195,9 +195,8 @@ const OrderDetails = () => {
 
     //edit mode
     //populate formik and init values with data from db
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (orderData.data) {
-            console.log(orderData.data)
             formik.setValues(orderData.data)
             setInitData(orderData.data)
         }
@@ -221,11 +220,8 @@ const OrderDetails = () => {
         return userRole === Role.SPECIALIST ? orderData.data?.status == 'PLANNING' : false
     }
 
-    const [isAddOrderStageVisible, setIsAddOrderStageVisible] = useState(false)
+    const [addingNewStage, setAddingNewStage] = useState(false)
 
-    const handleAddOrderStage = () => {
-        setIsAddOrderStageVisible(!isAddOrderStageVisible)
-    }
     //--------------- Localization functionality --------------------
     const formStructureLocation = useFormStructureLocation()
     const [initDataLocation, setInitDataLocation] = useState(getInitValues(formStructureLocation))
@@ -328,8 +324,8 @@ const OrderDetails = () => {
                                 onSubmit={formik.submitForm}
                                 readonlyMode={pageMode == 'read'}
                                 orderStageButton={getAddOrderStageButton()}
-                                handleAddOrderStage={handleAddOrderStage}
-                                isAddOrderStageVisible={isAddOrderStageVisible}
+                                setAddingNewStage={setAddingNewStage}
+                                addingNewStage={addingNewStage}
                                 nextStatus={canChangeToNextStatus() ? handleNextStatus : undefined}
                                 previousStatus={canChangeToPreviousStatus() ? handlePreviousStatus : undefined}
                                 editPermissionRoles={
@@ -346,7 +342,9 @@ const OrderDetails = () => {
                         </>
                     )}
                 </FormPaper>
-                {params.id !== 'new' && <OrderStagesDetails isAddOrderStageVisible={isAddOrderStageVisible} />}
+                {params.id !== 'new' && (
+                    <OrderStagesDetails addingNewStage={addingNewStage} setAddingNewStage={setAddingNewStage} />
+                )}
             </FormBox>
         </>
     )
