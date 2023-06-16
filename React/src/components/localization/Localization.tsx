@@ -14,10 +14,11 @@ type LocalizationProps = {
     formStructure: Array<FormInputProps>
     formik: any
     pageMode?: PageMode
+    invokeSearch?: boolean
 }
 
 const Localization = (props: LocalizationProps) => {
-    const { formStructure, formik, pageMode } = props
+    const { formStructure, formik, pageMode, invokeSearch } = props
     const appSize = useBreakpoints()
     const [coordinates, setCoordinates] = useState<Coordinates | null>(null)
 
@@ -62,6 +63,9 @@ const Localization = (props: LocalizationProps) => {
         }
     }
 
+    useEffect(() => {
+        if (invokeSearch) search()
+    }, [invokeSearch])
     const setLocationByCoordinates = async (coords: Coordinates) => {
         const location = await getLocationFromCoordinates(coords)
         for (const [key, value] of Object.entries(location)) {

@@ -88,13 +88,31 @@ const OrderDetails = () => {
 
     const handleSubmit = async (values: any) => {
         //show formik location errors to user
-        formikLocation.submitForm()
-        //check if there are any error
-        if (Object.keys(formikLocation.errors).length == 0) {
-            if (pageMode == 'new') addOrderMutation.mutate(values)
-            else if (pageMode == 'edit') editOrderMutation.mutate(values)
-            else console.warn('Try to submit while read mode')
-        }
+        formikLocation.submitForm().then(() => {
+            //check if there are any error
+            if (
+                formikLocation.values.xcoordinate.toString() != '' &&
+                formikLocation.values.ycoordinate.toString() != ''
+            ) {
+                if (pageMode == 'new') addOrderMutation.mutate(values)
+                else if (pageMode == 'edit') editOrderMutation.mutate(values)
+                else console.warn('Try to submit while read mode')
+            } else {
+                showDialog({
+                    title: 'Lokalizacja wymagana',
+                    content:
+                        formikLocation.values.city == ''
+                            ? 'Do zapisania zlecenia niezbędna jest lokalizacja'
+                            : 'Potwierdź wprowadzony adres',
+                    btnOptions: [
+                        {
+                            text: 'Ok',
+                            value: 0,
+                        },
+                    ],
+                })
+            }
+        })
     }
 
     const submitLocation = (data: Order) => {
@@ -220,7 +238,6 @@ const OrderDetails = () => {
     )
     const addLocationMutation = useAddOrderLocation()
     const editLocationMutation = useEditOrderLocation((data) => handleOnEditSuccess(data))
-
     useEffect(() => {
         if (queryLocationData.data) {
             formikLocation.setValues(queryLocationData.data)
@@ -270,7 +287,7 @@ const OrderDetails = () => {
 
                             <Paper sx={{ m: '20px 0' }}>
                                 <ExpandMore
-                                    isOpen={pageMode == 'new'}
+                                    isOpen={pageMode == 'new' || Object.keys(formikLocation.errors).length > 0}
                                     titleIcon={<MapIcon />}
                                     title="Lokalizacja"
                                     titleVariant="h5"
@@ -284,22 +301,22 @@ const OrderDetails = () => {
                                 />
                             </Paper>
 
-                            {/* {pageMode != 'new' && ( */}
-                            <Paper>
-                                <ExpandMore
-                                    titleIcon={<CalendarMonthIcon />}
-                                    title="Harmonogram pracy montażystów"
-                                    titleVariant="h5"
-                                    cardContent={
-                                        <Planner
-                                            orderId={params.id}
-                                            initialDate={moment(orderData.data?.plannedStart)}
-                                            readonly={!isAuthorized([Role.FOREMAN])}
-                                        />
-                                    }
-                                />
-                            </Paper>
-                            {/* )} */}
+                            {orderData.data && orderData.data.orderStages.length > 0 && (
+                                <Paper>
+                                    <ExpandMore
+                                        titleIcon={<CalendarMonthIcon />}
+                                        title="Harmonogram pracy montażystów"
+                                        titleVariant="h5"
+                                        cardContent={
+                                            <Planner
+                                                orderId={params.id}
+                                                initialDate={moment(orderData.data?.plannedStart)}
+                                                readonly={!isAuthorized([Role.FOREMAN])}
+                                            />
+                                        }
+                                    />
+                                </Paper>
+                            )}
 
                             <FormButtons
                                 id={params.id}

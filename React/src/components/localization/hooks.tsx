@@ -82,19 +82,21 @@ export const useFormStructureLocation = (): Array<FormInputProps> => {
         },
         {
             label: 'x',
-            id: 'xCoordinate',
+            id: 'xcoordinate',
             initValue: '',
             type: 'number',
             dontIncludeInFormStructure: true,
             readonly: true,
+            validation: yup.number().required(),
         },
         {
             label: 'y',
-            id: 'yCoordinate',
+            id: 'ycoordinate',
             initValue: '',
             type: 'number',
             dontIncludeInFormStructure: true,
             readonly: true,
+            validation: yup.number().required(),
         },
     ]
 }
