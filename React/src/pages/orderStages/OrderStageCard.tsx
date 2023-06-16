@@ -594,7 +594,7 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                 helperText={formik.touched.plannedFittersNumber && formik.errors.plannedFittersNumber}
                             />
                         </Grid>
-                        <Grid item xs={4} md={3}>
+                        {/* <Grid item xs={4} md={3}>
                             <CustomTextField
                                 readOnly={stageMode == 'read'}
                                 disabled={stageMode == 'read'}
@@ -608,7 +608,7 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                 error={formik.touched.minimumImagesNumber && Boolean(formik.errors.minimumImagesNumber)}
                                 helperText={formik.touched.minimumImagesNumber && formik.errors.minimumImagesNumber}
                             />
-                        </Grid>
+                        </Grid> */}
                         <Box sx={{ marginTop: '20px', width: '100%' }}>
                             <Box
                                 sx={{
