@@ -9,7 +9,7 @@ import IconButton from '@mui/material/IconButton'
 import { DatePicker, TimePicker } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { DateValidationError } from '@mui/x-date-pickers/models'
+import { DateValidationError, TimeValidationError } from '@mui/x-date-pickers/models'
 import { AxiosError } from 'axios'
 import dayjs, { Dayjs } from 'dayjs'
 import { useFormik } from 'formik'
@@ -73,6 +73,9 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
     const plannedElementsRef = useRef<{ numberOfElements: number; elementId: string }[]>([])
     const plannedToolsTypesRef = useRef<{ numberOfTools: number; toolTypeId: string }[]>([])
     const [error, setError] = useState<DateValidationError | null>(null)
+    const [startHourError, setStartHourError] = useState<TimeValidationError | null>(null)
+    const [endHourError, setEndHourError] = useState<TimeValidationError | null>(null)
+
     const queryClient = useQueryClient()
     //attachment functionality
     const attachmentData = useAttachmentData({
@@ -131,6 +134,9 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
         const hours = dayjs(plannedStartHour).format('HH:mm:ss.SSS')
         const preparedDate = date.substring(0, date.indexOf('T') + 1).replace('T', 'T' + hours)
         setPreparedPlannedStartDate(preparedDate)
+        if (plannedStartHour?.toString() != 'Invalid Date' && plannedStartDate) {
+            formik.setFieldValue('plannedStartDate', preparedDate)
+        }
     }, [plannedStartHour, plannedStartDate])
 
     useEffect(() => {
@@ -138,6 +144,13 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
         const hours = dayjs(plannedFinishHour).format('HH:mm:ss.SSS')
         const preparedDate = date.substring(0, date.indexOf('T') + 1).replace('T', 'T' + hours)
         setPreparedPlannedEndDate(preparedDate)
+        if (plannedFinishHour?.toString() != 'Invalid Date' && plannedStartDate) {
+            const isEndDateBeforeStartDay = dayjs(preparedPlannedStartDate).isAfter(dayjs(preparedDate))
+            if (!isEndDateBeforeStartDay) {
+                formik.setFieldValue('plannedEndDate', preparedDate)
+                setEndHourError('disablePast')
+            }
+        }
     }, [plannedFinishHour, plannedStartDate])
 
     const tabProps = (index: number) => {
@@ -260,6 +273,31 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
         }
     }, [error])
 
+    const errorStartHourMessage = useMemo(() => {
+        switch (error) {
+            case 'invalidDate': {
+                return 'Wprowadź poprawną godzinę'
+            }
+            default: {
+                return ''
+            }
+        }
+    }, [startHourError])
+
+    const errorEndHourMessage = useMemo(() => {
+        switch (error) {
+            case 'invalidDate': {
+                return 'Wprowadź poprawną godzinę'
+            }
+            case 'disablePast': {
+                return 'Godzina zakończenia nie może być mniejsza niż godzina rozpoczęcia'
+            }
+            default: {
+                return ''
+            }
+        }
+    }, [endHourError])
+
     const getDateInformations = (stage?: OrderStage) => {
         return (
             <Grid container spacing={{ xs: 2, md: 2 }} columns={{ xs: 2, sm: 4, md: 12 }}>
@@ -273,7 +311,7 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                 },
                             }}
                             label="Planowana data rozpoczęcia"
-                            disabled={stageMode != 'new'}
+                            disabled={stageMode == 'read'}
                             format="DD/MM/YYYY"
                             value={plannedStartDate}
                             onChange={(data) => {
@@ -300,10 +338,10 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                         WebkitTextFillColor: '#000000',
                                     },
                                 }}
-                                format="DD/MM/YYYY"
+                                format="DD/MM/YYYY HH:mm"
                                 label="Data rozpoczęcia"
                                 value={stage ? dayjs(stage.startDate) : ''}
-                                disabled={stageMode == 'read'}
+                                disabled={true}
                             />
                         </LocalizationProvider>
                     </Grid>
@@ -323,7 +361,14 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                             value={plannedStartHour}
                             disabled={stageMode == 'read'}
                             onChange={(data) => {
+                                setStartHourError(null)
                                 setPlannedStartHour(data)
+                            }}
+                            onError={(error) => setStartHourError(error)}
+                            slotProps={{
+                                textField: {
+                                    helperText: errorStartHourMessage || '',
+                                },
                             }}
                         />
                     </LocalizationProvider>
@@ -340,12 +385,9 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                     },
                                 }}
                                 label="Data zakończenia"
-                                disabled={stageMode == 'read'}
-                                format="DD/MM/YYYY"
+                                disabled={true}
+                                format="DD/MM/YYYY HH:mm"
                                 value={stage ? dayjs(stage.endDate) : ''}
-                                onChange={(data) => {
-                                    // const formattedDate = dayjs(data).format('YYYY-MM-DDTHH:mm:ss.SSS')
-                                }}
                             />
                         </LocalizationProvider>
                     </Grid>
@@ -362,10 +404,22 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                             disabled={stageMode == 'read'}
                             label="Planowana godzina zakończenia"
                             ampm={false}
+                            minTime={plannedStartHour}
                             format={'HH:mm'}
                             value={plannedFinishHour}
                             onChange={(data) => {
+                                const isDateBeforeStartDate = dayjs(plannedStartHour).isAfter(data)
+                                if (isDateBeforeStartDate) {
+                                    return setError('disablePast')
+                                }
+                                setEndHourError(null)
                                 setPlannedFinishHour(data)
+                            }}
+                            onError={(error) => setEndHourError(error)}
+                            slotProps={{
+                                textField: {
+                                    helperText: errorEndHourMessage || '',
+                                },
                             }}
                         />
                     </LocalizationProvider>
