@@ -11,7 +11,7 @@ data class ReleaseItem(
     val toolType: String,
     var quantity: Int = 1,
     val warehouse: String,
-    var isSelected: Boolean = false){
+    var isSelected: Boolean = false) {
 
     fun getQuantityInWarehouse(id: Int): Int {
         return 99

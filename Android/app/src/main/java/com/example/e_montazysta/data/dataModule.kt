@@ -41,6 +41,7 @@ import com.example.e_montazysta.ui.order.OrderListViewModel
 import com.example.e_montazysta.ui.release.ReleaseCreateViewModel
 import com.example.e_montazysta.ui.release.ReleaseDetailViewModel
 import com.example.e_montazysta.ui.release.ReleaseListViewModel
+import com.example.e_montazysta.ui.returnitem.ReturnCreateViewModel
 import com.example.e_montazysta.ui.stage.StageDetailViewModel
 import com.example.e_montazysta.ui.stage.StageListViewModel
 import com.example.e_montazysta.ui.toollist.ToolDetailViewModel
@@ -224,5 +225,7 @@ val dataModule = module {
     viewModel{
         UserListViewModel(get())
     }
-
+    viewModel{
+        ReturnCreateViewModel()
+    }
 }

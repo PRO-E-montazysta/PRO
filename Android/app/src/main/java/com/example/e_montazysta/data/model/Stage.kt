@@ -1,11 +1,14 @@
 package com.example.e_montazysta.data.model
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.example.e_montazysta.ui.release.ReleaseElementDAO
 import com.example.e_montazysta.ui.release.ReleaseToolDAO
 import com.example.e_montazysta.ui.stage.StageStatus
+import kotlinx.android.parcel.Parcelize
 import java.math.BigDecimal
 import java.util.Date
-
+@Parcelize
 data class Stage(
     val id: Int,
     val name: String,
@@ -27,4 +30,15 @@ data class Stage(
     val listOfElementsPlannedNumber: List<Int>,
     val simpleToolReleases: List<ReleaseToolDAO>,
     val simpleElementReturnReleases: List<ReleaseElementDAO>
-)
+) : Parcelable {
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(id)
+        parcel.writeString(name)
+        parcel.writeInt(plannedFittersNumber)
+        parcel.writeInt(minimumImagesNumber)
+        parcel.writeInt(orderId)
+    }
+    override fun describeContents(): Int {
+        return 0
+    }
+}

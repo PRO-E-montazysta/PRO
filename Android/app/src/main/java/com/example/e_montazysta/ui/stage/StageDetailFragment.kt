@@ -48,8 +48,8 @@ class StageDetailFragment : Fragment() {
         stageDetailViewModel.getStageDetail(stageId)
         viewPager = binding.pager
 
-        stageDetailViewModel.stagedetail.observe(viewLifecycleOwner, Observer {
-            it?.let {
+        stageDetailViewModel.stagedetail.observe(viewLifecycleOwner, Observer {stage ->
+            stage?.let {
                 stageDetailAdapter = StageDetailAdapter(this, it)
                 viewPager.adapter  = stageDetailAdapter
                 val tabLayout = binding.tabs
@@ -60,6 +60,16 @@ class StageDetailFragment : Fragment() {
                         else -> ""
                     }
                 }.attach()
+                mElementEventFab.setOnClickListener{
+                    val direction = StageDetailFragmentDirections.actionStageDetailFragmentToReleaseCreateFragment(stage.id)
+                    findNavController().navigate(direction)
+                }
+
+                //Mockup zwracania elementu
+                mElementManageFab.setOnClickListener {
+                    val direction = StageDetailFragmentDirections.actionStageDetailFragmentToReturnCreateFragment(stage)
+                    findNavController().navigate(direction)
+                }
             }
         })
 
@@ -109,16 +119,7 @@ class StageDetailFragment : Fragment() {
             }).also { subFabsVisible = it }
         })
 
-        mElementEventFab.setOnClickListener{
-            val direction = StageDetailFragmentDirections.actionStageDetailFragmentToReleaseCreateFragment(stageId)
-            findNavController().navigate(direction)
-        }
 
-        //Mockup zwracania elementu
-        mElementManageFab.setOnClickListener {
-            val direction = StageDetailFragmentDirections.actionStageDetailFragmentToReleaseCreateFragment(stageId)
-            findNavController().navigate(direction)
-        }
 
         // Wyświetlanie błędów
         stageDetailViewModel.messageLiveData.observe(viewLifecycleOwner) {

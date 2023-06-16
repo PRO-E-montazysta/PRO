@@ -47,13 +47,13 @@ class ReturnCreateViewModel : ViewModel(), CoroutineScope, KoinComponent {
     private val _selectedWarehouseLiveData = MutableLiveData<WarehouseFilterDAO?>()
     val selectedWarehouseLiveData: LiveData<WarehouseFilterDAO?> = _selectedWarehouseLiveData
 
-    fun addToolToRelease(code: String?) {
+    fun addToolToReturn(code: String?) {
         job = launch {
-            addToolToReleaseAsync(code)
+            addToolToReturnAsync(code)
         }
     }
 
-    private suspend fun addToolToReleaseAsync(code: String?) {
+    private suspend fun addToolToReturnAsync(code: String?) {
         _isLoadingLiveData.postValue(true)
         val currentItems = _itemsLiveData.value ?: emptyList()
         val existingItem = currentItems.find { it.code == code }
@@ -72,14 +72,14 @@ class ReturnCreateViewModel : ViewModel(), CoroutineScope, KoinComponent {
         _isLoadingLiveData.postValue(false)
     }
 
-    fun addElementToRelease(code: String?) {
+    fun addElementToReturn(code: String?) {
         job = launch {
-            addElementToReleaseAsync(code)
+            addElementToReturnAsync(code)
         }
     }
 
     //TODO Ogarnąć ten kod bo jest 2x to samo co w narzędziu
-    private suspend fun addElementToReleaseAsync(code: String?) {
+    private suspend fun addElementToReturnAsync(code: String?) {
         _isLoadingLiveData.postValue(true)
         val currentItems = _itemsLiveData.value ?: emptyList()
         val existingItem = currentItems.find { it.code == code }
@@ -102,13 +102,13 @@ class ReturnCreateViewModel : ViewModel(), CoroutineScope, KoinComponent {
         _isLoadingLiveData.postValue(false)
     }
 
-    suspend fun createRelease(items: List<ReleaseItem>, stageId: Int): Result<Any>? {
-        return createReleaseAsync(items, stageId)
+    suspend fun createReturn(items: List<ReleaseItem>, stageId: Int): Result<Any> {
+        return createReturnAsync(items, stageId)
     }
 
-    private suspend fun createReleaseAsync(items: List<ReleaseItem>, stageId: Int): Result<Any> {
+    private suspend fun createReturnAsync(items: List<ReleaseItem>, stageId: Int): Result<Any> {
         _isLoadingLiveData.postValue(true)
-        val result = releaseRepository.createRelease(items, stageId, selectedWarehouseLiveData.value?.id)
+        val result = releaseRepository.createReturn(items, stageId, selectedWarehouseLiveData.value?.id)
         when (result) {
             is Result.Success -> {
                 _messageLiveData.postValue("Wydanie utworzone!")
