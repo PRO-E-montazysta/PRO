@@ -51,7 +51,7 @@ const LoginForm = () => {
     const formik = useFormik({
         initialValues: {
             username: '',
-            password: 'password',
+            password: '',
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
@@ -105,7 +105,7 @@ const LoginForm = () => {
                     component="form"
                     onSubmit={formik.handleSubmit}
                     noValidate
-                    sx={{ autoComplete: 'off', maxWidth: 666, marginTop: '17px', width: '100%' }}
+                    sx={{ maxWidth: 666, marginTop: '17px', width: '100%' }}
                 >
                     <CustomTextField
                         className={'form-input-dark'}
@@ -159,13 +159,7 @@ const LoginForm = () => {
                     <Typography color="#d32f2f" align="center" marginTop={'5px'}>
                         {error && dispalyError(error)}
                     </Typography>
-                    <FormControlLabel
-                        sx={{ marginTop: '15px', marginBottom: '25px' }}
-                        control={<CustomCheckbox value="remember" />}
-                        label="Zapamiętaj moje dane logowania"
-                        name="check"
-                    />
-                    <Grid spacing={2} container justifyContent="flex-end" marginBottom={'5px'}>
+                    <Grid spacing={2} container justifyContent="flex-end" sx={{ mt: '5px', mb: '10px' }}>
                         <Grid item>
                             <Button
                                 id={'login-logIn'}
