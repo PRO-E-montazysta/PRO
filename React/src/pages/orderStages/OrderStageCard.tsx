@@ -207,9 +207,15 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
         plannedToolsTypesRef.current! = []
         setPreparedPlannedStartDate('')
         setPreparedPlannedEndDate('')
-        setPlannedStartDate(dayjs(stage!.plannedStartDate))
-        setPlannedStartHour(dayjs(stage!.plannedStartDate))
-        setPlannedFinishHour(dayjs(stage!.plannedEndDate))
+        if (stage) {
+            setPlannedStartDate(dayjs(stage.plannedStartDate))
+            setPlannedStartHour(dayjs(stage.plannedStartDate))
+            setPlannedFinishHour(dayjs(stage.plannedEndDate))
+        } else {
+            setPlannedStartDate(null)
+            setPlannedStartHour(null)
+            setPlannedFinishHour(null)
+        }
         formik.resetForm()
     }
     const handleCancelButtonAction = () => {
@@ -306,7 +312,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                 }}
                                 format="DD/MM/YYYY"
                                 label="Data rozpoczęcia"
-                                value={isDisplayingMode ? dayjs(stage!.startDate) : ''}
+                                value={isDisplayingMode && stage ? dayjs(stage.startDate) : ''}
                                 disabled={isDisplayingMode}
                             />
                         </LocalizationProvider>
@@ -346,7 +352,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                 label="Data zakończenia"
                                 disabled={isDisplayingMode}
                                 format="DD/MM/YYYY"
-                                value={isDisplayingMode ? dayjs(stage!.endDate) : ''}
+                                value={isDisplayingMode && stage ? dayjs(stage.endDate) : ''}
                                 onChange={(data) => {
                                     // const formattedDate = dayjs(data).format('YYYY-MM-DDTHH:mm:ss.SSS')
                                 }}
@@ -508,7 +514,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                 variant="outlined"
                                 label="Status"
                                 name="status"
-                                defaultValue={isDisplayingMode ? orderStageStatusName(stage!.status) : null}
+                                defaultValue={isDisplayingMode && stage ? orderStageStatusName(stage.status) : null}
                             />
                         </Grid>
 
