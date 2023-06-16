@@ -218,8 +218,8 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
         attachmentData.handleReset()
     }
 
-    const formik = useFormik({
-        initialValues: {
+    const mapStageToFormik = (stage?: OrderStage) => {
+        return {
             orderId: params.id!,
             orderStageId: !!stage && stage.id ? stage.id.toString() : '',
             name: stage ? stage.name : '',
@@ -233,7 +233,14 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
             listOfElementsPlannedNumber: stage ? stage.listOfElementsPlannedNumber : [],
             attachments: stage && stage.attachments ? stage.attachments : [],
             fitters: stage && stage.fitters ? stage.fitters : [],
-        },
+        }
+    }
+    useLayoutEffect(() => {
+        formik.setValues(mapStageToFormik(stage))
+    }, [stage])
+
+    const formik = useFormik({
+        initialValues: mapStageToFormik(stage),
         validationSchema: validationSchema,
         onSubmit: (values) => {
             values.listOfElementsPlannedNumber = plannedElementsRef.current!
