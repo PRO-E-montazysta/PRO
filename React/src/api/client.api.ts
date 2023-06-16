@@ -8,7 +8,7 @@ export const getFilteredClients = (payload: PayloadProps) => {
     return makeServiceCall('/clients/filter', 'GET', { ...payload })
 }
 
-export const getClientDetails = (id: string) => {
+export const getClientDetails = (id: string): Promise<Client> => {
     return makeServiceCall(`/clients/${id}`, 'GET', {})
 }
 

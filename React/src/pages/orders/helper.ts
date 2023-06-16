@@ -11,7 +11,7 @@ import { Company } from '../../types/model/Company'
 import { AppUser } from '../../types/model/AppUser'
 import { Location } from '../../types/model/Location'
 import { AxiosError } from 'axios'
-import { getAllClients } from '../../api/client.api'
+import { getAllClients, getClientDetails } from '../../api/client.api'
 import { getAllCompanies } from '../../api/company.api'
 import { getAllForemans } from '../../api/foreman.api'
 import { getAllLocations } from '../../api/location.api'
@@ -124,10 +124,7 @@ export const useFormStructure = (): Array<FormInputProps> => {
         cacheTime: 15 * 60 * 1000,
         staleTime: 10 * 60 * 1000,
     })
-    const queryManager = useQuery<Array<AppUser>, AxiosError>(['manager-list'], getAllManagers, {
-        cacheTime: 15 * 60 * 1000,
-        staleTime: 10 * 60 * 1000,
-    })
+
     const querySalesRepresentative = useQuery<Array<AppUser>, AxiosError>(
         ['sales-reprezentative-list'],
         getAllSalesRepresentatives,
@@ -136,10 +133,6 @@ export const useFormStructure = (): Array<FormInputProps> => {
             staleTime: 10 * 60 * 1000,
         },
     )
-    const querySpecialist = useQuery<Array<AppUser>, AxiosError>(['specialist-list'], getAllSpecialists, {
-        cacheTime: 15 * 60 * 1000,
-        staleTime: 10 * 60 * 1000,
-    })
 
     return [
         {
@@ -212,7 +205,9 @@ export const useFormStructure = (): Array<FormInputProps> => {
             id: 'clientId',
             initValue: '',
             type: 'can-be-deleted',
-            formatFn: (id: string) => DeletedClientName(id),
+            formatFn: async (id: string) => {
+                return id ? (await getClientDetails(id)).name : ''
+            },
             addNewPermissionRoles: [Role.NOBODY],
             editPermissionRoles: [Role.NOBODY],
             viewPermissionRoles: [Role['*']],

@@ -35,19 +35,20 @@ export const useOrderStageNextStatus = (onSuccessCallback: () => void) => {
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: orderStageNextStatus,
-        onSuccess(data) {
+        onSuccess: (data) => {
             showDialog({
                 btnOptions: [
                     {
                         text: 'OK',
-                        value: 0,
+                        value: 5,
                     },
                 ],
                 title: 'Sukces!',
                 content: <Box>Status został zmieniony</Box>,
+                callback: (result) => {
+                    onSuccessCallback()
+                },
             })
-            queryClient.invalidateQueries('orderStage')
-            onSuccessCallback()
         },
         onError: showError,
     })
@@ -59,19 +60,20 @@ export const useOrderStagePreviousStatus = (onSuccessCallback: () => void) => {
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: orderStagePreviousStatus,
-        onSuccess(data) {
+        onSuccess: (data) => {
             showDialog({
                 btnOptions: [
                     {
                         text: 'OK',
-                        value: 0,
+                        value: 5,
                     },
                 ],
                 title: 'Sukces!',
                 content: <Box>Status został zmieniony</Box>,
+                callback: (result) => {
+                    onSuccessCallback()
+                },
             })
-            queryClient.invalidateQueries('orderStage')
-            onSuccessCallback()
         },
         onError: showError,
     })

@@ -9,7 +9,7 @@ export type FormInputParams = {
     options?: Array<SelectMenuItemProps>
     style?: CSSProperties
     type?: HTMLInputTypeAttribute
-    formatFn?: (value: any) => string
+    formatFn?: (value: any) => string | Promise<string>
     placeholder?: string
 }
 

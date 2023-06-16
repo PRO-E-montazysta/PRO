@@ -25,6 +25,7 @@ import { Warehouse } from '../../types/model/Warehouse'
 import Localization from '../../components/localization/Localization'
 import Error from '../../components/error/Error'
 import { Role } from '../../types/roleEnum'
+import { Typography } from '@mui/material'
 
 const WarehouseDetails = () => {
     const params = useParams()
@@ -163,12 +164,17 @@ const WarehouseDetails = () => {
                 ) : (
                     <>
                         <FormStructure formStructure={formStructure} formik={formik} pageMode={pageMode} />
-                        <Localization
-                            title="Lokalizacja"
-                            formik={formikLocation}
-                            formStructure={formStructureLocation}
-                            pageMode={pageMode}
-                        />
+                        <FormPaper sx={{ mt: 0, pt: '10px' }}>
+                            <Typography variant="h5" sx={{ mb: '20px' }}>
+                                {'Lokalizacja'}
+                            </Typography>
+
+                            <Localization
+                                formik={formikLocation}
+                                formStructure={formStructureLocation}
+                                pageMode={pageMode}
+                            />
+                        </FormPaper>
                         <FormButtons
                             id={params.id}
                             onCancel={handleCancel}
