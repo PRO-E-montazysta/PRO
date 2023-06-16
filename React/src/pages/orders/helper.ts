@@ -152,6 +152,9 @@ export const useFormStructure = (): Array<FormInputProps> => {
                 .min(3, 'Nazwa musi zawierać co najmniej 3 znaki')
                 .max(255, 'Nazwa może zawierać maksymalnie 255 znaki')
                 .required('Wprowadź nazwę'),
+            addNewPermissionRoles: [Role.SALES_REPRESENTATIVE],
+            editPermissionRoles: [Role.SALES_REPRESENTATIVE],
+            viewPermissionRoles: [Role['*']],
         },
         {
             label: 'Priorytet',
@@ -160,6 +163,9 @@ export const useFormStructure = (): Array<FormInputProps> => {
             type: 'select',
             validation: yup.string().required('Wybierz priorytet'),
             options: priorityOptions(),
+            addNewPermissionRoles: [Role.SALES_REPRESENTATIVE],
+            editPermissionRoles: [Role.SALES_REPRESENTATIVE],
+            viewPermissionRoles: [Role['*']],
         },
         {
             label: 'Status',
@@ -177,6 +183,9 @@ export const useFormStructure = (): Array<FormInputProps> => {
             initValue: '',
             type: 'date-time',
             validation: yup.date().required('Wybierz datę'),
+            addNewPermissionRoles: [Role.SALES_REPRESENTATIVE],
+            editPermissionRoles: [Role.SALES_REPRESENTATIVE],
+            viewPermissionRoles: [Role['*']],
         },
         {
             label: 'Planowany czas zakończenia',
@@ -184,6 +193,9 @@ export const useFormStructure = (): Array<FormInputProps> => {
             initValue: '',
             type: 'date-time',
             validation: yup.date().required('Wybierz datę'),
+            addNewPermissionRoles: [Role.SALES_REPRESENTATIVE],
+            editPermissionRoles: [Role.SALES_REPRESENTATIVE],
+            viewPermissionRoles: [Role['*']],
         },
         {
             label: 'Klient',
