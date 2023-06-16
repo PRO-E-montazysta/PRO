@@ -73,6 +73,16 @@ export const useOrderData = (id: string | undefined) => {
     )
 }
 
+export const useOrderStagesData = (id: string | undefined) => {
+    return useQuery<OrderStage[], AxiosError>(
+        ['orderStageForOrder', { id: id }],
+        async () => getAllOrderStagesForOrder(id && id != 'new' ? id : ''),
+        {
+            enabled: !!id && id != 'new',
+        },
+    )
+}
+
 export const useAddOrderLocation = () => {
     const navigate = useNavigate()
     const { showDialog } = useContext(DialogGlobalContext)
