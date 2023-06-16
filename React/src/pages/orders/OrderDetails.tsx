@@ -197,6 +197,7 @@ const OrderDetails = () => {
     //populate formik and init values with data from db
     useEffect(() => {
         if (orderData.data) {
+            console.log(orderData.data)
             formik.setValues(orderData.data)
             setInitData(orderData.data)
         }
