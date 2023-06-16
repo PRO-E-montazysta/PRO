@@ -77,6 +77,7 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
     const [startHourError, setStartHourError] = useState<TimeValidationError | null>(null)
     const [endHourError, setEndHourError] = useState<TimeValidationError | null>(null)
 
+
     useEffect(() => {
         const role = getRolesFromToken()
         if (role.length !== 0) setUserRole(role[0])
@@ -89,6 +90,7 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
         
         return true
     }
+
     const queryClient = useQueryClient()
     //attachment functionality
     const attachmentData = useAttachmentData({
@@ -324,7 +326,9 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                 },
                             }}
                             label="Planowana data rozpoczęcia"
+
                             disabled={canBeEdittedBySpecialist()}
+
                             format="DD/MM/YYYY"
                             value={plannedStartDate}
                             onChange={(data) => {
@@ -401,9 +405,6 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                 disabled={true}
                                 format="DD/MM/YYYY HH:mm"
                                 value={stage ? dayjs(stage.endDate) : ''}
-                                onChange={(data) => {
-                                    // const formattedDate = dayjs(data).format('YYYY-MM-DDTHH:mm:ss.SSS')
-                                }}
                             />
                         </LocalizationProvider>
                     </Grid>
@@ -610,7 +611,7 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                 helperText={formik.touched.plannedFittersNumber && formik.errors.plannedFittersNumber}
                             />
                         </Grid>
-                        <Grid item xs={4} md={3}>
+                        {/* <Grid item xs={4} md={3}>
                             <CustomTextField
                                 readOnly={canBeEdittedBySpecialist()}
                                 disabled={canBeEdittedBySpecialist()}
@@ -624,7 +625,7 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                 error={formik.touched.minimumImagesNumber && Boolean(formik.errors.minimumImagesNumber)}
                                 helperText={formik.touched.minimumImagesNumber && formik.errors.minimumImagesNumber}
                             />
-                        </Grid>
+                        </Grid> */}
                         <Box sx={{ marginTop: '20px', width: '100%' }}>
                             <Box
                                 sx={{
