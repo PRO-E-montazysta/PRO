@@ -19,26 +19,15 @@ export const CustomTextField = styled(TextField)((props: CustomTextFieldProps) =
 
 const FormInput = (params: FormInputParams) => {
     const { id, readonly, style, type, formik, label, formatFn, placeholder } = params
-    const [value, setValue] = useState<any>(formik.values[id] || undefined)
-    useLayoutEffect(() => {
-        formatValue()
-    }, [formik.values[id]])
 
-    const formatValue = async () => {
-        let w
-        if (type == 'can-be-deleted' && formatFn) w = await formatFn(formik.values[id])
-        const formattedValue = !formik.values[id]
-            ? undefined
-            : type == 'datetime-local'
+    const formattedValue =
+        type == 'datetime-local'
             ? formatDate(formik.values[id])
             : type == 'date'
             ? formatShortDate(formik.values[id])
-            : w
-            ? w
+            : type == 'can-be-deleted' && formatFn
+            ? formatFn(formik.values[id])
             : formik.values[id]
-
-        setValue(formattedValue)
-    }
 
     const appSize = useBreakpoints()
     return (
@@ -55,7 +44,7 @@ const FormInput = (params: FormInputParams) => {
             label={label}
             variant="outlined"
             type={type ? type : 'text'}
-            value={value}
+            value={formattedValue}
             onChange={formik.handleChange}
             id={id}
             name={id}
