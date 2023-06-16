@@ -13,7 +13,7 @@ import {
     useOrderData,
     useOrderNextStatus,
     useOrderPreviousStatus,
-    useOrderStages,
+    useOrderStagesData,
 } from './hooks'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { FormButtons } from '../../components/form/FormButtons'
@@ -40,6 +40,7 @@ import Planner from './Planner'
 import ExpandMore from '../../components/expandMore/ExpandMore'
 import MapIcon from '@mui/icons-material/Map'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
+import { canChangeToNextStatus, canChangeToPreviousStatus, validateNextOrderStatus } from './statusValidation'
 
 const OrderDetails = () => {
     const [userRole, setUserRole] = useState('')
@@ -62,6 +63,7 @@ const OrderDetails = () => {
     const editOrderMutation = useEditOrder((data) => submitLocation(data))
     const deleteOrderMutation = useDeleteOrder(() => orderData.remove())
     const orderData = useOrderData(params.id)
+    const orderStagesData = useOrderStagesData(params.id)
     const orderNextStatusMutation = useOrderNextStatus(() => {
         orderData.refetch()
     })
@@ -71,7 +73,7 @@ const OrderDetails = () => {
 
     //status for all mutations and queries
     const queriesStatus = useQueriesStatus(
-        [orderData],
+        [orderData, orderStagesData],
         [addOrderMutation, editOrderMutation, deleteOrderMutation, orderNextStatusMutation],
     )
 
@@ -137,16 +139,25 @@ const OrderDetails = () => {
     }
 
     const handleNextStatus = () => {
-        showDialog({
-            title: 'Czy na pewno chcesz zmienić status zlecenia na następny?',
-            btnOptions: [
-                { text: 'Tak', value: 1, variant: 'contained' },
-                { text: 'Anuluj', value: 0, variant: 'outlined' },
-            ],
-            callback: (result: number) => {
-                if (result == 1 && params.id) orderNextStatusMutation.mutate(params.id)
-            },
-        })
+        const validationResult = validateNextOrderStatus(orderData.data, orderStagesData.data)
+
+        if (validationResult.isValid)
+            showDialog({
+                title: 'Czy na pewno chcesz zmienić status zlecenia na następny?',
+                btnOptions: [
+                    { text: 'Tak', value: 1, variant: 'contained' },
+                    { text: 'Anuluj', value: 0, variant: 'outlined' },
+                ],
+                callback: (result: number) => {
+                    if (result == 1 && params.id) orderNextStatusMutation.mutate(params.id)
+                },
+            })
+        else
+            showDialog({
+                title: 'Nie można zmienić statusu',
+                content: validationResult.message,
+                btnOptions: [{ text: 'Ok', value: 1, variant: 'contained' }],
+            })
     }
 
     const handlePreviousStatus = () => {
@@ -239,28 +250,6 @@ const OrderDetails = () => {
         }
     }, [queryLocationData.data])
 
-    //------------------------status functionality
-
-    const canChangeToNextStatus = () => {
-        return (
-            (orderData.data?.status == 'CREATED' && isAuthorized([Role.SALES_REPRESENTATIVE])) ||
-            (orderData.data?.status == 'PLANNING' && isAuthorized([Role.SPECIALIST])) ||
-            (orderData.data?.status == 'TO_ACCEPT' && isAuthorized([Role.MANAGER])) ||
-            (orderData.data?.status == 'ACCEPTED' && isAuthorized([Role.FOREMAN])) ||
-            (orderData.data?.status == 'IN_PROGRESS' && isAuthorized([Role.FOREMAN]))
-        )
-    }
-
-    const canChangeToPreviousStatus = () => {
-        return (
-            (orderData.data?.status == 'PLANNING' && isAuthorized([Role.SPECIALIST])) ||
-            (orderData.data?.status == 'TO_ACCEPT' && isAuthorized([Role.MANAGER])) ||
-            (orderData.data?.status == 'ACCEPTED' && isAuthorized([Role.FOREMAN])) ||
-            (orderData.data?.status == 'IN_PROGRESS' && isAuthorized([Role.FOREMAN])) ||
-            (orderData.data?.status == 'FINISHED' && isAuthorized([Role.FOREMAN]))
-        )
-    }
-
     return orderData.data?.deleted ? (
         <>
             <Error code={404} message={'Ten obiekt został usunięty'} />
@@ -289,7 +278,15 @@ const OrderDetails = () => {
                                         <Localization
                                             formik={formikLocation}
                                             formStructure={formStructureLocation}
-                                            pageMode={pageMode}
+                                            pageMode={
+                                                isAuthorized([
+                                                    Role.SALES_REPRESENTATIVE,
+                                                    Role.ADMIN,
+                                                    Role.WAREHOUSE_MANAGER,
+                                                ])
+                                                    ? pageMode
+                                                    : 'read'
+                                            }
                                         />
                                     }
                                 />
@@ -323,8 +320,10 @@ const OrderDetails = () => {
                                 orderStageButton={getAddOrderStageButton()}
                                 setAddingNewStage={setAddingNewStage}
                                 addingNewStage={addingNewStage}
-                                nextStatus={canChangeToNextStatus() ? handleNextStatus : undefined}
-                                previousStatus={canChangeToPreviousStatus() ? handlePreviousStatus : undefined}
+                                nextStatus={canChangeToNextStatus(orderData.data) ? handleNextStatus : undefined}
+                                previousStatus={
+                                    canChangeToPreviousStatus(orderData.data) ? handlePreviousStatus : undefined
+                                }
                                 editPermissionRoles={
                                     formik.values['status'] == 'CREATED'
                                         ? [Role.MANAGER, Role.SALES_REPRESENTATIVE]

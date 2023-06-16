@@ -49,5 +49,4 @@ export const validationSchema = yup.object({
     name: yup.string().required('Wpisz nazwę etapu'),
     price: yup.string().required('Podaj cenę etapu'),
     plannedFittersNumber: yup.string().required('Podaj planowaną liczbę montażystów'),
-    minimumImagesNumber: yup.string().required('Podaj planowaną liczbę montażystów'),
 })
