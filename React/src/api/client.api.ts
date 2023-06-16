@@ -4,10 +4,6 @@ import { makeServiceCall, PayloadProps } from './utils.api'
 export const getAllClients = () => {
     return makeServiceCall('/clients/filter', 'GET', {})
 }
-
-export const getAllClientsDeleted = () => {
-    return makeServiceCall('/clients/deleted', 'GET', {})
-}
 export const getFilteredClients = (payload: PayloadProps) => {
     return makeServiceCall('/clients/filter', 'GET', { ...payload })
 }

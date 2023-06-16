@@ -10,6 +10,7 @@ export type FormStructureParams = {
     formStructure: Array<FormInputProps>
     formik: any
     pageMode?: PageMode
+    readonlyMode?: boolean //deprecated
     thin?: boolean
 }
 
