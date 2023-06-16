@@ -23,7 +23,6 @@ const Planner = ({ orderId, initialDate, readonly }: PlannerProps) => {
 
     useEffect(() => {
         if (orderStagesQuery.data) {
-            console.log(orderStagesQuery.data)
             const events: EventInput[] = orderStagesQuery.data.map((d) => {
                 return {
                     title: `${d.name} (${d.fitters.length}/${d.plannedFittersNumber})`,
@@ -33,7 +32,6 @@ const Planner = ({ orderId, initialDate, readonly }: PlannerProps) => {
                     end: moment(d.plannedEndDate).toDate(),
                 }
             })
-            console.log(events)
             setOrderStagesAsEvents(events)
         }
     }, [orderStagesQuery.data])

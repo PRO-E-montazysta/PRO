@@ -61,9 +61,10 @@ const HamburgerButton = (props: HamburgerButtonProps) => {
             </MenuItem>
             {menuOpen &&
                 availableChilds &&
-                availableChilds.map((c) => {
+                availableChilds.map((c, i) => {
                     return (
                         <MenuItem
+                            key={i}
                             id={`hamburgerBtn-${page.path}-opt-${c.path}`}
                             sx={{ p: '0 20px', position: 'relative', height: '50px', ml: '20px' }}
                             onClick={() => onSubitemClick(c)}

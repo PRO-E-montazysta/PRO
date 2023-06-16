@@ -399,25 +399,21 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
     }
 
     const orderNextStatusMutation = useOrderStageNextStatus(() => {
-        queryClient.refetchQueries([
-            {
-                queryKey: ['order', { id: stage?.orderId }],
-            },
-            {
-                queryKey: ['orderStageForOrder', { id: stage?.orderId }],
-            },
-        ])
+        queryClient.refetchQueries({
+            queryKey: ['order', { id: stage?.orderId.toString() }],
+        })
+        queryClient.refetchQueries({
+            queryKey: ['orderStageForOrder', { id: stage?.orderId.toString() }],
+        })
     })
-    const orderPreviousStatusMutation = useOrderStagePreviousStatus(() =>
-        queryClient.refetchQueries([
-            {
-                queryKey: ['order', { id: stage?.orderId }],
-            },
-            {
-                queryKey: ['orderStageForOrder', { id: stage?.orderId }],
-            },
-        ]),
-    )
+    const orderPreviousStatusMutation = useOrderStagePreviousStatus(() => {
+        queryClient.refetchQueries({
+            queryKey: ['order', { id: stage?.orderId.toString() }],
+        })
+        queryClient.refetchQueries({
+            queryKey: ['orderStageForOrder', { id: stage?.orderId.toString() }],
+        })
+    })
 
     const handleNextStatus = () => {
         const validationResult = validateNextOrderStageStatus(stage)
@@ -506,9 +502,7 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                 variant="outlined"
                                 label="Status"
                                 name="status"
-                                defaultValue={
-                                    stage ? orderStageStatusName(stage.status) : orderStageStatusName('PLANNING')
-                                }
+                                value={stage ? orderStageStatusName(stage.status) : orderStageStatusName('PLANNING')}
                             />
                         </Grid>
 
@@ -547,21 +541,6 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                 helperText={formik.touched.plannedFittersNumber && formik.errors.plannedFittersNumber}
                             />
                         </Grid>
-                        {/* <Grid item xs={4} md={3}>
-                            <CustomTextField
-                                readOnly={stageMode == 'read'}
-                                disabled={stageMode == 'read'}
-                                sx={{ width: '100%' }}
-                                id="standard-basic"
-                                label="Minimalna liczba zdjęć"
-                                variant="outlined"
-                                name="minimumImagesNumber"
-                                value={formik.values.minimumImagesNumber}
-                                onChange={formik.handleChange}
-                                error={formik.touched.minimumImagesNumber && Boolean(formik.errors.minimumImagesNumber)}
-                                helperText={formik.touched.minimumImagesNumber && formik.errors.minimumImagesNumber}
-                            />
-                        </Grid> */}
                         <Box sx={{ marginTop: '20px', width: '100%' }}>
                             <Box
                                 sx={{
@@ -679,7 +658,6 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                         color="primary"
                                         startIcon={<ArrowBackIosIcon />}
                                         variant="contained"
-                                        type="submit"
                                         style={{ width: appSize.isMobile ? 'auto' : 170 }}
                                         onClick={handlePreviousStatus}
                                     >

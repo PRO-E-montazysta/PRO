@@ -92,7 +92,6 @@ const OrderDetails = () => {
                 formikLocation.values.xcoordinate.toString() != '' &&
                 formikLocation.values.ycoordinate.toString() != ''
             ) {
-                console.log(values)
                 if (pageMode == 'new') addOrderMutation.mutate(values)
                 else if (pageMode == 'edit') editOrderMutation.mutate(values)
                 else console.warn('Try to submit while read mode')
