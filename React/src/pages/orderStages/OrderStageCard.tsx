@@ -389,7 +389,9 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
     const canEdit = () => {
         const orderStageStatus = stage?.status
         return (
-            (orderStageStatus == 'PLANNING' && isAuthorized([Role.SPECIALIST])) ||
+            (orderStageStatus == 'PLANNING' &&
+                isAuthorized([Role.SPECIALIST]) &&
+                queryOrder.data?.status != 'TO_ACCEPT') ||
             (orderStageStatus == 'ADDING_FITTERS' && isAuthorized([Role.FOREMAN])) ||
             (orderStageStatus == 'PICK_UP' && isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) ||
             (orderStageStatus == 'REALESED' && isAuthorized([Role.FOREMAN])) ||
@@ -404,7 +406,8 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
         return (
             (orderStageStatus == 'PLANNING' &&
                 isAuthorized([Role.SPECIALIST]) &&
-                queryOrder.data?.status != 'PLANNING') ||
+                queryOrder.data?.status != 'PLANNING' &&
+                queryOrder.data?.status != 'TO_ACCEPT') ||
             (orderStageStatus == 'ADDING_FITTERS' && isAuthorized([Role.FOREMAN])) ||
             (orderStageStatus == 'PICK_UP' && isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) ||
             (orderStageStatus == 'REALESED' && isAuthorized([Role.FOREMAN])) ||
