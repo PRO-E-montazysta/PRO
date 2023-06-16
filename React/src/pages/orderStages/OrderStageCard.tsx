@@ -1,44 +1,42 @@
-import { Grid, Paper, Box, Button, Tabs, Tab, Typography, CardActions } from '@mui/material'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
+import AssignmentIcon from '@mui/icons-material/Assignment'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { Box, Button, CardActions, Grid, Paper, Tab, Tabs, Typography } from '@mui/material'
+import Card from '@mui/material/Card'
+import Collapse from '@mui/material/Collapse'
+import IconButton from '@mui/material/IconButton'
+import { DatePicker, TimePicker } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { DateValidationError } from '@mui/x-date-pickers/models'
+import { AxiosError } from 'axios'
 import dayjs, { Dayjs } from 'dayjs'
 import { useFormik } from 'formik'
-import { useParams } from 'react-router-dom'
 import { useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { DatePicker, TimePicker } from '@mui/x-date-pickers'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { DateValidationError } from '@mui/x-date-pickers/models'
-import { OrderStage } from '../../types/model/OrderStage'
-import IconButton from '@mui/material/IconButton'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import Card from '@mui/material/Card'
-import AssignmentIcon from '@mui/icons-material/Assignment'
-import Collapse from '@mui/material/Collapse'
-import { ExpandMore, TabPanel, validationSchema } from './helper'
-import { getRolesFromToken } from '../../utils/token'
 import { useQuery, useQueryClient } from 'react-query'
-import { AxiosError } from 'axios'
-import { getAllToolTypes, getPlannedToolTypesById } from '../../api/toolType.api'
+import { useParams } from 'react-router-dom'
 import { getAllElements, getPlannedElementById } from '../../api/element.api'
-import { useAddOrderStage, useOrderStageNextStatus, useOrderStagePreviousStatus, useUpdateOrderStage } from './hooks'
+import { getOrderDetails } from '../../api/order.api'
+import { getAllToolTypes, getPlannedToolTypesById } from '../../api/toolType.api'
+import useAttachmentData from '../../components/attachments/AttachmentData.hook'
+import Attachments from '../../components/attachments/Attachments'
+import { deleteFilesFromServer, saveNewFiles } from '../../components/attachments/attachments.helper'
 import { CustomTextField } from '../../components/form/FormInput'
-import { v4 as uuidv4 } from 'uuid'
-import { ToolType } from '../../types/model/ToolType'
-import OrderStageToolsTable from './OrderStageToolsTable'
-import OrderStageElementsTable from './OrderStageElementsTable'
-import { Role } from '../../types/roleEnum'
-import { isAuthorized } from '../../utils/authorize'
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import { orderStageStatusName } from '../../helpers/enum.helper'
 import useBreakpoints from '../../hooks/useBreakpoints'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
-import { orderStageStatusName } from '../../helpers/enum.helper'
-import PlannerStageDetails from '../orders/PlannerStageDetails'
-import moment from 'moment'
-import Attachments, { AttachmentsProps } from '../../components/attachments/Attachments'
-import useAttachmentData from '../../components/attachments/AttachmentData.hook'
-import { deleteFilesFromServer, saveNewFiles } from '../../components/attachments/attachments.helper'
 import { Order } from '../../types/model/Order'
-import { getOrderDetails } from '../../api/order.api'
+import { OrderStage } from '../../types/model/OrderStage'
+import { ToolType } from '../../types/model/ToolType'
+import { Role } from '../../types/roleEnum'
+import { isAuthorized } from '../../utils/authorize'
+import { getRolesFromToken } from '../../utils/token'
+import PlannerStageDetails from '../orders/PlannerStageDetails'
+import OrderStageElementsTable from './OrderStageElementsTable'
+import OrderStageToolsTable from './OrderStageToolsTable'
+import { ExpandMore, TabPanel, validationSchema } from './helper'
+import { useAddOrderStage, useOrderStageNextStatus, useOrderStagePreviousStatus, useUpdateOrderStage } from './hooks'
 
 type OrderStageCardProps = {
     index?: string
@@ -61,7 +59,6 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
     )
     const [preparedPlannedStartDate, setPreparedPlannedStartDate] = useState('')
     const [preparedPlannedEndDate, setPreparedPlannedEndDate] = useState('')
-    const [userRole, setUserRole] = useState('')
     const addOrderStage = useAddOrderStage(() => onSaveOrderStageSucceess())
     const updateOrderStage = useUpdateOrderStage(() => onSaveOrderStageSucceess())
     const appSize = useBreakpoints()
@@ -98,8 +95,6 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
                     queryKey: ['orderStageForOrder', { id: params.id }],
                 })
                 setAddingNewStage(false)
-                // setIsEditing(false)
-                // setIsDisplayingMode(true)
             },
         })
     }
@@ -120,11 +115,6 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
         ['elements-list'],
         async () => await getAllElements(),
     )
-
-    useEffect(() => {
-        const role = getRolesFromToken()
-        if (role.length !== 0) setUserRole(role[0])
-    }, [])
 
     useLayoutEffect(() => {
         if (addingNewStage === true) {
@@ -197,7 +187,6 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
 
     const handleEditButtonAction = () => {
         setIsEditing(true)
-        // setIsDisplayingMode(false)
         handleSetToolsTypeOnEdit()
         handleSetElementsOnEdit()
     }
@@ -224,9 +213,7 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
         handleResetFormik()
         attachmentData.handleReset()
     }
-    useEffect(() => {
-        if (stage) formik.setFieldValue('fitters', stage.fitters)
-    }, [stage])
+
     const formik = useFormik({
         initialValues: {
             orderId: params.id!,
@@ -435,8 +422,26 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
         )
     }
 
-    const orderNextStatusMutation = useOrderStageNextStatus(() => {})
-    const orderPreviousStatusMutation = useOrderStagePreviousStatus(() => {})
+    const orderNextStatusMutation = useOrderStageNextStatus(() => {
+        queryClient.refetchQueries([
+            {
+                queryKey: ['order', { id: stage?.orderId }],
+            },
+            {
+                queryKey: ['orderStageForOrder', { id: stage?.orderId }],
+            },
+        ])
+    })
+    const orderPreviousStatusMutation = useOrderStagePreviousStatus(() =>
+        queryClient.refetchQueries([
+            {
+                queryKey: ['order', { id: stage?.orderId }],
+            },
+            {
+                queryKey: ['orderStageForOrder', { id: stage?.orderId }],
+            },
+        ]),
+    )
 
     const handleNextStatus = () => {
         showDialog({
@@ -446,7 +451,7 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
                 { text: 'Anuluj', value: 0, variant: 'outlined' },
             ],
             callback: (result: number) => {
-                if (result == 1 && stage?.id!) orderNextStatusMutation.mutate(stage?.id!)
+                if (result == 1 && stage && stage.id) orderNextStatusMutation.mutate(stage.id)
             },
         })
     }
@@ -459,7 +464,7 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
                 { text: 'Anuluj', value: 0, variant: 'outlined' },
             ],
             callback: (result: number) => {
-                if (result == 1 && stage?.id!) orderPreviousStatusMutation.mutate(stage?.id!)
+                if (result == 1 && stage && stage.id) orderPreviousStatusMutation.mutate(stage.id)
             },
         })
     }
@@ -622,7 +627,7 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
                                         dateTo={preparedPlannedEndDate}
                                         fitters={formik.values.fitters}
                                         setFitters={(fitters) => formik.setFieldValue('fitters', fitters)}
-                                        readonly={!isAuthorized([Role.FOREMAN]) || !addingNewStage}
+                                        readonly={!isAuthorized([Role.FOREMAN]) || !isEditing}
                                         orderStageId={formik.values.orderStageId}
                                     />
                                 </TabPanel>
@@ -642,7 +647,7 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
                                     flexDirection: 'row-reverse',
                                 }}
                             >
-                                {addingNewStage && canEdit() && (
+                                {!addingNewStage && !isEditing && canEdit() && (
                                     <Button
                                         color="primary"
                                         variant="contained"
@@ -674,7 +679,7 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
                                         </Button>
                                     </>
                                 )}
-                                {canChangeToNextStatus() && !addingNewStage ? (
+                                {canChangeToNextStatus() && !addingNewStage && !isEditing ? (
                                     <Button
                                         id={`formButton-nextStatus`}
                                         color="primary"
@@ -686,7 +691,7 @@ const OrderStageCard = ({ index, stage, addingNewStage, setAddingNewStage }: Ord
                                         Następny status
                                     </Button>
                                 ) : null}
-                                {canChangeToPreviousStatus() && !addingNewStage ? (
+                                {canChangeToPreviousStatus() && !addingNewStage && !isEditing ? (
                                     <Button
                                         id={`formButton-nextStatus`}
                                         color="primary"

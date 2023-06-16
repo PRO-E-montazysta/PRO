@@ -16,7 +16,12 @@ import { Order } from '../../types/model/Order'
 import useError from '../../hooks/useError'
 import { useAddLocation, useEditLocation, useLocationData } from '../../components/localization/hooks'
 import { OrderStage } from '../../types/model/OrderStage'
-import { getAllOrderStagesForOrder, getOrderStageById, updateOrderStage, updateOrderStageFitters } from '../../api/orderStage.api'
+import {
+    getAllOrderStagesForOrder,
+    getOrderStageById,
+    updateOrderStage,
+    updateOrderStageFitters,
+} from '../../api/orderStage.api'
 
 export const useAddOrder = (onSuccessCallback: (data: any) => void) => {
     const showError = useError()
@@ -112,7 +117,7 @@ export const useOrderNextStatus = (onSuccessCallback: () => void) => {
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: orderNextStatus,
-        onSuccess(data) {
+        onSuccess: (data) => {
             showDialog({
                 btnOptions: [
                     {
@@ -122,9 +127,11 @@ export const useOrderNextStatus = (onSuccessCallback: () => void) => {
                 ],
                 title: 'Sukces!',
                 content: <Box>Status został zmieniony</Box>,
+                callback: () => {
+                    queryClient.invalidateQueries('orders')
+                    onSuccessCallback()
+                },
             })
-            queryClient.invalidateQueries('orders')
-            onSuccessCallback()
         },
         onError: showError,
     })
@@ -136,7 +143,7 @@ export const useOrderPreviousStatus = (onSuccessCallback: () => void) => {
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: orderPreviousStatus,
-        onSuccess(data) {
+        onSuccess: (data) => {
             showDialog({
                 btnOptions: [
                     {
@@ -146,9 +153,11 @@ export const useOrderPreviousStatus = (onSuccessCallback: () => void) => {
                 ],
                 title: 'Sukces!',
                 content: <Box>Status został zmieniony</Box>,
+                callback: () => {
+                    queryClient.invalidateQueries('orders')
+                    onSuccessCallback()
+                },
             })
-            queryClient.invalidateQueries('orders')
-            onSuccessCallback()
         },
         onError: showError,
     })

@@ -63,14 +63,10 @@ const OrderDetails = () => {
     const deleteOrderMutation = useDeleteOrder(() => orderData.remove())
     const orderData = useOrderData(params.id)
     const orderNextStatusMutation = useOrderNextStatus(() => {
-        orderData.refetch({
-            queryKey: ['order', { id: params.id }],
-        })
+        orderData.refetch()
     })
     const orderPreviousStatusMutation = useOrderPreviousStatus(() => {
-        orderData.refetch({
-            queryKey: ['order', { id: params.id }],
-        })
+        orderData.refetch()
     })
 
     //status for all mutations and queries
