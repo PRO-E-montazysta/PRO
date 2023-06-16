@@ -51,6 +51,7 @@ type OrderStageCardProps = {
 const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: OrderStageCardProps) => {
     const [stageMode, setStageMode] = useState<PageMode>(addingNewStag ? 'new' : 'read')
     const [tabValue, setTabValue] = useState(0)
+    const [userRole, setUserRole] = useState('')
     const [expandedInformation, setExpandedInformation] = useState(false)
     const [plannedStartDate, setPlannedStartDate] = useState<Dayjs | null>(
         dayjs(stage?.plannedStartDate ? stage?.plannedStartDate : null),
@@ -76,6 +77,18 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
     const [startHourError, setStartHourError] = useState<TimeValidationError | null>(null)
     const [endHourError, setEndHourError] = useState<TimeValidationError | null>(null)
 
+    useEffect(() => {
+        const role = getRolesFromToken()
+        if (role.length !== 0) setUserRole(role[0])
+    }, [])
+
+    const canBeEdittedBySpecialist = () => {
+        if(userRole === Role.SPECIALIST){
+          return  stageMode == 'read'
+        } 
+        
+        return true
+    }
     const queryClient = useQueryClient()
     //attachment functionality
     const attachmentData = useAttachmentData({
@@ -311,7 +324,7 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                 },
                             }}
                             label="Planowana data rozpoczęcia"
-                            disabled={stageMode == 'read'}
+                            disabled={canBeEdittedBySpecialist()}
                             format="DD/MM/YYYY"
                             value={plannedStartDate}
                             onChange={(data) => {
@@ -359,7 +372,7 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                             format={'HH:mm'}
                             ampm={false}
                             value={plannedStartHour}
-                            disabled={stageMode == 'read'}
+                            disabled={canBeEdittedBySpecialist()}
                             onChange={(data) => {
                                 setStartHourError(null)
                                 setPlannedStartHour(data)
@@ -404,7 +417,7 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                     WebkitTextFillColor: '#000000',
                                 },
                             }}
-                            disabled={stageMode == 'read'}
+                            disabled={canBeEdittedBySpecialist()}
                             label="Planowana godzina zakończenia"
                             ampm={false}
                             minTime={plannedStartHour}
@@ -533,8 +546,8 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                     >
                         <Grid item xs={4} md={3}>
                             <CustomTextField
-                                readOnly={stageMode == 'read'}
-                                disabled={stageMode == 'read'}
+                                readOnly={canBeEdittedBySpecialist()}
+                                disabled={canBeEdittedBySpecialist()}
                                 sx={{ width: '100%' }}
                                 id="standard-basic"
                                 variant="outlined"
@@ -564,8 +577,8 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
 
                         <Grid item xs={4} md={3}>
                             <CustomTextField
-                                readOnly={stageMode == 'read'}
-                                disabled={stageMode == 'read'}
+                                readOnly={canBeEdittedBySpecialist()}
+                                disabled={canBeEdittedBySpecialist()}
                                 sx={{ width: '100%' }}
                                 id="standard-basic"
                                 variant="outlined"
@@ -580,8 +593,8 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
 
                         <Grid item xs={4} md={3}>
                             <CustomTextField
-                                readOnly={stageMode == 'read'}
-                                disabled={stageMode == 'read'}
+                                readOnly={canBeEdittedBySpecialist()}
+                                disabled={canBeEdittedBySpecialist()}
                                 sx={{
                                     width: '100%',
                                 }}
@@ -599,8 +612,8 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                         </Grid>
                         <Grid item xs={4} md={3}>
                             <CustomTextField
-                                readOnly={stageMode == 'read'}
-                                disabled={stageMode == 'read'}
+                                readOnly={canBeEdittedBySpecialist()}
+                                disabled={canBeEdittedBySpecialist()}
                                 sx={{ width: '100%' }}
                                 id="standard-basic"
                                 label="Minimalna liczba zdjęć"
@@ -635,7 +648,7 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                             <TabPanel value={tabValue} index={1}>
                                 <OrderStageToolsTable
                                     itemsArray={queryAllToolTypes.data || []}
-                                    isDisplayingMode={stageMode == 'read'}
+                                    isDisplayingMode={canBeEdittedBySpecialist()}
                                     toolsTypeListIds={stage?.listOfToolsPlannedNumber as any}
                                     handleChange={handleSetPlannedToolsTypes}
                                     toolsRef={plannedToolsTypesRef}
@@ -645,7 +658,7 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                             <TabPanel value={tabValue} index={2}>
                                 <OrderStageElementsTable
                                     itemsArray={queryAllElements.data || []}
-                                    isDisplayingMode={stageMode == 'read'}
+                                    isDisplayingMode={canBeEdittedBySpecialist()}
                                     elementsListIds={stage?.listOfElementsPlannedNumber as any}
                                     handleChange={handleSetPlannedElements}
                                     elementsRef={plannedElementsRef}
