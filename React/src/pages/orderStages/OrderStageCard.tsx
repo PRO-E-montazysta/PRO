@@ -38,6 +38,8 @@ import OrderStageToolsTable from './OrderStageToolsTable'
 import { ExpandMore, TabPanel, validationSchema } from './helper'
 import { useAddOrderStage, useOrderStageNextStatus, useOrderStagePreviousStatus, useUpdateOrderStage } from './hooks'
 import { PageMode } from '../../types/form'
+import { useOrderData } from '../orders/hooks'
+import { canChangeToNextStatus, canChangeToPreviousStatus, validateNextOrderStageStatus } from './statusValidation'
 
 type OrderStageCardProps = {
     index?: string
@@ -372,13 +374,7 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
         )
     }
 
-    const queryOrder = useQuery<Order, AxiosError>(
-        ['order', { id: stage?.orderId }],
-        async () => getOrderDetails(String(stage?.orderId)),
-        {
-            enabled: !!stage?.orderId && stage?.orderId != undefined,
-        },
-    )
+    const queryOrder = useOrderData(stage ? stage.orderId.toString() : '')
 
     const canEdit = () => {
         const orderStageStatus = stage?.status
@@ -392,35 +388,6 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
             (orderStageStatus == 'ON_WORK' && isAuthorized([Role.FOREMAN])) ||
             (orderStageStatus == 'RETURN' && isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) ||
             (orderStageStatus == 'RETURNED' && isAuthorized([Role.FOREMAN]))
-        )
-    }
-
-    const canChangeToNextStatus = () => {
-        const orderStageStatus = stage?.status
-        return (
-            (orderStageStatus == 'PLANNING' &&
-                isAuthorized([Role.SPECIALIST]) &&
-                queryOrder.data?.status != 'PLANNING' &&
-                queryOrder.data?.status != 'TO_ACCEPT') ||
-            (orderStageStatus == 'ADDING_FITTERS' && isAuthorized([Role.FOREMAN])) ||
-            (orderStageStatus == 'PICK_UP' && isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) ||
-            (orderStageStatus == 'REALESED' && isAuthorized([Role.FOREMAN])) ||
-            (orderStageStatus == 'ON_WORK' && isAuthorized([Role.FOREMAN])) ||
-            (orderStageStatus == 'RETURN' && isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) ||
-            (orderStageStatus == 'RETURNED' && isAuthorized([Role.FOREMAN]))
-        )
-    }
-
-    const canChangeToPreviousStatus = () => {
-        const orderStageStatus = stage?.status
-        return (
-            (orderStageStatus == 'ADDING_FITTERS' && isAuthorized([Role.FOREMAN])) ||
-            (orderStageStatus == 'PICK_UP' && isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) ||
-            (orderStageStatus == 'REALESED' && isAuthorized([Role.FOREMAN])) ||
-            (orderStageStatus == 'ON_WORK' && isAuthorized([Role.FOREMAN])) ||
-            (orderStageStatus == 'RETURN' && isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) ||
-            (orderStageStatus == 'RETURNED' && isAuthorized([Role.FOREMAN])) ||
-            (orderStageStatus == 'FINISHED ' && isAuthorized([Role.FOREMAN]))
         )
     }
 
@@ -446,16 +413,25 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
     )
 
     const handleNextStatus = () => {
-        showDialog({
-            title: 'Czy na pewno chcesz zmienić status etapu na następny?',
-            btnOptions: [
-                { text: 'Tak', value: 1, variant: 'contained' },
-                { text: 'Anuluj', value: 0, variant: 'outlined' },
-            ],
-            callback: (result: number) => {
-                if (result == 1 && stage && stage.id) orderNextStatusMutation.mutate(stage.id)
-            },
-        })
+        const validationResult = validateNextOrderStageStatus(stage)
+
+        if (validationResult.isValid)
+            showDialog({
+                title: 'Czy na pewno chcesz zmienić status etapu na następny?',
+                btnOptions: [
+                    { text: 'Tak', value: 1, variant: 'contained' },
+                    { text: 'Anuluj', value: 0, variant: 'outlined' },
+                ],
+                callback: (result: number) => {
+                    if (result == 1 && stage && stage.id) orderNextStatusMutation.mutate(stage.id)
+                },
+            })
+        else
+            showDialog({
+                title: 'Nie można zmienić statusu',
+                content: validationResult.message,
+                btnOptions: [{ text: 'Ok', value: 1, variant: 'contained' }],
+            })
     }
 
     const handlePreviousStatus = () => {
@@ -564,7 +540,7 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                 helperText={formik.touched.plannedFittersNumber && formik.errors.plannedFittersNumber}
                             />
                         </Grid>
-                        <Grid item xs={4} md={3}>
+                        {/* <Grid item xs={4} md={3}>
                             <CustomTextField
                                 readOnly={stageMode == 'read'}
                                 disabled={stageMode == 'read'}
@@ -578,7 +554,7 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                 error={formik.touched.minimumImagesNumber && Boolean(formik.errors.minimumImagesNumber)}
                                 helperText={formik.touched.minimumImagesNumber && formik.errors.minimumImagesNumber}
                             />
-                        </Grid>
+                        </Grid> */}
                         <Box sx={{ marginTop: '20px', width: '100%' }}>
                             <Box
                                 sx={{
@@ -678,7 +654,7 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                         </Button>
                                     </>
                                 )}
-                                {canChangeToNextStatus() && stageMode == 'read' ? (
+                                {canChangeToNextStatus(stage, queryOrder.data) && stageMode == 'read' && (
                                     <Button
                                         id={`formButton-nextStatus`}
                                         color="primary"
@@ -689,8 +665,8 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                     >
                                         Następny status
                                     </Button>
-                                ) : null}
-                                {canChangeToPreviousStatus() && stageMode == 'read' ? (
+                                )}
+                                {canChangeToPreviousStatus(stage) && stageMode == 'read' && (
                                     <Button
                                         id={`formButton-nextStatus`}
                                         color="primary"
@@ -702,7 +678,7 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                     >
                                         Cofnij status
                                     </Button>
-                                ) : null}
+                                )}
                                 <div ref={dummyScrollDiv} />
                             </Grid>
                         </Grid>

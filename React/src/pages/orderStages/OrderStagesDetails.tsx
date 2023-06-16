@@ -13,10 +13,8 @@ type OrderStagesDetailsProps = {
 }
 
 const OrderStagesDetails = ({ addingNewStage, setAddingNewStage }: OrderStagesDetailsProps) => {
-    // const navigation = useNavigate()
     const params = useParams()
     const scrollerRef = useRef(null)
-    // const { showDialog } = useContext(DialogGlobalContext)
 
     const queryOrderStages = useQuery<Array<OrderStage>, AxiosError>({
         queryKey: ['orderStageForOrder', { id: params.id }],
@@ -36,19 +34,6 @@ const OrderStagesDetails = ({ addingNewStage, setAddingNewStage }: OrderStagesDe
             })
         }, 350)
     }
-
-    // const { isLoading, isError, error, mutate } = useMutation({
-    //     mutationFn: createOrderStage,
-    //     onSuccess(data) {
-    //         navigation('/', { replace: true })
-    //     },
-    //     onError() {
-    //         showDialog({
-    //             title: 'Błąd podczas dodawania etapu',
-    //             btnOptions: [{ text: 'Ok', value: 0 }],
-    //         })
-    //     },
-    // })
 
     return queryOrderStages.isLoading || queryOrderStages.isError ? (
         <Box
