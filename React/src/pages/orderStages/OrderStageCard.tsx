@@ -388,9 +388,6 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                 disabled={true}
                                 format="DD/MM/YYYY HH:mm"
                                 value={stage ? dayjs(stage.endDate) : ''}
-                                onChange={(data) => {
-                                    // const formattedDate = dayjs(data).format('YYYY-MM-DDTHH:mm:ss.SSS')
-                                }}
                             />
                         </LocalizationProvider>
                     </Grid>
