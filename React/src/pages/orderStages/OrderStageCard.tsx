@@ -77,17 +77,16 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
     const [startHourError, setStartHourError] = useState<TimeValidationError | null>(null)
     const [endHourError, setEndHourError] = useState<TimeValidationError | null>(null)
 
-
     useEffect(() => {
         const role = getRolesFromToken()
         if (role.length !== 0) setUserRole(role[0])
     }, [])
 
     const canBeEdittedBySpecialist = () => {
-        if(userRole === Role.SPECIALIST){
-          return  stageMode == 'read'
-        } 
-        
+        if (userRole === Role.SPECIALIST) {
+            return stageMode == 'read'
+        }
+
         return true
     }
 
@@ -246,8 +245,8 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
         attachmentData.handleReset()
     }
 
-    const formik = useFormik({
-        initialValues: {
+    const mapStageToFormik = (stage?: OrderStage) => {
+        return {
             orderId: params.id!,
             orderStageId: !!stage && stage.id ? stage.id.toString() : '',
             name: stage ? stage.name : '',
@@ -261,7 +260,14 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
             listOfElementsPlannedNumber: stage ? stage.listOfElementsPlannedNumber : [],
             attachments: stage && stage.attachments ? stage.attachments : [],
             fitters: stage && stage.fitters ? stage.fitters : [],
-        },
+        }
+    }
+    useLayoutEffect(() => {
+        formik.setValues(mapStageToFormik(stage))
+    }, [stage])
+
+    const formik = useFormik({
+        initialValues: mapStageToFormik(stage),
         validationSchema: validationSchema,
         onSubmit: (values) => {
             values.listOfElementsPlannedNumber = plannedElementsRef.current!
@@ -326,9 +332,7 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                 },
                             }}
                             label="Planowana data rozpoczęcia"
-
                             disabled={canBeEdittedBySpecialist()}
-
                             format="DD/MM/YYYY"
                             value={plannedStartDate}
                             onChange={(data) => {
@@ -463,25 +467,21 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
     }
 
     const orderNextStatusMutation = useOrderStageNextStatus(() => {
-        queryClient.refetchQueries([
-            {
-                queryKey: ['order', { id: stage?.orderId }],
-            },
-            {
-                queryKey: ['orderStageForOrder', { id: stage?.orderId }],
-            },
-        ])
+        queryClient.refetchQueries({
+            queryKey: ['order', { id: stage?.orderId.toString() }],
+        })
+        queryClient.refetchQueries({
+            queryKey: ['orderStageForOrder', { id: stage?.orderId.toString() }],
+        })
     })
-    const orderPreviousStatusMutation = useOrderStagePreviousStatus(() =>
-        queryClient.refetchQueries([
-            {
-                queryKey: ['order', { id: stage?.orderId }],
-            },
-            {
-                queryKey: ['orderStageForOrder', { id: stage?.orderId }],
-            },
-        ]),
-    )
+    const orderPreviousStatusMutation = useOrderStagePreviousStatus(() => {
+        queryClient.refetchQueries({
+            queryKey: ['order', { id: stage?.orderId.toString() }],
+        })
+        queryClient.refetchQueries({
+            queryKey: ['orderStageForOrder', { id: stage?.orderId.toString() }],
+        })
+    })
 
     const handleNextStatus = () => {
         const validationResult = validateNextOrderStageStatus(stage)
@@ -570,9 +570,7 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                 variant="outlined"
                                 label="Status"
                                 name="status"
-                                defaultValue={
-                                    stage ? orderStageStatusName(stage.status) : orderStageStatusName('PLANNING')
-                                }
+                                value={stage ? orderStageStatusName(stage.status) : orderStageStatusName('PLANNING')}
                             />
                         </Grid>
 
@@ -611,21 +609,6 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                 helperText={formik.touched.plannedFittersNumber && formik.errors.plannedFittersNumber}
                             />
                         </Grid>
-                        {/* <Grid item xs={4} md={3}>
-                            <CustomTextField
-                                readOnly={canBeEdittedBySpecialist()}
-                                disabled={canBeEdittedBySpecialist()}
-                                sx={{ width: '100%' }}
-                                id="standard-basic"
-                                label="Minimalna liczba zdjęć"
-                                variant="outlined"
-                                name="minimumImagesNumber"
-                                value={formik.values.minimumImagesNumber}
-                                onChange={formik.handleChange}
-                                error={formik.touched.minimumImagesNumber && Boolean(formik.errors.minimumImagesNumber)}
-                                helperText={formik.touched.minimumImagesNumber && formik.errors.minimumImagesNumber}
-                            />
-                        </Grid> */}
                         <Box sx={{ marginTop: '20px', width: '100%' }}>
                             <Box
                                 sx={{
@@ -743,7 +726,6 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                         color="primary"
                                         startIcon={<ArrowBackIosIcon />}
                                         variant="contained"
-                                        type="submit"
                                         style={{ width: appSize.isMobile ? 'auto' : 170 }}
                                         onClick={handlePreviousStatus}
                                     >
