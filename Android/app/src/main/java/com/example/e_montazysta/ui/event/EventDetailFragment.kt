@@ -20,13 +20,18 @@ import kotlin.system.measureTimeMillis
 class EventDetailFragment : Fragment() {
     private val viewModel: EventDetailViewModel by viewModel()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         val args: EventDetailFragmentArgs by navArgs()
         val eventId = args.eventId
 
         // Get a reference to the binding object and inflate the fragment views.
-        val binding: FragmentEventDetailBinding = FragmentEventDetailBinding.inflate(inflater, container, false)
+        val binding: FragmentEventDetailBinding =
+            FragmentEventDetailBinding.inflate(inflater, container, false)
 
         // To use the View Model with data binding, you have to explicitly
         // give the binding object a reference to it.
@@ -36,12 +41,13 @@ class EventDetailFragment : Fragment() {
         Log.d(TAG, "Requests took $time ms.")
 
         viewModel.eventdetail.observe(viewLifecycleOwner, Observer { event ->
-            when(event.item) {
+            when (event.item) {
                 is Tool -> {
                     binding.itemName.text = "Zgłaszane narzędzie"
                     binding.itemNameValue.text = event.item.name
                     binding.toolbar.subtitle = "${event.item.name} ${event.item.code}"
                 }
+
                 is Element -> {
                     binding.itemName.text = "Zgłaszany element"
                     binding.itemNameValue.text = event.item.name

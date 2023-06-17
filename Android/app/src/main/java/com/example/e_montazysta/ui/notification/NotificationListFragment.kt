@@ -18,19 +18,43 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class NotificationListFragment : Fragment() {
     private val viewModel: NotificationListViewModel by viewModel()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
-        val binding: FragmentNotificationsBinding = FragmentNotificationsBinding.inflate(inflater, container, false)
-        val adapter = NotificationListAdapter( CustomClickListener{
-                notification ->
-            when(notification.notificationType) {
-                    NotificationType.ORDER_CREATED -> findNavController().navigate( NotificationListFragmentDirections.actionNotificationListFragmentToOrderDetailFragment(notification.orderId!!))
-                    NotificationType.ACCEPT_ORDER -> findNavController().navigate( NotificationListFragmentDirections.actionNotificationListFragmentToOrderDetailFragment(notification.orderId!!))
-                    NotificationType.FOREMAN_ASSIGNMENT -> findNavController().navigate( NotificationListFragmentDirections.actionNotificationListFragmentToOrderDetailFragment(notification.orderId!!))
-                    NotificationType.FITTER_ASSIGNMENT -> findNavController().navigate( NotificationListFragmentDirections.actionNotificationListFragmentToStageDetailFragment(notification.orderStageId!!))
-                    NotificationType.TOOL_EVENT -> null
-                    NotificationType.ELEMENT_EVENT -> null
-                    NotificationType.AD_HOC_CREATED -> null
+        val binding: FragmentNotificationsBinding =
+            FragmentNotificationsBinding.inflate(inflater, container, false)
+        val adapter = NotificationListAdapter(CustomClickListener { notification ->
+            when (notification.notificationType) {
+                NotificationType.ORDER_CREATED -> findNavController().navigate(
+                    NotificationListFragmentDirections.actionNotificationListFragmentToOrderDetailFragment(
+                        notification.orderId!!
+                    )
+                )
+
+                NotificationType.ACCEPT_ORDER -> findNavController().navigate(
+                    NotificationListFragmentDirections.actionNotificationListFragmentToOrderDetailFragment(
+                        notification.orderId!!
+                    )
+                )
+
+                NotificationType.FOREMAN_ASSIGNMENT -> findNavController().navigate(
+                    NotificationListFragmentDirections.actionNotificationListFragmentToOrderDetailFragment(
+                        notification.orderId!!
+                    )
+                )
+
+                NotificationType.FITTER_ASSIGNMENT -> findNavController().navigate(
+                    NotificationListFragmentDirections.actionNotificationListFragmentToStageDetailFragment(
+                        notification.orderStageId!!
+                    )
+                )
+
+                NotificationType.TOOL_EVENT -> null
+                NotificationType.ELEMENT_EVENT -> null
+                NotificationType.AD_HOC_CREATED -> null
             }
             viewModel.readNotification(notification)
         })
@@ -46,9 +70,12 @@ class NotificationListFragment : Fragment() {
                             .show()
                     }
                     true
-                } else -> {
+                }
+
+                else -> {
                     Toast.makeText(context, "Błąd dzielenia przez ogórek", Toast.LENGTH_LONG).show()
-                    false}
+                    false
+                }
             }
         }
 
@@ -70,10 +97,10 @@ class NotificationListFragment : Fragment() {
             }
         })
 
-    // Wyświetlanie progress bar
-        viewModel.isLoadingLiveData.observe(viewLifecycleOwner, Observer<Boolean>{
+        // Wyświetlanie progress bar
+        viewModel.isLoadingLiveData.observe(viewLifecycleOwner, Observer<Boolean> {
             it?.let {
-                if(it) {
+                if (it) {
                     binding.loadingIndicator.visibility = View.VISIBLE
                 } else {
                     binding.loadingIndicator.visibility = View.GONE
@@ -81,9 +108,9 @@ class NotificationListFragment : Fragment() {
             }
         })
 
-    // Wyświetlanie błędów
-        viewModel.messageLiveData.observe(viewLifecycleOwner) {
-                errorMessage -> Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+        // Wyświetlanie błędów
+        viewModel.messageLiveData.observe(viewLifecycleOwner) { errorMessage ->
+            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
         }
 
         // Specify the current activity as the lifecycle owner of the binding.

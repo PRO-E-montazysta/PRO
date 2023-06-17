@@ -10,7 +10,8 @@ import com.example.e_montazysta.ui.user.UserListItem
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class UserRepository (private val serviceProvider: IServiceProvider): IUserRepository, KoinComponent{
+class UserRepository(private val serviceProvider: IServiceProvider) : IUserRepository,
+    KoinComponent {
     private val sharedPreferencesHelper: ISharedPreferencesHelper by inject()
     private val token = "Bearer " + sharedPreferencesHelper.get("lama").toString()
 

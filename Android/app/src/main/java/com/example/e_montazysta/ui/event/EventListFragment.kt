@@ -31,7 +31,11 @@ class EventListFragment : Fragment() {
     private val viewModel: EventListViewModel by viewModel()
     private lateinit var binding: FragmentEventsBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         // Get a reference to the binding object and inflate the fragment views.
         binding = FragmentEventsBinding.inflate(inflater, container, false)
@@ -44,8 +48,12 @@ class EventListFragment : Fragment() {
 
         // To use the View Model with data binding, you have to explicitly
         // give the binding object a reference to it.
-        val adapter = EventListAdapter( CustomClickListener{
-            eventId -> findNavController().navigate(EventListFragmentDirections.actionEventListFragmentToEventDetailFragment(eventId))
+        val adapter = EventListAdapter(CustomClickListener { eventId ->
+            findNavController().navigate(
+                EventListFragmentDirections.actionEventListFragmentToEventDetailFragment(
+                    eventId
+                )
+            )
         })
 
         binding.list.adapter = adapter
@@ -57,9 +65,9 @@ class EventListFragment : Fragment() {
             }
         })
 
-        viewModel.isLoadingLiveData.observe(viewLifecycleOwner, Observer<Boolean>{
+        viewModel.isLoadingLiveData.observe(viewLifecycleOwner, Observer<Boolean> {
             it?.let {
-                if(it) {
+                if (it) {
                     binding.loadingIndicator.visibility = View.VISIBLE
                 } else {
                     binding.loadingIndicator.visibility = View.GONE
@@ -77,8 +85,11 @@ class EventListFragment : Fragment() {
                 R.id.filter -> {
                     drawerLayout.openDrawer(GravityCompat.END)
                     true
-                } else -> {
-                false}
+                }
+
+                else -> {
+                    false
+                }
             }
         }
 
@@ -90,7 +101,7 @@ class EventListFragment : Fragment() {
                 .setTitleText("Wybierz zakres")
                 .setSelection(
                     MaterialDatePicker.thisMonthInUtcMilliseconds()
-                    )
+                )
                 .build()
         val startTimePicker =
             MaterialTimePicker.Builder()
@@ -118,7 +129,7 @@ class EventListFragment : Fragment() {
         }
 
         startDatePicker.addOnPositiveButtonClickListener {
-                startTimePicker.show(childFragmentManager, "tag")
+            startTimePicker.show(childFragmentManager, "tag")
         }
 
         startTimePicker.addOnPositiveButtonClickListener {
@@ -156,11 +167,18 @@ class EventListFragment : Fragment() {
 
         submitFilterButton.setOnClickListener {
 
-            val statuses= if (!getSelectedStatusChips(statusFilter).isNullOrEmpty()) getSelectedStatusChips(statusFilter) else null
-            val types = if (!getSelectedTypeChips(typeFilter).isNullOrEmpty()) getSelectedTypeChips(typeFilter) else null
+            val statuses =
+                if (!getSelectedStatusChips(statusFilter).isNullOrEmpty()) getSelectedStatusChips(
+                    statusFilter
+                ) else null
+            val types = if (!getSelectedTypeChips(typeFilter).isNullOrEmpty()) getSelectedTypeChips(
+                typeFilter
+            ) else null
             val name = if (!nameFilter.text.isNullOrBlank()) nameFilter.text.toString() else null
-            val startDate = if (!startDateFilter.text.isNullOrBlank()) DateUtil.toJsonString(startDateFilter.text.toString()) else null
-            val endDate = if (!endDateFilter.text.isNullOrBlank()) DateUtil.toJsonString(endDateFilter.text.toString()) else null
+            val startDate =
+                if (!startDateFilter.text.isNullOrBlank()) DateUtil.toJsonString(startDateFilter.text.toString()) else null
+            val endDate =
+                if (!endDateFilter.text.isNullOrBlank()) DateUtil.toJsonString(endDateFilter.text.toString()) else null
 
             viewModel.filterDataChanged("typeOfStatus", statuses?.joinToString(","))
             viewModel.filterDataChanged("eventType", types?.joinToString(","))
@@ -173,7 +191,7 @@ class EventListFragment : Fragment() {
 
         val clearFilterButton = binding.rightDrawer.clearFilterButton
 
-        clearFilterButton.setOnClickListener{
+        clearFilterButton.setOnClickListener {
             statusFilter.clearCheck()
             typeFilter.clearCheck()
             nameFilter.text?.clear()
@@ -185,8 +203,8 @@ class EventListFragment : Fragment() {
         }
 
         // Wyświetlanie błędów
-        viewModel.messageLiveData.observe(viewLifecycleOwner) {
-                errorMessage -> Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+        viewModel.messageLiveData.observe(viewLifecycleOwner) { errorMessage ->
+            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
         }
 
         binding.lifecycleOwner = this
@@ -207,6 +225,7 @@ class EventListFragment : Fragment() {
             chipGroup.addView(chip)
         }
     }
+
     private fun populateTypeChips(chipGroup: ChipGroup) {
         val types = EventType.values()
         for (status in types) {
@@ -217,9 +236,9 @@ class EventListFragment : Fragment() {
         }
     }
 
-    private fun getSelectedStatusChips(chipGroup: ChipGroup): List<String>? {
+    private fun getSelectedStatusChips(chipGroup: ChipGroup): List<String> {
         val selectedStatuses: MutableList<String> = ArrayList()
-        chipGroup.forEach {view ->
+        chipGroup.forEach { view ->
             val enumValues = EventStatus.values()
             val chip = view as Chip
             if (chip.isChecked) {
@@ -230,9 +249,9 @@ class EventListFragment : Fragment() {
         return selectedStatuses
     }
 
-    private fun getSelectedTypeChips(chipGroup: ChipGroup): List<String>? {
+    private fun getSelectedTypeChips(chipGroup: ChipGroup): List<String> {
         val selectedStatuses: MutableList<String> = ArrayList()
-        chipGroup.forEach {view ->
+        chipGroup.forEach { view ->
             val enumValues = EventType.values()
             val chip = view as Chip
             if (chip.isChecked) {

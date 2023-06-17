@@ -15,10 +15,15 @@ import java.text.DateFormat
 class OrderDetailDetailsFragment(val order: Order) : Fragment() {
     private val orderDetailViewModel: OrderDetailViewModel by viewModel()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         // Get a reference to the binding object and inflate the fragment views.
-        val binding: FragmentOrderDetailDetailsBinding = FragmentOrderDetailDetailsBinding.inflate(inflater, container, false)
+        val binding: FragmentOrderDetailDetailsBinding =
+            FragmentOrderDetailDetailsBinding.inflate(inflater, container, false)
         val application = requireNotNull(this.activity).application
 
         // To use the View Model with data binding, you have to explicitly
@@ -69,8 +74,8 @@ class OrderDetailDetailsFragment(val order: Order) : Fragment() {
         })
 
         // Wyświetlanie błędów
-        orderDetailViewModel.messageLiveData.observe(viewLifecycleOwner) {
-                errorMessage -> Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+        orderDetailViewModel.messageLiveData.observe(viewLifecycleOwner) { errorMessage ->
+            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
         }
 
         // Specify the current activity as the lifecycle owner of the binding.

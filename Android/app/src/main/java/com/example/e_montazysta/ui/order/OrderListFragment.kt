@@ -23,7 +23,7 @@ class OrderListFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         // Get a reference to the binding object and inflate the fragment views.
         val binding: FragmentOrdersBinding =

@@ -7,14 +7,15 @@ import com.example.e_montazysta.databinding.ListItemNotificationBinding
 import com.example.e_montazysta.helpers.DateUtil
 
 
-class NotificationListAdapter(val clickListener: CustomClickListener) : RecyclerView.Adapter<NotificationListAdapter.ViewHolder>(){
+class NotificationListAdapter(val clickListener: CustomClickListener) :
+    RecyclerView.Adapter<NotificationListAdapter.ViewHolder>() {
 
     var elements = listOf<Notification?>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
-    set(value) {
-        field = value
-        notifyDataSetChanged()
-    }
     override fun getItemCount(): Int {
         return elements.size
     }
@@ -28,14 +29,16 @@ class NotificationListAdapter(val clickListener: CustomClickListener) : Recycler
         holder.bind(item, clickListener)
     }
 
-    class ViewHolder( val binding: ListItemNotificationBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(val binding: ListItemNotificationBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: Notification?, clickListener: CustomClickListener) {
             binding.notification = data
-            binding.item.supportText =  "${data?.createdBy} | ${DateUtil.format(data?.createdAt!!)}"
+            binding.item.supportText = "${data?.createdBy} | ${DateUtil.format(data?.createdAt!!)}"
             binding.itemClickListener = clickListener
             binding.executePendingBindings()
         }
+
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
@@ -45,6 +48,7 @@ class NotificationListAdapter(val clickListener: CustomClickListener) : Recycler
         }
     }
 }
+
 class CustomClickListener(val clickListener: (notification: Notification) -> Unit) {
 
     fun cardClicked(notification: Notification) = clickListener(notification)

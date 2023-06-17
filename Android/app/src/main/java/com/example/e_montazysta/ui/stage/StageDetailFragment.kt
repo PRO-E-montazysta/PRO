@@ -39,7 +39,7 @@ class StageDetailFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         val args: StageDetailFragmentArgs by navArgs()
         val stageId = args.stageId

@@ -14,7 +14,8 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 
-class ReleaseListViewModel(private val repository: IReleaseRepository) : ViewModel(), CoroutineScope {
+class ReleaseListViewModel(private val repository: IReleaseRepository) : ViewModel(),
+    CoroutineScope {
 
     private var job: Job? = null
 
@@ -38,22 +39,22 @@ class ReleaseListViewModel(private val repository: IReleaseRepository) : ViewMod
 
     private suspend fun getReleaseAsync() {
         _isLoadingLiveData.postValue(true)
-            val result = repository.getRelease()
-            when (result) {
-                is Result.Success -> _releaseLiveData.postValue(result.data.map { it.mapToReleaseItem() })
-                is Result.Error -> {
-                    result.exception.message?.let { _messageLiveData.postValue(it) }
-                    _isLoadingLiveData.postValue(false)
-                }
+        val result = repository.getRelease()
+        when (result) {
+            is Result.Success -> _releaseLiveData.postValue(result.data.map { it.mapToReleaseItem() })
+            is Result.Error -> {
+                result.exception.message?.let { _messageLiveData.postValue(it) }
+                _isLoadingLiveData.postValue(false)
             }
-       _isLoadingLiveData.postValue(false)
+        }
+        _isLoadingLiveData.postValue(false)
     }
 
     fun setReleaseList(stage: Stage) {
         job = launch {
             _isLoadingLiveData.postValue(true)
             var releases: List<ReleaseListItem> = mutableListOf()
-            releases = releases + (stage.simpleToolReleases.map { it!!.maptoReleaseListItem() })
+            releases = releases + (stage.simpleToolReleases.map { it.maptoReleaseListItem() })
             if (!stage.simpleElementReturnReleases.isNullOrEmpty()) {
                 releases += (stage.simpleElementReturnReleases.map { it.maptoReleaseListItem() })
             }

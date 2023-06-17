@@ -19,8 +19,19 @@ data class Notification(
     val readAt: Date?,
     val subContent: String?,
     val toolEventId: Int?
-){
-    fun mapToNotificationListItem(): NotificationListItem{
-        return NotificationListItem(id, content, subContent, createdAt.toString(), createdBy.id, elementEventId, orderStageId, orderId, readAt.toString(), toolEventId)
+) {
+    fun mapToNotificationListItem(): NotificationListItem {
+        return NotificationListItem(
+            id,
+            content,
+            subContent,
+            createdAt.toString(),
+            createdBy.id,
+            elementEventId,
+            orderStageId,
+            orderId,
+            readAt.toString(),
+            toolEventId
+        )
     }
 }

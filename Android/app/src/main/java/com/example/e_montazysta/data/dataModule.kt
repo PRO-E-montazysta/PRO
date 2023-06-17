@@ -163,13 +163,13 @@ val dataModule = module {
         warehouseRepository
     }
 
-    factory{
+    factory {
         val locationRepository: ILocationRepository =
             LocationRepository(get())
         locationRepository
     }
 
-    factory{
+    factory {
         val plannedItemRepository: IPlannedItemRepository =
             PlannedItemRepository(get())
         plannedItemRepository
@@ -221,19 +221,19 @@ val dataModule = module {
     viewModel {
         EventDetailViewModel(get())
     }
-    viewModel{
+    viewModel {
         WarehouseListViewModel(get())
     }
-    viewModel{
+    viewModel {
         WarehouseDetailViewModel(get())
     }
-    viewModel{
+    viewModel {
         UserDetailViewModel(get())
     }
-    viewModel{
+    viewModel {
         UserListViewModel(get())
     }
-    viewModel{
+    viewModel {
         ReturnCreateViewModel()
     }
 }

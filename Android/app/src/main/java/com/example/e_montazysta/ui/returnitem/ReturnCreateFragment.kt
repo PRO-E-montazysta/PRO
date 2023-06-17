@@ -88,7 +88,7 @@ class ReturnCreateFragment : Fragment() {
 
         binding.addObjectsToRelease.setOnClickListener {
             installApiModule(moduleInstallClient, scanner)
-            scanner.startScan()?.addOnSuccessListener { barcode ->
+            scanner.startScan().addOnSuccessListener { barcode ->
                 val code = barcode?.rawValue
                 when (code?.first()) {
                     'E' -> binding.viewModel?.let {

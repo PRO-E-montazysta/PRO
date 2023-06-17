@@ -14,17 +14,18 @@ data class PlannedToolDAO(
     val numberOfTools: Int,
     val orderStageId: Int,
     val toolType: ToolType
-){
-    companion object: KoinComponent{
+) {
+    companion object : KoinComponent {
         val plannedItemRepository: IPlannedItemRepository by inject()
         suspend fun getPlannedTool(id: Int): PlannedToolDAO? {
             val result = plannedItemRepository.getPlannedTool(id)
-            return when(result){
+            return when (result) {
                 is Result.Success -> result.data
                 is Result.Error -> null
             }
         }
     }
+
     fun getListItemInfo(): String {
         return "Ilość: $numberOfTools"
     }
@@ -46,6 +47,7 @@ data class PlannedElementDAO(
             }
         }
     }
+
     fun getListItemInfo(): String {
         return "Ilość: $numberOfElements"
     }

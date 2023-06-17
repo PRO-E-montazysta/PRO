@@ -40,7 +40,7 @@ class ReleaseCreateFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         val binding: FragmentCreateReleaseBinding =
             FragmentCreateReleaseBinding.inflate(inflater, container, false)
@@ -90,7 +90,7 @@ class ReleaseCreateFragment : Fragment() {
 
         binding.addObjectsToRelease.setOnClickListener {
             installApiModule(moduleInstallClient, scanner)
-            scanner?.startScan()?.addOnSuccessListener { barcode ->
+            scanner.startScan()?.addOnSuccessListener { barcode ->
                 val code = barcode?.rawValue
                 when (code?.first()) {
                     'E' -> binding.viewModel?.let {

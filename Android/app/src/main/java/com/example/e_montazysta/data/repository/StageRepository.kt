@@ -11,7 +11,8 @@ import com.example.e_montazysta.ui.stage.StageListItem
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class StageRepository (private val serviceProvider: IServiceProvider): IStageRepository, KoinComponent{
+class StageRepository(private val serviceProvider: IServiceProvider) : IStageRepository,
+    KoinComponent {
     private val sharedPreferencesHelper: ISharedPreferencesHelper by inject()
     private val token = "Bearer " + sharedPreferencesHelper.get("lama").toString()
     private val stageService = serviceProvider.getStageService()

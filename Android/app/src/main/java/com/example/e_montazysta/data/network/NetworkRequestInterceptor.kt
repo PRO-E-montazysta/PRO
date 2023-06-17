@@ -5,7 +5,8 @@ import okhttp3.Response
 import java.io.IOException
 
 
-class NetworkRequestInterceptor(private val networkHeaders: List<NetworkRequestHeader>) : Interceptor {
+class NetworkRequestInterceptor(private val networkHeaders: List<NetworkRequestHeader>) :
+    Interceptor {
 
     @Throws(IOException::class)
     @Synchronized

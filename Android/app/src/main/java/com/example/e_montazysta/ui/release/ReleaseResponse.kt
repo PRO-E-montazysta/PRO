@@ -16,12 +16,25 @@ data class ReleaseToolDAO(
     val toolId: Int,
     val demandAdHocId: Int?,
     val orderStageId: Int
-){
+) {
     suspend fun mapToRelease(): Release {
         val releasedBy = if (releasedById != null) User.getUserDetails(releasedById) else null
         val receivedBy = if (receivedById != null) User.getUserDetails(receivedById) else null
         val tool = Tool.getToolDetails(toolId)
-        return Release(id, releaseTime, returnTime, releasedBy, receivedBy, tool, null, demandAdHocId, orderStageId, null, null, false)
+        return Release(
+            id,
+            releaseTime,
+            returnTime,
+            releasedBy,
+            receivedBy,
+            tool,
+            null,
+            demandAdHocId,
+            orderStageId,
+            null,
+            null,
+            false
+        )
     }
 
     suspend fun maptoReleaseListItem(): ReleaseListItem {
@@ -29,7 +42,16 @@ data class ReleaseToolDAO(
         val itemName = Tool.getToolDetails(toolId).name
         val releaseTimeString = DateUtil.format(releaseTime)
         val returnTimeString = returnTime?.let { DateUtil.format(it) }
-        return ReleaseListItem(id, releaseTimeString, returnTimeString, releasedBy, itemName,null, null, false)
+        return ReleaseListItem(
+            id,
+            releaseTimeString,
+            returnTimeString,
+            releasedBy,
+            itemName,
+            null,
+            null,
+            false
+        )
     }
 }
 
@@ -44,12 +66,25 @@ data class ReleaseElementDAO(
     val elementId: Int,
     val demandAdHocId: Int?,
     val orderStageId: Int
-){
+) {
     suspend fun mapToRelease(): Release {
         val releasedBy = if (releasedById != null) User.getUserDetails(releasedById) else null
         val receivedBy = if (receivedById != null) User.getUserDetails(receivedById) else null
         val element = Element.getElementDetails(elementId)
-        return Release(id, releaseTime, returnTime, releasedBy, receivedBy, null, element, demandAdHocId, orderStageId, releasedQuantity, returnedQuantity, true)
+        return Release(
+            id,
+            releaseTime,
+            returnTime,
+            releasedBy,
+            receivedBy,
+            null,
+            element,
+            demandAdHocId,
+            orderStageId,
+            releasedQuantity,
+            returnedQuantity,
+            true
+        )
 
     }
 
@@ -59,6 +94,15 @@ data class ReleaseElementDAO(
         val releaseTimeString = DateUtil.format(releaseTime)
         val returnTimeString = returnTime?.let { DateUtil.format(it) }
 
-        return ReleaseListItem(id, releaseTimeString, returnTimeString, releasedBy, itemName,releasedQuantity, returnedQuantity, true)
+        return ReleaseListItem(
+            id,
+            releaseTimeString,
+            returnTimeString,
+            releasedBy,
+            itemName,
+            releasedQuantity,
+            returnedQuantity,
+            true
+        )
     }
 }

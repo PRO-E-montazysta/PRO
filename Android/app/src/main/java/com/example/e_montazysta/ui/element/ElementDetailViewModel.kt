@@ -13,7 +13,8 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-class ElementDetailViewModel(private val repository: IElementRepository) : ViewModel(), CoroutineScope {
+class ElementDetailViewModel(private val repository: IElementRepository) : ViewModel(),
+    CoroutineScope {
     private var job: Job? = null
 
     private val _elementDetailLiveData = MutableLiveData<Element>()

@@ -11,7 +11,7 @@ data class StageListItem(
     val plannedStart: Date?,
     val plannedEnd: Date?
 //    var createdAt: String
-){
+) {
     fun getListItemInfo(): String {
         return "Status: " + status.value +
                 (if (plannedStart != null && plannedEnd != null) "\nPlanowana data: "

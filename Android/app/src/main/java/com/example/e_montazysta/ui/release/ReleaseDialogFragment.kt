@@ -30,7 +30,7 @@ class ReleaseDialogFragment(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL, com.example.e_montazysta.R.style.FullScreenDialogTheme)
+        setStyle(STYLE_NORMAL, R.style.FullScreenDialogTheme)
     }
 
     override fun onCreateView(
@@ -71,6 +71,7 @@ class ReleaseDialogFragment(
                             is Result.Success -> {
                                 findNavController().navigateUp()
                             }
+
                             is Result.Error -> {
                                 dismiss()
                             }
@@ -78,6 +79,7 @@ class ReleaseDialogFragment(
                     }
                     true
                 }
+
                 else -> {
                     Toast.makeText(context, "Coś poszło nie tak...", Toast.LENGTH_LONG).show()
                     false

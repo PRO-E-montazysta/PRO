@@ -13,7 +13,7 @@ class StageDetailPlannedToolsFragment(val listOfToolsPlannedNumber: List<Planned
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding: FragmentStageDetailPlannedToolsBinding =
             FragmentStageDetailPlannedToolsBinding.inflate(inflater, container, false)
 

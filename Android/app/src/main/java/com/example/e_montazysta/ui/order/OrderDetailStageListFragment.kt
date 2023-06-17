@@ -17,13 +17,22 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class OrderDetailStageListFragment(val order: Order? = null) : Fragment() {
     private val stageListViewModel: StageListViewModel by viewModel()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         // Get a reference to the binding object and inflate the fragment views.
-        val binding: FragmentOrderDetailStagesListBinding = FragmentOrderDetailStagesListBinding.inflate(inflater, container, false)
-        
-        val adapter = StageListAdapter( CustomClickListener{
-                stageId -> findNavController().navigate(OrderDetailFragmentDirections.actionOrderDetailFragmentToStageDetailFragment(stageId))
+        val binding: FragmentOrderDetailStagesListBinding =
+            FragmentOrderDetailStagesListBinding.inflate(inflater, container, false)
+
+        val adapter = StageListAdapter(CustomClickListener { stageId ->
+            findNavController().navigate(
+                OrderDetailFragmentDirections.actionOrderDetailFragmentToStageDetailFragment(
+                    stageId
+                )
+            )
         })
 
         binding.stageList.adapter = adapter
@@ -40,9 +49,9 @@ class OrderDetailStageListFragment(val order: Order? = null) : Fragment() {
             }
         })
 
-        stageListViewModel.isLoadingLiveData.observe(viewLifecycleOwner, Observer<Boolean>{
+        stageListViewModel.isLoadingLiveData.observe(viewLifecycleOwner, Observer<Boolean> {
             it?.let {
-                if(it) {
+                if (it) {
                     binding.loadingIndicator.visibility = View.VISIBLE
                 } else {
                     binding.loadingIndicator.visibility = View.GONE
@@ -51,7 +60,7 @@ class OrderDetailStageListFragment(val order: Order? = null) : Fragment() {
         })
         // Specify the current activity as the lifecycle owner of the binding.
         // This is necessary so that the binding can observe LiveData updates.
-    binding.lifecycleOwner = this
-    return binding.root
+        binding.lifecycleOwner = this
+        return binding.root
     }
 }

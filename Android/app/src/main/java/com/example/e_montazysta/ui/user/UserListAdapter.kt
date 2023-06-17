@@ -5,14 +5,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.e_montazysta.databinding.ListItemUserBinding
 
-class UserListAdapter(val clickListener: CustomClickListener): RecyclerView.Adapter<UserListAdapter.ViewHolder>() {
+class UserListAdapter(val clickListener: CustomClickListener) :
+    RecyclerView.Adapter<UserListAdapter.ViewHolder>() {
 
     var elements = listOf<UserListItem>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
-    set(value) {
-        field = value
-        notifyDataSetChanged()
-    }
     override fun getItemCount(): Int {
         return elements.size
     }
@@ -25,13 +26,15 @@ class UserListAdapter(val clickListener: CustomClickListener): RecyclerView.Adap
         val item = elements[position]
         holder.bind(item, clickListener)
     }
-    class ViewHolder( val binding: ListItemUserBinding) : RecyclerView.ViewHolder(binding.root) {
+
+    class ViewHolder(val binding: ListItemUserBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: UserListItem, clickListener: CustomClickListener) {
             binding.user = data
             binding.itemClickListener = clickListener
             binding.executePendingBindings()
         }
+
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
@@ -40,6 +43,7 @@ class UserListAdapter(val clickListener: CustomClickListener): RecyclerView.Adap
             }
         }
     }
+
     class CustomClickListener(val clickListener: (toolId: Int) -> Unit) {
         fun cardClicked(item: UserListItem) = clickListener(item.id)
     }

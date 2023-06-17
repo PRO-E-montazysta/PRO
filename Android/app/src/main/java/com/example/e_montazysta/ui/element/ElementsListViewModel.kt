@@ -13,7 +13,8 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 
-class ElementsListViewModel(private val repository: IElementRepository) : ViewModel(), CoroutineScope {
+class ElementsListViewModel(private val repository: IElementRepository) : ViewModel(),
+    CoroutineScope {
 
     private var job: Job? = null
 
@@ -37,14 +38,14 @@ class ElementsListViewModel(private val repository: IElementRepository) : ViewMo
 
     private suspend fun getElementsAsync() {
         _isLoadingLiveData.postValue(true)
-            val result = repository.getElements()
-            when (result) {
-                is Result.Success -> _elementsLiveData.postValue(result.data.map { it.mapToElementItem() })
-                is Result.Error -> {
-                    result.exception.message?.let { _messageLiveData.postValue(it) }
-                    _isLoadingLiveData.postValue(false)
-                }
+        val result = repository.getElements()
+        when (result) {
+            is Result.Success -> _elementsLiveData.postValue(result.data.map { it.mapToElementItem() })
+            is Result.Error -> {
+                result.exception.message?.let { _messageLiveData.postValue(it) }
+                _isLoadingLiveData.postValue(false)
             }
+        }
         _isLoadingLiveData.postValue(false)
     }
 

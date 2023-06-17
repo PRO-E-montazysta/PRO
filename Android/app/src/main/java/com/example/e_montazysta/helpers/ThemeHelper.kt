@@ -2,7 +2,8 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 
 class ThemeHelper(private val context: Context) {
-    private val sharedPreferences = context.getSharedPreferences("theme_prefs", Context.MODE_PRIVATE)
+    private val sharedPreferences =
+        context.getSharedPreferences("theme_prefs", Context.MODE_PRIVATE)
     private val editor = sharedPreferences.edit()
 
     fun applyTheme(themeMode: Int) {

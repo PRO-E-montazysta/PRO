@@ -19,13 +19,18 @@ import kotlin.system.measureTimeMillis
 class ToolDetailFragment : Fragment() {
     private val viewModel: ToolDetailViewModel by viewModel()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         val args: ToolDetailFragmentArgs by navArgs()
         val eventId = args.toolId
 
         // Get a reference to the binding object and inflate the fragment views.
-        val binding: FragmentToolDetailBinding = FragmentToolDetailBinding.inflate(inflater, container, false)
+        val binding: FragmentToolDetailBinding =
+            FragmentToolDetailBinding.inflate(inflater, container, false)
         val application = requireNotNull(this.activity).application
 
         // To use the View Model with data binding, you have to explicitly

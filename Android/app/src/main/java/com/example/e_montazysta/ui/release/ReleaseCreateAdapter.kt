@@ -13,16 +13,16 @@ import com.example.e_montazysta.databinding.ListItemCreateReleaseBinding
 import com.google.android.material.R
 
 
-class ReleaseCreateAdapter(val clickListener: CustomClickListener) : ListAdapter<ReleaseItem, ReleaseCreateAdapter.ViewHolder>(DiffCallback()){
+class ReleaseCreateAdapter(val clickListener: CustomClickListener) :
+    ListAdapter<ReleaseItem, ReleaseCreateAdapter.ViewHolder>(DiffCallback()) {
 
 
     var elements = mutableListOf<ReleaseItem>()
     var selectedItemCount = 0
-
-    set(value) {
-        field = value
-        notifyDataSetChanged()
-    }
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     // Add a variable to store the selected item count
     override fun getItemCount(): Int {
@@ -66,7 +66,14 @@ class ReleaseCreateAdapter(val clickListener: CustomClickListener) : ListAdapter
             binding.executePendingBindings()
 
             binding.quantity.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
+
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
                 override fun afterTextChanged(s: Editable?) {
                     val quantityString = s?.toString()
@@ -86,9 +93,10 @@ class ReleaseCreateAdapter(val clickListener: CustomClickListener) : ListAdapter
         }
     }
 
-    class CustomClickListener(val clickListener: (item: ReleaseItem) -> Unit,
-                              val longClickListener: () -> Unit,
-                              val itemSelectedListener: (itemCount: Int) -> Unit
+    class CustomClickListener(
+        val clickListener: (item: ReleaseItem) -> Unit,
+        val longClickListener: () -> Unit,
+        val itemSelectedListener: (itemCount: Int) -> Unit
     ) {
         fun cardClicked(item: ReleaseItem) = clickListener(item)
         fun cardLongClicked() = longClickListener()

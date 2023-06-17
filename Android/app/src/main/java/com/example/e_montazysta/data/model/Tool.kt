@@ -19,7 +19,7 @@ data class Tool(
     val toolType: ToolType,
     val status: ToolDAO.toolStatus
 ) {
-    companion object : KoinComponent{
+    companion object : KoinComponent {
         suspend fun getToolDetails(toolId: Int): Tool {
             val toolRepository: IToolRepository by inject()
             val result = toolRepository.getToolDetails(toolId)

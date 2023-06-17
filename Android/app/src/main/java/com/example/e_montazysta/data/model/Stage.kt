@@ -4,12 +4,13 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.example.e_montazysta.ui.release.ReleaseElementDAO
 import com.example.e_montazysta.ui.release.ReleaseToolDAO
-import com.example.e_montazysta.ui.stage.StageStatus
 import com.example.e_montazysta.ui.stage.PlannedElementDAO
 import com.example.e_montazysta.ui.stage.PlannedToolDAO
+import com.example.e_montazysta.ui.stage.StageStatus
 import kotlinx.android.parcel.Parcelize
 import java.math.BigDecimal
 import java.util.Date
+
 @Parcelize
 data class Stage(
     val id: Int,
@@ -41,6 +42,7 @@ data class Stage(
         parcel.writeInt(minimumImagesNumber)
         parcel.writeInt(orderId)
     }
+
     override fun describeContents(): Int {
         return 0
     }

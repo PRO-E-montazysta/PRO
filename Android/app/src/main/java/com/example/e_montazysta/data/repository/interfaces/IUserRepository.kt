@@ -8,5 +8,5 @@ import com.example.e_montazysta.ui.user.UserListItem
 interface IUserRepository {
     suspend fun getFilterUsers(payload: Map<String, String>?): Result<List<UserListItem>>
     suspend fun getUserDetails(id: Int): Result<User>
-    suspend fun getAboutMe() : Result<CurrentUser>
+    suspend fun getAboutMe(): Result<CurrentUser>
 }
