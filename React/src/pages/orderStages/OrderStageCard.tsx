@@ -358,6 +358,9 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                     '& .MuiInputBase-input.Mui-disabled': {
                                         WebkitTextFillColor: '#000000',
                                     },
+                                    '.css-8skray-MuiFormLabel-root-MuiInputLabel-root.Mui-error': {
+                                        color: 'rgba(0, 0, 0, 0.38)',
+                                    },
                                 }}
                                 format="DD/MM/YYYY HH:mm"
                                 label="Data rozpoczęcia"
@@ -403,6 +406,9 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                     width: '100%',
                                     '& .MuiInputBase-input.Mui-disabled': {
                                         WebkitTextFillColor: '#000000',
+                                    },
+                                    '.css-8skray-MuiFormLabel-root-MuiInputLabel-root.Mui-error': {
+                                        color: 'rgba(0, 0, 0, 0.38)',
                                     },
                                 }}
                                 label="Data zakończenia"
