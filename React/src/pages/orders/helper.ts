@@ -121,10 +121,6 @@ export const useFormStructure = (): Array<FormInputProps> => {
         cacheTime: 15 * 60 * 1000,
         staleTime: 10 * 60 * 1000,
     })
-    const queryClientDeleted = useQuery<Array<Client>, AxiosError>(['client-list-deleted'], getAllClientsDeleted, {
-        cacheTime: 15 * 60 * 1000,
-        staleTime: 10 * 60 * 1000,
-    })
 
     const queryForeman = useQuery<Array<AppUser>, AxiosError>(['foreman-list'], getAllForemans, {
         cacheTime: 15 * 60 * 1000,
