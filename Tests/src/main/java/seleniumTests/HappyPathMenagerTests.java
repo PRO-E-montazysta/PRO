@@ -31,8 +31,12 @@ public class HappyPathMenagerTests {
         driver.manage().window().maximize();
 
         wait.until(ExpectedConditions.elementToBeClickable(By.id("username"))).click();
-
         driver.findElement(By.id("username")).sendKeys("manager1");
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("password")));
+        WebElement passwordElement = driver.findElement((By.id("password")));
+        passwordElement.clear();
+        passwordElement.sendKeys("password");
 
 
         driver.findElement(By.id("login-logIn")).click();
@@ -91,23 +95,9 @@ public class HappyPathMenagerTests {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("formButton-edit")));
         driver.findElement(By.id("formButton-edit")).click();
 
-        driver.findElement(By.id("name")).clear();
-        driver.findElement(By.id("name")).sendKeys("Wymiana okna11");
-
-        driver.findElement(By.id("plannedEnd")).sendKeys("23122023");
-        Actions keyDown4 = new Actions(driver);
-        keyDown4.sendKeys(Keys.chord(Keys.ARROW_RIGHT)).perform();
-        driver.findElement(By.id("plannedEnd")).sendKeys("1600");
-        Thread.sleep(2000);
-
-        driver.findElement(By.id("mui-component-select-typeOfPriority")).click();
-        Actions keyDown1 = new Actions(driver);
-        keyDown1.sendKeys(Keys.chord(Keys.UP, Keys.ENTER)).perform();
-        Thread.sleep(2000);
-
-        driver.findElement(By.id("mui-component-select-specialistId")).click();
+        driver.findElement(By.id("mui-component-select-foremanId")).click();
         Actions keyDown2 = new Actions(driver);
-        keyDown2.sendKeys(Keys.chord(Keys.DOWN, Keys.ENTER)).perform();
+        keyDown2.sendKeys(Keys.chord(Keys.DOWN, Keys.DOWN, Keys.ENTER)).perform();
         Thread.sleep(2000);
 
         driver.findElement(By.id("formButton-save")).click();
@@ -116,17 +106,7 @@ public class HappyPathMenagerTests {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("dialogGlobal-OK")));
         driver.findElement(By.id("dialogGlobal-OK")).click();
 
-        driver.findElement(By.id("navBtn-/orders")).click();
-        driver.findElement(By.id("navMenu-/orders")).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("name")));
-        driver.findElement(By.id("name")).click();
-        driver.findElement(By.id("name")).clear();
-        driver.findElement(By.id("name")).sendKeys("Wymiana okna11");
-
-        driver.findElement(By.id("tableFilter-submit")).click();
-
-        Thread.sleep(5000);
 
         driver.findElement(By.id("navBtn-logout")).click();
         Thread.sleep(1000);
@@ -157,6 +137,7 @@ public class HappyPathMenagerTests {
         driver.findElement(By.id("navMenu-/events")).click();
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[2]/div/div/table/tbody/tr[1]/td[1]")));
+        Thread.sleep(1000);
         driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div/table/tbody/tr[1]/td[1]")).click();
 
         Thread.sleep(5000);
@@ -328,6 +309,9 @@ public class HappyPathMenagerTests {
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("dialogGlobal-Usuń")));
         driver.findElement(By.id("dialogGlobal-Usuń")).click();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("dialogGlobal-OK")));
+        driver.findElement(By.id("dialogGlobal-OK")).click();
 
         driver.findElement(By.id("navBtn-/unavailabilities")).click();
         driver.findElement(By.id("navMenu-/unavailabilities")).click();

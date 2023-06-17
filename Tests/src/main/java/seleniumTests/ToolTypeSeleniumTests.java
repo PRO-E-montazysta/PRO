@@ -26,17 +26,17 @@ public class ToolTypeSeleniumTests {
         driver.get("https://dev.emontazysta.pl/login");
         driver.manage().window().maximize();
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"username\"]"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("username"))).click();
 
-        driver.findElement(By.xpath("//*[@id=\"username\"]")).sendKeys("warehouseManager1");
-        Thread.sleep(1000);
-        driver.findElement(By.xpath("//*[@id=\"password\"]")).clear();
-        Thread.sleep(1000);
-        driver.findElement(By.xpath("//*[@id=\"password\"]")).sendKeys("password");
+        driver.findElement(By.id("username")).sendKeys("warehouseManager1");
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("password")));
+        WebElement passwordElement = driver.findElement((By.id("password")));
+        passwordElement.clear();
+        passwordElement.sendKeys("password");
 
 
-        driver.findElement(By.xpath("//*[@id=\"login-logIn\"]")).click();
-        Thread.sleep(2000);
+        driver.findElement(By.id("login-logIn")).click();
 
     }
     @After
@@ -93,44 +93,48 @@ public class ToolTypeSeleniumTests {
     }
 
 
-    // test do poprawy po wprowadzeniu zmian na froncie i wyjaśnieniu kwestii Soft Delete
-    //    @Test
+     @Test
     public void zDeleteToolTypeTestSelenium() throws InterruptedException {
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"navBtn-/tooltypes\"]")));
-        driver.findElement(By.xpath("//*[@id=\"navBtn-/tooltypes\"]")).click();
+         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("navBtn-/tooltypes")));
+         driver.findElement(By.id("navBtn-/tooltypes")).click();
+         Thread.sleep(1000);
+         driver.findElement(By.id("navMenu-/tooltypes")).click();
+         Thread.sleep(1000);
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"navMenu-/tooltypes\"]")));
-        driver.findElement(By.xpath("//*[@id=\"navMenu-/tooltypes\"]")).click();
+         driver.findElement(By.id("name")).click();
+         driver.findElement(By.id("name")).sendKeys("screwdriver");
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"name\"]")));
-        driver.findElement(By.xpath("//*[@id=\"name\"]")).click();
-        driver.findElement(By.xpath("//*[@id=\"name\"]")).sendKeys("screwdriver");
-        Thread.sleep(2000);
-//
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[2]/div/div/table/tbody/tr[1]/td[1]")));
-        driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div/table/tbody/tr[1]/td[1]")).click();
-        driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div/table/tbody/tr[1]/td[1]")).click();
-        Thread.sleep(2000);
+         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("tableFilter-submit")));
+         driver.findElement(By.id("tableFilter-submit")).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div")));
-        driver.findElement(By.xpath("//*[@id=\"formButton-delete\"]")).click();
-        Thread.sleep(2000);
+         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[2]/div/div/table/tbody/tr[1]/td[1]")));
+         driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div/table/tbody/tr[1]/td[1]")).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"formButton-delete\"]")));
-        driver.findElement(By.xpath("//*[@id=\"formButton-delete\"]")).click();
-        Thread.sleep(2000);
+         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("formButton-delete")));
+         driver.findElement(By.id("formButton-delete")).click();
+         Thread.sleep(1000);
 
-//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[2]/div")));
-//        driver.findElement(By.xpath("/html/body/div/div[2]/div/form/div/button[1]")).click();
-//        Thread.sleep(2000);
-//
-//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[2]/div")));
-//        driver.findElement(By.xpath("/html/body/div/div[2]/div/form/div/button")).click();
-//
-//        Thread.sleep(2000);
-//
-//        driver.findElement(By.xpath("/html/body/div/header/div/div/button")).click();
+         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("dialogGlobal-Usuń")));
+         driver.findElement(By.id("dialogGlobal-Usuń")).click();
+         Thread.sleep(1000);
+
+         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("dialogGlobal-OK")));
+         driver.findElement(By.id("dialogGlobal-OK")).click();
+         Thread.sleep(1000);
+
+         driver.findElement(By.id("navBtn-/tooltypes")).click();
+         driver.findElement(By.id("navMenu-/tooltypes")).click();
+
+
+         driver.findElement(By.id("name")).click();
+         driver.findElement(By.id("name")).clear();
+         driver.findElement(By.id("name")).sendKeys("screwdriver");
+
+         Thread.sleep(5000);
+
+         driver.findElement(By.id("navBtn-logout")).click();
+         Thread.sleep(1000);
 
     }
 }
