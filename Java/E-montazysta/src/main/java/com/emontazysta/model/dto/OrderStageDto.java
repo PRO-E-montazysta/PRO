@@ -1,6 +1,7 @@
 package com.emontazysta.model.dto;
 
 import com.emontazysta.enums.OrderStageStatus;
+import com.emontazysta.model.Foreman;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -42,6 +43,7 @@ public class OrderStageDto {
     private List<ElementReturnReleaseDto> simpleElementReturnReleases;
     private Long orderId;
     private String orderName;
+    private Long foremanId;
     private List<Long> attachments;
     private List<Long> notifications;
     private List<Long> listOfToolsPlannedNumber;
