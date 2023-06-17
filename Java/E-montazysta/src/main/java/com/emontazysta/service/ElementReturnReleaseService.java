@@ -11,4 +11,6 @@ public interface ElementReturnReleaseService {
     ElementReturnReleaseDto add(ElementReturnReleaseDto elementReturnRelease);
     void delete(Long id);
     ElementReturnReleaseDto update(Long id, ElementReturnReleaseDto elementReturnRelease);
+
+    List<ElementReturnReleaseDto> findAllForCompany();
 }

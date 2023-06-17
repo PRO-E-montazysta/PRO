@@ -4,6 +4,7 @@ import com.emontazysta.mapper.ElementReturnReleaseMapper;
 import com.emontazysta.model.ElementReturnRelease;
 import com.emontazysta.model.dto.ElementReturnReleaseDto;
 import com.emontazysta.repository.ElementReturnReleaseRepository;
+import com.emontazysta.repository.criteria.ElementReleaseCriteriaRepository;
 import com.emontazysta.service.ElementReturnReleaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ public class ElementReturnReleaseServiceImpl implements ElementReturnReleaseServ
 
     private final ElementReturnReleaseRepository repository;
     private final ElementReturnReleaseMapper elementReturnReleaseMapper;
+    private final ElementReleaseCriteriaRepository criteriaRepo;
 
     @Override
     public List<ElementReturnReleaseDto> getAll() {
@@ -58,5 +60,10 @@ public class ElementReturnReleaseServiceImpl implements ElementReturnReleaseServ
         elementReturnReleaseDb.setDemandAdHoc(updatedElementReturnRelease.getDemandAdHoc());
         elementReturnReleaseDb.setOrderStage(updatedElementReturnRelease.getOrderStage());
         return elementReturnReleaseMapper.toDto(elementReturnReleaseDb);
+    }
+
+    @Override
+    public List<ElementReturnReleaseDto> findAllForCompany() {
+        return criteriaRepo.findAllFromCompany();
     }
 }

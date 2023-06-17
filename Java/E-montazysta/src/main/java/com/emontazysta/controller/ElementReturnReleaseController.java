@@ -59,4 +59,10 @@ public class ElementReturnReleaseController {
     public ElementReturnReleaseDto updateElementReturnRelease(@PathVariable Long id, @Valid @RequestBody ElementReturnReleaseDto elementReturnRelease) {
         return elementReturnReleaseService.update(id, elementReturnRelease);
     }
+
+    @GetMapping("/all")
+    @Operation(description = "Allows to get filtered Element Return Releases.", security = @SecurityRequirement(name = "bearer-key"))
+    public List<ElementReturnReleaseDto> getAllForCompany() {
+        return elementReturnReleaseService.findAllForCompany();
+    }
 }
