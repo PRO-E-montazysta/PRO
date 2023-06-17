@@ -12,10 +12,18 @@ data class WarehouseListItem(
     val name: String,
     val openingHours: String,
     val tools: List<Int>
-){
-
-}
+)
 
 fun Warehouse.mapToWarehouseItem(): WarehouseListItem {
-    return WarehouseListItem(companyId, deleted, description, elementInWarehouses, id, location?.id, name, openingHours, tools)
+    return WarehouseListItem(
+        companyId,
+        deleted,
+        description,
+        elementInWarehouses,
+        id,
+        location?.id,
+        name,
+        openingHours,
+        tools
+    )
 }

@@ -118,6 +118,9 @@
         <action
             android:id="@+id/action_orderDetailFragment_to_stageDetailFragment"
             app:destination="@id/stageDetailFragment" />
+        <action
+            android:id="@+id/action_orderDetailFragment_to_userDetailFragment"
+            app:destination="@id/userDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/stageDetailFragment"
@@ -141,6 +144,9 @@
         <action
             android:id="@+id/action_stageDetailFragment_to_elementDetailFragment"
             app:destination="@id/elementDetailFragment" />
+        <action
+            android:id="@+id/action_stageDetailFragment_to_orderDetailFragment"
+            app:destination="@id/orderDetailFragment" />
     </fragment>
 
     <fragment
@@ -194,6 +200,12 @@
         <action
             android:id="@+id/action_notificationListFragment_to_orderDetailFragment"
             app:destination="@id/orderDetailFragment" />
+        <action
+            android:id="@+id/action_notificationListFragment_to_toolDetailFragment"
+            app:destination="@id/toolDetailFragment" />
+        <action
+            android:id="@+id/action_notificationListFragment_to_elementDetailFragment"
+            app:destination="@id/elementDetailFragment" />
     </fragment>
     <activity
         android:id="@+id/dashboardActivity"
@@ -214,6 +226,12 @@
             app:destination="@id/toolDetailFragment" />
         <action
             android:id="@+id/action_eventDetailFragment_to_elementDetailFragment2"
+            app:destination="@id/elementDetailFragment" />
+        <action
+            android:id="@+id/action_eventDetailFragment_to_toolDetailFragment2"
+            app:destination="@id/toolDetailFragment" />
+        <action
+            android:id="@+id/action_eventDetailFragment_to_elementDetailFragment3"
             app:destination="@id/elementDetailFragment" />
     </fragment>
     <fragment
@@ -239,6 +257,9 @@
         <argument
             android:name="toolId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_toolDetailFragment_to_warehouseDetailFragment"
+            app:destination="@id/warehouseDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/returnCreateFragment"

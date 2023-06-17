@@ -9,7 +9,8 @@ import com.example.e_montazysta.ui.warehouse.WarehouseFilterDAO
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class WarehouseRepository (private val serviceProvider: IServiceProvider): IWarehouseRepository, KoinComponent{
+class WarehouseRepository(private val serviceProvider: IServiceProvider) : IWarehouseRepository,
+    KoinComponent {
     private val sharedPreferencesHelper: ISharedPreferencesHelper by inject()
     private val token = "Bearer " + sharedPreferencesHelper.get("lama").toString()
     val warehouseService = serviceProvider.getWarehouseService()
@@ -19,7 +20,7 @@ class WarehouseRepository (private val serviceProvider: IServiceProvider): IWare
             val warehouseDAO = warehouseService.getWarehouseDetails(token, id)
             val warehouses = warehouseDAO.mapToWarehouse()
             Result.Success(warehouses)
-        } catch (e: Exception){
+        } catch (e: Exception) {
             Result.Error(e)
         }
     }
@@ -28,7 +29,7 @@ class WarehouseRepository (private val serviceProvider: IServiceProvider): IWare
         return try {
             val warehouseDAOs = warehouseService.getFilterWarehouses(token)
             Result.Success(warehouseDAOs)
-        } catch (e: Exception){
+        } catch (e: Exception) {
             Result.Error(e)
         }
     }

@@ -5,8 +5,8 @@ import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
 import java.math.BigDecimal
 
-class BigDecimalAdapter: JsonAdapter<BigDecimal>() {
-    override fun fromJson(reader: JsonReader): BigDecimal? {
+class BigDecimalAdapter : JsonAdapter<BigDecimal>() {
+    override fun fromJson(reader: JsonReader): BigDecimal {
         val bigDecimalAsString = reader.nextString()
         return BigDecimal(bigDecimalAsString)
     }

@@ -21,7 +21,8 @@ import org.koin.core.component.inject
 import kotlin.coroutines.CoroutineContext
 
 
-class ToolsListViewModel(private val repository: IToolRepository) : ViewModel(), CoroutineScope, KoinComponent {
+class ToolsListViewModel(private val repository: IToolRepository) : ViewModel(), CoroutineScope,
+    KoinComponent {
 
     private var job: Job? = null
 
@@ -55,14 +56,14 @@ class ToolsListViewModel(private val repository: IToolRepository) : ViewModel(),
 
     private suspend fun getFilterToolsAsync(payload: Map<String, String>?) {
         _isLoadingLiveData.postValue(true)
-            val result = repository.getFilterTools(payload)
-            when (result) {
-                is Result.Success -> _toolsLiveData.postValue(result.data)
-                is Result.Error -> {
-                    result.exception.message?.let { _messageLiveData.postValue(it) }
-                    _isLoadingLiveData.postValue(false)
-                }
+        val result = repository.getFilterTools(payload)
+        when (result) {
+            is Result.Success -> _toolsLiveData.postValue(result.data)
+            is Result.Error -> {
+                result.exception.message?.let { _messageLiveData.postValue(it) }
+                _isLoadingLiveData.postValue(false)
             }
+        }
         _isLoadingLiveData.postValue(false)
     }
 
@@ -100,7 +101,7 @@ class ToolsListViewModel(private val repository: IToolRepository) : ViewModel(),
         }
     }
 
-    private suspend fun getListOfWarehouseAsync(){
+    private suspend fun getListOfWarehouseAsync() {
         _isLoadingLiveData.postValue(true)
         val warehouseRepository: IWarehouseRepository by inject()
         val result = warehouseRepository.getListOfWarehouse()
@@ -115,6 +116,7 @@ class ToolsListViewModel(private val repository: IToolRepository) : ViewModel(),
         }
         _isLoadingLiveData.postValue(false)
     }
+
     fun filterDataChanged(key: String, value: String?) {
         val filters: MutableMap<String, String> =
             if (!filterLiveData.value.isNullOrEmpty()) filterLiveData.value!!.toMutableMap()

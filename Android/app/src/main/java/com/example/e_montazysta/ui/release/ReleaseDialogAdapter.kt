@@ -9,14 +9,14 @@ import com.example.e_montazysta.data.model.ReleaseItem
 import com.example.e_montazysta.databinding.ListItemSubmitReleaseReturnBinding
 
 
-class ReleaseDialogAdapter() : ListAdapter<ReleaseItem, ReleaseDialogAdapter.ViewHolder>(DiffCallback()){
+class ReleaseDialogAdapter :
+    ListAdapter<ReleaseItem, ReleaseDialogAdapter.ViewHolder>(DiffCallback()) {
 
     var elements: List<ReleaseItem> = listOf()
-
-    set(value) {
-        field = value
-        notifyDataSetChanged()
-    }
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     fun setItems(items: List<ReleaseItem>) {
         elements = items

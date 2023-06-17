@@ -43,5 +43,6 @@ class ElementRepository(
         } catch (e: Exception) {
             Result.Error(e)
             throw e
-        }    }
+        }
+    }
 }

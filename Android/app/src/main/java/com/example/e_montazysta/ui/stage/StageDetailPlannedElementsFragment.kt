@@ -14,7 +14,7 @@ class StageDetailPlannedElementsFragment(val listOfElementsPlannedNumber: List<P
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding: FragmentStageDetailPlannedElementsBinding =
             FragmentStageDetailPlannedElementsBinding.inflate(inflater, container, false)
 

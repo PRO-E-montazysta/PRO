@@ -14,7 +14,8 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 
-class NotificationListViewModel(private val repository: INotificationRepository) : ViewModel(), CoroutineScope {
+class NotificationListViewModel(private val repository: INotificationRepository) : ViewModel(),
+    CoroutineScope {
 
     private var job: Job? = null
 
@@ -42,17 +43,18 @@ class NotificationListViewModel(private val repository: INotificationRepository)
 
     private suspend fun getNotificationAsync() {
         _isLoadingLiveData.postValue(true)
-            val result = repository.getListOfNotifications()
-            when (result) {
-                is Result.Success -> {
-                    _notificationLiveData.postValue(result.data)
-                    _notificationsNumberLiveData.postValue(result.data.size)
-                }
-                is Result.Error -> {
-                    result.exception.message?.let { _messageLiveData.postValue(it) }
-                    _isLoadingLiveData.postValue(false)
-                }
+        val result = repository.getListOfNotifications()
+        when (result) {
+            is Result.Success -> {
+                _notificationLiveData.postValue(result.data)
+                _notificationsNumberLiveData.postValue(result.data.size)
             }
+
+            is Result.Error -> {
+                result.exception.message?.let { _messageLiveData.postValue(it) }
+                _isLoadingLiveData.postValue(false)
+            }
+        }
         _isLoadingLiveData.postValue(false)
     }
 
@@ -73,12 +75,13 @@ class NotificationListViewModel(private val repository: INotificationRepository)
             readNotificationAsync(notifications)
         }
     }
-    private suspend fun  readNotificationAsync(notifications: List<Notification?>) {
+
+    private suspend fun readNotificationAsync(notifications: List<Notification?>) {
         _isLoadingLiveData.postValue(true)
-        notifications.forEach{
+        notifications.forEach {
             val result = repository.readNotification(it!!.id)
             when (result) {
-                is Result.Success -> assert(it.id == result.data.id){ _messageLiveData.postValue("Błąd!") }
+                is Result.Success -> assert(it.id == result.data.id) { _messageLiveData.postValue("Błąd!") }
                 is Result.Error -> {
                     result.exception.message?.let { _messageLiveData.postValue(it) }
                     _isLoadingLiveData.postValue(false)
@@ -88,6 +91,7 @@ class NotificationListViewModel(private val repository: INotificationRepository)
         getNotificationAsync()
         _isLoadingLiveData.postValue(false)
     }
+
     private suspend fun readNotificationAsync(notification: Notification) {
         _isLoadingLiveData.postValue(true)
         val result = repository.readNotification(notification.id)

@@ -15,7 +15,8 @@ import org.koin.core.component.KoinComponent
 import kotlin.coroutines.CoroutineContext
 
 
-class UserListViewModel(private val repository: IUserRepository) : ViewModel(), CoroutineScope, KoinComponent {
+class UserListViewModel(private val repository: IUserRepository) : ViewModel(), CoroutineScope,
+    KoinComponent {
 
     private var job: Job? = null
 
@@ -46,14 +47,14 @@ class UserListViewModel(private val repository: IUserRepository) : ViewModel(), 
 
     private suspend fun getFilterUsersAsync(payload: Map<String, String>?) {
         _isLoadingLiveData.postValue(true)
-            val result = repository.getFilterUsers(payload)
-            when (result) {
-                is Result.Success -> _usersLiveData.postValue(result.data)
-                is Result.Error -> {
-                    result.exception.message?.let { _messageLiveData.postValue(it) }
-                    _isLoadingLiveData.postValue(false)
-                }
+        val result = repository.getFilterUsers(payload)
+        when (result) {
+            is Result.Success -> _usersLiveData.postValue(result.data)
+            is Result.Error -> {
+                result.exception.message?.let { _messageLiveData.postValue(it) }
+                _isLoadingLiveData.postValue(false)
             }
+        }
         _isLoadingLiveData.postValue(false)
     }
 

@@ -1,6 +1,5 @@
 package com.example.e_montazysta.ui.element
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,25 +8,33 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.e_montazysta.databinding.FragmentElementsBinding
-import com.example.e_montazysta.ui.activities.ElementMainActivity
 import com.google.android.material.appbar.MaterialToolbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ElementsListFragment : Fragment() {
     private val elementsListViewModel: ElementsListViewModel by viewModel()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         // Get a reference to the binding object and inflate the fragment views.
-        val binding: FragmentElementsBinding = FragmentElementsBinding.inflate(inflater, container, false)
+        val binding: FragmentElementsBinding =
+            FragmentElementsBinding.inflate(inflater, container, false)
         val application = requireNotNull(this.activity).application
 
         // To use the View Model with data binding, you have to explicitly
         // give the binding object a reference to it.
         binding.elementsListViewModel = elementsListViewModel
 
-        val adapter = ElementListAdapter( CustomClickListener{
-                elementId -> findNavController().navigate(ElementsListFragmentDirections.actionElementsListFragmentToElementMainActivity(elementId))
+        val adapter = ElementListAdapter(CustomClickListener { elementId ->
+            findNavController().navigate(
+                ElementsListFragmentDirections.actionElementsListFragmentToElementMainActivity(
+                    elementId
+                )
+            )
         })
         binding.elementList.adapter = adapter
 
@@ -39,9 +46,9 @@ class ElementsListFragment : Fragment() {
             }
         })
 
-        elementsListViewModel.isLoadingLiveData.observe(viewLifecycleOwner, Observer<Boolean>{
+        elementsListViewModel.isLoadingLiveData.observe(viewLifecycleOwner, Observer<Boolean> {
             it?.let {
-                if(it) {
+                if (it) {
                     binding.loadingIndicator.visibility = View.VISIBLE
                 } else {
                     binding.loadingIndicator.visibility = View.GONE

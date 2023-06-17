@@ -22,7 +22,11 @@ class ToolsListFragment : Fragment() {
     private val toolsListViewModel: ToolsListViewModel by viewModel()
     private lateinit var binding: FragmentToolsBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         // Get a reference to the binding object and inflate the fragment views.
         binding = FragmentToolsBinding.inflate(inflater, container, false)
@@ -36,8 +40,12 @@ class ToolsListFragment : Fragment() {
         // give the binding object a reference to it.
         binding.toolsListViewModel = toolsListViewModel
 
-        val adapter = ToolsListAdapter(ToolsListAdapter.CustomClickListener {
-                toolId -> findNavController().navigate(ToolsListFragmentDirections.actionToolsFragmentToToolDetailFragment(toolId))
+        val adapter = ToolsListAdapter(ToolsListAdapter.CustomClickListener { toolId ->
+            findNavController().navigate(
+                ToolsListFragmentDirections.actionToolsFragmentToToolDetailFragment(
+                    toolId
+                )
+            )
         })
 
         binding.list.adapter = adapter
@@ -50,9 +58,9 @@ class ToolsListFragment : Fragment() {
             }
         })
 
-        toolsListViewModel.isLoadingLiveData.observe(viewLifecycleOwner, Observer<Boolean>{
+        toolsListViewModel.isLoadingLiveData.observe(viewLifecycleOwner, Observer<Boolean> {
             it?.let {
-                if(it) {
+                if (it) {
                     binding.loadingIndicator.visibility = View.VISIBLE
                 } else {
                     binding.loadingIndicator.visibility = View.GONE
@@ -74,8 +82,11 @@ class ToolsListFragment : Fragment() {
                 R.id.filter -> {
                     drawerLayout.openDrawer(GravityCompat.END)
                     true
-                } else -> {
-                false}
+                }
+
+                else -> {
+                    false
+                }
             }
         }
         toolbar.setNavigationOnClickListener {
@@ -84,8 +95,8 @@ class ToolsListFragment : Fragment() {
 
 
         // Wyświetlanie błędów
-        toolsListViewModel.messageLiveData.observe(viewLifecycleOwner) {
-            errorMessage -> Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+        toolsListViewModel.messageLiveData.observe(viewLifecycleOwner) { errorMessage ->
+            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
         }
 
         toolsListViewModel.toolTypesLiveData.observe(viewLifecycleOwner) {
@@ -104,8 +115,13 @@ class ToolsListFragment : Fragment() {
 
             val name = if (!nameFilter.text.isNullOrBlank()) nameFilter.text.toString() else null
             val code = if (!codeFilter.text.isNullOrBlank()) codeFilter.text.toString() else null
-            val warehouses = if (!getSelectedWarehouseChips(warehouseFilter).isNullOrEmpty()) getSelectedWarehouseChips(warehouseFilter) else null
-            val types = if (!getSelectedTypeChips(typeFilter).isNullOrEmpty()) getSelectedTypeChips(typeFilter) else null
+            val warehouses =
+                if (!getSelectedWarehouseChips(warehouseFilter).isNullOrEmpty()) getSelectedWarehouseChips(
+                    warehouseFilter
+                ) else null
+            val types = if (!getSelectedTypeChips(typeFilter).isNullOrEmpty()) getSelectedTypeChips(
+                typeFilter
+            ) else null
 
             toolsListViewModel.filterDataChanged("name", name)
             toolsListViewModel.filterDataChanged("code", code)
@@ -117,7 +133,7 @@ class ToolsListFragment : Fragment() {
 
         val clearFilterButton = binding.rightDrawer.clearFilterButton
 
-        clearFilterButton.setOnClickListener{
+        clearFilterButton.setOnClickListener {
             codeFilter.text?.clear()
             typeFilter.clearCheck()
             nameFilter.text?.clear()
@@ -159,9 +175,11 @@ class ToolsListFragment : Fragment() {
     private fun getSelectedTypeChips(chipGroup: ChipGroup): List<Int?>? {
         val selectedStatuses: MutableList<String> = ArrayList()
         var matchingTypeIds: List<Int?>? = listOf()
-        chipGroup.forEach {view ->
+        chipGroup.forEach { view ->
             val chip = view as Chip
-            if (chip.isChecked) { selectedStatuses.add(chip.text.toString()) }
+            if (chip.isChecked) {
+                selectedStatuses.add(chip.text.toString())
+            }
             matchingTypeIds = toolsListViewModel.toolTypesLiveData.value
                 ?.filter { it.name in selectedStatuses }
                 ?.map { it.id }
@@ -173,9 +191,11 @@ class ToolsListFragment : Fragment() {
         val selectedWarehouses: MutableList<String> = ArrayList()
         var matchingWarehouseIds: List<Int?>? = listOf()
 
-        chipGroup.forEach {view ->
+        chipGroup.forEach { view ->
             val chip = view as Chip
-            if (chip.isChecked) { selectedWarehouses.add(chip.text.toString()) }
+            if (chip.isChecked) {
+                selectedWarehouses.add(chip.text.toString())
+            }
             matchingWarehouseIds = toolsListViewModel.warehouseLiveData.value
                 ?.filter { it.name in selectedWarehouses }
                 ?.map { it.id }

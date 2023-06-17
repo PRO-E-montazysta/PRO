@@ -100,7 +100,8 @@ class ReturnCreateViewModel : ViewModel(), CoroutineScope, KoinComponent {
             when (result) {
                 is Result.Success -> {
                     val element = mapToReleaseItem(result.data)
-                    val isReleased = stage.simpleElementReturnReleases.any { it.elementId == element.id }
+                    val isReleased =
+                        stage.simpleElementReturnReleases.any { it.elementId == element.id }
                     if (isReleased) {
                         _itemsLiveData.value = currentItems + element
                         _messageLiveData.postValue("Element dodany")

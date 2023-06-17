@@ -7,8 +7,13 @@ import retrofit2.http.Path
 
 interface StageService {
     @GET("/api/v1/order-stages/filter")
-    suspend fun getListOfStages(@Header("Authorization") token: String
+    suspend fun getListOfStages(
+        @Header("Authorization") token: String
     ): List<StageDAO>
+
     @GET("/api/v1/order-stages/{id}")
-    suspend fun getStageDetails(@Header("Authorization") token: String, @Path("id") id: Int): StageDAO
+    suspend fun getStageDetails(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int
+    ): StageDAO
 }

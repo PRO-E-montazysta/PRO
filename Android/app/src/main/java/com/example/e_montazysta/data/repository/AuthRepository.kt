@@ -15,11 +15,11 @@ import java.io.IOException
 class AuthRepository : IAuthRepository, KoinComponent {
     private val sharedPreferencesHelper: ISharedPreferencesHelper by inject()
 
-    override fun login(login: String, password: String) : Result<LoggedInUser> {
+    override fun login(login: String, password: String): Result<LoggedInUser> {
         val creds = LoginCredentials(login, password)
-        var rsp : String? = null
+        var rsp: String? = null
         try {
-             var token  = HttpRequestHelper.sendHttpPostRequest<LoginCredentials, TokenResponse>(
+            var token = HttpRequestHelper.sendHttpPostRequest<LoginCredentials, TokenResponse>(
                 "https://dev.emontazysta.pl/api/v1/gettoken",
                 creds
             )
@@ -31,8 +31,8 @@ class AuthRepository : IAuthRepository, KoinComponent {
 
             return Result.Success(user)
 
-            } catch (e: Throwable) {
-                return Result.Error(IOException("Error logging in", e))
-            }
+        } catch (e: Throwable) {
+            return Result.Error(IOException("Error logging in", e))
+        }
     }
 }

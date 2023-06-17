@@ -5,7 +5,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.e_montazysta.data.model.Stage
 import com.example.e_montazysta.ui.release.StageDetailReleaseListFragment
 
-class StageDetailAdapter(fragment: StageDetailFragment, val stage: Stage) : FragmentStateAdapter(fragment) {
+class StageDetailAdapter(fragment: StageDetailFragment, val stage: Stage) :
+    FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int {
         return 4
     }
@@ -16,7 +17,7 @@ class StageDetailAdapter(fragment: StageDetailFragment, val stage: Stage) : Frag
             1 -> StageDetailReleaseListFragment(stage)
             2 -> StageDetailPlannedToolsFragment(stage.listOfToolsPlannedNumber)
             3 -> StageDetailPlannedElementsFragment(stage.listOfElementsPlannedNumber)
-            else -> throw  IllegalArgumentException("Invalid position: $position")
+            else -> throw IllegalArgumentException("Invalid position: $position")
         }
     }
 }

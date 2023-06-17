@@ -43,11 +43,11 @@ class StageListViewModel(private val repository: IStageRepository) : ViewModel()
 
     private suspend fun getStageAsync() {
         _isLoadingLiveData.postValue(true)
-            val result = repository.getListOfStages()
-            when (result) {
-                is Result.Success -> _stageLiveData.postValue(result.data)
-                is Result.Error -> result.exception.message?.let { _messageLiveData.postValue(it) }
-            }
+        val result = repository.getListOfStages()
+        when (result) {
+            is Result.Success -> _stageLiveData.postValue(result.data)
+            is Result.Error -> result.exception.message?.let { _messageLiveData.postValue(it) }
+        }
         _isLoadingLiveData.postValue(false)
     }
 

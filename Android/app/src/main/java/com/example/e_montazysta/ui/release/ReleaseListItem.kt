@@ -13,7 +13,7 @@ data class ReleaseListItem(
     val releasedQuantity: Int?,
     val returnedQuantity: Int?,
     val isElement: Boolean
-    )
+)
 
 suspend fun Release.mapToReleaseItem(): ReleaseListItem {
     val releaseTimeString = releaseTime?.let { DateUtil.format(it) }

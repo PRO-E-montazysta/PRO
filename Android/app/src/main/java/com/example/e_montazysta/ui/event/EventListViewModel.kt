@@ -41,14 +41,14 @@ class EventListViewModel(private val repository: IEventRepository) : ViewModel()
 
     private suspend fun getEventAsync(payload: Map<String, String>?) {
         _isLoadingLiveData.postValue(true)
-            val result = repository.getListOfEvents(payload)
-            when (result) {
-                is Result.Success -> _eventLiveData.postValue( result.data )
-                is Result.Error -> {
-                    result.exception.message?.let { _messageLiveData.postValue(it) }
-                    _isLoadingLiveData.postValue(false)
-                }
+        val result = repository.getListOfEvents(payload)
+        when (result) {
+            is Result.Success -> _eventLiveData.postValue(result.data)
+            is Result.Error -> {
+                result.exception.message?.let { _messageLiveData.postValue(it) }
+                _isLoadingLiveData.postValue(false)
             }
+        }
         _isLoadingLiveData.postValue(false)
     }
 

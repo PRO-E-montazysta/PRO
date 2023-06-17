@@ -30,7 +30,7 @@ class ReturnDialogFragment(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL, com.example.e_montazysta.R.style.FullScreenDialogTheme)
+        setStyle(STYLE_NORMAL, R.style.FullScreenDialogTheme)
     }
 
     override fun onCreateView(
