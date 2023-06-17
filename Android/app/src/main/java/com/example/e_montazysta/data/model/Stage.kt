@@ -26,6 +26,7 @@ data class Stage(
     val plannedFittersNumber: Int,
     val minimumImagesNumber: Int,
     val fitters: List<User?>,
+    val foreman: User?,
     val comments: List<Comment?>,
     val toolReleases: List<Release?>,
     val elementReturnReleases: List<Release>?,

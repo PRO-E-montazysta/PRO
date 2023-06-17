@@ -111,12 +111,14 @@ class DashboardFragment : Fragment() {
             findNavController().navigate(direction)
         }
 
-        val releases = binding.releases
-        releases.setOnClickListener {
-            val direction =
-                DashboardFragmentDirections.actionNavigationDashboardToReleaseListFragment()
-            findNavController().navigate(direction)
-        }
+//        val releases = binding.releases
+//        releases.visibility = View.GONE
+//        releases.setOnClickListener {
+//            val direction =
+//                DashboardFragmentDirections.actionNavigationDashboardToReleaseListFragment()
+//            findNavController().navigate(direction)
+//        }
+
 
         val orders = binding.orders
         orders.setOnClickListener {

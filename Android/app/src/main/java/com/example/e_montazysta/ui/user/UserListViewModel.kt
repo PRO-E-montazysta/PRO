@@ -35,6 +35,9 @@ class UserListViewModel(private val repository: IUserRepository) : ViewModel(), 
     private val _filterLiveData = MutableLiveData<Map<String, String>>()
     val filterLiveData: LiveData<Map<String, String>> = _filterLiveData
 
+    private val _isEmptyLiveData = MutableLiveData<Boolean>()
+    val isEmptyLiveData: LiveData<Boolean> = _isEmptyLiveData
+
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
@@ -47,9 +50,13 @@ class UserListViewModel(private val repository: IUserRepository) : ViewModel(), 
 
     private suspend fun getFilterUsersAsync(payload: Map<String, String>?) {
         _isLoadingLiveData.postValue(true)
+        _isEmptyLiveData.postValue(false)
         val result = repository.getFilterUsers(payload)
         when (result) {
-            is Result.Success -> _usersLiveData.postValue(result.data)
+            is Result.Success -> {
+                _usersLiveData.postValue(result.data)
+                if (result.data.isNullOrEmpty()) _isEmptyLiveData.postValue(true)
+            }
             is Result.Error -> {
                 result.exception.message?.let { _messageLiveData.postValue(it) }
                 _isLoadingLiveData.postValue(false)

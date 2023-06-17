@@ -75,6 +75,17 @@ class EventListFragment : Fragment() {
             }
         })
 
+        // Empty list info
+        viewModel.isEmptyLiveData.observe(viewLifecycleOwner, Observer<Boolean> {
+            it?.let {
+                if (it) {
+                    binding.emptyInfo.visibility = View.VISIBLE
+                } else {
+                    binding.emptyInfo.visibility = View.GONE
+                }
+            }
+        })
+
         // Szuflada
         val toolbar: MaterialToolbar = binding.toolbar
         val drawerLayout: DrawerLayout = binding.drawerLayout

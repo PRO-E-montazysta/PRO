@@ -143,6 +143,18 @@ class ToolsListFragment : Fragment() {
             drawerLayout.closeDrawer(GravityCompat.END)
         }
 
+
+        // Empty list info
+        toolsListViewModel.isEmptyLiveData.observe(viewLifecycleOwner, Observer<Boolean> {
+            it?.let {
+                if (it) {
+                    binding.emptyInfo.visibility = View.VISIBLE
+                } else {
+                    binding.emptyInfo.visibility = View.GONE
+                }
+            }
+        })
+
         binding.lifecycleOwner = this
         return binding.root
 

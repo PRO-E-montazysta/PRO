@@ -147,6 +147,9 @@
         <action
             android:id="@+id/action_stageDetailFragment_to_orderDetailFragment"
             app:destination="@id/orderDetailFragment" />
+        <action
+            android:id="@+id/action_stageDetailFragment_to_userDetailFragment"
+            app:destination="@id/userDetailFragment" />
     </fragment>
 
     <fragment

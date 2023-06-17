@@ -26,6 +26,9 @@ class StageListViewModel(private val repository: IStageRepository) : ViewModel()
     private val _isLoadingLiveData = MutableLiveData<Boolean>()
     val isLoadingLiveData: LiveData<Boolean> = _isLoadingLiveData
 
+    private val _isEmptyLiveData = MutableLiveData<Boolean>()
+    val isEmptyLiveData: LiveData<Boolean> = _isEmptyLiveData
+
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
@@ -43,9 +46,13 @@ class StageListViewModel(private val repository: IStageRepository) : ViewModel()
 
     private suspend fun getStageAsync() {
         _isLoadingLiveData.postValue(true)
+        _isEmptyLiveData.postValue(false)
         val result = repository.getListOfStages()
         when (result) {
-            is Result.Success -> _stageLiveData.postValue(result.data)
+            is Result.Success -> {
+                _stageLiveData.postValue(result.data)
+                if (result.data.isNullOrEmpty()) _isEmptyLiveData.postValue(true)
+            }
             is Result.Error -> result.exception.message?.let { _messageLiveData.postValue(it) }
         }
         _isLoadingLiveData.postValue(false)
@@ -53,9 +60,14 @@ class StageListViewModel(private val repository: IStageRepository) : ViewModel()
 
     private suspend fun getStageAsync(stages: List<Int>) {
         _isLoadingLiveData.postValue(true)
+        _isEmptyLiveData.postValue(false)
         val result = repository.getListOfStages(stages)
         when (result) {
-            is Result.Success -> _stageLiveData.postValue(result.data)
+            is Result.Success -> {
+                _stageLiveData.postValue(result.data)
+                if (result.data.isNullOrEmpty()) _isEmptyLiveData.postValue(true)
+
+            }
             is Result.Error -> result.exception.message?.let { _messageLiveData.postValue(it) }
         }
         _isLoadingLiveData.postValue(false)
@@ -69,6 +81,8 @@ class StageListViewModel(private val repository: IStageRepository) : ViewModel()
     fun setStageList(stages: List<Int>) {
         if (stages.isNotEmpty()) {
             stages.map { getStages(stages) }
+        } else {
+            _isEmptyLiveData.postValue(true)
         }
     }
 }
