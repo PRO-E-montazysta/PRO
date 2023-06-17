@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.e_montazysta.data.model.Stage
 import com.example.e_montazysta.databinding.FragmentReleasesBinding
+import com.google.android.material.appbar.MaterialToolbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ReleaseListFragment(val stage: Stage? = null) : Fragment() {
@@ -65,6 +66,11 @@ class ReleaseListFragment(val stage: Stage? = null) : Fragment() {
                 }
             }
         })
+
+        val toolbar: MaterialToolbar = binding.toolbar
+        toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
 
         // Specify the current activity as the lifecycle owner of the binding.
         // This is necessary so that the binding can observe LiveData updates.
