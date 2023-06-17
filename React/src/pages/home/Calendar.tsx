@@ -28,10 +28,10 @@ const Calendar = () => {
 
     useLayoutEffect(() => {
         if (unavailabilityListByMonth.data && aboutMeQuery.data) {
+            console.log(unavailabilityListByMonth.data)
             const myEvents: Unavailability[] = unavailabilityListByMonth.data.filter(
                 (d) => d.assignedToId == aboutMeQuery.data.userId,
             )
-
             const newEvents: EventInput[] = myEvents.map((d) => {
                 return {
                     id: d.id.toString(),
@@ -39,7 +39,9 @@ const Calendar = () => {
                     title:
                         d.typeOfUnavailability == 'BUSY' && d.orderStageName
                             ? d.orderStageName
-                            : typeOfUnavailabilityName(d.typeOfUnavailability),
+                            : typeOfUnavailabilityName(d.typeOfUnavailability)
+                            ? typeOfUnavailabilityName(d.typeOfUnavailability)
+                            : 'INNE',
                     start: d.unavailableFrom,
                     end: d.unavailableTo,
                     display: 'block',
