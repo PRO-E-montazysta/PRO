@@ -31,6 +31,11 @@ public class ElementSeleniumTests {
 
         driver.findElement(By.id("username")).sendKeys("warehouseManager1");
 
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("password")));
+        WebElement passwordElement = driver.findElement((By.id("password")));
+        passwordElement.clear();
+        passwordElement.sendKeys("password");
+
 
         driver.findElement(By.id("login-logIn")).click();
 
@@ -109,8 +114,8 @@ public class ElementSeleniumTests {
 
         driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div/table/tbody/tr[1]/td[1]")).click();
         Thread.sleep(2000);
-        driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div/table/tbody/tr[1]/td[1]")).click();
-        Thread.sleep(2000);
+//        driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div/table/tbody/tr[1]/td[1]")).click();
+//        Thread.sleep(2000);
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("formButton-delete")));
         driver.findElement(By.id("formButton-delete")).click();
@@ -120,12 +125,23 @@ public class ElementSeleniumTests {
         driver.findElement(By.id("dialogGlobal-Usuń")).click();
         Thread.sleep(2000);
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[2]/div")));
-        driver.findElement(By.xpath("/html/body/div/div[2]/div/form/div/button")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("dialogGlobal-OK")));
+        driver.findElement(By.id("dialogGlobal-OK")).click();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("navBtn-/elements")));
+        driver.findElement(By.id("navBtn-/elements")).click();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("navMenu-/elements")));
+        driver.findElement(By.id("navMenu-/elements")).click();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("name")));
+        driver.findElement(By.id("name")).click();
+        driver.findElement(By.id("name")).sendKeys("brama garażowa");
 
         Thread.sleep(5000);
 
-        driver.findElement(By.xpath("/html/body/div/header/div/div/button")).click();
+        driver.findElement(By.id("navBtn-logout")).click();
+        Thread.sleep(1000);
 
     }
 
