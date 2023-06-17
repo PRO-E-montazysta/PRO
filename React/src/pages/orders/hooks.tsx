@@ -15,6 +15,13 @@ import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { Order } from '../../types/model/Order'
 import useError from '../../hooks/useError'
 import { useAddLocation, useEditLocation, useLocationData } from '../../components/localization/hooks'
+import { OrderStage } from '../../types/model/OrderStage'
+import {
+    getAllOrderStagesForOrder,
+    getOrderStageById,
+    updateOrderStage,
+    updateOrderStageFitters,
+} from '../../api/orderStage.api'
 
 export const useAddOrder = (onSuccessCallback: (data: any) => void) => {
     const showError = useError()
@@ -66,6 +73,16 @@ export const useOrderData = (id: string | undefined) => {
     )
 }
 
+export const useOrderStagesData = (id: string | undefined) => {
+    return useQuery<OrderStage[], AxiosError>(
+        ['orderStageForOrder', { id: id }],
+        async () => getAllOrderStagesForOrder(id && id != 'new' ? id : ''),
+        {
+            enabled: !!id && id != 'new',
+        },
+    )
+}
+
 export const useAddOrderLocation = () => {
     const navigate = useNavigate()
     const { showDialog } = useContext(DialogGlobalContext)
@@ -110,7 +127,7 @@ export const useOrderNextStatus = (onSuccessCallback: () => void) => {
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: orderNextStatus,
-        onSuccess(data) {
+        onSuccess: (data) => {
             showDialog({
                 btnOptions: [
                     {
@@ -120,9 +137,11 @@ export const useOrderNextStatus = (onSuccessCallback: () => void) => {
                 ],
                 title: 'Sukces!',
                 content: <Box>Status został zmieniony</Box>,
+                callback: () => {
+                    queryClient.invalidateQueries('orders')
+                    onSuccessCallback()
+                },
             })
-            queryClient.invalidateQueries('orders')
-            onSuccessCallback()
         },
         onError: showError,
     })
@@ -134,7 +153,7 @@ export const useOrderPreviousStatus = (onSuccessCallback: () => void) => {
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: orderPreviousStatus,
-        onSuccess(data) {
+        onSuccess: (data) => {
             showDialog({
                 btnOptions: [
                     {
@@ -144,10 +163,37 @@ export const useOrderPreviousStatus = (onSuccessCallback: () => void) => {
                 ],
                 title: 'Sukces!',
                 content: <Box>Status został zmieniony</Box>,
+                callback: () => {
+                    queryClient.invalidateQueries('orders')
+                    onSuccessCallback()
+                },
             })
-            queryClient.invalidateQueries('orders')
-            onSuccessCallback()
         },
+        onError: showError,
+    })
+}
+
+export const useOrderStages = (id?: string) => {
+    return useQuery<Array<OrderStage>, AxiosError>(
+        ['orderStageForOrder', { id: id }],
+        () => getAllOrderStagesForOrder(id || ''),
+        {
+            enabled: !!id,
+        },
+    )
+}
+
+export const useOrderStageQuery = (id?: string) => {
+    return useQuery<OrderStage, AxiosError>(['orderStage', { id: id }], () => getOrderStageById(id || ''), {
+        enabled: !!id,
+    })
+}
+
+export const useOrderStageFittersMutation = (onSuccessCallback: (data: any) => void) => {
+    const showError = useError()
+    return useMutation({
+        mutationFn: updateOrderStageFitters,
+        onSuccess: onSuccessCallback,
         onError: showError,
     })
 }

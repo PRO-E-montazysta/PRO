@@ -1,7 +1,7 @@
 import { Button, Paper, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import { useFormik } from 'formik'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState, useLayoutEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useFormStructure } from './helper'
 import {
@@ -13,6 +13,7 @@ import {
     useOrderData,
     useOrderNextStatus,
     useOrderPreviousStatus,
+    useOrderStagesData,
 } from './hooks'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 import { FormButtons } from '../../components/form/FormButtons'
@@ -28,12 +29,18 @@ import { PageMode } from '../../types/form'
 import OrderStagesDetails from '../orderStages/OrderStagesDetails'
 import { getRolesFromToken } from '../../utils/token'
 import { Role } from '../../types/roleEnum'
-import EditIcon from '@mui/icons-material/Edit'
 import Localization from '../../components/localization/Localization'
 import { Order } from '../../types/model/Order'
 import { useFormStructureLocation, useLocationData } from '../../components/localization/hooks'
 import Error from '../../components/error/Error'
 import { isAuthorized } from '../../utils/authorize'
+
+import moment from 'moment'
+import Planner from './Planner'
+import ExpandMore from '../../components/expandMore/ExpandMore'
+import MapIcon from '@mui/icons-material/Map'
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
+import { canChangeToNextStatus, canChangeToPreviousStatus, validateNextOrderStatus } from './statusValidation'
 
 const OrderDetails = () => {
     const [userRole, setUserRole] = useState('')
@@ -56,20 +63,17 @@ const OrderDetails = () => {
     const editOrderMutation = useEditOrder((data) => submitLocation(data))
     const deleteOrderMutation = useDeleteOrder(() => orderData.remove())
     const orderData = useOrderData(params.id)
+    const orderStagesData = useOrderStagesData(params.id)
     const orderNextStatusMutation = useOrderNextStatus(() => {
-        orderData.refetch({
-            queryKey: ['order', { id: params.id }],
-        })
+        orderData.refetch()
     })
     const orderPreviousStatusMutation = useOrderPreviousStatus(() => {
-        orderData.refetch({
-            queryKey: ['order', { id: params.id }],
-        })
+        orderData.refetch()
     })
 
     //status for all mutations and queries
     const queriesStatus = useQueriesStatus(
-        [orderData],
+        [orderData, orderStagesData],
         [addOrderMutation, editOrderMutation, deleteOrderMutation, orderNextStatusMutation],
     )
 
@@ -82,13 +86,31 @@ const OrderDetails = () => {
 
     const handleSubmit = async (values: any) => {
         //show formik location errors to user
-        formikLocation.submitForm()
-        //check if there are any error
-        if (Object.keys(formikLocation.errors).length == 0) {
-            if (pageMode == 'new') addOrderMutation.mutate(values)
-            else if (pageMode == 'edit') editOrderMutation.mutate(values)
-            else console.warn('Try to submit while read mode')
-        }
+        formikLocation.submitForm().then(() => {
+            //check if there are any error
+            if (
+                formikLocation.values.xcoordinate.toString() != '' &&
+                formikLocation.values.ycoordinate.toString() != ''
+            ) {
+                if (pageMode == 'new') addOrderMutation.mutate(values)
+                else if (pageMode == 'edit') editOrderMutation.mutate(values)
+                else console.warn('Try to submit while read mode')
+            } else {
+                showDialog({
+                    title: 'Lokalizacja wymagana',
+                    content:
+                        formikLocation.values.city == ''
+                            ? 'Do zapisania zlecenia niezbędna jest lokalizacja'
+                            : 'Potwierdź wprowadzony adres',
+                    btnOptions: [
+                        {
+                            text: 'Ok',
+                            value: 0,
+                        },
+                    ],
+                })
+            }
+        })
     }
 
     const submitLocation = (data: Order) => {
@@ -116,16 +138,25 @@ const OrderDetails = () => {
     }
 
     const handleNextStatus = () => {
-        showDialog({
-            title: 'Czy na pewno chcesz zmienić status zlecenia na następny?',
-            btnOptions: [
-                { text: 'Tak', value: 1, variant: 'contained' },
-                { text: 'Anuluj', value: 0, variant: 'outlined' },
-            ],
-            callback: (result: number) => {
-                if (result == 1 && params.id) orderNextStatusMutation.mutate(params.id)
-            },
-        })
+        const validationResult = validateNextOrderStatus(orderData.data, orderStagesData.data)
+
+        if (validationResult.isValid)
+            showDialog({
+                title: 'Czy na pewno chcesz zmienić status zlecenia na następny?',
+                btnOptions: [
+                    { text: 'Tak', value: 1, variant: 'contained' },
+                    { text: 'Anuluj', value: 0, variant: 'outlined' },
+                ],
+                callback: (result: number) => {
+                    if (result == 1 && params.id) orderNextStatusMutation.mutate(params.id)
+                },
+            })
+        else
+            showDialog({
+                title: 'Nie można zmienić statusu',
+                content: validationResult.message,
+                btnOptions: [{ text: 'Ok', value: 1, variant: 'contained' }],
+            })
     }
 
     const handlePreviousStatus = () => {
@@ -171,7 +202,7 @@ const OrderDetails = () => {
 
     //edit mode
     //populate formik and init values with data from db
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (orderData.data) {
             formik.setValues(orderData.data)
             setInitData(orderData.data)
@@ -196,12 +227,9 @@ const OrderDetails = () => {
         return userRole === Role.SPECIALIST ? orderData.data?.status == 'PLANNING' : false
     }
 
-    const [isAddOrderStageVisible, setIsAddOrderStageVisible] = useState(false)
+    const [addingNewStage, setAddingNewStage] = useState(false)
 
-    const handleAddOrderStage = () => {
-        setIsAddOrderStageVisible(!isAddOrderStageVisible)
-    }
-    //--------------- Location functionality --------------------
+    //--------------- Localization functionality --------------------
     const formStructureLocation = useFormStructureLocation()
     const [initDataLocation, setInitDataLocation] = useState(getInitValues(formStructureLocation))
     const formikLocation = useFormik({
@@ -214,33 +242,12 @@ const OrderDetails = () => {
     )
     const addLocationMutation = useAddOrderLocation()
     const editLocationMutation = useEditOrderLocation((data) => handleOnEditSuccess(data))
-
     useEffect(() => {
         if (queryLocationData.data) {
             formikLocation.setValues(queryLocationData.data)
             setInitDataLocation(queryLocationData.data)
         }
     }, [queryLocationData.data])
-
-    const canChangeToNextStatus = () => {
-        return (
-            (orderData.data?.status == 'CREATED' && isAuthorized([Role.SALES_REPRESENTATIVE])) ||
-            (orderData.data?.status == 'PLANNING' && isAuthorized([Role.SPECIALIST])) ||
-            (orderData.data?.status == 'TO_ACCEPT' && isAuthorized([Role.MANAGER])) ||
-            (orderData.data?.status == 'ACCEPTED' && isAuthorized([Role.FOREMAN])) ||
-            (orderData.data?.status == 'IN_PROGRESS' && isAuthorized([Role.FOREMAN]))
-        )
-    }
-
-    const canChangeToPreviousStatus = () => {
-        return (
-            (orderData.data?.status == 'PLANNING' && isAuthorized([Role.SPECIALIST])) ||
-            (orderData.data?.status == 'TO_ACCEPT' && isAuthorized([Role.MANAGER])) ||
-            (orderData.data?.status == 'ACCEPTED' && isAuthorized([Role.FOREMAN])) ||
-            (orderData.data?.status == 'IN_PROGRESS' && isAuthorized([Role.FOREMAN])) ||
-            (orderData.data?.status == 'FINISHED' && isAuthorized([Role.FOREMAN]))
-        )
-    }
 
     return orderData.data?.deleted ? (
         <>
@@ -260,12 +267,47 @@ const OrderDetails = () => {
                         <>
                             <FormStructure formStructure={formStructure} formik={formik} pageMode={pageMode} />
 
-                            <Localization
-                                title="Lokalizacja"
-                                formik={formikLocation}
-                                formStructure={formStructureLocation}
-                                pageMode={pageMode}
-                            />
+                            <Paper sx={{ m: '20px 0' }}>
+                                <ExpandMore
+                                    isOpen={pageMode == 'new' || Object.keys(formikLocation.errors).length > 0}
+                                    titleIcon={<MapIcon />}
+                                    title="Lokalizacja"
+                                    titleVariant="h5"
+                                    cardContent={
+                                        <Localization
+                                            formik={formikLocation}
+                                            formStructure={formStructureLocation}
+                                            pageMode={
+                                                isAuthorized([
+                                                    Role.SALES_REPRESENTATIVE,
+                                                    Role.ADMIN,
+                                                    Role.WAREHOUSE_MANAGER,
+                                                ])
+                                                    ? pageMode
+                                                    : 'read'
+                                            }
+                                        />
+                                    }
+                                />
+                            </Paper>
+
+                            {orderData.data && orderData.data.orderStages.length > 0 && (
+                                <Paper>
+                                    <ExpandMore
+                                        titleIcon={<CalendarMonthIcon />}
+                                        title="Harmonogram pracy montażystów"
+                                        titleVariant="h5"
+                                        cardContent={
+                                            <Planner
+                                                orderId={params.id}
+                                                initialDate={moment(orderData.data?.plannedStart)}
+                                                readonly={!isAuthorized([Role.FOREMAN])}
+                                            />
+                                        }
+                                    />
+                                </Paper>
+                            )}
+
                             <FormButtons
                                 id={params.id}
                                 onCancel={handleCancel}
@@ -275,10 +317,12 @@ const OrderDetails = () => {
                                 onSubmit={formik.submitForm}
                                 readonlyMode={pageMode == 'read'}
                                 orderStageButton={getAddOrderStageButton()}
-                                handleAddOrderStage={handleAddOrderStage}
-                                isAddOrderStageVisible={isAddOrderStageVisible}
-                                nextStatus={canChangeToNextStatus() ? handleNextStatus : undefined}
-                                previousStatus={canChangeToPreviousStatus() ? handlePreviousStatus : undefined}
+                                setAddingNewStage={setAddingNewStage}
+                                addingNewStage={addingNewStage}
+                                nextStatus={canChangeToNextStatus(orderData.data) ? handleNextStatus : undefined}
+                                previousStatus={
+                                    canChangeToPreviousStatus(orderData.data) ? handlePreviousStatus : undefined
+                                }
                                 editPermissionRoles={
                                     formik.values['status'] == 'CREATED'
                                         ? [Role.MANAGER, Role.SALES_REPRESENTATIVE]
@@ -293,7 +337,9 @@ const OrderDetails = () => {
                         </>
                     )}
                 </FormPaper>
-                {params.id !== 'new' && <OrderStagesDetails isAddOrderStageVisible={isAddOrderStageVisible} />}
+                {params.id !== 'new' && (
+                    <OrderStagesDetails addingNewStage={addingNewStage} setAddingNewStage={setAddingNewStage} />
+                )}
             </FormBox>
         </>
     )

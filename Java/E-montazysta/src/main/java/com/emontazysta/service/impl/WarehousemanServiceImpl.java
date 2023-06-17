@@ -1,8 +1,10 @@
 package com.emontazysta.service.impl;
 
 import com.emontazysta.enums.Role;
+import com.emontazysta.mail.MailTemplates;
 import com.emontazysta.mapper.EmploymentMapper;
 import com.emontazysta.mapper.WarehousemanMapper;
+import com.emontazysta.model.EmailData;
 import com.emontazysta.model.Warehouseman;
 import com.emontazysta.model.dto.EmployeeDto;
 import com.emontazysta.model.dto.EmploymentDto;
@@ -11,8 +13,10 @@ import com.emontazysta.model.searchcriteria.AppUserSearchCriteria;
 import com.emontazysta.repository.WarehousemanRepository;
 import com.emontazysta.repository.criteria.AppUserCriteriaRepository;
 import com.emontazysta.repository.EmploymentRepository;
+import com.emontazysta.service.EmailService;
 import com.emontazysta.service.WarehousemanService;
 import com.emontazysta.util.AuthUtils;
+import com.emontazysta.util.PasswordGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,6 +39,7 @@ public class WarehousemanServiceImpl implements WarehousemanService {
     private final AuthUtils authUtils;
     private final AppUserCriteriaRepository appUserCriteriaRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final EmailService emailService;
 
     @Override
     public List<WarehousemanDto> getAll(Principal principal) {
@@ -68,8 +73,9 @@ public class WarehousemanServiceImpl implements WarehousemanService {
 
     @Override
     public WarehousemanDto add(WarehousemanDto warehousemanDto) {
+        String password = PasswordGenerator.generatePassword(10);
         warehousemanDto.setUsername(warehousemanDto.getUsername().toLowerCase());
-        warehousemanDto.setPassword(bCryptPasswordEncoder.encode(warehousemanDto.getPassword()));
+        warehousemanDto.setPassword(bCryptPasswordEncoder.encode(password));
         warehousemanDto.setRoles(Set.of(Role.WAREHOUSE_MAN));
         warehousemanDto.setUnavailabilities(new ArrayList<>());
         warehousemanDto.setNotifications(new ArrayList<>());
@@ -90,6 +96,15 @@ public class WarehousemanServiceImpl implements WarehousemanService {
                 .employeeId(warehouseman.getId())
                 .build();
         employmentRepository.save(employmentMapper.toEntity(employmentDto));
+
+        emailService.sendEmail(
+                EmailData.builder()
+                        .to(warehousemanDto.getEmail())
+                        .message(MailTemplates.employeeCreate(warehousemanDto.getUsername(),
+                                password, warehousemanDto.getFirstName(), warehousemanDto.getLastName()))
+                        .subject("Witaj w E-Montażysta!")
+                        .build()
+        );
 
         return warehousemanMapper.toDto(warehouseman);
     }

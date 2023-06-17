@@ -39,7 +39,7 @@ const DisplayToolHistory = (params: ToolHistoryParams) => {
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
                                 <TableCell component="th" scope="row">
-                                    <Link href={'/order-stage/' + row['orderStageId']}>{row['orderStageName']}</Link>
+                                    <Link href={'/orders/' + row['orderId']}>{row['orderStageName']}</Link>
                                 </TableCell>
                                 <TableCell>
                                     <Link href={'/employees/' + row['foremanId']}>{row['foremanName']}</Link>

@@ -11,7 +11,7 @@ import { Company } from '../../types/model/Company'
 import { AppUser } from '../../types/model/AppUser'
 import { Location } from '../../types/model/Location'
 import { AxiosError } from 'axios'
-import { getAllClients } from '../../api/client.api'
+import { getAllClients, getClientDetails } from '../../api/client.api'
 import { getAllCompanies } from '../../api/company.api'
 import { getAllForemans } from '../../api/foreman.api'
 import { getAllLocations } from '../../api/location.api'
@@ -22,6 +22,7 @@ import { AppSize } from '../../hooks/useBreakpoints'
 import { FormInputProps } from '../../types/form'
 import { Role } from '../../types/roleEnum'
 import { isAuthorized } from '../../utils/authorize'
+import { DeletedClientName } from '../../helpers/Delted.helper'
 
 export const headCells: Array<HeadCell<Order>> = [
     {
@@ -123,10 +124,7 @@ export const useFormStructure = (): Array<FormInputProps> => {
         cacheTime: 15 * 60 * 1000,
         staleTime: 10 * 60 * 1000,
     })
-    const queryManager = useQuery<Array<AppUser>, AxiosError>(['manager-list'], getAllManagers, {
-        cacheTime: 15 * 60 * 1000,
-        staleTime: 10 * 60 * 1000,
-    })
+
     const querySalesRepresentative = useQuery<Array<AppUser>, AxiosError>(
         ['sales-reprezentative-list'],
         getAllSalesRepresentatives,
@@ -135,10 +133,6 @@ export const useFormStructure = (): Array<FormInputProps> => {
             staleTime: 10 * 60 * 1000,
         },
     )
-    const querySpecialist = useQuery<Array<AppUser>, AxiosError>(['specialist-list'], getAllSpecialists, {
-        cacheTime: 15 * 60 * 1000,
-        staleTime: 10 * 60 * 1000,
-    })
 
     return [
         {
@@ -151,6 +145,9 @@ export const useFormStructure = (): Array<FormInputProps> => {
                 .min(3, 'Nazwa musi zawierać co najmniej 3 znaki')
                 .max(255, 'Nazwa może zawierać maksymalnie 255 znaki')
                 .required('Wprowadź nazwę'),
+            addNewPermissionRoles: [Role.SALES_REPRESENTATIVE],
+            editPermissionRoles: [Role.SALES_REPRESENTATIVE],
+            viewPermissionRoles: [Role['*']],
         },
         {
             label: 'Priorytet',
@@ -159,6 +156,9 @@ export const useFormStructure = (): Array<FormInputProps> => {
             type: 'select',
             validation: yup.string().required('Wybierz priorytet'),
             options: priorityOptions(),
+            addNewPermissionRoles: [Role.SALES_REPRESENTATIVE],
+            editPermissionRoles: [Role.SALES_REPRESENTATIVE],
+            viewPermissionRoles: [Role['*']],
         },
         {
             label: 'Status',
@@ -176,6 +176,9 @@ export const useFormStructure = (): Array<FormInputProps> => {
             initValue: '',
             type: 'date-time',
             validation: yup.date().required('Wybierz datę'),
+            addNewPermissionRoles: [Role.SALES_REPRESENTATIVE],
+            editPermissionRoles: [Role.SALES_REPRESENTATIVE],
+            viewPermissionRoles: [Role['*']],
         },
         {
             label: 'Planowany czas zakończenia',
@@ -183,6 +186,9 @@ export const useFormStructure = (): Array<FormInputProps> => {
             initValue: '',
             type: 'date-time',
             validation: yup.date().required('Wybierz datę'),
+            addNewPermissionRoles: [Role.SALES_REPRESENTATIVE],
+            editPermissionRoles: [Role.SALES_REPRESENTATIVE],
+            viewPermissionRoles: [Role['*']],
         },
         {
             label: 'Klient',
@@ -191,7 +197,19 @@ export const useFormStructure = (): Array<FormInputProps> => {
             type: 'select',
             options: formatArrayToOptions('id', (x: Client) => x.name, queryClient.data),
             addNewPermissionRoles: [Role.SALES_REPRESENTATIVE],
-            editPermissionRoles: [Role.SALES_REPRESENTATIVE],
+            editPermissionRoles: [Role.NOBODY],
+            viewPermissionRoles: [Role.NOBODY],
+        },
+        {
+            label: 'Klient',
+            id: 'clientId',
+            initValue: '',
+            type: 'can-be-deleted',
+            formatFn: async (id: string) => {
+                return id ? (await getClientDetails(id)).name : ''
+            },
+            addNewPermissionRoles: [Role.NOBODY],
+            editPermissionRoles: [Role.NOBODY],
             viewPermissionRoles: [Role['*']],
         },
         {
@@ -216,20 +234,6 @@ export const useFormStructure = (): Array<FormInputProps> => {
             type: 'number',
             dontIncludeInFormStructure: true,
         },
-        // {
-        //     label: 'Manager',
-        //     id: 'managerId',
-        //     initValue: null,
-        //     type: 'select',
-        //     options: formatArrayToOptions('id', (x: AppUser) => x.firstName + ' ' + x.lastName, queryManager.data),
-        // },
-        // {
-        //     label: 'Specjalista',
-        //     id: 'specialistId',
-        //     initValue: null,
-        //     type: 'select',
-        //     options: formatArrayToOptions('id', (x: AppUser) => x.firstName + ' ' + x.lastName, querySpecialist.data),
-        // },
         {
             label: 'Handlowiec',
             id: 'salesRepresentativeId',

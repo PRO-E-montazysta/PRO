@@ -6,7 +6,7 @@ import { AxiosError } from 'axios'
 import { getFilteredTools } from '../../api/tool.api'
 import { headCells, useFilterStructure } from './helper'
 import { useNavigate } from 'react-router-dom'
-import { getFilterParams, getInputs, setNewFilterValues } from '../../helpers/filter.helper'
+import { getFilterParams, getFormikMetadata, newFilterValues } from '../../helpers/filter.helper'
 import { Tool } from '../../types/model/Tool'
 import { useFormik } from 'formik'
 
@@ -14,7 +14,7 @@ const Tools = () => {
     const { filterStructure, setFilterStructure } = useFilterStructure()
     const [filterParams, setFilterParams] = useState(getFilterParams(filterStructure))
 
-    const { initialValues, inputs } = getInputs(filterStructure)
+    const { initialValues, inputs, validationSchema } = getFormikMetadata(filterStructure)
     const navigation = useNavigate()
 
     const queryTools = useQuery<Array<Tool>, AxiosError>(['tools', filterParams], async () =>
@@ -24,9 +24,9 @@ const Tools = () => {
     const filter: Filter = {
         formik: useFormik({
             initialValues: initialValues,
-            // validationSchema={{}}
+            validationSchema: validationSchema,
             onSubmit: () => {
-                setFilterStructure(setNewFilterValues(filter.formik.values, filterStructure))
+                setFilterStructure(newFilterValues(filter.formik.values, filterStructure))
                 setFilterParams(getFilterParams(filterStructure))
             },
             onReset: () => filter.formik.setValues(initialValues),

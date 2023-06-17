@@ -143,7 +143,7 @@ const CompanyDetails = () => {
                     label="Email"
                     type="text"
                 />
-                <FormInput
+                {/* <FormInput
                     style={{ width: inputWidth }}
                     formik={formik}
                     id="password"
@@ -151,7 +151,7 @@ const CompanyDetails = () => {
                     label="Hasło"
                     type="password"
                     placeholder="POLE TYMCZASOWE"
-                />
+                /> */}
                 <FormInput
                     style={{ width: inputWidth }}
                     formik={formik}

@@ -5,7 +5,7 @@ export const getFilteredOrders = (payload: PayloadProps) => {
     return makeServiceCall('/orders/filter', 'GET', { ...payload })
 }
 
-export const getOrderDetails = (id: string) => {
+export const getOrderDetails = (id: string): Promise<Order> => {
     return makeServiceCall(`/orders/${id}`, 'GET', {})
 }
 

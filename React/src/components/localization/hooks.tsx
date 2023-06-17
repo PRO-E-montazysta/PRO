@@ -4,6 +4,7 @@ import useError from '../../hooks/useError'
 import { getLocationById, postLocation, updateLocation } from '../../api/location.api'
 import * as yup from 'yup'
 import { FormInputProps } from '../../types/form'
+import { Role } from '../../types/roleEnum'
 
 export const useLocationData = (id: string | undefined) => {
     return useQuery<Location, AxiosError>(
@@ -40,24 +41,32 @@ export const useFormStructureLocation = (): Array<FormInputProps> => {
             id: 'city',
             initValue: '',
             type: 'input',
+            editPermissionRoles: [Role.SALES_REPRESENTATIVE, Role.WAREHOUSE_MANAGER, Role.ADMIN],
+            viewPermissionRoles: [Role['*']],
         },
         {
             label: 'Ulica',
             id: 'street',
             initValue: '',
             type: 'input',
+            editPermissionRoles: [Role.SALES_REPRESENTATIVE, Role.WAREHOUSE_MANAGER, Role.ADMIN],
+            viewPermissionRoles: [Role['*']],
         },
         {
             label: 'Numer posiadłości',
             id: 'propertyNumber',
             initValue: '',
             type: 'input',
+            editPermissionRoles: [Role.SALES_REPRESENTATIVE, Role.WAREHOUSE_MANAGER, Role.ADMIN],
+            viewPermissionRoles: [Role['*']],
         },
         {
             label: 'Numer apartamentu',
             id: 'apartmentNumber',
             initValue: '',
             type: 'input',
+            editPermissionRoles: [Role.SALES_REPRESENTATIVE, Role.WAREHOUSE_MANAGER, Role.ADMIN],
+            viewPermissionRoles: [Role['*']],
         },
         {
             label: 'Kod pocztowy',
@@ -68,22 +77,26 @@ export const useFormStructureLocation = (): Array<FormInputProps> => {
                 .string()
                 .trim()
                 .matches(/^[0-9]{2}-[0-9]{3}$/, 'Kod pocztowy musi być formatu xx-xxx'),
+            editPermissionRoles: [Role.SALES_REPRESENTATIVE, Role.WAREHOUSE_MANAGER, Role.ADMIN],
+            viewPermissionRoles: [Role['*']],
         },
         {
             label: 'x',
-            id: 'xCoordinate',
+            id: 'xcoordinate',
             initValue: '',
             type: 'number',
             dontIncludeInFormStructure: true,
             readonly: true,
+            validation: yup.number().required(),
         },
         {
             label: 'y',
-            id: 'yCoordinate',
+            id: 'ycoordinate',
             initValue: '',
             type: 'number',
             dontIncludeInFormStructure: true,
             readonly: true,
+            validation: yup.number().required(),
         },
     ]
 }

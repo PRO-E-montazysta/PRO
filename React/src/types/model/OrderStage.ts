@@ -10,16 +10,16 @@ export type OrderStageSimpleToolReleases = Array<{
 }>
 
 export type OrderStageSimpleElementRelease = Array<{
-          id: number,
-          releaseTime: Date,
-          releasedQuantity: number,
-          returnedQuantity: number,
-          returnTime: null,
-          releasedById: number,
-          elementId: string,
-          demandAdHocId: number,
-          orderStageId: number,
-          deleted: false
+    id: number
+    releaseTime: Date
+    releasedQuantity: number
+    returnedQuantity: number
+    returnTime: null
+    releasedById: number
+    elementId: string
+    demandAdHocId: number
+    orderStageId: number
+    deleted: false
 }>
 
 export type OrderStage = {
@@ -27,12 +27,11 @@ export type OrderStage = {
     name: string
     status: string
     price: string
-    order: 0
     plannedStartDate: string
     plannedEndDate: string
     startDate: Date
     endDate: Date
-    plannedDurationTime: Date //jak chcemy to podawać?
+    plannedDurationTime: Date
     plannedFittersNumber: string
     minimumImagesNumber: string
     fitters: Array<number>
@@ -67,6 +66,7 @@ export type CreateOrderStage = {
     plannedEndDate: string
     plannedFittersNumber: string
     minimumImagesNumber: string
+    fitters: number[]
     listOfToolsPlannedNumber: Array<{
         numberOfTools: number
         toolTypeId: string
@@ -88,6 +88,7 @@ export type UpdateOrderStage = {
     plannedEndDate: string
     plannedFittersNumber: string
     minimumImagesNumber: string
+    fitters: number[]
     listOfToolsPlannedNumber: Array<{
         numberOfTools: number
         toolTypeId: string

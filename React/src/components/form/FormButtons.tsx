@@ -26,8 +26,8 @@ type FormButtonsParams = {
     onCancel: () => void
     printLabel?: [string, string]
     orderStageButton?: boolean
-    handleAddOrderStage?: () => void
-    isAddOrderStageVisible?: boolean
+    setAddingNewStage?: (value: boolean) => void
+    addingNewStage?: boolean
     hireDismissEmp?: [() => void, 'hire' | 'dismiss']
     nextStatus?: () => void
     previousStatus?: () => void
@@ -48,8 +48,8 @@ export const FormButtons = (params: FormButtonsParams) => {
         onSubmit,
         printLabel,
         orderStageButton,
-        handleAddOrderStage,
-        isAddOrderStageVisible,
+        setAddingNewStage,
+        addingNewStage,
         hireDismissEmp,
         nextStatus,
         previousStatus,
@@ -84,7 +84,6 @@ export const FormButtons = (params: FormButtonsParams) => {
                             color="primary"
                             startIcon={<ArrowForwardIosIcon />}
                             variant="contained"
-                            type="submit"
                             style={{ width: appSize.isMobile ? 'auto' : 190 }}
                             onClick={nextStatus}
                         >
@@ -97,7 +96,6 @@ export const FormButtons = (params: FormButtonsParams) => {
                             color="primary"
                             startIcon={<ArrowBackIosIcon />}
                             variant="contained"
-                            type="submit"
                             style={{ width: appSize.isMobile ? 'auto' : 170 }}
                             onClick={previousStatus}
                         >
@@ -110,7 +108,6 @@ export const FormButtons = (params: FormButtonsParams) => {
                             color="primary"
                             startIcon={<AssignmentIcon />}
                             variant="contained"
-                            type="submit"
                             onClick={hireDismissEmp[0]}
                         >
                             {hireDismissEmp[1] == 'hire' ? 'Zatrudnij' : 'Zwolnij'}
@@ -122,7 +119,6 @@ export const FormButtons = (params: FormButtonsParams) => {
                             color="primary"
                             startIcon={<EditIcon />}
                             variant="contained"
-                            type="submit"
                             style={{ width: appSize.isMobile ? 'auto' : 120 }}
                             onClick={onEdit}
                         >
@@ -135,7 +131,6 @@ export const FormButtons = (params: FormButtonsParams) => {
                             color="error"
                             startIcon={<DeleteIcon />}
                             variant="contained"
-                            type="submit"
                             style={{ width: appSize.isMobile ? 'auto' : 120 }}
                             onClick={onDelete}
                         >
@@ -147,11 +142,12 @@ export const FormButtons = (params: FormButtonsParams) => {
                             color="primary"
                             startIcon={<EditIcon />}
                             variant="contained"
-                            type="submit"
                             // style={{ width: 160 }}
-                            onClick={handleAddOrderStage}
+                            onClick={() => {
+                                setAddingNewStage && setAddingNewStage(!addingNewStage)
+                            }}
                         >
-                            {isAddOrderStageVisible ? 'Anuluj dodawanie etapu' : 'Dodaj etap'}
+                            {addingNewStage ? 'Anuluj dodawanie etapu' : 'Dodaj etap'}
                         </Button>
                     )}
                 </>

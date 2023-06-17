@@ -18,7 +18,8 @@ WORKDIR /workspace/app/target/dependency
 RUN jar -xf ../*.jar
 
 FROM eclipse-temurin:17-jre-alpine
-
+RUN apk add --no-cache tzdata
+ENV TZ=Europe/Warsaw
 RUN addgroup -S spring && adduser -S spring -G spring
 RUN mkdir /files
 RUN chown spring:spring /files

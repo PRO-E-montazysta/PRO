@@ -1,33 +1,29 @@
 import { Box, CircularProgress, Typography } from '@mui/material'
-import { useNavigate, useParams } from 'react-router-dom'
-import { useContext, useEffect, useRef, useState } from 'react'
-import { OrderStage } from '../../types/model/OrderStage'
-import { useMutation, useQuery } from 'react-query'
 import { AxiosError } from 'axios'
+import { useEffect, useLayoutEffect, useRef } from 'react'
+import { useQuery } from 'react-query'
+import { useParams } from 'react-router-dom'
+import { getAllOrderStagesForOrder } from '../../api/orderStage.api'
+import { OrderStage } from '../../types/model/OrderStage'
 import OrderStageCard from './OrderStageCard'
-import { createOrderStage, getAllOrderStagesForOrder } from '../../api/orderStage.api'
-import { v4 as uuidv4 } from 'uuid'
-import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
 
 type OrderStagesDetailsProps = {
-    isAddOrderStageVisible: boolean
+    addingNewStage: boolean
+    setAddingNewStage: (value: boolean) => void
 }
 
-const OrderStagesDetails = ({ isAddOrderStageVisible }: OrderStagesDetailsProps) => {
-    const navigation = useNavigate()
+const OrderStagesDetails = ({ addingNewStage, setAddingNewStage }: OrderStagesDetailsProps) => {
     const params = useParams()
     const scrollerRef = useRef(null)
-    const { showDialog } = useContext(DialogGlobalContext)
 
-    const queryOrderStages = useQuery<Array<OrderStage>, AxiosError>(['orderStage-list', { id: params.id }], () =>
-        getAllOrderStagesForOrder(params.id!),
-    )
+    const queryOrderStages = useQuery<Array<OrderStage>, AxiosError>({
+        queryKey: ['orderStageForOrder', { id: params.id }],
+        queryFn: () => getAllOrderStagesForOrder(params.id!),
+    })
 
-    useEffect(() => {
-        if (isAddOrderStageVisible === true) {
-            handleScroll(scrollerRef)
-        }
-    }, [isAddOrderStageVisible])
+    useLayoutEffect(() => {
+        if (addingNewStage === true) handleScroll(scrollerRef)
+    }, [addingNewStage])
 
     const handleScroll = (ref: any) => {
         setTimeout(() => {
@@ -37,41 +33,6 @@ const OrderStagesDetails = ({ isAddOrderStageVisible }: OrderStagesDetailsProps)
                 inline: 'end',
             })
         }, 350)
-    }
-
-    const { isLoading, isError, error, mutate } = useMutation({
-        mutationFn: createOrderStage,
-        onSuccess(data) {
-            navigation('/', { replace: true })
-        },
-        onError() {
-            showDialog({
-                title: 'Błąd podczas dodawania etapu',
-                btnOptions: [{ text: 'Ok', value: 0 }],
-            })
-        },
-    })
-
-    const getListOfStages = () => {
-        return (
-            <>
-                {queryOrderStages.data!.map((stage, index) => (
-                    <OrderStageCard
-                        key={uuidv4()}
-                        index={index.toString()}
-                        stage={stage}
-                        isLoading={isLoading}
-                        isDisplaying={true}
-                    />
-                ))}
-                {isAddOrderStageVisible ? (
-                    <>
-                        <OrderStageCard key={uuidv4()} isLoading={isLoading} isDisplaying={false} />
-                        <div ref={scrollerRef}></div>
-                    </>
-                ) : null}
-            </>
-        )
     }
 
     return queryOrderStages.isLoading || queryOrderStages.isError ? (
@@ -86,7 +47,23 @@ const OrderStagesDetails = ({ isAddOrderStageVisible }: OrderStagesDetailsProps)
             {queryOrderStages.isLoading ? <CircularProgress /> : <Typography>Nie znaleziono zlecenia</Typography>}
         </Box>
     ) : (
-        getListOfStages()
+        <Box>
+            {queryOrderStages.data!.map((stage, index) => (
+                <OrderStageCard
+                    key={stage.id}
+                    index={index.toString()}
+                    stage={stage}
+                    addingNewStag={false}
+                    setAddingNewStage={setAddingNewStage}
+                />
+            ))}
+            {addingNewStage && (
+                <>
+                    <OrderStageCard key={'new'} addingNewStag={addingNewStage} setAddingNewStage={setAddingNewStage} />
+                    <div ref={scrollerRef}></div>
+                </>
+            )}
+        </Box>
     )
 }
 

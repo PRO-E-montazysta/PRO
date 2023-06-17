@@ -532,17 +532,23 @@ public class OrderStageImpl implements OrderStageService {
         if(orderStage.getStatus().equals(OrderStageStatus.PLANNING) && loggedUserRoles.contains(Role.SPECIALIST)) {
             //czy jest podzielone
             orderStage.setStatus(OrderStageStatus.ADDING_FITTERS);
-            //TODO: Powiadomienie foremana- addign fitters
         }else if(orderStage.getStatus().equals(OrderStageStatus.ADDING_FITTERS) && loggedUserRoles.contains(Role.FOREMAN)) {
             //Check if fitters are assigned
             if(orderStage.getAssignedTo().size() > 0) {
                 //Check if needs to PICK_UP tools
                 if(orderStage.getListOfToolsPlannedNumber().size() == 0 &&
                         orderStage.getListOfElementsPlannedNumber().size() == 0){
-                    orderStage.setStatus(OrderStageStatus.REALESED);
+                    orderStage.setStatus(OrderStageStatus.ON_WORK);
+                    if(orderStage.getStartDate() == null) {
+                        orderStage.setStartDate(LocalDateTime.now());
+                    }
+
+                    if(orderStage.getOrders().getStatus().equals(OrderStatus.ACCEPTED)) {
+                        orderStage.getOrders().setStatus(OrderStatus.IN_PROGRESS);
+                        orderRepository.save(orderStage.getOrders());
+                    }
                 } else {
                     orderStage.setStatus(OrderStageStatus.PICK_UP);
-                    //TODO: Powiadomienie magazynierów- wydanie
                 }
             }else {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Przypisz montażystów do etapu!");
@@ -552,9 +558,18 @@ public class OrderStageImpl implements OrderStageService {
             orderStage.setStatus(OrderStageStatus.REALESED);
         }else if(orderStage.getStatus().equals(OrderStageStatus.REALESED) && loggedUserRoles.contains(Role.FOREMAN)) {
             orderStage.setStatus(OrderStageStatus.ON_WORK);
+            if(orderStage.getStartDate() == null) {
+                orderStage.setStartDate(LocalDateTime.now());
+            }
         }else if(orderStage.getStatus().equals(OrderStageStatus.ON_WORK) && loggedUserRoles.contains(Role.FOREMAN)) {
-            orderStage.setStatus(OrderStageStatus.RETURN);
-            //TODO: Powiadomienie magazynierów- zwrot
+            //Check if needs to Return tools and elements
+            if(orderStage.getListOfToolsPlannedNumber().size() == 0 &&
+                    orderStage.getListOfElementsPlannedNumber().size() == 0){
+                orderStage.setStatus(OrderStageStatus.FINISHED);
+                orderStage.setEndDate(LocalDateTime.now());
+            } else {
+                orderStage.setStatus(OrderStageStatus.RETURN);
+            }
         }else if(orderStage.getStatus().equals(OrderStageStatus.RETURN) && (loggedUserRoles.contains(Role.WAREHOUSE_MAN)
                 || loggedUserRoles.contains(Role.WAREHOUSE_MANAGER))) {
             //Check if all tools are returned
@@ -562,23 +577,26 @@ public class OrderStageImpl implements OrderStageService {
                 if(toolRelease.getReturnTime() == null) {
                     throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Zwróć wszystkie narzędzia!");
                 }
-                orderStage.setStatus(OrderStageStatus.RETURNED);
+                //orderStage.setStatus(OrderStageStatus.RETURNED); //Make sense, if we have min orderstage images
+                orderStage.setStatus(OrderStageStatus.FINISHED);
+                orderStage.setEndDate(LocalDateTime.now());
             }
         }else if(orderStage.getStatus().equals(OrderStageStatus.RETURNED) && loggedUserRoles.contains(Role.FOREMAN)) {
-            List<Attachment> orderStageAttachments = orderStage.getAttachments();
-            int orderStageImageNumber = 0;
-
-            for(Attachment attachment : orderStageAttachments) {
-                if(attachment.getTypeOfAttachment().equals(TypeOfAttachment.ORDER_STAGE_PHOTO)) {
-                    orderStageImageNumber++;
-                }
-            }
-
-            if(orderStageImageNumber < orderStage.getMinimumImagesNumber()) {
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Wykonaj odpowiednią ilość zdjęć etapu!");
-            }
+//            List<Attachment> orderStageAttachments = orderStage.getAttachments();
+//            int orderStageImageNumber = 0;
+//
+//            for(Attachment attachment : orderStageAttachments) {
+//                if(attachment.getTypeOfAttachment().equals(TypeOfAttachment.ORDER_STAGE_PHOTO)) {
+//                    orderStageImageNumber++;
+//                }
+//            }
+//
+//            if(orderStageImageNumber < orderStage.getMinimumImagesNumber()) {
+//                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Wykonaj odpowiednią ilość zdjęć etapu!");
+//            }
 
             orderStage.setStatus(OrderStageStatus.FINISHED);
+            orderStage.setEndDate(LocalDateTime.now());
 
         }else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Brak możliwości zmiany!");
@@ -605,14 +623,26 @@ public class OrderStageImpl implements OrderStageService {
         }else if(orderStage.getStatus().equals(OrderStageStatus.REALESED) && loggedUserRoles.contains(Role.FOREMAN)) {
             orderStage.setStatus(OrderStageStatus.PICK_UP);
         }else if(orderStage.getStatus().equals(OrderStageStatus.ON_WORK) && loggedUserRoles.contains(Role.FOREMAN)) {
-            orderStage.setStatus(OrderStageStatus.REALESED);
+            //Skip to ADDING_FITTERS if dont need tools/elements
+            if(orderStage.getListOfToolsPlannedNumber().size() == 0 &&
+                    orderStage.getListOfElementsPlannedNumber().size() == 0){
+                orderStage.setStatus(OrderStageStatus.ADDING_FITTERS);
+            }else {
+                orderStage.setStatus(OrderStageStatus.REALESED);
+            }
         }else if(orderStage.getStatus().equals(OrderStageStatus.RETURN) && (loggedUserRoles.contains(Role.WAREHOUSE_MAN)
                 || loggedUserRoles.contains(Role.WAREHOUSE_MANAGER))) {
             orderStage.setStatus(OrderStageStatus.ON_WORK);
         }else if(orderStage.getStatus().equals(OrderStageStatus.RETURNED) && loggedUserRoles.contains(Role.FOREMAN)) {
             orderStage.setStatus(OrderStageStatus.RETURN);
         }else if(orderStage.getStatus().equals(OrderStageStatus.FINISHED) && loggedUserRoles.contains(Role.FOREMAN)) {
-            orderStage.setStatus(OrderStageStatus.RETURNED);
+            //Skip to ON_WORK if dont need tools/elements
+            if(orderStage.getListOfToolsPlannedNumber().size() == 0 &&
+                    orderStage.getListOfElementsPlannedNumber().size() == 0){
+                orderStage.setStatus(OrderStageStatus.ON_WORK);
+            }else {
+                orderStage.setStatus(OrderStageStatus.RETURNED);
+            }
         }else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Brak możliwości zmiany!");
         }

@@ -51,7 +51,7 @@ export const useAddEmployee = () => {
     const showError = useError()
     return useMutation({
         mutationFn: sendRoleBasedPost,
-        onSuccess(data) {
+        onSuccess: (data) => {
             showDialog({
                 btnOptions: [
                     {

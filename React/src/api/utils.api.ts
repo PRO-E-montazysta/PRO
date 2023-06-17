@@ -21,12 +21,13 @@ export const getBaseUrl = (): string => {
     return url
 }
 
-export const makeServiceCall = async (url: string, httpMethod: Method, payload: PayloadProps) => {
+export const makeServiceCall = async (url: string, httpMethod: Method, payload: PayloadProps, isFormData?: boolean) => {
     const { body, queryParams } = payload
     const token = getToken()
 
     let headers = {
-        'Content-Type': 'application/json',
+        'Content-Type': isFormData ? 'multipart/form-data' : 'application/json',
+        'Access-Control-Allow-Origin': '*',
         Authorization: '',
     }
     if (token) headers.Authorization = 'Bearer ' + token

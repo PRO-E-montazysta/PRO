@@ -63,9 +63,9 @@ public class CompanyAdminServiceImpl implements CompanyAdminService {
 
     @Override
     public CompanyAdminDto add(CompanyAdminDto companyAdminDto) {
+        String password = PasswordGenerator.generatePassword(10);
         companyAdminDto.setUsername(companyAdminDto.getUsername().toLowerCase());
-        //companyAdminDto.setPassword(PasswordGenerator.generatePassword(10));  //TODO: uncomment to generate password
-        companyAdminDto.setPassword(bCryptPasswordEncoder.encode(companyAdminDto.getPassword()));
+        companyAdminDto.setPassword(bCryptPasswordEncoder.encode(password));
         companyAdminDto.setRoles(Set.of(Role.ADMIN));
         companyAdminDto.setUnavailabilities(new ArrayList<>());
         companyAdminDto.setNotifications(new ArrayList<>());
@@ -85,16 +85,15 @@ public class CompanyAdminServiceImpl implements CompanyAdminService {
                 .build();
         employmentRepository.save(employmentMapper.toEntity(employmentDto));
 
-
-        //TODO: uncomment to send email on company admin create
-        /*emailService.sendEmail(
+        //send email on company admin create
+        emailService.sendEmail(
                 EmailData.builder()
                         .to(companyAdminDto.getEmail())
                         .message(MailTemplates.employeeCreate(companyAdminDto.getUsername(),
-                                companyAdminDto.getPassword(), companyAdminDto.getFirstName(), companyAdminDto.getLastName()))
+                                password, companyAdminDto.getFirstName(), companyAdminDto.getLastName()))
                         .subject("Witaj w E-Montażysta!")
                         .build()
-        );*/
+        );
 
         return mapper.toDto(companyAdmin);
     }

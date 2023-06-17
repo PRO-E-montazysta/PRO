@@ -10,7 +10,7 @@ export type FormInputProps = {
     type: 'input' | 'select' | 'date' | 'password' | 'date-time' | 'number' | 'can-be-deleted'
     options?: Array<SelectMenuItemProps>
     validation?: yup.AnySchema
-    formatFn?: (value: any) => string
+    formatFn?: (value: any) => string | Promise<string>
     placeholder?: string
 
     //always readonly

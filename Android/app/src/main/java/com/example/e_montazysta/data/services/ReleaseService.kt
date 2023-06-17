@@ -50,4 +50,15 @@ interface ReleaseService {
         @Path("warehouseId") warehouseId: Int,
         @Body tools: List<ElementReleaseRequest>
     ): StageDAO
+    @PUT("/api/v1/order-stages/returnTools/{id}/")
+    suspend fun createToolsReturn(@Header("Authorization") token: String,
+                                      @Path("id") stageId: Int,
+                                      @Body elements: List<ToolReleaseRequest>
+    ): StageDAO
+    @PUT("/api/v1/order-stages/returnElements/{id}/{warehouseId}")
+    suspend fun createElementsReturn(@Header("Authorization") token: String,
+                                      @Path("id") stageId: Int,
+                                      @Path("warehouseId") warehouseId: Int,
+                                      @Body tools: List<ElementReleaseRequest>
+    ): StageDAO
 }

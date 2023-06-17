@@ -144,7 +144,7 @@ public class OrdersServiceImpl implements OrdersService {
                 notificationService.createNotification(notifiedEmployees, order.getId(), NotificationType.FOREMAN_ASSIGNMENT);
 
             }else {
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Podziel zlecenie na etapy!");
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Przypisz brygadzistę do zlecenia!");
             }
         }else if(order.getStatus().equals(OrderStatus.ACCEPTED) && loggedUserRoles.contains(Role.FOREMAN)) {
             order.setStatus(OrderStatus.IN_PROGRESS);
