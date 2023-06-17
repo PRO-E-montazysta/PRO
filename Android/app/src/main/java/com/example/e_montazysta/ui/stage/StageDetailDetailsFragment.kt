@@ -36,11 +36,17 @@ class StageDetailDetailsFragment(val stage: Stage?) : Fragment() {
                 binding.plannedEndValue.text = if ( it.plannedEnd != null) DateUtil.format(it.plannedEnd) else "Brak"
                 binding.plannedFittersNumberValue.text = it.plannedFittersNumber.toString()
                 binding.minimumImagesNumberValue.text = it.minimumImagesNumber.toString()
-                binding.listOfToolsPlannedNumberValue.text = if (!it.listOfToolsPlannedNumber.isNullOrEmpty()) it.listOfToolsPlannedNumber.toString() else "Brak"
-                binding.listOfElementsPlannedNumberValue.text = if (!it.listOfToolsPlannedNumber.isNullOrEmpty()) it.listOfToolsPlannedNumber.toString() else "Brak"
             }
         })
-
+        stageDetailViewModel.isLoadingLiveData.observe(viewLifecycleOwner, Observer<Boolean>{
+            it?.let {
+                if(it) {
+                    binding.loadingIndicator.visibility = View.VISIBLE
+                } else {
+                    binding.loadingIndicator.visibility = View.GONE
+                }
+            }
+        })
         return binding.root
     }
 

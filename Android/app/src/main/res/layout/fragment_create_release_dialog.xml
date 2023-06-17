@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="stage"
+            type="com.example.e_montazysta.data.model.Stage" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="0dp"
+                app:layout_scrollEffect="compress"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:menu="@menu/menu_submit_release_return"
+                app:navigationIcon="@drawable/baseline_close_24"
+                app:title="@string/create_release_title"></com.google.android.material.appbar.MaterialToolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Tytuł etapu -->
+                <TextView
+                    android:id="@+id/nameValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/stage_title"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleLarge"/>
+
+                <!-- Informacje dotyczące etapu -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/list_item_space_x3"
+                    android:paddingStart="@dimen/list_item_space_x4"
+                    android:paddingEnd="@dimen/list_item_space_x6">
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/orderName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Nazwa zlecenia" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/orderNameValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Brak"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/list_item_space_x3"
+                    android:paddingStart="@dimen/list_item_space_x4"
+                    android:paddingEnd="@dimen/list_item_space_x6">
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Status" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/statusValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="NIEZNANY"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/list_item_space_x3"
+                    android:paddingStart="@dimen/list_item_space_x4"
+                    android:paddingEnd="@dimen/list_item_space_x6">
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/listOfToolsPlannedNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Lista sugerowanych narzędzi" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/listOfToolsPlannedNumberValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Brak"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/list_item_space_x3"
+                    android:paddingStart="@dimen/list_item_space_x4"
+                    android:paddingEnd="@dimen/list_item_space_x6">
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/listOfElementsPlannedNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Lista sugerowanych elementów" />
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/listOfElementsPlannedNumberValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Brak"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/list_item_space_x3"
+                    android:paddingStart="@dimen/list_item_space_x4"
+                    android:paddingEnd="@dimen/list_item_space_x6">
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/warehouseName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Magazyn" />
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/warehouseNameValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Brak"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                </LinearLayout>
+
+                <!-- Nagłówek listy wydawanych elementów -->
+                <TextView
+                    android:id="@+id/txtElementsTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/elements_title" />
+
+                <!-- Lista wydawanych elementów -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/list_item_tool"
+                    android:scrollbars="vertical"
+                    />
+
+                <!-- Przycisk potwierdzenia -->
+
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

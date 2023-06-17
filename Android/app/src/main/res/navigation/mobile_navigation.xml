@@ -79,6 +79,9 @@
         <action
             android:id="@+id/action_toolsFragment_to_toolDetailFragment"
             app:destination="@id/toolDetailFragment" />
+<!--        <argument-->
+<!--            android:name="toolTypeId"-->
+<!--            app:argType="integer" />-->
     </fragment>
     <fragment
         android:id="@+id/releaseListFragment"
@@ -132,6 +135,12 @@
         <action
             android:id="@+id/action_stageDetailFragment_to_returnCreateFragment"
             app:destination="@id/returnCreateFragment" />
+        <action
+            android:id="@+id/action_stageDetailFragment_to_toolsFragment"
+            app:destination="@id/toolsFragment" />
+        <action
+            android:id="@+id/action_stageDetailFragment_to_elementDetailFragment"
+            app:destination="@id/elementDetailFragment" />
     </fragment>
 
     <fragment
@@ -147,8 +156,8 @@
         android:name="com.example.e_montazysta.ui.release.ReleaseCreateFragment"
         android:label="ReleaseCreateFragment" >
         <argument
-            android:name="stageId"
-            app:argType="integer" />
+            android:name="stage"
+            app:argType="com.example.e_montazysta.data.model.Stage" />
     </fragment>
     <fragment
         android:id="@+id/elementsListFragment"
@@ -237,7 +246,7 @@
         android:label="ReturnCreateFragment">
         <argument
             android:name="stage"
-            app:argType="integer" />
+            app:argType="com.example.e_montazysta.data.model.Stage" />
     </fragment>
     <fragment
         android:id="@+id/userDetailFragment"

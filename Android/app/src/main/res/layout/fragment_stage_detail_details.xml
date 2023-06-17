@@ -82,7 +82,8 @@
                     android:id="@+id/priceValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                    android:text="Brak" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -167,53 +168,23 @@
                     android:text="minimumImagesNumberValue"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
                 </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingVertical="@dimen/list_item_space_x3"
-                    android:paddingStart="@dimen/list_item_space_x4"
-                    android:paddingEnd="@dimen/list_item_space_x6">
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/listOfToolsPlannedNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Lista planowanych narzędzi" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/listOfToolsPlannedNumberValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="listOfToolsPlannedNumberValue"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingVertical="@dimen/list_item_space_x3"
-                    android:paddingStart="@dimen/list_item_space_x4"
-                    android:paddingEnd="@dimen/list_item_space_x6">
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/listOfElementsPlannedNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Lista planowanych elementów" />
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/listOfElementsPlannedNumberValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="listOfElementsPlannedNumberValue"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-                </LinearLayout>
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/list_item_space_x3"/>
             </LinearLayout>
-
-
-
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/loading_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
 </layout>
