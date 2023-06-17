@@ -24,17 +24,31 @@ data class ElementEventDAO(
     val movingDate: Date?,
     val quantity: Int,
     val status: EventStatus,
-): KoinComponent {
-    suspend fun mapToEvent(): Event{
+) : KoinComponent {
+    suspend fun mapToEvent(): Event {
         var acceptedBy: User?
         if (acceptedById != null) {
             acceptedBy = User.getUserDetails(acceptedById)
-            } else {
+        } else {
             acceptedBy = null
         }
-        val createdBy =  User.getUserDetails(createdById)
+        val createdBy = User.getUserDetails(createdById)
         val element = Element.getElementDetails(elementId)
-        return Event(acceptedBy, attachments, completionDate, createdBy, deleted, description, element, eventDate, id, movingDate, quantity, status, EventType.E)
+        return Event(
+            acceptedBy,
+            attachments,
+            completionDate,
+            createdBy,
+            deleted,
+            description,
+            element,
+            eventDate,
+            id,
+            movingDate,
+            quantity,
+            status,
+            EventType.E
+        )
     }
 }
 
@@ -51,16 +65,30 @@ data class ToolEventDAO(
     val movingDate: Date?,
     val status: EventStatus,
 ) {
-    suspend fun mapToEvent(): Event{
+    suspend fun mapToEvent(): Event {
         var acceptedBy: User?
         if (acceptedById != null) {
             acceptedBy = User.getUserDetails(acceptedById)
         } else {
             acceptedBy = null
         }
-        val createdBy =  User.getUserDetails(createdById)
+        val createdBy = User.getUserDetails(createdById)
         val tool = Tool.getToolDetails(toolId)
-        return Event(acceptedBy, attachments, completionDate, createdBy, deleted, description, tool, eventDate, id, movingDate, null, status, EventType.T)
+        return Event(
+            acceptedBy,
+            attachments,
+            completionDate,
+            createdBy,
+            deleted,
+            description,
+            tool,
+            eventDate,
+            id,
+            movingDate,
+            null,
+            status,
+            EventType.T
+        )
     }
 }
 
@@ -75,7 +103,7 @@ data class FilterEventDAO(
     val itemName: String,
     val movingDate: Date?,
     val status: EventStatus
-    ){
+) {
     fun mapToEventListItem(): EventListItem {
         return EventListItem(id, itemName, eventType, status, DateUtil.format(eventDate))
     }

@@ -31,7 +31,6 @@ const Calendar = () => {
     const formikFilter = useFormik<CalendarFilters>({
         initialValues: calendarFilterDefaultValues,
         onSubmit: (data: any) => {
-            console.log(data)
         },
     })
 

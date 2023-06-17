@@ -16,7 +16,8 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 
-class WarehouseDetailViewModel(private val repository: IWarehouseRepository) : ViewModel(), CoroutineScope {
+class WarehouseDetailViewModel(private val repository: IWarehouseRepository) : ViewModel(),
+    CoroutineScope {
 
     private var job: Job? = null
 
@@ -42,7 +43,7 @@ class WarehouseDetailViewModel(private val repository: IWarehouseRepository) : V
         _isLoadingLiveData.postValue(true)
         val result = repository.getWarehouseDetails(id)
         when (result) {
-            is Result.Success -> _eventLiveData.postValue( result.data )
+            is Result.Success -> _eventLiveData.postValue(result.data)
             is Result.Error -> {
                 throw result.exception
                 Log.e("getWarehouse", getStackTraceString(result.exception))

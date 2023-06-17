@@ -6,8 +6,18 @@ import com.example.e_montazysta.data.model.Result
 import com.example.e_montazysta.ui.stage.StageDAO
 
 interface IReleaseRepository {
-    suspend fun getRelease() : Result<List<Release>>
+    suspend fun getRelease(): Result<List<Release>>
 
     suspend fun getReleaseDetail(id: Int): Result<Release>
-    suspend fun createRelease(items: List<ReleaseItem>, stageId: Int, warehouseId: Int?): Result<List<StageDAO>>
+    suspend fun createRelease(
+        items: List<ReleaseItem>,
+        stageId: Int,
+        warehouseId: Int?
+    ): Result<List<StageDAO>>
+
+    suspend fun createReturn(
+        items: List<ReleaseItem>,
+        stageId: Int,
+        warehouseId: Int?
+    ): Result<List<StageDAO>>
 }

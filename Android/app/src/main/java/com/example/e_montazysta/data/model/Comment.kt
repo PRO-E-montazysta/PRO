@@ -1,8 +1,8 @@
 package com.example.e_montazysta.data.model
 
-import java.util.*
+import java.util.Date
 
-data class Comment (
+data class Comment(
     val attachments: List<Int>,
     val content: String,
     val createdAt: Date,
@@ -10,6 +10,4 @@ data class Comment (
     val id: Int,
     val messageCreator: User?,
     val orderStageId: Int
-){
-
-}
+)

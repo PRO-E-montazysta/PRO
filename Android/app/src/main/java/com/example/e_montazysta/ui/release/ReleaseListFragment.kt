@@ -14,13 +14,21 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ReleaseListFragment(val stage: Stage? = null) : Fragment() {
     private val releaseListViewModel: ReleaseListViewModel by viewModel()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         // Get a reference to the binding object and inflate the fragment views.
-        val binding: FragmentReleasesBinding = FragmentReleasesBinding.inflate(inflater, container, false)
+        val binding: FragmentReleasesBinding =
+            FragmentReleasesBinding.inflate(inflater, container, false)
 
-        val adapter = ReleaseListAdapter(CustomClickListener{
-            releaseId -> val action = ReleaseListFragmentDirections.actionReleaseListFragmentToReleaseDetailFragment(releaseId)
+        val adapter = ReleaseListAdapter(CustomClickListener { releaseId ->
+            val action =
+                ReleaseListFragmentDirections.actionReleaseListFragmentToReleaseDetailFragment(
+                    releaseId
+                )
             findNavController().navigate(action)
         })
 
@@ -37,15 +45,27 @@ class ReleaseListFragment(val stage: Stage? = null) : Fragment() {
             releaseListViewModel.setReleaseList(stage)
         }
 
-        releaseListViewModel.isLoadingLiveData.observe(viewLifecycleOwner, Observer<Boolean>{
+        releaseListViewModel.isLoadingLiveData.observe(viewLifecycleOwner, Observer<Boolean> {
             it?.let {
-                if(it) {
+                if (it) {
                     binding.loadingIndicator.visibility = View.VISIBLE
                 } else {
                     binding.loadingIndicator.visibility = View.GONE
                 }
             }
         })
+
+        // Empty list info
+        releaseListViewModel.isEmptyLiveData.observe(viewLifecycleOwner, Observer<Boolean> {
+            it?.let {
+                if (it) {
+                    binding.emptyInfo.visibility = View.VISIBLE
+                } else {
+                    binding.emptyInfo.visibility = View.GONE
+                }
+            }
+        })
+
         // Specify the current activity as the lifecycle owner of the binding.
         // This is necessary so that the binding can observe LiveData updates.
         binding.lifecycleOwner = this

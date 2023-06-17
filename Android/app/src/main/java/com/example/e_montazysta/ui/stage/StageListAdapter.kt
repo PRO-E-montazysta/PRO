@@ -6,14 +6,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.e_montazysta.databinding.ListItemStageBinding
 
 
-class StageListAdapter(val clickListener: CustomClickListener) : RecyclerView.Adapter<StageListAdapter.ViewHolder>(){
+class StageListAdapter(val clickListener: CustomClickListener) :
+    RecyclerView.Adapter<StageListAdapter.ViewHolder>() {
 
     var elements = listOf<StageListItem>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
-    set(value) {
-        field = value
-        notifyDataSetChanged()
-    }
     override fun getItemCount(): Int {
         return elements.size
     }
@@ -27,13 +28,14 @@ class StageListAdapter(val clickListener: CustomClickListener) : RecyclerView.Ad
         holder.bind(item, clickListener)
     }
 
-    class ViewHolder( val binding: ListItemStageBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(val binding: ListItemStageBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: StageListItem, clickListener: CustomClickListener) {
             binding.stage = data
             binding.itemClickListener = clickListener
             binding.executePendingBindings()
         }
+
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
@@ -43,6 +45,7 @@ class StageListAdapter(val clickListener: CustomClickListener) : RecyclerView.Ad
         }
     }
 }
+
 class CustomClickListener(val clickListener: (stageId: Int) -> Unit) {
 
     fun cardClicked(stage: StageListItem) = clickListener(stage.id)

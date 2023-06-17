@@ -7,9 +7,13 @@ import retrofit2.http.Path
 
 interface OrderService {
     @GET("/api/v1/orders/filter")
-    suspend fun getListOfOrders(@Header("Authorization") token: String
+    suspend fun getListOfOrders(
+        @Header("Authorization") token: String
     ): List<OrderDAO>
 
     @GET("/api/v1/orders/{id}")
-    suspend fun getOrderDetail(@Header("Authorization") token: String, @Path("id") id: Int): OrderDAO
+    suspend fun getOrderDetail(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int
+    ): OrderDAO
 }

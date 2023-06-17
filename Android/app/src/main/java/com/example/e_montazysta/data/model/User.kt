@@ -18,7 +18,7 @@ data class User(
 ) {
     override fun toString(): String = "$firstName $lastName"
 
-    companion object: KoinComponent {
+    companion object : KoinComponent {
         suspend fun getUserDetails(userId: Int): User? {
             val userRepository: IUserRepository by inject()
             val result = userRepository.getUserDetails(userId)

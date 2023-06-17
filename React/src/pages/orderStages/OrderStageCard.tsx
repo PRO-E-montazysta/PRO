@@ -9,7 +9,7 @@ import IconButton from '@mui/material/IconButton'
 import { DatePicker, TimePicker } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { DateValidationError } from '@mui/x-date-pickers/models'
+import { DateValidationError, TimeValidationError } from '@mui/x-date-pickers/models'
 import { AxiosError } from 'axios'
 import dayjs, { Dayjs } from 'dayjs'
 import { useFormik } from 'formik'
@@ -51,6 +51,7 @@ type OrderStageCardProps = {
 const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: OrderStageCardProps) => {
     const [stageMode, setStageMode] = useState<PageMode>(addingNewStag ? 'new' : 'read')
     const [tabValue, setTabValue] = useState(0)
+    const [userRole, setUserRole] = useState('')
     const [expandedInformation, setExpandedInformation] = useState(false)
     const [plannedStartDate, setPlannedStartDate] = useState<Dayjs | null>(
         dayjs(stage?.plannedStartDate ? stage?.plannedStartDate : null),
@@ -73,6 +74,22 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
     const plannedElementsRef = useRef<{ numberOfElements: number; elementId: string }[]>([])
     const plannedToolsTypesRef = useRef<{ numberOfTools: number; toolTypeId: string }[]>([])
     const [error, setError] = useState<DateValidationError | null>(null)
+    const [startHourError, setStartHourError] = useState<TimeValidationError | null>(null)
+    const [endHourError, setEndHourError] = useState<TimeValidationError | null>(null)
+
+    useEffect(() => {
+        const role = getRolesFromToken()
+        if (role.length !== 0) setUserRole(role[0])
+    }, [])
+
+    const canBeEdittedBySpecialist = () => {
+        if (userRole === Role.SPECIALIST) {
+            return stageMode == 'read'
+        }
+
+        return true
+    }
+
     const queryClient = useQueryClient()
     //attachment functionality
     const attachmentData = useAttachmentData({
@@ -131,6 +148,9 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
         const hours = dayjs(plannedStartHour).format('HH:mm:ss.SSS')
         const preparedDate = date.substring(0, date.indexOf('T') + 1).replace('T', 'T' + hours)
         setPreparedPlannedStartDate(preparedDate)
+        if (plannedStartHour?.toString() != 'Invalid Date' && plannedStartDate) {
+            formik.setFieldValue('plannedStartDate', preparedDate)
+        }
     }, [plannedStartHour, plannedStartDate])
 
     useEffect(() => {
@@ -138,6 +158,13 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
         const hours = dayjs(plannedFinishHour).format('HH:mm:ss.SSS')
         const preparedDate = date.substring(0, date.indexOf('T') + 1).replace('T', 'T' + hours)
         setPreparedPlannedEndDate(preparedDate)
+        if (plannedFinishHour?.toString() != 'Invalid Date' && plannedStartDate) {
+            const isEndDateBeforeStartDay = dayjs(preparedPlannedStartDate).isAfter(dayjs(preparedDate))
+            if (!isEndDateBeforeStartDay) {
+                formik.setFieldValue('plannedEndDate', preparedDate)
+                setEndHourError('disablePast')
+            }
+        }
     }, [plannedFinishHour, plannedStartDate])
 
     const tabProps = (index: number) => {
@@ -218,8 +245,8 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
         attachmentData.handleReset()
     }
 
-    const formik = useFormik({
-        initialValues: {
+    const mapStageToFormik = (stage?: OrderStage) => {
+        return {
             orderId: params.id!,
             orderStageId: !!stage && stage.id ? stage.id.toString() : '',
             name: stage ? stage.name : '',
@@ -233,7 +260,14 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
             listOfElementsPlannedNumber: stage ? stage.listOfElementsPlannedNumber : [],
             attachments: stage && stage.attachments ? stage.attachments : [],
             fitters: stage && stage.fitters ? stage.fitters : [],
-        },
+        }
+    }
+    useLayoutEffect(() => {
+        formik.setValues(mapStageToFormik(stage))
+    }, [stage])
+
+    const formik = useFormik({
+        initialValues: mapStageToFormik(stage),
         validationSchema: validationSchema,
         onSubmit: (values) => {
             values.listOfElementsPlannedNumber = plannedElementsRef.current!
@@ -260,6 +294,31 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
         }
     }, [error])
 
+    const errorStartHourMessage = useMemo(() => {
+        switch (error) {
+            case 'invalidDate': {
+                return 'Wprowadź poprawną godzinę'
+            }
+            default: {
+                return ''
+            }
+        }
+    }, [startHourError])
+
+    const errorEndHourMessage = useMemo(() => {
+        switch (error) {
+            case 'invalidDate': {
+                return 'Wprowadź poprawną godzinę'
+            }
+            case 'disablePast': {
+                return 'Godzina zakończenia nie może być mniejsza niż godzina rozpoczęcia'
+            }
+            default: {
+                return ''
+            }
+        }
+    }, [endHourError])
+
     const getDateInformations = (stage?: OrderStage) => {
         return (
             <Grid container spacing={{ xs: 2, md: 2 }} columns={{ xs: 2, sm: 4, md: 12 }}>
@@ -273,7 +332,7 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                 },
                             }}
                             label="Planowana data rozpoczęcia"
-                            disabled={stageMode != 'new'}
+                            disabled={canBeEdittedBySpecialist()}
                             format="DD/MM/YYYY"
                             value={plannedStartDate}
                             onChange={(data) => {
@@ -300,10 +359,10 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                         WebkitTextFillColor: '#000000',
                                     },
                                 }}
-                                format="DD/MM/YYYY"
+                                format="DD/MM/YYYY HH:mm"
                                 label="Data rozpoczęcia"
                                 value={stage ? dayjs(stage.startDate) : ''}
-                                disabled={stageMode == 'read'}
+                                disabled={true}
                             />
                         </LocalizationProvider>
                     </Grid>
@@ -321,9 +380,16 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                             format={'HH:mm'}
                             ampm={false}
                             value={plannedStartHour}
-                            disabled={stageMode == 'read'}
+                            disabled={canBeEdittedBySpecialist()}
                             onChange={(data) => {
+                                setStartHourError(null)
                                 setPlannedStartHour(data)
+                            }}
+                            onError={(error) => setStartHourError(error)}
+                            slotProps={{
+                                textField: {
+                                    helperText: errorStartHourMessage || '',
+                                },
                             }}
                         />
                     </LocalizationProvider>
@@ -340,12 +406,9 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                     },
                                 }}
                                 label="Data zakończenia"
-                                disabled={stageMode == 'read'}
-                                format="DD/MM/YYYY"
+                                disabled={true}
+                                format="DD/MM/YYYY HH:mm"
                                 value={stage ? dayjs(stage.endDate) : ''}
-                                onChange={(data) => {
-                                    // const formattedDate = dayjs(data).format('YYYY-MM-DDTHH:mm:ss.SSS')
-                                }}
                             />
                         </LocalizationProvider>
                     </Grid>
@@ -359,13 +422,25 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                     WebkitTextFillColor: '#000000',
                                 },
                             }}
-                            disabled={stageMode == 'read'}
+                            disabled={canBeEdittedBySpecialist()}
                             label="Planowana godzina zakończenia"
                             ampm={false}
+                            minTime={plannedStartHour}
                             format={'HH:mm'}
                             value={plannedFinishHour}
                             onChange={(data) => {
+                                const isDateBeforeStartDate = dayjs(plannedStartHour).isAfter(data)
+                                if (isDateBeforeStartDate) {
+                                    return setError('disablePast')
+                                }
+                                setEndHourError(null)
                                 setPlannedFinishHour(data)
+                            }}
+                            onError={(error) => setEndHourError(error)}
+                            slotProps={{
+                                textField: {
+                                    helperText: errorEndHourMessage || '',
+                                },
                             }}
                         />
                     </LocalizationProvider>
@@ -392,25 +467,21 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
     }
 
     const orderNextStatusMutation = useOrderStageNextStatus(() => {
-        queryClient.refetchQueries([
-            {
-                queryKey: ['order', { id: stage?.orderId }],
-            },
-            {
-                queryKey: ['orderStageForOrder', { id: stage?.orderId }],
-            },
-        ])
+        queryClient.refetchQueries({
+            queryKey: ['order', { id: stage?.orderId.toString() }],
+        })
+        queryClient.refetchQueries({
+            queryKey: ['orderStageForOrder', { id: stage?.orderId.toString() }],
+        })
     })
-    const orderPreviousStatusMutation = useOrderStagePreviousStatus(() =>
-        queryClient.refetchQueries([
-            {
-                queryKey: ['order', { id: stage?.orderId }],
-            },
-            {
-                queryKey: ['orderStageForOrder', { id: stage?.orderId }],
-            },
-        ]),
-    )
+    const orderPreviousStatusMutation = useOrderStagePreviousStatus(() => {
+        queryClient.refetchQueries({
+            queryKey: ['order', { id: stage?.orderId.toString() }],
+        })
+        queryClient.refetchQueries({
+            queryKey: ['orderStageForOrder', { id: stage?.orderId.toString() }],
+        })
+    })
 
     const handleNextStatus = () => {
         const validationResult = validateNextOrderStageStatus(stage)
@@ -476,8 +547,8 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                     >
                         <Grid item xs={4} md={3}>
                             <CustomTextField
-                                readOnly={stageMode == 'read'}
-                                disabled={stageMode == 'read'}
+                                readOnly={canBeEdittedBySpecialist()}
+                                disabled={canBeEdittedBySpecialist()}
                                 sx={{ width: '100%' }}
                                 id="standard-basic"
                                 variant="outlined"
@@ -499,16 +570,14 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                 variant="outlined"
                                 label="Status"
                                 name="status"
-                                defaultValue={
-                                    stage ? orderStageStatusName(stage.status) : orderStageStatusName('PLANNING')
-                                }
+                                value={stage ? orderStageStatusName(stage.status) : orderStageStatusName('PLANNING')}
                             />
                         </Grid>
 
                         <Grid item xs={4} md={3}>
                             <CustomTextField
-                                readOnly={stageMode == 'read'}
-                                disabled={stageMode == 'read'}
+                                readOnly={canBeEdittedBySpecialist()}
+                                disabled={canBeEdittedBySpecialist()}
                                 sx={{ width: '100%' }}
                                 id="standard-basic"
                                 variant="outlined"
@@ -523,8 +592,8 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
 
                         <Grid item xs={4} md={3}>
                             <CustomTextField
-                                readOnly={stageMode == 'read'}
-                                disabled={stageMode == 'read'}
+                                readOnly={canBeEdittedBySpecialist()}
+                                disabled={canBeEdittedBySpecialist()}
                                 sx={{
                                     width: '100%',
                                 }}
@@ -540,21 +609,6 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                 helperText={formik.touched.plannedFittersNumber && formik.errors.plannedFittersNumber}
                             />
                         </Grid>
-                        {/* <Grid item xs={4} md={3}>
-                            <CustomTextField
-                                readOnly={stageMode == 'read'}
-                                disabled={stageMode == 'read'}
-                                sx={{ width: '100%' }}
-                                id="standard-basic"
-                                label="Minimalna liczba zdjęć"
-                                variant="outlined"
-                                name="minimumImagesNumber"
-                                value={formik.values.minimumImagesNumber}
-                                onChange={formik.handleChange}
-                                error={formik.touched.minimumImagesNumber && Boolean(formik.errors.minimumImagesNumber)}
-                                helperText={formik.touched.minimumImagesNumber && formik.errors.minimumImagesNumber}
-                            />
-                        </Grid> */}
                         <Box sx={{ marginTop: '20px', width: '100%' }}>
                             <Box
                                 sx={{
@@ -578,7 +632,7 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                             <TabPanel value={tabValue} index={1}>
                                 <OrderStageToolsTable
                                     itemsArray={queryAllToolTypes.data || []}
-                                    isDisplayingMode={stageMode == 'read'}
+                                    isDisplayingMode={canBeEdittedBySpecialist()}
                                     toolsTypeListIds={stage?.listOfToolsPlannedNumber as any}
                                     handleChange={handleSetPlannedToolsTypes}
                                     toolsRef={plannedToolsTypesRef}
@@ -588,7 +642,7 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                             <TabPanel value={tabValue} index={2}>
                                 <OrderStageElementsTable
                                     itemsArray={queryAllElements.data || []}
-                                    isDisplayingMode={stageMode == 'read'}
+                                    isDisplayingMode={canBeEdittedBySpecialist()}
                                     elementsListIds={stage?.listOfElementsPlannedNumber as any}
                                     handleChange={handleSetPlannedElements}
                                     elementsRef={plannedElementsRef}
@@ -672,7 +726,6 @@ const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: Orde
                                         color="primary"
                                         startIcon={<ArrowBackIosIcon />}
                                         variant="contained"
-                                        type="submit"
                                         style={{ width: appSize.isMobile ? 'auto' : 170 }}
                                         onClick={handlePreviousStatus}
                                     >

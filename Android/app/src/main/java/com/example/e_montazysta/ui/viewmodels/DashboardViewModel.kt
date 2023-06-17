@@ -13,7 +13,8 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import kotlin.coroutines.CoroutineContext
 
-class DashboardViewModel(private val userRepository: IUserRepository,
+class DashboardViewModel(
+    private val userRepository: IUserRepository,
 ) : ViewModel(),
     KoinComponent,
     CoroutineScope {

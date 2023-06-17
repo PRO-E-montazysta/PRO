@@ -48,7 +48,6 @@ const DemandAdHocDetails = () => {
         //dołożyć dane do formika
         values.listOfElementsPlannedNumber = plannedElementsRef.current!
         values.listOfToolsPlannedNumber = plannedToolsTypesRef.current!
-        console.log('values', values)
         if (pageMode == 'new') addDemandAdHocMutation.mutate(values)
         else if (pageMode == 'edit') editDemandAdHocMutation.mutate(values)
         else console.warn('Try to submit while read mode')
@@ -92,7 +91,6 @@ const DemandAdHocDetails = () => {
 
     useEffect(() => {
         if (demandAdHocData.data) {
-            console.log('demand', demandAdHocData.data)
             formik.setValues(demandAdHocData.data)
             setInitData(demandAdHocData.data)
         }

@@ -19,7 +19,7 @@ class AuthController(private val repository: IAuthRepository) : IAuthController 
         user = null
     }
 
-    override fun login(login: String, password: String) : Result<LoggedInUser> {
+    override fun login(login: String, password: String): Result<LoggedInUser> {
         val result = repository.login(login, password)
 
         if (result is Result.Success) {
@@ -28,6 +28,7 @@ class AuthController(private val repository: IAuthRepository) : IAuthController 
 
         return result
     }
+
     private fun setLoggedInUser(loggedInUser: LoggedInUser) {
         this.user = loggedInUser
         // If user credentials will be cached in local storage, it is recommended it be encrypted

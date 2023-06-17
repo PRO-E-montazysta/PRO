@@ -18,12 +18,12 @@ data class Release(
     val releasedQuantity: Int?,
     val returnedQuantity: Int?,
     val isElement: Boolean
-){
+) {
     companion object : KoinComponent {
         val releaseRepository: IReleaseRepository by inject()
         suspend fun getReleaseDetails(id: Int): Release {
             val result = releaseRepository.getReleaseDetail(id)
-            return when(result){
+            return when (result) {
                 is Result.Success -> result.data
                 is Result.Error -> throw result.exception
             }

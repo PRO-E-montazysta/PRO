@@ -10,7 +10,8 @@ import com.example.e_montazysta.ui.order.mapToOrderListItem
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class OrderRepository (private val serviceProvider: IServiceProvider): IOrderRepository, KoinComponent{
+class OrderRepository(private val serviceProvider: IServiceProvider) : IOrderRepository,
+    KoinComponent {
     private val sharedPreferencesHelper: ISharedPreferencesHelper by inject()
     private val token = "Bearer " + sharedPreferencesHelper.get("lama").toString()
 

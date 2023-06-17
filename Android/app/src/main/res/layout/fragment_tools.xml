@@ -7,70 +7,81 @@
          the whole ViewModel, so that we can access the LiveData,
          click handlers, and state variables. -->
     <data>
+
         <variable
             name="ToolsListViewModel"
             type="com.example.e_montazysta.ui.toollist.ToolsListViewModel" />
     </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/drawer_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:openDrawer="end">
+            android:id="@+id/drawer_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:openDrawer="end">
 
             <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/topAppBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true">
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar"
+                android:id="@+id/topAppBar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:elevation="0dp"
-                app:menu="@menu/menu_list"
-                app:title="@string/title_tools"
-                app:navigationIcon="@drawable/baseline_arrow_back_24"
-                app:layout_collapseMode="pin"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:layout_scrollEffect="compress"
-                />
-        </com.google.android.material.appbar.AppBarLayout>
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="true">
+
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:elevation="0dp"
+                    app:layout_collapseMode="pin"
+                    app:layout_scrollEffect="compress"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                    app:menu="@menu/menu_list"
+                    app:navigationIcon="@drawable/baseline_arrow_back_24"
+                    app:title="@string/title_tools" />
+            </com.google.android.material.appbar.AppBarLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context=".ui.elementlist.ElementListFragment"
-                android:layout_marginVertical="?attr/actionBarSize">
+                android:layout_marginVertical="?attr/actionBarSize"
+                tools:context=".ui.elementlist.ElementListFragment">
 
                 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/swiperefresh"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                >
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/list"
+                    android:id="@+id/swiperefresh"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/list_item_tool"
-                    android:scrollbars="vertical"
-                    />
-            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                <ProgressBar
-                android:id="@+id/loading_indicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scrollbars="vertical"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/list_item_tool" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/empty_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Nie znaleziono żadnych elementów."
+                        android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                        android:visibility="gone" />
+
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/loading_indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <include
@@ -78,7 +89,7 @@
                 layout="@layout/fragment_tool_filters"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="end"/>
+                android:layout_gravity="end" />
         </androidx.drawerlayout.widget.DrawerLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

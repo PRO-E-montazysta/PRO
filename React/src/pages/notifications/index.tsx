@@ -35,7 +35,6 @@ const Notifications = () => {
     }
 
     const createUrl = (row: Notification) => {
-        console.log(row.notificationType)
         let url = '/'
 
         switch (row.notificationType) {

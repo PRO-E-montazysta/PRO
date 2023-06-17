@@ -34,7 +34,7 @@ class StageDetailViewModel(private val repository: IStageRepository) : ViewModel
         }
     }
 
-    fun setStageDetail(stage: Stage){
+    fun setStageDetail(stage: Stage) {
         _stageDetailLiveData.postValue(stage)
     }
 

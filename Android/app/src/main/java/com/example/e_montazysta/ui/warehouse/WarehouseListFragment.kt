@@ -16,17 +16,26 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class WarehouseListFragment : Fragment() {
     private val viewModel: WarehouseListViewModel by viewModel()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         // Get a reference to the binding object and inflate the fragment views.
-        val binding: FragmentWarehousesBinding = FragmentWarehousesBinding.inflate(inflater, container, false)
+        val binding: FragmentWarehousesBinding =
+            FragmentWarehousesBinding.inflate(inflater, container, false)
         val application = requireNotNull(this.activity).application
 
         // To use the View Model with data binding, you have to explicitly
         // give the binding object a reference to it. --NOT IMPLEMENTED--
 
-        val adapter = WarehouseListAdapter( CustomClickListener{
-                warehouseId -> findNavController().navigate(WarehouseListFragmentDirections.actionWarehouseListFragmentToWarehouseDetailFragment(warehouseId))
+        val adapter = WarehouseListAdapter(CustomClickListener { warehouseId ->
+            findNavController().navigate(
+                WarehouseListFragmentDirections.actionWarehouseListFragmentToWarehouseDetailFragment(
+                    warehouseId
+                )
+            )
         })
         binding.warehouseList.adapter = adapter
 
@@ -38,9 +47,9 @@ class WarehouseListFragment : Fragment() {
             }
         })
 
-        viewModel.isLoadingLiveData.observe(viewLifecycleOwner, Observer<Boolean>{
+        viewModel.isLoadingLiveData.observe(viewLifecycleOwner, Observer<Boolean> {
             it?.let {
-                if(it) {
+                if (it) {
                     binding.loadingIndicator.visibility = View.VISIBLE
                 } else {
                     binding.loadingIndicator.visibility = View.GONE
@@ -49,8 +58,8 @@ class WarehouseListFragment : Fragment() {
         })
 
         // Wyświetlanie błędów
-        viewModel.messageLiveData.observe(viewLifecycleOwner) {
-                errorMessage -> Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+        viewModel.messageLiveData.observe(viewLifecycleOwner) { errorMessage ->
+            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
         }
 
         // Specify the current activity as the lifecycle owner of the binding.
@@ -61,6 +70,17 @@ class WarehouseListFragment : Fragment() {
         toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
         }
+
+        // Empty list info
+        viewModel.isEmptyLiveData.observe(viewLifecycleOwner, Observer<Boolean> {
+            it?.let {
+                if (it) {
+                    binding.emptyInfo.visibility = View.VISIBLE
+                } else {
+                    binding.emptyInfo.visibility = View.GONE
+                }
+            }
+        })
 
         return binding.root
 

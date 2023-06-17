@@ -16,13 +16,22 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class StageListFragment(val order: Order? = null) : Fragment() {
     private val stageListViewModel: StageListViewModel by viewModel()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         // Get a reference to the binding object and inflate the fragment views.
-        val binding: FragmentStagesBinding = FragmentStagesBinding.inflate(inflater, container, false)
+        val binding: FragmentStagesBinding =
+            FragmentStagesBinding.inflate(inflater, container, false)
 
-        val adapter = StageListAdapter( CustomClickListener{
-            stageId -> findNavController().navigate(StageListFragmentDirections.actionStageListFragmentToStageDetailFragment(stageId))
+        val adapter = StageListAdapter(CustomClickListener { stageId ->
+            findNavController().navigate(
+                StageListFragmentDirections.actionStageListFragmentToStageDetailFragment(
+                    stageId
+                )
+            )
         })
 
         binding.stageList.adapter = adapter
@@ -40,9 +49,9 @@ class StageListFragment(val order: Order? = null) : Fragment() {
             }
         })
 
-        stageListViewModel.isLoadingLiveData.observe(viewLifecycleOwner, Observer<Boolean>{
+        stageListViewModel.isLoadingLiveData.observe(viewLifecycleOwner, Observer<Boolean> {
             it?.let {
-                if(it) {
+                if (it) {
                     binding.loadingIndicator.visibility = View.VISIBLE
                 } else {
                     binding.loadingIndicator.visibility = View.GONE
@@ -50,18 +59,29 @@ class StageListFragment(val order: Order? = null) : Fragment() {
             }
         })
         // Wyświetlanie błędów
-        stageListViewModel.messageLiveData.observe(viewLifecycleOwner) {
-                errorMessage -> Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+        stageListViewModel.messageLiveData.observe(viewLifecycleOwner) { errorMessage ->
+            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
         }
         // Specify the current activity as the lifecycle owner of the binding.
         // This is necessary so that the binding can observe LiveData updates.
-    	binding.lifecycleOwner = this
+        binding.lifecycleOwner = this
 
         val toolbar: MaterialToolbar = binding.toolbar
-	toolbar.setNavigationOnClickListener {
-	    requireActivity().onBackPressed()
-	}
+        toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
 
-    	return binding.root
+        // Empty list info
+        stageListViewModel.isEmptyLiveData.observe(viewLifecycleOwner, Observer<Boolean> {
+            it?.let {
+                if (it) {
+                    binding.emptyInfo.visibility = View.VISIBLE
+                } else {
+                    binding.emptyInfo.visibility = View.GONE
+                }
+            }
+        })
+
+        return binding.root
     }
 }

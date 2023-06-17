@@ -57,7 +57,6 @@ export const useOrderStageNextStatus = (onSuccessCallback: () => void) => {
 export const useOrderStagePreviousStatus = (onSuccessCallback: () => void) => {
     const { showDialog } = useContext(DialogGlobalContext)
     const showError = useError()
-    const queryClient = useQueryClient()
     return useMutation({
         mutationFn: orderStagePreviousStatus,
         onSuccess: (data) => {

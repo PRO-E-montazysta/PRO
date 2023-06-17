@@ -11,7 +11,8 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import retrofit2.HttpException
 
-class NotificationRepository (private val serviceProvider: IServiceProvider): INotificationRepository, KoinComponent{
+class NotificationRepository(private val serviceProvider: IServiceProvider) :
+    INotificationRepository, KoinComponent {
     private val sharedPreferencesHelper: ISharedPreferencesHelper by inject()
     private val token = "Bearer " + sharedPreferencesHelper.get("lama").toString()
     private val notificationService = serviceProvider.getNotificationService()

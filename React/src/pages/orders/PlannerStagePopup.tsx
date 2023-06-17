@@ -21,12 +21,6 @@ const PlannerStagePopup = ({ popupEventInfo, setPopupEventInfo, readonly }: Plan
     const orderStageQuery = useOrderStageQuery(popupEventInfo.stageId)
     const queryClient = useQueryClient()
     const updateOrderStage = useUpdateOrderStage(() => {
-        queryClient.refetchQueries({
-            queryKey: ['orderStageForOrder', { id: orderStageQuery.data?.orderId.toString() }],
-        })
-        queryClient.refetchQueries({
-            queryKey: ['orderStage', { id: popupEventInfo.stageId }],
-        })
         showDialog({
             title: 'Sukces',
             content: 'Montażyści zapisani',
@@ -36,7 +30,15 @@ const PlannerStagePopup = ({ popupEventInfo, setPopupEventInfo, readonly }: Plan
                     value: 0,
                 },
             ],
-            callback: () => setPopupEventInfo({ ...popupEventInfo, isOpen: false }),
+            callback: () => {
+                setPopupEventInfo({ ...popupEventInfo, isOpen: false })
+                queryClient.refetchQueries({
+                    queryKey: ['orderStageForOrder', { id: orderStageQuery.data?.orderId.toString() }],
+                })
+                queryClient.refetchQueries({
+                    queryKey: ['orderStage', { id: popupEventInfo.stageId }],
+                })
+            },
         })
     })
 

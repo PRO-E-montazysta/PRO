@@ -6,9 +6,9 @@ data class UserListItem(
     val roles: List<Role>,
     val email: String,
     val phone: String
-){
+) {
     fun getListItemInfo(): String {
-        return "${roles.joinToString (", ") { it.value }}" +
+        return "${roles.joinToString(", ") { it.value }}" +
                 "\n$email" +
                 "\n$phone"
     }

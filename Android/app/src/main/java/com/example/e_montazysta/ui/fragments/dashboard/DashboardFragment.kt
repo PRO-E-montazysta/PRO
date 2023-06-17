@@ -30,15 +30,15 @@ class DashboardFragment : Fragment() {
     private var isBackPressedFromDialog = false
 
 
-
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
     @com.google.android.material.badge.ExperimentalBadgeUtils
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
 
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
@@ -48,7 +48,9 @@ class DashboardFragment : Fragment() {
         viewModel.currentUser.observe(viewLifecycleOwner, Observer {
             it?.let {
                 binding.currentUser = it
-                binding.profilePicture.load(it.profilePhotoUrl ?: "https://cdn-icons-png.flaticon.com/512/149/149071.png"){
+                binding.profilePicture.load(
+                    it.profilePhotoUrl ?: "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                ) {
                     transformations(CircleCropTransformation())
                 }
             }
@@ -59,26 +61,37 @@ class DashboardFragment : Fragment() {
         binding.toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.notifications -> {
-                    val direction = DashboardFragmentDirections.actionNavigationDashboardToNotificationListFragment()
+                    val direction =
+                        DashboardFragmentDirections.actionNavigationDashboardToNotificationListFragment()
                     findNavController().navigate(direction)
                     true
                 }
+
                 else -> {
                     Toast.makeText(context, "Błąd dzielenia przez ogórek", Toast.LENGTH_LONG).show()
-                    false}
+                    false
+                }
 
             }
         }
 
         val badgeDrawable = BadgeDrawable.create(requireContext())
         notificationViewModel.getNotification()
-        notificationViewModel.notificationsNumberLiveData.observe(viewLifecycleOwner) {
-            notificationNumber ->
-            when(notificationNumber){
-                0 -> BadgeUtils.detachBadgeDrawable(badgeDrawable, binding.toolbar, R.id.notifications)
+        notificationViewModel.notificationsNumberLiveData.observe(viewLifecycleOwner) { notificationNumber ->
+            when (notificationNumber) {
+                0 -> BadgeUtils.detachBadgeDrawable(
+                    badgeDrawable,
+                    binding.toolbar,
+                    R.id.notifications
+                )
+
                 else -> {
                     badgeDrawable.number = notificationNumber
-                    BadgeUtils.attachBadgeDrawable(badgeDrawable, binding.toolbar, R.id.notifications)
+                    BadgeUtils.attachBadgeDrawable(
+                        badgeDrawable,
+                        binding.toolbar,
+                        R.id.notifications
+                    )
                 }
             }
 
@@ -86,80 +99,92 @@ class DashboardFragment : Fragment() {
         // KAFELKI
 
         val warehouses = binding.warehouses
-        warehouses.setOnClickListener{
-            val direction = DashboardFragmentDirections.actionNavigationDashboardToWarehouseListFragment()
+        warehouses.setOnClickListener {
+            val direction =
+                DashboardFragmentDirections.actionNavigationDashboardToWarehouseListFragment()
             findNavController().navigate(direction)
         }
 
         val tools = binding.tools
-        tools.setOnClickListener{
+        tools.setOnClickListener {
             val direction = DashboardFragmentDirections.actionNavigationDashboardToToolsFragment2()
             findNavController().navigate(direction)
         }
 
-        val releases = binding.releases
-        releases.setOnClickListener{
-            val direction = DashboardFragmentDirections.actionNavigationDashboardToReleaseListFragment()
-            findNavController().navigate(direction)
-        }
+//        val releases = binding.releases
+//        releases.visibility = View.GONE
+//        releases.setOnClickListener {
+//            val direction =
+//                DashboardFragmentDirections.actionNavigationDashboardToReleaseListFragment()
+//            findNavController().navigate(direction)
+//        }
+
 
         val orders = binding.orders
-        orders.setOnClickListener{
-            val direction = DashboardFragmentDirections.actionNavigationDashboardToOrderListFragment()
+        orders.setOnClickListener {
+            val direction =
+                DashboardFragmentDirections.actionNavigationDashboardToOrderListFragment()
             findNavController().navigate(direction)
         }
 
         val stages = binding.stages
-        stages.setOnClickListener{
-            val direction = DashboardFragmentDirections.actionNavigationDashboardToStageListFragment()
+        stages.setOnClickListener {
+            val direction =
+                DashboardFragmentDirections.actionNavigationDashboardToStageListFragment()
             findNavController().navigate(direction)
         }
 
         val elements = binding.elements
-        elements.setOnClickListener{
-            val direction = DashboardFragmentDirections.actionNavigationDashboardToElementsListFragment()
+        elements.setOnClickListener {
+            val direction =
+                DashboardFragmentDirections.actionNavigationDashboardToElementsListFragment()
             findNavController().navigate(direction)
         }
 
         val events = binding.events
-        events.setOnClickListener{
-            val direction = DashboardFragmentDirections.actionNavigationDashboardToEventListFragment()
+        events.setOnClickListener {
+            val direction =
+                DashboardFragmentDirections.actionNavigationDashboardToEventListFragment()
             findNavController().navigate(direction)
         }
 
         val users = binding.users
-        users.setOnClickListener{
-            val direction = DashboardFragmentDirections.actionNavigationDashboardToUserListFragment()
+        users.setOnClickListener {
+            val direction =
+                DashboardFragmentDirections.actionNavigationDashboardToUserListFragment()
             findNavController().navigate(direction)
         }
 
         // Observe the error message LiveData
-        viewModel.messageLiveData.observe(viewLifecycleOwner) {
-                errorMessage -> Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+        viewModel.messageLiveData.observe(viewLifecycleOwner) { errorMessage ->
+            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
         }
 
 
         // EXIT
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (!isBackPressedFromDialog) {
-                    showExitDialog()
-                } else {
-                    requireActivity().onBackPressed()
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (!isBackPressedFromDialog) {
+                        showExitDialog()
+                    } else {
+                        requireActivity().onBackPressed()
+                    }
                 }
-            }
-        })
+            })
         return root
     }
+
     private fun showExitDialog() {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
         alertDialogBuilder.setTitle("Uwaga!")
         alertDialogBuilder.setMessage("Czy na pewno chcesz opuścić aplikację?")
         alertDialogBuilder.setPositiveButton("Wyjdź") { _, _ ->
             isBackPressedFromDialog = true
-            requireActivity().moveTaskToBack(true);
-            android.os.Process.killProcess(android.os.Process.myPid());
-            exitProcess(1);
+            requireActivity().moveTaskToBack(true)
+            android.os.Process.killProcess(android.os.Process.myPid())
+            exitProcess(1)
         }
         alertDialogBuilder.setNegativeButton("Anuluj", null)
         alertDialogBuilder.setOnDismissListener {
@@ -167,6 +192,7 @@ class DashboardFragment : Fragment() {
         }
         alertDialogBuilder.create().show()
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

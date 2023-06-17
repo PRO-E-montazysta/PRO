@@ -9,6 +9,7 @@ import com.example.e_montazysta.data.repository.EventRepository
 import com.example.e_montazysta.data.repository.LocationRepository
 import com.example.e_montazysta.data.repository.NotificationRepository
 import com.example.e_montazysta.data.repository.OrderRepository
+import com.example.e_montazysta.data.repository.PlannedItemRepository
 import com.example.e_montazysta.data.repository.ReleaseRepository
 import com.example.e_montazysta.data.repository.StageRepository
 import com.example.e_montazysta.data.repository.ToolRepository
@@ -21,6 +22,7 @@ import com.example.e_montazysta.data.repository.interfaces.IEventRepository
 import com.example.e_montazysta.data.repository.interfaces.ILocationRepository
 import com.example.e_montazysta.data.repository.interfaces.INotificationRepository
 import com.example.e_montazysta.data.repository.interfaces.IOrderRepository
+import com.example.e_montazysta.data.repository.interfaces.IPlannedItemRepository
 import com.example.e_montazysta.data.repository.interfaces.IReleaseRepository
 import com.example.e_montazysta.data.repository.interfaces.IStageRepository
 import com.example.e_montazysta.data.repository.interfaces.IToolRepository
@@ -41,6 +43,7 @@ import com.example.e_montazysta.ui.order.OrderListViewModel
 import com.example.e_montazysta.ui.release.ReleaseCreateViewModel
 import com.example.e_montazysta.ui.release.ReleaseDetailViewModel
 import com.example.e_montazysta.ui.release.ReleaseListViewModel
+import com.example.e_montazysta.ui.returnitem.ReturnCreateViewModel
 import com.example.e_montazysta.ui.stage.StageDetailViewModel
 import com.example.e_montazysta.ui.stage.StageListViewModel
 import com.example.e_montazysta.ui.toollist.ToolDetailViewModel
@@ -160,10 +163,16 @@ val dataModule = module {
         warehouseRepository
     }
 
-    factory{
+    factory {
         val locationRepository: ILocationRepository =
             LocationRepository(get())
         locationRepository
+    }
+
+    factory {
+        val plannedItemRepository: IPlannedItemRepository =
+            PlannedItemRepository(get())
+        plannedItemRepository
     }
 
     viewModel {
@@ -212,17 +221,19 @@ val dataModule = module {
     viewModel {
         EventDetailViewModel(get())
     }
-    viewModel{
+    viewModel {
         WarehouseListViewModel(get())
     }
-    viewModel{
+    viewModel {
         WarehouseDetailViewModel(get())
     }
-    viewModel{
+    viewModel {
         UserDetailViewModel(get())
     }
-    viewModel{
+    viewModel {
         UserListViewModel(get())
     }
-
+    viewModel {
+        ReturnCreateViewModel()
+    }
 }

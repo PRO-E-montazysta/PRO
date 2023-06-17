@@ -62,7 +62,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @Transactional
     public CompanyDto addCompanyWithAdmin(CompanyWithAdminDto companyWithAdminDto) {
-            //companyWithAdminDto.setPassword(PasswordGenerator.generatePassword(10)); TODO: uncomment to generate password
+        companyWithAdminDto.setPassword(PasswordGenerator.generatePassword(10));
 
         Company company = companyRepository.save(CompanyWithAdminMapper.companyFromDto(companyWithAdminDto));
         CompanyAdmin companyAdmin = companyAdminRepository.save(CompanyWithAdminMapper.companyAdminFromDto(companyWithAdminDto));
