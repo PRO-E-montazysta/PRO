@@ -36,7 +36,7 @@ public class ElementReleaseCriteriaRepository {
         CriteriaQuery<ElementReturnRelease> criteriaQuery = criteriaBuilder.createQuery(ElementReturnRelease.class);
         Root<ElementReturnRelease> elementReturnReleaseRoot = criteriaQuery.from(ElementReturnRelease.class);
         Predicate predicate = getPredicate(elementReturnReleaseRoot);
-        criteriaQuery.where(predicate);
+        criteriaQuery.where(predicate).distinct(true);
 
         TypedQuery<ElementReturnRelease> typedQuery = entityManager.createQuery(criteriaQuery);
         List<ElementReturnRelease> elementReturnReleaseList = typedQuery.getResultList();
