@@ -65,26 +65,23 @@ const CalendarEventDetails = ({ popupEventInfo, setPopupEventInfo }: CalendarEve
                         {popupEventInfo.title}
                     </Typography>
                 </NavLink>
-                <Box
-                    sx={{
-                        display: 'grid',
-                        gridTemplateColumns: '175px 175px',
-                        gap: '10px 20px',
-                    }}
-                >
-                    {popupEventInfo.infoArray.map((row, i) => {
-                        return (
-                            <>
-                                <Typography key={`label-${i}`} variant="body1" textAlign={'right'}>
-                                    {row.label}
-                                </Typography>
-                                <Typography key={`value-${i}`} variant="body1">
-                                    {row.value}
-                                </Typography>
-                            </>
-                        )
-                    })}
-                </Box>
+                {popupEventInfo.infoArray.map((row, i) => {
+                    return (
+                        <Box
+                            sx={{
+                                display: 'grid',
+                                gridTemplateColumns: '175px 175px',
+                                gap: '10px 20px',
+                            }}
+                            key={i}
+                        >
+                            <Typography variant="body1" textAlign={'right'}>
+                                {row.label}
+                            </Typography>
+                            <Typography variant="body1">{row.value}</Typography>
+                        </Box>
+                    )
+                })}
             </Box>
         </ClickAwayListener>
     )

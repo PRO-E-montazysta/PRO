@@ -17,6 +17,7 @@ import { AxiosError } from 'axios'
 import { getAboutMeInfo } from '../../api/employee.api'
 import { useFormik } from 'formik'
 import { Unavailability } from '../../types/model/Unavailability'
+import useError from '../../hooks/useError'
 
 const Calendar = () => {
     const [popupEventInfo, setPopupEventInfo] = useState<PopupEventInfo>(cleanEventInfo)
@@ -24,13 +25,15 @@ const Calendar = () => {
     const unavailabilityListByMonth = useUnavailabilityListByMonth(currentDate.year(), currentDate.month() + 1)
     const [events, setEvents] = useState<EventInput[]>([])
 
+
     const aboutMeQuery = useQuery<any, AxiosError>(['about-me'], async () => getAboutMeInfo())
 
     useLayoutEffect(() => {
         if (unavailabilityListByMonth.data && aboutMeQuery.data) {
-            const myEvents: Unavailability[] = unavailabilityListByMonth.data.filter(
-                (d) => d.assignedToId == aboutMeQuery.data.userId,
-            )
+            const myEvents: Unavailability[] = unavailabilityListByMonth.data
+            // .filter(
+            //     (d) => d.assignedToId == aboutMeQuery.data.userId,
+            // )
             const newEvents: EventInput[] = myEvents.map((d) => {
                 return {
                     id: d.id.toString(),
