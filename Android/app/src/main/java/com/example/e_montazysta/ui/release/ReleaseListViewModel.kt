@@ -28,6 +28,9 @@ class ReleaseListViewModel(private val repository: IReleaseRepository) : ViewMod
     private val _isLoadingLiveData = MutableLiveData<Boolean>()
     val isLoadingLiveData: LiveData<Boolean> = _isLoadingLiveData
 
+    private val _isEmptyLiveData = MutableLiveData<Boolean>()
+    val isEmptyLiveData: LiveData<Boolean> = _isEmptyLiveData
+
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
@@ -39,9 +42,13 @@ class ReleaseListViewModel(private val repository: IReleaseRepository) : ViewMod
 
     private suspend fun getReleaseAsync() {
         _isLoadingLiveData.postValue(true)
+        _isEmptyLiveData.postValue(false)
         val result = repository.getRelease()
         when (result) {
-            is Result.Success -> _releaseLiveData.postValue(result.data.map { it.mapToReleaseItem() })
+            is Result.Success -> {
+                _releaseLiveData.postValue(result.data.map { it.mapToReleaseItem() })
+                if (result.data.isNullOrEmpty()) _isEmptyLiveData.postValue(true)
+            }
             is Result.Error -> {
                 result.exception.message?.let { _messageLiveData.postValue(it) }
                 _isLoadingLiveData.postValue(false)

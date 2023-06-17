@@ -44,6 +44,9 @@ class ToolsListViewModel(private val repository: IToolRepository) : ViewModel(),
     private val _filterLiveData = MutableLiveData<Map<String, String>>()
     val filterLiveData: LiveData<Map<String, String>> = _filterLiveData
 
+    private val _isEmptyLiveData = MutableLiveData<Boolean>()
+    val isEmptyLiveData: LiveData<Boolean> = _isEmptyLiveData
+
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
@@ -56,9 +59,13 @@ class ToolsListViewModel(private val repository: IToolRepository) : ViewModel(),
 
     private suspend fun getFilterToolsAsync(payload: Map<String, String>?) {
         _isLoadingLiveData.postValue(true)
+        _isEmptyLiveData.postValue(false)
         val result = repository.getFilterTools(payload)
         when (result) {
-            is Result.Success -> _toolsLiveData.postValue(result.data)
+            is Result.Success -> {
+                _toolsLiveData.postValue(result.data)
+                if (result.data.isNullOrEmpty()) _isEmptyLiveData.postValue(true)
+            }
             is Result.Error -> {
                 result.exception.message?.let { _messageLiveData.postValue(it) }
                 _isLoadingLiveData.postValue(false)

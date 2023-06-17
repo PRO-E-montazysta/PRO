@@ -28,6 +28,7 @@ class StageDetailPlannedElementsFragment(val listOfElementsPlannedNumber: List<P
         adapter.elements = listOfElementsPlannedNumber
         binding.list.adapter = adapter
 
+
         return binding.root
     }
 }

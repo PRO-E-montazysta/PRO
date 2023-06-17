@@ -71,6 +71,17 @@ class StageListFragment(val order: Order? = null) : Fragment() {
             requireActivity().onBackPressed()
         }
 
+        // Empty list info
+        stageListViewModel.isEmptyLiveData.observe(viewLifecycleOwner, Observer<Boolean> {
+            it?.let {
+                if (it) {
+                    binding.emptyInfo.visibility = View.VISIBLE
+                } else {
+                    binding.emptyInfo.visibility = View.GONE
+                }
+            }
+        })
+
         return binding.root
     }
 }

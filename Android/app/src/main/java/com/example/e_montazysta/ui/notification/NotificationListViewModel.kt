@@ -31,6 +31,9 @@ class NotificationListViewModel(private val repository: INotificationRepository)
     private val _notificationsNumberLiveData = MutableLiveData<Int>()
     val notificationsNumberLiveData: LiveData<Int> = _notificationsNumberLiveData
 
+    private val _isEmptyLiveData = MutableLiveData<Boolean>()
+    val isEmptyLiveData: LiveData<Boolean> = _isEmptyLiveData
+
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
@@ -43,11 +46,13 @@ class NotificationListViewModel(private val repository: INotificationRepository)
 
     private suspend fun getNotificationAsync() {
         _isLoadingLiveData.postValue(true)
+        _isEmptyLiveData.postValue(false)
         val result = repository.getListOfNotifications()
         when (result) {
             is Result.Success -> {
                 _notificationLiveData.postValue(result.data)
                 _notificationsNumberLiveData.postValue(result.data.size)
+                if (result.data.isNullOrEmpty()) _isEmptyLiveData.postValue(true)
             }
 
             is Result.Error -> {

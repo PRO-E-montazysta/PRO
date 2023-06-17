@@ -84,6 +84,16 @@ class UserListFragment : Fragment() {
         }
 
 
+        // Empty list info
+        viewModel.isEmptyLiveData.observe(viewLifecycleOwner, Observer<Boolean> {
+            it?.let {
+                if (it) {
+                    binding.emptyInfo.visibility = View.VISIBLE
+                } else {
+                    binding.emptyInfo.visibility = View.GONE
+                }
+            }
+        })
 
 
         binding.lifecycleOwner = this

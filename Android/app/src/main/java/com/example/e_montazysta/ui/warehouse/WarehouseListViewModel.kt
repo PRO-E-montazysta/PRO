@@ -30,6 +30,9 @@ class WarehouseListViewModel(private val repository: IWarehouseRepository) : Vie
     private val _filterLiveData = MutableLiveData<Map<String, String>>()
     val filterLiveData: LiveData<Map<String, String>> = _filterLiveData
 
+    private val _isEmptyLiveData = MutableLiveData<Boolean>()
+    val isEmptyLiveData: LiveData<Boolean> = _isEmptyLiveData
+
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
@@ -41,9 +44,13 @@ class WarehouseListViewModel(private val repository: IWarehouseRepository) : Vie
 
     private suspend fun getWarehousesAsync() {
         _isLoadingLiveData.postValue(true)
+        _isEmptyLiveData.postValue(false)
         val result = repository.getListOfWarehouse()
         when (result) {
-            is Result.Success -> _warehouseLiveData.postValue(result.data)
+            is Result.Success -> {
+                _warehouseLiveData.postValue(result.data)
+                if (result.data.isNullOrEmpty()) _isEmptyLiveData.postValue(true)
+            }
             is Result.Error -> {
                 result.exception.message?.let { _messageLiveData.postValue(it) }
                 _isLoadingLiveData.postValue(false)

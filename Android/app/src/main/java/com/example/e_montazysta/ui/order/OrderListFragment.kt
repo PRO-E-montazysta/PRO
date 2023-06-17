@@ -73,6 +73,17 @@ class OrderListFragment : Fragment() {
             Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
         }
 
+        // Empty list info
+        orderListViewModel.isEmptyLiveData.observe(viewLifecycleOwner, Observer<Boolean> {
+            it?.let {
+                if (it) {
+                    binding.emptyInfo.visibility = View.VISIBLE
+                } else {
+                    binding.emptyInfo.visibility = View.GONE
+                }
+            }
+        })
+
         return binding.root
     }
 }

@@ -1,6 +1,7 @@
 package com.example.e_montazysta.ui.stage
 
 //import com.example.e_montazysta.ui.order.StageDetailFragmentArgs
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class StageDetailDetailsFragment(val stage: Stage?) : Fragment() {
     private val stageDetailViewModel: StageDetailViewModel by viewModel()
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -34,7 +36,7 @@ class StageDetailDetailsFragment(val stage: Stage?) : Fragment() {
         stageDetailViewModel.setStageDetail(stage!!)
 
         stageDetailViewModel.stagedetail.observe(viewLifecycleOwner, Observer {
-            it?.let {stage ->
+            it?.let { stage ->
                 binding.nameValue.text = stage.name
                 binding.statusValue.text = stage.status.value
                 binding.priceValue.text = stage.price.toString() + " PLN"
@@ -45,12 +47,22 @@ class StageDetailDetailsFragment(val stage: Stage?) : Fragment() {
                 binding.plannedFittersNumberValue.text = stage.plannedFittersNumber.toString()
                 binding.minimumImagesNumberValue.text = stage.minimumImagesNumber.toString()
                 binding.orderNameValue.text = stage.orderName
-                binding.order.setOnClickListener{
+                binding.order.setOnClickListener {
                     findNavController().navigate(
                         StageDetailFragmentDirections.actionStageDetailFragmentToOrderDetailFragment(
                             stage.orderId
                         )
                     )
+                }
+                stage.foreman?.let { foreman ->
+                    binding.foremanName.text = "${foreman.firstName} ${foreman.lastName}"
+                    binding.foreman.setOnClickListener {
+                        findNavController().navigate(
+                            StageDetailFragmentDirections.actionStageDetailFragmentToUserDetailFragment(
+                                stage.foreman.id
+                            )
+                        )
+                    }
                 }
             }
         })

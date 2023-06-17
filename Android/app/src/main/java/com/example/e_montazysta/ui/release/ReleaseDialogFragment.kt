@@ -56,7 +56,7 @@ class ReleaseDialogFragment(
             stage.listOfElementsPlannedNumber.joinToString("\n") { it.element.name + " Ilość: " + it.numberOfElements }
         binding.listOfToolsPlannedNumberValue.text =
             stage.listOfToolsPlannedNumber.joinToString("\n") { it.toolType.name + " Ilość: " + it.numberOfTools }
-
+        stage.foreman?.let { binding.foremanNameValue.text = "${stage.foreman.firstName} ${stage.foreman.lastName}" }
 
         binding.toolbar.setNavigationOnClickListener {
             dismiss()
