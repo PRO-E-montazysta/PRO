@@ -211,10 +211,7 @@ export const useFormStructure = (): Array<FormInputProps> => {
             id: 'clientId',
             initValue: '',
             type: 'can-be-deleted',
-            formatFn: (id: string) => {
-                const client = queryClientDeleted.data?.find((d) => d.id.toString() == id)
-                return client ? client.name : ''
-            },
+            formatFn: (id: string) => DeletedClientName(id),
             addNewPermissionRoles: [Role.NOBODY],
             editPermissionRoles: [Role.NOBODY],
             viewPermissionRoles: [Role['*']],
