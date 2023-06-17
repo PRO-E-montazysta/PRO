@@ -77,8 +77,6 @@ const OrderDetails = () => {
         [addOrderMutation, editOrderMutation, deleteOrderMutation, orderNextStatusMutation],
     )
 
-    const appSize = useBreakpoints()
-
     useEffect(() => {
         const role = getRolesFromToken()
         if (role.length !== 0) setUserRole(role[0])
@@ -172,7 +170,7 @@ const OrderDetails = () => {
         })
     }
 
-    const formik = useFormik({
+    const formik = useFormik<Order>({
         initialValues: initData,
         validationSchema: getValidatinSchema(formStructure, pageMode),
         onSubmit: handleSubmit,
@@ -258,7 +256,7 @@ const OrderDetails = () => {
             <FormBox>
                 <FormTitle
                     mainTitle={pageMode == 'new' ? 'Nowe zlecenie' : 'Zlecenie'}
-                    subTitle={pageMode == 'new' ? null : formik.values['name']}
+                    subTitle={pageMode == 'new' ? undefined : formik.values.name}
                 />
                 <FormPaper>
                     {queriesStatus.result != 'isSuccess' ? (
@@ -324,12 +322,12 @@ const OrderDetails = () => {
                                     canChangeToPreviousStatus(orderData.data) ? handlePreviousStatus : undefined
                                 }
                                 editPermissionRoles={
-                                    formik.values['status'] == 'CREATED'
+                                    formik.values.status == 'CREATED'
                                         ? [Role.MANAGER, Role.SALES_REPRESENTATIVE]
                                         : [Role.MANAGER]
                                 }
                                 deletePermissionRoles={
-                                    formik.values['status'] == 'CREATED'
+                                    formik.values.status == 'CREATED'
                                         ? [Role.MANAGER, Role.SALES_REPRESENTATIVE]
                                         : undefined
                                 }

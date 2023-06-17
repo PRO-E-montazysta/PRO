@@ -74,12 +74,14 @@ const CalendarEventDetails = ({ popupEventInfo, setPopupEventInfo }: CalendarEve
                 >
                     {popupEventInfo.infoArray.map((row, i) => {
                         return (
-                            <Box key={i}>
-                                <Typography variant="body1" textAlign={'right'}>
+                            <>
+                                <Typography key={`label-${i}`} variant="body1" textAlign={'right'}>
                                     {row.label}
                                 </Typography>
-                                <Typography variant="body1">{row.value}</Typography>
-                            </Box>
+                                <Typography key={`value-${i}`} variant="body1">
+                                    {row.value}
+                                </Typography>
+                            </>
                         )
                     })}
                 </Box>

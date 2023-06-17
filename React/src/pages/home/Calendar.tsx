@@ -20,73 +20,27 @@ import { Unavailability } from '../../types/model/Unavailability'
 
 const Calendar = () => {
     const [popupEventInfo, setPopupEventInfo] = useState<PopupEventInfo>(cleanEventInfo)
-    const [filterOpen, setFilterOpen] = useState<boolean>(false)
-
     const [currentDate, setCurrentDate] = useState(moment())
     const unavailabilityListByMonth = useUnavailabilityListByMonth(currentDate.year(), currentDate.month() + 1)
     const [events, setEvents] = useState<EventInput[]>([])
 
     const aboutMeQuery = useQuery<any, AxiosError>(['about-me'], async () => getAboutMeInfo())
 
-    const formikFilter = useFormik<CalendarFilters>({
-        initialValues: calendarFilterDefaultValues,
-        onSubmit: (data: any) => {
-        },
-    })
-
-    useLayoutEffect(() => {
-        if (aboutMeQuery.data && aboutMeQuery.data.userId)
-            formikFilter.setFieldValue('unavilibilityPersonCollection', [aboutMeQuery.data.userId])
-    }, [aboutMeQuery.data])
-
     useLayoutEffect(() => {
         if (unavailabilityListByMonth.data && aboutMeQuery.data) {
-            const newOrderEvents: Unavailability[] = unavailabilityListByMonth.data
-                .filter((d) => {
-                    return d.typeOfUnavailability == 'BUSY'
-                })
-                .filter((d) => {
-                    if (formikFilter.values.orderIdCollection.length == 0) return true
-                    if (d.orderId && formikFilter.values.orderIdCollection.indexOf(d.orderId) > -1) return true
-                    return false
-                })
-            //TODO
-            // .filter((d) => {
-            //     if (formikFilter.values.statusIdCollection.length == 0) return true
-            //     if (d.statusId && formikFilter.values.statusIdCollection.indexOf(d.statuId) > -1) return true
-            //     return false
-            // })
-
-            const newAbsenceEvents: Unavailability[] = unavailabilityListByMonth.data
-                .filter((d) => {
-                    return d.typeOfUnavailability != 'BUSY'
-                })
-                .filter((d) => {
-                    if (formikFilter.values.unavilibilityPersonCollection.length == 0) return true
-                    if (
-                        d.assignedToId &&
-                        formikFilter.values.unavilibilityPersonCollection.indexOf(d.assignedToId) > -1
-                    )
-                        return true
-                    return false
-                })
-                .filter((d) => {
-                    if (formikFilter.values.unavilibilityTypeCollection.length == 0) return true
-                    if (
-                        d.typeOfUnavailability &&
-                        formikFilter.values.unavilibilityTypeCollection.indexOf(d.typeOfUnavailability) > -1
-                    )
-                        return true
-                    return false
-                })
-            const newEvents: EventInput[] = [...newOrderEvents, ...newAbsenceEvents].map((d) => {
+            const myEvents: Unavailability[] = unavailabilityListByMonth.data.filter(
+                (d) => d.assignedToId == aboutMeQuery.data.userId,
+            )
+            const newEvents: EventInput[] = myEvents.map((d) => {
                 return {
                     id: d.id.toString(),
                     groupId: d.typeOfUnavailability,
                     title:
                         d.typeOfUnavailability == 'BUSY' && d.orderStageName
                             ? d.orderStageName
-                            : typeOfUnavailabilityName(d.typeOfUnavailability),
+                            : typeOfUnavailabilityName(d.typeOfUnavailability)
+                            ? typeOfUnavailabilityName(d.typeOfUnavailability)
+                            : 'INNE',
                     start: d.unavailableFrom,
                     end: d.unavailableTo,
                     display: 'block',
@@ -96,7 +50,7 @@ const Calendar = () => {
 
             setEvents(newEvents)
         }
-    }, [unavailabilityListByMonth.data, formikFilter.values, aboutMeQuery.data])
+    }, [unavailabilityListByMonth.data, aboutMeQuery.data])
 
     const handleEventClick = async (e: EventClickArg) => {
         const _def = e.event._def
@@ -166,14 +120,6 @@ const Calendar = () => {
 
     return (
         <>
-            <Box>
-                <IconButton onClick={() => setFilterOpen(!filterOpen)}>
-                    <FilterAltIcon />
-                </IconButton>
-            </Box>
-            <Box sx={{ display: filterOpen ? '' : 'none' }}>
-                <CalendarFilter formikFilter={formikFilter} />
-            </Box>
             <FullCalendar
                 plugins={[dayGridPlugin]}
                 initialView="dayGridMonth"

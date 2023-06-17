@@ -11,7 +11,7 @@ import { Company } from '../../types/model/Company'
 import { AppUser } from '../../types/model/AppUser'
 import { Location } from '../../types/model/Location'
 import { AxiosError } from 'axios'
-import { getAllClients, getClientDetails } from '../../api/client.api'
+import { getAllClients, getAllClientsDeleted, getClientDetails } from '../../api/client.api'
 import { getAllCompanies } from '../../api/company.api'
 import { getAllForemans } from '../../api/foreman.api'
 import { getAllLocations } from '../../api/location.api'
@@ -23,6 +23,7 @@ import { FormInputProps } from '../../types/form'
 import { Role } from '../../types/roleEnum'
 import { isAuthorized } from '../../utils/authorize'
 import { DeletedClientName } from '../../helpers/Delted.helper'
+import { useEffect } from 'react'
 
 export const headCells: Array<HeadCell<Order>> = [
     {
@@ -120,6 +121,7 @@ export const useFormStructure = (): Array<FormInputProps> => {
         cacheTime: 15 * 60 * 1000,
         staleTime: 10 * 60 * 1000,
     })
+
     const queryForeman = useQuery<Array<AppUser>, AxiosError>(['foreman-list'], getAllForemans, {
         cacheTime: 15 * 60 * 1000,
         staleTime: 10 * 60 * 1000,
@@ -205,9 +207,7 @@ export const useFormStructure = (): Array<FormInputProps> => {
             id: 'clientId',
             initValue: '',
             type: 'can-be-deleted',
-            formatFn: async (id: string) => {
-                return id ? (await getClientDetails(id)).name : ''
-            },
+            formatFn: (id: string) => DeletedClientName(id),
             addNewPermissionRoles: [Role.NOBODY],
             editPermissionRoles: [Role.NOBODY],
             viewPermissionRoles: [Role['*']],
