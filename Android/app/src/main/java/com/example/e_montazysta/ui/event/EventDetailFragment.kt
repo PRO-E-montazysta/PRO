@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.e_montazysta.data.model.Element
 import com.example.e_montazysta.data.model.Tool
@@ -46,24 +47,40 @@ class EventDetailFragment : Fragment() {
                     binding.itemName.text = "Zgłaszane narzędzie"
                     binding.itemNameValue.text = event.item.name
                     binding.toolbar.subtitle = "${event.item.name} ${event.item.code}"
+                    binding.item.setOnClickListener {
+                        findNavController().navigate(
+                            EventDetailFragmentDirections.actionEventDetailFragmentToToolDetailFragment(
+                                event.item.id
+                            )
+                        )
+                    }
                 }
 
                 is Element -> {
                     binding.itemName.text = "Zgłaszany element"
                     binding.itemNameValue.text = event.item.name
                     binding.toolbar.subtitle = "${event.item.name} ${event.item.code}"
+                    binding.item.setOnClickListener {
+                        findNavController().navigate(
+                            EventDetailFragmentDirections.actionEventDetailFragmentToElementDetailFragment(
+                                event.item.id
+                            )
+                        )
+                    }
                 }
             }
             binding.itemStatusValue.text = event.status.value
             binding.itemStatusValue.setTextColor(event.status.color)
             binding.eventDateValue.text = DateUtil.format(event.eventDate)
             binding.descriptionValue.text = event.description
+
         })
 
         val toolbar: MaterialToolbar = binding.toolbar
         toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
         }
+
 
         return binding.root
     }

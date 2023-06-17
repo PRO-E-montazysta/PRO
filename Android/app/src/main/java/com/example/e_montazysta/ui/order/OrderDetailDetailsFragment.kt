@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.e_montazysta.data.model.Order
 import com.example.e_montazysta.databinding.FragmentOrderDetailDetailsBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -49,18 +50,46 @@ class OrderDetailDetailsFragment(val order: Order) : Fragment() {
 
                 it.foreman?.let { foremanId ->
                     binding.foremanIdValue.text = foremanId.toString()
+                    binding.foreman.setOnClickListener {
+                        findNavController().navigate(
+                            OrderDetailFragmentDirections.actionOrderDetailFragmentToUserDetailFragment(
+                                foremanId.id
+                            )
+                        )
+                    }
                 }
 
                 it.manager?.let { managerId ->
                     binding.managerIdValue.text = managerId.toString()
+                    binding.manager.setOnClickListener {
+                        findNavController().navigate(
+                            OrderDetailFragmentDirections.actionOrderDetailFragmentToUserDetailFragment(
+                                managerId.id
+                            )
+                        )
+                    }
                 }
 
                 it.specialist?.let { specialistId ->
                     binding.specialistIdValue.text = specialistId.toString()
+                    binding.specialist.setOnClickListener {
+                        findNavController().navigate(
+                            OrderDetailFragmentDirections.actionOrderDetailFragmentToUserDetailFragment(
+                                specialistId.id
+                            )
+                        )
+                    }
                 }
 
                 it.salesRepresentative?.let { salesRepresentativeId ->
                     binding.salesRepresentativeIdValue.text = salesRepresentativeId.toString()
+                    binding.salesman.setOnClickListener {
+                        findNavController().navigate(
+                            OrderDetailFragmentDirections.actionOrderDetailFragmentToUserDetailFragment(
+                                salesRepresentativeId.id
+                            )
+                        )
+                    }
                 }
                 it.editedAt?.let {
                     binding.createdAtValue.text =

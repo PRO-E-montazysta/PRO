@@ -118,6 +118,9 @@
         <action
             android:id="@+id/action_orderDetailFragment_to_stageDetailFragment"
             app:destination="@id/stageDetailFragment" />
+        <action
+            android:id="@+id/action_orderDetailFragment_to_userDetailFragment"
+            app:destination="@id/userDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/stageDetailFragment"
@@ -215,6 +218,12 @@
         <action
             android:id="@+id/action_eventDetailFragment_to_elementDetailFragment2"
             app:destination="@id/elementDetailFragment" />
+        <action
+            android:id="@+id/action_eventDetailFragment_to_toolDetailFragment2"
+            app:destination="@id/toolDetailFragment" />
+        <action
+            android:id="@+id/action_eventDetailFragment_to_elementDetailFragment3"
+            app:destination="@id/elementDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/eventListFragment"
@@ -239,6 +248,9 @@
         <argument
             android:name="toolId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_toolDetailFragment_to_warehouseDetailFragment"
+            app:destination="@id/warehouseDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/returnCreateFragment"
