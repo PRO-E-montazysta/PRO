@@ -28,7 +28,6 @@ const Calendar = () => {
 
     useLayoutEffect(() => {
         if (unavailabilityListByMonth.data && aboutMeQuery.data) {
-            console.log(unavailabilityListByMonth.data)
             const myEvents: Unavailability[] = unavailabilityListByMonth.data.filter(
                 (d) => d.assignedToId == aboutMeQuery.data.userId,
             )
