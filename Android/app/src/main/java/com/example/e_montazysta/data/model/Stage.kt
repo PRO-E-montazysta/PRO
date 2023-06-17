@@ -5,8 +5,8 @@ import android.os.Parcelable
 import com.example.e_montazysta.ui.release.ReleaseElementDAO
 import com.example.e_montazysta.ui.release.ReleaseToolDAO
 import com.example.e_montazysta.ui.stage.StageStatus
-import com.example.e_montazysta.ui.stage.plannedElementDAO
-import com.example.e_montazysta.ui.stage.plannedToolDAO
+import com.example.e_montazysta.ui.stage.PlannedElementDAO
+import com.example.e_montazysta.ui.stage.PlannedToolDAO
 import kotlinx.android.parcel.Parcelize
 import java.math.BigDecimal
 import java.util.Date
@@ -29,8 +29,8 @@ data class Stage(
     val toolReleases: List<Release?>,
     val elementReturnReleases: List<Release>?,
     val orderId: Int,
-    val listOfToolsPlannedNumber: List<plannedToolDAO>,
-    val listOfElementsPlannedNumber: List<plannedElementDAO>,
+    val listOfToolsPlannedNumber: List<PlannedToolDAO>,
+    val listOfElementsPlannedNumber: List<PlannedElementDAO>,
     val simpleToolReleases: List<ReleaseToolDAO>,
     val simpleElementReturnReleases: List<ReleaseElementDAO>
 ) : Parcelable {

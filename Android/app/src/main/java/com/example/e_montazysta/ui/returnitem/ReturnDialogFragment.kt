@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
+import com.example.e_montazysta.R
 import com.example.e_montazysta.data.model.ReleaseItem
 import com.example.e_montazysta.data.model.Result
 import com.example.e_montazysta.data.model.Stage
@@ -37,7 +38,8 @@ class ReturnDialogFragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding: FragmentCreateReturnDialogBinding = FragmentCreateReturnDialogBinding.inflate(inflater, container, false)
+        val binding: FragmentCreateReturnDialogBinding =
+            FragmentCreateReturnDialogBinding.inflate(inflater, container, false)
         val adapter = ReturnDialogAdapter()
         viewModel.setWarehouse(warehouse)
         binding.list.adapter = adapter
@@ -52,27 +54,40 @@ class ReturnDialogFragment(
         }
 
 
-        binding.toolbar.setNavigationOnClickListener{
+        binding.toolbar.setNavigationOnClickListener {
             dismiss()
-            }
+        }
 
-        binding.btnConfirm.setOnClickListener(View.OnClickListener {
-            GlobalScope.launch(Dispatchers.Main) {
-                val result = async { viewModel.createReturn(items, stage.id) }.await()
-                when (result) {
-                    is Result.Success -> {
-                        findNavController().navigateUp()
+
+
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.action_submit -> {
+                    GlobalScope.launch(Dispatchers.Main) {
+                        val result = async { viewModel.createReturn(items, stage.id) }.await()
+                        when (result) {
+                            is Result.Success -> {
+                                findNavController().navigateUp()
+                            }
+
+                            is Result.Error -> {
+                                dismiss()
+                            }
+                        }
                     }
-                    is Result.Error -> {
-                        dismiss()
-                    }
+                    true
+                }
+
+                else -> {
+                    Toast.makeText(context, "Coś poszło nie tak...", Toast.LENGTH_LONG).show()
+                    false
                 }
             }
-        })
+        }
 
         // Wyświetlanie błędów
-        viewModel.messageLiveData.observe(viewLifecycleOwner) {
-                errorMessage -> Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+        viewModel.messageLiveData.observe(viewLifecycleOwner) { errorMessage ->
+            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
         }
 
         return binding.root

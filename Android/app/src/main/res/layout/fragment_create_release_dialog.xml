@@ -103,7 +103,7 @@
                         android:id="@+id/listOfToolsPlannedNumber"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Lista planowanych narzędzi" />
+                        android:text="Lista sugerowanych narzędzi" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/listOfToolsPlannedNumberValue"
@@ -124,7 +124,7 @@
                         android:id="@+id/listOfElementsPlannedNumber"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Lista planowanych elementów" />
+                        android:text="Lista sugerowanych elementów" />
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/listOfElementsPlannedNumberValue"
                         android:layout_width="wrap_content"
@@ -177,12 +177,6 @@
             </LinearLayout>
 
         </ScrollView>
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnConfirm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/confirm_button"
-            android:layout_gravity="bottom"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

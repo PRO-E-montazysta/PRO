@@ -65,6 +65,8 @@ class StageDetailFragment : Fragment() {
                     tab.text = when (position) {
                         0 -> "Szczegóły"
                         1 -> "Wydania"
+                        2 -> "Sugerowane Narzędzia"
+                        3 -> "Sugerowane Elementy"
                         else -> ""
                     }
                 }.attach()

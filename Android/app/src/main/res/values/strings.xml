@@ -82,10 +82,11 @@
     <string name="release_return_objects_label">Zwróć</string>
     <string name="empty_field">Brak</string>
     <string name="order_title">Zlecenie</string>
-    <string name="create_return_title">Utwórz zwrót</string>
+    <string name="create_return_title">Utwórz zwrot</string>
     <string name="user_first_name">Imię</string>
     <string name="user_details_title">Pracownik</string>
     <string name="title_users">Pracownicy</string>
     <string name="elements_title">Lista wydawanych przedmiotów:</string>
     <string name="confirm_button">Zatwierdź</string>
+    <string name="return_items_list_label">Lista zwracanych przedmiotów</string>
 </resources>

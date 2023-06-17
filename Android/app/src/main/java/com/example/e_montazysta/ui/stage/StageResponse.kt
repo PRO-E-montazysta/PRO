@@ -48,9 +48,9 @@ data class StageDAO(
         val commentsList: List<Comment> = comments.mapNotNull { id -> getCommentDetails(id) }
         val releasesList: List<Release> = toolReleases.mapNotNull { id -> getReleaseDetails(id) }
         val listOfToolsPlannedNumber =
-            listOfToolsPlannedNumber.mapNotNull { id -> plannedToolDAO.getPlannedTool(id) }
+            listOfToolsPlannedNumber.mapNotNull { id -> PlannedToolDAO.getPlannedTool(id) }
         val listOfElementsPlannedNumber =
-            listOfElementsPlannedNumber.mapNotNull { id -> plannedElementDAO.getPlannedElement(id) }
+            listOfElementsPlannedNumber.mapNotNull { id -> PlannedElementDAO.getPlannedElement(id) }
         return Stage(
             id,
             name,

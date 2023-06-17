@@ -1,7 +1,7 @@
 package com.example.e_montazysta.data.services
 
-import com.example.e_montazysta.ui.stage.plannedElementDAO
-import com.example.e_montazysta.ui.stage.plannedToolDAO
+import com.example.e_montazysta.ui.stage.PlannedElementDAO
+import com.example.e_montazysta.ui.stage.PlannedToolDAO
 import retrofit2.http.*
 
 interface PlannedItemService {
@@ -9,11 +9,11 @@ interface PlannedItemService {
     suspend fun getPlannedTool(
         @Header("Authorization") token: String,
         @Path("id") id: Int
-    ): plannedToolDAO
+    ): PlannedToolDAO
 
     @GET("/api/v1/elements-planned/{id}")
     suspend fun getPlannedElement(
         @Header("Authorization") token: String,
         @Path("id") id: Int
-    ): plannedElementDAO
+    ): PlannedElementDAO
 }

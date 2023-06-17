@@ -79,6 +79,9 @@
         <action
             android:id="@+id/action_toolsFragment_to_toolDetailFragment"
             app:destination="@id/toolDetailFragment" />
+<!--        <argument-->
+<!--            android:name="toolTypeId"-->
+<!--            app:argType="integer" />-->
     </fragment>
     <fragment
         android:id="@+id/releaseListFragment"
@@ -132,6 +135,12 @@
         <action
             android:id="@+id/action_stageDetailFragment_to_returnCreateFragment"
             app:destination="@id/returnCreateFragment" />
+        <action
+            android:id="@+id/action_stageDetailFragment_to_toolsFragment"
+            app:destination="@id/toolsFragment" />
+        <action
+            android:id="@+id/action_stageDetailFragment_to_elementDetailFragment"
+            app:destination="@id/elementDetailFragment" />
     </fragment>
 
     <fragment

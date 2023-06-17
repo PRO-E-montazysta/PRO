@@ -1,14 +1,14 @@
 package com.example.e_montazysta.ui.stage
 
 
-import com.example.e_montazysta.data.model.Element
+import com.example.e_montazysta.data.model.ElementDAO
 import com.example.e_montazysta.data.model.Result
 import com.example.e_montazysta.data.model.ToolType
 import com.example.e_montazysta.data.repository.interfaces.IPlannedItemRepository
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-data class plannedToolDAO(
+data class PlannedToolDAO(
     val demandAdHocId: Int?,
     val id: Int,
     val numberOfTools: Int,
@@ -17,7 +17,7 @@ data class plannedToolDAO(
 ){
     companion object: KoinComponent{
         val plannedItemRepository: IPlannedItemRepository by inject()
-        suspend fun getPlannedTool(id: Int): plannedToolDAO? {
+        suspend fun getPlannedTool(id: Int): PlannedToolDAO? {
             val result = plannedItemRepository.getPlannedTool(id)
             return when(result){
                 is Result.Success -> result.data
@@ -25,23 +25,29 @@ data class plannedToolDAO(
             }
         }
     }
+    fun getListItemInfo(): String {
+        return "Ilość: $numberOfTools"
+    }
 }
 
-data class plannedElementDAO(
+data class PlannedElementDAO(
     val demandAdHocId: Int?,
-    val element: Element,
+    val element: ElementDAO,
     val id: Int,
     val numberOfElements: Int,
     val orderStageId: Int
 ) {
     companion object {
-        suspend fun getPlannedElement(id: Int): plannedElementDAO? {
-            val result = plannedToolDAO.plannedItemRepository.getPlannedElement(id)
+        suspend fun getPlannedElement(id: Int): PlannedElementDAO? {
+            val result = PlannedToolDAO.plannedItemRepository.getPlannedElement(id)
             return when (result) {
                 is Result.Success -> result.data
                 is Result.Error -> null
             }
         }
+    }
+    fun getListItemInfo(): String {
+        return "Ilość: $numberOfElements"
     }
 }
 
