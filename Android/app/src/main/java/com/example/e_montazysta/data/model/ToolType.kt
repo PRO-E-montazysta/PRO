@@ -16,8 +16,8 @@ data class ToolType(
     val tools: List<Int?>,
     val companyId: Int?,
     val listOfToolsPlannedNumber: List<Int?>
-){
-    companion object: KoinComponent{
+) {
+    companion object : KoinComponent {
         suspend fun getToolType(toolTypeId: Int): ToolType {
             val toolTypeRepository: IToolTypeRepository by inject()
             val result = toolTypeRepository.getToolType(toolTypeId)

@@ -74,6 +74,8 @@ public class DataSeeding {
     private final ElementInWarehouseMapper elementInWarehouseMapper;
     private final ElementReturnReleaseMapper elementReturnReleaseMapper;
     private final UnavailabilityMapper unavailabilityMapper;
+    private final ToolsPlannedNumberRepository toolsPlannedNumberRepository;
+    private final ElementsPlannedNumberRepository elementsPlannedNumberRepository;
 
     private Company addCompanyFromModel(Company company) {
         return companyMapper.toEntity(companyService.add(companyMapper.toDto(company)));
@@ -541,6 +543,11 @@ public class DataSeeding {
         ElementReturnRelease elementReturnRelease4 = addElementReturnReleaseFromModel(new ElementReturnRelease(null,
                 LocalDateTime.now(), 1, 0, null, warehouseman2, element4,
                 demandAdHoc4, orderStage5));
+
+        toolsPlannedNumberRepository.save(new ToolsPlannedNumber(null, 1, toolType1, orderStage6, null));
+        toolsPlannedNumberRepository.save(new ToolsPlannedNumber(null, 2, toolType2, orderStage6, null));
+        elementsPlannedNumberRepository.save(new ElementsPlannedNumber(null, 1, element5, orderStage6, null));
+        elementsPlannedNumberRepository.save(new ElementsPlannedNumber(null, 2, element6, orderStage6, null));
 
         context.setAuthentication(null);
     }

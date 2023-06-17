@@ -19,12 +19,12 @@ class QRScanFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         val QRScanViewModel =
-                ViewModelProvider(this).get(QRScanViewModel::class.java)
+            ViewModelProvider(this).get(QRScanViewModel::class.java)
 
         _binding = FragmentQrscanBinding.inflate(inflater, container, false)
         val root: View = binding.root

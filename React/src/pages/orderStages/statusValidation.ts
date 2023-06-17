@@ -56,7 +56,7 @@ export const canChangeToPreviousStatus = (stageData?: OrderStage) => {
     if (!stageData) return false
     const orderStageStatus = stageData.status
     return (
-        (orderStageStatus == 'ADDING_FITTERS' && isAuthorized([Role.FOREMAN])) ||
+        //(orderStageStatus == 'ADDING_FITTERS' && isAuthorized([Role.FOREMAN])) ||
         (orderStageStatus == 'PICK_UP' && isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) ||
         (orderStageStatus == 'REALESED' && isAuthorized([Role.FOREMAN])) ||
         (orderStageStatus == 'ON_WORK' && isAuthorized([Role.FOREMAN])) ||

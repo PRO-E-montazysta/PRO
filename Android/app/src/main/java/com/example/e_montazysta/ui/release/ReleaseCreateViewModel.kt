@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.e_montazysta.data.model.ReleaseItem
 import com.example.e_montazysta.data.model.Result
+import com.example.e_montazysta.data.model.Stage
 import com.example.e_montazysta.data.model.mapToReleaseItem
 import com.example.e_montazysta.data.repository.interfaces.IElementRepository
 import com.example.e_montazysta.data.repository.interfaces.IReleaseRepository
@@ -47,6 +48,8 @@ class ReleaseCreateViewModel : ViewModel(), CoroutineScope, KoinComponent {
     private val _selectedWarehouseLiveData = MutableLiveData<WarehouseFilterDAO?>()
     val selectedWarehouseLiveData: LiveData<WarehouseFilterDAO?> = _selectedWarehouseLiveData
 
+    lateinit var stage: Stage
+
     fun addToolToRelease(code: String?) {
         job = launch {
             addToolToReleaseAsync(code)
@@ -58,14 +61,16 @@ class ReleaseCreateViewModel : ViewModel(), CoroutineScope, KoinComponent {
         val currentItems = _itemsLiveData.value ?: emptyList()
         val existingItem = currentItems.find { it.code == code }
         if (existingItem != null) {
-            _messageLiveData.postValue("Item already added to list:\n$code")
+            _messageLiveData.postValue("Narzędzie zostało już dodane do listy:\n$code")
         } else {
             val result = toolRepository.getToolByCode(code)
             when (result) {
                 is Result.Success -> {
                     val tool = mapToReleaseItem(result.data)
                     _itemsLiveData.postValue(currentItems + tool)
+                    _messageLiveData.postValue("Narzędzie dodane")
                 }
+
                 is Result.Error -> result.exception.message?.let { _messageLiveData.postValue(it) }
             }
         }
@@ -84,13 +89,14 @@ class ReleaseCreateViewModel : ViewModel(), CoroutineScope, KoinComponent {
         val currentItems = _itemsLiveData.value ?: emptyList()
         val existingItem = currentItems.find { it.code == code }
         if (existingItem != null) {
-            _messageLiveData.postValue("Item already added to list:\n$code")
+            _messageLiveData.postValue("Element został już dodany do listy:\n$code")
         } else {
             val result = elementRepository.getElementByCode(code)
             when (result) {
                 is Result.Success -> {
                     val element = mapToReleaseItem(result.data)
                     _itemsLiveData.value = currentItems + element
+                    _messageLiveData.postValue("Element dodany")
                 }
 
                 is Result.Error -> {
@@ -102,17 +108,19 @@ class ReleaseCreateViewModel : ViewModel(), CoroutineScope, KoinComponent {
         _isLoadingLiveData.postValue(false)
     }
 
-    suspend fun createRelease(items: List<ReleaseItem>, stageId: Int): Result<Any>? {
+    suspend fun createRelease(items: List<ReleaseItem>, stageId: Int): Result<Any> {
         return createReleaseAsync(items, stageId)
     }
 
     private suspend fun createReleaseAsync(items: List<ReleaseItem>, stageId: Int): Result<Any> {
         _isLoadingLiveData.postValue(true)
-        val result = releaseRepository.createRelease(items, stageId, selectedWarehouseLiveData.value?.id)
+        val result =
+            releaseRepository.createRelease(items, stageId, selectedWarehouseLiveData.value?.id)
         when (result) {
             is Result.Success -> {
-                _messageLiveData.postValue("Wydanie utworzone!")
+                _messageLiveData.postValue("Wydanie utworzone.")
             }
+
             is Result.Error -> {
                 result.exception.message?.let { _messageLiveData.postValue(it) }
                 _isLoadingLiveData.postValue(false)
@@ -121,12 +129,14 @@ class ReleaseCreateViewModel : ViewModel(), CoroutineScope, KoinComponent {
         _isLoadingLiveData.postValue(false)
         return result
     }
+
     fun getListOfWarehouse() {
         job = launch {
             withContext(Dispatchers.Default) { getListOfWarehouseAsync() }
         }
     }
-    private suspend fun getListOfWarehouseAsync(){
+
+    private suspend fun getListOfWarehouseAsync() {
         _isLoadingLiveData.postValue(true)
         val warehouseRepository: IWarehouseRepository by inject()
         val result = warehouseRepository.getListOfWarehouse()

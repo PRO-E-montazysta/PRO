@@ -24,7 +24,7 @@ public class MailTemplates {
                 "<p>Poniżej przesyłamy Twoje dane logowania<br />" +
                 "Nazwa użytkownika: <em>" + userName + "</em><br />" +
                 "Hasło: <em>" + password + "</em><br />" +
-                "<span style=\"text-decoration: underline;\">support@emontazysta.pl</span>,<br />" +
+                "<a href=\"https://dev.emontazysta.pl/login\">Logowanie</a></p>" +
                 "<p>W razie niejasności, bądź problemów zapraszamy do kontaktu pod adresem email: " +
                 "<span style=\"text-decoration: underline;\">support@emontazysta.pl</span>,<br />" +
                 "bądź dzwoniąc na infolinię supportu w godzinach 8:00 - 18:00.</p>" +

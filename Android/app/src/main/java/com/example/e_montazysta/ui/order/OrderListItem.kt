@@ -11,9 +11,9 @@ data class OrderListItem(
     val plannedStart: String?,
     val plannedEnd: String?,
     val stagesCount: Int
-){
-    fun getListItemInfo() : String {
-        return "Status: " +status.value + "\nPriorytet: " + priority.value +
+) {
+    fun getListItemInfo(): String {
+        return "Status: " + status.value + "\nPriorytet: " + priority.value +
                 "\nCzas utworzenia: " + createdAt +
                 "\nPlanowany start: " + plannedStart +
                 "\nPlanowany koniec: " + plannedEnd +

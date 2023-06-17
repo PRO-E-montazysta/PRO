@@ -10,7 +10,8 @@ import com.example.e_montazysta.ui.event.FilterEventDAO
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class EventRepository (private val serviceProvider: IServiceProvider): IEventRepository, KoinComponent{
+class EventRepository(private val serviceProvider: IServiceProvider) : IEventRepository,
+    KoinComponent {
     private val sharedPreferencesHelper: ISharedPreferencesHelper by inject()
     private val token = "Bearer " + sharedPreferencesHelper.get("lama").toString()
     private val eventService = serviceProvider.getEventService()
@@ -31,7 +32,7 @@ class EventRepository (private val serviceProvider: IServiceProvider): IEventRep
             var eventDAOs: List<FilterEventDAO>
             if (payload.isNullOrEmpty()) {
                 eventDAOs = eventService.getFilteredEvents(token)
-            } else{
+            } else {
                 eventDAOs = eventService.getFilteredEvents(token, payload)
             }
             val events = eventDAOs.map { it.mapToEventListItem() }

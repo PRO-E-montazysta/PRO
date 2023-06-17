@@ -48,7 +48,7 @@ class UserDetailViewModel(private val repository: IUserRepository) : ViewModel()
                 result.exception.message?.let { _messageLiveData.postValue(it) }
                 _isLoadingLiveData.postValue(false)
             }
-            }
+        }
         _isLoadingLiveData.postValue(false)
     }
 

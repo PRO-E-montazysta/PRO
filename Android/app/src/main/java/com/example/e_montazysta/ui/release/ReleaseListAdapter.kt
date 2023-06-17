@@ -6,14 +6,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.e_montazysta.databinding.ListItemReleaseBinding
 
 
-class ReleaseListAdapter(val clickListener: CustomClickListener) : RecyclerView.Adapter<ReleaseListAdapter.ViewHolder>(){
+class ReleaseListAdapter(val clickListener: CustomClickListener) :
+    RecyclerView.Adapter<ReleaseListAdapter.ViewHolder>() {
 
     var elements = listOf<ReleaseListItem>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
-    set(value) {
-        field = value
-        notifyDataSetChanged()
-    }
     override fun getItemCount(): Int {
         return elements.size
     }
@@ -27,13 +28,14 @@ class ReleaseListAdapter(val clickListener: CustomClickListener) : RecyclerView.
         holder.bind(item, clickListener)
     }
 
-    class ViewHolder( val binding: ListItemReleaseBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(val binding: ListItemReleaseBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: ReleaseListItem, clickListener: CustomClickListener) {
             binding.release = data
             binding.itemClickListener = clickListener
             binding.executePendingBindings()
         }
+
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
@@ -43,6 +45,7 @@ class ReleaseListAdapter(val clickListener: CustomClickListener) : RecyclerView.
         }
     }
 }
+
 class CustomClickListener(val clickListener: (releaseId: Int) -> Unit) {
 
     fun cardClicked(release: ReleaseListItem) = clickListener(release.id)

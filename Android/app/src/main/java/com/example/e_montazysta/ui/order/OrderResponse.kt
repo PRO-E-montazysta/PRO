@@ -6,7 +6,7 @@ import com.squareup.moshi.Json
 import org.koin.core.component.KoinComponent
 import java.util.Date
 
-data class OrderDAO (
+data class OrderDAO(
     val id: Int,
     val name: String,
     @Json(name = "typeOfPriority")
@@ -33,14 +33,31 @@ data class OrderDAO (
 //        val client = if (clientId != null) User.getUserDetails(clientId) else null
         val manager = if (managerId != null) User.getUserDetails(managerId) else null
         val specialist = if (specialistId != null) User.getUserDetails(specialistId) else null
-        val salesRepresentative = if (salesRepresentativeId != null) User.getUserDetails(salesRepresentativeId) else null
+        val salesRepresentative =
+            if (salesRepresentativeId != null) User.getUserDetails(salesRepresentativeId) else null
         val foreman = if (foremanId != null) User.getUserDetails(foremanId) else null
 
-        return Order(id, name, priority, status, plannedStart, plannedEnd, clientId, foreman, manager, specialist, salesRepresentative, locationId, orderStages, createdAt, editedAt)
+        return Order(
+            id,
+            name,
+            priority,
+            status,
+            plannedStart,
+            plannedEnd,
+            clientId,
+            foreman,
+            manager,
+            specialist,
+            salesRepresentative,
+            locationId,
+            orderStages,
+            createdAt,
+            editedAt
+        )
     }
 }
 
-enum class OrderStatus(val value: String){
+enum class OrderStatus(val value: String) {
     CREATED("UTWORZONY"),
     PLANNING("PLANOWANIE"),
     TO_ACCEPT("DO AKCEPTACJI"),
@@ -49,7 +66,7 @@ enum class OrderStatus(val value: String){
     FINISHED("ZAKOŃCZONO")
 }
 
-enum class OrderPriority(val value: String){
+enum class OrderPriority(val value: String) {
     NORMAL("NORMALNY"),
     IMPORTANT("WAŻNY"),
     IMMEDIATE("NATYCHMIASTOWY")

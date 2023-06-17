@@ -623,14 +623,26 @@ public class OrderStageImpl implements OrderStageService {
         }else if(orderStage.getStatus().equals(OrderStageStatus.REALESED) && loggedUserRoles.contains(Role.FOREMAN)) {
             orderStage.setStatus(OrderStageStatus.PICK_UP);
         }else if(orderStage.getStatus().equals(OrderStageStatus.ON_WORK) && loggedUserRoles.contains(Role.FOREMAN)) {
-            orderStage.setStatus(OrderStageStatus.REALESED);
+            //Skip to ADDING_FITTERS if dont need tools/elements
+            if(orderStage.getListOfToolsPlannedNumber().size() == 0 &&
+                    orderStage.getListOfElementsPlannedNumber().size() == 0){
+                orderStage.setStatus(OrderStageStatus.ADDING_FITTERS);
+            }else {
+                orderStage.setStatus(OrderStageStatus.REALESED);
+            }
         }else if(orderStage.getStatus().equals(OrderStageStatus.RETURN) && (loggedUserRoles.contains(Role.WAREHOUSE_MAN)
                 || loggedUserRoles.contains(Role.WAREHOUSE_MANAGER))) {
             orderStage.setStatus(OrderStageStatus.ON_WORK);
         }else if(orderStage.getStatus().equals(OrderStageStatus.RETURNED) && loggedUserRoles.contains(Role.FOREMAN)) {
             orderStage.setStatus(OrderStageStatus.RETURN);
         }else if(orderStage.getStatus().equals(OrderStageStatus.FINISHED) && loggedUserRoles.contains(Role.FOREMAN)) {
-            orderStage.setStatus(OrderStageStatus.RETURNED);
+            //Skip to ON_WORK if dont need tools/elements
+            if(orderStage.getListOfToolsPlannedNumber().size() == 0 &&
+                    orderStage.getListOfElementsPlannedNumber().size() == 0){
+                orderStage.setStatus(OrderStageStatus.ON_WORK);
+            }else {
+                orderStage.setStatus(OrderStageStatus.RETURNED);
+            }
         }else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Brak możliwości zmiany!");
         }

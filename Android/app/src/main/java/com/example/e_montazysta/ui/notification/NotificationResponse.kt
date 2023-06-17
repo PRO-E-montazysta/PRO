@@ -23,10 +23,24 @@ data class NotificationDAO(
     val readAt: Date?,
     val subContent: String?,
     val toolEventId: Int?
-): KoinComponent {
-    suspend fun mapToNotification(): Notification{
+) : KoinComponent {
+    suspend fun mapToNotification(): Notification {
         val createdBy = getUserDetails(createdById)
-        return Notification(content, createdAt, createdBy!!, deleted, elementEventId, id, notificationType, notifiedEmployeeId, orderStageId, orderId, readAt, subContent, toolEventId)
+        return Notification(
+            content,
+            createdAt,
+            createdBy!!,
+            deleted,
+            elementEventId,
+            id,
+            notificationType,
+            notifiedEmployeeId,
+            orderStageId,
+            orderId,
+            readAt,
+            subContent,
+            toolEventId
+        )
     }
 
     private suspend fun getUserDetails(userId: Int): User? {

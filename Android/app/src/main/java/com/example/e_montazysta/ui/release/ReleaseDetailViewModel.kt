@@ -6,10 +6,15 @@ import androidx.lifecycle.ViewModel
 import com.example.e_montazysta.data.model.Release
 import com.example.e_montazysta.data.model.Result
 import com.example.e_montazysta.data.repository.interfaces.IReleaseRepository
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-class ReleaseDetailViewModel(private val repository: IReleaseRepository) : ViewModel(), CoroutineScope {
+class ReleaseDetailViewModel(private val repository: IReleaseRepository) : ViewModel(),
+    CoroutineScope {
     private var job: Job? = null
 
     private val _releaseDetailLiveData = MutableLiveData<Release>()

@@ -282,17 +282,17 @@ export const useFormStructure = (): Array<FormInputProps> => {
             editPermissionRoles: [Role.ADMIN],
             viewPermissionRoles: [Role.ADMIN, Role.MANAGER],
         },
-        {
-            label: 'Hasło',
-            id: 'password',
-            initValue: '',
-            type: 'input',
-            validation: yup.string().min(8, 'Hasło musi zawierać co najmniej 8 znaków').required('Wprowadź hasło'),
-            editPermissionRoles: [Role.NOBODY],
-            viewPermissionRoles: [Role.NOBODY],
-            validationOnUpdate: 'NO_VALIDATION_ON_UPDATE',
-            placeholder: 'POLE TYMCZASOWE',
-        },
+        // {
+        //     label: 'Hasło',
+        //     id: 'password',
+        //     initValue: '',
+        //     type: 'input',
+        //     validation: yup.string().min(8, 'Hasło musi zawierać co najmniej 8 znaków').required('Wprowadź hasło'),
+        //     editPermissionRoles: [Role.NOBODY],
+        //     viewPermissionRoles: [Role.NOBODY],
+        //     validationOnUpdate: 'NO_VALIDATION_ON_UPDATE',
+        //     placeholder: 'POLE TYMCZASOWE',
+        // },
     ]
 }
 

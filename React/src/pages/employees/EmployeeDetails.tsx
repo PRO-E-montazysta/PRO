@@ -27,6 +27,7 @@ import { isAuthorized } from '../../utils/authorize'
 import { Role } from '../../types/roleEnum'
 import DisplayForemanHistory from '../../components/history/DisplayForemanHistory'
 import DisplayFitterHistory from '../../components/history/DisplayFitterHistory'
+import { Employee } from '../../types/model/Employee'
 
 const EmployeeDetails = () => {
     const params = useParams()
@@ -72,7 +73,7 @@ const EmployeeDetails = () => {
         })
     }
 
-    const formik = useFormik({
+    const formik = useFormik<Employee>({
         initialValues: initData,
         validationSchema: getValidatinSchema(formStructure, pageMode),
         onSubmit: handleSubmit,
@@ -159,9 +160,9 @@ const EmployeeDetails = () => {
 
     const workHistory = () => {
         if (canDistplayWorkingHistory()) {
-            if (formik.values['roles'][0] == 'FOREMAN') {
+            if (formik.values.roles && formik.values.roles.at(0) == 'FOREMAN') {
                 return <DisplayForemanHistory foremanId={params.id!}></DisplayForemanHistory>
-            } else if (formik.values['roles'][0] == 'FITTER') {
+            } else if (formik.values.roles && formik.values.roles.at(0) == 'FITTER') {
                 return <DisplayFitterHistory fitterId={params.id!}></DisplayFitterHistory>
             }
         }
@@ -179,10 +180,12 @@ const EmployeeDetails = () => {
                 subTitle={
                     pageMode == 'new'
                         ? ''
-                        : String(formik.values['roles'] === null ? '' : roleName(formik.values['roles'][0]) + ' - ') +
-                          formik.values['firstName'] +
+                        : String(
+                              formik.values.roles === null ? '' : roleName(formik.values.roles.at(0) || '') + ' - ',
+                          ) +
+                          formik.values.firstName +
                           ' ' +
-                          formik.values['lastName']
+                          formik.values.lastName
                 }
             />
             <FormPaper>
@@ -200,7 +203,8 @@ const EmployeeDetails = () => {
                             onSubmit={formik.submitForm}
                             readonlyMode={pageMode == 'read'}
                             hireDismissEmp={
-                                !isAuthorized([Role.ADMIN]) || formik.values['roles'][0] == 'ADMIN'
+                                !isAuthorized([Role.ADMIN]) ||
+                                (formik.values.roles && formik.values.roles.at(0) == 'ADMIN')
                                     ? undefined
                                     : hired
                                     ? [handleDismissEmployee, 'dismiss']

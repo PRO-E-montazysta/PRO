@@ -1,8 +1,10 @@
 package com.emontazysta.service.impl;
 
 import com.emontazysta.enums.Role;
+import com.emontazysta.mail.MailTemplates;
 import com.emontazysta.mapper.EmploymentMapper;
 import com.emontazysta.mapper.SalesRepresentativeMapper;
+import com.emontazysta.model.EmailData;
 import com.emontazysta.model.SalesRepresentative;
 import com.emontazysta.model.dto.EmployeeDto;
 import com.emontazysta.model.dto.EmploymentDto;
@@ -11,8 +13,10 @@ import com.emontazysta.model.searchcriteria.AppUserSearchCriteria;
 import com.emontazysta.repository.SalesRepresentativeRepository;
 import com.emontazysta.repository.criteria.AppUserCriteriaRepository;
 import com.emontazysta.repository.EmploymentRepository;
+import com.emontazysta.service.EmailService;
 import com.emontazysta.service.SalesRepresentativeService;
 import com.emontazysta.util.AuthUtils;
+import com.emontazysta.util.PasswordGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,6 +38,7 @@ public class SalesRepresentativeServiceImpl implements SalesRepresentativeServic
     private final AuthUtils authUtils;
     private final AppUserCriteriaRepository appUserCriteriaRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final EmailService emailService;
 
     @Override
     public List<SalesRepresentativeDto> getAll(Principal principal) {
@@ -67,8 +72,9 @@ public class SalesRepresentativeServiceImpl implements SalesRepresentativeServic
 
     @Override
     public SalesRepresentativeDto add(SalesRepresentativeDto salesRepresentativeDto) {
+        String password = PasswordGenerator.generatePassword(10);
         salesRepresentativeDto.setUsername(salesRepresentativeDto.getUsername().toLowerCase());
-        salesRepresentativeDto.setPassword(bCryptPasswordEncoder.encode(salesRepresentativeDto.getPassword()));
+        salesRepresentativeDto.setPassword(bCryptPasswordEncoder.encode(password));
         salesRepresentativeDto.setRoles(Set.of(Role.SALES_REPRESENTATIVE));
         salesRepresentativeDto.setUnavailabilities(new ArrayList<>());
         salesRepresentativeDto.setNotifications(new ArrayList<>());
@@ -88,6 +94,15 @@ public class SalesRepresentativeServiceImpl implements SalesRepresentativeServic
                 .employeeId(salesRepresentative.getId())
                 .build();
         employmentRepository.save(employmentMapper.toEntity(employmentDto));
+
+        emailService.sendEmail(
+                EmailData.builder()
+                        .to(salesRepresentativeDto.getEmail())
+                        .message(MailTemplates.employeeCreate(salesRepresentativeDto.getUsername(),
+                                password, salesRepresentativeDto.getFirstName(), salesRepresentativeDto.getLastName()))
+                        .subject("Witaj w E-Montażysta!")
+                        .build()
+        );
 
         return salesRepresentativeMapper.toDto(salesRepresentative);
     }

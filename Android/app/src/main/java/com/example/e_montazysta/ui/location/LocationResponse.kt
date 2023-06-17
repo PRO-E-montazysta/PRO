@@ -1,7 +1,6 @@
 package com.example.e_montazysta.ui.location
 
 import android.content.ContentValues.TAG
-import android.nfc.Tag
 import android.util.Log
 import com.example.e_montazysta.data.model.Result
 import com.example.e_montazysta.data.repository.interfaces.ILocationRepository
@@ -20,11 +19,11 @@ data class LocationDAO(
     val xcoordinate: Double, //pewnie float/double
     val ycoordinate: Double, //pewnie float/double
     val zipCode: String
-){
-    companion object : KoinComponent{
-        val locationRepository : ILocationRepository by inject()
+) {
+    companion object : KoinComponent {
+        val locationRepository: ILocationRepository by inject()
 
-        suspend fun getLocation(locationId : Int): LocationDAO? {
+        suspend fun getLocation(locationId: Int): LocationDAO? {
             return when (val result = locationRepository.getLocation(locationId)) {
                 is Result.Success -> result.data
                 is Result.Error -> {

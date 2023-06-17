@@ -18,29 +18,58 @@ interface EventService {
     suspend fun getFilteredEvents(@Header("Authorization") token: String): List<FilterEventDAO>
 
     @GET("/api/v1/events/filter")
-    suspend fun getFilteredEvents(@Header("Authorization") token: String, @QueryMap(encoded = true) payload: Map<String, String>?): List<FilterEventDAO>
+    suspend fun getFilteredEvents(
+        @Header("Authorization") token: String,
+        @QueryMap(encoded = true) payload: Map<String, String>?
+    ): List<FilterEventDAO>
 
     @GET("/api/v1/toolEvent/{id}")
-    suspend fun getToolEventDetails(@Header("Authorization") token: String, @Path("id") id: Int): ToolEventDAO
-    
+    suspend fun getToolEventDetails(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int
+    ): ToolEventDAO
+
     @PUT("/api/v1/toolEvent/{id}")
-    suspend fun updateToolEvent(@Header("Authorization") token: String, @Path("id") id: Int, @Body data: Element): ToolEventDAO
+    suspend fun updateToolEvent(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int,
+        @Body data: Element
+    ): ToolEventDAO
 
     @POST("/api/v1/toolEvent")
-    suspend fun postToolEvent(@Header("Authorization") token: String, @Body data: Element): ToolEventDAO
+    suspend fun postToolEvent(
+        @Header("Authorization") token: String,
+        @Body data: Element
+    ): ToolEventDAO
 
     @DELETE("/api/v1/toolEvent/{id}")
-    suspend fun deleteToolEvent(@Header("Authorization") token: String, @Path("id") id: String): ToolEventDAO
+    suspend fun deleteToolEvent(
+        @Header("Authorization") token: String,
+        @Path("id") id: String
+    ): ToolEventDAO
 
     @GET("/api/v1/elementEvent/{id}")
-    suspend fun getElementEventDetails(@Header("Authorization") token: String, @Path("id") id: String?): ElementEventDAO
+    suspend fun getElementEventDetails(
+        @Header("Authorization") token: String,
+        @Path("id") id: String?
+    ): ElementEventDAO
 
     @PUT("/api/v1/elementEvent/{id}")
-    suspend fun updateElementEvent(@Header("Authorization") token: String, @Path("id") id: String, @Body data: Element): ElementEventDAO
+    suspend fun updateElementEvent(
+        @Header("Authorization") token: String,
+        @Path("id") id: String,
+        @Body data: Element
+    ): ElementEventDAO
 
     @POST("/api/v1/elementEvent")
-    suspend fun postElementEvent(@Header("Authorization") token: String, @Body data: Element): ElementEventDAO
+    suspend fun postElementEvent(
+        @Header("Authorization") token: String,
+        @Body data: Element
+    ): ElementEventDAO
 
     @DELETE("/api/v1/elementEvent/{id}")
-    suspend fun deleteElementEvent(@Header("Authorization") token: String, @Path("id") id: String): ElementEventDAO
+    suspend fun deleteElementEvent(
+        @Header("Authorization") token: String,
+        @Path("id") id: String
+    ): ElementEventDAO
 }

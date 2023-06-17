@@ -17,7 +17,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.e_montazysta.R
 import com.example.e_montazysta.data.model.ReleaseItem
-import com.example.e_montazysta.data.model.Result
+import com.example.e_montazysta.data.model.Stage
 import com.example.e_montazysta.databinding.FragmentCreateReleaseBinding
 import com.example.e_montazysta.ui.warehouse.WarehouseFilterDAO
 import com.google.android.gms.common.api.OptionalModuleApi
@@ -28,15 +28,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class ReleaseCreateFragment : Fragment() {
-    private val releaseCreateViewModel: ReleaseCreateViewModel by viewModel()
+    private val viewModel: ReleaseCreateViewModel by viewModel()
     private var isBackPressedFromDialog = false
     var actionMode: ActionMode? = null
     lateinit var actionModeCallback: Callback
@@ -44,35 +40,39 @@ class ReleaseCreateFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
-        val binding: FragmentCreateReleaseBinding = FragmentCreateReleaseBinding.inflate(inflater, container, false)
+        val binding: FragmentCreateReleaseBinding =
+            FragmentCreateReleaseBinding.inflate(inflater, container, false)
 
         val args: ReleaseCreateFragmentArgs by navArgs()
-        val stageId = args.stageId
+        val stage = args.stage
+        val stageId = stage.id
 
-        binding.viewModel = releaseCreateViewModel
-        releaseCreateViewModel.getListOfWarehouse()
+        binding.viewModel = viewModel
+        viewModel.getListOfWarehouse()
+        viewModel.stage = stage
 
         binding.toolbar.inflateMenu(R.menu.menu_release)
 
         val adapter = ReleaseCreateAdapter(
-            ReleaseCreateAdapter.CustomClickListener (
-                {item ->
-                    if (actionMode != null ) {
+            ReleaseCreateAdapter.CustomClickListener(
+                { item ->
+                    if (actionMode != null) {
                         Toast.makeText(requireContext(), item.code, Toast.LENGTH_LONG).show()
-                    }
-                    else {
+                    } else {
                         false
                     }
                 },
                 {
                     Toast.makeText(requireContext(), "LONG PRESS TEST", Toast.LENGTH_LONG).show()
-                    if(actionMode == null) {
+                    if (actionMode == null) {
                         actionMode = requireActivity().startActionMode(actionModeCallback)
                     }
                 },
-                { itemCount -> actionMode?.title = "Wybrane elementy: $itemCount" } // Update the listener to update the ActionMode title with item count
+                { itemCount ->
+                    actionMode?.title = "Wybrane elementy: $itemCount"
+                } // Update the listener to update the ActionMode title with item count
 
             )
         )
@@ -81,81 +81,119 @@ class ReleaseCreateFragment : Fragment() {
 
         val options = GmsBarcodeScannerOptions.Builder()
             .setBarcodeFormats(
-                Barcode.FORMAT_QR_CODE)
+                Barcode.FORMAT_QR_CODE
+            )
             .build()
 
         val moduleInstallClient = ModuleInstall.getClient(requireContext())
         val scanner = GmsBarcodeScanning.getClient(requireContext(), options)
 
-        binding.addObjectsToRelease.setOnClickListener{
+        binding.addObjectsToRelease.setOnClickListener {
             installApiModule(moduleInstallClient, scanner)
-            scanner?.startScan()?.addOnSuccessListener {barcode ->
+            scanner.startScan()?.addOnSuccessListener { barcode ->
                 val code = barcode?.rawValue
-                when(code?.first()) {
+                when (code?.first()) {
                     'E' -> binding.viewModel?.let {
                         it.addElementToRelease(code)
-                        if (releaseCreateViewModel.selectedWarehouseLiveData.value == null) {
-                            showWarehouseFilterDialog(requireContext(), releaseCreateViewModel.warehouseLiveData.value!!)
+                        if (viewModel.selectedWarehouseLiveData.value == null) {
+                            showWarehouseFilterDialog(
+                                requireContext(),
+                                viewModel.warehouseLiveData.value!!
+                            )
                         }
                     }
+
                     'T' -> {
                         binding.viewModel?.let {
                             it.addToolToRelease(code)
 
                         }
                     }
+
                     else -> {
-                        Toast.makeText(activity, "Niepoprawny kod QR!\nWartość: $code", Toast.LENGTH_LONG ).show() }
+                        Toast.makeText(
+                            activity,
+                            "Niepoprawny kod QR!\nWartość: $code",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                 }
             }?.addOnCanceledListener {
 
             }?.addOnFailureListener { e ->
-                Toast.makeText(activity, "Failed to initialize a scanner.\nError: ${e.message}", Toast.LENGTH_LONG ).show()
+                Toast.makeText(
+                    activity,
+                    "Trwa inicjalizacja skanera, spróbuj ponownie.",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
 
 
-        binding.toolbar.setOnMenuItemClickListener {menuItem ->
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.action_submit -> {
-                    if (adapter.elements != null && adapter.elements.isNotEmpty()){
-                        showConfirmationDialog(adapter.elements, binding, stageId)
+                    if (adapter.elements != null && adapter.elements.isNotEmpty()) {
+                        showConfirmationDialog(
+                            adapter.elements,
+                            stage,
+                            viewModel.selectedWarehouseLiveData.value
+                        )
                         true
                     } else {
-                        Toast.makeText(context, "Dodaj co namniej jeden przedmiot!", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            context,
+                            "Dodaj co namniej jeden przedmiot!",
+                            Toast.LENGTH_LONG
+                        ).show()
                         false
                     }
                 }
+
+                R.id.change_warehouse -> {
+                    showWarehouseFilterDialog(
+                        requireContext(),
+                        viewModel.warehouseLiveData.value!!
+                    )
+                    true
+                }
+
                 else -> {
-                    Toast.makeText(context, "Błąd dzielenia przez ogórek", Toast.LENGTH_LONG).show()
-                    false}
+                    Toast.makeText(context, "Coś poszło nie tak...", Toast.LENGTH_LONG).show()
+                    false
+                }
 
             }
         }
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (!isBackPressedFromDialog && adapter.elements.isNotEmpty()) {
-                    showDiscardChangesDialog()
-                } else {
-                    findNavController().navigateUp()
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (!isBackPressedFromDialog && adapter.elements.isNotEmpty()) {
+                        showDiscardChangesDialog()
+                    } else {
+                        findNavController().navigateUp()
+                    }
                 }
-            }
-        })
+            })
 
         // Observe the error message LiveData
-        releaseCreateViewModel.messageLiveData.observe(viewLifecycleOwner) {
-            errorMessage -> Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+        viewModel.messageLiveData.observe(viewLifecycleOwner) { errorMessage ->
+            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
         }
 
-        releaseCreateViewModel.itemsLiveData.observe(viewLifecycleOwner) {
-            items -> adapter.elements = items.toMutableList()
+        viewModel.itemsLiveData.observe(viewLifecycleOwner) { items ->
+            adapter.elements = items.toMutableList()
             adapter.notifyDataSetChanged()
         }
 
         // Spinner
-        releaseCreateViewModel.selectedWarehouseLiveData.observe(viewLifecycleOwner) {warehouse ->
-            warehouse?.let { binding.toolbar.subtitle = it.name }
+        viewModel.selectedWarehouseLiveData.observe(viewLifecycleOwner) { warehouse ->
+            warehouse?.let {
+                binding.toolbar.subtitle = it.name
+                binding.toolbar.menu.findItem(R.id.change_warehouse).isVisible = true
+            }
         }
 
         actionModeCallback = object : Callback {
@@ -172,13 +210,14 @@ class ReleaseCreateFragment : Fragment() {
                 // Handle menu item clicks
                 when (item.itemId) {
                     R.id.action_delete -> {
-                        adapter.elements.filter{ it.isSelected }.forEach {
+                        adapter.elements.filter { it.isSelected }.forEach {
                             adapter.elements.remove(it)
                         }
-                        releaseCreateViewModel._itemsLiveData.postValue(adapter.elements)
+                        viewModel._itemsLiveData.postValue(adapter.elements)
                         actionMode?.finish()
                         return true
                     }
+
                     else -> return false
                 }
             }
@@ -186,7 +225,7 @@ class ReleaseCreateFragment : Fragment() {
             override fun onDestroyActionMode(mode: ActionMode) {
                 val tempList: List<ReleaseItem> = adapter.elements
                 tempList.forEach { it.isSelected = false }
-                releaseCreateViewModel._itemsLiveData.postValue(tempList)
+                viewModel._itemsLiveData.postValue(tempList)
                 adapter.selectedItemCount = 0
                 actionMode = null
             }
@@ -198,39 +237,14 @@ class ReleaseCreateFragment : Fragment() {
 
     private fun showConfirmationDialog(
         items: List<ReleaseItem>,
-        binding: FragmentCreateReleaseBinding,
-        stageId: Int
+        stage: Stage,
+        warehouse: WarehouseFilterDAO?
     ) {
-        val itemNames = items.map { it.name + ", Ilość: " + it.quantity }.toTypedArray()
-
-        val dialogBuilder = MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Wydać:")
-            .setItems(itemNames, null)
-            .setPositiveButton("Wydaj") { dialog, _ ->
-
-                GlobalScope.launch(Dispatchers.Main){
-                    val result = async { binding.viewModel!!.createRelease(items, stageId) }.await()
-                    when (result) {
-                        is Result.Success -> {
-                            findNavController().navigateUp()
-                        }
-                        is Result.Error -> {
-                            dialog.dismiss()
-                        }
-
-                        else -> {
-                            Toast.makeText(activity, "Coś poszło nie tak!" , Toast.LENGTH_LONG).show()
-                        }
-                    }
-                }
-                dialog.dismiss()
-            }
-            .setNegativeButton("Anuluj") { dialog, _ ->
-                dialog.dismiss()
-            }
-        val dialog = dialogBuilder.create()
-        dialog.show()
+        val fragmentManager = childFragmentManager
+        val dialogFragment = ReleaseDialogFragment(items, stage, warehouse)
+        dialogFragment.show(fragmentManager, "dialog")
     }
+
 
     fun showWarehouseFilterDialog(context: Context, warehouses: List<WarehouseFilterDAO>) {
         val adapter = WarehouseListAdapter(context, warehouses)
@@ -241,7 +255,7 @@ class ReleaseCreateFragment : Fragment() {
                 selectedWarehouse = warehouses[position]
             }
             .setPositiveButton("Wybierz") { dialog, _ ->
-                releaseCreateViewModel.setWarehouse(selectedWarehouse)
+                viewModel.setWarehouse(selectedWarehouse)
                 dialog.dismiss()
             }
             .setNegativeButton("Anuluj") { dialog, _ ->
@@ -252,7 +266,10 @@ class ReleaseCreateFragment : Fragment() {
         alertDialog.show()
     }
 
-    private fun installApiModule(moduleInstallClient: ModuleInstallClient, module: OptionalModuleApi) {
+    private fun installApiModule(
+        moduleInstallClient: ModuleInstallClient,
+        module: OptionalModuleApi
+    ) {
         moduleInstallClient
             .areModulesAvailable(module)
             .addOnSuccessListener {
@@ -266,9 +283,6 @@ class ReleaseCreateFragment : Fragment() {
                     moduleInstallClient
                         .installModules(moduleInstallRequest)
                         .addOnSuccessListener {
-                            if (it.areModulesAlreadyInstalled()) {
-                                // Modules are already installed when the request is sent.
-                            }
                         }
                         .addOnFailureListener { exception ->
                             Toast.makeText(activity, exception.message, Toast.LENGTH_LONG).show()

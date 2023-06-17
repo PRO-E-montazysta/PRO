@@ -54,7 +54,7 @@ data class UserFilterDAO(
     }
 }
 
-enum class Role(val value: String){
+enum class Role(val value: String) {
     ADMIN("Administrator"),
     MANAGER("Manager"),
     SALES_REPRESENTATIVE("Handlowiec"),

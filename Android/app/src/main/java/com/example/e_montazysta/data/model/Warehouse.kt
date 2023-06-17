@@ -16,12 +16,12 @@ data class Warehouse(
     val name: String,
     val openingHours: String,
     val tools: List<Int>
-){
-    companion object: KoinComponent {
+) {
+    companion object : KoinComponent {
         val warehouseRepository: IWarehouseRepository by inject()
-        suspend fun getWarehouseDetails(id: Int) : Warehouse {
+        suspend fun getWarehouseDetails(id: Int): Warehouse {
             val result = warehouseRepository.getWarehouseDetails(id)
-            return when(result){
+            return when (result) {
                 is Result.Success -> result.data
                 is Result.Error -> throw result.exception
             }

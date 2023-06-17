@@ -8,7 +8,7 @@ data class ToolListItem(
     val code: String,
     val warehouse: String,
     val toolType: String
-    )
+)
 
 fun Tool.mapToToolItem(): ToolListItem {
     return ToolListItem(id, name, code, warehouse.name, toolType.name)

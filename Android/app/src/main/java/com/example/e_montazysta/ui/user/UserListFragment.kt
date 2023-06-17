@@ -19,13 +19,21 @@ class UserListFragment : Fragment() {
     private val viewModel: UserListViewModel by viewModel()
     private lateinit var binding: FragmentUsersBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         // Get a reference to the binding object and inflate the fragment views.
         binding = FragmentUsersBinding.inflate(inflater, container, false)
 
-        val adapter = UserListAdapter(UserListAdapter.CustomClickListener {
-                userId -> findNavController().navigate(UserListFragmentDirections.actionUserListFragmentToUserDetailFragment(userId))
+        val adapter = UserListAdapter(UserListAdapter.CustomClickListener { userId ->
+            findNavController().navigate(
+                UserListFragmentDirections.actionUserListFragmentToUserDetailFragment(
+                    userId
+                )
+            )
         })
 
         binding.list.adapter = adapter
@@ -38,9 +46,9 @@ class UserListFragment : Fragment() {
             }
         })
 
-        viewModel.isLoadingLiveData.observe(viewLifecycleOwner, Observer<Boolean>{
+        viewModel.isLoadingLiveData.observe(viewLifecycleOwner, Observer<Boolean> {
             it?.let {
-                if(it) {
+                if (it) {
                     binding.loadingIndicator.visibility = View.VISIBLE
                 } else {
                     binding.loadingIndicator.visibility = View.GONE
@@ -58,8 +66,11 @@ class UserListFragment : Fragment() {
                 R.id.filter -> {
                     drawerLayout.openDrawer(GravityCompat.END)
                     true
-                } else -> {
-                false}
+                }
+
+                else -> {
+                    false
+                }
             }
         }
         toolbar.setNavigationOnClickListener {
@@ -68,11 +79,21 @@ class UserListFragment : Fragment() {
 
 
         // Wyświetlanie błędów
-        viewModel.messageLiveData.observe(viewLifecycleOwner) {
-            errorMessage -> Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+        viewModel.messageLiveData.observe(viewLifecycleOwner) { errorMessage ->
+            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
         }
 
 
+        // Empty list info
+        viewModel.isEmptyLiveData.observe(viewLifecycleOwner, Observer<Boolean> {
+            it?.let {
+                if (it) {
+                    binding.emptyInfo.visibility = View.VISIBLE
+                } else {
+                    binding.emptyInfo.visibility = View.GONE
+                }
+            }
+        })
 
 
         binding.lifecycleOwner = this

@@ -1,6 +1,6 @@
 package com.example.e_montazysta.data.model
 
-data class CurrentUser (
+data class CurrentUser(
     val firstName: String,
     val lastName: String,
     val roles: List<String>,
