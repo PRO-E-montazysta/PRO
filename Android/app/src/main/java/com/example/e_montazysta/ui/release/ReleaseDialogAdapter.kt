@@ -1,4 +1,4 @@
-package com.example.e_montazysta.ui.returnitem
+package com.example.e_montazysta.ui.release
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,7 +9,7 @@ import com.example.e_montazysta.data.model.ReleaseItem
 import com.example.e_montazysta.databinding.ListItemSubmitReleaseReturnBinding
 
 
-class ReturnDialogAdapter() : ListAdapter<ReleaseItem, ReturnDialogAdapter.ViewHolder>(DiffCallback()){
+class ReleaseDialogAdapter() : ListAdapter<ReleaseItem, ReleaseDialogAdapter.ViewHolder>(DiffCallback()){
 
     var elements: List<ReleaseItem> = listOf()
 

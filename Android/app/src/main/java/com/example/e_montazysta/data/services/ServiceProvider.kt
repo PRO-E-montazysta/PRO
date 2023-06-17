@@ -46,4 +46,8 @@ class ServiceProvider (private val serviceFactory: ServiceFactory) : IServicePro
     override fun getLocationService(): LocationService {
         return serviceFactory.create(LocationService::class.java)
     }
+
+    override fun getPlannedItemService(): PlannedItemService {
+        return serviceFactory.create(PlannedItemService::class.java)
+    }
 }

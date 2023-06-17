@@ -9,6 +9,7 @@ import com.example.e_montazysta.data.repository.EventRepository
 import com.example.e_montazysta.data.repository.LocationRepository
 import com.example.e_montazysta.data.repository.NotificationRepository
 import com.example.e_montazysta.data.repository.OrderRepository
+import com.example.e_montazysta.data.repository.PlannedItemRepository
 import com.example.e_montazysta.data.repository.ReleaseRepository
 import com.example.e_montazysta.data.repository.StageRepository
 import com.example.e_montazysta.data.repository.ToolRepository
@@ -21,6 +22,7 @@ import com.example.e_montazysta.data.repository.interfaces.IEventRepository
 import com.example.e_montazysta.data.repository.interfaces.ILocationRepository
 import com.example.e_montazysta.data.repository.interfaces.INotificationRepository
 import com.example.e_montazysta.data.repository.interfaces.IOrderRepository
+import com.example.e_montazysta.data.repository.interfaces.IPlannedItemRepository
 import com.example.e_montazysta.data.repository.interfaces.IReleaseRepository
 import com.example.e_montazysta.data.repository.interfaces.IStageRepository
 import com.example.e_montazysta.data.repository.interfaces.IToolRepository
@@ -165,6 +167,12 @@ val dataModule = module {
         val locationRepository: ILocationRepository =
             LocationRepository(get())
         locationRepository
+    }
+
+    factory{
+        val plannedItemRepository: IPlannedItemRepository =
+            PlannedItemRepository(get())
+        plannedItemRepository
     }
 
     viewModel {

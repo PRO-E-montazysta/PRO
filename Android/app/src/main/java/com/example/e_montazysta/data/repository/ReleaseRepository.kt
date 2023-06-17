@@ -86,7 +86,7 @@ class ReleaseRepository (
             }
             Result.Success(releaseDAOs)
         } catch (e: Exception) {
-            Log.e(TAG, e.message!!)
+            Log.e(TAG, Log.getStackTraceString(e))
             Result.Error(e)
         }
     }

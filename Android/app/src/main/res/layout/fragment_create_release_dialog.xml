@@ -10,7 +10,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/activity_vertical_margin">
+        android:layout_margin="5dp">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/topAppBar"
@@ -163,12 +163,13 @@
 
                 <!-- Lista wydawanych elementów -->
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/listElements"
+                    android:id="@+id/list"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:listitem="@layout/list_item_submit_release_return"
-                    android:divider="@android:color/darker_gray"
-                    android:dividerHeight="1dp" />
+                    android:layout_height="match_parent"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/list_item_tool"
+                    android:scrollbars="vertical"
+                    />
 
                 <!-- Przycisk potwierdzenia -->
 

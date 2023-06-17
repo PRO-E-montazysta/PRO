@@ -147,8 +147,8 @@
         android:name="com.example.e_montazysta.ui.release.ReleaseCreateFragment"
         android:label="ReleaseCreateFragment" >
         <argument
-            android:name="stageId"
-            app:argType="integer" />
+            android:name="stage"
+            app:argType="com.example.e_montazysta.data.model.Stage" />
     </fragment>
     <fragment
         android:id="@+id/elementsListFragment"

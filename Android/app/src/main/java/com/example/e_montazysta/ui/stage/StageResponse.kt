@@ -21,6 +21,7 @@ data class StageDAO(
     val name: String,
     val status: StageStatus,
     val price: BigDecimal,
+    val orderName: String,
     @Json(name = "plannedStartDate")
     val plannedStart: Date?,
     @Json(name = "plannedEndDate")
@@ -43,17 +44,40 @@ data class StageDAO(
     private val releaseRepository: IReleaseRepository by inject()
 
     suspend fun mapToStage(): Stage {
-        val fittersList: List<User?> = fitters.map {id -> User.getUserDetails(id)}
-        val commentsList: List<Comment?> = comments.map {id -> getCommentDetails(id)}
-        val releasesList: List<Release?> = toolReleases.map {id -> getReleaseDetails(id)}
-        return Stage(id, name, status, price, plannedStart, plannedEnd, startDate, endDate, plannedDurationTime,
-            plannedFittersNumber, minimumImagesNumber, fittersList, commentsList, releasesList,
-            listOf(), orderId, listOfToolsPlannedNumber, listOfElementsPlannedNumber,
-            simpleToolReleases, simpleElementReturnReleases)
+        val fittersList: List<User> = fitters.mapNotNull { id -> User.getUserDetails(id) }
+        val commentsList: List<Comment> = comments.mapNotNull { id -> getCommentDetails(id) }
+        val releasesList: List<Release> = toolReleases.mapNotNull { id -> getReleaseDetails(id) }
+        val listOfToolsPlannedNumber =
+            listOfToolsPlannedNumber.mapNotNull { id -> plannedToolDAO.getPlannedTool(id) }
+        val listOfElementsPlannedNumber =
+            listOfElementsPlannedNumber.mapNotNull { id -> plannedElementDAO.getPlannedElement(id) }
+        return Stage(
+            id,
+            name,
+            status,
+            price,
+            orderName,
+            plannedStart,
+            plannedEnd,
+            startDate,
+            endDate,
+            plannedDurationTime,
+            plannedFittersNumber,
+            minimumImagesNumber,
+            fittersList,
+            commentsList,
+            releasesList,
+            listOf(),
+            orderId,
+            listOfToolsPlannedNumber,
+            listOfElementsPlannedNumber,
+            simpleToolReleases,
+            simpleElementReturnReleases
+        )
     }
 
     fun mapToStageListItem(): StageListItem {
-        return StageListItem(id, name, "TODO", status, plannedStart, plannedEnd)
+        return StageListItem(id, name, orderName, status, plannedStart, plannedEnd)
     }
 
     private suspend fun getCommentDetails(commentId: Int): Comment? {
@@ -63,6 +87,7 @@ data class StageDAO(
             is Result.Error -> null
         }
     }
+
     private suspend fun getReleaseDetails(releaseId: Int): Release? {
         val result = releaseRepository.getReleaseDetail(releaseId)
         return when (result) {
@@ -71,7 +96,8 @@ data class StageDAO(
         }
     }
 }
-enum class StageStatus(val value: String){
+
+enum class StageStatus(val value: String) {
     PLANNING("PLANOWANIE"),
     ADDING_FITTERS("DODAWANIE MONTAŻYSTÓW"),
     PICK_UP("WYDAWANIE"),

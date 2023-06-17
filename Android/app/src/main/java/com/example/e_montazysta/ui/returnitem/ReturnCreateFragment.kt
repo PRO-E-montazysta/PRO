@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.e_montazysta.R
@@ -48,10 +47,10 @@ class ReturnCreateFragment : Fragment() {
 
         val args: ReturnCreateFragmentArgs by navArgs()
         val stage = args.stage
-        val stageId = stage.id
 
         binding.viewModel = viewModel
         viewModel.getListOfWarehouse()
+        viewModel.stage = stage
 
         binding.toolbar.inflateMenu(R.menu.menu_release)
 
@@ -65,7 +64,6 @@ class ReturnCreateFragment : Fragment() {
                     }
                 },
                 {
-                    Toast.makeText(requireContext(), "LONG PRESS TEST", Toast.LENGTH_LONG).show()
                     if (actionMode == null) {
                         actionMode = requireActivity().startActionMode(actionModeCallback)
                     }
@@ -123,7 +121,7 @@ class ReturnCreateFragment : Fragment() {
             }?.addOnFailureListener { e ->
                 Toast.makeText(
                     activity,
-                    "Failed to initialize a scanner.\nError: ${e.message}",
+                    "Trwa inicjalizacja skanera, spróbuj ponownie.",
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -135,7 +133,6 @@ class ReturnCreateFragment : Fragment() {
                 R.id.action_submit -> {
                     if (adapter.elements != null && adapter.elements.isNotEmpty()) {
                         showConfirmationDialog(
-                            binding,
                             adapter.elements,
                             stage,
                             viewModel.selectedWarehouseLiveData.value
@@ -149,6 +146,14 @@ class ReturnCreateFragment : Fragment() {
                         ).show()
                         false
                     }
+                }
+
+                R.id.change_warehouse -> {
+                    showWarehouseFilterDialog(
+                        requireContext(),
+                        viewModel.warehouseLiveData.value!!
+                    )
+                    true
                 }
 
                 else -> {
@@ -183,7 +188,10 @@ class ReturnCreateFragment : Fragment() {
 
         // Spinner
         viewModel.selectedWarehouseLiveData.observe(viewLifecycleOwner) { warehouse ->
-            warehouse?.let { binding.toolbar.subtitle = it.name }
+            warehouse?.let {
+                binding.toolbar.subtitle = it.name
+                binding.toolbar.menu.findItem(R.id.change_warehouse).isVisible = true
+            }
         }
 
         actionModeCallback = object : Callback {
@@ -226,36 +234,32 @@ class ReturnCreateFragment : Fragment() {
     }
 
     private fun showConfirmationDialog(
-        binding: FragmentCreateReturnBinding,
         items: List<ReleaseItem>,
         stage: Stage,
         warehouse: WarehouseFilterDAO?
     ) {
         val fragmentManager = childFragmentManager
         val dialogFragment = ReturnDialogFragment(items, stage, warehouse)
-//        dialogFragment.show(fragmentManager, "dialog")
-        val transaction = fragmentManager.beginTransaction()
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-        transaction
-            .add(R.id.container_view, dialogFragment)
-            .addToBackStack(null)
-            .commit()
+        dialogFragment.show(fragmentManager, "dialog")
     }
 
 
-    private fun showWarehouseFilterDialog(context: Context, warehouses: List<WarehouseFilterDAO>) {
+    private fun showWarehouseFilterDialog(
+        context: Context,
+        warehouses: List<WarehouseFilterDAO>
+    ) {
         val adapter = WarehouseListAdapter(context, warehouses)
         var selectedWarehouse: WarehouseFilterDAO? = null
         val alertDialog = MaterialAlertDialogBuilder(context)
-            .setTitle("Select Warehouse")
+            .setTitle("Wybierz magazyn")
             .setSingleChoiceItems(adapter, -1) { _, position ->
                 selectedWarehouse = warehouses[position]
             }
-            .setPositiveButton("OK") { dialog, _ ->
+            .setPositiveButton("Wybierz") { dialog, _ ->
                 viewModel.setWarehouse(selectedWarehouse)
                 dialog.dismiss()
             }
-            .setNegativeButton("Cancel") { dialog, _ ->
+            .setNegativeButton("Anuluj") { dialog, _ ->
                 dialog.dismiss()
             }
             .create()
@@ -280,9 +284,6 @@ class ReturnCreateFragment : Fragment() {
                     moduleInstallClient
                         .installModules(moduleInstallRequest)
                         .addOnSuccessListener {
-                            if (it.areModulesAlreadyInstalled()) {
-                                // Modules are already installed when the request is sent.
-                            }
                         }
                         .addOnFailureListener { exception ->
                             Toast.makeText(activity, exception.message, Toast.LENGTH_LONG)
