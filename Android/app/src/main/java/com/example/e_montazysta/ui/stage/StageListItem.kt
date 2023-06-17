@@ -13,7 +13,8 @@ data class StageListItem(
 //    var createdAt: String
 ) {
     fun getListItemInfo(): String {
-        return "Status: " + status.value +
+        return "Zlecenie: " + orderName +
+                "\nStatus: " + status.value +
                 (if (plannedStart != null && plannedEnd != null) "\nPlanowana data: "
                         + DateUtil.format(plannedStart) + " - "
                         + DateUtil.format(plannedEnd.time) else "")

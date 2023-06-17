@@ -52,8 +52,18 @@ class NotificationListFragment : Fragment() {
                     )
                 )
 
-                NotificationType.TOOL_EVENT -> null
-                NotificationType.ELEMENT_EVENT -> null
+                NotificationType.TOOL_EVENT ->
+                    findNavController().navigate(
+                        NotificationListFragmentDirections.actionNotificationListFragmentToToolDetailFragment(
+                            notification.toolEventId!!
+                        )
+                    )
+                NotificationType.ELEMENT_EVENT ->
+                    findNavController().navigate(
+                        NotificationListFragmentDirections.actionNotificationListFragmentToElementDetailFragment(
+                            notification.elementEventId!!
+                        )
+                    )
                 NotificationType.AD_HOC_CREATED -> null
             }
             viewModel.readNotification(notification)

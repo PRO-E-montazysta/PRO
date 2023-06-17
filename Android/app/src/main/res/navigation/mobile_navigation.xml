@@ -144,6 +144,9 @@
         <action
             android:id="@+id/action_stageDetailFragment_to_elementDetailFragment"
             app:destination="@id/elementDetailFragment" />
+        <action
+            android:id="@+id/action_stageDetailFragment_to_orderDetailFragment"
+            app:destination="@id/orderDetailFragment" />
     </fragment>
 
     <fragment
@@ -197,6 +200,12 @@
         <action
             android:id="@+id/action_notificationListFragment_to_orderDetailFragment"
             app:destination="@id/orderDetailFragment" />
+        <action
+            android:id="@+id/action_notificationListFragment_to_toolDetailFragment"
+            app:destination="@id/toolDetailFragment" />
+        <action
+            android:id="@+id/action_notificationListFragment_to_elementDetailFragment"
+            app:destination="@id/elementDetailFragment" />
     </fragment>
     <activity
         android:id="@+id/dashboardActivity"

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.e_montazysta.data.model.Stage
 import com.example.e_montazysta.databinding.FragmentStageDetailDetailsBinding
 import com.example.e_montazysta.helpers.DateUtil
@@ -33,16 +34,24 @@ class StageDetailDetailsFragment(val stage: Stage?) : Fragment() {
         stageDetailViewModel.setStageDetail(stage!!)
 
         stageDetailViewModel.stagedetail.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                binding.nameValue.text = it.name
-                binding.statusValue.text = it.status.value
-                binding.priceValue.text = it.price.toString() + " PLN"
+            it?.let {stage ->
+                binding.nameValue.text = stage.name
+                binding.statusValue.text = stage.status.value
+                binding.priceValue.text = stage.price.toString() + " PLN"
                 binding.plannedStartValue.text =
-                    if (it.plannedStart != null) DateUtil.format(it.plannedStart) else "Brak"
+                    if (stage.plannedStart != null) DateUtil.format(stage.plannedStart) else "Brak"
                 binding.plannedEndValue.text =
-                    if (it.plannedEnd != null) DateUtil.format(it.plannedEnd) else "Brak"
-                binding.plannedFittersNumberValue.text = it.plannedFittersNumber.toString()
-                binding.minimumImagesNumberValue.text = it.minimumImagesNumber.toString()
+                    if (stage.plannedEnd != null) DateUtil.format(stage.plannedEnd) else "Brak"
+                binding.plannedFittersNumberValue.text = stage.plannedFittersNumber.toString()
+                binding.minimumImagesNumberValue.text = stage.minimumImagesNumber.toString()
+                binding.orderNameValue.text = stage.orderName
+                binding.order.setOnClickListener{
+                    findNavController().navigate(
+                        StageDetailFragmentDirections.actionStageDetailFragmentToOrderDetailFragment(
+                            stage.orderId
+                        )
+                    )
+                }
             }
         })
         stageDetailViewModel.isLoadingLiveData.observe(viewLifecycleOwner, Observer<Boolean> {
