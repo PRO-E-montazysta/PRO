@@ -59,4 +59,10 @@ public class ToolReleaseController {
     public ToolReleaseDto updateToolRelease(@PathVariable Long id, @Valid @RequestBody ToolReleaseDto toolRelease) {
         return toolReleaseService.update(id, toolRelease);
     }
+
+    @GetMapping("/filtered")
+    @Operation(description = "Allows to get filtered Tool Releases.", security = @SecurityRequirement(name = "bearer-key"))
+    public List<ToolReleaseDto> getAllForComapny() {
+        return toolReleaseService.findAllFromCompany();
+    }
 }

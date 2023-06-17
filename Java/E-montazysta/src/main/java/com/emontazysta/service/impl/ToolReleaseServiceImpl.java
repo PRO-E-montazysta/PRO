@@ -4,6 +4,7 @@ import com.emontazysta.mapper.ToolReleaseMapper;
 import com.emontazysta.model.ToolRelease;
 import com.emontazysta.model.dto.ToolReleaseDto;
 import com.emontazysta.repository.ToolReleaseRepository;
+import com.emontazysta.repository.criteria.ToolReleaseCriteriaRepository;
 import com.emontazysta.service.ToolReleaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ public class ToolReleaseServiceImpl implements ToolReleaseService {
 
     private final ToolReleaseRepository repository;
     private final ToolReleaseMapper toolReleaseMapper;
+    private final ToolReleaseCriteriaRepository criteriaRepo;
 
     @Override
     public List<ToolReleaseDto> getAll() {
@@ -59,5 +61,10 @@ public class ToolReleaseServiceImpl implements ToolReleaseService {
         toolReleaseDb.setOrderStage(updatedToolRelease.getOrderStage());
 
         return toolReleaseMapper.toDto(toolReleaseDb);
+    }
+
+    @Override
+    public List<ToolReleaseDto> findAllFromCompany() {
+        return criteriaRepo.findAllFromCompany();
     }
 }

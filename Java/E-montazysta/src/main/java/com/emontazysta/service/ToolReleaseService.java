@@ -11,4 +11,5 @@ public interface ToolReleaseService {
     ToolReleaseDto add(ToolReleaseDto toolRelease);
     void delete(Long id);
     ToolReleaseDto update(Long id, ToolReleaseDto toolRelease);
+    List<ToolReleaseDto> findAllFromCompany();
 }
