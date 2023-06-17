@@ -8,9 +8,12 @@ import retrofit2.http.Path
 
 interface NotificationService {
     @GET("/api/v1/notifications")
-    suspend fun getListOfNotifications(@Header("Authorization") token: String
-    ) : List<NotificationDAO?>
+    suspend fun getListOfNotifications(
+        @Header("Authorization") token: String
+    ): List<NotificationDAO?>
+
     @PUT("/api/v1/notifications/{id}")
-    suspend fun readNotification(@Header("Authorization") token: String, @Path("id") id: Int
-    ) : NotificationDAO
+    suspend fun readNotification(
+        @Header("Authorization") token: String, @Path("id") id: Int
+    ): NotificationDAO
 }

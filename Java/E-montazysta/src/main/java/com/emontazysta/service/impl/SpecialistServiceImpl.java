@@ -1,8 +1,10 @@
 package com.emontazysta.service.impl;
 
 import com.emontazysta.enums.Role;
+import com.emontazysta.mail.MailTemplates;
 import com.emontazysta.mapper.EmploymentMapper;
 import com.emontazysta.mapper.SpecialistMapper;
+import com.emontazysta.model.EmailData;
 import com.emontazysta.model.Specialist;
 import com.emontazysta.model.dto.EmployeeDto;
 import com.emontazysta.model.dto.EmploymentDto;
@@ -11,8 +13,10 @@ import com.emontazysta.model.searchcriteria.AppUserSearchCriteria;
 import com.emontazysta.repository.SpecialistRepository;
 import com.emontazysta.repository.criteria.AppUserCriteriaRepository;
 import com.emontazysta.repository.EmploymentRepository;
+import com.emontazysta.service.EmailService;
 import com.emontazysta.service.SpecialistService;
 import com.emontazysta.util.AuthUtils;
+import com.emontazysta.util.PasswordGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,6 +38,7 @@ public class SpecialistServiceImpl implements SpecialistService {
     private final AuthUtils authUtils;
     private final AppUserCriteriaRepository appUserCriteriaRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final EmailService emailService;
 
     @Override
     public List<SpecialistDto> getAll(Principal principal) {
@@ -67,8 +72,9 @@ public class SpecialistServiceImpl implements SpecialistService {
 
     @Override
     public SpecialistDto add(SpecialistDto specialistDto) {
+        String password = PasswordGenerator.generatePassword(10);
         specialistDto.setUsername(specialistDto.getUsername().toLowerCase());
-        specialistDto.setPassword(bCryptPasswordEncoder.encode(specialistDto.getPassword()));
+        specialistDto.setPassword(bCryptPasswordEncoder.encode(password));
         specialistDto.setRoles(Set.of(Role.SPECIALIST));
         specialistDto.setUnavailabilities(new ArrayList<>());
         specialistDto.setNotifications(new ArrayList<>());
@@ -89,6 +95,15 @@ public class SpecialistServiceImpl implements SpecialistService {
                 .employeeId(specialist.getId())
                 .build();
         employmentRepository.save(employmentMapper.toEntity(employmentDto));
+
+        emailService.sendEmail(
+                EmailData.builder()
+                        .to(specialistDto.getEmail())
+                        .message(MailTemplates.employeeCreate(specialistDto.getUsername(),
+                                password, specialistDto.getFirstName(), specialistDto.getLastName()))
+                        .subject("Witaj w E-Montażysta!")
+                        .build()
+        );
 
         return specialistMapper.toDto(specialist);
     }

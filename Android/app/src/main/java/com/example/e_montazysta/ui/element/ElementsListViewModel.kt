@@ -13,7 +13,8 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 
-class ElementsListViewModel(private val repository: IElementRepository) : ViewModel(), CoroutineScope {
+class ElementsListViewModel(private val repository: IElementRepository) : ViewModel(),
+    CoroutineScope {
 
     private var job: Job? = null
 
@@ -26,6 +27,9 @@ class ElementsListViewModel(private val repository: IElementRepository) : ViewMo
     private val _isLoadingLiveData = MutableLiveData<Boolean>()
     val isLoadingLiveData: LiveData<Boolean> = _isLoadingLiveData
 
+    private val _isEmptyLiveData = MutableLiveData<Boolean>()
+    val isEmptyLiveData: LiveData<Boolean> = _isEmptyLiveData
+
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
@@ -37,14 +41,18 @@ class ElementsListViewModel(private val repository: IElementRepository) : ViewMo
 
     private suspend fun getElementsAsync() {
         _isLoadingLiveData.postValue(true)
-            val result = repository.getElements()
-            when (result) {
-                is Result.Success -> _elementsLiveData.postValue(result.data.map { it.mapToElementItem() })
-                is Result.Error -> {
-                    result.exception.message?.let { _messageLiveData.postValue(it) }
-                    _isLoadingLiveData.postValue(false)
-                }
+        _isEmptyLiveData.postValue(false)
+        val result = repository.getElements()
+        when (result) {
+            is Result.Success -> {
+                _elementsLiveData.postValue(result.data.map { it.mapToElementItem() })
+                if (result.data.isNullOrEmpty()) _isEmptyLiveData.postValue(true)
             }
+            is Result.Error -> {
+                result.exception.message?.let { _messageLiveData.postValue(it) }
+                _isLoadingLiveData.postValue(false)
+            }
+        }
         _isLoadingLiveData.postValue(false)
     }
 

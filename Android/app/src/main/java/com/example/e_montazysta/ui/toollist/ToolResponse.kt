@@ -18,9 +18,20 @@ data class ToolDAO(
         val warehouse = Warehouse.getWarehouseDetails(warehouseId)
 //        val toolEvents: List<Event> = toolEvents.map { Event.getEventDetails(it) }
 //        val toolReleases: List<Release> = toolReleases.map { Release.getReleaseDetails(it) }
-        return Tool(id, name, code, createdAt, toolReleases, warehouse, toolEvents, toolType, status)
+        return Tool(
+            id,
+            name,
+            code,
+            createdAt,
+            toolReleases,
+            warehouse,
+            toolEvents,
+            toolType,
+            status
+        )
     }
-    enum class toolStatus(val value: String){
+
+    enum class toolStatus(val value: String) {
         AVAILABLE("Dostępne"),
         RELEASED("Wydane"),
         IN_REPAIR("W naprawie"),

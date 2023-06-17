@@ -14,12 +14,25 @@ data class ElementListItem(
     val name: String,
     val quantityInUnit: Double,
     val typeOfUnit: String
-){
-    fun getQuantityInWarehouse(warehouseId: Int): String{
-        val warehouse = elementInWarehouses?.first { it.warehouseId ==  warehouseId }
+) {
+    fun getQuantityInWarehouse(warehouseId: Int): String {
+        val warehouse = elementInWarehouses?.first { it.warehouseId == warehouseId }
         return warehouse?.inWarehouseCount.toString()
     }
 }
+
 fun Element.mapToElementItem(): ElementListItem {
-    return ElementListItem(name, code, deleted, elementEvents, elementInWarehouses, elementReturnReleases, id, listOfElementsPlannedNumber, name, quantityInUnit, typeOfUnit)
+    return ElementListItem(
+        name,
+        code,
+        deleted,
+        elementEvents,
+        elementInWarehouses,
+        elementReturnReleases,
+        id,
+        listOfElementsPlannedNumber,
+        name,
+        quantityInUnit,
+        typeOfUnit
+    )
 }

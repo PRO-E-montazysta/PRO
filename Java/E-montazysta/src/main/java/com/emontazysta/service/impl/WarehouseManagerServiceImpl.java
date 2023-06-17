@@ -1,8 +1,10 @@
 package com.emontazysta.service.impl;
 
 import com.emontazysta.enums.Role;
+import com.emontazysta.mail.MailTemplates;
 import com.emontazysta.mapper.EmploymentMapper;
 import com.emontazysta.mapper.WarehouseManagerMapper;
+import com.emontazysta.model.EmailData;
 import com.emontazysta.model.WarehouseManager;
 import com.emontazysta.model.dto.EmployeeDto;
 import com.emontazysta.model.dto.EmploymentDto;
@@ -11,8 +13,10 @@ import com.emontazysta.model.searchcriteria.AppUserSearchCriteria;
 import com.emontazysta.repository.WarehouseManagerRepository;
 import com.emontazysta.repository.criteria.AppUserCriteriaRepository;
 import com.emontazysta.repository.EmploymentRepository;
+import com.emontazysta.service.EmailService;
 import com.emontazysta.service.WarehouseManagerService;
 import com.emontazysta.util.AuthUtils;
+import com.emontazysta.util.PasswordGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,6 +38,7 @@ public class WarehouseManagerServiceImpl implements WarehouseManagerService {
     private final AuthUtils authUtils;
     private final AppUserCriteriaRepository appUserCriteriaRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final EmailService emailService;
 
     @Override
     public List<WarehouseManagerDto> getAll(Principal principal) {
@@ -66,8 +71,9 @@ public class WarehouseManagerServiceImpl implements WarehouseManagerService {
 
     @Override
     public WarehouseManagerDto add(WarehouseManagerDto warehouseManagerDto) {
+        String password = PasswordGenerator.generatePassword(10);
         warehouseManagerDto.setUsername(warehouseManagerDto.getUsername().toLowerCase());
-        warehouseManagerDto.setPassword(bCryptPasswordEncoder.encode(warehouseManagerDto.getPassword()));
+        warehouseManagerDto.setPassword(bCryptPasswordEncoder.encode(password));
         warehouseManagerDto.setRoles(Set.of(Role.WAREHOUSE_MANAGER));
         warehouseManagerDto.setUnavailabilities(new ArrayList<>());
         warehouseManagerDto.setNotifications(new ArrayList<>());
@@ -89,6 +95,15 @@ public class WarehouseManagerServiceImpl implements WarehouseManagerService {
                 .employeeId(warehouseManager.getId())
                 .build();
         employmentRepository.save(employmentMapper.toEntity(employmentDto));
+
+        emailService.sendEmail(
+                EmailData.builder()
+                        .to(warehouseManagerDto.getEmail())
+                        .message(MailTemplates.employeeCreate(warehouseManagerDto.getUsername(),
+                                password, warehouseManagerDto.getFirstName(), warehouseManagerDto.getLastName()))
+                        .subject("Witaj w E-Montażysta!")
+                        .build()
+        );
 
         return warehouseManagerMapper.toDto(warehouseManager);
     }

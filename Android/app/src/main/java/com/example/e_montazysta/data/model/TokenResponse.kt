@@ -7,7 +7,7 @@ class TokenResponse {
         this.token = token
     }
 
-    fun getToken() : String? {
+    fun getToken(): String? {
         return token
     }
 }

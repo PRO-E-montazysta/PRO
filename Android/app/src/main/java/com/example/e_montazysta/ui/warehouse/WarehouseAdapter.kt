@@ -17,7 +17,8 @@ class WarehouseListAdapter(
         val warehouse = getItem(position)
 
         if (view == null) {
-            view = LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_single_choice, parent, false)
+            view = LayoutInflater.from(context)
+                .inflate(android.R.layout.simple_list_item_single_choice, parent, false)
         }
 
         val textView = view!!.findViewById<TextView>(android.R.id.text1)

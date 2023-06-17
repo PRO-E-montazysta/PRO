@@ -16,7 +16,17 @@ data class WarehouseDAO(
 ) {
     suspend fun mapToWarehouse(): Warehouse {
         val location = locationId?.let { LocationDAO.getLocation(locationId) }
-        return Warehouse(companyId, deleted, description, elementInWarehouses, id, location, name, openingHours, tools)
+        return Warehouse(
+            companyId,
+            deleted,
+            description,
+            elementInWarehouses,
+            id,
+            location,
+            name,
+            openingHours,
+            tools
+        )
     }
 }
 

@@ -5,18 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
-import com.example.e_montazysta.R
 import com.example.e_montazysta.databinding.FragmentElementDetailBinding
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.text.DateFormat
 
 
 class ElementDetailFragment : Fragment() {
@@ -36,7 +30,11 @@ class ElementDetailFragment : Fragment() {
 
     private val elementDetailViewModel: ElementDetailViewModel by viewModel()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         //super.onCreate(savedInstanceState)
 
         //setContentView(R.layout.activity_element)
@@ -68,7 +66,8 @@ class ElementDetailFragment : Fragment() {
         val elementId = args.elementId
 
         // Get a reference to the binding object and inflate the fragment views.
-        val binding: FragmentElementDetailBinding = FragmentElementDetailBinding.inflate(inflater, container, false)
+        val binding: FragmentElementDetailBinding =
+            FragmentElementDetailBinding.inflate(inflater, container, false)
         val application = requireNotNull(this.activity).application
 
         // To use the View Model with data binding, you have to explicitly

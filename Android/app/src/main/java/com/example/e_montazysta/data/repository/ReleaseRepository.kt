@@ -12,7 +12,7 @@ import com.example.e_montazysta.ui.stage.StageDAO
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class ReleaseRepository (
+class ReleaseRepository(
     private val serviceProvider: IServiceProvider
 ) : IReleaseRepository, KoinComponent {
     private val sharedPreferencesHelper: ISharedPreferencesHelper by inject()
@@ -40,7 +40,11 @@ class ReleaseRepository (
         }
     }
 
-    override suspend fun createRelease(items: List<ReleaseItem>, stageId: Int, warehouseId: Int?): Result<List<StageDAO>> {
+    override suspend fun createRelease(
+        items: List<ReleaseItem>,
+        stageId: Int,
+        warehouseId: Int?
+    ): Result<List<StageDAO>> {
         return try {
             val releaseService = serviceProvider.getReleaseService()
             val elements = items.filter { it.isElement }.map { it.mapToElementReleaseRequest() }
@@ -49,16 +53,45 @@ class ReleaseRepository (
             val releaseDAOs = mutableListOf<StageDAO>()
 
             if (elements.isNotEmpty()) {
-                val elementReleaseDAOs = releaseService.createElementsRelease(token, stageId, warehouseId!!, elements)
+                val elementReleaseDAOs =
+                    releaseService.createElementsRelease(token, stageId, warehouseId!!, elements)
                 releaseDAOs.add(elementReleaseDAOs)
             }
             if (tools.isNotEmpty()) {
                 val toolsReleaseDAOs = releaseService.createToolsRelease(token, stageId, tools)
                 releaseDAOs.add(toolsReleaseDAOs)
-                }
+            }
             Result.Success(releaseDAOs)
         } catch (e: Exception) {
-            Log.e(TAG, e.message!! )
+            Log.e(TAG, e.message!!)
+            Result.Error(e)
+        }
+    }
+
+    override suspend fun createReturn(
+        items: List<ReleaseItem>,
+        stageId: Int,
+        warehouseId: Int?
+    ): Result<List<StageDAO>> {
+        return try {
+            val releaseService = serviceProvider.getReleaseService()
+            val elements = items.filter { it.isElement }.map { it.mapToElementReleaseRequest() }
+            val tools = items.filter { !it.isElement }.map { it.mapToToolReleaseRequest() }
+
+            val releaseDAOs = mutableListOf<StageDAO>()
+
+            if (elements.isNotEmpty()) {
+                val elementReleaseDAOs =
+                    releaseService.createElementsReturn(token, stageId, warehouseId!!, elements)
+                releaseDAOs.add(elementReleaseDAOs)
+            }
+            if (tools.isNotEmpty()) {
+                val toolsReleaseDAOs = releaseService.createToolsReturn(token, stageId, tools)
+                releaseDAOs.add(toolsReleaseDAOs)
+            }
+            Result.Success(releaseDAOs)
+        } catch (e: Exception) {
+            Log.e(TAG, Log.getStackTraceString(e))
             Result.Error(e)
         }
     }

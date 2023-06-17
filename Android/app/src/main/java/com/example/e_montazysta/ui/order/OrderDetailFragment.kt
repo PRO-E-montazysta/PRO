@@ -18,13 +18,18 @@ class OrderDetailFragment : Fragment() {
     private lateinit var orderDetailAdapter: OrderDetailAdapter
     private lateinit var viewPager: ViewPager2
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         val args: OrderDetailFragmentArgs by navArgs()
         val orderId = args.orderId
 
         // Get a reference to the binding object and inflate the fragment views.
-        val binding: FragmentOrderDetailBinding = FragmentOrderDetailBinding.inflate(inflater, container, false)
+        val binding: FragmentOrderDetailBinding =
+            FragmentOrderDetailBinding.inflate(inflater, container, false)
 
         orderDetailViewModel.getOrderDetail(orderId)
         viewPager = binding.pager
@@ -32,7 +37,7 @@ class OrderDetailFragment : Fragment() {
         orderDetailViewModel.orderdetail.observe(viewLifecycleOwner, Observer {
             it?.let {
                 orderDetailAdapter = OrderDetailAdapter(this, it)
-                viewPager.adapter  = orderDetailAdapter
+                viewPager.adapter = orderDetailAdapter
                 val tabLayout = binding.tabs
                 TabLayoutMediator(tabLayout, viewPager) { tab, position ->
                     tab.text = when (position) {
@@ -45,8 +50,8 @@ class OrderDetailFragment : Fragment() {
         })
 
         // Wyświetlanie błędów
-        orderDetailViewModel.messageLiveData.observe(viewLifecycleOwner) {
-                errorMessage -> Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+        orderDetailViewModel.messageLiveData.observe(viewLifecycleOwner) { errorMessage ->
+            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
         }
 
         // Specify the current activity as the lifecycle owner of the binding.

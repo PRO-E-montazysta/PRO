@@ -20,8 +20,6 @@ import { Unavailability } from '../../types/model/Unavailability'
 
 const Calendar = () => {
     const [popupEventInfo, setPopupEventInfo] = useState<PopupEventInfo>(cleanEventInfo)
-    const [filterOpen, setFilterOpen] = useState<boolean>(false)
-
     const [currentDate, setCurrentDate] = useState(moment())
     const unavailabilityListByMonth = useUnavailabilityListByMonth(currentDate.year(), currentDate.month() + 1)
     const [events, setEvents] = useState<EventInput[]>([])

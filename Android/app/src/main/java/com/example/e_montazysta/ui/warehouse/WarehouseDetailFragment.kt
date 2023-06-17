@@ -7,28 +7,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
-import com.example.e_montazysta.helpers.DateUtil
-import com.example.e_montazysta.ui.warehouse.WarehouseDetailFragmentArgs
-import com.example.e_montazysta.ui.warehouse.WarehouseDetailViewModel
+import com.example.e_montazysta.databinding.FragmentWarehouseDetailBinding
 import com.google.android.material.appbar.MaterialToolbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.system.measureTimeMillis
-import android.content.ContentValues.TAG
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import com.example.e_montazysta.databinding.FragmentWarehouseDetailBinding
 
 class WarehouseDetailFragment : Fragment() {
     private val viewModel: WarehouseDetailViewModel by viewModel()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         val args: WarehouseDetailFragmentArgs by navArgs()
         val warehouseId = args.warehouseId
 
         // Get a reference to the binding object and inflate the fragment views.
-        val binding: FragmentWarehouseDetailBinding = FragmentWarehouseDetailBinding.inflate(inflater, container, false)
+        val binding: FragmentWarehouseDetailBinding =
+            FragmentWarehouseDetailBinding.inflate(inflater, container, false)
         val application = requireNotNull(this.activity).application
 
         // To use the View Model with data binding, you have to explicitly
@@ -65,8 +66,8 @@ class WarehouseDetailFragment : Fragment() {
         }
 
         // Wyświetlanie błędów
-        viewModel.messageLiveData.observe(viewLifecycleOwner) {
-                errorMessage -> Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+        viewModel.messageLiveData.observe(viewLifecycleOwner) { errorMessage ->
+            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
         }
 
         return binding.root

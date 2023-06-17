@@ -40,16 +40,16 @@ class ToolDetailViewModel(private val repository: IToolRepository) : ViewModel()
 
     private suspend fun getToolDetailAsync(id: Int) {
         _isLoadingLiveData.postValue(true)
-            val result = repository.getToolDetails(id)
-            when (result) {
-                is Result.Success -> _eventLiveData.postValue( result.data )
-                is Result.Error -> {
-                    throw result.exception
-                    Log.e("getTool", getStackTraceString(result.exception))
-                    result.exception.message?.let { _messageLiveData.postValue(it) }
-                    _isLoadingLiveData.postValue(false)
-                }
+        val result = repository.getToolDetails(id)
+        when (result) {
+            is Result.Success -> _eventLiveData.postValue(result.data)
+            is Result.Error -> {
+                throw result.exception
+                Log.e("getTool", getStackTraceString(result.exception))
+                result.exception.message?.let { _messageLiveData.postValue(it) }
+                _isLoadingLiveData.postValue(false)
             }
+        }
         _isLoadingLiveData.postValue(false)
     }
 

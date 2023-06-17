@@ -8,7 +8,8 @@ import com.example.e_montazysta.helpers.Interfaces.ISharedPreferencesHelper
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class CommentRepository (private val serviceProvider: IServiceProvider): ICommentRepository, KoinComponent{
+class CommentRepository(private val serviceProvider: IServiceProvider) : ICommentRepository,
+    KoinComponent {
     private val sharedPreferencesHelper: ISharedPreferencesHelper by inject()
     private val token = "Bearer " + sharedPreferencesHelper.get("lama").toString()
 

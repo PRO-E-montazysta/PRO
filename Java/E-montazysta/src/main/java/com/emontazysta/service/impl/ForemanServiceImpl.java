@@ -1,9 +1,11 @@
 package com.emontazysta.service.impl;
 
 import com.emontazysta.enums.Role;
+import com.emontazysta.mail.MailTemplates;
 import com.emontazysta.mapper.EmploymentMapper;
 import com.emontazysta.mapper.ForemanMapper;
 import com.emontazysta.mapper.WorkingOnMapper;
+import com.emontazysta.model.EmailData;
 import com.emontazysta.model.Foreman;
 import com.emontazysta.model.dto.EmployeeDto;
 import com.emontazysta.model.dto.EmploymentDto;
@@ -13,8 +15,10 @@ import com.emontazysta.model.searchcriteria.AppUserSearchCriteria;
 import com.emontazysta.repository.ForemanRepository;
 import com.emontazysta.repository.criteria.AppUserCriteriaRepository;
 import com.emontazysta.repository.EmploymentRepository;
+import com.emontazysta.service.EmailService;
 import com.emontazysta.service.ForemanService;
 import com.emontazysta.util.AuthUtils;
+import com.emontazysta.util.PasswordGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,6 +43,7 @@ public class ForemanServiceImpl implements ForemanService {
     private final AppUserCriteriaRepository appUserCriteriaRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final WorkingOnMapper workingOnMapper;
+    private final EmailService emailService;
 
     @Override
     public List<ForemanDto> getAll(Principal principal) {
@@ -72,8 +77,9 @@ public class ForemanServiceImpl implements ForemanService {
 
     @Override
     public ForemanDto add(ForemanDto foremanDto) {
+        String password = PasswordGenerator.generatePassword(10);
         foremanDto.setUsername(foremanDto.getUsername().toLowerCase());
-        foremanDto.setPassword(bCryptPasswordEncoder.encode(foremanDto.getPassword()));
+        foremanDto.setPassword(bCryptPasswordEncoder.encode(password));
         foremanDto.setRoles(Set.of(Role.FOREMAN));
         foremanDto.setUnavailabilities(new ArrayList<>());
         foremanDto.setNotifications(new ArrayList<>());
@@ -95,6 +101,15 @@ public class ForemanServiceImpl implements ForemanService {
                 .employeeId(foreman.getId())
                 .build();
         employmentRepository.save(employmentMapper.toEntity(employmentDto));
+
+        emailService.sendEmail(
+                EmailData.builder()
+                        .to(foremanDto.getEmail())
+                        .message(MailTemplates.employeeCreate(foremanDto.getUsername(),
+                                password, foremanDto.getFirstName(), foremanDto.getLastName()))
+                        .subject("Witaj w E-Montażysta!")
+                        .build()
+        );
 
         return foremanMapper.toDto(foreman);
     }

@@ -52,6 +52,19 @@
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 />
 
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/empty_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Nie znaleziono żadnych elementów."
+                android:visibility="gone"
+                android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <ProgressBar
                 android:id="@+id/loading_indicator"
                 android:layout_width="wrap_content"

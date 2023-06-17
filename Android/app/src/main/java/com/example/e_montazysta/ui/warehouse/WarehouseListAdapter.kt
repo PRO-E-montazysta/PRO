@@ -6,14 +6,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.e_montazysta.databinding.ListItemWarehouseBinding
 
 
-class WarehouseListAdapter(val clickListener: CustomClickListener) : RecyclerView.Adapter<WarehouseListAdapter.ViewHolder>(){
+class WarehouseListAdapter(val clickListener: CustomClickListener) :
+    RecyclerView.Adapter<WarehouseListAdapter.ViewHolder>() {
 
     var warehouses = listOf<WarehouseFilterDAO>()
-
         set(value) {
             field = value
             notifyDataSetChanged()
         }
+
     override fun getItemCount(): Int {
         return warehouses.size
     }
@@ -27,13 +28,15 @@ class WarehouseListAdapter(val clickListener: CustomClickListener) : RecyclerVie
         holder.bind(item, clickListener)
     }
 
-    class ViewHolder( val binding: ListItemWarehouseBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(val binding: ListItemWarehouseBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: WarehouseFilterDAO, clickListener: CustomClickListener) {
             binding.warehouse = data
             binding.itemClickListener = clickListener
             binding.executePendingBindings()
         }
+
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
