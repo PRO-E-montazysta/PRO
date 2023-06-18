@@ -264,14 +264,10 @@ public class DataSeeding {
                 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), company1));
 
         Tool tool1 = toolRepository.save(new Tool(null, "Tool 1", LocalDateTime.now(), "T|HARDCODED-TOOL1",
-                new ArrayList<>(), warehouse1, new ArrayList<>(), toolType1));
-        Tool tool2 = toolRepository.save(new Tool(null, "Tool 2", LocalDateTime.now(), "T|HARDCODED-TOOL2",
                 new ArrayList<>(), warehouse2, new ArrayList<>(), toolType1));
 
-        ToolRelease toolRelease1 = addToolReleaseFromModel(new ToolRelease(null, LocalDateTime.now(), LocalDateTime.now(),
-                warehouseman1, tool1, null, orderStage5));
-        ToolRelease toolRelease2 = addToolReleaseFromModel(new ToolRelease(null, LocalDateTime.now(), null,
-                warehouseManager1, tool2, null, orderStage5));
+        ToolRelease toolRelease1 = addToolReleaseFromModel(new ToolRelease(null, LocalDateTime.now(), null,
+                warehouseManager1, tool1, null, orderStage5));
 
 
         Element element1 = elementRepository.save(new Element(null, "Element 1", "E|HARDCODED-ELEMENT1", TypeOfUnit.KILOGRAM,
