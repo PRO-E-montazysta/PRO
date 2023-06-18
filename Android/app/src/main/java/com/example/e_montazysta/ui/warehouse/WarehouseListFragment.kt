@@ -81,7 +81,6 @@ class WarehouseListFragment : Fragment() {
                 }
             }
         })
-
         return binding.root
 
     }

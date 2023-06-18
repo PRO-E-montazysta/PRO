@@ -80,8 +80,7 @@ class EventDetailFragment : Fragment() {
         toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
         }
-
-
+        
         return binding.root
     }
 }
