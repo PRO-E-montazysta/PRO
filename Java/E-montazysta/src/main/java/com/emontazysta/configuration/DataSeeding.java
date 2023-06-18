@@ -245,7 +245,7 @@ public class DataSeeding {
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), order1, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         OrderStage orderStage5 = addOrderStageFromModel(new OrderStage(null, "Etap zwracania",
-                OrderStageStatus.RETURN, new BigDecimal(1), LocalDateTime.now(), LocalDateTime.now().plusHours(1), LocalDateTime.now(), LocalDateTime.now().plusHours(1),
+                OrderStageStatus.RETURN, new BigDecimal(1), LocalDateTime.now(), LocalDateTime.now().plusHours(1), LocalDateTime.now(), null,
                 1, 1, 1, new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), order5, new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
@@ -262,22 +262,16 @@ public class DataSeeding {
 
         ToolType toolType1 = addToolTypeFromModel(new ToolType(null, "ToolType 1",
                 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), company1));
-        ToolType toolType2 = addToolTypeFromModel(new ToolType(null, "ToolType 2",
-                2, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), company1));
 
         Tool tool1 = toolRepository.save(new Tool(null, "Tool 1", LocalDateTime.now(), "T|HARDCODED-TOOL1",
                 new ArrayList<>(), warehouse1, new ArrayList<>(), toolType1));
         Tool tool2 = toolRepository.save(new Tool(null, "Tool 2", LocalDateTime.now(), "T|HARDCODED-TOOL2",
-                new ArrayList<>(), warehouse2, new ArrayList<>(), toolType2));
+                new ArrayList<>(), warehouse2, new ArrayList<>(), toolType1));
 
         ToolRelease toolRelease1 = addToolReleaseFromModel(new ToolRelease(null, LocalDateTime.now(), LocalDateTime.now(),
-                null, tool1, null, orderStage5));
-        ToolRelease toolRelease2 = addToolReleaseFromModel(new ToolRelease(null, LocalDateTime.now(), LocalDateTime.now(),
-                null, tool2, null, orderStage5));
-        ToolRelease toolRelease3 = addToolReleaseFromModel(new ToolRelease(null, LocalDateTime.now(), null,
-                null, tool1, null, orderStage5));
-        ToolRelease toolRelease4 = addToolReleaseFromModel(new ToolRelease(null, LocalDateTime.now(), null,
-                null, tool2, null, orderStage5));
+                warehouseman1, tool1, null, orderStage5));
+        ToolRelease toolRelease2 = addToolReleaseFromModel(new ToolRelease(null, LocalDateTime.now(), null,
+                warehouseManager1, tool2, null, orderStage5));
 
 
         Element element1 = elementRepository.save(new Element(null, "Element 1", "E|HARDCODED-ELEMENT1", TypeOfUnit.KILOGRAM,
@@ -295,14 +289,13 @@ public class DataSeeding {
                 2, "2", "2", element2, warehouse2));
 
         ElementReturnRelease elementReturnRelease1 = addElementReturnReleaseFromModel(new ElementReturnRelease(null,
-                LocalDateTime.now(), 10, 1, LocalDateTime.now(), warehouseman1, element1,
+                LocalDateTime.now(), 10, 0, null, warehouseman1, element1,
                 null, orderStage5));
         ElementReturnRelease elementReturnRelease2 = addElementReturnReleaseFromModel(new ElementReturnRelease(null,
                 LocalDateTime.now(), 5, 0, null, warehouseman1, element2,
                 null, orderStage5));
 
         toolsPlannedNumberRepository.save(new ToolsPlannedNumber(null, 1, toolType1, orderStage6, null));
-        toolsPlannedNumberRepository.save(new ToolsPlannedNumber(null, 2, toolType2, orderStage6, null));
         elementsPlannedNumberRepository.save(new ElementsPlannedNumber(null, 1, element1, orderStage6, null));
         elementsPlannedNumberRepository.save(new ElementsPlannedNumber(null, 2, element2, orderStage6, null));
 
