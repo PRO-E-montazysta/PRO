@@ -24,7 +24,7 @@ class DateUtil {
         fun toJsonString(dateString: String): String {
             val date = dateFormat.parse(dateString)
             val serverDateFormat =
-                SimpleDateFormat(CustomDateAdapter.SERVER_FORMAT, Locale.getDefault())
+                SimpleDateFormat(CustomDateAdapter.TARGET_FORMAT, Locale.getDefault())
             return serverDateFormat.format(date)
         }
     }

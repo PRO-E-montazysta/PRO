@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/sort"
-        android:title="Filters"
-        android:icon="@drawable/baseline_sort_24"
-        android:contentDescription="Filters"
-        app:showAsAction="ifRoom"/>
+<!--    <item-->
+<!--        android:id="@+id/sort"-->
+<!--        android:title="Filters"-->
+<!--        android:icon="@drawable/baseline_sort_24"-->
+<!--        android:contentDescription="Filters"-->
+<!--        app:showAsAction="ifRoom"/>-->
     <item
         android:id="@+id/filter"
         android:title="Filters"

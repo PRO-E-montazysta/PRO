@@ -98,6 +98,13 @@ class OrderDetailDetailsFragment(val order: Order) : Fragment() {
                 it.editedAt?.let {
                     binding.editedAtValue.text = DateFormat.getDateTimeInstance().format(it)
                 }
+                it.plannedStart?.let {
+                    binding.plannedStartValue.text = DateFormat.getDateTimeInstance().format(it)
+                }
+
+                it.plannedEnd?.let {
+                    binding.plannedEndValue.text = DateFormat.getDateTimeInstance().format(it)
+                }
 
             }
         })

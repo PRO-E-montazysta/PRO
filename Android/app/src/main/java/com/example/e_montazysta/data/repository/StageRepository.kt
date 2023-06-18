@@ -48,4 +48,14 @@ class StageRepository(private val serviceProvider: IServiceProvider) : IStageRep
             Result.Error(e)
         }
     }
+
+    override suspend fun nextOrderStatus(id: Int): Result<Stage> {
+        return try {
+            val stageService = serviceProvider.getStageService()
+            val stageDAO = stageService.nextOrderStatus(token, id)
+            val stageDetail = stageDAO.mapToStage()
+            Result.Success(stageDetail)
+        } catch (e: Exception) {
+            Result.Error(e)
+        }    }
 }

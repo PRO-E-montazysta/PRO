@@ -55,6 +55,7 @@ import com.example.e_montazysta.ui.toollist.ToolsListViewModel
 import com.example.e_montazysta.ui.user.UserDetailViewModel
 import com.example.e_montazysta.ui.user.UserListViewModel
 import com.example.e_montazysta.ui.viewmodels.DashboardViewModel
+import com.example.e_montazysta.ui.viewmodels.QRScanViewModel
 import com.example.e_montazysta.ui.warehouse.WarehouseDetailViewModel
 import com.example.e_montazysta.ui.warehouse.WarehouseListViewModel
 import com.squareup.moshi.Moshi
@@ -251,5 +252,8 @@ val dataModule = module {
     }
     viewModel {
         ReturnCreateViewModel()
+    }
+    viewModel {
+        QRScanViewModel()
     }
 }
