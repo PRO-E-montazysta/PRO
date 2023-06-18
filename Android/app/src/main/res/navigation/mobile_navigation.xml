@@ -165,6 +165,31 @@
         <argument
             android:name="elementId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_elementDetailFragment_to_elementInWarehousesListFragment"
+            app:destination="@id/elementInWarehousesListFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/elementInWarehousesListFragment"
+        android:name="com.example.e_montazysta.ui.element_in_warehouse.ElementInWarehousesListFragment"
+        android:label="ElementInWarehousesListFragment">
+        <argument
+            android:name="elementInWarehouseId"
+            app:argType="integer"/>
+        <action
+            android:id="@+id/action_elementInWarehousesListFragment_to_elementInWarehouseDetailFragment"
+            app:destination="@+id/elementInWarehouseDetailFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/elementInWarehouseDetailFragment"
+        android:name="com.example.e_montazysta.ui.element_in_warehouse.ElementInWarehouseDetailFragment"
+        android:label="ElementInWarehouseDetailFragment">
+        <argument
+            android:name="elementInWarehouseId"
+            app:argType="integer" />
+        <argument
+            android:name="elementName"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/notificationListFragment"

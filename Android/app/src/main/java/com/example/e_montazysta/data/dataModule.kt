@@ -4,6 +4,7 @@ import com.example.e_montazysta.data.environments.Environment
 import com.example.e_montazysta.data.network.NetworkServiceFactory
 import com.example.e_montazysta.data.network.ServiceFactory
 import com.example.e_montazysta.data.repository.CommentRepository
+import com.example.e_montazysta.data.repository.ElementInWarehouseRepository
 import com.example.e_montazysta.data.repository.ElementRepository
 import com.example.e_montazysta.data.repository.EventRepository
 import com.example.e_montazysta.data.repository.LocationRepository
@@ -16,6 +17,7 @@ import com.example.e_montazysta.data.repository.ToolTypeRepository
 import com.example.e_montazysta.data.repository.UserRepository
 import com.example.e_montazysta.data.repository.WarehouseRepository
 import com.example.e_montazysta.data.repository.interfaces.ICommentRepository
+import com.example.e_montazysta.data.repository.interfaces.IElementInWarehouseRepository
 import com.example.e_montazysta.data.repository.interfaces.IElementRepository
 import com.example.e_montazysta.data.repository.interfaces.IEventRepository
 import com.example.e_montazysta.data.repository.interfaces.ILocationRepository
@@ -32,6 +34,8 @@ import com.example.e_montazysta.data.services.ServiceProvider
 import com.example.e_montazysta.helpers.CustomDateAdapter
 import com.example.e_montazysta.ui.element.ElementDetailViewModel
 import com.example.e_montazysta.ui.element.ElementsListViewModel
+import com.example.e_montazysta.ui.element_in_warehouse.ElementInWarehouseDetailViewModel
+import com.example.e_montazysta.ui.element_in_warehouse.ElementInWarehousesListViewModel
 import com.example.e_montazysta.ui.event.EventDetailViewModel
 import com.example.e_montazysta.ui.event.EventListViewModel
 import com.example.e_montazysta.ui.notification.NotificationListViewModel
@@ -155,10 +159,16 @@ val dataModule = module {
         warehouseRepository
     }
 
-    factory{
+    factory {
         val locationRepository: ILocationRepository =
             LocationRepository(get())
         locationRepository
+    }
+
+    factory {
+        val elementInWarehouseRepository: IElementInWarehouseRepository =
+            ElementInWarehouseRepository(get())
+        elementInWarehouseRepository
     }
 
     viewModel {
@@ -207,11 +217,17 @@ val dataModule = module {
     viewModel {
         EventDetailViewModel(get())
     }
-    viewModel{
+    viewModel {
         WarehouseListViewModel(get())
     }
-    viewModel{
+    viewModel {
         WarehouseDetailViewModel(get())
+    }
+    viewModel {
+        ElementInWarehouseDetailViewModel(get())
+    }
+    viewModel {
+        ElementInWarehousesListViewModel(get())
     }
 
 }
