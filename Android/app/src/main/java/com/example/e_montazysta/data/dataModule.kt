@@ -10,6 +10,7 @@ import com.example.e_montazysta.data.repository.EventRepository
 import com.example.e_montazysta.data.repository.LocationRepository
 import com.example.e_montazysta.data.repository.NotificationRepository
 import com.example.e_montazysta.data.repository.OrderRepository
+import com.example.e_montazysta.data.repository.PlannedItemRepository
 import com.example.e_montazysta.data.repository.ReleaseRepository
 import com.example.e_montazysta.data.repository.StageRepository
 import com.example.e_montazysta.data.repository.ToolRepository
@@ -23,6 +24,7 @@ import com.example.e_montazysta.data.repository.interfaces.IEventRepository
 import com.example.e_montazysta.data.repository.interfaces.ILocationRepository
 import com.example.e_montazysta.data.repository.interfaces.INotificationRepository
 import com.example.e_montazysta.data.repository.interfaces.IOrderRepository
+import com.example.e_montazysta.data.repository.interfaces.IPlannedItemRepository
 import com.example.e_montazysta.data.repository.interfaces.IReleaseRepository
 import com.example.e_montazysta.data.repository.interfaces.IStageRepository
 import com.example.e_montazysta.data.repository.interfaces.IToolRepository
@@ -31,6 +33,7 @@ import com.example.e_montazysta.data.repository.interfaces.IUserRepository
 import com.example.e_montazysta.data.repository.interfaces.IWarehouseRepository
 import com.example.e_montazysta.data.services.IServiceProvider
 import com.example.e_montazysta.data.services.ServiceProvider
+import com.example.e_montazysta.helpers.BigDecimalAdapter
 import com.example.e_montazysta.helpers.CustomDateAdapter
 import com.example.e_montazysta.ui.element.ElementDetailViewModel
 import com.example.e_montazysta.ui.element.ElementsListViewModel
@@ -44,10 +47,13 @@ import com.example.e_montazysta.ui.order.OrderListViewModel
 import com.example.e_montazysta.ui.release.ReleaseCreateViewModel
 import com.example.e_montazysta.ui.release.ReleaseDetailViewModel
 import com.example.e_montazysta.ui.release.ReleaseListViewModel
+import com.example.e_montazysta.ui.returnitem.ReturnCreateViewModel
 import com.example.e_montazysta.ui.stage.StageDetailViewModel
 import com.example.e_montazysta.ui.stage.StageListViewModel
 import com.example.e_montazysta.ui.toollist.ToolDetailViewModel
 import com.example.e_montazysta.ui.toollist.ToolsListViewModel
+import com.example.e_montazysta.ui.user.UserDetailViewModel
+import com.example.e_montazysta.ui.user.UserListViewModel
 import com.example.e_montazysta.ui.viewmodels.DashboardViewModel
 import com.example.e_montazysta.ui.warehouse.WarehouseDetailViewModel
 import com.example.e_montazysta.ui.warehouse.WarehouseListViewModel
@@ -58,6 +64,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Converter
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.math.BigDecimal
 import java.util.Date
 
 val dataModule = module {
@@ -66,6 +73,7 @@ val dataModule = module {
             Moshi.Builder()
                 .add(KotlinJsonAdapterFactory())
                 .add(Date::class.java, CustomDateAdapter().nullSafe())
+                .add(BigDecimal::class.java, BigDecimalAdapter().nullSafe())
                 .build()
         moshi
     }
@@ -170,6 +178,12 @@ val dataModule = module {
             ElementInWarehouseRepository(get())
         elementInWarehouseRepository
     }
+    
+    factory {
+      val plannedItemRepository: IPlannedItemRepository =
+            PlannedItemRepository(get())
+        plannedItemRepository
+    }
 
     viewModel {
         ToolsListViewModel(get())
@@ -229,5 +243,13 @@ val dataModule = module {
     viewModel {
         ElementInWarehousesListViewModel(get())
     }
-
+    viewModel {
+        UserDetailViewModel(get())
+    }
+    viewModel {
+        UserListViewModel(get())
+    }
+    viewModel {
+        ReturnCreateViewModel()
+    }
 }

@@ -1,47 +1,57 @@
-import { Grid, Paper, Box, Button, Tabs, Tab, Typography, CardActions } from '@mui/material'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
+import AssignmentIcon from '@mui/icons-material/Assignment'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { Box, Button, CardActions, Grid, Paper, Tab, Tabs, Typography } from '@mui/material'
+import Card from '@mui/material/Card'
+import Collapse from '@mui/material/Collapse'
+import IconButton from '@mui/material/IconButton'
+import { DatePicker, TimePicker } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { DateValidationError, TimeValidationError } from '@mui/x-date-pickers/models'
+import { AxiosError } from 'axios'
 import dayjs, { Dayjs } from 'dayjs'
 import { useFormik } from 'formik'
+import { useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useQuery, useQueryClient } from 'react-query'
 import { useParams } from 'react-router-dom'
-import { useContext, useEffect, useMemo, useRef, useState } from 'react'
-import { DatePicker, TimePicker } from '@mui/x-date-pickers'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { DateValidationError } from '@mui/x-date-pickers/models'
-import { OrderStage } from '../../types/model/OrderStage'
-import IconButton from '@mui/material/IconButton'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import Card from '@mui/material/Card'
-import AssignmentIcon from '@mui/icons-material/Assignment'
-import Collapse from '@mui/material/Collapse'
-import { ExpandMore, TabPanel, validationSchema } from './helper'
-import { getRolesFromToken } from '../../utils/token'
-import { useQuery } from 'react-query'
-import { AxiosError } from 'axios'
-import { getAllToolTypes, getPlannedToolTypesById } from '../../api/toolType.api'
 import { getAllElements, getPlannedElementById } from '../../api/element.api'
-import { useAddOrderStage, useOrderStageNextStatus, useOrderStagePreviousStatus, useUpdateOrderStage } from './hooks'
+import { getOrderDetails } from '../../api/order.api'
+import { getAllToolTypes, getPlannedToolTypesById } from '../../api/toolType.api'
+import useAttachmentData from '../../components/attachments/AttachmentData.hook'
+import Attachments from '../../components/attachments/Attachments'
+import { deleteFilesFromServer, saveNewFiles } from '../../components/attachments/attachments.helper'
 import { CustomTextField } from '../../components/form/FormInput'
-import { v4 as uuidv4 } from 'uuid'
-import { ToolType } from '../../types/model/ToolType'
-import OrderStageToolsTable from './OrderStageToolsTable'
-import OrderStageElementsTable from './OrderStageElementsTable'
-import { Role } from '../../types/roleEnum'
-import { isAuthorized } from '../../utils/authorize'
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import { orderStageStatusName } from '../../helpers/enum.helper'
 import useBreakpoints from '../../hooks/useBreakpoints'
 import { DialogGlobalContext } from '../../providers/DialogGlobalProvider'
-import { orderStageStatusName } from '../../helpers/enum.helper'
+import { Order } from '../../types/model/Order'
+import { OrderStage } from '../../types/model/OrderStage'
+import { ToolType } from '../../types/model/ToolType'
+import { Role } from '../../types/roleEnum'
+import { isAuthorized } from '../../utils/authorize'
+import { getRolesFromToken } from '../../utils/token'
+import PlannerStageDetails from '../orders/PlannerStageDetails'
+import OrderStageElementsTable from './OrderStageElementsTable'
+import OrderStageToolsTable from './OrderStageToolsTable'
+import { ExpandMore, TabPanel, validationSchema } from './helper'
+import { useAddOrderStage, useOrderStageNextStatus, useOrderStagePreviousStatus, useUpdateOrderStage } from './hooks'
+import { PageMode } from '../../types/form'
+import { useOrderData } from '../orders/hooks'
+import { canChangeToNextStatus, canChangeToPreviousStatus, validateNextOrderStageStatus } from './statusValidation'
 
 type OrderStageCardProps = {
     index?: string
     stage?: OrderStage
-    isLoading: boolean
-    isDisplaying: boolean
+    addingNewStag: boolean
+    setAddingNewStage: (value: boolean) => void
 }
 
-const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCardProps) => {
+const OrderStageCard = ({ index, stage, addingNewStag, setAddingNewStage }: OrderStageCardProps) => {
+    const [stageMode, setStageMode] = useState<PageMode>(addingNewStag ? 'new' : 'read')
     const [tabValue, setTabValue] = useState(0)
+    const [userRole, setUserRole] = useState('')
     const [expandedInformation, setExpandedInformation] = useState(false)
     const [plannedStartDate, setPlannedStartDate] = useState<Dayjs | null>(
         dayjs(stage?.plannedStartDate ? stage?.plannedStartDate : null),
@@ -54,9 +64,8 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
     )
     const [preparedPlannedStartDate, setPreparedPlannedStartDate] = useState('')
     const [preparedPlannedEndDate, setPreparedPlannedEndDate] = useState('')
-    const [userRole, setUserRole] = useState('')
-    const addOrderStage = useAddOrderStage()
-    const updateOrderStage = useUpdateOrderStage()
+    const addOrderStage = useAddOrderStage(() => onSaveOrderStageSucceess())
+    const updateOrderStage = useUpdateOrderStage(() => onSaveOrderStageSucceess())
     const appSize = useBreakpoints()
     const { showDialog } = useContext(DialogGlobalContext)
 
@@ -65,8 +74,51 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
     const plannedElementsRef = useRef<{ numberOfElements: number; elementId: string }[]>([])
     const plannedToolsTypesRef = useRef<{ numberOfTools: number; toolTypeId: string }[]>([])
     const [error, setError] = useState<DateValidationError | null>(null)
-    const [isEditing, setIsEditing] = useState(false)
-    const [isDisplayingMode, setIsDisplayingMode] = useState(isDisplaying)
+    const [startHourError, setStartHourError] = useState<TimeValidationError | null>(null)
+    const [endHourError, setEndHourError] = useState<TimeValidationError | null>(null)
+
+    useEffect(() => {
+        const role = getRolesFromToken()
+        if (role.length !== 0) setUserRole(role[0])
+    }, [])
+
+    const canBeEdittedBySpecialist = () => {
+        if (userRole === Role.SPECIALIST) {
+            return stageMode == 'read'
+        }
+
+        return true
+    }
+
+    const queryClient = useQueryClient()
+    //attachment functionality
+    const attachmentData = useAttachmentData({
+        idsOfFilesFromServer: stage?.attachments || [],
+    })
+    const onSaveOrderStageSucceess = async () => {
+        const saveResult = await saveNewFiles(attachmentData.fileListLocal, stage?.id)
+        const deleteResult = await deleteFilesFromServer(attachmentData.fileIdsFromServerToDelete)
+        const attachmentResult = saveResult && deleteResult
+        let message = stageMode == 'edit' ? 'Zedytowano etap pomyślnie' : 'Nowy etap utworzono pomyślnie'
+        if (!attachmentResult) message += ', jednak wystąpił błąd zapisu załączników'
+        showDialog({
+            btnOptions: [
+                {
+                    text: 'OK',
+                    value: 0,
+                },
+            ],
+            title: attachmentResult ? 'Sukces' : 'Błąd zapisu załączników',
+            content: message,
+            callback: () => {
+                queryClient.refetchQueries({
+                    queryKey: ['orderStageForOrder', { id: params.id }],
+                })
+                setAddingNewStage(false)
+                setStageMode('read')
+            },
+        })
+    }
 
     const handleSetPlannedElements = (value: { numberOfElements: number; elementId: string }[]) => {
         plannedElementsRef!.current! = value
@@ -85,22 +137,20 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
         async () => await getAllElements(),
     )
 
-    useEffect(() => {
-        const role = getRolesFromToken()
-        if (role.length !== 0) setUserRole(role[0])
-    }, [])
-
-    useEffect(() => {
-        if (isDisplayingMode === false) {
+    useLayoutEffect(() => {
+        if (addingNewStag === true) {
             setExpandedInformation(true)
         }
-    }, [isDisplayingMode])
+    }, [addingNewStag])
 
     useEffect(() => {
         const date = dayjs(plannedStartDate).format('YYYY-MM-DDTHH:mm:ss.SSS')
         const hours = dayjs(plannedStartHour).format('HH:mm:ss.SSS')
         const preparedDate = date.substring(0, date.indexOf('T') + 1).replace('T', 'T' + hours)
         setPreparedPlannedStartDate(preparedDate)
+        if (plannedStartHour?.toString() != 'Invalid Date' && plannedStartDate) {
+            formik.setFieldValue('plannedStartDate', preparedDate)
+        }
     }, [plannedStartHour, plannedStartDate])
 
     useEffect(() => {
@@ -108,6 +158,13 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
         const hours = dayjs(plannedFinishHour).format('HH:mm:ss.SSS')
         const preparedDate = date.substring(0, date.indexOf('T') + 1).replace('T', 'T' + hours)
         setPreparedPlannedEndDate(preparedDate)
+        if (plannedFinishHour?.toString() != 'Invalid Date' && plannedStartDate) {
+            const isEndDateBeforeStartDay = dayjs(preparedPlannedStartDate).isAfter(dayjs(preparedDate))
+            if (!isEndDateBeforeStartDay) {
+                formik.setFieldValue('plannedEndDate', preparedDate)
+                setEndHourError('disablePast')
+            }
+        }
     }, [plannedFinishHour, plannedStartDate])
 
     const tabProps = (index: number) => {
@@ -160,8 +217,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
     }
 
     const handleEditButtonAction = () => {
-        setIsEditing(true)
-        setIsDisplayingMode(false)
+        setStageMode('edit')
         handleSetToolsTypeOnEdit()
         handleSetElementsOnEdit()
     }
@@ -171,33 +227,47 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
         plannedToolsTypesRef.current! = []
         setPreparedPlannedStartDate('')
         setPreparedPlannedEndDate('')
-        setPlannedStartDate(dayjs(stage!.plannedStartDate))
-        setPlannedStartHour(dayjs(stage!.plannedStartDate))
-        setPlannedFinishHour(dayjs(stage!.plannedEndDate))
+        if (stage) {
+            setPlannedStartDate(dayjs(stage.plannedStartDate))
+            setPlannedStartHour(dayjs(stage.plannedStartDate))
+            setPlannedFinishHour(dayjs(stage.plannedEndDate))
+        } else {
+            setPlannedStartDate(null)
+            setPlannedStartHour(null)
+            setPlannedFinishHour(null)
+        }
         formik.resetForm()
     }
     const handleCancelButtonAction = () => {
-        setIsEditing(false)
-        setIsDisplayingMode(true)
+        setStageMode('read')
+        setAddingNewStage(false)
         handleResetFormik()
+        attachmentData.handleReset()
     }
 
-    const formik = useFormik({
-        initialValues: {
+    const mapStageToFormik = (stage?: OrderStage) => {
+        return {
             orderId: params.id!,
-            orderStageId: !!stage && stage.id ? stage!.id.toString() : '',
-            name: isDisplayingMode ? stage!.name : '',
-            status: isDisplayingMode ? stage!.status : null,
-            price: isDisplayingMode ? stage!.price : '',
-            plannedStartDate: isDisplayingMode ? stage!.plannedStartDate : '',
-            plannedEndDate: isDisplayingMode ? stage!.plannedEndDate : '',
-            plannedFittersNumber: isDisplayingMode ? stage!.plannedFittersNumber : '',
-            minimumImagesNumber: isDisplayingMode ? stage!.minimumImagesNumber : '0',
-            listOfToolsPlannedNumber: isDisplayingMode ? stage!.listOfToolsPlannedNumber : [],
-            listOfElementsPlannedNumber: isDisplayingMode ? stage!.listOfElementsPlannedNumber : [],
-            attachments: [],
-            test: '',
-        },
+            orderStageId: !!stage && stage.id ? stage.id.toString() : '',
+            name: stage ? stage.name : '',
+            status: stage ? stage.status : null,
+            price: stage ? stage.price : '',
+            plannedStartDate: stage ? stage.plannedStartDate : '',
+            plannedEndDate: stage ? stage.plannedEndDate : '',
+            plannedFittersNumber: stage ? stage.plannedFittersNumber : '',
+            minimumImagesNumber: stage ? stage.minimumImagesNumber : '0',
+            listOfToolsPlannedNumber: stage ? stage.listOfToolsPlannedNumber : [],
+            listOfElementsPlannedNumber: stage ? stage.listOfElementsPlannedNumber : [],
+            attachments: stage && stage.attachments ? stage.attachments : [],
+            fitters: stage && stage.fitters ? stage.fitters : [],
+        }
+    }
+    useLayoutEffect(() => {
+        formik.setValues(mapStageToFormik(stage))
+    }, [stage])
+
+    const formik = useFormik({
+        initialValues: mapStageToFormik(stage),
         validationSchema: validationSchema,
         onSubmit: (values) => {
             values.listOfElementsPlannedNumber = plannedElementsRef.current!
@@ -205,7 +275,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
             values.plannedStartDate = preparedPlannedStartDate
             values.plannedEndDate = preparedPlannedEndDate
 
-            if (isEditing) {
+            if (stageMode == 'edit') {
                 return updateOrderStage.mutate(values)
             }
             addOrderStage.mutate(values)
@@ -224,6 +294,31 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
         }
     }, [error])
 
+    const errorStartHourMessage = useMemo(() => {
+        switch (error) {
+            case 'invalidDate': {
+                return 'Wprowadź poprawną godzinę'
+            }
+            default: {
+                return ''
+            }
+        }
+    }, [startHourError])
+
+    const errorEndHourMessage = useMemo(() => {
+        switch (error) {
+            case 'invalidDate': {
+                return 'Wprowadź poprawną godzinę'
+            }
+            case 'disablePast': {
+                return 'Godzina zakończenia nie może być mniejsza niż godzina rozpoczęcia'
+            }
+            default: {
+                return ''
+            }
+        }
+    }, [endHourError])
+
     const getDateInformations = (stage?: OrderStage) => {
         return (
             <Grid container spacing={{ xs: 2, md: 2 }} columns={{ xs: 2, sm: 4, md: 12 }}>
@@ -237,7 +332,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                 },
                             }}
                             label="Planowana data rozpoczęcia"
-                            disabled={isDisplayingMode}
+                            disabled={canBeEdittedBySpecialist()}
                             format="DD/MM/YYYY"
                             value={plannedStartDate}
                             onChange={(data) => {
@@ -254,7 +349,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                     </LocalizationProvider>
                 </Grid>
 
-                {isDisplayingMode ? (
+                {stageMode != 'new' ? (
                     <Grid item xs={6}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
@@ -263,11 +358,14 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     '& .MuiInputBase-input.Mui-disabled': {
                                         WebkitTextFillColor: '#000000',
                                     },
+                                    '.css-8skray-MuiFormLabel-root-MuiInputLabel-root.Mui-error': {
+                                        color: 'rgba(0, 0, 0, 0.38)',
+                                    },
                                 }}
-                                format="DD/MM/YYYY"
+                                format="DD/MM/YYYY HH:mm"
                                 label="Data rozpoczęcia"
-                                value={isDisplayingMode ? dayjs(stage!.startDate) : ''}
-                                disabled={isDisplayingMode}
+                                value={stage ? dayjs(stage.startDate) : ''}
+                                disabled={true}
                             />
                         </LocalizationProvider>
                     </Grid>
@@ -285,15 +383,22 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                             format={'HH:mm'}
                             ampm={false}
                             value={plannedStartHour}
-                            disabled={isDisplayingMode}
+                            disabled={canBeEdittedBySpecialist()}
                             onChange={(data) => {
+                                setStartHourError(null)
                                 setPlannedStartHour(data)
+                            }}
+                            onError={(error) => setStartHourError(error)}
+                            slotProps={{
+                                textField: {
+                                    helperText: errorStartHourMessage || '',
+                                },
                             }}
                         />
                     </LocalizationProvider>
                 </Grid>
 
-                {isDisplayingMode ? (
+                {stageMode != 'new' ? (
                     <Grid item xs={6}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
@@ -302,14 +407,14 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     '& .MuiInputBase-input.Mui-disabled': {
                                         WebkitTextFillColor: '#000000',
                                     },
+                                    '.css-8skray-MuiFormLabel-root-MuiInputLabel-root.Mui-error': {
+                                        color: 'rgba(0, 0, 0, 0.38)',
+                                    },
                                 }}
                                 label="Data zakończenia"
-                                disabled={isDisplayingMode}
-                                format="DD/MM/YYYY"
-                                value={isDisplayingMode ? dayjs(stage!.endDate) : ''}
-                                onChange={(data) => {
-                                    // const formattedDate = dayjs(data).format('YYYY-MM-DDTHH:mm:ss.SSS')
-                                }}
+                                disabled={true}
+                                format="DD/MM/YYYY HH:mm"
+                                value={stage ? dayjs(stage.endDate) : ''}
                             />
                         </LocalizationProvider>
                     </Grid>
@@ -323,13 +428,25 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     WebkitTextFillColor: '#000000',
                                 },
                             }}
-                            disabled={isDisplayingMode}
+                            disabled={canBeEdittedBySpecialist()}
                             label="Planowana godzina zakończenia"
                             ampm={false}
+                            minTime={plannedStartHour}
                             format={'HH:mm'}
                             value={plannedFinishHour}
                             onChange={(data) => {
+                                const isDateBeforeStartDate = dayjs(plannedStartHour).isAfter(data)
+                                if (isDateBeforeStartDate) {
+                                    return setError('disablePast')
+                                }
+                                setEndHourError(null)
                                 setPlannedFinishHour(data)
+                            }}
+                            onError={(error) => setEndHourError(error)}
+                            slotProps={{
+                                textField: {
+                                    helperText: errorEndHourMessage || '',
+                                },
                             }}
                         />
                     </LocalizationProvider>
@@ -338,10 +455,14 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
         )
     }
 
-    const canChangeToNextStatus = () => {
+    const queryOrder = useOrderData(stage ? stage.orderId.toString() : '')
+
+    const canEdit = () => {
         const orderStageStatus = stage?.status
         return (
-            (orderStageStatus == 'PLANNING' && isAuthorized([Role.SPECIALIST])) ||
+            (orderStageStatus == 'PLANNING' &&
+                isAuthorized([Role.SPECIALIST]) &&
+                queryOrder.data?.status != 'TO_ACCEPT') ||
             (orderStageStatus == 'ADDING_FITTERS' && isAuthorized([Role.FOREMAN])) ||
             (orderStageStatus == 'PICK_UP' && isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) ||
             (orderStageStatus == 'REALESED' && isAuthorized([Role.FOREMAN])) ||
@@ -351,33 +472,43 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
         )
     }
 
-    const canChangeToPreviousStatus = () => {
-        const orderStageStatus = stage?.status
-        return (
-            (orderStageStatus == 'ADDING_FITTERS' && isAuthorized([Role.FOREMAN])) ||
-            (orderStageStatus == 'PICK_UP' && isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) ||
-            (orderStageStatus == 'REALESED' && isAuthorized([Role.FOREMAN])) ||
-            (orderStageStatus == 'ON_WORK' && isAuthorized([Role.FOREMAN])) ||
-            (orderStageStatus == 'RETURN' && isAuthorized([Role.WAREHOUSE_MAN, Role.WAREHOUSE_MANAGER])) ||
-            (orderStageStatus == 'RETURNED' && isAuthorized([Role.FOREMAN])) ||
-            (orderStageStatus == 'FINISHED ' && isAuthorized([Role.FOREMAN]))
-        )
-    }
-
-    const orderNextStatusMutation = useOrderStageNextStatus(() => {})
-    const orderPreviousStatusMutation = useOrderStagePreviousStatus(() => {})
+    const orderNextStatusMutation = useOrderStageNextStatus(() => {
+        queryClient.refetchQueries({
+            queryKey: ['order', { id: stage?.orderId.toString() }],
+        })
+        queryClient.refetchQueries({
+            queryKey: ['orderStageForOrder', { id: stage?.orderId.toString() }],
+        })
+    })
+    const orderPreviousStatusMutation = useOrderStagePreviousStatus(() => {
+        queryClient.refetchQueries({
+            queryKey: ['order', { id: stage?.orderId.toString() }],
+        })
+        queryClient.refetchQueries({
+            queryKey: ['orderStageForOrder', { id: stage?.orderId.toString() }],
+        })
+    })
 
     const handleNextStatus = () => {
-        showDialog({
-            title: 'Czy na pewno chcesz zmienić status etapu na następny?',
-            btnOptions: [
-                { text: 'Tak', value: 1, variant: 'contained' },
-                { text: 'Anuluj', value: 0, variant: 'outlined' },
-            ],
-            callback: (result: number) => {
-                if (result == 1 && stage?.id!) orderNextStatusMutation.mutate(stage?.id!)
-            },
-        })
+        const validationResult = validateNextOrderStageStatus(stage)
+
+        if (validationResult.isValid)
+            showDialog({
+                title: 'Czy na pewno chcesz zmienić status etapu na następny?',
+                btnOptions: [
+                    { text: 'Tak', value: 1, variant: 'contained' },
+                    { text: 'Anuluj', value: 0, variant: 'outlined' },
+                ],
+                callback: (result: number) => {
+                    if (result == 1 && stage && stage.id) orderNextStatusMutation.mutate(stage.id)
+                },
+            })
+        else
+            showDialog({
+                title: 'Nie można zmienić statusu',
+                content: validationResult.message,
+                btnOptions: [{ text: 'Ok', value: 1, variant: 'contained' }],
+            })
     }
 
     const handlePreviousStatus = () => {
@@ -388,7 +519,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                 { text: 'Anuluj', value: 0, variant: 'outlined' },
             ],
             callback: (result: number) => {
-                if (result == 1 && stage?.id!) orderPreviousStatusMutation.mutate(stage?.id!)
+                if (result == 1 && stage && stage.id) orderPreviousStatusMutation.mutate(stage.id)
             },
         })
     }
@@ -400,7 +531,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                     <AssignmentIcon />
                 </IconButton>
                 <Typography variant="h5" color="text.secondary">
-                    {stage ? <Typography>Etap {stage.name}</Typography> : <Typography>Dodaj etap</Typography>}
+                    {stage ? `Etap - ${stage.name}` : `Nowy etap`}
                 </Typography>
                 <ExpandMore
                     expand={expandedInformation}
@@ -422,8 +553,8 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                     >
                         <Grid item xs={4} md={3}>
                             <CustomTextField
-                                readOnly={isDisplayingMode!}
-                                disabled={isDisplayingMode}
+                                readOnly={canBeEdittedBySpecialist()}
+                                disabled={canBeEdittedBySpecialist()}
                                 sx={{ width: '100%' }}
                                 id="standard-basic"
                                 variant="outlined"
@@ -435,24 +566,24 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                 helperText={formik.touched.name && formik.errors.name}
                             />
                         </Grid>
-                        {isDisplayingMode ? (
-                            <Grid item xs={4} md={3}>
-                                <CustomTextField
-                                    readOnly={isDisplayingMode!}
-                                    disabled={isDisplayingMode}
-                                    sx={{ width: '100%' }}
-                                    id="standard-basic"
-                                    variant="outlined"
-                                    label="Status"
-                                    name="status"
-                                    defaultValue={isDisplayingMode ? orderStageStatusName(stage!.status) : null}
-                                />
-                            </Grid>
-                        ) : null}
+
                         <Grid item xs={4} md={3}>
                             <CustomTextField
-                                readOnly={isDisplayingMode!}
-                                disabled={isDisplayingMode}
+                                readOnly={true}
+                                disabled={true}
+                                sx={{ width: '100%' }}
+                                id="standard-basic"
+                                variant="outlined"
+                                label="Status"
+                                name="status"
+                                value={stage ? orderStageStatusName(stage.status) : orderStageStatusName('PLANNING')}
+                            />
+                        </Grid>
+
+                        <Grid item xs={4} md={3}>
+                            <CustomTextField
+                                readOnly={canBeEdittedBySpecialist()}
+                                disabled={canBeEdittedBySpecialist()}
                                 sx={{ width: '100%' }}
                                 id="standard-basic"
                                 variant="outlined"
@@ -467,8 +598,8 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
 
                         <Grid item xs={4} md={3}>
                             <CustomTextField
-                                readOnly={isDisplayingMode!}
-                                disabled={isDisplayingMode}
+                                readOnly={canBeEdittedBySpecialist()}
+                                disabled={canBeEdittedBySpecialist()}
                                 sx={{
                                     width: '100%',
                                 }}
@@ -484,21 +615,6 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                 helperText={formik.touched.plannedFittersNumber && formik.errors.plannedFittersNumber}
                             />
                         </Grid>
-                        <Grid item xs={4} md={3}>
-                            <CustomTextField
-                                readOnly={isDisplayingMode!}
-                                disabled={isDisplayingMode}
-                                sx={{ width: '100%' }}
-                                id="standard-basic"
-                                label="Minimalna liczba zdjęć"
-                                variant="outlined"
-                                name="minimumImagesNumber"
-                                value={formik.values.minimumImagesNumber}
-                                onChange={formik.handleChange}
-                                error={formik.touched.minimumImagesNumber && Boolean(formik.errors.minimumImagesNumber)}
-                                helperText={formik.touched.minimumImagesNumber && formik.errors.minimumImagesNumber}
-                            />
-                        </Grid>
                         <Box sx={{ marginTop: '20px', width: '100%' }}>
                             <Box
                                 sx={{
@@ -512,47 +628,48 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     <Tab label="Informacje o datach" {...tabProps(0)} />
                                     <Tab label="Narzędzia" {...tabProps(1)} />
                                     <Tab label="Elementy" {...tabProps(2)} />
-                                    {isDisplayingMode ? <Tab label="Montażyści..." {...tabProps(2)} /> : null}
-                                    <Tab label="Szczegóły etapu/Zalaczniki" {...tabProps(1)} />
+                                    <Tab label="Załączniki" {...tabProps(3)} />
+                                    {!isAuthorized([Role.SPECIALIST]) && <Tab label="Montażyści" {...tabProps(4)} />}
                                 </Tabs>
                             </Box>
-                            <TabPanel key={uuidv4()} value={tabValue} index={0}>
+                            <TabPanel value={tabValue} index={0}>
                                 {getDateInformations(stage)}
                             </TabPanel>
-                            <TabPanel key={uuidv4()} value={tabValue} index={1}>
+                            <TabPanel value={tabValue} index={1}>
                                 <OrderStageToolsTable
-                                    itemsArray={queryAllToolTypes.data!}
-                                    isDisplayingMode={isDisplayingMode!}
+                                    itemsArray={queryAllToolTypes.data || []}
+                                    isDisplayingMode={canBeEdittedBySpecialist()}
                                     toolsTypeListIds={stage?.listOfToolsPlannedNumber as any}
                                     handleChange={handleSetPlannedToolsTypes}
                                     toolsRef={plannedToolsTypesRef}
                                     releasedToolsInfo={stage?.simpleToolReleases}
                                 />
                             </TabPanel>
-                            <TabPanel key={uuidv4()} value={tabValue} index={2}>
+                            <TabPanel value={tabValue} index={2}>
                                 <OrderStageElementsTable
-                                    itemsArray={queryAllElements.data!}
-                                    isDisplayingMode={isDisplayingMode!}
+                                    itemsArray={queryAllElements.data || []}
+                                    isDisplayingMode={canBeEdittedBySpecialist()}
                                     elementsListIds={stage?.listOfElementsPlannedNumber as any}
                                     handleChange={handleSetPlannedElements}
                                     elementsRef={plannedElementsRef}
                                     releasedReturnedElementsInfo={stage?.simpleElementReturnReleases}
                                 />
                             </TabPanel>
-
-                            <TabPanel key={uuidv4()} value={tabValue} index={3}>
-                                <Typography>Zalaczniki...</Typography>
+                            <TabPanel value={tabValue} index={3}>
+                                <Attachments {...attachmentData} readonly={stageMode == 'read'} />
                             </TabPanel>
-                            <TabPanel key={uuidv4()} value={tabValue} index={4}>
-                                <Grid item xs={2}>
-                                    <CustomTextField
-                                        readOnly={isDisplayingMode!}
-                                        sx={{ width: '100%' }}
-                                        label="Załączniki"
-                                        name="attachments"
+                            {!isAuthorized([Role.SPECIALIST]) && (
+                                <TabPanel value={tabValue} index={4}>
+                                    <PlannerStageDetails
+                                        dateFrom={preparedPlannedStartDate}
+                                        dateTo={preparedPlannedEndDate}
+                                        fitters={formik.values.fitters}
+                                        setFitters={(fitters) => formik.setFieldValue('fitters', fitters)}
+                                        readonly={!isAuthorized([Role.FOREMAN]) || stageMode == 'read'}
+                                        orderStageId={formik.values.orderStageId}
                                     />
-                                </Grid>
-                            </TabPanel>
+                                </TabPanel>
+                            )}
                         </Box>
 
                         <Grid spacing={2} container justifyContent="flex-end" sx={{ marginTop: '20px' }}>
@@ -565,23 +682,23 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     flexDirection: 'row-reverse',
                                 }}
                             >
-                                {isDisplayingMode && canChangeToNextStatus() && (
+                                {stageMode == 'read' && canEdit() && (
                                     <Button
                                         color="primary"
                                         variant="contained"
-                                        disabled={isLoading}
+                                        // disabled={isLoading}
                                         onClick={handleEditButtonAction}
                                     >
                                         Edytuj etap
                                     </Button>
                                 )}
-                                {(!isDisplayingMode || isEditing) && (
+                                {stageMode != 'read' && (
                                     <>
                                         <Button
                                             type="submit"
                                             color="primary"
                                             variant="contained"
-                                            disabled={isLoading}
+                                            // disabled={isLoading}
                                             id={`formButton-save`}
                                         >
                                             Zapisz
@@ -589,7 +706,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                         <Button
                                             color="primary"
                                             variant="contained"
-                                            disabled={isLoading}
+                                            // disabled={isLoading}
                                             onClick={handleCancelButtonAction}
                                             id={`formButton-cancel`}
                                         >
@@ -597,7 +714,7 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                         </Button>
                                     </>
                                 )}
-                                {canChangeToNextStatus() && isDisplayingMode ? (
+                                {canChangeToNextStatus(stage, queryOrder.data) && stageMode == 'read' && (
                                     <Button
                                         id={`formButton-nextStatus`}
                                         color="primary"
@@ -608,20 +725,19 @@ const OrderStageCard = ({ index, stage, isLoading, isDisplaying }: OrderStageCar
                                     >
                                         Następny status
                                     </Button>
-                                ) : null}
-                                {canChangeToPreviousStatus() && isDisplayingMode ? (
+                                )}
+                                {canChangeToPreviousStatus(stage) && stageMode == 'read' && (
                                     <Button
                                         id={`formButton-nextStatus`}
                                         color="primary"
                                         startIcon={<ArrowBackIosIcon />}
                                         variant="contained"
-                                        type="submit"
                                         style={{ width: appSize.isMobile ? 'auto' : 170 }}
                                         onClick={handlePreviousStatus}
                                     >
                                         Cofnij status
                                     </Button>
-                                ) : null}
+                                )}
                                 <div ref={dummyScrollDiv} />
                             </Grid>
                         </Grid>

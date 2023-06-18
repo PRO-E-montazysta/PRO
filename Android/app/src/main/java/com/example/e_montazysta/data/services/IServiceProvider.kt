@@ -14,4 +14,5 @@ interface IServiceProvider {
     fun getWarehouseService(): WarehouseService
     fun getLocationService(): LocationService
     fun getElementInWarehouseService(): ElementInWarehouseService
+    fun getPlannedItemService(): PlannedItemService
 }

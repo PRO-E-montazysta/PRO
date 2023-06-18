@@ -120,6 +120,14 @@ export const useFilterInitStructure = (): Array<FilterInputType> => {
                   typeValue: 'string',
               },
               {
+                  id: 'roles',
+                  value: '',
+                  label: 'Stanowisko',
+                  inputType: 'multiselect',
+                  typeValue: 'Array',
+                  options: userRoleOptions(),
+              },
+              {
                   id: 'email',
                   value: '',
                   label: 'Email',
@@ -132,14 +140,6 @@ export const useFilterInitStructure = (): Array<FilterInputType> => {
                   label: 'Telefon',
                   inputType: 'text',
                   typeValue: 'string',
-              },
-              {
-                  id: 'roles',
-                  value: '',
-                  label: 'Stanowisko',
-                  inputType: 'multiselect',
-                  typeValue: 'Array',
-                  options: userRoleOptions(),
               },
               {
                   id: 'pesel',
@@ -165,6 +165,14 @@ export const useFilterInitStructure = (): Array<FilterInputType> => {
                   typeValue: 'string',
               },
               {
+                  id: 'roles',
+                  value: '',
+                  label: 'Stanowisko',
+                  inputType: 'multiselect',
+                  typeValue: 'Array',
+                  options: userRoleOptions(),
+              },
+              {
                   id: 'email',
                   value: '',
                   label: 'Email',
@@ -177,14 +185,6 @@ export const useFilterInitStructure = (): Array<FilterInputType> => {
                   label: 'Telefon',
                   inputType: 'text',
                   typeValue: 'string',
-              },
-              {
-                  id: 'roles',
-                  value: '',
-                  label: 'Stanowisko',
-                  inputType: 'multiselect',
-                  typeValue: 'Array',
-                  options: userRoleOptions(),
               },
           ]
 }
@@ -282,17 +282,17 @@ export const useFormStructure = (): Array<FormInputProps> => {
             editPermissionRoles: [Role.ADMIN],
             viewPermissionRoles: [Role.ADMIN, Role.MANAGER],
         },
-        {
-            label: 'Hasło',
-            id: 'password',
-            initValue: '',
-            type: 'input',
-            validation: yup.string().min(8, 'Hasło musi zawierać co najmniej 8 znaków').required('Wprowadź hasło'),
-            editPermissionRoles: [Role.NOBODY],
-            viewPermissionRoles: [Role.NOBODY],
-            validationOnUpdate: 'NO_VALIDATION_ON_UPDATE',
-            placeholder: 'POLE TYMCZASOWE',
-        },
+        // {
+        //     label: 'Hasło',
+        //     id: 'password',
+        //     initValue: '',
+        //     type: 'input',
+        //     validation: yup.string().min(8, 'Hasło musi zawierać co najmniej 8 znaków').required('Wprowadź hasło'),
+        //     editPermissionRoles: [Role.NOBODY],
+        //     viewPermissionRoles: [Role.NOBODY],
+        //     validationOnUpdate: 'NO_VALIDATION_ON_UPDATE',
+        //     placeholder: 'POLE TYMCZASOWE',
+        // },
     ]
 }
 

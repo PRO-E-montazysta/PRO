@@ -5,14 +5,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.e_montazysta.databinding.ListItemToolBinding
 
-class ToolsListAdapter(val clickListener: CustomClickListener): RecyclerView.Adapter<ToolsListAdapter.ViewHolder>() {
+class ToolsListAdapter(val clickListener: CustomClickListener) :
+    RecyclerView.Adapter<ToolsListAdapter.ViewHolder>() {
 
     var elements = listOf<ToolListItem>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
-    set(value) {
-        field = value
-        notifyDataSetChanged()
-    }
     override fun getItemCount(): Int {
         return elements.size
     }
@@ -25,13 +26,15 @@ class ToolsListAdapter(val clickListener: CustomClickListener): RecyclerView.Ada
         val item = elements[position]
         holder.bind(item, clickListener)
     }
-    class ViewHolder( val binding: ListItemToolBinding) : RecyclerView.ViewHolder(binding.root) {
+
+    class ViewHolder(val binding: ListItemToolBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: ToolListItem, clickListener: CustomClickListener) {
             binding.tool = data
             binding.itemClickListener = clickListener
             binding.executePendingBindings()
         }
+
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
@@ -40,6 +43,7 @@ class ToolsListAdapter(val clickListener: CustomClickListener): RecyclerView.Ada
             }
         }
     }
+
     class CustomClickListener(val clickListener: (toolId: Int) -> Unit) {
         fun cardClicked(item: ToolListItem) = clickListener(item.id)
     }

@@ -29,7 +29,6 @@
             app:supportText='@{warehouse.description + " | " + warehouse.fullAddress + " | " + warehouse.openingHours}'
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            >
-        </include>
+            app:icon="@{@drawable/warehouse}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

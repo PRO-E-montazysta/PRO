@@ -10,10 +10,14 @@ import java.net.URLEncoder
 class HttpRequestHelper {
     companion object {
         val baseUrl = "https://dev.emontazysta.pl/api/v1"
-        inline fun <T1, reified T2> sendHttpPostRequest(url: String = baseUrl, data: T1, token: String? = null): T2 {
+        inline fun <T1, reified T2> sendHttpPostRequest(
+            url: String = baseUrl,
+            data: T1,
+            token: String? = null
+        ): T2 {
             var response = runBlocking {
                 var headers = emptyMap<String, String>()
-                if(token != null) {
+                if (token != null) {
                     headers = mapOf("Authorization" to "Bearer $token")
                 }
                 val (request, response, result) = Fuel.post(url)
@@ -21,9 +25,9 @@ class HttpRequestHelper {
                     .jsonBody(Gson().toJson(data))
                     .awaitStringResponseResult()
                 result.fold(
-                        { data -> return@runBlocking data},
-                        { error -> return@runBlocking "ERROR $error" }
-                    )
+                    { data -> return@runBlocking data },
+                    { error -> return@runBlocking "ERROR $error" }
+                )
             }
             if (response.startsWith("ERROR")) {
                 throw Exception(response)
@@ -31,14 +35,18 @@ class HttpRequestHelper {
             return Gson().fromJson(response, T2::class.java)
         }
 
-        inline fun <T1, reified T2> sendHttpGetRequest(url: String, data: T1, token: String? = null): T2 {
+        inline fun <T1, reified T2> sendHttpGetRequest(
+            url: String,
+            data: T1,
+            token: String? = null
+        ): T2 {
             var response = runBlocking {
                 var headers = emptyMap<String, String>()
-                if(token != null) {
+                if (token != null) {
                     headers = mapOf("Authorization" to "Bearer $token")
                 }
                 var query = ""
-                if(data != null) {
+                if (data != null) {
                     val dataMap = MapHelper.toMapNotNull(data)
                     query = dataMap.entries.stream()
                         .map { (k, v) ->
@@ -66,10 +74,10 @@ class HttpRequestHelper {
             return Gson().fromJson(response, T2::class.java)
         }
 
-        inline fun <reified T> sendHttpPutRequest(url: String, data: T, token: String? = null) : T {
+        inline fun <reified T> sendHttpPutRequest(url: String, data: T, token: String? = null): T {
             var response = runBlocking {
                 var headers = emptyMap<String, String>()
-                if(token != null) {
+                if (token != null) {
                     headers = mapOf("Authorization" to "Bearer $token")
                 }
                 val (request, response, result) = Fuel.put(url)
@@ -87,10 +95,10 @@ class HttpRequestHelper {
             return Gson().fromJson(response, T::class.java)
         }
 
-        inline fun sendHttpDeleteRequest(url: String, token: String? = null) : Boolean {
+        inline fun sendHttpDeleteRequest(url: String, token: String? = null): Boolean {
             var response = runBlocking {
                 var headers = emptyMap<String, String>()
-                if(token != null) {
+                if (token != null) {
                     headers = mapOf("Authorization" to "Bearer $token")
                 }
                 val (request, response, result) = Fuel.delete(url)

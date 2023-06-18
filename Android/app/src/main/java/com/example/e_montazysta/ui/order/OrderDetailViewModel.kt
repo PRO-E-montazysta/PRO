@@ -6,7 +6,11 @@ import androidx.lifecycle.ViewModel
 import com.example.e_montazysta.data.model.Order
 import com.example.e_montazysta.data.model.Result
 import com.example.e_montazysta.data.repository.interfaces.IOrderRepository
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 class OrderDetailViewModel(private val repository: IOrderRepository) : ViewModel(), CoroutineScope {
@@ -43,5 +47,9 @@ class OrderDetailViewModel(private val repository: IOrderRepository) : ViewModel
     override fun onCleared() {
         super.onCleared()
         coroutineContext.cancel()
+    }
+
+    fun setOrderDetail(order: Order) {
+        _orderDetailLiveData.postValue(order)
     }
 }

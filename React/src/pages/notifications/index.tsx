@@ -5,7 +5,7 @@ import { AxiosError } from 'axios'
 import { getAllMyNotifications, updateNotification } from '../../api/notification.api'
 import { filterInitStructure, headCells } from './helper'
 import { useNavigate } from 'react-router-dom'
-import { getFilterParams, getInputs, setNewFilterValues } from '../../helpers/filter.helper'
+import { getFilterParams, getFormikMetadata, newFilterValues } from '../../helpers/filter.helper'
 import { Filter } from '../../components/table/filter/TableFilter'
 import { useFormik } from 'formik'
 import { Notification } from '../../types/model/Notification'
@@ -13,7 +13,7 @@ import { Notification } from '../../types/model/Notification'
 const Notifications = () => {
     const [filterStructure, setFilterStructure] = useState(filterInitStructure)
     const [filterParams, setFilterParams] = useState(getFilterParams(filterInitStructure))
-    const { initialValues, inputs } = getInputs(filterInitStructure)
+    const { initialValues, inputs } = getFormikMetadata(filterInitStructure)
     const navigation = useNavigate()
     const queryClient = useQueryClient()
 
@@ -26,7 +26,7 @@ const Notifications = () => {
             initialValues: initialValues,
             // validationSchema={{}}
             onSubmit: () => {
-                setFilterStructure(setNewFilterValues(filter.formik.values, filterStructure))
+                setFilterStructure(newFilterValues(filter.formik.values, filterStructure))
                 setFilterParams(getFilterParams(filterStructure))
             },
             onReset: () => filter.formik.setValues(initialValues),
@@ -35,7 +35,6 @@ const Notifications = () => {
     }
 
     const createUrl = (row: Notification) => {
-        console.log(row.notificationType)
         let url = '/'
 
         switch (row.notificationType) {

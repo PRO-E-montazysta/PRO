@@ -3,9 +3,9 @@ import FatTable from '../../components/table/FatTable'
 import { useState } from 'react'
 import { useQuery } from 'react-query'
 import { AxiosError } from 'axios'
-import { filterInitStructure, headCells } from './helper'
+import { filterInitStructure, headCells, useFilterStructure } from './helper'
 import { useNavigate } from 'react-router-dom'
-import { getFilterParams, getInputs, setNewFilterValues } from '../../helpers/filter.helper'
+import { getFilterParams, getFormikMetadata, newFilterValues } from '../../helpers/filter.helper'
 import { useFormik } from 'formik'
 import { ElementInWarehouseFilterDto } from '../../types/model/ElementInWarehouse'
 import { getElementInWarehouseCounts } from '../../api/elementInWarehouse.api'
@@ -17,22 +17,22 @@ type ElementInWarehouseViewParams = {
 const ElementInWarehouseView = (params: ElementInWarehouseViewParams) => {
     const { elementId } = params
 
-    const [filterStructure, setFilterStructure] = useState(filterInitStructure)
+    const { filterStructure, setFilterStructure } = useFilterStructure()
     const [filterParams, setFilterParams] = useState(getFilterParams(filterInitStructure))
-    const { initialValues, inputs } = getInputs(filterInitStructure)
+    const { initialValues, inputs, validationSchema } = getFormikMetadata(filterInitStructure)
     const navigation = useNavigate()
 
     const queryElementInWarehouse = useQuery<Array<ElementInWarehouseFilterDto>, AxiosError>(
-        ['elements-in-warehouse', filterParams],
+        ['elements-in-warehouse', { id: params.elementId }, filterParams],
         async () => getElementInWarehouseCounts({ queryParams: filterParams }, elementId),
     )
 
     const filter: Filter = {
         formik: useFormik({
             initialValues: initialValues,
-            // validationSchema={{}}
+            validationSchema: validationSchema,
             onSubmit: () => {
-                setFilterStructure(setNewFilterValues(filter.formik.values, filterStructure))
+                setFilterStructure(newFilterValues(filter.formik.values, filterStructure))
                 setFilterParams(getFilterParams(filterStructure))
             },
             onReset: () => filter.formik.setValues(initialValues),

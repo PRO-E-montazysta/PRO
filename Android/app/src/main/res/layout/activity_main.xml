@@ -33,11 +33,12 @@
             android:layout_marginBottom="20dp"
             android:text="@string/app_description_header" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="20dp"
+            android:gravity="center"
             android:text="@string/app_description" />
 
         <Button

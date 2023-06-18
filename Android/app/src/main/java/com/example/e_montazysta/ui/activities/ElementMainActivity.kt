@@ -17,7 +17,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class ElementMainActivity : AppCompatActivity() {
-    lateinit var topAppBar : MaterialToolbar
+    lateinit var topAppBar: MaterialToolbar
 
     //deklaracja potrzebna do działania FAB w oknie Element
     private lateinit var mActionMainFab: FloatingActionButton
@@ -30,7 +30,6 @@ class ElementMainActivity : AppCompatActivity() {
 
     //sprawdzanie, czy FAB podległe pod główny FAB mają być widoczne
     private var subFabsVisible: Boolean? = null
-
 
     //SIDOR
     //    val args: ElementMainActivityArgs by navArgs()
@@ -51,7 +50,7 @@ class ElementMainActivity : AppCompatActivity() {
         }
 
         topAppBar.setOnMenuItemClickListener { menuItem ->
-            when(menuItem.itemId){
+            when (menuItem.itemId) {
 //                R.id.home -> {
 //                    Toast.makeText(this, "Back action clicked", Toast.LENGTH_SHORT).show()
 //                    true
@@ -71,8 +70,8 @@ class ElementMainActivity : AppCompatActivity() {
 
         val binding: ActivityElementBinding = ActivityElementBinding.inflate(layoutInflater)
         binding.elementDetailViewModel = elementDetailViewModel
-        val intent: Intent = getIntent()
-        val elementId: Int = intent.getIntExtra("ELEMENT_ID", 1);
+        val intent: Intent = intent
+        val elementId: Int = intent.getIntExtra("ELEMENT_ID", 1)
         elementDetailViewModel.getElementDetail(elementId)
         elementDetailViewModel.elementdetail.observe(this, Observer {
             it?.let {
@@ -126,7 +125,7 @@ class ElementMainActivity : AppCompatActivity() {
         })
 
         //Mockup zgłaszania usterki
-        mElementEventFab.setOnClickListener{
+        mElementEventFab.setOnClickListener {
             Toast.makeText(this, "Zgłoszono usterkę", Toast.LENGTH_SHORT).show()
         }
 

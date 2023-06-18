@@ -17,8 +17,8 @@ data class Element(
     val name: String,
     val quantityInUnit: Double,
     val typeOfUnit: String
-    ) {
-    companion object : KoinComponent{
+) {
+    companion object : KoinComponent {
         suspend fun getElementDetails(elementId: Int): Element {
             val elementRepository: IElementRepository by inject()
             val result = elementRepository.getElementDetails(elementId)

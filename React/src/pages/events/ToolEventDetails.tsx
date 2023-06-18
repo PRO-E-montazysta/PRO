@@ -144,12 +144,7 @@ const ToolEventDetails = () => {
                                         ? [Role.MANAGER, Role.WAREHOUSE_MANAGER, Role.FOREMAN]
                                         : [Role.MANAGER, Role.WAREHOUSE_MANAGER]
                                 }
-                                deletePermissionRoles={
-                                    aboutMeQuery.data.userId == formik.values['createdById'] &&
-                                    formik.values['status'] == 'CREATED'
-                                        ? [Role.MANAGER, Role.WAREHOUSE_MANAGER, Role.FOREMAN]
-                                        : [Role.MANAGER, Role.WAREHOUSE_MANAGER]
-                                }
+                                deletePermissionRoles={[Role.MANAGER, Role.WAREHOUSE_MANAGER]}
                             />
                         </>
                     )}

@@ -10,6 +10,7 @@ import NavMenuItem from './NavMenuItem'
 import { useQuery } from 'react-query'
 import { getAboutMeInfo } from '../../api/employee.api'
 import { AxiosError } from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 export type UserInfo = {
     name: string
@@ -19,9 +20,6 @@ export type UserInfo = {
 }
 
 type NavActionsProps = {}
-//TODO
-//ERROR
-//CHANGE THIS LATER
 
 const NavActions = (props: NavActionsProps) => {
     const [drawerOpen, setDrawerOpen] = useState(false)
@@ -30,7 +28,7 @@ const NavActions = (props: NavActionsProps) => {
         logout()
     }
     const aboutMeQuery = useQuery<any, AxiosError>(['about-me'], async () => getAboutMeInfo())
-
+    const navigate = useNavigate()
     const [userInfo, setUserInfo] = useState<UserInfo>({
         name: 'Imię Nazwisko',
         company: 'Firma',
@@ -117,7 +115,8 @@ const NavActions = (props: NavActionsProps) => {
                                     sx={{ pl: '5px' }}
                                     text="Powiadomienia"
                                     onItemClick={() => {
-                                        console.log('Not implemented yet')
+                                        navigate('/notifications')
+                                        setDrawerOpen(false)
                                     }}
                                 />
                                 <NavMenuItem

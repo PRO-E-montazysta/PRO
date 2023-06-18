@@ -8,18 +8,25 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.example.e_montazysta.databinding.FragmentReleaseDetailBinding
+import com.example.e_montazysta.helpers.DateUtil
+import com.google.android.material.appbar.MaterialToolbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ReleaseDetailFragment : Fragment() {
     private val releaseDetailViewModel: ReleaseDetailViewModel by viewModel()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         val args: ReleaseDetailFragmentArgs by navArgs()
         val releaseId = args.releaseId
 
         // Get a reference to the binding object and inflate the fragment views.
-        val binding: FragmentReleaseDetailBinding = FragmentReleaseDetailBinding.inflate(inflater, container, false)
+        val binding: FragmentReleaseDetailBinding =
+            FragmentReleaseDetailBinding.inflate(inflater, container, false)
         val application = requireNotNull(this.activity).application
 
         // To use the View Model with data binding, you have to explicitly
@@ -30,16 +37,24 @@ class ReleaseDetailFragment : Fragment() {
 
         releaseDetailViewModel.releasedetail.observe(viewLifecycleOwner, Observer {
             it?.let {
-                binding.releaseId.text = it.id.toString()
-                binding.releaseTimeValue.text = it.releaseTime
-                binding.returnTimeValue.text = it.returnTime
-                binding.receivedByIdValue.text = it.receivedById
-                binding.releasedById.text = it.releasedById
-                binding.toolIdValue.text = it.toolId
-                binding.demandAdHocIdValue.text = it.demandAdHocId
-                binding.orderStageIdValue.text = it.orderStageId
+                if (it.releaseTime != null) binding.releaseTimeValue.text =
+                    it.releaseTime.let { DateUtil.format(it) }
+                if (it.returnTime != null) binding.returnTimeValue.text =
+                    it.returnTime.let { DateUtil.format(it) }
+                if (it.receivedBy != null) binding.receivedByIdValue.text = it.receivedBy.toString()
+                if (it.releasedBy != null) binding.releasedByIdValue.text = it.releasedBy.toString()
+                binding.toolValue.text = when (it.isElement) {
+                    true -> it.element?.name
+                    false -> it.tool?.name
+                }
             }
         })
+
+        val toolbar: MaterialToolbar = binding.toolbar
+        toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
+
         // Specify the current activity as the lifecycle owner of the binding.
         // This is necessary so that the binding can observe LiveData updates.
         return binding.root

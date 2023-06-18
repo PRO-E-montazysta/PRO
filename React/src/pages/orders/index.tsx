@@ -5,7 +5,7 @@ import { AxiosError } from 'axios'
 import { getFilteredOrders } from '../../api/order.api'
 import { filterInitStructure, headCells } from './helper'
 import { useNavigate } from 'react-router-dom'
-import { getFilterParams, getInputs, setNewFilterValues } from '../../helpers/filter.helper'
+import { getFilterParams, getFormikMetadata, newFilterValues } from '../../helpers/filter.helper'
 import { Order } from '../../types/model/Order'
 import { Filter } from '../../components/table/filter/TableFilter'
 import { useFormik } from 'formik'
@@ -14,7 +14,7 @@ import { Container } from '@mui/material'
 const Orders = () => {
     const [filterStructure, setFilterStructure] = useState(filterInitStructure)
     const [filterParams, setFilterParams] = useState(getFilterParams(filterInitStructure))
-    const { initialValues, inputs } = getInputs(filterInitStructure)
+    const { initialValues, inputs, validationSchema } = getFormikMetadata(filterInitStructure)
     const navigation = useNavigate()
 
     const queryOrders = useQuery<Array<Order>, AxiosError>(['orders', filterParams], async () =>
@@ -24,9 +24,9 @@ const Orders = () => {
     const filter: Filter = {
         formik: useFormik({
             initialValues: initialValues,
-            // validationSchema={{}}
+            validationSchema: validationSchema,
             onSubmit: () => {
-                setFilterStructure(setNewFilterValues(filter.formik.values, filterStructure))
+                setFilterStructure(newFilterValues(filter.formik.values, filterStructure))
                 setFilterParams(getFilterParams(filterStructure))
             },
             onReset: () => filter.formik.setValues(initialValues),

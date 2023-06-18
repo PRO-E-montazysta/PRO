@@ -5,6 +5,12 @@ import { AppSize } from '../../hooks/useBreakpoints'
 import { FormInputProps } from '../../types/form'
 import { Role } from '../../types/roleEnum'
 import { ElementInWarehouseFilterDto } from '../../types/model/ElementInWarehouse'
+import { useEffect, useState } from 'react'
+import { AxiosError } from 'axios'
+import { useQuery } from 'react-query'
+import { getAllWarehouses } from '../../api/warehouse.api'
+import { formatArrayToOptions } from '../../helpers/format.helper'
+import { Warehouse } from '../../types/model/Warehouse'
 
 export const headCells: Array<HeadCell<ElementInWarehouseFilterDto>> = [
     {
@@ -39,20 +45,39 @@ export const headCells: Array<HeadCell<ElementInWarehouseFilterDto>> = [
 
 export const filterInitStructure: Array<FilterInputType> = [
     {
-        id: 'minCount',
-        value: '',
-        label: 'Minimalna ilość',
-        inputType: 'number',
-        typeValue: 'number',
-    },
-    {
         id: 'warehouseId',
         value: '',
         label: 'Magazyn',
         inputType: 'multiselect',
         typeValue: 'Array',
     },
+    {
+        id: 'minCount',
+        value: '',
+        label: 'Minimalna ilość',
+        inputType: 'number',
+        typeValue: 'number',
+    },
 ]
+
+export const useFilterStructure = () => {
+    const [filterStructure, setFilterStructure] = useState<Array<FilterInputType>>(filterInitStructure)
+
+    const queryWarehouse = useQuery<Array<Warehouse>, AxiosError>(['warehouse-list'], getAllWarehouses)
+
+    useEffect(() => {
+        if (queryWarehouse.isFetched) {
+            const freshStructure: Array<any> = filterStructure.map((s) => {
+                if (s.id == 'warehouseId')
+                    s.options = formatArrayToOptions('id', (x: Warehouse) => x.name, queryWarehouse.data)
+                return s
+            })
+            setFilterStructure(freshStructure)
+        }
+    }, [queryWarehouse.isFetched])
+
+    return { filterStructure, setFilterStructure }
+}
 
 export const useFormStructure = (): Array<FormInputProps> => {
     return [
@@ -73,7 +98,7 @@ export const useFormStructure = (): Array<FormInputProps> => {
             initValue: '',
             type: 'input',
             editPermissionRoles: [Role.WAREHOUSE_MANAGER],
-            validation: yup.string().min(3, 'Wprowadź co najmniej 1 znak').max(255, 'Wprowadź co najwyżej 255 znaków'),
+            validation: yup.string().min(1, 'Wprowadź co najmniej 1 znak').max(255, 'Wprowadź co najwyżej 255 znaków'),
         },
         {
             label: 'Półka',
@@ -81,7 +106,7 @@ export const useFormStructure = (): Array<FormInputProps> => {
             initValue: '',
             type: 'input',
             editPermissionRoles: [Role.WAREHOUSE_MANAGER],
-            validation: yup.string().min(3, 'Wprowadź co najmniej 1 znak').max(255, 'Wprowadź co najwyżej 255 znaków'),
+            validation: yup.string().min(1, 'Wprowadź co najmniej 1 znak').max(255, 'Wprowadź co najwyżej 255 znaków'),
         },
     ]
 }

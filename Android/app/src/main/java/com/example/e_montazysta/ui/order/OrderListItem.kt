@@ -1,17 +1,35 @@
 package com.example.e_montazysta.ui.order
 
-import com.example.e_montazysta.data.model.Order
-import java.text.DateFormat
-import java.util.*
+import com.example.e_montazysta.helpers.DateUtil
 
 data class OrderListItem(
-    var id: Int,
-    var name: String,
-    var priority: String,
-    var status: String,
-//    var createdAt: String? = ""
-)
+    val id: Int,
+    val name: String,
+    val priority: OrderPriority,
+    val status: OrderStatus,
+    val createdAt: String?,
+    val plannedStart: String?,
+    val plannedEnd: String?,
+    val stagesCount: Int
+) {
+    fun getListItemInfo(): String {
+        return "Status: " + status.value + "\nPriorytet: " + priority.value +
+                "\nCzas utworzenia: " + createdAt +
+                "\nPlanowany start: " + plannedStart +
+                "\nPlanowany koniec: " + plannedEnd +
+                "\nLiczba etapów: " + stagesCount
+    }
+}
 
-fun Order.mapToOrderItem(): OrderListItem {
-    return OrderListItem(id, name, priority, status)
+fun OrderDAO.mapToOrderListItem(): OrderListItem {
+    return OrderListItem(
+        id,
+        name,
+        priority,
+        status,
+        createdAt?.let { DateUtil.format(createdAt) },
+        plannedStart?.let { DateUtil.format(plannedStart) },
+        plannedEnd?.let { DateUtil.format(plannedEnd) },
+        orderStages.size
+    )
 }

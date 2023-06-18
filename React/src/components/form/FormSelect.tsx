@@ -47,6 +47,10 @@ const FormSelect = (params: FormInputParams) => {
                 <MenuItem key={-1} value={-1} disabled hidden style={{ display: 'none' }}>
                     -- WYBIERZ --
                 </MenuItem>
+
+                <MenuItem key={-2} value={''} disabled hidden style={{ display: 'none' }}>
+                    -- WYBIERZ --
+                </MenuItem>
                 {options?.map((o) => (
                     <MenuItem key={o.key} value={o.key} id={`formSelect-${id}-opt-${o.key}`}>
                         {o.value}

@@ -24,13 +24,14 @@
         android:onClick="@{() -> itemClickListener.cardClicked(tool)}"
         >
 
-        <include layout="@layout/list_item_template"
+        <include
+            layout="@layout/list_item_template"
             android:id="@+id/item"
             app:headline="@{tool.name}"
             app:supportText='@{tool.warehouse + " | " + tool.toolType}'
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            >
-        </include>
+            app:icon="@{@drawable/baseline_tools_24}" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

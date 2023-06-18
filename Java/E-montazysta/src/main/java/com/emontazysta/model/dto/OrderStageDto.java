@@ -32,7 +32,7 @@ public class OrderStageDto {
     private long plannedDurationTime;
     @PositiveOrZero(message = "Planned fitters number cannot be negative")
     private int plannedFittersNumber;
-    @PositiveOrZero(message = "Minimum images number cannot be negative")
+    //@PositiveOrZero(message = "Minimum images number cannot be negative")
     private int minimumImagesNumber;
     private List<Long> fitters;
     private List<Long> comments;
@@ -41,6 +41,8 @@ public class OrderStageDto {
     private List<Long> elementReturnReleases;
     private List<ElementReturnReleaseDto> simpleElementReturnReleases;
     private Long orderId;
+    private String orderName;
+    private Long foremanId;
     private List<Long> attachments;
     private List<Long> notifications;
     private List<Long> listOfToolsPlannedNumber;

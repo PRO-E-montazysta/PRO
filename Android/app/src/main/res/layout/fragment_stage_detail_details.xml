@@ -1,159 +1,249 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-    <variable
-        name="stageDetailViewModel"
-        type="com.example.e_montazysta.ui.stage.StageDetailViewModel" />
+
+        <variable
+            name="stageDetailViewModel"
+            type="com.example.e_montazysta.ui.stage.StageDetailViewModel" />
     </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:id="@+id/details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingHorizontal="10dp"
-                android:layout_marginHorizontal="19dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Nazwa etapu" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/list_item_space_x3"
+                    android:paddingStart="@dimen/list_item_space_x4"
+                    android:paddingEnd="@dimen/list_item_space_x6">
 
-                <TextView
-                    android:id="@+id/nameValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="nameValue"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Nazwa etapu" />
 
-                <TextView
-                    android:id="@+id/status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Status" />
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/nameValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="nameValue"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/statusValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="statusValue"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                <LinearLayout
+                    android:id="@+id/order"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/list_item_space_x3"
+                    android:paddingStart="@dimen/list_item_space_x4"
+                    android:paddingEnd="@dimen/list_item_space_x6">
 
-                <TextView
-                    android:id="@+id/price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/orderPrice" />
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/orderName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Zlecenie" />
 
-                <TextView
-                    android:id="@+id/priceValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/orderNameValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Brak"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/plannedStart"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Planowany czas rozpoczęcia" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/list_item_space_x3"
+                    android:paddingStart="@dimen/list_item_space_x4"
+                    android:paddingEnd="@dimen/list_item_space_x6">
 
-                <TextView
-                    android:id="@+id/plannedStartValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="plannedStartValue"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Status" />
 
-                <TextView
-                    android:id="@+id/plannedEnd"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Planowany czas zakończenia" />
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/statusValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Brak"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/plannedEndValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="plannedEndValue"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                <LinearLayout
+                    android:id="@+id/foreman"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/list_item_space_x3"
+                    android:paddingStart="@dimen/list_item_space_x4"
+                    android:paddingEnd="@dimen/list_item_space_x6">
 
-                <TextView
-                    android:id="@+id/plannedFittersNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Planowany czas zakończenia" />
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/foremanName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Brygadzista" />
 
-                <TextView
-                    android:id="@+id/plannedFittersNumberValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="plannedFittersNumberValue"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/foremanNameValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Brak"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/minimumImagesNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Minimalna liczba zdjęć" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/list_item_space_x3"
+                    android:paddingStart="@dimen/list_item_space_x4"
+                    android:paddingEnd="@dimen/list_item_space_x6">
 
-                <TextView
-                    android:id="@+id/minimumImagesNumberValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="minimumImagesNumberValue"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/orderPrice" />
 
-                <TextView
-                    android:id="@+id/listOfToolsPlannedNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Lista planowanych narzędzi" />
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/priceValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Brak"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/listOfToolsPlannedNumberValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="listOfToolsPlannedNumberValue"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/list_item_space_x3"
+                    android:paddingStart="@dimen/list_item_space_x4"
+                    android:paddingEnd="@dimen/list_item_space_x6">
 
-                <TextView
-                    android:id="@+id/listOfElementsPlannedNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Lista planowanych elementów" />
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/plannedStart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Planowany czas rozpoczęcia" />
 
-                <TextView
-                    android:id="@+id/listOfElementsPlannedNumberValue"
-                    android:layout_width="wrap_content"
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/plannedStartValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Brak"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/list_item_space_x3"
+                    android:paddingStart="@dimen/list_item_space_x4"
+                    android:paddingEnd="@dimen/list_item_space_x6">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/plannedEnd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Planowany czas zakończenia" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/plannedEndValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Brak"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/list_item_space_x3"
+                    android:paddingStart="@dimen/list_item_space_x4"
+                    android:paddingEnd="@dimen/list_item_space_x6">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/plannedFittersNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Planowana liczba montażystów" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/plannedFittersNumberValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Brak"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/list_item_space_x3"
+                    android:paddingStart="@dimen/list_item_space_x4"
+                    android:paddingEnd="@dimen/list_item_space_x6">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/minimumImagesNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Minimalna liczba zdjęć" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/minimumImagesNumberValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Brak"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                </LinearLayout>
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="listOfElementsPlannedNumberValue"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                    android:layout_marginTop="@dimen/list_item_space_x3" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/separator"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="3dp"
-                android:alpha=".30"
-                android:background="?colorOnPrimaryContainer"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="@+id/details"
-                app:layout_constraintStart_toStartOf="@+id/details"
-                app:layout_constraintTop_toBottomOf="@+id/details" />
-
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/loading_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
 </layout>

@@ -4,35 +4,36 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.e_montazysta.data.model.Stage
-import com.example.e_montazysta.databinding.FragmentStageDetailReleaseListBinding
-import com.example.e_montazysta.ui.stage.StageDetailFragmentDirections
+import com.example.e_montazysta.databinding.FragmentReleasesBinding
+import com.google.android.material.appbar.MaterialToolbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ReleaseListFragment(val stage: Stage? = null) : Fragment() {
     private val releaseListViewModel: ReleaseListViewModel by viewModel()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         // Get a reference to the binding object and inflate the fragment views.
-        val binding: FragmentStageDetailReleaseListBinding = FragmentStageDetailReleaseListBinding.inflate(inflater, container, false)
-        val application = requireNotNull(this.activity).application
+        val binding: FragmentReleasesBinding =
+            FragmentReleasesBinding.inflate(inflater, container, false)
 
-        // To use the View Model with data binding, you have to explicitly
-        // give the binding object a reference to it.
-        // binding.releaseListViewModel = releaseListViewModel
-        val adapter = ReleaseListAdapter(CustomClickListener{
-            releaseId -> Toast.makeText(context, "$releaseId", Toast.LENGTH_SHORT).show()
-            val action = StageDetailFragmentDirections.actionStageDetailFragmentToReleaseDetailFragment(releaseId)
+        val adapter = ReleaseListAdapter(CustomClickListener { releaseId ->
+            val action =
+                ReleaseListFragmentDirections.actionReleaseListFragmentToReleaseDetailFragment(
+                    releaseId
+                )
             findNavController().navigate(action)
         })
 
         binding.toolList.adapter = adapter
-
 
         releaseListViewModel.release.observe(viewLifecycleOwner, Observer {
             it?.let {
@@ -45,15 +46,32 @@ class ReleaseListFragment(val stage: Stage? = null) : Fragment() {
             releaseListViewModel.setReleaseList(stage)
         }
 
-        releaseListViewModel.isLoadingLiveData.observe(viewLifecycleOwner, Observer<Boolean>{
+        releaseListViewModel.isLoadingLiveData.observe(viewLifecycleOwner, Observer<Boolean> {
             it?.let {
-                if(it) {
+                if (it) {
                     binding.loadingIndicator.visibility = View.VISIBLE
                 } else {
                     binding.loadingIndicator.visibility = View.GONE
                 }
             }
         })
+
+        // Empty list info
+        releaseListViewModel.isEmptyLiveData.observe(viewLifecycleOwner, Observer<Boolean> {
+            it?.let {
+                if (it) {
+                    binding.emptyInfo.visibility = View.VISIBLE
+                } else {
+                    binding.emptyInfo.visibility = View.GONE
+                }
+            }
+        })
+
+        val toolbar: MaterialToolbar = binding.toolbar
+        toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
+
         // Specify the current activity as the lifecycle owner of the binding.
         // This is necessary so that the binding can observe LiveData updates.
         binding.lifecycleOwner = this

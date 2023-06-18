@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
 
 @Component
 @RequiredArgsConstructor
@@ -36,7 +37,8 @@ public class AttachmentMapper {
         return AttachmentDto.builder()
                 .id(attachment.getId())
                 .name(attachment.getName())
-                .url(attachment.getUrl())
+                .uniqueName(attachment.getUniqueName())
+                .path(attachment.getPath())
                 .description(attachment.getDescription())
                 .typeOfAttachment(attachment.getTypeOfAttachment())
                 .createdAt(attachment.getCreatedAt())
@@ -57,7 +59,7 @@ public class AttachmentMapper {
         return Attachment.builder()
                 .id(attachmentDto.getId())
                 .name(attachmentDto.getName())
-                .url(attachmentDto.getUrl())
+                .uniqueName(attachmentDto.getUniqueName())
                 .description(attachmentDto.getDescription())
                 .typeOfAttachment(attachmentDto.getTypeOfAttachment())
                 .createdAt(attachmentDto.getCreatedAt())
@@ -74,12 +76,13 @@ public class AttachmentMapper {
 
     public Attachment toEntity(AttachmentDto attachmentDto, MultipartFile file) throws IOException {
 
-        String url = fileSystemRepository.save(file.getBytes(), file.getOriginalFilename());
+        Path path = fileSystemRepository.save(file.getBytes(), file.getOriginalFilename());
 
         return Attachment.builder()
                 .id(attachmentDto.getId())
                 .name(attachmentDto.getName())
-                .url(url)
+                .uniqueName(path.getFileName().toString())
+                .path(path.toAbsolutePath().toString())
                 .description(attachmentDto.getDescription())
                 .typeOfAttachment(attachmentDto.getTypeOfAttachment())
                 .createdAt(attachmentDto.getCreatedAt())

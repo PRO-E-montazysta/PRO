@@ -1,71 +1,73 @@
 package com.example.e_montazysta.ui.order
 
 import com.example.e_montazysta.data.model.Order
-import com.example.e_montazysta.data.model.Result
 import com.example.e_montazysta.data.model.User
-import com.example.e_montazysta.data.repository.interfaces.IUserRepository
 import com.squareup.moshi.Json
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import java.util.Date
 
-data class OrderDAO (
-    @Json(name = "id")
+data class OrderDAO(
     val id: Int,
-    @Json(name = "name")
     val name: String,
     @Json(name = "typeOfPriority")
-    val priority: String,
-    @Json(name = "status")
-    val status: String,
-    @Json(name = "plannedStart")
+    val priority: OrderPriority,
+    val status: OrderStatus,
     val plannedStart: Date?,
-    @Json(name = "plannedEnd")
     val plannedEnd: Date?,
-    @Json(name = "clientId")
+    val companyId: Int?,
+    val companyName: String?,
     val clientId: Int?,
-    @Json(name = "foremanId")
     val foremanId: Int?,
-    @Json(name = "locationId")
     val locationId: Int?,
-    @Json(name = "managerId")
     val managerId: Int?,
-    @Json(name = "specialistId")
+    val managerFirstName: String?,
+    val managerLastName: String?,
     val specialistId: Int?,
-    @Json(name = "salesRepresentativeId")
     val salesRepresentativeId: Int?,
-    @Json(name = "createdAt")
     val createdAt: Date?,
-    @Json(name = "editedAt")
-    val editedAt: Date?
+    val editedAt: Date?,
+    val orderStages: List<Int>,
+    val attachments: List<Int?>
 ) : KoinComponent {
-    val userRepository: IUserRepository by inject()
     suspend fun mapToOrder(): Order {
-        var client: User?
-        var manager: User?
-        var specialist: User?
-        var salesRepresentative: User?
-        var foreman: User?
+//        val client = if (clientId != null) User.getUserDetails(clientId) else null
+        val manager = if (managerId != null) User.getUserDetails(managerId) else null
+        val specialist = if (specialistId != null) User.getUserDetails(specialistId) else null
+        val salesRepresentative =
+            if (salesRepresentativeId != null) User.getUserDetails(salesRepresentativeId) else null
+        val foreman = if (foremanId != null) User.getUserDetails(foremanId) else null
 
-        coroutineScope {
-            client = async { getUserDetails(clientId) }.await()
-            manager = async { getUserDetails(managerId) }.await()
-            specialist = async { getUserDetails(specialistId) }.await()
-            salesRepresentative = async { getUserDetails(salesRepresentativeId) }.await()
-            foreman = async { getUserDetails(foremanId) }.await()
-        }
-        return Order(id, name, priority, status, plannedStart, plannedEnd, client, foreman, manager, specialist, salesRepresentative, locationId, createdAt, editedAt)
+        return Order(
+            id,
+            name,
+            priority,
+            status,
+            plannedStart,
+            plannedEnd,
+            clientId,
+            foreman,
+            manager,
+            specialist,
+            salesRepresentative,
+            locationId,
+            orderStages,
+            createdAt,
+            editedAt
+        )
     }
+}
 
-    private suspend fun getUserDetails(userId: Int?): User? {
-        if (userId == null) {
-            return null
-        }
-        return when (val result = userRepository.getUserDetails(userId)) {
-            is Result.Success -> result.data
-            is Result.Error -> null
-        }
-    }
+enum class OrderStatus(val value: String) {
+    CREATED("UTWORZONY"),
+    PLANNING("PLANOWANIE"),
+    TO_ACCEPT("DO AKCEPTACJI"),
+    ACCEPTED("ZAAKCEPTOWANE"),
+    IN_PROGRESS("W TRAKCIE"),
+    FINISHED("ZAKOŃCZONO")
+}
+
+enum class OrderPriority(val value: String) {
+    NORMAL("NORMALNY"),
+    IMPORTANT("WAŻNY"),
+    IMMEDIATE("NATYCHMIASTOWY")
 }

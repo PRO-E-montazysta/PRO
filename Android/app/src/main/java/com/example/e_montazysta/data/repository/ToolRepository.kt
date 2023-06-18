@@ -23,7 +23,7 @@ class ToolRepository(
             val toolItemDAOs: List<ToolListItem>
             if (payload.isNullOrEmpty()) {
                 toolItemDAOs = toolService.getFilterTools(token)
-            } else{
+            } else {
                 toolItemDAOs = toolService.getFilterTools(token, payload)
             }
             Result.Success(toolItemDAOs)

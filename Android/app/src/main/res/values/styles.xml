@@ -38,4 +38,65 @@
         <item name="cornerSize">50%</item>
         <item name="android:padding">5dp</item>
     </style>
+
+    <style name="Widget.MyApp.Spinner" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <!-- Color of box ONLY, not dropdown -->
+        <item name="boxBackgroundColor">?colorPrimaryContainer</item>
+        <!-- Box outline color depending on state (default, enabled, but NOT error) -->
+        <item name="boxStrokeColor">?colorOnPrimaryContainer</item>
+        <!-- Box outline color just for errors -->
+        <item name="boxStrokeErrorColor">?colorErrorContainer</item>
+        <!-- Enable 8dp space below the box for error message -->
+        <item name="errorEnabled">true</item>
+        <!-- Hint INSIDE the box, before focusing the TextInputEditText -->
+        <item name="android:textColorHint">?colorOnPrimaryContainer</item>
+        <!-- Hint ON TOP of the box, when the spinner's TextInputEditText is focused. -->
+        <item name="hintTextColor">?colorOnSecondaryContainer</item>
+        <!-- Additional styles only available via a theme overlay (HORRID) -->
+        <item name="materialThemeOverlay">@style/Theme.MyApp.Spinner.ThemeOverlay</item>
+    </style>
+
+    <style name="Theme.MyApp.Spinner.ThemeOverlay" parent="">
+        <!-- Style inception - hook into styling the AutoCompleteTextView -->
+        <item name="autoCompleteTextViewStyle">@style/Widget.MyApp.Spinner.ThemeOverlay.AutoCompleteTextView</item>
+        <!-- Background color of dropdown (popup) entries -->
+        <item name="colorSurface">?colorSurface</item>
+        <!-- Dropdown arrow color -->
+        <item name="colorOnSurface">?colorOnSurface</item>
+    </style>
+    <!-- Text (NOT the popup) of the child AutoCompleteTextView of our material spinner -->
+    <style name="Widget.MyApp.Spinner.ThemeOverlay.AutoCompleteTextView" parent="Widget.AppCompat.AutoCompleteTextView">
+        <!--
+        Another nasty little bug. Our main spinner style inherits from material
+        TextInputLayout.OutlinedBox.ExposedDropdownMenu, which means we want the
+        spinner to have an outline. But this won't work unless we manually FORCE
+        a null background on the child AutoCompleteTextView.
+        https://github.com/material-components/material-components-android/issues/1989
+        -->
+        <item name="android:background">@null</item>
+        <!-- Restore padding to sanity -->
+        <item name="android:padding">16dp</item>
+        <!-- Color of selected item -->
+        <item name="android:textColor">?colorOnSecondaryContainer</item>
+        <!-- Text size of selected item -->
+        <item name="android:textSize">20sp</item>
+    </style>
+    <!-- Material spinner 'item' layout style -->
+    <style name="Widget.MyApp.SpinnerItem" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">?colorOnSurface</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:padding">16dp</item>
+    </style>
+
+    <style name="FullScreenDialogTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+<!--        <item name="android:statusBarColor">#280680</item>-->
+<!--        <item name="windowNoTitle">true</item>-->
+<!--        <item name="android:layout_width">match_parent</item>-->
+<!--        <item name="android:layout_height">match_parent</item>-->
+<!--        <item name="android:layout_gravity">center</item>-->
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
 </resources>

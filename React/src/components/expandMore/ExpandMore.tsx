@@ -6,6 +6,7 @@ import Collapse from '@mui/material/Collapse'
 import IconButton, { IconButtonProps } from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { Variant } from '@mui/material/styles/createTypography'
 
 interface CustomExpandMoreProps extends IconButtonProps {
     expand: boolean
@@ -25,11 +26,12 @@ const CustomExpandMore = styled((props: CustomExpandMoreProps) => {
 type ExpandMoreProps = {
     titleIcon: JSX.Element
     title: string
+    titleVariant?: Variant
     cardContent: JSX.Element
     isOpen?: boolean
 }
 
-const ExpandMore = ({ titleIcon, title, cardContent, isOpen }: ExpandMoreProps) => {
+const ExpandMore = ({ titleIcon, title, cardContent, isOpen, titleVariant }: ExpandMoreProps) => {
     const [expandedInformation, setExpandedInformation] = useState(false)
     useEffect(() => {
         if (!!isOpen) setExpandedInformation(isOpen)
@@ -45,7 +47,7 @@ const ExpandMore = ({ titleIcon, title, cardContent, isOpen }: ExpandMoreProps) 
                 <IconButton id={`expandMore-${title}`} aria-label="share">
                     {titleIcon}
                 </IconButton>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant={titleVariant || 'body2'} color="text.secondary">
                     {title}
                 </Typography>
                 <CustomExpandMore

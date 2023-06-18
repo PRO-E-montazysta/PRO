@@ -21,15 +21,21 @@ class App : Application() {
         super.onCreate()
 
         val preferencesModule = module {
-            single<ISharedPreferencesHelper> { SharedPreferencesHelper(PreferenceManager.getDefaultSharedPreferences(applicationContext)) }
+            single<ISharedPreferencesHelper> {
+                SharedPreferencesHelper(
+                    PreferenceManager.getDefaultSharedPreferences(
+                        applicationContext
+                    )
+                )
+            }
         }
 
-        startKoin{
+        startKoin {
             androidLogger()
             androidContext(this@App)
             modules(preferencesModule, uiModule, dataModule)
         }
-     // Required initialization logic here!
+        // Required initialization logic here!
     }
 
 }

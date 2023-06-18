@@ -16,6 +16,7 @@ import {
     NotificationType_WAREHOUSEMANAGER,
 } from '../types/model/Notification'
 import { OrderStageStatus } from '../types/model/OrderStage'
+import { TypeOfAttachment } from '../types/model/Attachment'
 
 export const orderStatusName = (key: string) => {
     return Object.values(OrderStatus)[Object.keys(OrderStatus).indexOf(key)]
@@ -48,6 +49,11 @@ export const typeOfUnitName = (key: string) => {
 export const typeOfUnavailabilityName = (key: string) => {
     return Object.values(TypeOfUnavailability)[Object.keys(TypeOfUnavailability).indexOf(key)]
 }
+
+export const typeOfAttachmentName = (key: string) => {
+    return Object.values(TypeOfAttachment)[Object.keys(TypeOfAttachment).indexOf(key)]
+}
+
 
 export const roleName = (key: string) => {
     return Object.values(UserRole)[Object.keys(UserRole).indexOf(key)]

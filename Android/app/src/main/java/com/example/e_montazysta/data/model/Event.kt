@@ -10,7 +10,7 @@ data class Event(
     val acceptedBy: User?,
     val attachments: List<Int?>,
     val completionDate: Date?,
-    val createdBy: User,
+    val createdBy: User?,
     val deleted: Boolean,
     val description: String?,
     val item: Any,
@@ -38,7 +38,7 @@ enum class EventType(val value: String) {
     E("Element")
 }
 
-enum class EventStatus (val color: Int, val value: String){
+enum class EventStatus(val color: Int, val value: String) {
     CREATED(Color.BLUE, "UTWORZONY"),         // Blue
     IN_PROGRESS(Color.YELLOW, "W REALIZACJI"),     // Yellow
     REPAIRED(Color.GREEN, "NAPRAWIONY"),        // Green

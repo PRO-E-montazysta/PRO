@@ -12,8 +12,20 @@ data class ElementDAO(
     val name: String,
     val quantityInUnit: Double,
     val typeOfUnit: String
-){
+) {
     fun mapToElement(): Element {
-        return Element(attachmentId, code, false, elementEvents, null, elementReturnReleases, id, listOfElementsPlannedNumber, name, quantityInUnit, typeOfUnit)
+        return Element(
+            attachmentId,
+            code,
+            false,
+            elementEvents,
+            null,
+            elementReturnReleases,
+            id,
+            listOfElementsPlannedNumber,
+            name,
+            quantityInUnit,
+            typeOfUnit
+        )
     }
 }

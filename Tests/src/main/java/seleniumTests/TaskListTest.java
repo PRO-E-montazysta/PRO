@@ -74,11 +74,7 @@ public class TaskListTest {
     driver.findElement(By.id("createdAtMax")).click();
     driver.findElement(By.id("createdAtMax")).sendKeys("2325-12-09T03:31");
     driver.findElement(By.cssSelector(".filter")).click();
-    {
-      WebElement element = driver.findElement(By.cssSelector(".MuiAutocomplete-popupIndicator > .MuiSvgIcon-root"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).perform();
-    }
+
     driver.findElement(By.cssSelector(".MuiAutocomplete-popupIndicator > .MuiSvgIcon-root")).click();
     {
       WebElement element = driver.findElement(By.tagName("body"));

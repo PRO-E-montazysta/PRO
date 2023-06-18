@@ -10,10 +10,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.koin.core.component.KoinComponent
 import kotlin.coroutines.CoroutineContext
 
-class SettingsViewModel(private val userRepository: IUserRepository,
+class SettingsViewModel(
+    private val userRepository: IUserRepository,
 ) : ViewModel(),
     CoroutineScope {
 

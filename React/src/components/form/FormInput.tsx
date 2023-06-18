@@ -2,6 +2,7 @@ import { TextField, styled } from '@mui/material'
 import { formatDate, formatShortDate } from '../../helpers/format.helper'
 import useBreakpoints from '../../hooks/useBreakpoints'
 import { FormInputParams } from './types'
+import { useEffect, useLayoutEffect, useState } from 'react'
 
 type CustomTextFieldProps = {
     readOnly: boolean
@@ -18,14 +19,15 @@ export const CustomTextField = styled(TextField)((props: CustomTextFieldProps) =
 
 const FormInput = (params: FormInputParams) => {
     const { id, readonly, style, type, formik, label, formatFn, placeholder } = params
-    const value =
+
+    const formattedValue =
         type == 'datetime-local'
             ? formatDate(formik.values[id])
             : type == 'date'
             ? formatShortDate(formik.values[id])
-            : type == 'can-be-deleted'
-            ? formatFn && formatFn(String(formik.values[id]))
-            : String(formik.values[id])
+            : type == 'can-be-deleted' && formatFn
+            ? formatFn(formik.values[id])
+            : formik.values[id]
 
     const appSize = useBreakpoints()
     return (
@@ -38,12 +40,11 @@ const FormInput = (params: FormInputParams) => {
             InputProps={{
                 readOnly: readonly,
             }}
-            // sx={{ minWidth: '300px' }}
             style={style}
             label={label}
             variant="outlined"
             type={type ? type : 'text'}
-            value={value}
+            value={formattedValue}
             onChange={formik.handleChange}
             id={id}
             name={id}

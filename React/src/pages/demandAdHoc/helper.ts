@@ -40,16 +40,16 @@ export const headCells: Array<HeadCell<DemandAdHocFilterDto>> = [
 
 export const filterInitStructure: Array<FilterInputType> = [
     {
-        id: 'createdByName',
+        id: 'orderStageName',
         value: '',
-        label: 'Brygadzista',
+        label: 'Etap zlecenia',
         inputType: 'text',
         typeValue: 'string',
     },
     {
-        id: 'orderStageName',
+        id: 'createdByName',
         value: '',
-        label: 'Etap zlecenia',
+        label: 'Brygadzista',
         inputType: 'text',
         typeValue: 'string',
     },
