@@ -223,7 +223,7 @@ public class OrderStageImpl implements OrderStageService {
                     fitterRepository.save(fitter);
                     unavailabilityRepository.save(Unavailability.builder()
                                     .typeOfUnavailability(TypeOfUnavailability.BUSY)
-                                    .description("OrderStage"+orderStageDb.getId())
+                                    .description("Etap: " + orderStageDb.getName())
                                     .unavailableFrom(orderStageDb.getPlannedStartDate())
                                     .unavailableTo(orderStageDb.getPlannedEndDate())
                                     .assignedTo(fitter)
