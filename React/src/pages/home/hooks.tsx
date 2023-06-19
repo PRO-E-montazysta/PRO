@@ -8,15 +8,22 @@ import { SelectMenuItemProps } from '../../components/form/types'
 import { getFilteredOrders } from '../../api/order.api'
 import { getAllEmployees } from '../../api/employee.api'
 import { Employee } from '../../types/model/Employee'
+import useError from '../../hooks/useError'
 
 export const useUnavailabilityListByMonth = (year: number, month: number) => {
-    return useQuery<Unavailability[], AxiosError>(['unavailability', { month: month, year: year }], async () =>
-        getUnavailabilityByMonth({
-            queryParams: {
-                month: month,
-                year: year,
-            },
-        }),
+    const onError = useError()
+    return useQuery<Unavailability[], AxiosError>(
+        ['unavailability', { month: month, year: year }],
+        async () =>
+            getUnavailabilityByMonth({
+                queryParams: {
+                    month: month,
+                    year: year,
+                },
+            }),
+        {
+            onError: onError,
+        },
     )
 }
 

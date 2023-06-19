@@ -47,7 +47,7 @@ interface SortedTableProps<T> {
     initOrderBy: keyof T
     initOrderByDesc?: boolean
     idPropName: keyof T
-    onClickRow: (event: React.MouseEvent<unknown>, row: T) => void
+    onClickRow: (event: React.MouseEvent, row: T) => void
 }
 
 export default function SortedTable<T>(props: SortedTableProps<T>) {
@@ -62,7 +62,7 @@ export default function SortedTable<T>(props: SortedTableProps<T>) {
         setOrderBy(initOrderBy)
     }, [initOrderBy])
 
-    const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof T | undefined) => {
+    const handleRequestSort = (event: React.MouseEvent, property: keyof T | undefined) => {
         const isAsc = orderBy === property && order === 'asc'
         setOrder(isAsc ? 'desc' : 'asc')
         setOrderBy(property)
@@ -77,7 +77,7 @@ export default function SortedTable<T>(props: SortedTableProps<T>) {
         setPage(0)
     }
 
-    const handleClickRow = (event: React.MouseEvent<unknown>, row: T) => onClickRow(event, row)
+    const handleClickRow = (event: React.MouseEvent, row: T) => onClickRow(event, row)
 
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows = page > 0 && query.data ? Math.max(0, (1 + page) * rowsPerPage - query.data.length) : 0

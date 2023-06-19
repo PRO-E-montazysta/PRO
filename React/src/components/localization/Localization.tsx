@@ -1,14 +1,11 @@
-import { Box, Button, Typography } from '@mui/material'
-import { Location } from '../../types/model/Location'
-import FormBox from '../form/FormBox'
-import { useFormik } from 'formik'
-import { FormStructure, FormStructureParams } from '../form/FormStructure'
-import FormPaper from '../form/FormPaper'
-import useBreakpoints from '../../hooks/useBreakpoints'
+import { Button } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { Coordinates, getLocationFromAddress, getLocationFromCoordinates, getPositionError, options } from './helper'
-import Map from './Map'
+import useBreakpoints from '../../hooks/useBreakpoints'
 import { FormInputProps, PageMode } from '../../types/form'
+import FormBox from '../form/FormBox'
+import { FormStructure } from '../form/FormStructure'
+import Map from './Map'
+import { Coordinates, getLocationFromAddress, getLocationFromCoordinates, getPositionError, options } from './helper'
 
 type LocalizationProps = {
     formStructure: Array<FormInputProps>

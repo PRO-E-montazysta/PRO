@@ -15,7 +15,7 @@ type FatTableParams<T> = {
     headCells: Array<HeadCell<T>>
     initOrderBy: keyof T
     initOrderByDesc?: boolean
-    onClickRow: (event: React.MouseEvent<unknown>, row: T) => void
+    onClickRow: (event: React.MouseEvent, row: T) => void
     pageHeader?: string
     idPropName: keyof T
 }

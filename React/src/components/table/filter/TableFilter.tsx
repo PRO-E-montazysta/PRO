@@ -4,12 +4,12 @@ import { theme } from '../../../themes/baseTheme'
 import MultipleSelectChip from '../../base/Multiselect'
 import SearchIcon from '@mui/icons-material/Search'
 import ReplayIcon from '@mui/icons-material/Replay'
-
 import './style.less'
 import useBreakpoints from '../../../hooks/useBreakpoints'
 import { useInputWidth } from '../../../hooks/useInputWidth'
 import { SelectMenuItemProps } from '../../form/types'
 import * as yup from 'yup'
+
 export type Filter = {
     formik: any
     inputs: Array<any>
@@ -17,6 +17,7 @@ export type Filter = {
     resetBtnStyle?: CSSProperties
     submitBtnStyle?: CSSProperties
 }
+
 export type FilterFormProps = {
     filterStructure: Array<FilterInputType>
     onSearch: (filters: any) => void
