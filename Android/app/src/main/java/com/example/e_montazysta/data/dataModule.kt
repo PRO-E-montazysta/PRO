@@ -3,6 +3,7 @@ package com.example.e_montazysta.data
 import com.example.e_montazysta.data.environments.Environment
 import com.example.e_montazysta.data.network.NetworkServiceFactory
 import com.example.e_montazysta.data.network.ServiceFactory
+import com.example.e_montazysta.data.repository.ClientRepository
 import com.example.e_montazysta.data.repository.CommentRepository
 import com.example.e_montazysta.data.repository.ElementInWarehouseRepository
 import com.example.e_montazysta.data.repository.ElementRepository
@@ -17,6 +18,7 @@ import com.example.e_montazysta.data.repository.ToolRepository
 import com.example.e_montazysta.data.repository.ToolTypeRepository
 import com.example.e_montazysta.data.repository.UserRepository
 import com.example.e_montazysta.data.repository.WarehouseRepository
+import com.example.e_montazysta.data.repository.interfaces.IClientRepository
 import com.example.e_montazysta.data.repository.interfaces.ICommentRepository
 import com.example.e_montazysta.data.repository.interfaces.IElementInWarehouseRepository
 import com.example.e_montazysta.data.repository.interfaces.IElementRepository
@@ -184,6 +186,12 @@ val dataModule = module {
         val plannedItemRepository: IPlannedItemRepository =
             PlannedItemRepository(get())
         plannedItemRepository
+    }
+
+    factory {
+        val clientRepository: IClientRepository =
+            ClientRepository(get())
+        clientRepository
     }
 
     viewModel {
