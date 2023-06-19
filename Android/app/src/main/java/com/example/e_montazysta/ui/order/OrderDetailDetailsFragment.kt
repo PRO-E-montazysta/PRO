@@ -44,8 +44,8 @@ class OrderDetailDetailsFragment(val order: Order) : Fragment() {
                 it.editedAt?.let {
                     binding.plannedEndValue.text = DateFormat.getDateTimeInstance().format(it)
                 }
-                it.client?.let { clientId ->
-                    binding.clientIdValue.text = clientId.toString()
+                it.client?.let { client ->
+                    binding.clientIdValue.text = client.name
                 }
 
                 it.foreman?.let { foremanId ->
