@@ -6,14 +6,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.e_montazysta.databinding.ListItemElementInWarehousesBinding
 
 
-class ElementInWarehouseListAdapter(val clickListener: CustomClickListener) : RecyclerView.Adapter<ElementInWarehouseListAdapter.ViewHolder>(){
+class ElementInWarehouseListAdapter(val clickListener: CustomClickListener) :
+    RecyclerView.Adapter<ElementInWarehouseListAdapter.ViewHolder>() {
 
     var elements = listOf<ElementInWarehousesDAOItem>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
-    set(value) {
-        field = value
-        notifyDataSetChanged()
-    }
     override fun getItemCount(): Int {
         return elements.size
     }
@@ -27,22 +28,26 @@ class ElementInWarehouseListAdapter(val clickListener: CustomClickListener) : Re
         holder.bind(item, clickListener)
     }
 
-    class ViewHolder( val binding: ListItemElementInWarehousesBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(val binding: ListItemElementInWarehousesBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: ElementInWarehousesDAOItem, clickListener: CustomClickListener) {
             binding.elementInWarehouse = data
             binding.itemClickListener = clickListener
             binding.executePendingBindings()
         }
+
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ListItemElementInWarehousesBinding.inflate(layoutInflater, parent, false)
+                val binding =
+                    ListItemElementInWarehousesBinding.inflate(layoutInflater, parent, false)
                 return ViewHolder(binding)
             }
         }
     }
 }
+
 class CustomClickListener(val clickListener: (element: ElementInWarehousesDAOItem) -> Unit) {
 
     fun cardClicked(element: ElementInWarehousesDAOItem) = clickListener(element)

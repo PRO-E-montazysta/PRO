@@ -51,6 +51,7 @@ class WarehouseListViewModel(private val repository: IWarehouseRepository) : Vie
                 _warehouseLiveData.postValue(result.data)
                 if (result.data.isNullOrEmpty()) _isEmptyLiveData.postValue(true)
             }
+
             is Result.Error -> {
                 result.exception.message?.let { _messageLiveData.postValue(it) }
                 _isLoadingLiveData.postValue(false)

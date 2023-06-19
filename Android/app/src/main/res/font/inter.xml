@@ -2,5 +2,4 @@
 <font-family xmlns:android="http://schemas.android.com/apk/res/android"
     android:fontProviderAuthority="com.google.android.gms.fonts"
     android:fontProviderPackage="com.google.android.gms"
-    android:fontProviderQuery="Inter">
-</font-family>
+    android:fontProviderQuery="Inter"></font-family>

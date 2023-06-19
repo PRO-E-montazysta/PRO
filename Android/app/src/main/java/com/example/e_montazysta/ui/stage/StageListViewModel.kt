@@ -53,6 +53,7 @@ class StageListViewModel(private val repository: IStageRepository) : ViewModel()
                 _stageLiveData.postValue(result.data)
                 if (result.data.isNullOrEmpty()) _isEmptyLiveData.postValue(true)
             }
+
             is Result.Error -> result.exception.message?.let { _messageLiveData.postValue(it) }
         }
         _isLoadingLiveData.postValue(false)
@@ -68,6 +69,7 @@ class StageListViewModel(private val repository: IStageRepository) : ViewModel()
                 if (result.data.isNullOrEmpty()) _isEmptyLiveData.postValue(true)
 
             }
+
             is Result.Error -> result.exception.message?.let { _messageLiveData.postValue(it) }
         }
         _isLoadingLiveData.postValue(false)

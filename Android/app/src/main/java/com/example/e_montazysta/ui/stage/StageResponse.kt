@@ -46,7 +46,7 @@ data class StageDAO(
 
     suspend fun mapToStage(): Stage {
         val fittersList: List<User> = fitters.mapNotNull { id -> User.getUserDetails(id) }
-        val foreman: User? = if(foremanId != null) User.getUserDetails(foremanId) else null
+        val foreman: User? = if (foremanId != null) User.getUserDetails(foremanId) else null
         val commentsList: List<Comment> = comments.mapNotNull { id -> getCommentDetails(id) }
         val releasesList: List<Release> = toolReleases.mapNotNull { id -> getReleaseDetails(id) }
         val listOfToolsPlannedNumber =

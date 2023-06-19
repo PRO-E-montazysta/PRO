@@ -87,8 +87,11 @@ class ElementDetailFragment : Fragment() {
         })
 
         val elementInWarehouses = binding.elementInWarehousesButton
-        elementInWarehouses.setOnClickListener{
-            val direction = ElementDetailFragmentDirections.actionElementDetailFragmentToElementInWarehousesListFragment(elementId)
+        elementInWarehouses.setOnClickListener {
+            val direction =
+                ElementDetailFragmentDirections.actionElementDetailFragmentToElementInWarehousesListFragment(
+                    elementId
+                )
             findNavController().navigate(direction)
         }
 //        val create_release = binding.createRelease

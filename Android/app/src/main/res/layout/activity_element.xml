@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="ElementDetailViewModel"
             type="com.example.e_montazysta.ui.element.ElementDetailViewModel" />
+
         <variable
             name="element"
             type="com.example.e_montazysta.data.model.Element" />
@@ -16,7 +18,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="8dp"
-        tools:context=".ui.activities.ElementMainActivity"
         tools:ignore="HardcodedText">
 
         <com.google.android.material.appbar.AppBarLayout

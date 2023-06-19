@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.example.e_montazysta.R
 import com.example.e_montazysta.databinding.FragmentWarehousesBinding
 import com.google.android.material.appbar.MaterialToolbar
 //import com.example.e_montazysta.ui.activities.ElementMainActivity
@@ -71,6 +72,7 @@ class WarehouseListFragment : Fragment() {
             requireActivity().onBackPressed()
         }
 
+
         // Empty list info
         viewModel.isEmptyLiveData.observe(viewLifecycleOwner, Observer<Boolean> {
             it?.let {
@@ -81,6 +83,15 @@ class WarehouseListFragment : Fragment() {
                 }
             }
         })
+
+        toolbar.menu.findItem(R.id.filter).isVisible = false
+
+        val mSwipeRefreshLayout = binding.swiperefresh
+        mSwipeRefreshLayout.setOnRefreshListener {
+            viewModel.getWarehouses()
+            mSwipeRefreshLayout.isRefreshing = false
+        }
+
         return binding.root
 
     }

@@ -57,6 +57,7 @@ class UserListViewModel(private val repository: IUserRepository) : ViewModel(), 
                 _usersLiveData.postValue(result.data)
                 if (result.data.isNullOrEmpty()) _isEmptyLiveData.postValue(true)
             }
+
             is Result.Error -> {
                 result.exception.message?.let { _messageLiveData.postValue(it) }
                 _isLoadingLiveData.postValue(false)
