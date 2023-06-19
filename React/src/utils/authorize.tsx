@@ -21,22 +21,18 @@ export const isAuthorizedToPage = (page: PageProps) => {
     return isAuthorized(ar)
 }
 
+const availablePaths = ['/login', '/forgot', '/new-password']
+
 export const AutorizedRoute = (page: PageProps) => {
     const token = getToken()
     const isAuthenticate = !!token ? true : false
     const location = useLocation()
 
-    if (location.pathname === '/login') return <Outlet />
-    if (location.pathname === '/forgot') return <Outlet />
-    if (location.pathname === '/new-password') return <Outlet />
-
+    if (availablePaths.indexOf(location.pathname) != -1) return <Outlet />
     if (!isAuthenticate || isExpire(token)) return <Navigate to="/login" />
 
-    return isAuthorizedToPage(page) ? (
-        <Outlet />
-    ) : (
-        <Error code={401} message={'Nie masz uprawnień do oglądania tej strony'} />
-    )
+    if (!isAuthorizedToPage(page)) return <Error code={401} message={'Brak uprawnień'} />
+    return <Outlet />
 }
 
 const getParentAllowedRoles = (page: PageProps): Array<Role> => {

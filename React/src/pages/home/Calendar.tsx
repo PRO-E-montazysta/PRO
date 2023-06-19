@@ -8,7 +8,7 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt'
 import { Box, IconButton } from '@mui/material'
 import moment from 'moment'
 import { getOrderStageById } from '../../api/orderStage.api'
-import { orderStatusName, typeOfUnavailabilityName } from '../../helpers/enum.helper'
+import { orderStageStatusName, orderStatusName, typeOfUnavailabilityName } from '../../helpers/enum.helper'
 import { getUnavailabilityDetails } from '../../api/unavailability.api'
 import { useUnavailabilityListByMonth } from './hooks'
 import { getOrderDetails } from '../../api/order.api'
@@ -25,15 +25,15 @@ const Calendar = () => {
     const unavailabilityListByMonth = useUnavailabilityListByMonth(currentDate.year(), currentDate.month() + 1)
     const [events, setEvents] = useState<EventInput[]>([])
 
-
     const aboutMeQuery = useQuery<any, AxiosError>(['about-me'], async () => getAboutMeInfo())
 
     useLayoutEffect(() => {
         if (unavailabilityListByMonth.data && aboutMeQuery.data) {
+            console.log(unavailabilityListByMonth.data)
             const myEvents: Unavailability[] = unavailabilityListByMonth.data
-            // .filter(
-            //     (d) => d.assignedToId == aboutMeQuery.data.userId,
-            // )
+            .filter(
+                (d) => d.assignedToId == aboutMeQuery.data.userId,
+            )
             const newEvents: EventInput[] = myEvents.map((d) => {
                 return {
                     id: d.id.toString(),
@@ -93,32 +93,36 @@ const Calendar = () => {
     }
 
     const displayEventOrderStageDetails = async (id: string) => {
-        const stageData = await getOrderStageById(id)
-        const orderData = await getOrderDetails(stageData.orderId.toString())
-
-        if (stageData)
-            setTimeout(() => {
-                setPopupEventInfo({
-                    isOpen: true,
-                    title: stageData.name,
-                    subtitle: orderData.name,
-                    link: '/orders/' + stageData.orderId,
-                    infoArray: [
-                        {
-                            label: 'Data od',
-                            value: moment(stageData.startDate).format('HH:mm DD-MM-YYYY'),
-                        },
-                        {
-                            label: 'Data do',
-                            value: moment(stageData.endDate).format('HH:mm DD-MM-YYYY'),
-                        },
-                        {
-                            label: 'Status',
-                            value: orderStatusName(stageData.status),
-                        },
-                    ],
-                })
-            }, 10)
+        if (!unavailabilityListByMonth.data) return
+        const thisUnavalibility = unavailabilityListByMonth.data.find((f) => f.id.toString() == id)
+        console.log(thisUnavalibility)
+        if (!thisUnavalibility || !thisUnavalibility.orderStageId || !thisUnavalibility.orderId) return
+        const stageData = await getOrderStageById(thisUnavalibility.orderStageId.toString())
+        const orderData = await getOrderDetails(thisUnavalibility.orderId.toString())
+        console.log(stageData)
+        if (!stageData) return
+        setTimeout(() => {
+            setPopupEventInfo({
+                isOpen: true,
+                title: stageData.name,
+                subtitle: orderData.name,
+                link: '/orders/' + stageData.orderId,
+                infoArray: [
+                    {
+                        label: 'Data od',
+                        value: moment(thisUnavalibility.unavailableFrom).format('HH:mm DD-MM-YYYY'),
+                    },
+                    {
+                        label: 'Data do',
+                        value: moment(thisUnavalibility.unavailableTo).format('HH:mm DD-MM-YYYY'),
+                    },
+                    {
+                        label: 'Status',
+                        value: orderStageStatusName(stageData.status),
+                    },
+                ],
+            })
+        }, 10)
     }
 
     return (

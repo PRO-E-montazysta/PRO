@@ -10,9 +10,9 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 import { theme } from './themes/baseTheme'
 import './app.less'
 
-const browserRouterMapper = (pages: Array<PageProps>) => {
-    const result: Array<RouteObject> = pages.map((page) => {
-        if (page.component) {
+const browserRouterMapper = (pages: Array<PageProps>): Array<RouteObject> => {
+    return pages.map((page) => {
+        if (page.component)
             return {
                 element: <AutorizedRoute {...page} />,
                 children: [
@@ -23,11 +23,8 @@ const browserRouterMapper = (pages: Array<PageProps>) => {
                     },
                 ],
             }
-        } else {
-            return {}
-        }
+        else return {}
     })
-    return result
 }
 
 const router = createBrowserRouter(browserRouterMapper(pageList))

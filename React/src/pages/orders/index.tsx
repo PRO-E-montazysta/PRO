@@ -1,15 +1,14 @@
-import FatTable from '../../components/table/FatTable'
+import { AxiosError } from 'axios'
+import { useFormik } from 'formik'
 import { useState } from 'react'
 import { useQuery } from 'react-query'
-import { AxiosError } from 'axios'
-import { getFilteredOrders } from '../../api/order.api'
-import { filterInitStructure, headCells } from './helper'
 import { useNavigate } from 'react-router-dom'
+import { getFilteredOrders } from '../../api/order.api'
+import FatTable from '../../components/table/FatTable'
+import { Filter } from '../../components/table/filter/TableFilter'
 import { getFilterParams, getFormikMetadata, newFilterValues } from '../../helpers/filter.helper'
 import { Order } from '../../types/model/Order'
-import { Filter } from '../../components/table/filter/TableFilter'
-import { useFormik } from 'formik'
-import { Container } from '@mui/material'
+import { filterInitStructure, headCells } from './helper'
 
 const Orders = () => {
     const [filterStructure, setFilterStructure] = useState(filterInitStructure)

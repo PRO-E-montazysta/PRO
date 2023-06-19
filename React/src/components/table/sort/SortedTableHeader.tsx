@@ -24,7 +24,7 @@ export interface HeadCell<T> {
 }
 
 export interface SortedTableHeadProps<T> {
-    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof T | undefined) => void
+    onRequestSort: (event: React.MouseEvent, property: keyof T | undefined) => void
     order: Order
     orderBy: keyof T | undefined
     headCells: HeadCell<T>[]
@@ -48,7 +48,7 @@ const StyledTableSortLabel = styled(TableSortLabel)(() => ({
 
 function SortedTableHeader<T>(props: SortedTableHeadProps<T>) {
     const { order, orderBy, onRequestSort, headCells } = props
-    const createSortHandler = (property: keyof T | undefined) => (event: React.MouseEvent<unknown>) => {
+    const createSortHandler = (property: keyof T | undefined) => (event: React.MouseEvent) => {
         onRequestSort(event, property)
     }
     const appSize = useBreakpoints()
