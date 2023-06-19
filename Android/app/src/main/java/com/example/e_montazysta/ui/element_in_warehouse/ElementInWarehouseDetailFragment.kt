@@ -18,14 +18,19 @@ class ElementInWarehouseDetailFragment : Fragment() {
 
     private val elementInWarehouseDetailViewModel: ElementInWarehouseDetailViewModel by viewModel()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         val args: ElementInWarehouseDetailFragmentArgs by navArgs()
         val elementId = args.elementInWarehouseId
         val elementName = args.elementName
 
         // Get a reference to the binding object and inflate the fragment views.
-        val binding: FragmentElementInWarehouseDetailBinding = FragmentElementInWarehouseDetailBinding.inflate(inflater, container, false)
+        val binding: FragmentElementInWarehouseDetailBinding =
+            FragmentElementInWarehouseDetailBinding.inflate(inflater, container, false)
         val application = requireNotNull(this.activity).application
 
         // To use the View Model with data binding, you have to explicitly
@@ -43,8 +48,8 @@ class ElementInWarehouseDetailFragment : Fragment() {
         })
 
         // Wyświetlanie błędów
-        elementInWarehouseDetailViewModel.messageLiveData.observe(viewLifecycleOwner) {
-                errorMessage -> Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+        elementInWarehouseDetailViewModel.messageLiveData.observe(viewLifecycleOwner) { errorMessage ->
+            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
         }
 
         val toolbar: MaterialToolbar = binding.toolbar

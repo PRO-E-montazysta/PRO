@@ -8,7 +8,7 @@ data class ElementInWarehouseListItem(
     val rack: String,
     val shelf: String,
     val warehouse: String
-){
+) {
     fun getListItemInfo(): String {
         return "Nazwa: " + element + "\nIlość: " + inWarehouseCount.toString() +
                 "\nRegał: " + rack +

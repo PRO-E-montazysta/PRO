@@ -4,5 +4,5 @@
     <item
         android:id="@+id/action_submit"
         android:title="Zatwierdź"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
 </menu>

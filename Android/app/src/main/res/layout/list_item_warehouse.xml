@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="warehouse"
             type="com.example.e_montazysta.ui.warehouse.WarehouseFilterDAO" />
+
         <variable
             name="itemClickListener"
             type="com.example.e_montazysta.ui.warehouse.CustomClickListener" />
@@ -20,15 +22,16 @@
         android:clickable="true"
         android:focusable="true"
         android:minHeight="@dimen/list_item_min_height_two_line"
-        tools:theme="@style/Theme.Material3.DayNight"
-        android:onClick="@{() -> itemClickListener.cardClicked(warehouse)}">
+        android:onClick="@{() -> itemClickListener.cardClicked(warehouse)}"
+        tools:theme="@style/Theme.Material3.DayNight">
 
-        <include layout="@layout/list_item_template"
+        <include
             android:id="@+id/item"
-            app:headline="@{warehouse.name}"
-            app:supportText='@{warehouse.description + " | " + warehouse.fullAddress + " | " + warehouse.openingHours}'
-            android:layout_height="wrap_content"
+            layout="@layout/list_item_template"
             android:layout_width="match_parent"
-            app:icon="@{@drawable/warehouse}" />
+            android:layout_height="wrap_content"
+            app:headline="@{warehouse.name}"
+            app:icon="@{@drawable/warehouse}"
+            app:supportText='@{warehouse.description + " | " + warehouse.fullAddress + " | " + warehouse.openingHours}' />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

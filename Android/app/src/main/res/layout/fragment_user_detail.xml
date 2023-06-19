@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/topAppBar"
@@ -19,12 +17,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:elevation="0dp"
-                app:menu="@menu/menu_details"
-                app:title="@string/user_details_title"
-                app:navigationIcon="@drawable/baseline_arrow_back_24"
-                app:layout_scrollFlags="scroll|enterAlways|snap"
                 app:layout_scrollEffect="compress"
-                />
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:menu="@menu/menu_details"
+                app:navigationIcon="@drawable/baseline_arrow_back_24"
+                app:title="@string/user_details_title" />
         </com.google.android.material.appbar.AppBarLayout>
 
 
@@ -32,11 +29,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:clickable="true">
+                android:clickable="true"
+                android:orientation="vertical">
+
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -44,22 +43,22 @@
                     android:paddingVertical="@dimen/list_item_space_x3"
                     android:paddingStart="@dimen/list_item_space_x4"
                     android:paddingEnd="@dimen/list_item_space_x6">
+
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/userFirstName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="?colorOnSurfaceVariant"
-                        android:textAppearance="?textAppearanceBodySmall"
                         android:text="@string/user_first_name"
-                        />
+                        android:textAppearance="?textAppearanceBodySmall"
+                        android:textColor="?colorOnSurfaceVariant" />
+
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/userFirstNameValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?textAppearanceBodyLarge"
-                        android:textColor="?colorOnSurface"
                         android:text="Brak"
-                        />
+                        android:textAppearance="?textAppearanceBodyLarge"
+                        android:textColor="?colorOnSurface" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -70,112 +69,112 @@
                     android:paddingVertical="@dimen/list_item_space_x3"
                     android:paddingStart="@dimen/list_item_space_x4"
                     android:paddingEnd="@dimen/list_item_space_x6">
+
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/userLastName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text='Nazwisko'
-                        android:textColor="?colorOnSurfaceVariant"
                         android:textAppearance="?textAppearanceBodySmall"
-                        />
+                        android:textColor="?colorOnSurfaceVariant" />
+
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/userLastNameValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?textAppearanceBodyLarge"
                         android:text="Brak"
-                        />
+                        android:textAppearance="?textAppearanceBodyLarge" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
                     android:clickable="true"
+                    android:orientation="vertical"
                     android:paddingVertical="@dimen/list_item_space_x3"
                     android:paddingStart="@dimen/list_item_space_x4"
                     android:paddingEnd="@dimen/list_item_space_x6">
+
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/userRole"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text='Stanowisko'
-                        android:textColor="?colorOnSurfaceVariant"
                         android:textAppearance="?textAppearanceBodySmall"
-                        />
+                        android:textColor="?colorOnSurfaceVariant" />
+
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/userRoleValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?textAppearanceBodyLarge"
-                        android:textColor="?colorOnSurface"
                         android:text="Brak"
-                        />
+                        android:textAppearance="?textAppearanceBodyLarge"
+                        android:textColor="?colorOnSurface" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
                     android:clickable="true"
+                    android:orientation="vertical"
                     android:paddingVertical="@dimen/list_item_space_x3"
                     android:paddingStart="@dimen/list_item_space_x4"
                     android:paddingEnd="@dimen/list_item_space_x6">
+
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/userEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text='Email'
-                        android:textColor="?colorOnSurfaceVariant"
                         android:textAppearance="?textAppearanceBodySmall"
-                        />
+                        android:textColor="?colorOnSurfaceVariant" />
+
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/userEmailValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?textAppearanceBodyLarge"
-                        android:textColor="?colorOnSurface"
                         android:text="Brak"
-                        />
+                        android:textAppearance="?textAppearanceBodyLarge"
+                        android:textColor="?colorOnSurface" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
                     android:clickable="true"
+                    android:orientation="vertical"
                     android:paddingVertical="@dimen/list_item_space_x3"
                     android:paddingStart="@dimen/list_item_space_x4"
                     android:paddingEnd="@dimen/list_item_space_x6">
+
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/userPhone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text='Telefon'
-                        android:textColor="?colorOnSurfaceVariant"
                         android:textAppearance="?textAppearanceBodySmall"
-                        />
+                        android:textColor="?colorOnSurfaceVariant" />
+
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/userPhoneValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?textAppearanceBodyLarge"
-                        android:textColor="?colorOnSurface"
                         android:text="Brak"
-                        />
+                        android:textAppearance="?textAppearanceBodyLarge"
+                        android:textColor="?colorOnSurface" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/list_item_space_x3"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@id/guide_end"
-                    app:layout_constraintStart_toStartOf="@id/guide_start"
-                    android:layout_marginTop="@dimen/list_item_space_x3"/>
+                    app:layout_constraintStart_toStartOf="@id/guide_start" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
         </ScrollView>

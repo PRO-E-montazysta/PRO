@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="elementDetailViewModel"
             type="com.example.e_montazysta.ui.element.ElementDetailViewModel" />
+
         <variable
             name="element"
             type="com.example.e_montazysta.data.model.Element" />
@@ -15,169 +16,170 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="?attr/actionBarSize"
-        >
+        android:layout_marginBottom="?attr/actionBarSize">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/topAppBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/topAppBar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:elevation="0dp"
-            app:menu="@menu/menu_details"
-            app:title="@string/title_element"
-            app:navigationIcon="@drawable/baseline_arrow_back_24"
-            app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:layout_scrollEffect="compress"
-            />
-    </com.google.android.material.appbar.AppBarLayout>
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        <androidx.appcompat.widget.LinearLayoutCompat
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="0dp"
+                app:layout_scrollEffect="compress"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:menu="@menu/menu_details"
+                app:navigationIcon="@drawable/baseline_arrow_back_24"
+                app:title="@string/title_element" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:clickable="true">
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingVertical="@dimen/list_item_space_x3"
-                android:paddingStart="@dimen/list_item_space_x4"
-                android:paddingEnd="@dimen/list_item_space_x6">
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/element_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="?colorOnSurfaceVariant"
-                    android:textAppearance="?textAppearanceBodySmall"
-                    android:text="@string/element_name_text"
-                    />
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/element_name_data"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?textAppearanceBodyLarge"
-                    android:textColor="?colorOnSurface"
-                    android:text="element_name_data"
-                    />
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingVertical="@dimen/list_item_space_x3"
-                android:paddingStart="@dimen/list_item_space_x4"
-                android:paddingEnd="@dimen/list_item_space_x6">
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/element_code"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/element_code_text"
-                    android:textColor="?colorOnSurfaceVariant"
-                    android:textAppearance="?textAppearanceBodySmall"
-                    />
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/element_code_data"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?textAppearanceBodyLarge"
-                    android:text="element_code_data"
-                    />
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
                 android:clickable="true"
-                android:paddingVertical="@dimen/list_item_space_x3"
-                android:paddingStart="@dimen/list_item_space_x4"
-                android:paddingEnd="@dimen/list_item_space_x6">
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/element_unit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/element_unit_text"
-                    android:textColor="?colorOnSurfaceVariant"
-                    android:textAppearance="?textAppearanceBodySmall"
-                    />
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/element_unit_data"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?textAppearanceBodyLarge"
-                    android:textColor="?colorOnSurface"
-                    android:text="element_unit_data"
-                    />
+                android:orientation="vertical">
 
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/list_item_space_x3"
+                    android:paddingStart="@dimen/list_item_space_x4"
+                    android:paddingEnd="@dimen/list_item_space_x6">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/element_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/element_name_text"
+                        android:textAppearance="?textAppearanceBodySmall"
+                        android:textColor="?colorOnSurfaceVariant" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/element_name_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="element_name_data"
+                        android:textAppearance="?textAppearanceBodyLarge"
+                        android:textColor="?colorOnSurface" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/list_item_space_x3"
+                    android:paddingStart="@dimen/list_item_space_x4"
+                    android:paddingEnd="@dimen/list_item_space_x6">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/element_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/element_code_text"
+                        android:textAppearance="?textAppearanceBodySmall"
+                        android:textColor="?colorOnSurfaceVariant" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/element_code_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="element_code_data"
+                        android:textAppearance="?textAppearanceBodyLarge" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/list_item_space_x3"
+                    android:paddingStart="@dimen/list_item_space_x4"
+                    android:paddingEnd="@dimen/list_item_space_x6">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/element_unit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/element_unit_text"
+                        android:textAppearance="?textAppearanceBodySmall"
+                        android:textColor="?colorOnSurfaceVariant" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/element_unit_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="element_unit_data"
+                        android:textAppearance="?textAppearanceBodyLarge"
+                        android:textColor="?colorOnSurface" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/list_item_space_x3"
+                    android:paddingStart="@dimen/list_item_space_x4"
+                    android:paddingEnd="@dimen/list_item_space_x6">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/element_qty_of_unit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/element_qty_of_unit_text"
+                        android:textAppearance="?textAppearanceBodySmall"
+                        android:textColor="?colorOnSurfaceVariant" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/element_qty_of_unit_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="element_qty_of_unit_data"
+                        android:textAppearance="?textAppearanceBodyLarge"
+                        android:textColor="?colorOnSurface" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/list_item_space_x3"
+                    android:paddingStart="@dimen/list_item_space_x4"
+                    android:paddingEnd="@dimen/list_item_space_x6">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/elementInWarehousesButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Stan magazynowy"
+                        app:icon="@drawable/baseline_warehouse_24"
+                        app:iconGravity="end" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/list_item_space_x3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/guide_end"
+                    app:layout_constraintStart_toStartOf="@id/guide_start" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:clickable="true"
-                android:paddingVertical="@dimen/list_item_space_x3"
-                android:paddingStart="@dimen/list_item_space_x4"
-                android:paddingEnd="@dimen/list_item_space_x6">
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/element_qty_of_unit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/element_qty_of_unit_text"
-                    android:textColor="?colorOnSurfaceVariant"
-                    android:textAppearance="?textAppearanceBodySmall"
-                    />
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/element_qty_of_unit_data"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?textAppearanceBodyLarge"
-                    android:textColor="?colorOnSurface"
-                    android:text="element_qty_of_unit_data"
-                    />
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:clickable="true"
-                android:paddingVertical="@dimen/list_item_space_x3"
-                android:paddingStart="@dimen/list_item_space_x4"
-                android:paddingEnd="@dimen/list_item_space_x6">
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/elementInWarehousesButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Stan magazynowy"
-                    app:icon="@drawable/baseline_warehouse_24"
-                    app:iconGravity="end"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/guide_end"
-                app:layout_constraintStart_toStartOf="@id/guide_start"
-                android:layout_marginTop="@dimen/list_item_space_x3"/>
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-    </ScrollView>
+        </ScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

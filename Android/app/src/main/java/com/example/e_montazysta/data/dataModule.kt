@@ -179,9 +179,9 @@ val dataModule = module {
             ElementInWarehouseRepository(get())
         elementInWarehouseRepository
     }
-    
+
     factory {
-      val plannedItemRepository: IPlannedItemRepository =
+        val plannedItemRepository: IPlannedItemRepository =
             PlannedItemRepository(get())
         plannedItemRepository
     }

@@ -30,6 +30,7 @@ data class LocationDAO(
                 "$zipCode " +
                 "$city"
     }
+
     companion object : KoinComponent {
         val locationRepository: ILocationRepository by inject()
 

@@ -19,5 +19,8 @@ interface StageService {
     ): StageDAO
 
     @PUT("/api/v1/order-stages/nextStatus/{id}")
-    suspend fun nextOrderStatus(@Header("Authorization") token: String, @Path("id") id: Int): StageDAO
+    suspend fun nextOrderStatus(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int
+    ): StageDAO
 }

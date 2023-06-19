@@ -42,7 +42,7 @@ class LoginViewModel(private val loginRepository: IAuthController) : ViewModel()
 
     // A placeholder username validation check
     private fun isUserNameValid(username: String): Boolean {
-            return username.isNotBlank()
+        return username.isNotBlank()
     }
 
     // A placeholder password validation check

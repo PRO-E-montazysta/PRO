@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="notification"
             type="com.example.e_montazysta.ui.notification.Notification" />
+
         <variable
             name="itemClickListener"
             type="com.example.e_montazysta.ui.notification.CustomClickListener" />
@@ -20,17 +22,15 @@
         android:clickable="true"
         android:focusable="true"
         android:minHeight="@dimen/list_item_min_height_two_line"
-        tools:theme="@style/Theme.Material3.DayNight"
         android:onClick="@{() -> itemClickListener.cardClicked(notification)}"
-        >
+        tools:theme="@style/Theme.Material3.DayNight">
 
         <include
-            layout="@layout/list_item_template"
             android:id="@+id/item"
-            app:headline="@{notification.content}"
-            android:layout_height="wrap_content"
+            layout="@layout/list_item_template"
             android:layout_width="match_parent"
-            app:icon="@{@drawable/baseline_notifications_24}"
-            />
+            android:layout_height="wrap_content"
+            app:headline="@{notification.content}"
+            app:icon="@{@drawable/baseline_notifications_24}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

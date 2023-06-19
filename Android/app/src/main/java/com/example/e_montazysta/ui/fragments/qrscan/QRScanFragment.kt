@@ -37,7 +37,6 @@ class QRScanFragment : Fragment() {
     val viewModel: QRScanViewModel by viewModel()
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -58,13 +57,22 @@ class QRScanFragment : Fragment() {
         }
 
         viewModel.itemLiveData.observe(viewLifecycleOwner) { item ->
-            when(item){
+            when (item) {
                 is Element -> {
-                    findNavController().navigate(QRScanFragmentDirections.actionNavigationQrscanToElementDetailFragment(item.id))
+                    findNavController().navigate(
+                        QRScanFragmentDirections.actionNavigationQrscanToElementDetailFragment(
+                            item.id
+                        )
+                    )
                     viewModel.clearItem()
                 }
+
                 is Tool -> {
-                    findNavController().navigate(QRScanFragmentDirections.actionNavigationQrscanToToolDetailFragment(item.id))
+                    findNavController().navigate(
+                        QRScanFragmentDirections.actionNavigationQrscanToToolDetailFragment(
+                            item.id
+                        )
+                    )
                     viewModel.clearItem()
                 }
             }

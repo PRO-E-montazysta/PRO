@@ -38,7 +38,6 @@ class DashboardActivity : AppCompatActivity(), KoinComponent {
         navView.setupWithNavController(navController)
 
 
-
     }
 
     override fun onSupportNavigateUp(): Boolean {

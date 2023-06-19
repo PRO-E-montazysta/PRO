@@ -51,6 +51,7 @@ class QRScanViewModel : ViewModel(), KoinComponent, CoroutineScope {
                 _itemLiveData.postValue(result.data)
                 result.data
             }
+
             is Result.Error -> {
                 result.exception.message?.let { _messageLiveData.postValue(it) }
                 null
@@ -61,7 +62,7 @@ class QRScanViewModel : ViewModel(), KoinComponent, CoroutineScope {
 
     fun getElementByCode(code: String): Element? {
         return runBlocking {
-             async { getElementByCodeAsync(code) }.await()
+            async { getElementByCodeAsync(code) }.await()
         }
     }
 
@@ -72,6 +73,7 @@ class QRScanViewModel : ViewModel(), KoinComponent, CoroutineScope {
                 _itemLiveData.postValue(result.data)
                 result.data
             }
+
             is Result.Error -> {
                 result.exception.message?.let { _messageLiveData.postValue(it) }
                 null
@@ -79,7 +81,7 @@ class QRScanViewModel : ViewModel(), KoinComponent, CoroutineScope {
         }
     }
 
-    fun clearItem(){
+    fun clearItem() {
         _itemLiveData.postValue(null)
     }
 

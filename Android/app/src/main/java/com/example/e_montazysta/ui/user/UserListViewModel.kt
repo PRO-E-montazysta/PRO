@@ -41,7 +41,7 @@ class UserListViewModel(private val repository: IUserRepository) : ViewModel(), 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
-    fun  getFilterUsers() {
+    fun getFilterUsers() {
         job = launch {
             val payload = _filterLiveData.value
             getFilterUsersAsync(payload)
@@ -57,6 +57,7 @@ class UserListViewModel(private val repository: IUserRepository) : ViewModel(), 
                 _usersLiveData.postValue(result.data)
                 if (result.data.isNullOrEmpty()) _isEmptyLiveData.postValue(true)
             }
+
             is Result.Error -> {
                 result.exception.message?.let { _messageLiveData.postValue(it) }
                 _isLoadingLiveData.postValue(false)

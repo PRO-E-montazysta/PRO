@@ -68,6 +68,7 @@ class StageDetailViewModel(private val repository: IStageRepository) : ViewModel
                     _stageDetailLiveData.postValue(result.data)
                     _messageLiveData.postValue("Zmianiono status na ${stagedetail.value!!.status.value}")
                 }
+
                 is Result.Error -> result.exception.message?.let { _messageLiveData.postValue(it) }
             }
         }

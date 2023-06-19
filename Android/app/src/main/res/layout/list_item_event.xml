@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="event"
             type="com.example.e_montazysta.ui.event.EventListItem" />
+
         <variable
             name="itemClickListener"
             type="com.example.e_montazysta.ui.event.CustomClickListener" />
@@ -20,18 +22,16 @@
         android:clickable="true"
         android:focusable="true"
         android:minHeight="@dimen/list_item_min_height_two_line"
-        tools:theme="@style/Theme.Material3.DayNight"
         android:onClick="@{() -> itemClickListener.cardClicked(event)}"
-        >
+        tools:theme="@style/Theme.Material3.DayNight">
 
         <include
-            layout="@layout/list_item_template"
             android:id="@+id/item"
-            app:headline="@{event.itemName}"
-            app:supportText='@{event.status.value + " | " + event.eventType.value + " | " + event.eventDate }'
-            android:layout_height="wrap_content"
+            layout="@layout/list_item_template"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:headline="@{event.itemName}"
             app:icon="@{@drawable/baseline_events_24}"
-            />
+            app:supportText='@{event.status.value + " | " + event.eventType.value + " | " + event.eventDate }' />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

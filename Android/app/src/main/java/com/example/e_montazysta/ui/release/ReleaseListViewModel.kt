@@ -49,6 +49,7 @@ class ReleaseListViewModel(private val repository: IReleaseRepository) : ViewMod
                 _releaseLiveData.postValue(result.data.map { it.mapToReleaseItem() })
                 if (result.data.isNullOrEmpty()) _isEmptyLiveData.postValue(true)
             }
+
             is Result.Error -> {
                 result.exception.message?.let { _messageLiveData.postValue(it) }
                 _isLoadingLiveData.postValue(false)

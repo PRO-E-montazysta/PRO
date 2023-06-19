@@ -52,7 +52,9 @@ class ReturnDialogFragment(
         } else {
             binding.warehouseNameValue.text = adapter.elements.first().warehouse
         }
-        stage.foreman?.let { binding.foremanNameValue.text = "${stage.foreman.firstName} ${stage.foreman.lastName}" }
+        stage.foreman?.let {
+            binding.foremanNameValue.text = "${stage.foreman.firstName} ${stage.foreman.lastName}"
+        }
 
 
         binding.toolbar.setNavigationOnClickListener {

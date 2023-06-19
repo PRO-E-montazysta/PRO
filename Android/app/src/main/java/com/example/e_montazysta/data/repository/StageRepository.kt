@@ -57,5 +57,6 @@ class StageRepository(private val serviceProvider: IServiceProvider) : IStageRep
             Result.Success(stageDetail)
         } catch (e: Exception) {
             Result.Error(e)
-        }    }
+        }
+    }
 }

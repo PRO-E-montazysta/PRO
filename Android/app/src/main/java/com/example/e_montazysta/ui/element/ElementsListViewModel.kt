@@ -48,6 +48,7 @@ class ElementsListViewModel(private val repository: IElementRepository) : ViewMo
                 _elementsLiveData.postValue(result.data.map { it.mapToElementItem() })
                 if (result.data.isNullOrEmpty()) _isEmptyLiveData.postValue(true)
             }
+
             is Result.Error -> {
                 result.exception.message?.let { _messageLiveData.postValue(it) }
                 _isLoadingLiveData.postValue(false)

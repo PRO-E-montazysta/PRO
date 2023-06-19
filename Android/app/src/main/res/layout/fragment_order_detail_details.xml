@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <variable
             name="orderDetailViewModel"
             type="com.example.e_montazysta.ui.order.OrderDetailViewModel" />
     </data>
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -28,8 +29,7 @@
                     android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nazwa zlecenia"
-                    />
+                    android:text="Nazwa zlecenia" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/nameValue"
@@ -38,6 +38,7 @@
                     android:text="@string/empty_field"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -45,6 +46,7 @@
                 android:paddingVertical="@dimen/list_item_space_x3"
                 android:paddingStart="@dimen/list_item_space_x4"
                 android:paddingEnd="@dimen/list_item_space_x6">
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/status"
                     android:layout_width="wrap_content"
@@ -58,6 +60,7 @@
                     android:text="@string/empty_field"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -65,6 +68,7 @@
                 android:paddingVertical="@dimen/list_item_space_x3"
                 android:paddingStart="@dimen/list_item_space_x4"
                 android:paddingEnd="@dimen/list_item_space_x6">
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/priority"
                     android:layout_width="wrap_content"
@@ -78,6 +82,7 @@
                     android:text="@string/empty_field"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -85,6 +90,7 @@
                 android:paddingVertical="@dimen/list_item_space_x3"
                 android:paddingStart="@dimen/list_item_space_x4"
                 android:paddingEnd="@dimen/list_item_space_x6">
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/plannedStart"
                     android:layout_width="wrap_content"
@@ -98,6 +104,7 @@
                     android:text="@string/empty_field"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -105,6 +112,7 @@
                 android:paddingVertical="@dimen/list_item_space_x3"
                 android:paddingStart="@dimen/list_item_space_x4"
                 android:paddingEnd="@dimen/list_item_space_x6">
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/plannedEnd"
                     android:layout_width="wrap_content"
@@ -118,6 +126,7 @@
                     android:text="@string/empty_field"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -125,11 +134,13 @@
                 android:paddingVertical="@dimen/list_item_space_x3"
                 android:paddingStart="@dimen/list_item_space_x4"
                 android:paddingEnd="@dimen/list_item_space_x6">
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/clientId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Klient" />
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/clientIdValue"
                     android:layout_width="wrap_content"
@@ -137,6 +148,7 @@
                     android:text="@string/empty_field"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/foreman"
                 android:layout_width="match_parent"
@@ -145,11 +157,13 @@
                 android:paddingVertical="@dimen/list_item_space_x3"
                 android:paddingStart="@dimen/list_item_space_x4"
                 android:paddingEnd="@dimen/list_item_space_x6">
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/foremanId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Brygadzista"/>
+                    android:text="Brygadzista" />
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/foremanIdValue"
                     android:layout_width="wrap_content"
@@ -157,6 +171,7 @@
                     android:text="@string/empty_field"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -164,11 +179,13 @@
                 android:paddingVertical="@dimen/list_item_space_x3"
                 android:paddingStart="@dimen/list_item_space_x4"
                 android:paddingEnd="@dimen/list_item_space_x6">
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/locationId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Lokalizacja" />
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/locationIdValue"
                     android:layout_width="wrap_content"
@@ -176,6 +193,7 @@
                     android:text="@string/empty_field"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/manager"
                 android:layout_width="match_parent"
@@ -184,11 +202,13 @@
                 android:paddingVertical="@dimen/list_item_space_x3"
                 android:paddingStart="@dimen/list_item_space_x4"
                 android:paddingEnd="@dimen/list_item_space_x6">
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/managerId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Manager" />
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/managerIdValue"
                     android:layout_width="wrap_content"
@@ -196,6 +216,7 @@
                     android:text="@string/empty_field"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/specialist"
                 android:layout_width="match_parent"
@@ -204,11 +225,13 @@
                 android:paddingVertical="@dimen/list_item_space_x3"
                 android:paddingStart="@dimen/list_item_space_x4"
                 android:paddingEnd="@dimen/list_item_space_x6">
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/specialistId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Specjalista" />
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/specialistIdValue"
                     android:layout_width="wrap_content"
@@ -216,6 +239,7 @@
                     android:text="@string/empty_field"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/salesman"
                 android:layout_width="match_parent"
@@ -224,11 +248,13 @@
                 android:paddingVertical="@dimen/list_item_space_x3"
                 android:paddingStart="@dimen/list_item_space_x4"
                 android:paddingEnd="@dimen/list_item_space_x6">
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/salesRepresentativeId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Sprzedawca" />
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/salesRepresentativeIdValue"
                     android:layout_width="wrap_content"
@@ -236,6 +262,7 @@
                     android:text="@string/empty_field"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -243,11 +270,13 @@
                 android:paddingVertical="@dimen/list_item_space_x3"
                 android:paddingStart="@dimen/list_item_space_x4"
                 android:paddingEnd="@dimen/list_item_space_x6">
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/createdAt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Czas utworzenia" />
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/createdAtValue"
                     android:layout_width="wrap_content"
@@ -255,6 +284,7 @@
                     android:text="@string/empty_field"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -262,11 +292,13 @@
                 android:paddingVertical="@dimen/list_item_space_x3"
                 android:paddingStart="@dimen/list_item_space_x4"
                 android:paddingEnd="@dimen/list_item_space_x6">
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/editedAt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Czas ostatniej edycji" />
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/editedAtValue"
                     android:layout_width="wrap_content"
@@ -274,10 +306,11 @@
                     android:text="Brak"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
             </LinearLayout>
+
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/list_item_space_x3"/>
+                android:layout_marginTop="@dimen/list_item_space_x3" />
         </LinearLayout>
     </ScrollView>
 </layout>

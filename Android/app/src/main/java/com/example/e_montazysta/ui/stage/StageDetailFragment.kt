@@ -59,7 +59,7 @@ class StageDetailFragment : Fragment() {
 
         stageDetailViewModel.getStageDetail(stageId)
         viewPager = binding.pager
-        viewPager. offscreenPageLimit = 3;
+        viewPager.offscreenPageLimit = 3;
 
         stageDetailViewModel.stagedetail.observe(viewLifecycleOwner, Observer { stage ->
             stage?.let {
@@ -82,6 +82,7 @@ class StageDetailFragment : Fragment() {
                     StageStatus.PICK_UP, StageStatus.RETURN -> {
                         mActionMainFab.show()
                     }
+
                     else -> mActionMainFab.hide()
                 }
 

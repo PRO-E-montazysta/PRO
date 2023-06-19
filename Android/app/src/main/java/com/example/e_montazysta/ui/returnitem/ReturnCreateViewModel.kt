@@ -71,7 +71,15 @@ class ReturnCreateViewModel : ViewModel(), CoroutineScope, KoinComponent {
                     if (isReleased) {
                         _itemsLiveData.value = currentItems + tool
                         if (selectedWarehouseLiveData.value == null) {
-                            setWarehouse(WarehouseFilterDAO(result.data.warehouse.id, "",result.data.warehouse.name, result.data.warehouse.openingHours, ""))
+                            setWarehouse(
+                                WarehouseFilterDAO(
+                                    result.data.warehouse.id,
+                                    "",
+                                    result.data.warehouse.name,
+                                    result.data.warehouse.openingHours,
+                                    ""
+                                )
+                            )
                         }
                         _messageLiveData.postValue("Narzędzie dodane")
                     } else {

@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/notifications"
-        android:title="Notifications"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minWidth="0dp"
-        android:icon="@drawable/baseline_notifications_none_24"
-        android:contentDescription="Notifications"
-        app:iconPadding="0dp"
         android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="Notifications"
+        android:icon="@drawable/baseline_notifications_none_24"
+        android:minWidth="0dp"
+        android:title="Notifications"
+        app:iconPadding="0dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
 </menu>

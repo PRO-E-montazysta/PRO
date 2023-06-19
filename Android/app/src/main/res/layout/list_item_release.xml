@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="release"
             type="com.example.e_montazysta.ui.release.ReleaseListItem" />
+
         <variable
             name="itemClickListener"
             type="com.example.e_montazysta.ui.release.CustomClickListener" />
@@ -20,17 +22,16 @@
         android:clickable="true"
         android:focusable="true"
         android:minHeight="@dimen/list_item_min_height_two_line"
-        tools:theme="@style/Theme.Material3.DayNight"
         android:onClick="@{() -> itemClickListener.cardClicked(release)}"
-        >
+        tools:theme="@style/Theme.Material3.DayNight">
 
         <include
-            layout="@layout/list_item_template"
             android:id="@+id/item"
-            app:headline='@{"Wydanie " + release.itemName}'
-            app:supportText='@{release.releasedBy.firstName + " " + release.releasedBy.lastName + " | " + release.releaseTime}'
-            android:layout_height="wrap_content"
+            layout="@layout/list_item_template"
             android:layout_width="match_parent"
-            app:icon="@{@drawable/baseline_swap_horiz_24}" />
+            android:layout_height="wrap_content"
+            app:headline='@{"Wydanie " + release.itemName}'
+            app:icon="@{@drawable/baseline_swap_horiz_24}"
+            app:supportText='@{release.releasedBy.firstName + " " + release.releasedBy.lastName + " | " + release.releaseTime}' />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
