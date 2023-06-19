@@ -67,27 +67,34 @@ class ReturnCreateViewModel : ViewModel(), CoroutineScope, KoinComponent {
             when (result) {
                 is Result.Success -> {
                     val tool = mapToReleaseItem(result.data)
-                    val isReleased = stage.simpleToolReleases.any { it.toolId == tool.id }
-                    if (isReleased) {
-                        _itemsLiveData.value = currentItems + tool
-                        if (selectedWarehouseLiveData.value == null) {
-                            setWarehouse(
-                                WarehouseFilterDAO(
-                                    result.data.warehouse.id,
-                                    "",
-                                    result.data.warehouse.name,
-                                    result.data.warehouse.openingHours,
-                                    ""
+                    val isReleased = stage.simpleToolReleases.find { it.toolId == tool.id }
+                    if (isReleased != null) {
+                        if (isReleased.returnTime == null) {
+                            _itemsLiveData.value = currentItems + tool
+                            if (selectedWarehouseLiveData.value == null) {
+                                setWarehouse(
+                                    WarehouseFilterDAO(
+                                        result.data.warehouse.id,
+                                        "",
+                                        result.data.warehouse.name,
+                                        result.data.warehouse.openingHours,
+                                        ""
+                                    )
                                 )
-                            )
+                            }
+                            _messageLiveData.postValue("Narzędzie dodane")
+                        } else {
+                            _messageLiveData.postValue("Narzędzie już zostało zwrócone!")
                         }
-                        _messageLiveData.postValue("Narzędzie dodane")
                     } else {
                         _messageLiveData.postValue("Brak narzędzia wśród wydanych!")
                     }
                 }
 
-                is Result.Error -> result.exception.message?.let { _messageLiveData.postValue(it) }
+                is Result.Error -> {
+                    result.exception.message?.let { _messageLiveData.postValue(it) }
+                    _isLoadingLiveData.postValue(false)
+                }
             }
         }
         _isLoadingLiveData.postValue(false)
@@ -112,10 +119,14 @@ class ReturnCreateViewModel : ViewModel(), CoroutineScope, KoinComponent {
                 is Result.Success -> {
                     val element = mapToReleaseItem(result.data)
                     val isReleased =
-                        stage.simpleElementReturnReleases.any { it.elementId == element.id }
-                    if (isReleased) {
-                        _itemsLiveData.value = currentItems + element
-                        _messageLiveData.postValue("Element dodany")
+                        stage.simpleElementReturnReleases.filter { it.elementId == element.id }
+                    if (!isReleased.isNullOrEmpty()) {
+                        if (isReleased.sumOf { it.returnedQuantity } < isReleased.sumOf { it.returnedQuantity }) {
+                            _itemsLiveData.value = currentItems + element
+                            _messageLiveData.postValue("Element dodany")
+                        } else {
+                            _messageLiveData.postValue("Wszystkie elementy zostały już zwrócone")
+                        }
                     } else {
                         _messageLiveData.postValue("Brak elementu wśród wydanych!")
                     }
@@ -126,8 +137,8 @@ class ReturnCreateViewModel : ViewModel(), CoroutineScope, KoinComponent {
                     _isLoadingLiveData.postValue(false)
                 }
             }
-            _isLoadingLiveData.postValue(false)
         }
+        _isLoadingLiveData.postValue(false)
     }
 
 
