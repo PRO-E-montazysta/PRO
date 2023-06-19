@@ -1,6 +1,5 @@
 package com.example.e_montazysta.ui.fragments.dashboard
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +17,7 @@ import com.example.e_montazysta.ui.notification.NotificationListViewModel
 import com.example.e_montazysta.ui.viewmodels.DashboardViewModel
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.system.exitProcess
 
@@ -177,7 +177,7 @@ class DashboardFragment : Fragment() {
     }
 
     private fun showExitDialog() {
-        val alertDialogBuilder = AlertDialog.Builder(requireContext())
+        val alertDialogBuilder = MaterialAlertDialogBuilder(requireContext())
         alertDialogBuilder.setTitle("Uwaga!")
         alertDialogBuilder.setMessage("Czy na pewno chcesz opuścić aplikację?")
         alertDialogBuilder.setPositiveButton("Wyjdź") { _, _ ->

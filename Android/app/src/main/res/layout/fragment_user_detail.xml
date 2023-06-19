@@ -97,33 +97,6 @@
                     android:paddingStart="@dimen/list_item_space_x4"
                     android:paddingEnd="@dimen/list_item_space_x6">
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/userPesel"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text='Pesel'
-                        android:textColor="?colorOnSurfaceVariant"
-                        android:textAppearance="?textAppearanceBodySmall"
-                        />
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/userPeselValue"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?textAppearanceBodyLarge"
-                        android:textColor="?colorOnSurface"
-                        android:text="Brak"
-                        />
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    android:paddingVertical="@dimen/list_item_space_x3"
-                    android:paddingStart="@dimen/list_item_space_x4"
-                    android:paddingEnd="@dimen/list_item_space_x6">
-                    <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/userRole"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

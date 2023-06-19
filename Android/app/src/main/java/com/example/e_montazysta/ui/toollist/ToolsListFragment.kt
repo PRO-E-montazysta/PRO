@@ -155,7 +155,15 @@ class ToolsListFragment : Fragment() {
             }
         })
 
+
         binding.lifecycleOwner = this
+
+        val mSwipeRefreshLayout = binding.swiperefresh
+        mSwipeRefreshLayout.setOnRefreshListener {
+            toolsListViewModel.getFilterTools()
+            mSwipeRefreshLayout.isRefreshing = false
+        }
+
         return binding.root
 
     }

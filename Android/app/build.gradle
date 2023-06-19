@@ -94,4 +94,5 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview-selection:1.1.0'
 
     implementation project(":listitem")
+    implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
 }

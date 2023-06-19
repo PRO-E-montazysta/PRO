@@ -30,6 +30,9 @@ class QRScanViewModel : ViewModel(), KoinComponent, CoroutineScope {
     private val _isLoadingLiveData = MutableLiveData<Boolean>()
     val isLoadingLiveData: LiveData<Boolean> = _isLoadingLiveData
 
+    private val _itemLiveData = MutableLiveData<Any?>()
+    val itemLiveData: LiveData<Any?> = _itemLiveData
+
     private val _text = MutableLiveData<String>().apply {
         value = "This is home Fragment"
     }
@@ -44,7 +47,10 @@ class QRScanViewModel : ViewModel(), KoinComponent, CoroutineScope {
     suspend fun getToolByCodeAsync(code: String): Tool? {
         val result = toolRepository.getToolByCode(code)
         return when (result) {
-            is Result.Success -> result.data
+            is Result.Success -> {
+                _itemLiveData.postValue(result.data)
+                result.data
+            }
             is Result.Error -> {
                 result.exception.message?.let { _messageLiveData.postValue(it) }
                 null
@@ -62,7 +68,10 @@ class QRScanViewModel : ViewModel(), KoinComponent, CoroutineScope {
     suspend fun getElementByCodeAsync(code: String): Element? {
         val result = elementRepository.getElementByCode(code)
         return when (result) {
-            is Result.Success -> result.data
+            is Result.Success -> {
+                _itemLiveData.postValue(result.data)
+                result.data
+            }
             is Result.Error -> {
                 result.exception.message?.let { _messageLiveData.postValue(it) }
                 null
@@ -70,6 +79,10 @@ class QRScanViewModel : ViewModel(), KoinComponent, CoroutineScope {
         }
     }
 
+    fun clearItem(){
+        _itemLiveData.postValue(null)
+    }
+
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.IO
+        get() = Dispatchers.Main
 }

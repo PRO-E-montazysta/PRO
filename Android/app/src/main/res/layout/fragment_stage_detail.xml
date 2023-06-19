@@ -96,6 +96,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:text="Wydaj elementy"
+                android:padding="3dp"
+                android:background="@drawable/rounded_corner_background"
                 app:layout_constraintBottom_toBottomOf="@+id/add_objects_to_release"
                 app:layout_constraintEnd_toStartOf="@+id/add_objects_to_release"
                 app:layout_constraintTop_toTopOf="@+id/add_objects_to_release" />
@@ -118,6 +120,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:text="Zwróć elementy"
+                android:padding="3dp"
+                android:background="@drawable/rounded_corner_background"
                 app:layout_constraintBottom_toBottomOf="@+id/add_objects_to_return"
                 app:layout_constraintEnd_toStartOf="@+id/add_objects_to_return"
                 app:layout_constraintTop_toTopOf="@+id/add_objects_to_return" />
@@ -132,14 +136,16 @@
                 app:layout_constraintBottom_toTopOf="@+id/add_objects_to_return"
                 app:layout_constraintEnd_toEndOf="@+id/add_objects_to_return"
                 app:layout_constraintStart_toStartOf="@+id/add_objects_to_return"
-                app:srcCompat="@drawable/baseline_arrow_left_alt_24" />
+                app:srcCompat="@drawable/baseline_check_24" />
 
             <TextView
                 android:id="@+id/change_order_status_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:text="Zatwiedź etap"
+                android:text="Zatwierdź etap"
+                android:padding="3dp"
+                android:background="@drawable/rounded_corner_background"
                 app:layout_constraintBottom_toBottomOf="@+id/change_order_status"
                 app:layout_constraintEnd_toStartOf="@+id/change_order_status"
                 app:layout_constraintTop_toTopOf="@+id/change_order_status" />

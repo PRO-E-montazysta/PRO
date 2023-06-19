@@ -76,6 +76,7 @@ class UserListFragment : Fragment() {
         toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
         }
+        toolbar.menu.findItem(R.id.filter).isVisible = false
 
 
         // Wyświetlanie błędów
@@ -97,6 +98,13 @@ class UserListFragment : Fragment() {
 
 
         binding.lifecycleOwner = this
+
+        val mSwipeRefreshLayout = binding.swiperefresh
+        mSwipeRefreshLayout.setOnRefreshListener {
+            viewModel.getFilterUsers()
+            mSwipeRefreshLayout.isRefreshing = false
+        }
+
         return binding.root
 
     }

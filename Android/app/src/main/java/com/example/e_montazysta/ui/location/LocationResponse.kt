@@ -12,14 +12,24 @@ data class LocationDAO(
     val city: String,
     val deleted: Boolean,
     val id: Int,
-    val orderId: Int,
+    val orderId: Int?,
     val propertyNumber: String,
     val street: String,
-    val warehouseId: Int,
+    val warehouseId: Int?,
     val xcoordinate: Double, //pewnie float/double
     val ycoordinate: Double, //pewnie float/double
     val zipCode: String
 ) {
+    fun getListItemInfo(): String {
+        val apartmentNumber = apartmentNumber
+        val apartmentString = if (!apartmentNumber.isNullOrBlank()) "/$apartmentNumber" else ""
+
+        return "$street " +
+                "$propertyNumber" +
+                "$apartmentString, " +
+                "$zipCode " +
+                "$city"
+    }
     companion object : KoinComponent {
         val locationRepository: ILocationRepository by inject()
 

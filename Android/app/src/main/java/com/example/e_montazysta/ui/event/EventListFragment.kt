@@ -224,6 +224,12 @@ class EventListFragment : Fragment() {
             requireActivity().onBackPressed()
         }
 
+        val mSwipeRefreshLayout = binding.swiperefresh
+        mSwipeRefreshLayout.setOnRefreshListener {
+            viewModel.getEvent()
+            mSwipeRefreshLayout.isRefreshing = false
+        }
+
         return binding.root
     }
 

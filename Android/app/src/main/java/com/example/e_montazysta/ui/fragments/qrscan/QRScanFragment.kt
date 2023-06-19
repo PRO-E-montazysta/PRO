@@ -1,19 +1,22 @@
 package com.example.e_montazysta.ui.fragments.qrscan
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.e_montazysta.data.model.Element
+import com.example.e_montazysta.data.model.Tool
 import com.example.e_montazysta.databinding.FragmentQrscanBinding
 import com.example.e_montazysta.ui.viewmodels.QRScanViewModel
 import com.google.android.gms.common.api.OptionalModuleApi
 import com.google.android.gms.common.moduleinstall.ModuleInstall
 import com.google.android.gms.common.moduleinstall.ModuleInstallClient
 import com.google.android.gms.common.moduleinstall.ModuleInstallRequest
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanner
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
@@ -30,12 +33,11 @@ class QRScanFragment : Fragment() {
     lateinit var scannerOptions: GmsBarcodeScannerOptions
     lateinit var moduleInstallClient: ModuleInstallClient
     lateinit var scanner: GmsBarcodeScanner
+    var doScan: Boolean = true
     val viewModel: QRScanViewModel by viewModel()
 
-    override fun onStart() {
-        super.onStart()
-        setupScanner()
-    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,13 +48,32 @@ class QRScanFragment : Fragment() {
         _binding = FragmentQrscanBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textQrscan
-        viewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+
+        binding.qrscanButton.setOnClickListener {
+            setupScanner()
         }
 
+        viewModel.messageLiveData.observe(viewLifecycleOwner) { errorMessage ->
+            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+        }
 
+        viewModel.itemLiveData.observe(viewLifecycleOwner) { item ->
+            when(item){
+                is Element -> {
+                    findNavController().navigate(QRScanFragmentDirections.actionNavigationQrscanToElementDetailFragment(item.id))
+                    viewModel.clearItem()
+                }
+                is Tool -> {
+                    findNavController().navigate(QRScanFragmentDirections.actionNavigationQrscanToToolDetailFragment(item.id))
+                    viewModel.clearItem()
+                }
+            }
+        }
 
+        val toolbar: MaterialToolbar = binding.toolbar
+        toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
 
         return root
     }
@@ -78,22 +99,24 @@ class QRScanFragment : Fragment() {
             val code = barcode?.rawValue
             when (code?.first()) {
                 'E' -> {
-//                    viewModel.getElementByCode(code)?.let {
-//                        val action =
-//                            QRScanFragmentDirections.actionNavigationQrscanToElementDetailFragment(
-//                                it.id
-//                            )
-//                        findNavController().navigate(action)
+                    viewModel.getElementByCode(code)?.let {
+                        val action =
+                            QRScanFragmentDirections.actionNavigationQrscanToElementDetailFragment(
+                                it.id
+                            )
+                        findNavController().navigate(action)
                     }
+                }
 
                 'T' -> {
-//                    viewModel.getToolByCode(code)?.let {
-//                        val action =
-//                            QRScanFragmentDirections.actionNavigationQrscanToToolDetailFragment(
-//                                it.id
-//                            )
-//                        findNavController().navigate(action)
-//                    }
+                    viewModel.getToolByCode(code)?.let {
+                        Log.d("QRScanFragment", "Tool: $it")
+                        val action =
+                            QRScanFragmentDirections.actionNavigationQrscanToToolDetailFragment(
+                                it.id
+                            )
+                        findNavController().navigate(action)
+                    }
                 }
 
                 else -> {
@@ -105,14 +128,12 @@ class QRScanFragment : Fragment() {
                 }
             }
         }?.addOnCanceledListener {
-            findNavController().navigateUp()
         }?.addOnFailureListener { e ->
             Toast.makeText(
                 activity,
                 "Trwa inicjalizacja skanera, spróbuj ponownie.",
                 Toast.LENGTH_LONG
             ).show()
-            findNavController().navigateUp()
         }
     }
 

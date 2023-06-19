@@ -59,6 +59,7 @@ class StageDetailFragment : Fragment() {
 
         stageDetailViewModel.getStageDetail(stageId)
         viewPager = binding.pager
+        viewPager. offscreenPageLimit = 3;
 
         stageDetailViewModel.stagedetail.observe(viewLifecycleOwner, Observer { stage ->
             stage?.let {
@@ -105,6 +106,30 @@ class StageDetailFragment : Fragment() {
                     stageDetailViewModel.nextOrderStatus()
                 }
 
+                when (stage.status) {
+                    StageStatus.PICK_UP -> {
+                        itemsReleaseFab.show()
+                        itemsReleaseFabText.visibility = View.VISIBLE
+                        stageNextStatusFab.show()
+                        stageNextStatusFabText.visibility = View.VISIBLE
+                    }
+
+                    StageStatus.RETURN -> {
+                        itemsReturnFab.show()
+                        itemsReturnFabText.visibility = View.VISIBLE
+                        stageNextStatusFab.show()
+                        stageNextStatusFabText.visibility = View.VISIBLE
+                    }
+
+                    else -> {
+                        itemsReturnFab.hide()
+                        itemsReturnFabText.visibility = View.GONE
+                        itemsReleaseFab.hide()
+                        itemsReleaseFabText.visibility = View.GONE
+                        stageNextStatusFab.hide()
+                        stageNextStatusFabText.visibility = View.GONE
+                    }
+                }
             }
         })
 
@@ -153,7 +178,10 @@ class StageDetailFragment : Fragment() {
                     }
 
                     else -> {
-
+                        itemsReturnFab.hide()
+                        itemsReturnFabText.visibility = View.GONE
+                        stageNextStatusFab.hide()
+                        stageNextStatusFabText.visibility = View.GONE
                     }
                 }
 

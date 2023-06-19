@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.e_montazysta.R
 import com.example.e_montazysta.databinding.FragmentElementInWarehousesBinding
-import com.example.e_montazysta.ui.element.ElementDetailFragmentArgs
 import com.google.android.material.appbar.MaterialToolbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -67,6 +67,7 @@ class ElementInWarehousesListFragment : Fragment() {
         }
 
         return binding.root
+        toolbar.menu.findItem(R.id.filter).isVisible = false
 
     }
 

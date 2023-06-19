@@ -42,15 +42,8 @@ class WarehouseDetailFragment : Fragment() {
         viewModel.tool.observe(viewLifecycleOwner, Observer { warehouse ->
             binding.warehouseNameValue.text = warehouse.name
             binding.warehouseDescriptionValue.text = warehouse.description
-            binding.warehouseAdressValue.text = warehouse.location?.let {
-                val apartmentNumber = warehouse.location.apartmentNumber
-                val apartmentString = if (apartmentNumber != null) "/$apartmentNumber" else ""
-
-                "${warehouse.location.street} " +
-                        "${warehouse.location.propertyNumber}" +
-                        "$apartmentString, " +
-                        "${warehouse.location.zipCode} " +
-                        "${warehouse.location.city}"
+            warehouse.location?.let {
+                binding.warehouseAdressValue.text = it.getListItemInfo()
             }
             binding.warehouseOpeningHoursValue.text = warehouse.openingHours
         })

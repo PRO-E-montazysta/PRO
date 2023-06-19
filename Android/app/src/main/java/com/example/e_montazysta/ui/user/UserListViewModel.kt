@@ -41,7 +41,7 @@ class UserListViewModel(private val repository: IUserRepository) : ViewModel(), 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
-    fun getFilterUsers() {
+    fun  getFilterUsers() {
         job = launch {
             val payload = _filterLiveData.value
             getFilterUsersAsync(payload)

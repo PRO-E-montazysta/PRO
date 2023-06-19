@@ -27,6 +27,7 @@
             android:id="@+id/item"
             app:headline="@{elementInWarehouse.warehouse}"
             app:supportText='@{elementInWarehouse.getListItemInfo()}'
+            app:icon='@{@drawable/shelves_fill0_wght400_grad0_opsz48}'
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             >

@@ -106,6 +106,10 @@ class OrderDetailDetailsFragment(val order: Order) : Fragment() {
                     binding.plannedEndValue.text = DateFormat.getDateTimeInstance().format(it)
                 }
 
+                it.location?.let {
+                    binding.locationIdValue.text = it.getListItemInfo()
+                }
+
             }
         })
 

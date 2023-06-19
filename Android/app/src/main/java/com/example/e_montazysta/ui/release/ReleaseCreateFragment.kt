@@ -107,7 +107,6 @@ class ReleaseCreateFragment : Fragment() {
                     'T' -> {
                         binding.viewModel?.let {
                             it.addToolToRelease(code)
-
                         }
                     }
 
