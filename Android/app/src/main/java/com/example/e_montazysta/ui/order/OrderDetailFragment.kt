@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import com.example.e_montazysta.databinding.FragmentOrderDetailBinding
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -52,6 +53,11 @@ class OrderDetailFragment : Fragment() {
         // Wyświetlanie błędów
         orderDetailViewModel.messageLiveData.observe(viewLifecycleOwner) { errorMessage ->
             Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+        }
+
+        val toolbar: MaterialToolbar = binding.toolbar
+        toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
         }
 
         // Specify the current activity as the lifecycle owner of the binding.

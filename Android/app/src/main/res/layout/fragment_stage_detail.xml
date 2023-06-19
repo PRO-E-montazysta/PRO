@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-    <variable
-        name="stageDetailViewModel"
-        type="com.example.e_montazysta.ui.stage.StageDetailViewModel" />
+
+        <variable
+            name="stageDetailViewModel"
+            type="com.example.e_montazysta.ui.stage.StageDetailViewModel" />
     </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true">
+
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:elevation="0dp"
-                app:menu="@menu/menu_details"
-                app:title="@string/stage_title"
-                app:navigationIcon="@drawable/baseline_arrow_back_24"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:layout_scrollEffect="compress"
-                />
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:menu="@menu/menu_details"
+                app:navigationIcon="@drawable/baseline_arrow_back_24"
+                app:title="@string/stage_title" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -69,12 +69,12 @@
                 android:id="@+id/action_main_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="Wykonaj akcję"
                 android:layout_marginEnd="@dimen/fab_margin"
                 android:layout_marginBottom="@dimen/fab_margin"
+                android:contentDescription="Wykonaj akcję"
                 android:src="@drawable/baseline_swap_horiz_24"
-                app:fabSize="normal"
                 android:visibility="gone"
+                app:fabSize="normal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
@@ -95,6 +95,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
+                android:background="@drawable/rounded_corner_background"
+                android:padding="3dp"
                 android:text="Wydaj elementy"
                 app:layout_constraintBottom_toBottomOf="@+id/add_objects_to_release"
                 app:layout_constraintEnd_toStartOf="@+id/add_objects_to_release"
@@ -117,10 +119,36 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
+                android:background="@drawable/rounded_corner_background"
+                android:padding="3dp"
                 android:text="Zwróć elementy"
                 app:layout_constraintBottom_toBottomOf="@+id/add_objects_to_return"
                 app:layout_constraintEnd_toStartOf="@+id/add_objects_to_return"
                 app:layout_constraintTop_toTopOf="@+id/add_objects_to_return" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/change_order_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:contentDescription="Wydaj/Zwróć element"
+                app:fabSize="normal"
+                app:layout_constraintBottom_toTopOf="@+id/add_objects_to_return"
+                app:layout_constraintEnd_toEndOf="@+id/add_objects_to_return"
+                app:layout_constraintStart_toStartOf="@+id/add_objects_to_return"
+                app:srcCompat="@drawable/baseline_check_24" />
+
+            <TextView
+                android:id="@+id/change_order_status_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/rounded_corner_background"
+                android:padding="3dp"
+                android:text="Zatwierdź etap"
+                app:layout_constraintBottom_toBottomOf="@+id/change_order_status"
+                app:layout_constraintEnd_toStartOf="@+id/change_order_status"
+                app:layout_constraintTop_toTopOf="@+id/change_order_status" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

@@ -9,7 +9,7 @@
         android:id="@+id/navigation_dashboard"
         android:name="com.example.e_montazysta.ui.fragments.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" >
+        tools:layout="@layout/fragment_dashboard">
         <action
             android:id="@+id/action_navigation_dashboard_to_warehouseListFragment"
             app:destination="@id/warehouseListFragment" />
@@ -50,7 +50,14 @@
         android:id="@+id/navigation_qrscan"
         android:name="com.example.e_montazysta.ui.fragments.qrscan.QRScanFragment"
         android:label="@string/title_qrscan"
-        tools:layout="@layout/fragment_qrscan" />
+        tools:layout="@layout/fragment_qrscan">
+        <action
+            android:id="@+id/action_navigation_qrscan_to_elementDetailFragment"
+            app:destination="@id/elementDetailFragment" />
+        <action
+            android:id="@+id/action_navigation_qrscan_to_toolDetailFragment"
+            app:destination="@id/toolDetailFragment" />
+    </fragment>
 
 
     <fragment
@@ -66,7 +73,7 @@
         android:id="@+id/warehouseListFragment"
         android:name="com.example.e_montazysta.ui.warehouse.WarehouseListFragment"
         android:label="WarehouseListFragment"
-        tools:layout="@layout/fragment_warehouses" >
+        tools:layout="@layout/fragment_warehouses">
         <action
             android:id="@+id/action_warehouseListFragment_to_warehouseDetailFragment"
             app:destination="@id/warehouseDetailFragment" />
@@ -75,18 +82,18 @@
         android:id="@+id/toolsFragment"
         android:name="com.example.e_montazysta.ui.toollist.ToolsListFragment"
         android:label="fragment_tools"
-        tools:layout="@layout/fragment_tools" >
+        tools:layout="@layout/fragment_tools">
         <action
             android:id="@+id/action_toolsFragment_to_toolDetailFragment"
             app:destination="@id/toolDetailFragment" />
-<!--        <argument-->
-<!--            android:name="toolTypeId"-->
-<!--            app:argType="integer" />-->
+        <!--        <argument-->
+        <!--            android:name="toolTypeId"-->
+        <!--            app:argType="integer" />-->
     </fragment>
     <fragment
         android:id="@+id/releaseListFragment"
         android:name="com.example.e_montazysta.ui.release.ReleaseListFragment"
-        android:label="ReleaseListFragment" >
+        android:label="ReleaseListFragment">
         <action
             android:id="@+id/action_releaseListFragment_to_releaseDetailFragment"
             app:destination="@id/releaseDetailFragment" />
@@ -94,7 +101,7 @@
     <fragment
         android:id="@+id/releaseDetailFragment"
         android:name="com.example.e_montazysta.ui.release.ReleaseDetailFragment"
-        android:label="ReleaseDetailFragment" >
+        android:label="ReleaseDetailFragment">
         <argument
             android:name="releaseId"
             app:argType="integer" />
@@ -102,7 +109,7 @@
     <fragment
         android:id="@+id/orderListFragment"
         android:name="com.example.e_montazysta.ui.order.OrderListFragment"
-        android:label="OrderListFragment" >
+        android:label="OrderListFragment">
         <action
             android:id="@+id/action_orderListFragment_to_orderDetailFragment"
             app:destination="@id/orderDetailFragment" />
@@ -110,8 +117,7 @@
     <fragment
         android:id="@+id/orderDetailFragment"
         android:name="com.example.e_montazysta.ui.order.OrderDetailFragment"
-        android:label="OrderDetailFragment"
-        >
+        android:label="OrderDetailFragment">
         <argument
             android:name="orderId"
             app:argType="integer" />
@@ -155,7 +161,7 @@
     <fragment
         android:id="@+id/stageListFragment"
         android:name="com.example.e_montazysta.ui.stage.StageListFragment"
-        android:label="StageListFragment" >
+        android:label="StageListFragment">
         <action
             android:id="@+id/action_stageListFragment_to_stageDetailFragment"
             app:destination="@id/stageDetailFragment" />
@@ -163,7 +169,7 @@
     <fragment
         android:id="@+id/releaseCreateFragment"
         android:name="com.example.e_montazysta.ui.release.ReleaseCreateFragment"
-        android:label="ReleaseCreateFragment" >
+        android:label="ReleaseCreateFragment">
         <argument
             android:name="stage"
             app:argType="com.example.e_montazysta.data.model.Stage" />
@@ -171,7 +177,7 @@
     <fragment
         android:id="@+id/elementsListFragment"
         android:name="com.example.e_montazysta.ui.element.ElementsListFragment"
-        android:label="ElementsListFragment" >
+        android:label="ElementsListFragment">
         <action
             android:id="@+id/action_elementsListFragment_to_elementMainActivity"
             app:destination="@id/elementDetailFragment" />
@@ -192,11 +198,36 @@
         <argument
             android:name="elementId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_elementDetailFragment_to_elementInWarehousesListFragment"
+            app:destination="@id/elementInWarehousesListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/elementInWarehousesListFragment"
+        android:name="com.example.e_montazysta.ui.element_in_warehouse.ElementInWarehousesListFragment"
+        android:label="ElementInWarehousesListFragment">
+        <argument
+            android:name="elementInWarehouseId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_elementInWarehousesListFragment_to_elementInWarehouseDetailFragment"
+            app:destination="@+id/elementInWarehouseDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/elementInWarehouseDetailFragment"
+        android:name="com.example.e_montazysta.ui.element_in_warehouse.ElementInWarehouseDetailFragment"
+        android:label="ElementInWarehouseDetailFragment">
+        <argument
+            android:name="elementInWarehouseId"
+            app:argType="integer" />
+        <argument
+            android:name="elementName"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/notificationListFragment"
         android:name="com.example.e_montazysta.ui.notification.NotificationListFragment"
-        android:label="NotificationListFragment" >
+        android:label="NotificationListFragment">
         <action
             android:id="@+id/action_notificationListFragment_to_stageDetailFragment"
             app:destination="@id/stageDetailFragment" />
@@ -240,7 +271,7 @@
     <fragment
         android:id="@+id/eventListFragment"
         android:name="com.example.e_montazysta.ui.event.EventListFragment"
-        android:label="EventListFragment" >
+        android:label="EventListFragment">
         <action
             android:id="@+id/action_eventListFragment_to_eventDetailFragment"
             app:destination="@id/eventDetailFragment" />
@@ -275,7 +306,7 @@
     <fragment
         android:id="@+id/userDetailFragment"
         android:name="com.example.e_montazysta.ui.user.UserDetailFragment"
-        android:label="UserDetailFragment" >
+        android:label="UserDetailFragment">
         <argument
             android:name="userId"
             app:argType="integer" />
@@ -283,7 +314,7 @@
     <fragment
         android:id="@+id/userListFragment"
         android:name="com.example.e_montazysta.ui.user.UserListFragment"
-        android:label="UserListFragment" >
+        android:label="UserListFragment">
         <action
             android:id="@+id/action_userListFragment_to_userDetailFragment"
             app:destination="@id/userDetailFragment" />

@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="PrimaryText" parent="@android:style/Widget.TextView">
         <item name="android:textSize">@dimen/text_size_primary</item>
         <item name="android:textStyle">normal</item>
         <item name="android:fontFamily">Comic Sans</item>
     </style>
+
     <style name="SecondaryText" parent="@android:style/Widget.TextView">
         <item name="android:textSize">@dimen/text_size_secondary</item>
         <item name="android:textStyle">normal</item>
         <item name="android:fontFamily">Comic Sans</item>
     </style>
+
     <style name="button" parent="@style/Widget.AppCompat.Button.Borderless">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:minHeight">48dp</item>
@@ -17,6 +20,7 @@
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
     </style>
+
     <style name="card" parent="@style/Widget.Material3.CardView.Elevated">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
@@ -29,7 +33,8 @@
         <item name="elevation">3dp</item>
         <item name="cardBackgroundColor">?colorPrimaryContainer</item>
     </style>
-    <style name="backdrop" >
+
+    <style name="backdrop">
         <item name="android:background">?backgroundColor</item>
     </style>
 
@@ -58,7 +63,9 @@
 
     <style name="Theme.MyApp.Spinner.ThemeOverlay" parent="">
         <!-- Style inception - hook into styling the AutoCompleteTextView -->
-        <item name="autoCompleteTextViewStyle">@style/Widget.MyApp.Spinner.ThemeOverlay.AutoCompleteTextView</item>
+        <item name="autoCompleteTextViewStyle">
+            @style/Widget.MyApp.Spinner.ThemeOverlay.AutoCompleteTextView
+        </item>
         <!-- Background color of dropdown (popup) entries -->
         <item name="colorSurface">?colorSurface</item>
         <!-- Dropdown arrow color -->
@@ -91,11 +98,11 @@
     </style>
 
     <style name="FullScreenDialogTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
-<!--        <item name="android:statusBarColor">#280680</item>-->
-<!--        <item name="windowNoTitle">true</item>-->
-<!--        <item name="android:layout_width">match_parent</item>-->
-<!--        <item name="android:layout_height">match_parent</item>-->
-<!--        <item name="android:layout_gravity">center</item>-->
+        <!--        <item name="android:statusBarColor">#280680</item>-->
+        <!--        <item name="windowNoTitle">true</item>-->
+        <!--        <item name="android:layout_width">match_parent</item>-->
+        <!--        <item name="android:layout_height">match_parent</item>-->
+        <!--        <item name="android:layout_gravity">center</item>-->
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowIsFloating">false</item>
     </style>

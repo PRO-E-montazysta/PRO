@@ -13,5 +13,7 @@ interface IServiceProvider {
     fun getToolTypeService(): ToolTypeService
     fun getWarehouseService(): WarehouseService
     fun getLocationService(): LocationService
+    fun getElementInWarehouseService(): ElementInWarehouseService
     fun getPlannedItemService(): PlannedItemService
+    fun getClientService(): ClientService
 }

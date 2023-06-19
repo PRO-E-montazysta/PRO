@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="elementInWarehouse"
+            type="com.example.e_montazysta.ui.element_in_warehouse.ElementInWarehousesDAOItem" />
+
+        <variable
+            name="itemClickListener"
+            type="com.example.e_montazysta.ui.element_in_warehouse.CustomClickListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:backgroundTint="?colorSurface"
+        android:clickable="true"
+        android:focusable="true"
+        android:minHeight="@dimen/list_item_min_height_two_line"
+        android:onClick="@{() -> itemClickListener.cardClicked(elementInWarehouse)}"
+        tools:theme="@style/Theme.Material3.DayNight">
+
+        <include
+            android:id="@+id/item"
+            layout="@layout/list_item_template"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:headline="@{elementInWarehouse.warehouse}"
+            app:icon='@{@drawable/shelves_fill0_wght400_grad0_opsz48}'
+            app:supportText='@{elementInWarehouse.getListItemInfo()}'></include>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

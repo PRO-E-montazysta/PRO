@@ -7,6 +7,7 @@
          the whole ViewModel, so that we can access the LiveData,
          click handlers, and state variables. -->
     <data>
+
         <variable
             name="StageListViewModel"
             type="com.example.e_montazysta.ui.stage.StageListViewModel" />
@@ -14,54 +15,59 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
+
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true">
+
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:elevation="0dp"
-                app:menu="@menu/menu_list"
-                app:title="@string/stages_list_tile"
-                app:navigationIcon="@drawable/baseline_arrow_back_24"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:layout_scrollEffect="compress"
-                />
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:menu="@menu/menu_list"
+                app:navigationIcon="@drawable/baseline_arrow_back_24"
+                app:title="@string/stages_list_tile" />
         </com.google.android.material.appbar.AppBarLayout>
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/stage_list"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swiperefresh"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/list_item_stage"
-            app:layout_constraintEnd_toEndOf="@+id/title"
-            app:layout_constraintStart_toStartOf="@+id/title"
-            app:layout_constraintTop_toBottomOf="@+id/title"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            />
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/stage_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:layout_constraintEnd_toEndOf="@+id/title"
+                app:layout_constraintStart_toStartOf="@+id/title"
+                app:layout_constraintTop_toBottomOf="@+id/title"
+                tools:listitem="@layout/list_item_stage" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/empty_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="Nie znaleziono żadnych elementów."
             android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-            android:layout_gravity="center"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <ProgressBar
             android:id="@+id/loading_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:layout_gravity="center"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

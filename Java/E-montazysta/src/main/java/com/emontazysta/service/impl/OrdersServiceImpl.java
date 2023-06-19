@@ -5,10 +5,7 @@ import com.emontazysta.enums.OrderStageStatus;
 import com.emontazysta.enums.OrderStatus;
 import com.emontazysta.enums.Role;
 import com.emontazysta.mapper.OrdersMapper;
-import com.emontazysta.model.AppUser;
-import com.emontazysta.model.Employment;
-import com.emontazysta.model.OrderStage;
-import com.emontazysta.model.Orders;
+import com.emontazysta.model.*;
 import com.emontazysta.model.dto.OrdersCompanyManagerDto;
 import com.emontazysta.model.dto.OrdersDto;
 import com.emontazysta.model.searchcriteria.OrdersSearchCriteria;
@@ -98,6 +95,10 @@ public class OrdersServiceImpl implements OrdersService {
         order.setClient(updatedOrder.getClient());
         order.setOrderStages(updatedOrder.getOrderStages());
         order.setAttachments(updatedOrder.getAttachments());
+
+        if(authUtils.getLoggedUser().getRoles().contains(Role.MANAGER) && order.getManagedBy() == null) {
+            order.setManagedBy((Manager) authUtils.getLoggedUser());
+        }
 
         return ordersMapper.toDto(repository.save(order));
     }

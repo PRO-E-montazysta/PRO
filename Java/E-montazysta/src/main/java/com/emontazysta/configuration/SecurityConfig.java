@@ -57,8 +57,8 @@ public class SecurityConfig {
         appuserDetailsService.add(
                 new AppUser(
                         null,
-                        "Tomek",
-                        "Pyrzak",
+                        "E-Montazysta",
+                        "Admin",
                         "tpyrzak@wp.pl",
                         securityProperties.getCloudManagerPassword(),
                         securityProperties.getCloudManagerUsername(),

@@ -2,6 +2,8 @@ package com.example.e_montazysta.ui.order
 
 import com.example.e_montazysta.data.model.Order
 import com.example.e_montazysta.data.model.User
+import com.example.e_montazysta.ui.client.ClientDAO
+import com.example.e_montazysta.ui.location.LocationDAO
 import com.squareup.moshi.Json
 import org.koin.core.component.KoinComponent
 import java.util.Date
@@ -36,7 +38,8 @@ data class OrderDAO(
         val salesRepresentative =
             if (salesRepresentativeId != null) User.getUserDetails(salesRepresentativeId) else null
         val foreman = if (foremanId != null) User.getUserDetails(foremanId) else null
-
+        val location = if (locationId != null) LocationDAO.getLocation(locationId) else null
+        val client = if (clientId != null) ClientDAO.getClient(clientId) else null
         return Order(
             id,
             name,
@@ -44,12 +47,12 @@ data class OrderDAO(
             status,
             plannedStart,
             plannedEnd,
-            clientId,
+            client,
             foreman,
             manager,
             specialist,
             salesRepresentative,
-            locationId,
+            location,
             orderStages,
             createdAt,
             editedAt

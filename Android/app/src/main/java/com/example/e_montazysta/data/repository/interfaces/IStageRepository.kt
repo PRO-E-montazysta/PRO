@@ -8,4 +8,5 @@ open interface IStageRepository {
     suspend fun getListOfStages(): Result<List<StageListItem>>
     suspend fun getListOfStages(stages: List<Int>): Result<List<StageListItem>>
     suspend fun getStageDetails(id: Int): Result<Stage>
+    suspend fun nextOrderStatus(id: Int): Result<Stage>
 }

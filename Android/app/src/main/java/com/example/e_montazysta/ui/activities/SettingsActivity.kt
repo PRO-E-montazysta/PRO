@@ -58,7 +58,7 @@ class SettingsActivity : Fragment() {
                 binding.userName.text = it.firstName + ' ' + it.lastName
                 binding.companyName.text = it.companyName
                 binding.profilePicture.load(
-                    it.profilePhotoUrl ?: "https://i.imgflip.com/3u04h5.jpg?a468072"
+                    it.profilePhotoUrl ?: "https://cdn-icons-png.flaticon.com/512/149/149071.png"
                 ) {
                     transformations(CircleCropTransformation())
                 }

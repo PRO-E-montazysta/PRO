@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.e_montazysta.databinding.FragmentElementDetailBinding
 import com.google.android.material.appbar.MaterialToolbar
@@ -82,10 +83,17 @@ class ElementDetailFragment : Fragment() {
                 binding.elementCodeData.text = it.code
                 binding.elementUnitData.text = it.typeOfUnit
                 binding.elementQtyOfUnitData.text = it.quantityInUnit.toString()
-//                binding.elementWarehouseData.text = it.elementInWarehouses.toString()
             }
         })
 
+        val elementInWarehouses = binding.elementInWarehousesButton
+        elementInWarehouses.setOnClickListener {
+            val direction =
+                ElementDetailFragmentDirections.actionElementDetailFragmentToElementInWarehousesListFragment(
+                    elementId
+                )
+            findNavController().navigate(direction)
+        }
 //        val create_release = binding.createRelease
 //        create_release.setOnClickListener {
 //            val direction = ElementDetailFragmentDirections.actionElementDetailFragmentToReleaseCreateFragment(elementId)

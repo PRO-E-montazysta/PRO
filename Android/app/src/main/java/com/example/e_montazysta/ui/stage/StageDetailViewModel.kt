@@ -52,4 +52,26 @@ class StageDetailViewModel(private val repository: IStageRepository) : ViewModel
         super.onCleared()
         coroutineContext.cancel()
     }
+
+    fun nextOrderStatus() {
+        job = launch {
+            nextOrderStatusAsync()
+        }
+    }
+
+    private suspend fun nextOrderStatusAsync() {
+        _isLoadingLiveData.postValue(true)
+        stagedetail.value?.let {
+            val result = repository.nextOrderStatus(it.id)
+            when (result) {
+                is Result.Success -> {
+                    _stageDetailLiveData.postValue(result.data)
+                    _messageLiveData.postValue("Zmianiono status na ${stagedetail.value!!.status.value}")
+                }
+
+                is Result.Error -> result.exception.message?.let { _messageLiveData.postValue(it) }
+            }
+        }
+    }
+
 }

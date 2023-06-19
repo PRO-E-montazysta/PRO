@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="order"
             type="com.example.e_montazysta.ui.order.OrderListItem" />
+
         <variable
             name="itemClickListener"
             type="com.example.e_montazysta.ui.order.CustomClickListener" />
@@ -20,18 +22,16 @@
         android:clickable="true"
         android:focusable="true"
         android:minHeight="@dimen/list_item_min_height_two_line"
-        tools:theme="@style/Theme.Material3.DayNight"
         android:onClick="@{() -> itemClickListener.cardClicked(order)}"
-        >
+        tools:theme="@style/Theme.Material3.DayNight">
 
         <include
-            layout="@layout/list_item_template"
             android:id="@+id/item"
-            app:headline="@{order.name}"
-            app:supportText='@{order.getListItemInfo()}'
-            android:layout_height="wrap_content"
+            layout="@layout/list_item_template"
             android:layout_width="match_parent"
-            app:icon="@{@drawable/baseline_assignment_24}">
-        </include>
+            android:layout_height="wrap_content"
+            app:headline="@{order.name}"
+            app:icon="@{@drawable/baseline_assignment_24}"
+            app:supportText='@{order.getListItemInfo()}'></include>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

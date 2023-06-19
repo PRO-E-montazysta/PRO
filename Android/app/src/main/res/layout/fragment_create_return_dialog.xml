@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="stage"
             type="com.example.e_montazysta.data.model.Stage" />
@@ -27,7 +29,7 @@
                 app:layout_scrollFlags="scroll|enterAlways|snap"
                 app:menu="@menu/menu_submit_release_return"
                 app:navigationIcon="@drawable/baseline_close_24"
-                app:title="@string/create_return_title"/>
+                app:title="@string/create_return_title" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <ScrollView
@@ -47,7 +49,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/stage_title"
-                    android:textAppearance="@style/TextAppearance.Material3.TitleLarge"/>
+                    android:textAppearance="@style/TextAppearance.Material3.TitleLarge" />
 
                 <!-- Informacje dotyczące etapu -->
                 <LinearLayout
@@ -57,6 +59,7 @@
                     android:paddingVertical="@dimen/list_item_space_x3"
                     android:paddingStart="@dimen/list_item_space_x4"
                     android:paddingEnd="@dimen/list_item_space_x6">
+
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/orderName"
                         android:layout_width="wrap_content"
@@ -79,6 +82,7 @@
                     android:paddingVertical="@dimen/list_item_space_x3"
                     android:paddingStart="@dimen/list_item_space_x4"
                     android:paddingEnd="@dimen/list_item_space_x6">
+
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/foremanName"
                         android:layout_width="wrap_content"
@@ -101,6 +105,7 @@
                     android:paddingVertical="@dimen/list_item_space_x3"
                     android:paddingStart="@dimen/list_item_space_x4"
                     android:paddingEnd="@dimen/list_item_space_x6">
+
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/status"
                         android:layout_width="wrap_content"
@@ -122,11 +127,13 @@
                     android:paddingVertical="@dimen/list_item_space_x3"
                     android:paddingStart="@dimen/list_item_space_x4"
                     android:paddingEnd="@dimen/list_item_space_x6">
+
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/warehouseName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Magazyn" />
+
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/warehouseNameValue"
                         android:layout_width="wrap_content"
@@ -148,10 +155,9 @@
                     android:id="@+id/list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/list_item_tool"
                     android:scrollbars="vertical"
-                    />
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/list_item_tool" />
 
                 <!-- Przycisk potwierdzenia -->
 

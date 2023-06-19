@@ -108,7 +108,7 @@ public class UnavailabilityServiceImpl implements UnavailabilityService {
     @Override
     public List<UnavailabilityToCalendarDto> getAllForCompanyLoggedUserInMonth(int month, int year) {
        List<UnavailabilityToCalendarDto> unavailabilityToCalendarDtoList = new ArrayList<>();
-       List<Unavailability> unavailabilitiesfilteredByCompanyId = new ArrayList<>();
+       List<Unavailability> unavailabilitiesFilteredByCompanyId = new ArrayList<>();
 
 
        Long loggedUserCompanyId = authUtils.getLoggedUserCompanyId();
@@ -122,11 +122,11 @@ public class UnavailabilityServiceImpl implements UnavailabilityService {
        // tylko nieobecności dla firmy zalogowanego użytkownika
         for (Unavailability unavailability : unavailabilities) {
             if(loggedUserCompanyId.equals(authUtils.getUserCompanyId(unavailability.getAssignedBy()))) {
-                unavailabilitiesfilteredByCompanyId.add(unavailability);
+                unavailabilitiesFilteredByCompanyId.add(unavailability);
             }
         }
         //mapowanie nieobecności
-        for (Unavailability unavailability: unavailabilitiesfilteredByCompanyId) {
+        for (Unavailability unavailability: unavailabilitiesFilteredByCompanyId) {
                 unavailabilityToCalendarDtoList.add(unavailabilityToCallendarMapper.toDto(unavailability));
         }
 

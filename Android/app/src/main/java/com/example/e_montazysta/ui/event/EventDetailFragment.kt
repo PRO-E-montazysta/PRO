@@ -81,7 +81,6 @@ class EventDetailFragment : Fragment() {
             requireActivity().onBackPressed()
         }
 
-
         return binding.root
     }
 }

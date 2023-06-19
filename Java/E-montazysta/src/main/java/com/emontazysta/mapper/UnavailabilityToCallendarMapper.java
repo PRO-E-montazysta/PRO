@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -44,7 +45,7 @@ public class UnavailabilityToCallendarMapper {
                 .city(findCity(unavailability) == null ? null : findCity(unavailability))
                 .street(findStreet(unavailability) == null ? null : findStreet(unavailability))
                 .propertyNumber(findPropertyNumber(unavailability) == null ? null : findPropertyNumber(unavailability))
-                .apartmentNumber(findapartmentNumber(unavailability) == null ? null : findapartmentNumber(unavailability))
+                .apartmentNumber(findApartmentNumber(unavailability) == null ? null : findApartmentNumber(unavailability))
                 .zipCode(findZipCode(unavailability) == null ? null : findZipCode(unavailability))
                 .build();
     }
@@ -91,7 +92,7 @@ public class UnavailabilityToCallendarMapper {
         return null;
     }
 
-    private String findapartmentNumber(Unavailability unavailability ) {
+    private String findApartmentNumber(Unavailability unavailability ) {
         OrderStage orderStage = findOrderStage(unavailability);
         Location location = findLocation(unavailability);
         if (orderStage != null && location != null) {
@@ -167,17 +168,17 @@ public class UnavailabilityToCallendarMapper {
 
     private OrderStage findOrderStage(Unavailability unavability){
         if (unavability.getTypeOfUnavailability().equals(TypeOfUnavailability.BUSY)) {
-            Fitter fitter = fitterRepository.getReferenceById(unavability.getAssignedTo().getId());
-
-            List<OrderStage> stages = orderStageRepository.findAllByPlannedStartDateEqualsAndPlannedEndDateEquals(unavability.getUnavailableFrom(), unavability.getUnavailableTo());
-
-            for (OrderStage stage: stages) {
-                return stage;
-
+            if(unavability.getOrderStageId() == null) {
+                return null;
+            }else {
+                Optional<OrderStage> orderStage = orderStageRepository.findById(unavability.getOrderStageId());
+                if(orderStage.isPresent()) {
+                    return orderStage.get();
+                }else {
+                    return null;
                 }
             }
+        }
         return null;
     }
-
-
 }

@@ -14,6 +14,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import com.example.e_montazysta.data.model.Stage
 import com.example.e_montazysta.databinding.FragmentStageDetailBinding
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -27,10 +28,13 @@ class StageDetailFragment : Fragment() {
     private lateinit var mActionMainFab: FloatingActionButton
     private lateinit var itemsReleaseFab: FloatingActionButton
     private lateinit var itemsReturnFab: FloatingActionButton
+    private lateinit var stageNextStatusFab: FloatingActionButton
 
     //wlaczanie/wylaczanie widocznosci tekstu FABów
     private lateinit var itemsReleaseFabText: TextView
     private lateinit var itemsReturnFabText: TextView
+    private lateinit var stageNextStatusFabText: TextView
+
 
     //sprawdzanie, czy FAB podległe pod główny FAB mają być widoczne
     private var subFabsVisible: Boolean? = null
@@ -55,6 +59,7 @@ class StageDetailFragment : Fragment() {
 
         stageDetailViewModel.getStageDetail(stageId)
         viewPager = binding.pager
+        viewPager.offscreenPageLimit = 3;
 
         stageDetailViewModel.stagedetail.observe(viewLifecycleOwner, Observer { stage ->
             stage?.let {
@@ -98,6 +103,34 @@ class StageDetailFragment : Fragment() {
                     findNavController().navigate(direction)
                 }
 
+                stageNextStatusFab.setOnClickListener {
+                    stageDetailViewModel.nextOrderStatus()
+                }
+
+                when (stage.status) {
+                    StageStatus.PICK_UP -> {
+                        itemsReleaseFab.show()
+                        itemsReleaseFabText.visibility = View.VISIBLE
+                        stageNextStatusFab.show()
+                        stageNextStatusFabText.visibility = View.VISIBLE
+                    }
+
+                    StageStatus.RETURN -> {
+                        itemsReturnFab.show()
+                        itemsReturnFabText.visibility = View.VISIBLE
+                        stageNextStatusFab.show()
+                        stageNextStatusFabText.visibility = View.VISIBLE
+                    }
+
+                    else -> {
+                        itemsReturnFab.hide()
+                        itemsReturnFabText.visibility = View.GONE
+                        itemsReleaseFab.hide()
+                        itemsReleaseFabText.visibility = View.GONE
+                        stageNextStatusFab.hide()
+                        stageNextStatusFabText.visibility = View.GONE
+                    }
+                }
             }
         })
 
@@ -108,17 +141,20 @@ class StageDetailFragment : Fragment() {
         //FAB - dzieci
         itemsReleaseFab = binding.addObjectsToRelease
         itemsReturnFab = binding.addObjectsToReturn
-
+        stageNextStatusFab = binding.changeOrderStatus
         //Tekst do FAB - dzieci
         itemsReleaseFabText = binding.elementEventFabText
         itemsReturnFabText = binding.addObjectsToReturnText
+        stageNextStatusFabText = binding.changeOrderStatusText
+
 
         //Wyłączamy widoczność FAB - dzieci i ich tekstów
         itemsReleaseFab.visibility = View.GONE
         itemsReleaseFabText.visibility = View.GONE
         itemsReturnFab.visibility = View.GONE
         itemsReturnFabText.visibility = View.GONE
-
+        stageNextStatusFab.visibility = View.GONE
+        stageNextStatusFabText.visibility = View.GONE
         //Wyłączamy boolean sprawdzający widoczność deklarowany wyżej
         subFabsVisible = false
 
@@ -126,19 +162,27 @@ class StageDetailFragment : Fragment() {
         //po kliknięciu w FAB - parent
         mActionMainFab.setOnClickListener(View.OnClickListener {
             (if (!subFabsVisible!!) {
+
                 when (stage.status) {
                     StageStatus.PICK_UP -> {
                         itemsReleaseFab.show()
                         itemsReleaseFabText.visibility = View.VISIBLE
+                        stageNextStatusFab.show()
+                        stageNextStatusFabText.visibility = View.VISIBLE
                     }
 
                     StageStatus.RETURN -> {
                         itemsReturnFab.show()
                         itemsReturnFabText.visibility = View.VISIBLE
+                        stageNextStatusFab.show()
+                        stageNextStatusFabText.visibility = View.VISIBLE
                     }
 
                     else -> {
-
+                        itemsReturnFab.hide()
+                        itemsReturnFabText.visibility = View.GONE
+                        stageNextStatusFab.hide()
+                        stageNextStatusFabText.visibility = View.GONE
                     }
                 }
 
@@ -151,6 +195,8 @@ class StageDetailFragment : Fragment() {
                 itemsReleaseFabText.visibility = View.GONE
                 itemsReturnFab.hide()
                 itemsReturnFabText.visibility = View.GONE
+                stageNextStatusFab.hide()
+                stageNextStatusFabText.visibility = View.GONE
 
                 //zmieniamy boolean subFabsVisible na false
                 false
@@ -163,8 +209,12 @@ class StageDetailFragment : Fragment() {
         stageDetailViewModel.messageLiveData.observe(viewLifecycleOwner) { errorMessage ->
             Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
         }
-        // Specify the current activity as the lifecycle owner of the binding.
-        // This is necessary so that the binding can observe LiveData updates.
+
+        val toolbar: MaterialToolbar = binding.toolbar
+        toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
+
         return binding.root
     }
 }

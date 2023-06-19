@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.example.e_montazysta.R
 import com.example.e_montazysta.databinding.FragmentOrdersBinding
 import com.google.android.material.appbar.MaterialToolbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -83,6 +84,13 @@ class OrderListFragment : Fragment() {
                 }
             }
         })
+        toolbar.menu.findItem(R.id.filter).isVisible = false
+
+        val mSwipeRefreshLayout = binding.swiperefresh
+        mSwipeRefreshLayout.setOnRefreshListener {
+            orderListViewModel.getOrder()
+            mSwipeRefreshLayout.isRefreshing = false
+        }
 
         return binding.root
     }

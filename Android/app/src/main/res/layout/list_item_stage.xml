@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="stage"
             type="com.example.e_montazysta.ui.stage.StageListItem" />
+
         <variable
             name="itemClickListener"
             type="com.example.e_montazysta.ui.stage.CustomClickListener" />
@@ -20,16 +22,16 @@
         android:clickable="true"
         android:focusable="true"
         android:minHeight="@dimen/list_item_min_height_two_line"
-        tools:theme="@style/Theme.Material3.DayNight"
         android:onClick="@{() -> itemClickListener.cardClicked(stage)}"
-        >
+        tools:theme="@style/Theme.Material3.DayNight">
 
-        <include layout="@layout/list_item_template"
+        <include
             android:id="@+id/item"
-            app:headline="@{stage.name}"
-            app:supportText='@{stage.getListItemInfo()}'
-            android:layout_height="wrap_content"
+            layout="@layout/list_item_template"
             android:layout_width="match_parent"
-            app:icon="@{@drawable/baseline_format_list_numbered_24}" />
+            android:layout_height="wrap_content"
+            app:headline="@{stage.name}"
+            app:icon="@{@drawable/baseline_format_list_numbered_24}"
+            app:supportText='@{stage.getListItemInfo()}' />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

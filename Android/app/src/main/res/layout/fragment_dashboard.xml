@@ -3,19 +3,24 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="currentUser"
             type="com.example.e_montazysta.data.model.CurrentUser" />
     </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
+
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true">
+
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
@@ -31,46 +36,47 @@
                         android:id="@+id/profilePicture"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:scaleType="centerCrop"
-                        app:strokeWidth="1dp"
-                        android:padding="2dp"
-                        app:strokeColor="?colorOnSurface"
-                        app:shapeAppearanceOverlay="@style/circleImageView"
+                        android:layout_gravity="center_vertical"
                         android:contentDescription="@string/content_description_profile_picture"
-                        android:layout_gravity="center_vertical"/>
+                        android:padding="2dp"
+                        android:scaleType="centerCrop"
+                        app:shapeAppearanceOverlay="@style/circleImageView"
+                        app:strokeColor="?colorOnSurface"
+                        app:strokeWidth="1dp" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center_vertical">
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/user_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="16sp"
-                            android:paddingLeft="8dp"
                             android:minWidth="100dp"
-                            android:text="@{currentUser.firstName + ' ' + currentUser.lastName}"/>
+                            android:paddingLeft="8dp"
+                            android:text="@{currentUser.firstName + ' ' + currentUser.lastName}"
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/company_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="14sp"
-                            android:paddingLeft="8dp"
                             android:minWidth="100dp"
-                            android:text="@{currentUser.companyName}"/>
+                            android:paddingLeft="8dp"
+                            android:text="@{currentUser.companyName}"
+                            android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.appbar.MaterialToolbar>
         </com.google.android.material.appbar.AppBarLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".ui.fragments.dashboard.DashboardFragment"
-            android:layout_marginTop="?attr/actionBarSize">
+            android:layout_marginTop="?attr/actionBarSize"
+            tools:context=".ui.fragments.dashboard.DashboardFragment">
 
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/text_dashboard"
@@ -149,35 +155,35 @@
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
-<!--                    <com.google.android.material.card.MaterialCardView-->
-<!--                        android:id="@+id/releases"-->
-<!--                        style="@style/card">-->
+                    <!--                    <com.google.android.material.card.MaterialCardView-->
+                    <!--                        android:id="@+id/releases"-->
+                    <!--                        style="@style/card">-->
 
-<!--                        <LinearLayout-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="match_parent"-->
-<!--                            android:orientation="vertical"-->
-<!--                            android:padding="10dp">-->
+                    <!--                        <LinearLayout-->
+                    <!--                            android:layout_width="match_parent"-->
+                    <!--                            android:layout_height="match_parent"-->
+                    <!--                            android:orientation="vertical"-->
+                    <!--                            android:padding="10dp">-->
 
-<!--                            &lt;!&ndash; Media &ndash;&gt;-->
-<!--                            <ImageView-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:layout_gravity="center"-->
-<!--                                android:contentDescription="@string/content_description_media"-->
-<!--                                android:scaleType="centerCrop"-->
-<!--                                android:src="@drawable/baseline_swap_horiz_24" />-->
+                    <!--                            &lt;!&ndash; Media &ndash;&gt;-->
+                    <!--                            <ImageView-->
+                    <!--                                android:layout_width="wrap_content"-->
+                    <!--                                android:layout_height="wrap_content"-->
+                    <!--                                android:layout_gravity="center"-->
+                    <!--                                android:contentDescription="@string/content_description_media"-->
+                    <!--                                android:scaleType="centerCrop"-->
+                    <!--                                android:src="@drawable/baseline_swap_horiz_24" />-->
 
 
-<!--                            &lt;!&ndash; @string/title, secondary and supporting text &ndash;&gt;-->
-<!--                            <TextView-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:layout_gravity="center"-->
-<!--                                android:padding="10dp"-->
-<!--                                android:text="@string/title_releases" />-->
-<!--                        </LinearLayout>-->
-<!--                    </com.google.android.material.card.MaterialCardView>-->
+                    <!--                            &lt;!&ndash; @string/title, secondary and supporting text &ndash;&gt;-->
+                    <!--                            <TextView-->
+                    <!--                                android:layout_width="wrap_content"-->
+                    <!--                                android:layout_height="wrap_content"-->
+                    <!--                                android:layout_gravity="center"-->
+                    <!--                                android:padding="10dp"-->
+                    <!--                                android:text="@string/title_releases" />-->
+                    <!--                        </LinearLayout>-->
+                    <!--                    </com.google.android.material.card.MaterialCardView>-->
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/elements"
@@ -274,8 +280,8 @@
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/events"
                         style="@style/card"
-                        android:transitionName="shared_element_container"
-                        android:clickable="true">
+                        android:clickable="true"
+                        android:transitionName="shared_element_container">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -306,8 +312,8 @@
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/users"
                         style="@style/card"
-                        android:transitionName="shared_element_container"
-                        android:clickable="true">
+                        android:clickable="true"
+                        android:transitionName="shared_element_container">
 
                         <LinearLayout
                             android:layout_width="match_parent"

@@ -1,5 +1,7 @@
 package com.example.e_montazysta.data.model
 
+import com.example.e_montazysta.ui.client.ClientDAO
+import com.example.e_montazysta.ui.location.LocationDAO
 import com.example.e_montazysta.ui.order.OrderPriority
 import com.example.e_montazysta.ui.order.OrderStatus
 import java.util.Date
@@ -11,12 +13,12 @@ data class Order(
     val status: OrderStatus,
     val plannedStart: Date?,
     val plannedEnd: Date?,
-    val client: Int?,
+    val client: ClientDAO?,
     val foreman: User?,
     val manager: User?,
     val specialist: User?,
     val salesRepresentative: User?,
-    val locationId: Int?,
+    val location: LocationDAO?,
     val orderStages: List<Int>,
     val createdAt: Date?,
     val editedAt: Date?

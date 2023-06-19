@@ -3,7 +3,9 @@ package com.example.e_montazysta.data
 import com.example.e_montazysta.data.environments.Environment
 import com.example.e_montazysta.data.network.NetworkServiceFactory
 import com.example.e_montazysta.data.network.ServiceFactory
+import com.example.e_montazysta.data.repository.ClientRepository
 import com.example.e_montazysta.data.repository.CommentRepository
+import com.example.e_montazysta.data.repository.ElementInWarehouseRepository
 import com.example.e_montazysta.data.repository.ElementRepository
 import com.example.e_montazysta.data.repository.EventRepository
 import com.example.e_montazysta.data.repository.LocationRepository
@@ -16,7 +18,9 @@ import com.example.e_montazysta.data.repository.ToolRepository
 import com.example.e_montazysta.data.repository.ToolTypeRepository
 import com.example.e_montazysta.data.repository.UserRepository
 import com.example.e_montazysta.data.repository.WarehouseRepository
+import com.example.e_montazysta.data.repository.interfaces.IClientRepository
 import com.example.e_montazysta.data.repository.interfaces.ICommentRepository
+import com.example.e_montazysta.data.repository.interfaces.IElementInWarehouseRepository
 import com.example.e_montazysta.data.repository.interfaces.IElementRepository
 import com.example.e_montazysta.data.repository.interfaces.IEventRepository
 import com.example.e_montazysta.data.repository.interfaces.ILocationRepository
@@ -35,6 +39,8 @@ import com.example.e_montazysta.helpers.BigDecimalAdapter
 import com.example.e_montazysta.helpers.CustomDateAdapter
 import com.example.e_montazysta.ui.element.ElementDetailViewModel
 import com.example.e_montazysta.ui.element.ElementsListViewModel
+import com.example.e_montazysta.ui.element_in_warehouse.ElementInWarehouseDetailViewModel
+import com.example.e_montazysta.ui.element_in_warehouse.ElementInWarehousesListViewModel
 import com.example.e_montazysta.ui.event.EventDetailViewModel
 import com.example.e_montazysta.ui.event.EventListViewModel
 import com.example.e_montazysta.ui.notification.NotificationListViewModel
@@ -51,6 +57,7 @@ import com.example.e_montazysta.ui.toollist.ToolsListViewModel
 import com.example.e_montazysta.ui.user.UserDetailViewModel
 import com.example.e_montazysta.ui.user.UserListViewModel
 import com.example.e_montazysta.ui.viewmodels.DashboardViewModel
+import com.example.e_montazysta.ui.viewmodels.QRScanViewModel
 import com.example.e_montazysta.ui.warehouse.WarehouseDetailViewModel
 import com.example.e_montazysta.ui.warehouse.WarehouseListViewModel
 import com.squareup.moshi.Moshi
@@ -170,9 +177,21 @@ val dataModule = module {
     }
 
     factory {
+        val elementInWarehouseRepository: IElementInWarehouseRepository =
+            ElementInWarehouseRepository(get())
+        elementInWarehouseRepository
+    }
+
+    factory {
         val plannedItemRepository: IPlannedItemRepository =
             PlannedItemRepository(get())
         plannedItemRepository
+    }
+
+    factory {
+        val clientRepository: IClientRepository =
+            ClientRepository(get())
+        clientRepository
     }
 
     viewModel {
@@ -228,6 +247,12 @@ val dataModule = module {
         WarehouseDetailViewModel(get())
     }
     viewModel {
+        ElementInWarehouseDetailViewModel(get())
+    }
+    viewModel {
+        ElementInWarehousesListViewModel(get())
+    }
+    viewModel {
         UserDetailViewModel(get())
     }
     viewModel {
@@ -235,5 +260,8 @@ val dataModule = module {
     }
     viewModel {
         ReturnCreateViewModel()
+    }
+    viewModel {
+        QRScanViewModel()
     }
 }

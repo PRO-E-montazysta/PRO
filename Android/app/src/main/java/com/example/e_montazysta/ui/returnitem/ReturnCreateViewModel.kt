@@ -70,6 +70,17 @@ class ReturnCreateViewModel : ViewModel(), CoroutineScope, KoinComponent {
                     val isReleased = stage.simpleToolReleases.any { it.toolId == tool.id }
                     if (isReleased) {
                         _itemsLiveData.value = currentItems + tool
+                        if (selectedWarehouseLiveData.value == null) {
+                            setWarehouse(
+                                WarehouseFilterDAO(
+                                    result.data.warehouse.id,
+                                    "",
+                                    result.data.warehouse.name,
+                                    result.data.warehouse.openingHours,
+                                    ""
+                                )
+                            )
+                        }
                         _messageLiveData.postValue("Narzędzie dodane")
                     } else {
                         _messageLiveData.postValue("Brak narzędzia wśród wydanych!")

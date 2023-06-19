@@ -33,7 +33,6 @@ class UserDetailFragment : Fragment() {
         viewModel.user.observe(viewLifecycleOwner, Observer { user ->
             binding.userFirstNameValue.text = user.firstName
             binding.userLastNameValue.text = user.lastName
-            binding.userPeselValue.text = user.pesel
             binding.userRoleValue.text = user.roles.joinToString(", ") { it.value }
             binding.userEmailValue.text = user.email
             binding.userPhoneValue.text = user.phone

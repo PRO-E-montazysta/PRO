@@ -68,6 +68,17 @@ class ReleaseCreateViewModel : ViewModel(), CoroutineScope, KoinComponent {
                 is Result.Success -> {
                     val tool = mapToReleaseItem(result.data)
                     _itemsLiveData.postValue(currentItems + tool)
+                    if (selectedWarehouseLiveData.value == null) {
+                        setWarehouse(
+                            WarehouseFilterDAO(
+                                result.data.warehouse.id,
+                                "",
+                                result.data.warehouse.name,
+                                result.data.warehouse.openingHours,
+                                ""
+                            )
+                        )
+                    }
                     _messageLiveData.postValue("Narzędzie dodane")
                 }
 

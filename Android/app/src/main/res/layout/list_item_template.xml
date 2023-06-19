@@ -1,16 +1,16 @@
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="headline"
             type="java.lang.String" />
+
         <variable
             name="supportText"
             type="java.lang.String" />
+
         <variable
             name="icon"
             type="android.graphics.drawable.Drawable" />

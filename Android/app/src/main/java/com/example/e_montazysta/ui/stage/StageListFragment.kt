@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.example.e_montazysta.R
 import com.example.e_montazysta.data.model.Order
 import com.example.e_montazysta.databinding.FragmentStagesBinding
 import com.google.android.material.appbar.MaterialToolbar
@@ -81,6 +82,13 @@ class StageListFragment(val order: Order? = null) : Fragment() {
                 }
             }
         })
+        toolbar.menu.findItem(R.id.filter).isVisible = false
+
+        val mSwipeRefreshLayout = binding.swiperefresh
+        mSwipeRefreshLayout.setOnRefreshListener {
+            stageListViewModel.getStages()
+            mSwipeRefreshLayout.isRefreshing = false
+        }
 
         return binding.root
     }

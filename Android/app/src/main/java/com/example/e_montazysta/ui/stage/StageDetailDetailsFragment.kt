@@ -55,7 +55,7 @@ class StageDetailDetailsFragment(val stage: Stage?) : Fragment() {
                     )
                 }
                 stage.foreman?.let { foreman ->
-                    binding.foremanName.text = "${foreman.firstName} ${foreman.lastName}"
+                    binding.foremanNameValue.text = "${foreman.firstName} ${foreman.lastName}"
                     binding.foreman.setOnClickListener {
                         findNavController().navigate(
                             StageDetailFragmentDirections.actionStageDetailFragmentToUserDetailFragment(

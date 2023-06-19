@@ -7,6 +7,7 @@
          the whole ViewModel, so that we can access the LiveData,
          click handlers, and state variables. -->
     <data>
+
         <variable
             name="ReleaseListViewModel"
             type="com.example.e_montazysta.ui.release.ReleaseListViewModel" />
@@ -33,8 +34,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Nie znaleziono żadnych elementów."
-            android:visibility="gone"
             android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
