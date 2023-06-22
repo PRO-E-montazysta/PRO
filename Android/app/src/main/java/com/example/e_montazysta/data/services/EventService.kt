@@ -51,7 +51,7 @@ interface EventService {
     @GET("/api/v1/elementEvent/{id}")
     suspend fun getElementEventDetails(
         @Header("Authorization") token: String,
-        @Path("id") id: String?
+        @Path("id") id: Int
     ): ElementEventDAO
 
     @PUT("/api/v1/elementEvent/{id}")

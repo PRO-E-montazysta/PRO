@@ -16,7 +16,7 @@ data class Element(
     val listOfElementsPlannedNumber: List<Int>,
     val name: String,
     val quantityInUnit: Double,
-    val typeOfUnit: String
+    val typeOfUnit: TypeOfUnit
 ) {
     companion object : KoinComponent {
         suspend fun getElementDetails(elementId: Int): Element {

@@ -11,7 +11,7 @@ data class ElementDAO(
     val listOfElementsPlannedNumber: List<Int>,
     val name: String,
     val quantityInUnit: Double,
-    val typeOfUnit: String
+    val typeOfUnit: TypeOfUnit
 ) {
     fun mapToElement(): Element {
         return Element(
@@ -28,4 +28,14 @@ data class ElementDAO(
             typeOfUnit
         )
     }
+}
+
+enum class TypeOfUnit(val value: String){
+    KILOGRAM("Kilogramy"),
+    LITER("Litry"),
+    PIECE("Sztuki"),
+    GRAM("Gramy"),
+    MILILITER("Mililitry"),
+    MKW("Metry kwadratowe"),
+    MSZ("Metry sześcienne")
 }

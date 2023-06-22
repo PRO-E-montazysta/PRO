@@ -1,6 +1,7 @@
 package com.example.e_montazysta.ui.element
 
 import com.example.e_montazysta.data.model.Element
+import com.example.e_montazysta.data.model.TypeOfUnit
 
 data class ElementListItem(
     val attachmentId: Any,
@@ -13,7 +14,7 @@ data class ElementListItem(
     val listOfElementsPlannedNumber: List<Int>,
     val name: String,
     val quantityInUnit: Double,
-    val typeOfUnit: String
+    val typeOfUnit: TypeOfUnit
 ) {
     fun getQuantityInWarehouse(warehouseId: Int): String {
         val warehouse = elementInWarehouses?.first { it.warehouseId == warehouseId }

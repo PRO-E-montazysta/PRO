@@ -82,8 +82,18 @@ class StageDetailFragment : Fragment() {
                     StageStatus.PICK_UP, StageStatus.RETURN -> {
                         mActionMainFab.show()
                     }
+                    else -> {
+                        mActionMainFab.hide()
 
-                    else -> mActionMainFab.hide()
+                        itemsReleaseFab.hide()
+                        itemsReleaseFabText.visibility = View.GONE
+
+                        itemsReturnFab.hide()
+                        itemsReturnFabText.visibility = View.GONE
+
+                        stageNextStatusFab.hide()
+                        stageNextStatusFabText.visibility = View.GONE
+                    }
                 }
 
 
@@ -105,31 +115,6 @@ class StageDetailFragment : Fragment() {
 
                 stageNextStatusFab.setOnClickListener {
                     stageDetailViewModel.nextOrderStatus()
-                }
-
-                when (stage.status) {
-                    StageStatus.PICK_UP -> {
-                        itemsReleaseFab.show()
-                        itemsReleaseFabText.visibility = View.VISIBLE
-                        stageNextStatusFab.show()
-                        stageNextStatusFabText.visibility = View.VISIBLE
-                    }
-
-                    StageStatus.RETURN -> {
-                        itemsReturnFab.show()
-                        itemsReturnFabText.visibility = View.VISIBLE
-                        stageNextStatusFab.show()
-                        stageNextStatusFabText.visibility = View.VISIBLE
-                    }
-
-                    else -> {
-                        itemsReturnFab.hide()
-                        itemsReturnFabText.visibility = View.GONE
-                        itemsReleaseFab.hide()
-                        itemsReleaseFabText.visibility = View.GONE
-                        stageNextStatusFab.hide()
-                        stageNextStatusFabText.visibility = View.GONE
-                    }
                 }
             }
         })

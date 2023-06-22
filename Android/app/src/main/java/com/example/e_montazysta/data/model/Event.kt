@@ -23,8 +23,8 @@ data class Event(
 ) {
     companion object : KoinComponent {
         val eventRepository: IEventRepository by inject()
-        suspend fun getEventDetails(id: Int): Event {
-            val result = eventRepository.getEventDetails(id)
+        suspend fun getEventDetails(id: Int, type: EventType): Event {
+            val result = eventRepository.getEventDetails(id, type)
             return when (result) {
                 is Result.Success -> result.data
                 is Result.Error -> throw result.exception

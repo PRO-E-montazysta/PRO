@@ -59,28 +59,6 @@ class OrderDetailDetailsFragment(val order: Order) : Fragment() {
                     }
                 }
 
-                it.manager?.let { managerId ->
-                    binding.managerIdValue.text = managerId.toString()
-                    binding.manager.setOnClickListener {
-                        findNavController().navigate(
-                            OrderDetailFragmentDirections.actionOrderDetailFragmentToUserDetailFragment(
-                                managerId.id
-                            )
-                        )
-                    }
-                }
-
-                it.specialist?.let { specialistId ->
-                    binding.specialistIdValue.text = specialistId.toString()
-                    binding.specialist.setOnClickListener {
-                        findNavController().navigate(
-                            OrderDetailFragmentDirections.actionOrderDetailFragmentToUserDetailFragment(
-                                specialistId.id
-                            )
-                        )
-                    }
-                }
-
                 it.salesRepresentative?.let { salesRepresentativeId ->
                     binding.salesRepresentativeIdValue.text = salesRepresentativeId.toString()
                     binding.salesman.setOnClickListener {

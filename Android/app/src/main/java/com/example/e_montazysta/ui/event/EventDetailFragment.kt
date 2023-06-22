@@ -1,8 +1,6 @@
 package com.example.e_montazysta.ui.event
 
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +14,6 @@ import com.example.e_montazysta.databinding.FragmentEventDetailBinding
 import com.example.e_montazysta.helpers.DateUtil
 import com.google.android.material.appbar.MaterialToolbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import kotlin.system.measureTimeMillis
 
 class EventDetailFragment : Fragment() {
     private val viewModel: EventDetailViewModel by viewModel()
@@ -29,6 +26,7 @@ class EventDetailFragment : Fragment() {
 
         val args: EventDetailFragmentArgs by navArgs()
         val eventId = args.eventId
+        val eventType = args.eventType
 
         // Get a reference to the binding object and inflate the fragment views.
         val binding: FragmentEventDetailBinding =
@@ -36,10 +34,7 @@ class EventDetailFragment : Fragment() {
 
         // To use the View Model with data binding, you have to explicitly
         // give the binding object a reference to it.
-        val time = measureTimeMillis {
-            viewModel.getEventDetail(eventId)
-        }
-        Log.d(TAG, "Requests took $time ms.")
+        viewModel.getEventDetail(eventId, eventType)
 
         viewModel.eventdetail.observe(viewLifecycleOwner, Observer { event ->
             when (event.item) {
@@ -60,6 +55,8 @@ class EventDetailFragment : Fragment() {
                     binding.itemName.text = "Zgłaszany element"
                     binding.itemNameValue.text = event.item.name
                     binding.toolbar.subtitle = "${event.item.name} ${event.item.code}"
+                    binding.itemQuantity.visibility = View.VISIBLE
+                    binding.itemQuantityValue.text = event.quantity.toString()
                     binding.item.setOnClickListener {
                         findNavController().navigate(
                             EventDetailFragmentDirections.actionEventDetailFragmentToElementDetailFragment(
