@@ -41,7 +41,6 @@ class ReleaseDetailFragment : Fragment() {
                     it.releaseTime.let { DateUtil.format(it) }
                 if (it.returnTime != null) binding.returnTimeValue.text =
                     it.returnTime.let { DateUtil.format(it) }
-                if (it.receivedBy != null) binding.receivedByIdValue.text = it.receivedBy.toString()
                 if (it.releasedBy != null) binding.releasedByIdValue.text = it.releasedBy.toString()
                 binding.toolValue.text = when (it.isElement) {
                     true -> it.element?.name

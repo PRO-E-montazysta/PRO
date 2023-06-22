@@ -46,7 +46,7 @@ class EventListAdapter(val clickListener: CustomClickListener) :
     }
 }
 
-class CustomClickListener(val clickListener: (eventId: Int) -> Unit) {
+class CustomClickListener(val clickListener: (event: EventListItem) -> Unit) {
 
-    fun cardClicked(event: EventListItem) = clickListener(event.id)
+    fun cardClicked(event: EventListItem) = clickListener(event)
 }

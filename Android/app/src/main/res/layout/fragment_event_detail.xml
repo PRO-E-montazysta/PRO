@@ -149,6 +149,33 @@
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/itemQuantity"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/list_item_space_x3"
+                    android:paddingStart="@dimen/list_item_space_x4"
+                    android:paddingEnd="@dimen/list_item_space_x6">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/itemQuantityLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text='Ilość'
+                        android:textAppearance="?textAppearanceBodySmall"
+                        android:textColor="?colorOnSurfaceVariant" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/itemQuantityValue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?textAppearanceBodyLarge"
+                        android:textColor="?colorOnSurface" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

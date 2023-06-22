@@ -195,52 +195,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/manager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingVertical="@dimen/list_item_space_x3"
-                android:paddingStart="@dimen/list_item_space_x4"
-                android:paddingEnd="@dimen/list_item_space_x6">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/managerId"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Manager" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/managerIdValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/empty_field"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/specialist"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingVertical="@dimen/list_item_space_x3"
-                android:paddingStart="@dimen/list_item_space_x4"
-                android:paddingEnd="@dimen/list_item_space_x6">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/specialistId"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Specjalista" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/specialistIdValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/empty_field"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/salesman"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

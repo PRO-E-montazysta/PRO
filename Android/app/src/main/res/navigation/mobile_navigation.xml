@@ -252,6 +252,9 @@
         <argument
             android:name="eventId"
             app:argType="integer" />
+        <argument
+            android:name="eventType"
+            app:argType="com.example.e_montazysta.data.model.EventType" />
         <action
             android:id="@+id/action_eventDetailFragment_to_elementDetailFragment"
             app:destination="@id/elementDetailFragment" />

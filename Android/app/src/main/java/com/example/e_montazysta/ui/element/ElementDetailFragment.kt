@@ -81,7 +81,7 @@ class ElementDetailFragment : Fragment() {
             it?.let {
                 binding.elementNameData.text = it.name
                 binding.elementCodeData.text = it.code
-                binding.elementUnitData.text = it.typeOfUnit
+                binding.elementUnitData.text = it.typeOfUnit.value
                 binding.elementQtyOfUnitData.text = it.quantityInUnit.toString()
             }
         })

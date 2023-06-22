@@ -45,7 +45,6 @@ class StageDetailDetailsFragment(val stage: Stage?) : Fragment() {
                 binding.plannedEndValue.text =
                     if (stage.plannedEnd != null) DateUtil.format(stage.plannedEnd) else "Brak"
                 binding.plannedFittersNumberValue.text = stage.plannedFittersNumber.toString()
-                binding.minimumImagesNumberValue.text = stage.minimumImagesNumber.toString()
                 binding.orderNameValue.text = stage.orderName
                 binding.order.setOnClickListener {
                     findNavController().navigate(

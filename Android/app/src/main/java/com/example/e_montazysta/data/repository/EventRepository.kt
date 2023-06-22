@@ -1,6 +1,7 @@
 package com.example.e_montazysta.data.repository
 
 import com.example.e_montazysta.data.model.Event
+import com.example.e_montazysta.data.model.EventType
 import com.example.e_montazysta.data.model.Result
 import com.example.e_montazysta.data.repository.interfaces.IEventRepository
 import com.example.e_montazysta.data.services.IServiceProvider
@@ -16,13 +17,21 @@ class EventRepository(private val serviceProvider: IServiceProvider) : IEventRep
     private val token = "Bearer " + sharedPreferencesHelper.get("lama").toString()
     private val eventService = serviceProvider.getEventService()
 
-    override suspend fun getEventDetails(id: Int): Result<Event> {
+    override suspend fun getEventDetails(id: Int, type: EventType): Result<Event> {
         return try {
-            val eventDAO = eventService.getToolEventDetails(token, id)
-            val eventDetail = eventDAO.mapToEvent()
-            Result.Success(eventDetail)
+            when(type){
+                EventType.E -> {
+                    val eventDAO = eventService.getElementEventDetails(token, id)
+                    val eventDetail = eventDAO.mapToEvent()
+                    Result.Success(eventDetail)
+                }
+                EventType.T -> {
+                    val eventDAO = eventService.getToolEventDetails(token, id)
+                    val eventDetail = eventDAO.mapToEvent()
+                    Result.Success(eventDetail)
+                }
+            }
         } catch (e: Exception) {
-
             Result.Error(e)
         }
     }

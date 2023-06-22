@@ -22,7 +22,7 @@ data class Stage(
     val plannedEnd: Date?,
     val startDate: Date?,
     val endDate: Date?,
-    val plannedDurationTime: Date?,
+    val plannedDurationTime: Int,
     val plannedFittersNumber: Int,
     val minimumImagesNumber: Int,
     val fitters: List<User?>,

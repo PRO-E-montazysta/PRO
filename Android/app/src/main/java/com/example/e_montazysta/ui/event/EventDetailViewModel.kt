@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.e_montazysta.data.model.Event
+import com.example.e_montazysta.data.model.EventType
 import com.example.e_montazysta.data.model.Result
 import com.example.e_montazysta.data.repository.interfaces.IEventRepository
 import kotlinx.coroutines.CoroutineScope
@@ -30,15 +31,15 @@ class EventDetailViewModel(private val repository: IEventRepository) : ViewModel
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
-    fun getEventDetail(id: Int) {
+    fun getEventDetail(id: Int, type: EventType) {
         job = launch {
-            getEventDetailAsync(id)
+            getEventDetailAsync(id, type)
         }
     }
 
-    private suspend fun getEventDetailAsync(id: Int) {
+    private suspend fun getEventDetailAsync(id: Int, type: EventType) {
         _isLoadingLiveData.postValue(true)
-        val result = repository.getEventDetails(id)
+        val result = repository.getEventDetails(id, type)
         when (result) {
             is Result.Success -> _eventDetailLiveData.postValue(result.data)
             is Result.Error -> {

@@ -60,18 +60,28 @@ class StageDetailViewModel(private val repository: IStageRepository) : ViewModel
     }
 
     private suspend fun nextOrderStatusAsync() {
+        val dupa = stagedetail.value
+        _messageLiveData.postValue(dupa.toString())
         _isLoadingLiveData.postValue(true)
         stagedetail.value?.let {
-            val result = repository.nextOrderStatus(it.id)
-            when (result) {
-                is Result.Success -> {
-                    _stageDetailLiveData.postValue(result.data)
-                    _messageLiveData.postValue("Zmianiono status na ${stagedetail.value!!.status.value}")
-                }
+            if(it.simpleToolReleases.none { tool -> tool.returnTime == null }) {
+                val result = repository.nextOrderStatus(it.id)
+                when (result) {
+                    is Result.Success -> {
+                        _stageDetailLiveData.postValue(result.data)
+                        _messageLiveData.postValue("Pomyślnie zmianiono status na ${stagedetail.value!!.status.value}")
+                    }
 
-                is Result.Error -> result.exception.message?.let { _messageLiveData.postValue(it) }
+                    is Result.Error -> {
+                        result.exception.message?.let { _messageLiveData.postValue(it) }
+                        _isLoadingLiveData.postValue(false)
+                    }
+                }
+            } else {
+                _messageLiveData.postValue("Aby przejść do następnego etapu wszystkie narzędzia muszą zostać zwrócone.")
             }
         }
+        _isLoadingLiveData.postValue(false)
     }
 
 }

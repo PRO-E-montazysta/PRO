@@ -13,7 +13,6 @@ data class EventListItem(
     val eventType: EventType,
     val status: EventStatus,
     val eventDate: String
-
 )
 
 fun Event.mapToEventListItem(): EventListItem {

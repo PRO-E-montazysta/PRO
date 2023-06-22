@@ -48,10 +48,10 @@ class EventListFragment : Fragment() {
 
         // To use the View Model with data binding, you have to explicitly
         // give the binding object a reference to it.
-        val adapter = EventListAdapter(CustomClickListener { eventId ->
+        val adapter = EventListAdapter(CustomClickListener { event ->
             findNavController().navigate(
                 EventListFragmentDirections.actionEventListFragmentToEventDetailFragment(
-                    eventId
+                    event.id, event.eventType
                 )
             )
         })

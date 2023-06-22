@@ -29,7 +29,7 @@ data class StageDAO(
     val startDate: Date?,
     val foremanId: Int?,
     val endDate: Date?,
-    val plannedDurationTime: Date?,
+    val plannedDurationTime: Int,
     val plannedFittersNumber: Int,
     val minimumImagesNumber: Int,
     val fitters: List<Int>,

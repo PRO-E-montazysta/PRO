@@ -32,6 +32,6 @@
             android:layout_height="wrap_content"
             app:headline="@{element.name}"
             app:icon="@{@drawable/baseline_category_24}"
-            app:supportText='@{element.code + " | " + element.typeOfUnit + " | " + element.quantityInUnit}' />
+            app:supportText='@{element.code + " | " + element.typeOfUnit.value + " | " + element.quantityInUnit}' />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

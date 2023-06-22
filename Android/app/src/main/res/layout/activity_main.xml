@@ -5,7 +5,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:elevation="4dp"
-    tools:context=".ui.activities.MainActivity">
+    tools:context=".ui.activities.MainActivity"
+    android:paddingHorizontal="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"

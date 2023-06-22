@@ -145,7 +145,7 @@
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/rounded_corner_background"
                 android:padding="3dp"
-                android:text="Zatwierdź etap"
+                android:text="Następny status"
                 app:layout_constraintBottom_toBottomOf="@+id/change_order_status"
                 app:layout_constraintEnd_toStartOf="@+id/change_order_status"
                 app:layout_constraintTop_toTopOf="@+id/change_order_status" />
