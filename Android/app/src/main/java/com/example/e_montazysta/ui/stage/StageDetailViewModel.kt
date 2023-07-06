@@ -64,7 +64,7 @@ class StageDetailViewModel(private val repository: IStageRepository) : ViewModel
         _messageLiveData.postValue(stage.toString())
         _isLoadingLiveData.postValue(true)
         stagedetail.value?.let {
-            if(stage.status == StageStatus.RETURN) {
+            if(stage?.status == StageStatus.RETURN) {
                 if (it.simpleToolReleases.none { tool -> tool.returnTime == null }) {
                     val result = repository.nextOrderStatus(it.id)
                     when (result) {
