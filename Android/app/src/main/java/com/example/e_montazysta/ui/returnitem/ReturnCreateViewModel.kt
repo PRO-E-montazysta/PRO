@@ -121,7 +121,7 @@ class ReturnCreateViewModel : ViewModel(), CoroutineScope, KoinComponent {
                     val isReleased =
                         stage.simpleElementReturnReleases.filter { it.elementId == element.id }
                     if (!isReleased.isNullOrEmpty()) {
-                        if (isReleased.sumOf { it.returnedQuantity } < isReleased.sumOf { it.returnedQuantity }) {
+                        if (isReleased.sumOf { it.returnedQuantity } < isReleased.sumOf { it.releasedQuantity }) {
                             _itemsLiveData.value = currentItems + element
                             _messageLiveData.postValue("Element dodany")
                         } else {
