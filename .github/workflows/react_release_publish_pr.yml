@@ -1,4 +1,4 @@
-name: Release&Publish React Dev
+name: Release&Publish React Prod
 
 on:
   push:
