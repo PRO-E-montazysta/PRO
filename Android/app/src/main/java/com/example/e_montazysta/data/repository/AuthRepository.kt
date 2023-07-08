@@ -20,7 +20,7 @@ class AuthRepository : IAuthRepository, KoinComponent {
         var rsp: String? = null
         try {
             var token = HttpRequestHelper.sendHttpPostRequest<LoginCredentials, TokenResponse>(
-                "https://dev.emontazysta.pl/api/v1/gettoken",
+                "https://emontazysta.pl/api/v1/gettoken",
                 creds
             )
             rsp = token.getToken()

@@ -5,15 +5,14 @@ metadata:
   name: frontend
 spec:
   entryPoints:
+    - web
     - websecure
   routes:
   - kind: Rule
     match: Host(`emontazysta.pl`)
-    priority: 10
+    priority: 1
     services:
     - kind: Service
       name: frontend
       namespace: production
       port: 80
-  tls:
-    certResolver: cloudflare

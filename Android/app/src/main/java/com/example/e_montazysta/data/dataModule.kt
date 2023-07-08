@@ -88,7 +88,7 @@ val dataModule = module {
 
     factory { HttpLoggingInterceptor.Level.BODY }
 
-    factory { Environment("https://dev.emontazysta.pl") }
+    factory { Environment("https://emontazysta.pl") }
 
 
     single {

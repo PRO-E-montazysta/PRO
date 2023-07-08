@@ -2,8 +2,8 @@ name: Release&Publish React Dev
 
 on:
   push:
-    branches:
-      - 'master'
+    tags:
+      - 'frontend/v*'
     paths:
       - React/**
   workflow_dispatch:
@@ -62,7 +62,7 @@ jobs:
           namespace: production
           manifests: |
             React/.build/deployment.yml
-            React/.build/ingressroute_dev.yml
+            React/.build/ingressroute_prod.yml
             React/.build/serverstransport.yml
             React/.build/service.yml
           images: |
@@ -72,3 +72,12 @@ jobs:
           strategy: basic
           action: deploy
           token: ${{ github.token }}
+      -
+        name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}

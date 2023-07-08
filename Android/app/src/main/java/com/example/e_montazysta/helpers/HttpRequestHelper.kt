@@ -9,7 +9,7 @@ import java.net.URLEncoder
 
 class HttpRequestHelper {
     companion object {
-        val baseUrl = "https://dev.emontazysta.pl/api/v1"
+        val baseUrl = "https://emontazysta.pl/api/v1"
         inline fun <T1, reified T2> sendHttpPostRequest(
             url: String = baseUrl,
             data: T1,
