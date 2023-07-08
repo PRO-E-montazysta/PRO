@@ -15,8 +15,7 @@ import org.koin.core.context.startKoin
 import org.koin.dsl.module
 
 class App : Application() {
-    // Called when the application is starting, before any other application objects have been created.
-    // Overriding this method is totally optional!
+     // Overriding this method is totally optional!
     override fun onCreate() {
         super.onCreate()
 
