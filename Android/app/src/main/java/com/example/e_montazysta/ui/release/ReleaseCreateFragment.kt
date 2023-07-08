@@ -60,13 +60,12 @@ class ReleaseCreateFragment : Fragment() {
             ReleaseCreateAdapter.CustomClickListener(
                 { item ->
                     if (actionMode != null) {
-                        Toast.makeText(requireContext(), item.code, Toast.LENGTH_LONG).show()
+
                     } else {
                         false
                     }
                 },
                 {
-                    Toast.makeText(requireContext(), "LONG PRESS TEST", Toast.LENGTH_LONG).show()
                     if (actionMode == null) {
                         actionMode = requireActivity().startActionMode(actionModeCallback)
                     }

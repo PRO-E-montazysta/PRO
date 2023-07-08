@@ -61,7 +61,6 @@ class StageDetailViewModel(private val repository: IStageRepository) : ViewModel
 
     private suspend fun nextOrderStatusAsync() {
         val stage = stagedetail.value
-        _messageLiveData.postValue(stage.toString())
         _isLoadingLiveData.postValue(true)
         stagedetail.value?.let {
             if(stage?.status == StageStatus.RETURN) {
